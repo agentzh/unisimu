@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0078)http://search.cpan.org/src/KCLARK/SQL-Translator-0.07/t/data/template/basic.tt -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY><PRE>Schema: 
+Database: 
+
+Foo: 
+Hello: 
+
+Table: Student
+==========================================================================
+
+Fields
+    Sno
+        data_type:             int
+        size:                  11
+        is_nullable:           0
+        default_value:         
+        is_primary_key:        1
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 1
+        table:                 Student
+    
+    Sname
+        data_type:             char
+        size:                  8
+        is_nullable:           0
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 2
+        table:                 Student
+    
+    Ssex
+        data_type:             char
+        size:                  2
+        is_nullable:           1
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 3
+        table:                 Student
+    
+    Sage
+        data_type:             int
+        size:                  11
+        is_nullable:           1
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 4
+        table:                 Student
+    
+    Sdept
+        data_type:             char
+        size:                  30
+        is_nullable:           1
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 5
+        table:                 Student
+    
+
+Indices
+    
+Constraints
+    ?
+        type:             PRIMARY KEY
+        fields:           Sno
+        expression:       
+        match_type:       
+        reference_fields: 
+        reference_table:  
+        deferrable:       1
+        on_delete:        
+        on_update:        
+        options:          
+        is_valid:         1
+    
+Table: Course
+==========================================================================
+
+Fields
+    Cno
+        data_type:             int
+        size:                  11
+        is_nullable:           0
+        default_value:         
+        is_primary_key:        1
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 6
+        table:                 Course
+    
+    Cname
+        data_type:             char
+        size:                  30
+        is_nullable:           0
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 7
+        table:                 Course
+    
+    Cpno
+        data_type:             int
+        size:                  11
+        is_nullable:           1
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 8
+        table:                 Course
+    
+    Ccredit
+        data_type:             int
+        size:                  11
+        is_nullable:           1
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 9
+        table:                 Course
+    
+
+Indices
+    
+Constraints
+    ?
+        type:             PRIMARY KEY
+        fields:           Cno
+        expression:       
+        match_type:       
+        reference_fields: 
+        reference_table:  
+        deferrable:       1
+        on_delete:        
+        on_update:        
+        options:          
+        is_valid:         1
+    
+Table: SC
+==========================================================================
+
+Fields
+    Sno
+        data_type:             int
+        size:                  11
+        is_nullable:           0
+        default_value:         
+        is_primary_key:        1
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        1
+        foreign_key_reference: SQL::Translator::Schema::Constraint=HASH(0x3d65cc0)
+        is_valid:              1
+        order:                 10
+        table:                 SC
+    
+    Cno
+        data_type:             int
+        size:                  11
+        is_nullable:           0
+        default_value:         
+        is_primary_key:        1
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        1
+        foreign_key_reference: SQL::Translator::Schema::Constraint=HASH(0x3d65b70)
+        is_valid:              1
+        order:                 11
+        table:                 SC
+    
+    Grade
+        data_type:             int
+        size:                  11
+        is_nullable:           1
+        default_value:         
+        is_primary_key:        0
+        is_unique:             0
+        is_auto_increment:     0
+        is_foreign_key:        0
+        foreign_key_reference: 
+        is_valid:              1
+        order:                 12
+        table:                 SC
+    
+
+Indices
+    
+Constraints
+    ?
+        type:             PRIMARY KEY
+        fields:           Sno, Cno
+        expression:       
+        match_type:       
+        reference_fields: 
+        reference_table:  
+        deferrable:       1
+        on_delete:        
+        on_update:        
+        options:          
+        is_valid:         1
+    
+    ?
+        type:             FOREIGN KEY
+        fields:           Sno
+        expression:       
+        match_type:       
+        reference_fields: Sno
+        reference_table:  Student
+        deferrable:       1
+        on_delete:        
+        on_update:        
+        options:          
+        is_valid:         1
+    
+    ?
+        type:             FOREIGN KEY
+        fields:           Cno
+        expression:       
+        match_type:       
+        reference_fields: Cno
+        reference_table:  Course
+        deferrable:       1
+        on_delete:        
+        on_update:        
+        options:          
+        is_valid:         1
+    
+</PRE></BODY></HTML>

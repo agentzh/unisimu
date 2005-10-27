@@ -1,0 +1,125 @@
+#: masmd.pl.tt
+#: 2005-10-14 2005-10-15
+
+use strict;
+use warnings;
+
+my $fname = shift;
+die "No MASM file specified.\n" if !defined $fname;
+$fname .= '.asm' if $fname !~ m/\.asm$/i;
+
+open my $in, $fname or
+    die "error: Can't open '$fname' for reading: $!\n";
+open my $fh, 
+
+my ($pcnt, $lcnt, $scnt) = (0, 0, 0);
+my $in_codes = 0;
+
+# Add guard procedure to prevent user's procs fall down
+# into masmd's routines
+my $proc_defs = <<'_EOC_';
+_masmd_P proc
+    ret
+_masmd_P endp
+_EOC_
+while (<$in>) {
+    if (/^\s*;\s*(?:(say|print)(10|16)?)\s*(.*);?\s*$/i) {
+        my $old = $_;
+        chomp $old;
+        $in_codes = 1;
+        my $cmd = lc($1);
+        my $fmt = $2 || 10;  # default to 10
+        my $args = $3;
+        my @strings;
+        $pcnt++;
+        $proc_defs .= <<"_EOC_";
+
+; procedure for ``$old'':
+_masmd_P$pcnt proc
+_EOC_
+        while (1) {
+            if ($args =~ m/\G\s*("[^"]*"|'[^']*')\s*,?/gco) {
+                #warn "! ($.): $& ", pos($args), "\n";
+                my $s = $1;
+                my $old = $s;
+                $s =~ s/\\n/",0dh,0ah,"/g;
+                $s =~ s/\"\",|\"\"$//g;
+                #$s .= ",0dh,0ah" if $cmd eq 'say';
+                $s .= ",'\$'";
+                $s =~ s/,,+/,/g;
+                $lcnt++; $scnt++;
+                $proc_defs .= <<_EOC_;
+
+    ; output constant string $old:
+    jmp _masmd_L$lcnt
+    _masmd_S$scnt db $s
+_masmd_L$lcnt:
+    push dx
+    push ax
+    push ds
+    mov ax, cs
+    mov ds, ax
+    mov dx, offset _masmd_S$scnt
+    mov ah, 09h
+    int 21h
+    pop ds
+    pop ax
+    pop dx
+
+_EOC_
+
+            } elsif ($args =~ m/\G\s*([^"',]+)\s*,?/gco) {
+                my $var = $1;
+                #warn "!! ($.) $& ", pos($args), "\n";
+                $proc_defs .= "    ; output variable $var:\n";
+                if ($var ne 'ax') {
+                    $proc_defs .= <<"_EOC_";
+    push ax
+    mov ax, $var
+_EOC_
+                }
+                $proc_defs .= "    call _masmd_outw$fmt\n";
+                if ($var ne 'ax') {
+                    $proc_defs .= "    pop ax\n";
+                }
+            }elsif ($args =~ m/\G.*\S/gco) {
+                die "Syntax error: line $.: character '$& ' unexpected.\n";
+            } else {
+                #warn "!!! ($.) ", pos($args), "\n";
+                last;
+            }
+        }
+        if ($cmd eq 'say') {
+            $proc_defs .= <<'_EOC_';
+
+    ; output the trailing "\n" for ``say'':
+    push dx
+    push ax
+    mov ah, 02h
+    mov dl, 0dh
+    int 21h
+    mov dl, 0ah
+    int 21h
+    pop ax
+    pop dx
+
+_EOC_
+        }
+        $proc_defs .= "ret\n_masmd_P$pcnt endp\n";
+        print;
+        print "    call _masmd_P$pcnt\n";
+    } elsif ($in_codes and m/^\s*\w+\s+ends\b/i) {
+        $proc_defs .= <<'_EOC_';
+
+[% INCLUDE "dec.asm.tt" prefix='_masmd' %]
+
+[% INCLUDE "hex.asm.tt" prefix='_masmd' %]
+_EOC_
+        print "$proc_defs\n";
+        print;
+    } else {
+        print;
+    }
+}
+
+close $in;

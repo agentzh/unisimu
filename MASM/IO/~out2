@@ -1,0 +1,36 @@
+0ABC
+ax = 0ABC (0ABC)
+bx = -1
+cx = -1
+dx = -1
+
+FFFF
+ax = FFFF (FFFF)
+bx = -1
+cx = -1
+dx = -1
+
+0000
+ax = 0000 (0000)
+bx = -1
+cx = -1
+dx = -1
+
+7FFF
+ax = 7FFF (7FFF)
+bx = -1
+cx = -1
+dx = -1
+
+8000
+ax = 8000 (8000)
+bx = -1
+cx = -1
+dx = -1
+
+FF80
+ax = FF80 (FF80)
+bx = -1
+cx = -1
+dx = -1
+

@@ -1,0 +1,15 @@
+[% USE list = datafile('P.csv', delim = ',') -%]
+
+drop table P
+
+create table
+    P 
+    (PNO char(4) primary key,
+     PNAME char(8),
+     COLOR char(4),
+     WEIGHT integer)
+
+[% FOREACH list -%]
+insert into P values('[% PNO %]','[% PNAME %]','[% COLOR %]',[% WEIGHT %])
+
+[% END -%]

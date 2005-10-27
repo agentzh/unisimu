@@ -1,0 +1,6 @@
+Revision history for Perl extension Dynamic::Partition.
+
+0.01  Sun Oct 23 10:13:28 2005
+	- original version; created by h2xs 1.23 with options
+		-XA -b 5.8.6 -n Dynamic::Partition
+

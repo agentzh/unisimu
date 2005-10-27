@@ -1,0 +1,276 @@
+Microsoft (R) Macro Assembler Version 6.11		    10/15/05 20:16:19
+tmp.asm							     Page 1 - 1
+
+
+ 0000				data segment
+ 0000 0015 0014 0013 0012	    ARRAY dw 21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2
+       0011 0010 000F
+       000E 000D 000C
+       000B 000A 0009
+       0008 0007 0006
+       0005 0004 0003
+       0002
+ 0028 0000			    ODD dw ?
+ 002A				data ends
+
+ 0000				code segment
+				    assume cs:code, ds:data
+ 0000				start:
+ 0000  33 D2			    xor dx, dx
+ 0002  33 FF			    xor di, di
+ 0004  8D 2E 0000 R		    lea bp, ARRAY
+ 0008				L1:
+ 0008  83 FF 28			    cmp di, 20*2
+ 000B  7D 1C			    jge L3
+ 000D  8B 03			    mov ax, [bp+di]
+
+				    ; say "Checking elem ", ax, " at ", di, "..."
+ 000F  E8 0020			    call _masmd_P1
+
+				    ; Jump aside if it's an even number
+ 0012  A9 0001			    test ax, 1
+ 0015  74 0D			    jz L2
+
+				    ; Jump in if dx is unset:
+ 0017  85 D2			    test dx, dx
+ 0019  74 04			    jz L4
+
+				    ; Jump aside if it's less than dx
+ 001B  3B C2			    cmp ax, dx
+ 001D  7D 05			    jge L2
+ 001F				L4:
+				    ; say "    Moving ", ax, " to dx..."
+ 001F  E8 007A			    call _masmd_P2
+ 0022  8B D0			    mov dx, ax
+ 0024				L2:
+ 0024  83 C7 02			    add di, 2
+ 0027  EB DF			    jmp L1
+ 0029				L3:
+ 0029  89 16 0028 R		    mov ODD, dx
+
+ 002D  B8 4C00			    mov ax, 4c00h
+ 0030  CD 21			    int 21h
+
+				; procedure for ``    ; say "Checking elem ", ax, " at ", di, "..."'':
+ 0032				_masmd_P1 proc
+
+				    ; output constant string "Checking elem ":
+ 0032  EB 0F			    jmp _masmd_L1
+ 0034 43 68 65 63 6B 69		    _masmd_S1 db "Checking elem ",'$'
+       6E 67 20 65 6C 65
+       6D 20 24
+ 0043				_masmd_L1:
+ 0043  52			    push dx
+ 0044  50			    push ax
+ 0045  1E			    push ds
+ 0046  8C C8			    mov ax, cs
+ 0048  8E D8			    mov ds, ax
+ 004A  BA 0034 R		    mov dx, offset _masmd_S1
+ 004D  B4 09			    mov ah, 09h
+ 004F  CD 21			    int 21h
+ 0051  1F			    pop ds
+ 0052  58			    pop ax
+ 0053  5A			    pop dx
+
+				    ; output variable ax:
+ 0054  E8 0093			    call _masmd_outw
+
+				    ; output constant string " at ":
+ 0057  EB 05			    jmp _masmd_L2
+ 0059 20 61 74 20 24		    _masmd_S2 db " at ",'$'
+ 005E				_masmd_L2:
+ 005E  52			    push dx
+ 005F  50			    push ax
+ 0060  1E			    push ds
+ 0061  8C C8			    mov ax, cs
+ 0063  8E D8			    mov ds, ax
+ 0065  BA 0059 R		    mov dx, offset _masmd_S2
+ 0068  B4 09			    mov ah, 09h
+ 006A  CD 21			    int 21h
+ 006C  1F			    pop ds
+ 006D  58			    pop ax
+ 006E  5A			    pop dx
+
+				    ; output variable di:
+ 006F  50			    push ax
+ 0070  8B C7			    mov ax, di
+ 0072  E8 0075			    call _masmd_outw
+ 0075  58			    pop ax
+
+				    ; output constant string "...":
+ 0076  EB 04			    jmp _masmd_L3
+ 0078 2E 2E 2E 24		    _masmd_S3 db "...",'$'
+ 007C				_masmd_L3:
+ 007C  52			    push dx
+ 007D  50			    push ax
+ 007E  1E			    push ds
+ 007F  8C C8			    mov ax, cs
+ 0081  8E D8			    mov ds, ax
+ 0083  BA 0078 R		    mov dx, offset _masmd_S3
+ 0086  B4 09			    mov ah, 09h
+ 0088  CD 21			    int 21h
+ 008A  1F			    pop ds
+ 008B  58			    pop ax
+ 008C  5A			    pop dx
+
+
+				    ; output the trailing "\n" for ``say'':
+ 008D  52			    push dx
+ 008E  50			    push ax
+ 008F  B4 02			    mov ah, 02h
+ 0091  B2 0D			    mov dl, 0dh
+ 0093  CD 21			    int 21h
+ 0095  B2 0A			    mov dl, 0ah
+ 0097  CD 21			    int 21h
+ 0099  58			    pop ax
+ 009A  5A			    pop dx
+
+ 009B  C3			ret
+ 009C				_masmd_P1 endp
+
+				; procedure for ``    ; say "    Moving ", ax, " to dx..."'':
+ 009C				_masmd_P2 proc
+
+				    ; output constant string "    Moving ":
+ 009C  EB 0C			    jmp _masmd_L4
+ 009E 20 20 20 20 4D 6F		    _masmd_S4 db "    Moving ",'$'
+       76 69 6E 67 20 24
+ 00AA				_masmd_L4:
+ 00AA  52			    push dx
+ 00AB  50			    push ax
+ 00AC  1E			    push ds
+ 00AD  8C C8			    mov ax, cs
+ 00AF  8E D8			    mov ds, ax
+ 00B1  BA 009E R		    mov dx, offset _masmd_S4
+ 00B4  B4 09			    mov ah, 09h
+ 00B6  CD 21			    int 21h
+ 00B8  1F			    pop ds
+ 00B9  58			    pop ax
+ 00BA  5A			    pop dx
+
+				    ; output variable ax:
+ 00BB  E8 002C			    call _masmd_outw
+
+				    ; output constant string " to dx...":
+ 00BE  EB 0A			    jmp _masmd_L5
+ 00C0 20 74 6F 20 64 78		    _masmd_S5 db " to dx...",'$'
+       2E 2E 2E 24
+ 00CA				_masmd_L5:
+ 00CA  52			    push dx
+ 00CB  50			    push ax
+ 00CC  1E			    push ds
+ 00CD  8C C8			    mov ax, cs
+ 00CF  8E D8			    mov ds, ax
+ 00D1  BA 00C0 R		    mov dx, offset _masmd_S5
+ 00D4  B4 09			    mov ah, 09h
+ 00D6  CD 21			    int 21h
+ 00D8  1F			    pop ds
+ 00D9  58			    pop ax
+ 00DA  5A			    pop dx
+
+
+				    ; output the trailing "\n" for ``say'':
+ 00DB  52			    push dx
+ 00DC  50			    push ax
+ 00DD  B4 02			    mov ah, 02h
+ 00DF  B2 0D			    mov dl, 0dh
+ 00E1  CD 21			    int 21h
+ 00E3  B2 0A			    mov dl, 0ah
+ 00E5  CD 21			    int 21h
+ 00E7  58			    pop ax
+ 00E8  5A			    pop dx
+
+ 00E9  C3			ret
+ 00EA				_masmd_P2 endp
+
+ 00EA				_masmd_outw proc
+ 00EA  50			    push ax
+ 00EB  51			    push cx
+ 00EC  52			    push dx
+ 00ED  53			    push bx
+
+ 00EE  8B D8			    mov bx, ax
+ 00F0  B1 0C			    mov cl, 16-4
+
+ 00F2				_masmd_outw1:
+ 00F2  8B C3			    mov ax, bx
+ 00F4  D3 E8			    shr ax, cl
+
+ 00F6  8A D0			    mov dl, al
+ 00F8  80 E2 0F			    and dl, 0fh
+
+ 00FB  80 FA 09			    cmp dl, 9
+ 00FE  7F 05			    jg _masmd_outw2
+
+ 0100  80 C2 30			    add dl, 30h
+ 0103  EB 03			    jmp _masmd_outw3
+
+ 0105				_masmd_outw2:
+ 0105  80 C2 37			    add dl, 41h-0ah
+
+ 0108				_masmd_outw3:
+ 0108  B4 02			    mov ah, 02h
+ 010A  CD 21			    int 21h
+
+ 010C  80 E9 04			    sub cl, 4
+ 010F  7D E1			    jge _masmd_outw1
+
+ 0111  5B			    pop bx
+ 0112  5A			    pop dx
+ 0113  59			    pop cx
+ 0114  58			    pop ax
+ 0115  C3			    ret
+ 0116				_masmd_outw endp
+
+ 0116				code ends
+				     end start
+Microsoft (R) Macro Assembler Version 6.11		    10/15/05 20:16:19
+tmp.asm							     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+code . . . . . . . . . . . . . .	16 Bit	 0116	  Para	  Private 
+data . . . . . . . . . . . . . .	16 Bit	 002A	  Para	  Private 
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+_masmd_P1  . . . . . . . . . . .	P Near	 0032	  code	Length= 006A Private
+_masmd_P2  . . . . . . . . . . .	P Near	 009C	  code	Length= 004E Private
+_masmd_outw  . . . . . . . . . .	P Near	 00EA	  code	Length= 002C Private
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+ARRAY  . . . . . . . . . . . . .	Word	 0000	  data	
+L1 . . . . . . . . . . . . . . .	L Near	 0008	  code	
+L2 . . . . . . . . . . . . . . .	L Near	 0024	  code	
+L3 . . . . . . . . . . . . . . .	L Near	 0029	  code	
+L4 . . . . . . . . . . . . . . .	L Near	 001F	  code	
+ODD  . . . . . . . . . . . . . .	Word	 0028	  data	
+_masmd_L1  . . . . . . . . . . .	L Near	 0043	  code	
+_masmd_L2  . . . . . . . . . . .	L Near	 005E	  code	
+_masmd_L3  . . . . . . . . . . .	L Near	 007C	  code	
+_masmd_L4  . . . . . . . . . . .	L Near	 00AA	  code	
+_masmd_L5  . . . . . . . . . . .	L Near	 00CA	  code	
+_masmd_S1  . . . . . . . . . . .	Byte	 0034	  code	
+_masmd_S2  . . . . . . . . . . .	Byte	 0059	  code	
+_masmd_S3  . . . . . . . . . . .	Byte	 0078	  code	
+_masmd_S4  . . . . . . . . . . .	Byte	 009E	  code	
+_masmd_S5  . . . . . . . . . . .	Byte	 00C0	  code	
+_masmd_outw1 . . . . . . . . . .	L Near	 00F2	  code	
+_masmd_outw2 . . . . . . . . . .	L Near	 0105	  code	
+_masmd_outw3 . . . . . . . . . .	L Near	 0108	  code	
+start  . . . . . . . . . . . . .	L Near	 0000	  code	
+
+	   0 Warnings
+	   0 Errors

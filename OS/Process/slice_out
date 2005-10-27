@@ -1,0 +1,425 @@
+Running P1...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P2         5            0        R     
+P3         6            0        R     
+P4         7            0        R     
+P5         8            0        R     
+P1         4            1        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P3         6            0        R     
+P4         7            0        R     
+P5         8            0        R     
+P1         4            1        R     
+P2         5            1        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P4         7            0        R     
+P5         8            0        R     
+P1         4            1        R     
+P2         5            1        R     
+P3         6            1        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            0        R     
+P1         4            1        R     
+P2         5            1        R     
+P3         6            1        R     
+P4         7            1        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            1        R     
+P2         5            1        R     
+P3         6            1        R     
+P4         7            1        R     
+P5         8            1        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P1...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P2         5            1        R     
+P3         6            1        R     
+P4         7            1        R     
+P5         8            1        R     
+P1         4            2        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P3         6            1        R     
+P4         7            1        R     
+P5         8            1        R     
+P1         4            2        R     
+P2         5            2        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P4         7            1        R     
+P5         8            1        R     
+P1         4            2        R     
+P2         5            2        R     
+P3         6            2        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            1        R     
+P1         4            2        R     
+P2         5            2        R     
+P3         6            2        R     
+P4         7            2        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            2        R     
+P2         5            2        R     
+P3         6            2        R     
+P4         7            2        R     
+P5         8            2        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P1...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P2         5            2        R     
+P3         6            2        R     
+P4         7            2        R     
+P5         8            2        R     
+P1         4            3        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P3         6            2        R     
+P4         7            2        R     
+P5         8            2        R     
+P1         4            3        R     
+P2         5            3        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P4         7            2        R     
+P5         8            2        R     
+P1         4            3        R     
+P2         5            3        R     
+P3         6            3        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            2        R     
+P1         4            3        R     
+P2         5            3        R     
+P3         6            3        R     
+P4         7            3        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            3        R     
+P2         5            3        R     
+P3         6            3        R     
+P4         7            3        R     
+P5         8            3        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+Running P1...
+Terminating P1...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P2         5            3        R     
+P3         6            3        R     
+P4         7            3        R     
+P5         8            3        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P3         6            3        R     
+P4         7            3        R     
+P5         8            3        R     
+P2         5            4        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P4         7            3        R     
+P5         8            3        R     
+P2         5            4        R     
+P3         6            4        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            3        R     
+P2         5            4        R     
+P3         6            4        R     
+P4         7            4        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P2         5            4        R     
+P3         6            4        R     
+P4         7            4        R     
+P5         8            4        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+
+Running P2...
+Terminating P2...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P3         6            4        R     
+P4         7            4        R     
+P5         8            4        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P4         7            4        R     
+P5         8            4        R     
+P3         6            5        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            4        R     
+P3         6            5        R     
+P4         7            5        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P3         6            5        R     
+P4         7            5        R     
+P5         8            5        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+
+Running P3...
+Terminating P3...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P4         7            5        R     
+P5         8            5        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+P3         6            6        E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            5        R     
+P4         7            6        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+P3         6            6        E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P4         7            6        R     
+P5         8            6        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+P3         6            6        E     
+
+Running P4...
+Terminating P4...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            6        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+P3         6            6        E     
+P4         7            7        E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P5         8            7        R     
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+P3         6            6        E     
+P4         7            7        E     
+
+Running P5...
+Terminating P5...
+------------ PCB List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+
+------------ End List ----------------
+Process ID Request Time Run Time Status
+---------- ------------ -------- ----- 
+P1         4            4        E     
+P2         5            5        E     
+P3         6            6        E     
+P4         7            7        E     
+P5         8            8        E     
+

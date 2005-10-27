@@ -1,0 +1,45 @@
+Entering outw10 with ax = 256
+256
+ax = 256 (256)
+bx = -1
+cx = -1
+dx = -1
+
+Entering outw10 with ax = -1
+ax is negative
+-1
+ax = -1 (-1)
+bx = -1
+cx = -1
+dx = -1
+
+Entering outw10 with ax = 0
+0
+ax = 0 (0)
+bx = -1
+cx = -1
+dx = -1
+
+Entering outw10 with ax = 32767
+32767
+ax = 32767 (32767)
+bx = -1
+cx = -1
+dx = -1
+
+Entering outw10 with ax = -32768
+ax is negative
+-32768
+ax = -32768 (-32768)
+bx = -1
+cx = -1
+dx = -1
+
+Entering outw10 with ax = -327
+ax is negative
+-327
+ax = -327 (-327)
+bx = -1
+cx = -1
+dx = -1
+

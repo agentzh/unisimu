@@ -1,0 +1,52 @@
+[% prefix %]_outw10 proc
+    push ax
+    push bx
+    push cx
+    push dx
+
+    ; say "Entering outw10 with ax = ", ax
+    test ax, ax
+    ;; say "Here?"
+    jns [% prefix %]_outw10_1
+    neg ax
+
+    ; say "ax is negative"
+    push ax
+    mov dl, '-'
+    mov ah, 02h
+    int 21h
+    pop ax
+
+[% prefix %]_outw10_1:
+    ;; say "Here??"
+    xor cx, cx
+    mov bx, 10
+[% prefix %]_outw10_2:
+    xor dx,dx
+    div bx
+    ;; say "Here???"
+    
+    ;; say "Producing digit ", dx, "..."
+    push dx  ; save the decimal digit one by one
+    inc cx
+    
+    test ax, ax
+    jnz [% prefix %]_outw10_2
+
+[% prefix %]_outw10_3:
+    pop dx   ; restore the decimal digit one by one
+    
+    ;; say "Outputing digit ", dx, "..."
+    add dl, 30h
+    mov ah, 02h
+    int 21h
+
+    loop [% prefix %]_outw10_3
+    
+    pop dx
+    pop cx
+    pop bx
+    pop ax
+
+    ret
+[% prefix %]_outw10 endp

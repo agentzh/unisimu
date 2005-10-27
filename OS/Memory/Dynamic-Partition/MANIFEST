@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Dynamic-Partition.t
+lib/Dynamic/Partition.pm

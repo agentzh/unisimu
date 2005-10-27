@@ -1,0 +1,38 @@
+[% prefix %]_outw16 proc
+    push ax
+    push cx
+    push dx
+    push bx
+
+    mov bx, ax
+    mov cl, 16-4
+
+[% prefix %]_outw16_1:
+    mov ax, bx
+    shr ax, cl
+
+    mov dl, al
+    and dl, 0fh
+
+    cmp dl, 9
+    jg [% prefix %]_outw16_2
+
+    add dl, 30h
+    jmp [% prefix %]_outw16_3
+
+[% prefix %]_outw16_2:
+    add dl, 41h-0ah
+
+[% prefix %]_outw16_3:
+    mov ah, 02h
+    int 21h
+
+    sub cl, 4
+    jge [% prefix %]_outw16_1
+
+    pop bx
+    pop dx
+    pop cx
+    pop ax
+    ret
+[% prefix %]_outw16 endp

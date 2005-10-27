@@ -1,0 +1,14 @@
+[%- table = 'Student' %]
+[%- file = table _ '.csv' %]
+[%- USE list = datafile(file, delim = ',') -%]
+create table [% table %]
+    (Sno   integer primary key,
+     Sname char(8) not null,
+     Ssex  char(2),
+     Sage  integer,
+     Sdept char(30));
+
+[% FOREACH list -%]
+insert into [% table %] values([% Sno %],'[% Sname %]','[% Ssex %]',[% Sage %],'[% Sdept %]');
+
+[% END -%]

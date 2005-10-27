@@ -1,0 +1,25 @@
+[% TAGS <+ +> %]
+<+- FOREACH table = schema.get_tables -+>
+[%- USE list = datafile('<+ table +>.csv', delim = ',') -%]
+
+[% FOREACH r IN list -%]
+  <+- fields = table.get_fields +>
+  <+- FOREACH field IN fields +>
+    [%- <+ field +> = r.<+ field +> %]
+    <+- IF field.is_nullable +>
+    [%- IF <+ field +> == '' OR !<+ field +>.defined;
+            <+ field +> = "null";
+        END -%]
+    <+- END +>
+    <+- IF field.data_type == 'char' +>
+    [%- <+ field +> = "'" _ <+ field +> _ "'" IF <+ field +> != "null" -%]
+    <+- END +>
+  <+- END +>
+insert into <+ table +> values(
+    <+- FOREACH var IN fields +>
+        <+- "[% " _ var _ " %]" +>
+        <+- "," UNLESS var == fields.last +>
+    <+- END +>);
+
+[% END -%]
+<+ END -+>

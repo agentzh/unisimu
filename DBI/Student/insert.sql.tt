@@ -1,0 +1,52 @@
+[%- USE list = datafile('Student.csv', delim = ',') -%]
+
+[% FOREACH r IN list -%]
+    [%- Sno = r.Sno %]
+    [%- Sname = r.Sname %]
+    [%- Sname = "'" _ Sname _ "'" IF Sname != "null" -%]
+    [%- Ssex = r.Ssex %]
+    [%- IF Ssex == '' OR !Ssex.defined;
+            Ssex = "null";
+        END -%]
+    [%- Ssex = "'" _ Ssex _ "'" IF Ssex != "null" -%]
+    [%- Sage = r.Sage %]
+    [%- IF Sage == '' OR !Sage.defined;
+            Sage = "null";
+        END -%]
+    [%- Sdept = r.Sdept %]
+    [%- IF Sdept == '' OR !Sdept.defined;
+            Sdept = "null";
+        END -%]
+    [%- Sdept = "'" _ Sdept _ "'" IF Sdept != "null" -%]
+insert into Student values([% Sno %],[% Sname %],[% Ssex %],[% Sage %],[% Sdept %]);
+
+[% END -%]
+[%- USE list = datafile('Course.csv', delim = ',') -%]
+
+[% FOREACH r IN list -%]
+    [%- Cno = r.Cno %]
+    [%- Cname = r.Cname %]
+    [%- Cname = "'" _ Cname _ "'" IF Cname != "null" -%]
+    [%- Cpno = r.Cpno %]
+    [%- IF Cpno == '' OR !Cpno.defined;
+            Cpno = "null";
+        END -%]
+    [%- Ccredit = r.Ccredit %]
+    [%- IF Ccredit == '' OR !Ccredit.defined;
+            Ccredit = "null";
+        END -%]
+insert into Course values([% Cno %],[% Cname %],[% Cpno %],[% Ccredit %]);
+
+[% END -%]
+[%- USE list = datafile('SC.csv', delim = ',') -%]
+
+[% FOREACH r IN list -%]
+    [%- Sno = r.Sno %]
+    [%- Cno = r.Cno %]
+    [%- Grade = r.Grade %]
+    [%- IF Grade == '' OR !Grade.defined;
+            Grade = "null";
+        END -%]
+insert into SC values([% Sno %],[% Cno %],[% Grade %]);
+
+[% END -%]

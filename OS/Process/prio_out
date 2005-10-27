@@ -1,0 +1,425 @@
+Running P1...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P2         5            13       R     
+P1         3            13       R     
+P3         6            12       R     
+P4         7            11       R     
+P5         8            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         3            13       R     
+P3         6            12       R     
+P2         4            12       R     
+P4         7            11       R     
+P5         8            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+
+Running P1...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P2         4            12       R     
+P3         6            12       R     
+P1         2            12       R     
+P4         7            11       R     
+P5         8            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         2            12       R     
+P3         6            12       R     
+P4         7            11       R     
+P2         3            11       R     
+P5         8            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+
+Running P1...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P3         6            12       R     
+P2         3            11       R     
+P4         7            11       R     
+P1         1            11       R     
+P5         8            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         1            11       R     
+P4         7            11       R     
+P2         3            11       R     
+P3         5            11       R     
+P5         8            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+
+Running P1...
+Terminating P1...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P4         7            11       R     
+P2         3            11       R     
+P3         5            11       R     
+P5         8            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P3         5            11       R     
+P2         3            11       R     
+P5         8            10       R     
+P4         6            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P2         3            11       R     
+P4         6            10       R     
+P5         8            10       R     
+P3         4            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P3         4            10       R     
+P5         8            10       R     
+P4         6            10       R     
+P2         2            10       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P2         2            10       R     
+P4         6            10       R     
+P5         8            10       R     
+P3         3             9       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P2...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         8            10       R     
+P4         6            10       R     
+P3         3             9       R     
+P2         1             9       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P4         6            10       R     
+P2         1             9       R     
+P3         3             9       R     
+P5         7             9       R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         7            9        R     
+P3         3            9        R     
+P2         1            9        R     
+P4         5            9        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P4         5            9        R     
+P2         1            9        R     
+P3         3            9        R     
+P5         6            8        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P3         3            9        R     
+P2         1            9        R     
+P5         6            8        R     
+P4         4            8        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P2         1            9        R     
+P4         4            8        R     
+P5         6            8        R     
+P3         2            8        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+
+Running P2...
+Terminating P2...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P4         4            8        R     
+P5         6            8        R     
+P3         2            8        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P3         2            8        R     
+P5         6            8        R     
+P4         3            7        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+
+Running P3...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         6            8        R     
+P4         3            7        R     
+P3         1            7        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P3         1            7        R     
+P4         3            7        R     
+P5         5            7        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+
+Running P3...
+Terminating P3...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P4         3            7        R     
+P5         5            7        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         5            7        R     
+P4         2            6        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P4         2            6        R     
+P5         4            6        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+
+Running P4...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         4            6        R     
+P4         1            5        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P4         1            5        R     
+P5         3            5        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+
+Running P4...
+Terminating P4...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         3            5        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+P4         0             4       E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         2            4        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+P4         0             4       E     
+
+Running P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P5         1            3        R     
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+P4         0             4       E     
+
+Running P5...
+Terminating P5...
+------------ PCB List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+
+------------ End List ----------------
+Process ID Request Time Priority Status
+---------- ------------ -------- ----- 
+P1         0            10       E     
+P2         0             8       E     
+P3         0             6       E     
+P4         0             4       E     
+P5         0             2       E     
+

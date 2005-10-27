@@ -1,0 +1,15 @@
+[%- table = 'SC' %]
+[%- file = table _ '.csv' %]
+[%- USE list = datafile(file, delim = ',') -%]
+create table [% table %]
+    (Sno   integer,
+     Cno   integer,
+     Grade integer,
+     primary key (Sno, Cno),
+     foreign key (Sno) references Student,
+     foreign key (Cno) references Course);
+
+[% FOREACH list -%]
+insert into [% table %] values([% Sno %],[% Cno %],[% Grade %]);
+
+[% END -%]

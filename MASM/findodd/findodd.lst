@@ -1,0 +1,80 @@
+Microsoft (R) Macro Assembler Version 6.11		    10/15/05 20:16:19
+findodd.asm						     Page 1 - 1
+
+
+ 0000				data segment
+ 0000 0015 0014 0013 0012	    ARRAY dw 21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2
+       0011 0010 000F
+       000E 000D 000C
+       000B 000A 0009
+       0008 0007 0006
+       0005 0004 0003
+       0002
+ 0028 0000			    ODD dw ?
+ 002A				data ends
+
+ 0000				code segment
+				    assume cs:code, ds:data
+ 0000				start:
+ 0000  33 D2			    xor dx, dx
+ 0002  33 FF			    xor di, di
+ 0004  8D 2E 0000 R		    lea bp, ARRAY
+ 0008				L1:
+ 0008  83 FF 28			    cmp di, 20*2
+ 000B  7D 16			    jge L3
+ 000D  8B 03			    mov ax, [bp+di]
+
+				    ; say "Checking elem ", ax, " at ", di, "..."
+
+				    ; Jump aside if it's an even number
+ 000F  A9 0001			    test ax, 1
+ 0012  74 0A			    jz L2
+
+				    ; Jump in if dx is unset:
+ 0014  85 D2			    test dx, dx
+ 0016  74 04			    jz L4
+
+				    ; Jump aside if it's less than dx
+ 0018  3B C2			    cmp ax, dx
+ 001A  7D 02			    jge L2
+ 001C				L4:
+				    ; say "    Moving ", ax, " to dx..."
+ 001C  8B D0			    mov dx, ax
+ 001E				L2:
+ 001E  83 C7 02			    add di, 2
+ 0021  EB E5			    jmp L1
+ 0023				L3:
+ 0023  89 16 0028 R		    mov ODD, dx
+
+ 0027  B8 4C00			    mov ax, 4c00h
+ 002A  CD 21			    int 21h
+ 002C				code ends
+				     end start
+Microsoft (R) Macro Assembler Version 6.11		    10/15/05 20:16:19
+findodd.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+code . . . . . . . . . . . . . .	16 Bit	 002C	  Para	  Private 
+data . . . . . . . . . . . . . .	16 Bit	 002A	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+ARRAY  . . . . . . . . . . . . .	Word	 0000	  data	
+L1 . . . . . . . . . . . . . . .	L Near	 0008	  code	
+L2 . . . . . . . . . . . . . . .	L Near	 001E	  code	
+L3 . . . . . . . . . . . . . . .	L Near	 0023	  code	
+L4 . . . . . . . . . . . . . . .	L Near	 001C	  code	
+ODD  . . . . . . . . . . . . . .	Word	 0028	  data	
+start  . . . . . . . . . . . . .	L Near	 0000	  code	
+
+	   0 Warnings
+	   0 Errors

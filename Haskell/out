@@ -1,0 +1,40 @@
+IterSolve> test1
+3.00381091929119
+IterSolve> test1'
+5
+IterSolve> test2
+1.#INF
+IterSolve> test2'
+12
+IterSolve> test3
+1.46559498495446
+IterSolve> test3'
+16
+IterSolve> test4
+1.46571701802245
+IterSolve> test4'
+12
+IterSolve> test4''
+[1.5,1.44444444444444,1.4792899408284,1.456976,1.47108058332003,1.46209053547124
+,1.46779057601959,1.46416438046218,1.46646635571707,1.46500304056686,1.465932439
+08183,1.46534182571779,1.46571701802245]
+IterSolve> test5
+1.46587682016881
+IterSolve> test5'
+6
+IterSolve> test5''
+[1.5,1.48124803420369,1.47270572963939,1.4688173136645,1.4670479732006,1.4662430
+1011475,1.46587682016881]
+IterSolve> test6
+1.#INF
+IterSolve> test6'
+21
+IterSolve> test7
+
+Program error: argument out of range
+
+IterSolve> test7'
+
+Program error: argument out of range
+
+IterSolve>

@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(void) {
+    clock_t before, elapse;
+
+    [%- content -%]
+    return 0;
+}

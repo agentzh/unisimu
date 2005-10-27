@@ -1,0 +1,71 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title>Description of Schema</title>
+<meta name="generator" content="SQL::Translator::Producer::HTML, 1.15" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+
+<h1 class="SchemaDescription">Description of Schema</h1>
+<hr />
+<!-- Table listing (3 tables) -->
+<a name="top" />
+<table class="LinkTable" width="100%">
+<tr><td class="LinkTableCell"><h2 class="LinkTableTitle">Tables</h2></td></tr>
+<!-- Start link to table 'Student' -->
+<tr class="LinkTableRow"><td class="LinkTableCell"><a id="Student-link" href="#Student">Student</a></td></tr>
+<!-- End link to table 'Student' -->
+<!-- Start link to table 'Course' -->
+<tr class="LinkTableRow"><td class="LinkTableCell"><a id="Course-link" href="#Course">Course</a></td></tr>
+<!-- End link to table 'Course' -->
+<!-- Start link to table 'SC' -->
+<tr class="LinkTableRow"><td class="LinkTableCell"><a id="SC-link" href="#SC">SC</a></td></tr>
+<!-- End link to table 'SC' -->
+</table>
+<!-- Starting table 'Student' -->
+<a name="Student" />
+<table class="TableHeader" width="100%"><tr class="TableHeaderRow"><td class="TableHeaderCell"><h3>Student</h3></td> <a name="Student"> <td class="TableHeaderCell" align="right"><a href="#top">Top</a></td></tr></table>
+<table border="1">
+<tr><th class="FieldHeader">Field Name</th> <th class="FieldHeader">Data Type</th> <th class="FieldHeader">Size</th> <th class="FieldHeader">Default Value</th> <th class="FieldHeader">Other</th> <th class="FieldHeader">Foreign Key</th></tr>
+<tr class="tr-odd"><td class="FieldCellName"><a name="Student-Sno">Sno</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther">PRIMARY KEY, NOT NULL</td> <td class="FieldCellFK"></td></tr>
+<tr class="tr-even"><td class="FieldCellName"><a name="Student-Sname">Sname</a></td> <td class="FieldCellType">char</td> <td class="FieldCellSize">8</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther">NOT NULL</td> <td class="FieldCellFK"></td></tr>
+<tr class="tr-odd"><td class="FieldCellName"><a name="Student-Ssex">Ssex</a></td> <td class="FieldCellType">char</td> <td class="FieldCellSize">2</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther"></td> <td class="FieldCellFK"></td></tr>
+<tr class="tr-even"><td class="FieldCellName"><a name="Student-Sage">Sage</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther"></td> <td class="FieldCellFK"></td></tr>
+<tr class="tr-odd"><td class="FieldCellName"><a name="Student-Sdept">Sdept</a></td> <td class="FieldCellType">char</td> <td class="FieldCellSize">30</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther"></td> <td class="FieldCellFK"></td></tr>
+</table>
+<hr />
+<!-- Starting table 'Course' -->
+<a name="Course" />
+<table class="TableHeader" width="100%"><tr class="TableHeaderRow"><td class="TableHeaderCell"><h3>Course</h3></td> <a name="Course"> <td class="TableHeaderCell" align="right"><a href="#top">Top</a></td></tr></table>
+<table border="1">
+<tr><th class="FieldHeader">Field Name</th> <th class="FieldHeader">Data Type</th> <th class="FieldHeader">Size</th> <th class="FieldHeader">Default Value</th> <th class="FieldHeader">Other</th> <th class="FieldHeader">Foreign Key</th></tr>
+<tr class="tr-odd"><td class="FieldCellName"><a name="Course-Cno">Cno</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther">PRIMARY KEY, NOT NULL</td> <td class="FieldCellFK"></td></tr>
+<tr class="tr-even"><td class="FieldCellName"><a name="Course-Cname">Cname</a></td> <td class="FieldCellType">char</td> <td class="FieldCellSize">30</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther">NOT NULL</td> <td class="FieldCellFK"></td></tr>
+<tr class="tr-odd"><td class="FieldCellName"><a name="Course-Cpno">Cpno</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther"></td> <td class="FieldCellFK"></td></tr>
+<tr class="tr-even"><td class="FieldCellName"><a name="Course-Ccredit">Ccredit</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther"></td> <td class="FieldCellFK"></td></tr>
+</table>
+<hr />
+<!-- Starting table 'SC' -->
+<a name="SC" />
+<table class="TableHeader" width="100%"><tr class="TableHeaderRow"><td class="TableHeaderCell"><h3>SC</h3></td> <a name="SC"> <td class="TableHeaderCell" align="right"><a href="#top">Top</a></td></tr></table>
+<table border="1">
+<tr><th class="FieldHeader">Field Name</th> <th class="FieldHeader">Data Type</th> <th class="FieldHeader">Size</th> <th class="FieldHeader">Default Value</th> <th class="FieldHeader">Other</th> <th class="FieldHeader">Foreign Key</th></tr>
+<tr class="tr-odd"><td class="FieldCellName"><a name="SC-Sno">Sno</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther">PRIMARY KEY, NOT NULL</td> <td class="FieldCellFK"><a href="#Student-Sno">Student.Sno</a></td></tr>
+<tr class="tr-even"><td class="FieldCellName"><a name="SC-Cno">Cno</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther">PRIMARY KEY, NOT NULL</td> <td class="FieldCellFK"><a href="#Course-Cno">Course.Cno</a></td></tr>
+<tr class="tr-odd"><td class="FieldCellName"><a name="SC-Grade">Grade</a></td> <td class="FieldCellType">int</td> <td class="FieldCellSize">11</td> <td class="FieldCellDefault"></td> <td class="FieldCellOther"></td> <td class="FieldCellFK"></td></tr>
+</table>
+<h3>Constraints</h3>
+<table border="1">
+<tr class="IndexRow"><th>Type</th> <th>Fields</th></tr>
+<tr class="IndexCell"><td>FOREIGN KEY</td> <td>Sno</td></tr>
+<tr class="IndexCell"><td>FOREIGN KEY</td> <td>Cno</td></tr>
+</table>
+<hr />
+Created by <a href="http://sqlfairy.sourceforge.net">
+SQL::Translator 0.07</a>
+
+</body>
+</html>

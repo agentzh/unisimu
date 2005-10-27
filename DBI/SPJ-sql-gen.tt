@@ -1,0 +1,15 @@
+[% USE list = datafile('SPJ.csv', delim = ',') -%]
+
+drop table SPJ
+
+create table
+    SPJ
+    (SNO char(4),
+     PNO char(4),
+     JNO char(4),
+     QTY integer)
+
+[% FOREACH list -%]
+insert into SPJ values('[% SNO %]','[% PNO %]','[% JNO %]',[% QTY %])
+
+[% END -%]

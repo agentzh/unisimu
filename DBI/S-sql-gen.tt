@@ -1,0 +1,12 @@
+[% USE list = datafile('S.csv', delim = ',') -%]
+create table
+    S 
+    (SNO char(4) primary key,
+     SNAME char(8),
+     STATUS integer,
+     CITY char(6))
+
+[% FOREACH list -%]
+insert into S values('[% SNO %]','[% SNAME %]',[% STATUS %],'[% CITY %]')
+
+[% END -%]

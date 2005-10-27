@@ -1,0 +1,18 @@
+[%- table = 'Course' %]
+[%- file = table _ '.csv' %]
+[%- USE list = datafile(file, delim = ',') -%]
+create table [% table %]
+    (Cno integer primary key,
+     Cname char(30) not null,
+     Cpno integer,
+     Ccredit integer);
+
+[% FOREACH r IN list -%]
+    [%- IF r.Cpno == '' OR !r.Cpno.defined;
+            Cpno = "null";
+        ELSE;
+            Cpno = r.Cpno;
+        END -%]
+insert into [% table %] values([% r.Cno %],'[% r.Cname %]',[% Cpno %],[% r.Ccredit %]);
+
+[% END -%]

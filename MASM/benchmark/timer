@@ -1,0 +1,29 @@
+    [% USE Perl %]
+    [%- label_id = Perl.rand(9999) %]
+    [%- label_id = Perl.int(label_id) %]
+    before = clock();
+    _asm {
+        mov ecx, [% count %]
+next[% label_id %]:
+
+    [%- i = 0 %]
+    [%- WHILE (i < 500) %]
+        [%- content %]
+
+        [%- content %]
+
+        [%- i = i + 1 %]
+    [%- END %]
+
+        dec ecx
+        cmp ecx, 0
+        jne next[% label_id %]
+    }
+    elapse = clock() - before;
+    [%- s = content.replace("\n", " & ") %]
+    [%- s = s.replace('\s+', " ") %]
+    [%- s = s.replace('^\s+', '') %]
+    printf("[% s %] : %.4lf ns (%d clocks)\n",
+           elapse * 1.e6 / (double)CLOCKS_PER_SEC / [% count %],
+           elapse
+    );

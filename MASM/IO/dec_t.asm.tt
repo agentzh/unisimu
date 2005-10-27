@@ -1,0 +1,58 @@
+code segment
+    assume ds:code, cs:code
+start:
+    mov ax, code
+    mov ds, ax
+
+    or bx,-1
+    or cx,-1
+    or dx,-1
+    mov ax, 256
+    call [% prefix %]_outw10
+    ; say "\nax = ", ax, " (256)"
+    ; say "bx = ", bx
+    ; say "cx = ", cx
+    ; say "dx = ", dx, "\n"
+
+    mov ax, 0ffffh
+    call [% prefix %]_outw10
+    ; say "\nax = ", ax, " (-1)"
+    ; say "bx = ", bx
+    ; say "cx = ", cx
+    ; say "dx = ", dx, "\n"
+
+    mov ax, 0
+    call [% prefix %]_outw10
+    ; say "\nax = ", ax, " (0)"
+    ; say "bx = ", bx
+    ; say "cx = ", cx
+    ; say "dx = ", dx, "\n"
+
+    mov ax, 32767
+    call [% prefix %]_outw10
+    ; say "\nax = ", ax, " (32767)"
+    ; say "bx = ", bx
+    ; say "cx = ", cx
+    ; say "dx = ", dx, "\n"
+
+    mov ax, -32768
+    call [% prefix %]_outw10
+    ; say "\nax = ", ax, " (-32768)"
+    ; say "bx = ", bx
+    ; say "cx = ", cx
+    ; say "dx = ", dx, "\n"
+
+    mov ax, -327
+    call [% prefix %]_outw10
+    ; say "\nax = ", ax, " (-327)"
+    ; say "bx = ", bx
+    ; say "cx = ", cx
+    ; say "dx = ", dx, "\n"
+
+    mov ax, 4c00h
+    int 21h
+
+[% INCLUDE "dec.asm.tt" prefix='' %]
+
+code ends
+     end start

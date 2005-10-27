@@ -1,0 +1,19 @@
+[%- max = 9999999 %]
+[%- WRAPPER prog %]
+
+  [%- WRAPPER timer
+                count = max
+  -%]
+        add eax, 10
+  [%- END %]
+
+	_asm {
+		mov edx, 10
+	}
+  [%- WRAPPER timer
+                count = max
+  -%]
+		add eax, edx
+  [%- END %]
+
+[%- END %]
