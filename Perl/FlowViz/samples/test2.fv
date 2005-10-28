@@ -1,0 +1,11 @@
+    encoding gb2312
+    font     simsun.ttc
+
+    start 开始
+    do    来到十字路口
+    test  绿灯是否亮着？
+    jyes  L1
+    do    等绿灯亮起
+L1:
+    do    穿过十字路口
+    end   结束

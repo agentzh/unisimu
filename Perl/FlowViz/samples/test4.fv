@@ -1,0 +1,24 @@
+    encoding gb2312
+    font     simsun.ttc
+
+    do   计算所有的布尔表达式，为真者对\n应的<接受语句>标识为开放
+    test 有开放的入口吗？
+    jno  L1
+    test 有被调用的\n开放入口？
+    jyes L3
+    test 有 else 部分？
+    jyes L4
+    do   入等待队列
+L3:
+    do   任取一个被调用的<接受语句>
+    do   会合期处理\n（同<接受语句>的会合期处理）
+    end
+L1:
+    test 有 else 部分？
+    jyes L2
+    end   退出
+L2:
+    do 执行之
+    jmp
+L4:
+    do 执行之

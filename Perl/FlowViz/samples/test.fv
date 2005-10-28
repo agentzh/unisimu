@@ -1,0 +1,12 @@
+    encoding gb2312
+    font     simsun.ttc
+    width    2
+    height   6
+
+    start 开始运行
+L1:
+    io    输入
+    do    求解
+    test  结束？
+    jno   L1
+    end   退出

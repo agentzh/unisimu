@@ -1,0 +1,23 @@
+    encoding gb2312
+    font     simsun.ttc
+
+    test 有调用者吗？
+    jyes L1
+    do   入等待队列 
+L1:
+    do   从 FIFO 中取第一个
+    test 有输入参数吗？
+    jno  L2
+    do   取输入参数
+L2:
+    test 有语句序列？
+    jno  L3
+    jyes L5
+L5:
+    do   执行之
+L3:
+    test 有输出参数吗？
+    jno  L4
+    do   送输出参数
+L4:
+    do   唤醒调用者
