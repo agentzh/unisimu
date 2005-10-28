@@ -1,0 +1,12 @@
+    font  cour.ttf
+
+    start Enter
+    io    Input a and b
+    test  a > b?
+    jno   L1
+    io    Output a
+    jmp L2
+L1:
+    io    Output b
+L2:
+    end   Quit

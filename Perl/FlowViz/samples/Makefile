@@ -1,6 +1,6 @@
 RM_F = perl -MExtUtils::Command -e rm_f
 FLOWVIZ = perl ..\flowviz.pl
-PNG_FILES = test.png test2.png test3.png test4.png
+PNG_FILES = test.png test2.png test3.png test4.png test5.png
 
 all: $(PNG_FILES)
 
@@ -17,3 +17,4 @@ test: all
 	diff test2.png ~test2.png
 	diff test3.png ~test3.png
 	diff test4.png ~test4.png
+	diff test5.png ~test5.png
