@@ -105,21 +105,21 @@ sub process_if_stmt {
         $code = <<_EOC_;
     # line $lineno: if-else statement:
     test $item{condition} ?
-    jno L$Counter
+    jno _FV_L$Counter
 $item{block}
-    jmp L$outer
-L$Counter:
+    jmp _FV_L$outer
+_FV_L$Counter:
 $item{else_block}
-L$outer:
+_FV_L$outer:
     do end if
 _EOC_
     } else {
         $code = <<_EOC_;
     # line $lineno: if statement:
     test $item{condition} ?
-    jno L$Counter
+    jno _FV_L$Counter
 $item{block}
-L$Counter:
+_FV_L$Counter:
     do end if
 _EOC_
     }
@@ -135,12 +135,12 @@ sub process_while_stmt {
     my $code = <<_EOC_;
     # line $lineno: while statement:
     do while begin
-L$Counter:
+_FV_L$Counter:
     test $item{condition} ?
-    jno L$outer
+    jno _FV_L$outer
 $item{block}
-    jmp L$Counter
-L$outer:
+    jmp _FV_L$Counter
+_FV_L$outer:
     do end while
 _EOC_
     $Counter = $outer;
