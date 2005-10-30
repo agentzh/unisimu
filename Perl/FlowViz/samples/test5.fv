@@ -5,7 +5,7 @@
     test  a > b?
     jno   L1
     io    Output a
-    jmp L2
+    jmp   L2
 L1:
     io    Output b
 L2:

@@ -16,7 +16,7 @@ L3:
 L1:
     test 有 else 部分？
     jyes L2
-    end   退出
+    end  退出
 L2:
     do 执行之
     jmp
