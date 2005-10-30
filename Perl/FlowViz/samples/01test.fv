@@ -1,0 +1,17 @@
+font cour.ttf
+
+if (a > b) {
+    io a is greater than b!
+} else if (a == b) {
+    io a is equal to b!
+} else {
+    io a is less than b!
+}
+
+if (a < 0)
+    do a = -a
+
+if (b <= 0) {
+    do b = -b
+    io output b
+}

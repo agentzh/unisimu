@@ -45,7 +45,7 @@ my $label = '_line0';
 my $prev = { name => '', cond => '' };
 while (<$in>) {
     chomp;
-    next if /^\s*$/;
+    next if /^\s*$/ or /^\s*#/;
     if (/^\s*encoding\s+(\S+)/o) {
         $encoding = $1;
     }

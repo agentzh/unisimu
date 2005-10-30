@@ -1,0 +1,23 @@
+font cour.ttf
+
+if 'a > 5'
+    if <a < 10>
+        io "a is between 5 and 10!"
+    else
+        io "a is greater than 5!"
+
+if "b == 0"
+    do b = -1
+
+while (i > 0) {
+    do Do some calculations
+    do i = i + 1
+}
+
+while (*p != '\0')
+    do p++
+
+if <p == '\0'>
+    io print "Reached the end\n of the input"
+else
+    io print "blah blah blah..."
