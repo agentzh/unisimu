@@ -86,6 +86,13 @@ defined $asm or die "Process failed due to compilation errors\n";
 if ($asm =~ m/\n\s*\w+:[\s\n]*$/s) {
     $asm .= "\n    end End\n";
 }
+
+# combine nested lables:
+while ($asm =~ s/(_FV_L(\d+):\n[\n\s]*)_FV_L(\d+):\n/$1/os) {
+    my ($fir, $sec) = ($2, $3);
+    $asm =~ s/_FV_L$sec/_FV_L$fir/g;
+}
+
 open my $out, ">$outfile" or
     die "error: Can't open $outfile for writing: $!\n";
 print $out $asm;
@@ -97,7 +104,6 @@ if (!$opts{c}) {
 
 sub process_if_stmt {
     my ($lineno, %item) = @_;
-    $Counter++;
     #warn "$Counter";
     my $outer = $Counter + 1;
     my $code;
@@ -111,7 +117,6 @@ $item{block}
 _FV_L$Counter:
 $item{else_block}
 _FV_L$outer:
-    do end if
 _EOC_
     } else {
         $code = <<_EOC_;
@@ -120,10 +125,9 @@ _EOC_
     jno _FV_L$Counter
 $item{block}
 _FV_L$Counter:
-    do end if
 _EOC_
     }
-    $Counter = $outer;
+    $Counter = $outer + 1;
     return $code;
 }
 
@@ -133,16 +137,14 @@ sub process_while_stmt {
     #warn "$Counter";
     my $outer = $Counter + 1;
     my $code = <<_EOC_;
-    # line $lineno: while statement:
-    do while begin
 _FV_L$Counter:
+    # line $lineno: while statement:
     test $item{condition} ?
     jno _FV_L$outer
 $item{block}
     jmp _FV_L$Counter
 _FV_L$outer:
-    do end while
 _EOC_
-    $Counter = $outer;
+    $Counter = $outer + 1;
     return $code;
 }
