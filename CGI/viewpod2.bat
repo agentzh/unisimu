@@ -12,6 +12,12 @@ goto endofperl
 @rem ';
 #!perl
 #line 15
+#: viewpod2.pl
+#: Pod Dynamic Viewer 2
+#: v0.01
+#: Copyright (c) 2005 Agent Zhang
+#: 2005-10-21 2005-10-29
+
 use strict;
 use warnings;
 use HTTP::Server::Simple;
