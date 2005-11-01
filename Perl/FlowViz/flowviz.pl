@@ -37,6 +37,7 @@ statements: statement(s)                             {  $stmts = $item{'statemen
 
 statement: if_statement
          | while_statement
+		 | label <commit> command					 { $return = "$item{label}\n    $item{command}\n"; }
          | command
 
 if_statement: 'if' <commit> condition
@@ -62,9 +63,11 @@ while_statement: 'while' <commit> condition
                       block                          { $return = ::process_while_stmt($thisline, %item); }
                | <error?> <reject>
 
-command: instruction <commit> operand                { $return = 
+command: instruction <commit> operand          { $return = 
                                                         "    $item{instruction} $item{operand}\n"; }
        | <error?> <reject>
+
+label: /(\w+)\s*:/
 
 instruction: 'do' | 'io' | 'start' | 'end' | 'test' | 'jmp' | 'jno' | 'jyes' | 'encoding' | 'font'
 

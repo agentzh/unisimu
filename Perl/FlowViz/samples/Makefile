@@ -2,7 +2,7 @@ RM_F = perl -MExtUtils::Command -e rm_f
 FLOWASM = perl ..\flowasm.pl
 FLOWVIZ = perl ..\flowviz.pl
 PNG_FILES = test.png test2.png test3.png test4.png test5.png \
-	    01test.png 02test.png
+	    01test.png 02test.png 03test.png
 
 all: $(PNG_FILES)
 
