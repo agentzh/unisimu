@@ -25,3 +25,4 @@ test: all
 	diff test5.png ~test5.png
 	diff 01test.png ~01test.png
 	diff 02test.png ~02test.png
+	diff 03test.png ~03test.png
