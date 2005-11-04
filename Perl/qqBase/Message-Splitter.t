@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests=>72;
+use Test::More tests=>77;
 BEGIN { use_ok('Message::Splitter'); }
 
 my $obj = Message::Splitter->new(5);
@@ -68,7 +68,7 @@ ok $obj->should_split;
 $obj->add(b=>2);
 ok not $obj->should_split;
 
-$obj->add(a=>5);
+$obj->add(a=>5+50);
 ok not $obj->should_split;
 
 $obj->add(b=>7);
@@ -77,7 +77,7 @@ ok not $obj->should_split;
 $obj->add(b=>10);
 ok not $obj->should_split;
 
-$obj->add(a=>13);
+$obj->add(a=>13+50);
 ok not $obj->should_split;
 
 $obj->add(b=>17);
@@ -88,22 +88,22 @@ ok $obj->should_split;
 $obj = Message::Splitter->new(5);
 ok $obj->should_split;
 
-$obj->add(b=>2);
+$obj->add(b=>2+50);
 ok not $obj->should_split;
 
 $obj->add(a=>5);
 ok not $obj->should_split;
 
-$obj->add(b=>7);
+$obj->add(b=>7+50);
 ok $obj->should_split, 'split!';
 
-$obj->add(b=>10);
+$obj->add(b=>10+50);
 ok not $obj->should_split;
 
 $obj->add(a=>15);
 ok not $obj->should_split;
 
-$obj->add(b=>15);
+$obj->add(b=>15+50);
 ok $obj->should_split;
 
 ###
@@ -114,7 +114,7 @@ ok $obj->should_split;
 $obj->add(a=>2);
 ok not $obj->should_split;
 
-$obj->add(b=>5);
+$obj->add(b=>5+50);
 ok not $obj->should_split;
 
 $obj->add(a=>7);
@@ -123,7 +123,7 @@ ok not $obj->should_split;
 $obj->add(a=>10);
 ok not $obj->should_split;
 
-$obj->add(b=>13);
+$obj->add(b=>13+50);
 ok not $obj->should_split;
 
 $obj->add(a=>17);
@@ -134,22 +134,22 @@ ok $obj->should_split;
 $obj = Message::Splitter->new(5);
 ok $obj->should_split;
 
-$obj->add(a=>2);
+$obj->add(a=>2+20);
 ok not $obj->should_split;
 
 $obj->add(b=>5);
 ok not $obj->should_split;
 
-$obj->add(a=>7);
+$obj->add(a=>7+20);
 ok $obj->should_split, 'split!';
 
-$obj->add(a=>10);
+$obj->add(a=>10+20);
 ok not $obj->should_split;
 
 $obj->add(b=>15);
 ok not $obj->should_split;
 
-$obj->add(a=>15);
+$obj->add(a=>15+20);
 ok $obj->should_split;
 
 ###
@@ -231,4 +231,21 @@ $obj->add(a=>6);
 ok not $obj->should_split;
 
 $obj->add(b=>35);
+ok not $obj->should_split;
+
+###
+
+$obj = Message::Splitter->new(20 * 60);
+ok $obj->should_split;
+
+$obj->add(a=>67171);
+ok not $obj->should_split;
+
+$obj->add(b=>74012);
+ok not $obj->should_split;
+
+$obj->add(a=>74440);
+ok not $obj->should_split;
+
+$obj->add(b=>74052);
 ok not $obj->should_split;

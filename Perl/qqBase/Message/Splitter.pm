@@ -58,6 +58,19 @@ sub add {
 sub should_split {
     my $self = shift;
     return 1 if !$self->prev;
+    if ($self->prev eq 'a' and defined $self->a and defined $self->b) {
+        my $delta = $self->a - $self->b;
+        if ($delta < $self->gap and $delta >= 0) {
+            #$self->delta_a($delta) if $delta < $self->delta_a;
+            return undef;
+        }
+    } elsif ($self->prev eq 'b' and defined $self->b and defined $self->a) {
+        my $delta = $self->b - $self->a;
+        if ($delta < $self->gap and $delta >= 0) {
+            #$self->delta_b($delta) if $delta < $self->delta_b;
+            return undef;
+        }
+    }
     if ($self->delta_a >= $self->gap and defined $self->prev_a) {
         $self->clear;
         return 1;
@@ -76,9 +89,11 @@ sub clear {
     if ($self->prev eq 'a') {
         $self->b(undef);
         $self->prev_b(undef);
+        $self->prev_a(undef);
     } else {
         $self->a(undef);
         $self->prev_a(undef);
+        $self->prev_b(undef);
     }
 }
 

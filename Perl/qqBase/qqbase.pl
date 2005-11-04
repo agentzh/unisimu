@@ -10,6 +10,7 @@ use List::Util qw(first);
 use File::Spec;
 use POSIX 'mktime';
 use Getopt::Std;
+use Message::Splitter;
 
 my %opts;
 getopts('s:', \%opts);
@@ -114,6 +115,7 @@ sub process_log {
     my ($msg_from, $msg_to, $msg_time, $msg_body);
     my ($host, $host_name, $guest, $guest_name);
     my ($session_id, $offset);
+    my $splitter = Message::Splitter->new(20 * 60); # 20 min
     my $state = 'S_INIT';
     while (<$in>) {
         s/\r//g;
@@ -136,9 +138,18 @@ sub process_log {
             my $name = $7;
 
             if ($msg_time and $msg_from and $msg_to and $msg_body) {
+                # insert the previous message (if any!):
+                if ($splitter->should_split) {
+                    $session_id = $msg_time;
+                    $offset = 0;
+                }
                 insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset++);
+                $splitter->add(($msg_from eq $host ? 'a' : 'b') => $msg_time);
+
+                # make time for the current message:
                 $msg_time = mktime($sec, $min, $hour, $mday, $mon, $year);
-            } else { # for the first time:
+            } else {
+                # for the first message in the backup file:
                 $msg_time = mktime($sec, $min, $hour, $mday, $mon, $year);
                 $session_id = $msg_time;
                 $offset = 0;
