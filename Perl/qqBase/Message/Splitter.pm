@@ -1,3 +1,6 @@
+#: Message/Splitter.pm
+#: 2005-11-03 2005-11-04
+
 package Message::Splitter;
 
 use strict;
@@ -29,9 +32,10 @@ sub add {
         $self->a($hash{a});
         if ($self->prev eq 'a') { # a a
             $self->delta_a($self->a - $self->prev_a);
-            $self->delta_b($self->delta_b + $self->delta_a);
+            $self->delta_b($self->delta_b - $self->delta_a);
         } elsif ($self->prev eq 'b') { # b a
-            $self->delta_a($self->a - $self->prev_a - $self->delta_a);
+            $self->delta_a($self->a - $self->prev_a + $self->delta_a)
+                if defined $self->prev_a;
             $self->delta_b(0);
         }
         $self->prev('a');
@@ -40,9 +44,10 @@ sub add {
         $self->b($hash{b});
         if ($self->prev eq 'a') { # a b
             $self->delta_a(0);
-            $self->delta_b = $self->b - $self->prev_b - $self->delta_b;
+            $self->delta_b($self->b - $self->prev_b + $self->delta_b)
+                if defined $self->prev_b;
         } elsif ($self->prev eq 'b') { # b b
-            $self->delta_a($self->delta_a + $self->delta_b);
+            $self->delta_a($self->delta_a - $self->delta_b);
             $self->delta_b($self->b - $self->prev_b);
         }
         $self->prev('b');
@@ -53,11 +58,27 @@ sub add {
 sub should_split {
     my $self = shift;
     return 1 if !$self->prev;
-    if (($self->delta_a >= $self->gap and defined $self->prev_a) ||
-           ($self->delta_b >= $self->gap and defined $self->prev_b)) {
+    if ($self->delta_a >= $self->gap and defined $self->prev_a) {
+        $self->clear;
+        return 1;
+    } elsif ($self->delta_b >= $self->gap and defined $self->prev_b) {
+        $self->clear;
         return 1;
     } else {
         return undef;
+    }
+}
+
+sub clear {
+    my $self = shift;
+    $self->delta_a(0);
+    $self->delta_b(0);
+    if ($self->prev eq 'a') {
+        $self->b(undef);
+        $self->prev_b(undef);
+    } else {
+        $self->a(undef);
+        $self->prev_a(undef);
     }
 }
 
@@ -66,9 +87,8 @@ sub gap {
 }
 
 sub delta_a {
-    my $self = shift;
-    my $val = shift;
-    if (defined $val) {
+    my ($self, $val) = @_;
+    if (@_ == 2) {
         $self->{_delta_a} = $val;
     } else {
         return $self->{_delta_a};
@@ -76,9 +96,8 @@ sub delta_a {
 }
 
 sub delta_b {
-    my $self = shift;
-    my $val = shift;
-    if (defined $val) {
+    my ($self, $val) = @_;
+    if (@_ == 2) {
         $self->{_delta_b} = $val;
     } else {
         return $self->{_delta_b};
@@ -86,9 +105,8 @@ sub delta_b {
 }
 
 sub a {
-    my $self = shift;
-    my $val = shift;
-    if (defined $val) {
+    my ($self, $val) = @_;
+    if (@_ == 2) {
         $self->{_a} = $val;
     } else {
         return $self->{_a};
@@ -96,9 +114,8 @@ sub a {
 }
 
 sub prev_a {
-    my $self = shift;
-    my $val = shift;
-    if (defined $val) {
+    my ($self, $val) = @_;
+    if (@_ == 2) {
         $self->{_prev_a} = $val;
     } else {
         return $self->{_prev_a};
@@ -106,9 +123,8 @@ sub prev_a {
 }
 
 sub b {
-    my $self = shift;
-    my $val = shift;
-    if (defined $val) {
+    my ($self, $val) = @_;
+    if (@_ == 2) {
         $self->{_b} = $val;
     } else {
         return $self->{_b};
@@ -116,9 +132,8 @@ sub b {
 }
 
 sub prev_b {
-    my $self = shift;
-    my $val = shift;
-    if (defined $val) {
+    my ($self, $val) = @_;
+    if (@_ == 2) {
         $self->{_prev_b} = $val;
     } else {
         return $self->{_prev_b};
@@ -126,9 +141,8 @@ sub prev_b {
 }
 
 sub prev {
-    my $self = shift;
-    my $val = shift;
-    if (defined $val) {
+    my ($self, $val) = @_;
+    if (@_ == 2) {
         $self->{_prev} = $val;
     } else {
         return $self->{_prev};
