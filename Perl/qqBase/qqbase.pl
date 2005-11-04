@@ -200,7 +200,7 @@ sub insert_msg {
     $sth = $dbh->prepare(
         'insert into msgs values (?,?,?,?,?,?)'
     );
-    $msg_body =~ s/^[\s\n]+|[\s\n]+$//gs;
+    $msg_body =~ s/^[\s\n]*\n|[\s\n]+$//gs;
     my $raw = $msg_body;
     $msg_body = substr($raw, 0, $BODY_SIZE);
     if ($msg_body ne $raw) {
