@@ -22,9 +22,9 @@ local $| = 1;
 my %schema_sql = (
     'msgs' => <<_EOC_,
 create table msgs
-    (msg_time integer not null,
-     msg_from varchar(20) not null,
-     msg_to   varchar(20) not null,
+    (msg_time integer,
+     msg_from varchar(20),
+     msg_to   varchar(20),
      msg_body varchar($BODY_SIZE) not null,
      session_id integer not null,
      offset integer not null,
@@ -171,6 +171,10 @@ sub process_log {
         }
     }
     if ($msg_time and $msg_from and $msg_to and $msg_body) {
+        if ($splitter->should_split) {
+            $session_id = $msg_time;
+            $offset = 0;
+        }
         insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset);
     }
     close $in;
@@ -178,6 +182,9 @@ sub process_log {
 
 sub check_user {
     my ($id, $nickname, $real_name) = @_;
+    if ($id eq '279005114') {
+        $real_name = 'ียาเดบ';
+    }
     my $sth = $user_dup_sth;
     my ($user_id, $user_name);
     $sth->execute($id);
