@@ -28,6 +28,7 @@
 %]
 
 <html>
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
 <head>
  <title>Qooqle QQ log</title>
  <style type='text/css'>
@@ -71,11 +72,16 @@
     [%- END %]
 
   <tr class="[% is_odd ? 'odd' : 'even' %]">
-  <td width=15% align=center><font size=-1>[% r.sender %]</font></td>
-  <td width=75% align=left>
+  <td align=center>
+  <font size=-1>[% r.sender %]</font></td>
+  <td width=70% align=left>
       <font size=-1>
-      [%- message = r.message %]
-      [%- message.replace("\n", "<br>\n") %]
+      [%- msg = r.message %]
+      [%- msg = msg.replace("<", "\&lt;") %]
+      [%- msg = msg.replace(">", "\&gt;") %]
+      [%- msg = msg.replace("\n", "<br>\n") %]
+      [%- msg = msg.replace(" ", "\&nbsp;") %]
+      [%- msg.replace("\t", "\&nbsp;\&nbsp;\&nbsp;\&nbsp;") %]
       </font>
   </td>
   <td align=center><font color=blue>[% r.msg_time %]</font></td>
@@ -87,5 +93,4 @@
 	<center><br>&nbsp;<p>
 <b><font size="2">Copyright &copy; 2005 Agent Zhang</font></b></p>
 	</center>
-    <br>&nbsp;&nbsp;
 </body></html>
