@@ -1,0 +1,91 @@
+[% DEFAULT
+    hits = [
+        {
+            session = 123456
+            session_time = '2005-11-06 Sun'
+            msg_time = '17:13:50'
+            sender = '’¬“‡¥∫'
+            receiver = '’≈–«'
+            message = "Hello, world!\nYeah, he' here!"
+        }
+        {
+            session = 123456
+            session_time = '2005-11-06 Sun'
+            msg_time = '18:14:21'
+            sender = '’≈–«'
+            receiver = '’¬“‡¥∫'
+            message = "Hello, world!\nYeah, I'm here!"
+        }
+        {
+            session = 562313
+            session_time = '2004-05-24 Sat'
+            msg_time = '18:14:21'
+            sender = '÷ŸŒ∞œÈ'
+            receiver = '’¬“‡¥∫'
+            message = "Hello, world!\nYeah, they're here!"
+        }
+    ]
+%]
+
+<html>
+<head>
+ <title>Qooqle QQ log</title>
+ <style type='text/css'>
+ body,td,div,.p,a{font-family:arial,sans-serif,ª™Œƒœ∏∫⁄ }
+ tr.even {background-color: #f0f0f0}
+ tr.odd {background-color: #e0e0e0}
+ tr.sep {background-color: #c0c0c0}
+ </style>
+</head>
+<body>
+ <font color="#b66c64"><h1>Qooqle QQ log</h1></font>
+ <p>
+ Powered by <a href="/">qooqle</a>.
+  <br>
+  <hr>
+  <br>
+
+[%- is_odd = 1 %]
+[%- session = 0 %]
+[%- first_time = 1 %]
+[%- FOREACH r = hits %]
+    [%- IF !session OR r.session != session %]
+
+        [%- session = r.session %]
+        [%- IF first_time %]
+            [%- first_time = 0 %]
+        [%- ELSE %]
+  </table>
+
+  <p>
+  <hr>
+  <p>
+        [%- END %]
+
+  <font color="#6472b6"><b><I>[% r.session_time %]</I></b></font>
+  <br><br>
+
+  <table width=100%>
+  <tr><th>Who<th>What<th>When
+        [%- is_odd = 0 %]
+    [%- END %]
+
+  <tr class="[% is_odd ? 'odd' : 'even' %]">
+  <td width=15% align=center><font size=-1>[% r.sender %]</font></td>
+  <td width=75% align=left>
+      <font size=-1>
+      [%- message = r.message %]
+      [%- message.replace("\n", "<br>\n") %]
+      </font>
+  </td>
+  <td align=center><font color=blue>[% r.msg_time %]</font></td>
+  </tr>
+    [%- is_odd = is_odd ? 0 : 1 %]
+[% END %]
+</table>
+
+	<center><br>&nbsp;<p>
+<b><font size="2">Copyright &copy; 2005 Agent Zhang</font></b></p>
+	</center>
+    <br>&nbsp;&nbsp;
+</body></html>

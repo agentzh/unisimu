@@ -121,7 +121,7 @@ sub handle_request {
     warn "Refresh PNG output...\n";
     $stack->as_png('tmp.png');
 
-    print "HTTP/1.0 200 OK\r\n";
+    print "HTTP/1.0 200 OK\n\n";
     print $cgi->header(-type=>'text/html');
     my $time = time();
     my @reqs = map { $_->{pid} } @$req_tb;
@@ -199,7 +199,7 @@ sub send_png {
     binmode $in;
     local $/;
     my $data = <$in>;
-    print "HTTP/1.0 200 OK\r\n";
+    print "HTTP/1.0 200 OK\n\n";
     print $cgi->header(
         -type=>'image/gif',
         -expires=>'0');
