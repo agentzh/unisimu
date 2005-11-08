@@ -83,6 +83,9 @@ my @files = map glob, @ARGV;
 @files = sort { $a cmp $b } @files;
 #$" = "\n";
 #die "@files\n";
+
+die "No file specified.\n" if !@files;
+
 for my $file (@files) {
     process_log($file);
 }
@@ -119,16 +122,25 @@ sub process_log {
     my $splitter = Message::Splitter->new(20 * 60); # 20 min
     my $state = 'S_INIT';
     while (<$in>) {
-        s/\r//g;
+		#warn "$_";
+		s/\r//g;
+		s/：/:/g;
+		#warn $_;
         if ($state eq 'S_INIT') {
-            if (/^用户:(\d+)\((.+)\)/) {
-                ($host, $host_name) = ($1, $2);
+			#warn $_;
+            if (/^用户(:|：)(\d+)\((.+)\)/) {
+                ($host, $host_name) = ($2, $3);
 				warn "$host $host_name";
                 check_user($host, $host_name, $real_name);
-            }
+            } elsif (/^用户/) {
+				#warn "Matched!";
+				($host, $host_name) = ($ENV{QQ_ID} || '0000', $myname);
+				warn "$host $host_name";
+                check_user($host, $host_name, $real_name);
+			}
             if (/^消息对象:(\d+)\((.+)\)/) {
                 ($guest, $guest_name) = ($1, $2);
-				warn "$guest, $guest_name";
+				#warn "$guest, $guest_name";
                 check_user($guest, $guest_name, $real_name);
                 #warn "$msg_from => $msg_to\n";
                 $state = 'S_START';
@@ -146,6 +158,7 @@ sub process_log {
                     $session_id = $msg_time;
                     $offset = 0;
                 }
+				#warn "$msg_time, $msg_from, $msg_to, $msg_body, $session_id\n";
                 insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset++);
                 $splitter->add(($msg_from eq $host ? 'a' : 'b') => $msg_time);
 
