@@ -10,9 +10,6 @@ use warnings;
 use HTTP::Server::Simple;
 use DBI;
 
-our $dsn = $ENV{DSN};
-die "No env DSN set.\n" unless $dsn;
-
 my $server = MyServer->new();
 $server->run();
 
@@ -88,20 +85,37 @@ from msgs, users as U1, users as U2
 where msgs.msg_from=U1.user_id and msgs.msg_to=U2.user_id and
 _EOC_
     $query .= '(' . (join ' or ', (map { "msg_body like '%$_%'" } @words)) . ')';
-    #warn "SQL: $query\n";
-    my $dbh = DBI->connect($dsn, { PrintError => 1, RaiseError => 0 });
-    my $sth = $dbh->prepare($query);
+    $query .= "\norder by session_id asc";
+    warn "SQL: $query\n";
+
+	my $dbh = connect_db();
+	my $sth = $dbh->prepare($query);
     $sth->execute;
-    
+
     my @hits;
     while (my $ref = $sth->fetchrow_hashref) {
         #warn "REF: $ref\n";
+		my $msg = $ref->{msg_body};
+		my $matched = 0;
+		for my $word (@words) {
+			my $pat = quotemeta($word);
+			if ($word =~ m/\W/) {
+				$msg =~ s,$pat,<B>$&</B>,is;
+				$matched = 1;
+			}
+			elsif ($msg =~ s,\b$pat\b,<B>$&</B>,is) {
+				$matched = 1;
+			}
+		}
+		next if !$matched;
+
+		$msg = quote_html($msg);
         my $rec = {
             'time'   => scalar localtime($ref->{session_id}),
             session  => $ref->{session_id},
             receiver => $ref->{receiver},
             sender   => $ref->{sender},
-            message  => $ref->{msg_body},
+            message  => $msg,
         };
         push @hits, $rec;
     }
@@ -124,8 +138,9 @@ _EOC_
     $query .= '(' . (join ' or ', (map { "session_id=$_" } @sessions)) . ')';
     $query .= "\norder by session_id, offset asc";
     warn "SQL: $query\n";
-    my $dbh = DBI->connect($dsn, { PrintError => 1, RaiseError => 0 });
-    my $sth = $dbh->prepare($query);
+
+	my $dbh = connect_db();
+	my $sth = $dbh->prepare($query);
     $sth->execute;
     
     my $session;
@@ -164,3 +179,21 @@ sub dump_file {
     print $content;
 }
 
+sub quote_html {
+	my $src = shift;
+	$src =~ s,>,&gt;,g;
+	$src =~ s,<,&lt;,g;
+	$src =~ s,&lt;B&gt;,<B>,g;
+	$src =~ s,&lt;/B&gt;,</B>,g;
+	$src =~ s/\n/<br>/gs;
+	$src =~ s/\t/    /g;
+	$src =~ s/ /&nbsp;/g;
+	return $src;
+}
+
+sub connect_db {
+	my $dsn = $ENV{DSN};
+	die "No env DSN set. So no database is available\n" unless $dsn;
+    my $dbh = DBI->connect($dsn, { PrintError => 1, RaiseError => 0 });
+	return $dbh;
+}

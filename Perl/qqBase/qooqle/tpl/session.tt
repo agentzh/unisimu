@@ -76,12 +76,7 @@
   <font size=-1>[% r.sender %]</font></td>
   <td width=70% align=left>
       <font size=-1>
-      [%- msg = r.message %]
-      [%- msg = msg.replace("<", "\&lt;") %]
-      [%- msg = msg.replace(">", "\&gt;") %]
-      [%- msg = msg.replace("\n", "<br>\n") %]
-      [%- msg = msg.replace(" ", "\&nbsp;") %]
-      [%- msg.replace("\t", "\&nbsp;\&nbsp;\&nbsp;\&nbsp;") %]
+      [% r.message %]
       </font>
   </td>
   <td align=center><font color=blue>[% r.msg_time %]</font></td>

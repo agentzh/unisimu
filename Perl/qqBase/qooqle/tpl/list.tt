@@ -110,12 +110,7 @@ h3{font-weight:normal;font-size=100%}
 <td>&nbsp;</td>
 <td>
 <font size=-1>
-      [%- msg = r.message %]
-      [%- msg = msg.replace("<", "\&lt;") %]
-      [%- msg = msg.replace(">", "\&gt;") %]
-      [%- msg = msg.replace("\n", "<br>\n") %]
-      [%- msg = msg.replace(" ", "\&nbsp;") %]
-      [%- msg.replace("\t", "\&nbsp;\&nbsp;\&nbsp;\&nbsp;") %]
+      [% r.message %]
 </font>
 <br>
 <td>

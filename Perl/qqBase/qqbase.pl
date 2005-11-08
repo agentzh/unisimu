@@ -13,8 +13,9 @@ use Getopt::Std;
 use Message::Splitter;
 
 my %opts;
-getopts('s:', \%opts);
+getopts('m:s:', \%opts);
 
+my $myname = $opts{m} || 'me';
 my $BODY_SIZE = +$opts{s} || 255;
 
 local $| = 1;
@@ -122,10 +123,12 @@ sub process_log {
         if ($state eq 'S_INIT') {
             if (/^用户:(\d+)\((.+)\)/) {
                 ($host, $host_name) = ($1, $2);
+				warn "$host $host_name";
                 check_user($host, $host_name, $real_name);
             }
             if (/^消息对象:(\d+)\((.+)\)/) {
                 ($guest, $guest_name) = ($1, $2);
+				warn "$guest, $guest_name";
                 check_user($guest, $guest_name, $real_name);
                 #warn "$msg_from => $msg_to\n";
                 $state = 'S_START';
@@ -183,7 +186,7 @@ sub process_log {
 sub check_user {
     my ($id, $nickname, $real_name) = @_;
     if ($id eq '279005114') {
-        $real_name = '章亦春';
+        $real_name = $myname;
     }
     my $sth = $user_dup_sth;
     my ($user_id, $user_name);
