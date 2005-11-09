@@ -124,15 +124,20 @@ sub process_log {
     my ($msg_from, $msg_to, $msg_time, $msg_body);
     my ($host, $host_name, $guest, $guest_name);
     my ($session_id, $offset);
-    my $offset = 0;
+    $offset = 0;
     my $insert_count = 0;
     my $splitter = Message::Splitter->new(20 * 60); # 20 min
+    my $ready = 0;
     my $state = 'S_INIT';
     while (<$in>) {
 		#warn "$_";
 		s/\r//g;
 		s/£∫/:/g;
 		#warn $_;
+        if (/^$/ or /^-+$/) {
+            $ready = 1;
+            next;
+        }
         if ($state eq 'S_INIT') {
 			#warn $_;
             if (/^”√ªß(:|£∫)(\d+)\((.+)\)/) {
@@ -153,7 +158,7 @@ sub process_log {
                 $state = 'S_START';
             }
         }
-        elsif ($state eq 'S_START' and
+        elsif ($state eq 'S_START' and $ready and
                 /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) (.+)/) {
             my ($year, $mon, $mday, $hour, $min, $sec) =
                 ($1-1900, $2-1, $3, $4, $5, $6);
@@ -169,7 +174,8 @@ sub process_log {
                 }
 				#warn "  insert $msg_time, $msg_from, $msg_to, $session_id, $offset\n$msg_body\n";
                 $insert_count +=
-                    insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset++);
+                    insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset);
+                $offset++;
 
                 # make time for the current message:
                 $msg_time = mktime($sec, $min, $hour, $mday, $mon, $year);
@@ -177,7 +183,7 @@ sub process_log {
                 # for the first message in the backup file:
                 $msg_time = mktime($sec, $min, $hour, $mday, $mon, $year);
                 $session_id = $msg_time;
-                #$offset = 1;
+                $offset = 0;
             }
 
             #my $date = localtime($msg_time);
@@ -190,9 +196,13 @@ sub process_log {
             die "Internal assertion failed: $msg_from sent msg to itself"
                 if $msg_from eq $msg_to;
             $msg_body = '';
+            $ready = 0;
         }
         elsif ($state eq 'S_START') {
             $msg_body .= $_;
+        }
+        if (!/^$/) {
+            $ready = 0;
         }
     }
     if ($msg_time and $msg_from and $msg_to and $msg_body) {
