@@ -19,7 +19,7 @@ use warnings;
 use strict;
 use URI::Escape;
 use Template;
-use CGI::Carp qw(fatalsToBrowser);
+#use CGI::Carp qw(fatalsToBrowser);
 use POSIX qw(strftime);
 use Time::HiRes;
 
@@ -43,6 +43,7 @@ sub handle_request {
     #my @params = $cgi->param;
     #warn "@params";
     $WholeWord = $cgi->param('wholeword');
+    warn "  Whole Word: $WholeWord\n";
     if ($url eq '/' or $url eq '') {
         if (my $query = $cgi->param('query')) {
             warn "Query: $query\n";

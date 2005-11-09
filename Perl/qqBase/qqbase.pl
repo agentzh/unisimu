@@ -124,6 +124,7 @@ sub process_log {
     my ($msg_from, $msg_to, $msg_time, $msg_body);
     my ($host, $host_name, $guest, $guest_name);
     my ($session_id, $offset);
+    my $offset = 0;
     my $insert_count = 0;
     my $splitter = Message::Splitter->new(20 * 60); # 20 min
     my $state = 'S_INIT';
@@ -160,14 +161,15 @@ sub process_log {
 
             if ($msg_time and $msg_from and $msg_to and $msg_body) {
                 # insert the previous message (if any!):
+                $splitter->add(($msg_to eq $guest ? 'a' : 'b') => $msg_time);
+
                 if ($splitter->should_split) {
                     $session_id = $msg_time;
                     $offset = 0;
                 }
-				#warn "$msg_time, $msg_from, $msg_to, $msg_body, $session_id\n";
+				#warn "  insert $msg_time, $msg_from, $msg_to, $session_id, $offset\n$msg_body\n";
                 $insert_count +=
                     insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset++);
-                $splitter->add(($msg_from eq $host ? 'a' : 'b') => $msg_time);
 
                 # make time for the current message:
                 $msg_time = mktime($sec, $min, $hour, $mday, $mon, $year);
@@ -175,7 +177,7 @@ sub process_log {
                 # for the first message in the backup file:
                 $msg_time = mktime($sec, $min, $hour, $mday, $mon, $year);
                 $session_id = $msg_time;
-                $offset = 0;
+                #$offset = 1;
             }
 
             #my $date = localtime($msg_time);
@@ -194,10 +196,11 @@ sub process_log {
         }
     }
     if ($msg_time and $msg_from and $msg_to and $msg_body) {
+        $splitter->add(($msg_to eq $guest ? 'a' : 'b') => $msg_time);
         if ($splitter->should_split) {
             $session_id = $msg_time;
-            $offset = 0;
         }
+		#warn "  insert $msg_time, $msg_from, $msg_to, $session_id, $offset\n$msg_body\n";
         $insert_count +=
             insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset);
     }

@@ -1,6 +1,6 @@
 [% DEFAULT
     query = 'idu ·´»ã±àÆ÷ ×´Ì¬»ú Salent'
-    whole_word = 1
+    whole_word = 0
     elapsed = 0.18
     hits = [
       {
