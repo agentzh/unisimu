@@ -43,8 +43,13 @@
  <p>
  Powered by <a href="/">qooqle</a>.
   <br>
+  <br>
+<a href="/display_prev?session=[% hits.0.session %]">&larr;&nbsp;Prev session</a>&nbsp;&nbsp;
+<a href="/display_next?session=[% hits.last.session %]">Next session&nbsp;&rarr;</a>
+<br>
   <hr>
   <br>
+
 
 [%- is_odd = 1 %]
 [%- session = 0 %]

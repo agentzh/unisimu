@@ -70,6 +70,14 @@ sub handle_request {
         my @sessions = $cgi->param('session');
         dump_sessions($cgi, @sessions);
     }
+    elsif ($url =~ m[^/?display_prev]) {
+        warn "Displaying prev...\n";
+        dump_prev($cgi, $cgi->param('session'));
+    }
+    elsif ($url =~ m[^/?display_next]) {
+        warn "Displaying next...\n";
+        dump_next($cgi, $cgi->param('session'));
+    }
     elsif ($url =~ m[^/?display]) {
         warn "Displaying...\n";
         dump_sessions($cgi, $cgi->param('session'));
@@ -208,4 +216,58 @@ sub connect_db {
 	die "No env DSN set. So no database is available\n" unless $dsn;
     my $dbh = DBI->connect($dsn, { PrintError => 1, RaiseError => 0 });
 	return $dbh;
+}
+
+sub dump_prev {
+    my $cgi = shift;
+    my $session = shift;
+    my $prev = 0;
+
+    my $query = <<_EOC_;
+select session_id
+from msgs
+where session_id < $session
+order by session_id desc
+_EOC_
+    warn "SQL: $query\n";
+
+	my $dbh = connect_db();
+	my $sth = $dbh->prepare($query);
+    $sth->execute;
+
+    my @hits;
+    my $ref = $sth->fetchrow_arrayref;
+    $sth->finish;
+    $dbh->disconnect;
+
+    $prev = $ref ? $ref->[0] : $session;
+
+    dump_sessions($cgi, $prev);
+}
+
+sub dump_next {
+    my $cgi = shift;
+    my $session = shift;
+    my $next = 0;
+
+    my $query = <<_EOC_;
+select session_id
+from msgs
+where session_id > $session
+order by session_id asc
+_EOC_
+    warn "SQL: $query\n";
+
+	my $dbh = connect_db();
+	my $sth = $dbh->prepare($query);
+    $sth->execute;
+
+    my @hits;
+    my $ref = $sth->fetchrow_arrayref;
+    $sth->finish;
+    $dbh->disconnect;
+
+    $next = $ref ? $ref->[0] : $session;
+
+    dump_sessions($cgi, $next);
 }
