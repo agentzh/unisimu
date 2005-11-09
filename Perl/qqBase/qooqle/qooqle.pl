@@ -174,7 +174,7 @@ _EOC_
             msg_time => strftime("%H:%M:%S", localtime($ref->{msg_time})),
             receiver => $ref->{receiver},
             sender   => $ref->{sender},
-            message  => $ref->{msg_body},
+            message  => quote_html($ref->{msg_body}),
         };
         push @hits, $rec;
     }
