@@ -77,9 +77,9 @@
     [%- END %]
 
   <tr class="[% is_odd ? 'odd' : 'even' %]">
-  <td align=center>
+  <td width=8% align=center>
   <font size=-1>[% r.sender %]</font></td>
-  <td width=70% align=left>
+  <td align=left wrap>
       <font size=-1>
       [% r.message %]
       </font>

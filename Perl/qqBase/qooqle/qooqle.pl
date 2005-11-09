@@ -209,6 +209,7 @@ sub quote_html {
 	$src =~ s/\n/<br>/gs;
 	$src =~ s/\t/    /g;
 	$src =~ s/ /&nbsp;/g;
+    $src =~ s/(\w)&nbsp;(\w)/$1 $2/g;
 	return $src;
 }
 
