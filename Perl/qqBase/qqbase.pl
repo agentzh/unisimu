@@ -1,6 +1,8 @@
 #: qqbase.pl
 #: Set up the QQ log database
-#: 2005-11-02 2005-11-03
+#: v0.01
+#: Copyright (c) 2005 Agent Zhang
+#: 2005-11-02 2005-11-09
 
 use strict;
 use warnings;
@@ -13,9 +15,12 @@ use Getopt::Std;
 use Message::Splitter;
 
 my %opts;
-getopts('m:s:', \%opts);
+getopts('s:', \%opts);
 
-my $myname = $opts{m} || 'me';
+my $my_qq_id = get_env('QQ_ID');
+my $my_qq_name = get_env('QQ_NICKNAME');
+my $my_real_name = get_env('QQ_REAL_NAME');
+
 my $BODY_SIZE = +$opts{s} || 255;
 
 local $| = 1;
@@ -115,10 +120,11 @@ sub process_log {
     my @dirs = File::Spec->splitdir($logfile);
     my $real_name = $dirs[-2] if @dirs >= 2;
     $real_name = ($real_name =~ /^[^\w]+$/) ? $real_name : undef;
-    warn "Real Name: $real_name\n" if $real_name;
+    warn "    info: $real_name\n" if $real_name;
     my ($msg_from, $msg_to, $msg_time, $msg_body);
     my ($host, $host_name, $guest, $guest_name);
     my ($session_id, $offset);
+    my $insert_count = 0;
     my $splitter = Message::Splitter->new(20 * 60); # 20 min
     my $state = 'S_INIT';
     while (<$in>) {
@@ -130,12 +136,12 @@ sub process_log {
 			#warn $_;
             if (/^用户(:|：)(\d+)\((.+)\)/) {
                 ($host, $host_name) = ($2, $3);
-				warn "$host $host_name";
+				#warn "    info: $host_name";
                 check_user($host, $host_name, $real_name);
             } elsif (/^用户/) {
 				#warn "Matched!";
-				($host, $host_name) = ($ENV{QQ_ID} || '0000', $myname);
-				warn "$host $host_name";
+				($host, $host_name) = ($my_qq_id, $my_qq_name);
+				#warn "    info: $host $host_name";
                 check_user($host, $host_name, $real_name);
 			}
             if (/^消息对象:(\d+)\((.+)\)/) {
@@ -159,7 +165,8 @@ sub process_log {
                     $offset = 0;
                 }
 				#warn "$msg_time, $msg_from, $msg_to, $msg_body, $session_id\n";
-                insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset++);
+                $insert_count +=
+                    insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset++);
                 $splitter->add(($msg_from eq $host ? 'a' : 'b') => $msg_time);
 
                 # make time for the current message:
@@ -176,8 +183,8 @@ sub process_log {
             #die "$_ => $date\n";
             #($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
             #                                    localtime(msg_time);
-            $msg_from = $name eq $host_name ? $host : $guest;
-            $msg_to   = $name eq $host_name ? $guest : $host;
+            $msg_from = $name eq $guest_name ? $guest : $host;
+            $msg_to   = $name eq $guest_name ? $host : $guest;
             die "Internal assertion failed: $msg_from sent msg to itself"
                 if $msg_from eq $msg_to;
             $msg_body = '';
@@ -191,15 +198,17 @@ sub process_log {
             $session_id = $msg_time;
             $offset = 0;
         }
-        insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset);
+        $insert_count +=
+            insert_msg($msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset);
     }
     close $in;
+    warn "    $insert_count message(s) inserted.\n";
 }
 
 sub check_user {
     my ($id, $nickname, $real_name) = @_;
     if ($id eq '279005114') {
-        $real_name = $myname;
+        $real_name = $my_real_name;
     }
     my $sth = $user_dup_sth;
     my ($user_id, $user_name);
@@ -229,7 +238,7 @@ sub insert_msg {
     my ($user_id, $user_name);
     my $sth = $msg_dup_sth;
     $sth->execute($msg_time, $msg_from, $msg_to);
-    if ($sth->fetch) { return undef; }
+    if ($sth->fetch) { return 0; }
 
     $sth = $dbh->prepare(
         'insert into msgs values (?,?,?,?,?,?)'
@@ -247,4 +256,12 @@ sub insert_msg {
         warn "$msg_time, $msg_from, $msg_to, $msg_body, $session_id, $offset";
     }
     #$dbh->{PrintError} = 1;
+    return 1;
+}
+
+sub get_env {
+    my $name = shift;
+    my $val = $ENV{$name};
+    die "Environment $name not set.\n" if !defined $val;
+    return $val;
 }

@@ -10,6 +10,7 @@ use warnings;
 use HTTP::Server::Simple;
 use DBI;
 
+my $time = 0;
 my $server = MyServer->new();
 $server->run();
 
@@ -20,10 +21,14 @@ use URI::Escape;
 use Template;
 use CGI::Carp qw(fatalsToBrowser);
 use POSIX qw(strftime);
+use Time::HiRes;
 
 use base qw(HTTP::Server::Simple::CGI);
 
+our $WholeWord = 0;
+
 sub handle_request {
+    $time = Time::HiRes::time;
     my ($self, $cgi) = @_;     #... do something, print output to default
     my $base = $cgi->url;
     $base = quotemeta($base);
@@ -35,6 +40,9 @@ sub handle_request {
     $url = '' if !$url;
     warn "URL: $url\n";
 
+    #my @params = $cgi->param;
+    #warn "@params";
+    $WholeWord = $cgi->param('wholeword');
     if ($url eq '/' or $url eq '') {
         if (my $query = $cgi->param('query')) {
             warn "Query: $query\n";
@@ -99,11 +107,11 @@ _EOC_
 		my $matched = 0;
 		for my $word (@words) {
 			my $pat = quotemeta($word);
-			if ($word =~ m/\W/) {
-				$msg =~ s,$pat,<B>$&</B>,is;
+			if ($word =~ m/\W/ or !$WholeWord) {
+				$msg =~ s,$pat,<B>$&</B>,isg;
 				$matched = 1;
 			}
-			elsif ($msg =~ s,\b$pat\b,<B>$&</B>,is) {
+			elsif ($WholeWord and $msg =~ s,\b$pat\b,<B>$&</B>,isg) {
 				$matched = 1;
 			}
 		}
@@ -120,10 +128,14 @@ _EOC_
         push @hits, $rec;
     }
     #warn "\@hits: ", scalar(@hits), "\n";
+    my $elapsed = sprintf("%.2f", Time::HiRes::time - $time);
     my $tt = Template->new;
     print "HTTP/1.0 200 OK\n\n";
-    $tt->process('tpl/list.tt', { query => join(' ', @words), hits => \@hits }, \*STDOUT)
-      || warn $tt->error();
+    $tt->process(
+        'tpl/list.tt',
+        { whole_word => $WholeWord, query => join(' ', @words), 'elapsed' => $elapsed, hits => \@hits },
+        \*STDOUT,
+    ) || warn $tt->error();
     $dbh->disconnect;
 }
 

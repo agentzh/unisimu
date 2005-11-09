@@ -1,5 +1,7 @@
 [% DEFAULT
     query = 'idu ·´»ã±àÆ÷ ×´Ì¬»ú Salent'
+    whole_word = 1
+    elapsed = 0.18
     hits = [
       {
         time => 'Thu Nov 25 18:03:56 2004'
@@ -58,23 +60,36 @@ h3{font-weight:normal;font-size=100%}
 </style>
 </head>
 <body bgcolor=#ffffff topmargin=3 marginheight=3>
+<form name=gs method=POST action="/"><td valign=top>
 <table border=0 cellpadding=0 cellspacing=0 width=100%>
 <tr>
-<form name=gs method=POST action="/"><td valign=top>
+<td>
 <a href="/"><img src="images/logo_sm.png" width=150 height=55 alt="Go to Qooqle Home" border=0 vspace=12></a>
 </td>
 <td>&nbsp;&nbsp;</td>
 <td valign=top width=100%>
 <table cellpadding=0 cellspacing=0 border=0><tr><td height=14 valign=bottom>
-<table border=0 cellpadding=4 cellspacing=0><tr><td class=q><b>
+<table border=0 cellpadding=4 cellspacing=0>
+<tr>
+<td class=q>
+<b>
 		<font size="-1" face="Arial" color="#0000FF">This is a Google-like 
 	search engine 
 		for qqBase</font></b></td></tr></table></td></tr><tr><td><table border=0 cellpadding=0 cellspacing=0><tr><td nowrap>
 		<input type=text name=query size=41 maxlength=2048 title="Search" value="[% query %]"><font size=-1>
         <input type=submit name="btnG" value="Search"><span id=hf></span></font></td><td nowrap>
-        <font size=-2>&nbsp;&nbsp;&nbsp;</font></td></tr></table></td></tr></table>
+        <font size=-2>&nbsp;&nbsp;&nbsp;</font></td></tr></table></td></tr>
+        </table>
+        
         <table cellpadding=0 cellspacing=0 border=0><tr><td><font size=-1></font></td></tr><tr><td height=7>
-        <img width=1 height=1 alt=""></td></tr></table></td></form></tr></table>
+        <img width=1 height=1 alt=""></td></tr>
+        <tr>
+        <tr><td><input type=checkbox name="wholeword"[% whole_word ? ' checked' : '' %]>
+        <font size="-1" face="Arial" color="#0000FF">&nbsp;Whole word only</font></td></tr>
+        </table>
+</td>
+</table>
+</form>
 <style><!--
 .fl:link{color:#7777CC}
 -->
@@ -94,7 +109,7 @@ h3{font-weight:normal;font-size=100%}
 [%- IF hits.size %]
 
 <font size=-1>Results <b>1</b> - <b>[% hits.size %]</b> of <b>[% hits.size %]</b> for <b><b>[% query %]</b>
-</b>.  </font></td></tr></table><div>
+</b>.  (<b>[% elapsed %]</b> seconds)&nbsp;</font></td></tr></table><div>
 
 <form name=f2 action="/join" method="post" target="_blank">
   [%- FOREACH r = hits %]
