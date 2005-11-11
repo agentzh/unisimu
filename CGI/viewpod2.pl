@@ -44,10 +44,13 @@ sub handle_request {
         $file = '/modlist';
     }
 
-    if ($file =~ m,/modlist,i) {
+    if ($file =~ m,/?modlist,i) {
         if (!update_modlist($cgi)) {
             return 0;
         }
+    } elsif ($file =~ m,/?Active.css$,i) {
+        dump_file($cgi, "$Config{installhtmldir}/Active.css");
+        return;
     }
             
     $file =~ s/\.html?$//;
@@ -83,7 +86,7 @@ sub handle_request {
         "--recurse",
         "--infile=$file",
         "--outfile=$ENV{TEMP}/tmp.html",
-        "--css=$Config{installhtmldir}/Active.css",
+        "--css=/Active.css",
         "--header",
     );
     if (!open $fh, "$ENV{TEMP}/tmp.html") {
@@ -94,8 +97,9 @@ sub handle_request {
     }
     clean_tmp();
     undef $/;
-	print "HTTP/1.0 200 OK\r\n";
-	print $cgi->header(-type=>'text/html', -target=>'content');
+	print "HTTP/1.0 200 OK\n";
+	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
+    print "\n";
     print <$fh>;
     close $fh;
 }
@@ -171,4 +175,17 @@ sub update_modlist {
     return 1;
 }
 
-1;
+sub dump_file {
+    my ($cgi, $fname) = @_;
+    my $in;
+    if (!open $in, $fname) {
+        warn "Internal Server Error: Resource $fname not found: $!";
+        return;
+    }
+    local $/;
+    binmode $in;
+    my $content = <$in>;
+    close $in;
+    print "HTTP/1.0 200 OK\n\n";
+    print $content;
+}

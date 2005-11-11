@@ -2,7 +2,7 @@
 #: Web interface for qqBase
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-06 2005-11-06
+#: 2005-11-06 2005-11-11
 
 use strict;
 use warnings;
@@ -43,10 +43,10 @@ sub handle_request {
     #my @params = $cgi->param;
     #warn "@params";
     $WholeWord = $cgi->param('wholeword');
-    warn "  Whole Word: $WholeWord\n";
+    #warn "  Whole Word: $WholeWord\n";
     if ($url eq '/' or $url eq '') {
         if (my $query = $cgi->param('query')) {
-            warn "Query: $query\n";
+            #warn "Query: $query\n";
             my @words;
             while ($query =~ s/"\s*([^"]*)"//) {
                 push @words, $1;
@@ -55,7 +55,7 @@ sub handle_request {
             @words = grep !/^\s*$/, @words;
             map s/\s*$//, @words;
             local $" = ':';
-            warn "Words: @words\n";
+            warn "Search words: @words\n";
             if (!@words) {
                 dump_home($cgi);
             } else {
@@ -94,7 +94,7 @@ sub dump_home {
 }
 
 sub dump_list {
-    my @cgi = shift;
+    my $cgi = shift;
     my @words = @_;
     my $query = <<_EOC_;
 select session_id, U1.user_name as sender, U2.user_name as receiver, msg_body
@@ -103,7 +103,7 @@ where msgs.msg_from=U1.user_id and msgs.msg_to=U2.user_id and
 _EOC_
     $query .= '(' . (join ' or ', (map { "msg_body like '%$_%'" } @words)) . ')';
     $query .= "\norder by session_id asc";
-    warn "SQL: $query\n";
+    #warn "SQL: $query\n";
 
 	my $dbh = connect_db();
 	my $sth = $dbh->prepare($query);
@@ -136,10 +136,12 @@ _EOC_
         };
         push @hits, $rec;
     }
-    #warn "\@hits: ", scalar(@hits), "\n";
+    warn "    info: ", scalar(@hits), " hits\n";
     my $elapsed = sprintf("%.2f", Time::HiRes::time - $time);
     my $tt = Template->new;
-    print "HTTP/1.0 200 OK\n\n";
+    print "HTTP/1.0 200 OK\n";
+	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
+    print "\n";
     $tt->process(
         'tpl/list.tt',
         { whole_word => $WholeWord, query => join(' ', @words), 'elapsed' => $elapsed, hits => \@hits },
@@ -158,7 +160,7 @@ where msgs.msg_from=U1.user_id and msgs.msg_to=U2.user_id and
 _EOC_
     $query .= '(' . (join ' or ', (map { "session_id=$_" } @sessions)) . ')';
     $query .= "\norder by session_id, offset asc";
-    warn "SQL: $query\n";
+    #warn "SQL: $query\n";
 
 	my $dbh = connect_db();
 	my $sth = $dbh->prepare($query);
@@ -167,7 +169,14 @@ _EOC_
     my $session;
     my @hits;
     print "HTTP/1.0 200 OK\n";
+	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
+    print "\n";
+    my $first = 1;
     while (my $ref = $sth->fetchrow_hashref) {
+        if ($first) {
+            warn "    info: $ref->{sender} vs. $ref->{receiver}\n";
+            $first = 0;
+        }
         my $rec = {
             session  => $ref->{session_id},
             session_time => strftime("%Y-%m-%d %a", localtime($ref->{msg_time})),
@@ -231,7 +240,7 @@ from msgs
 where session_id < $session
 order by session_id desc
 _EOC_
-    warn "SQL: $query\n";
+    #warn "SQL: $query\n";
 
 	my $dbh = connect_db();
 	my $sth = $dbh->prepare($query);
@@ -258,7 +267,7 @@ from msgs
 where session_id > $session
 order by session_id asc
 _EOC_
-    warn "SQL: $query\n";
+    #warn "SQL: $query\n";
 
 	my $dbh = connect_db();
 	my $sth = $dbh->prepare($query);

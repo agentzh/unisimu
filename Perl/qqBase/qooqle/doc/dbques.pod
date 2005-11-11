@@ -1,0 +1,254 @@
+=head1 NAME
+
+dbques - Some questions and ideas on databases
+
+=head1 VERISON
+
+0.01 - the original version, released on Firday, Nov 11, 2005.
+
+=head1 DESCRIPTION
+
+本学期我选修了数据库课程，并在最近完成了一个名为 Qooqle 的基于数据库的 Web CGI 应用。
+本文档描述了我在近来的数据库学习与实践过程中遇到的一些问题与心得，希望能与老师和同学们
+进行交流。
+
+=head1 Terminology
+
+微软公司以术语混乱著称，想想 OLE，COM 和 ActiveX 这些东西，您就会明白我的意思了。然
+而不幸的是，我们自己的教材也存在同样的问题。这或许更加令人难以接受。
+
+=head2 Keys
+
+我们有必要重新对和"码"有关的术语进行精确化。下面是我的提议：
+
+=over
+
+=item *
+
+Super Keys
+
+超码。在关系 R 中，任意能够函数决定 R 的属性组都称为 R 的超码。所有的"码"都可视为超
+码的一种实例。
+
+=item *
+
+Candidate Keys
+
+候选码。在 R 的超码中，能够完全函数决定 R 的属性组称为 R 的候选码。对一个关系而言，它
+的候选码可能不唯一。
+
+=item *
+
+Primary Keys
+
+主码。在关系 R 中，人为指定的一个候选码称为 R 的主码。对一个关系而言，它的主码是唯一确定的。
+
+=item *
+
+Full Keys
+
+全码。对关系 R 而言，若其候选码就等于整个 R，则称该候选码为全码。
+
+=item *
+
+Keys
+
+码。与"超码"同义。
+
+=back
+
+=head1 Portability and Standardization
+
+数据库和数据库应用的可移植性在课堂上似乎没有得到足够的重视。尽管使用特定的 DBMS 提供的
+非标准的特性可以获得性能和功能方面的很多好处，但是我们也为之付出了可移植性方面的代价。
+其实，能够在不同的 DBMS 之间兼容的应用比只能在特定的 DBMS 上工作的应用要有用的多，我
+们可能在未来的某个时候需要把我们的应用迁移到一个不同的 DBMS，甚至是完全不同的操作系统。
+通用的代码使得迁移无需额外的成本。另外，可移植的应用也为在不同的 DBMS 和数据库接口上进
+行性能比较提供了便利。
+
+在一开始就被设计成高度可移植的数据库及对应的应用显然能节省更多的成本，并提供了近乎无限的
+“可能性”与“灵活性”。
+
+在我编写的 Qooqle 项目中，我开发了一个名为 qqbase 的工具用来扫描所有的 QQ 聊天记录的
+备份文件，并将所有信息通过数据库接口导入到用户指定的数据库。由于 qqbase 被设计成是数据库
+无关的，因此我可以通过改变环境变量的值来指定 qqbase 实际指向的数据库。比如我在命令提示
+符中输入
+
+    set DSN=DBI:ODBC:qqbase
+    qqbase 聊天记录\*\*.txt
+
+此时 qqbase 就会通过 ODBC 接口向我机器上的 SQL Server 2000 插入数据(注意这儿的"qqbase"
+是我事先在 Windows 控制面板中设置的 ODBC 数据源的名称）。
+
+如果我改而键入
+
+    set DSN=DBI:ADO:Provider=Microsoft.Jet.OLEDB.4.0;Data Source=qqbase.mdb
+    qqbase 聊天记录\*\*.txt
+
+qqbase 就会将扫描众多 QQ 备份文件得到的信息通过 ADO 数据库接口插入到当前工作目录中的
+Access 数据库文件 test.mdb
+
+事实上，qqbase 也能工作在 Linux, FreeBSD 等众多的操作系统上，在那里，我们可以将 DSN
+环境变量设置为指向那些平台上工作的数据库，比如 MySQL, SQLite 或者 Oricle。如此惊人
+的可移植性得益于 Perl 语言和 Perl 的 DBI 通用数据库接口完美的可移植性。
+
+把 qqbase 设计成能在任何 DBMS 上跑的程序，显然比将之局限在某一款特定的 DBMS，比如
+L<MS SQL Server> 要有吸引力得多。毕竟整个 qqbase 的源代码不过二百多行。
+
+=head1 Performance
+
+由于 Qooqle 项目中的 qqbase 应用是数据库无关的，我们可以很方便地对不同的 DBMS 和数据库
+可编程接口进行“很公平”的性能比较。qqbase 向数据库进行 select, create table, update
+和 insert 等多种 SQL 操作。与数据库的交互次数的数量级约为 10 的 5 次方。以下数据都是在
+我的 Pentium4 2.66 GHz, 512 MB RAM 的机器上的计时结果。
+
+=over
+
+=item *
+
+使用 ODBC + MS SQL Server 2000 的组合
+
+    62.703 sec
+
+=item *
+
+使用 ADO + MS SQL Server 2000 的组合
+
+    334.906 sec
+
+=item *
+
+使用 ODBC + MS Access 2003 的组合
+
+    108.156 sec
+
+=item *
+
+使用 ADO + MS Access 2003 的组合
+
+    377.296 sec
+
+=back
+
+从上面这四组数据，我们不难看到 MS SQL Server 2000 的性能对该应用而言，要优于 MS
+Access 2003，而 ODBC 接口又要远胜于建立在 OLE DB 基础之上的 ADO。这个结果与我们
+的估计是一致的，毕竟 Access 是很简单的小型数据库，另外微软的 OLE 本来就不是性能过
+人的。
+
+=head1 Some Issues on SQL
+
+=over
+
+=item *
+
+The LIMIT Syntax
+
+我不清楚标准的 SQL 是否规定了 LIMIT 关键字，但是很多 DBMS 都提供了对 SQL 的扩展，
+以表达只返回结果集的开头几个记录，比如下面这个为微软数据库所接受的例子：
+
+    select top 1 sum(grades)
+    from students
+    group by stu_name
+    order by sum(grades)
+
+但是 top 关键字不是标准的，比如 Oracle 使用 RowNum 关键字，而 LimitXY 则是
+MySQL 的语法。Perl 的 CPAN 模块 L<SQL::Abstract::Limit> 提供了应用语言级
+别上的抽象，它能提据实际连接的数据库种库自动生成对应的 SQL 方言。
+
+但这儿有一点不清楚的是，上面例子中的 top 1 的动作是发生在 order by 之前呢，还
+是之后呢。换句话说，上面的 SQL 查询能否得到最高的学生总分呢？
+
+=item *
+
+Advanced Pattern Match
+
+很遗憾，SQL 标准没有采纳 Perl5 正则表达式作为 LIKE 匹配结构的语法。这使得我在
+Qooqle 搜索引擎中不得不使用 Perl5 对数据库返回的结果集进行过滤。比如说，如果我
+们想搜索含有单词 like 的 QQ 消息，下面的 SQL 查询会返回仅出现 dislike 或者
+alike 的消息记录：
+
+    select *
+    from msgs
+    where msg_body like '%like%'
+
+换言之，模式C<%like%>过于松散了。但如果我们改用C<% like %>，则匹配又过于严格，
+比如下面两个串都无法匹配：
+
+    I don't know what they like.
+    I love (like) her.
+
+有的同学建议我在 where 子句中将"like"关键字替换成"="，但这并不是我想要的，因为
+我要匹配的是B<含有>指定单词的字符串。
+
+在 Perl 中我们可以使用下面的正则表达式圆满地解决上面的问题：
+
+    /\blike\b/
+
+但 SQL 却不可能支持。
+
+另一个问题是，SQL 的 LIKE 匹配是不区分大小写的。那么有没有办法令查询变成大小写敏
+感的？
+
+=item *
+
+Time and Date
+
+我不清楚日期和时间类型是不是 SQL 标准的一部分，不过我在 Qooqle 项目的数据库中使用了
+自系统纪元 00:00:00 UTC, January 1, 1970 以来连续的秒数作为消息发送时间的取值。虽
+然这对于手工查询时指定绝对的时间比较不便，但对于很多编程语言而言，这种时间表示法操纵起
+来却非常方便。比如我可以很容易地在 Perl 中将这样的数字转换成各种形式：
+
+    Mon Jan 3 18:49:54 2005
+    2005-01-03 Mon 18:49:54
+
+另外，由于是连续的秒数，对时间进行加减运算和比较大小也非常便利。比如利用下面这个查询：
+
+    select *
+    from msgs
+    where msg_time < 1104749394
+    order by msg_time
+
+可以得到自时刻 1104749394 (2005-01-03 18:49:54) 之前发送的最近的一条 QQ 消息（数据
+库返回的结果集的第一行记录）。
+
+=item *
+
+Testing SQL queries
+
+以前上课的时候，我也曾就 SQL 查询的测试问题询问过我的数据库老师。由于测试在
+软件工程和极限编程中都是如此重要，因此我们在尝试回答这个问题之前应当认真思考一下。
+
+最简单的方法当数用不同的表达方式构造出同一个查询的 SQL 语句，然后比较它们的查询结果
+是否一致。比方说，我们要查询章亦春发送给仲伟祥的所有 QQ 消息，我们至少可以写出三种
+不同形式的 SQL 查询：
+
+    select count(*) as Total
+    from msgs
+    where msg_from=279005114 and msg_to=348000440
+
+    select count(*) Total2
+    from msgs, users as U1, users as U2
+    where msg_from=U1.user_id and msg_to=U2.user_id and
+          U1.user_name='章亦春' and U2.user_name='仲伟祥'
+
+    select count(*) as Total3
+    from msgs
+    where msg_from in
+        (select user_id
+         from users
+         where user_name='章亦春')
+          and msg_to in
+        (select user_id
+         from users
+         where user_name='仲伟祥')
+
+在第一个查询中，我们假设已经知道了两个人的 QQ 号。而后两个查询的区别就在于前者使用了连接，
+而二者使用了子查询。
+
+=back
+
+=head1 AUTHOR
+
+Agent Zhang (章亦春), E<lt>agentz@tom.comE<gt>
+
+Copyright (c) 2005 Agent Zhang
