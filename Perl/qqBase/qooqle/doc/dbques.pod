@@ -171,7 +171,7 @@ alike 的消息记录：
     from msgs
     where msg_body like '%like%'
 
-换言之，模式C<%like%>过于松散了。但如果我们改用C<% like %>，则匹配又过于严格，
+换言之，模式"%like%"过于松散了。但如果我们改用"% like %"，则匹配又过于严格，
 比如下面两个串都无法匹配：
 
     I don't know what they like.
@@ -247,8 +247,33 @@ Testing SQL queries
 
 =back
 
+=head1 Generation of E-R and Schema Diagrams
+
+实体-联系图（E-R 图）和数据库模式图的自动化生成是非常有趣的主题，特别是当我们拥有 Graphviz
+这个值得信赖的有向图绘制软件的情况下。Graphviz 内建有多种图布局的自适应算法，我们只需给出图
+的结构描述，它就能自动推导出合适的节点坐标和边的走向。下面的 URL 提供了 Graphviz 生成众多样
+图（其中包括 E-R 图），真的很漂亮：
+
+L<http://www.graphviz.org/Gallery.php>
+
+现在的主要问题就是，绘图所需的信息从何而来？对于模式图而言，创建数据库表格的 SQL 代码就已经提
+供了足够多的信息。但对于 E-R 而言， 我们还需要额外的语义信息。最好的办法是另外定义一种小语言，
+用来描述实体和联系。下面便是 QQ 数据库的一种典型的 E-R 描述：
+
+    E msgs ([msg_id], msg_time, msg_body)
+    E sessions ([session_id], session_len)
+    R belong (msg_id, session_id, offset)
+    E users ([user_id], user_name, user_sex, user_nickname)
+    R send (msg_id, user_id)
+    R receive (msg_id, user_id)
+
+每行开头的大写字母表示类型，E 代表 Entity，R 代表 Relationship. 另外，主码放在方括号 [] 里
+以示区别。我在想，也可以把函数依赖关系的定义放到这个文件里，这样我的程序就能通过解析这种描述绘制
+出图片格式的 E-R 图，并对模式属于第几范式(Normal Form)进行自动化判断。当然了，这些还只是初步
+的设想。
+
 =head1 AUTHOR
 
-Agent Zhang (章亦春), E<lt>agentz@tom.comE<gt>
+Agent Zhang (章亦春), E<lt>agent2002@126.comE<gt>
 
 Copyright (c) 2005 Agent Zhang
