@@ -58,6 +58,43 @@ h3{font-weight:normal;font-size=100%}
 .sm{display:block; margin-top: 0px; margin-bottom: 0px; margin-left: 40px}
 //-->
 </style>
+<script language="javascript" type="text/javascript">
+//<!--
+    var SelectAllFlag = true;
+	function goToForAllSelect() {
+		 var doc = document.f2;
+		 var l=doc.session.length
+		 if(l==null) {
+		  l=1;
+		 }	 
+		 if(l==1){
+		   if(!SelectAllFlag){
+			 doc.session.checked = true;
+		 }else {
+		   doc.session.checked = false;
+		 }
+		 }else {
+		   for(i = 0; i < l; i++) {
+				if(!SelectAllFlag){
+				 doc.session[i].checked = true;
+				}else{
+				 doc.session[i].checked = false;
+				}
+		 
+		   }
+		 
+		 }
+		 if(!SelectAllFlag){
+			  SelectAllFlag = true;
+			  doc.btnAllSelect.value="Unselect All";
+		 } else{
+		  SelectAllFlag = false;
+		  doc.btnAllSelect.value="Select All";
+		 }
+	 
+	}
+//-->
+</script>
 </head>
 <body bgcolor=#ffffff topmargin=3 marginheight=3>
 <form name=gs method=POST action="/"><td valign=top>
@@ -137,7 +174,9 @@ h3{font-weight:normal;font-size=100%}
 <td/>
 <td align=center>
 <br>
-<input type=submit value="Join Sessions" name=join>
+    <input name="btnAllSelect" type="Button" id="Button" value="Unselect All" class="myButton" onclick="goToForAllSelect()">
+    &nbsp; &nbsp; &nbsp;
+    <input type=submit value="Join Sessions" name=join>
 </td>
 </tr>
 </table>
