@@ -117,8 +117,9 @@ _EOC_
 		for my $word (@words) {
 			my $pat = quotemeta($word);
 			if ($word =~ m/\W/ or !$WholeWord) {
-				$msg =~ s,$pat,<B>$&</B>,isg;
-				$matched = 1;
+				if ($msg =~ s,$pat,<B>$&</B>,isg) {
+    				$matched = 1;
+                }
 			}
 			elsif ($WholeWord and $msg =~ s,\b$pat\b,<B>$&</B>,isg) {
 				$matched = 1;
