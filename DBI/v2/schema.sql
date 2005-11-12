@@ -6,7 +6,6 @@ drop table P
 
 drop table J
 
-
 create table S
     (SNO varchar(8) primary key,
      SNAME varchar(8),
