@@ -4,8 +4,9 @@
 
 use strict;
 use warnings;
-
 use DBI;
+
+my ($user, $password) = qw(zwy zwy);
 
 my @files = map glob, @ARGV;
 die "Usage: eval-sql <sql-file1> <sql-file2> ...\n" unless @files;
@@ -13,7 +14,7 @@ die "Usage: eval-sql <sql-file1> <sql-file2> ...\n" unless @files;
 my $dsn = $ENV{DSN};
 die "No env DSN set.\n" unless $dsn;
 
-my $dbh = DBI->connect($dsn, { PrintError => 1 });
+my $dbh = DBI->connect($dsn, $user, $password, { PrintError => 1 });
 
 for (@files) {
     my $sqls = slurp($_);

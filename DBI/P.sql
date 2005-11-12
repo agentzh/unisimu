@@ -16,4 +16,3 @@ insert into P values('P4','ÂİË¿µ¶','ºì',14)
 insert into P values('P5','Í¹ÂÖ','À¶',40)
 
 insert into P values('P6','³İÂÖ','ºì',30)
-
