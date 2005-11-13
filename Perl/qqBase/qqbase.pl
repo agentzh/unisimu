@@ -13,6 +13,8 @@ use File::Spec;
 use POSIX 'mktime';
 use Getopt::Std;
 use Message::Splitter;
+#use encoding 'GBK';
+#use Encode qw(encode decode);
 
 my %opts;
 getopts('s:', \%opts);
@@ -130,9 +132,10 @@ sub process_log {
     my $ready = 0;
     my $state = 'S_INIT';
     while (<$in>) {
-		#warn "$_";
+        #$_ = decode('GBK', $_);
+		#warn "$_" if /;
 		s/\r//g;
-		s/£º/:/g;
+		#s/£º/:/g;
 		#warn $_;
         if (/^$/ or /^-+$/) {
             $ready = 1;
