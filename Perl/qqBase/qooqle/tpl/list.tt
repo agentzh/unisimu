@@ -1,4 +1,5 @@
 [% DEFAULT
+    trim_session = 1
     query = 'idu ·´»ã±àÆ÷ ×´Ì¬»ú Salent'
     whole_word = 0
     elapsed = 0.18
@@ -145,10 +146,31 @@ h3{font-weight:normal;font-size=100%}
 
 [%- IF hits.size %]
 
+  [%- IF trim_session %]
+      [%- hits2 = [] %]
+      [%- i = 0 %]
+      [%- WHILE (i < hits.size) %]
+        [%- r = hits.$i %]
+        [%- j = i + 1 %]
+        [%- WHILE (j < hits.size);
+               r2 = hits.$j;
+               IF r2.session == r.session;
+                   r.message = r.message _ "<br><B>...</B><br>" _ r2.message;
+                   i = j;
+               END;
+               j = j + 1;
+            END %]
+        [%- hits2.push(r) %]
+        [%- i = i + 1 %]
+      [%- END %]
+      [%- hits = hits2 %]
+  [%- END %]
+
 <font size=-1>Results <b>1</b> - <b>[% hits.size %]</b> of <b>[% hits.size %]</b> for <b><b>[% query %]</b>
 </b>.  (<b>[% elapsed %]</b> seconds)&nbsp;</font></td></tr></table><div>
 
 <form name=f2 action="/join" method="post" target="_blank">
+
   [%- FOREACH r = hits %]
     [%- message = r.message %]
 <p class=g>
