@@ -22,6 +22,7 @@ getopts('s:', \%opts);
 my $my_qq_id = get_env('QQ_ID');
 my $my_qq_name = get_env('QQ_NICKNAME');
 my $my_real_name = get_env('QQ_REAL_NAME');
+my $TotalInsert = 0;
 
 my $BODY_SIZE = +$opts{s} || 255;
 
@@ -99,6 +100,8 @@ for my $file (@files) {
 $msg_dup_sth->finish;
 $user_dup_sth->finish;
 $dbh->disconnect();
+
+warn "\ninfo: For total $TotalInsert message(s) inserted\n";
 
 sub create_table {
     my $table = shift;
@@ -229,6 +232,7 @@ sub process_log {
     }
     close $in;
     warn "    $insert_count message(s) inserted.\n";
+    $TotalInsert += $insert_count;
 }
 
 sub check_user {
