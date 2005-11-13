@@ -142,7 +142,6 @@ _EOC_
     my $tt = Template->new;
     print "HTTP/1.0 200 OK\n";
 	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
-    print "\n";
     $tt->process(
         'tpl/list.tt',
         { whole_word => $WholeWord, query => join(' ', @words), 'elapsed' => $elapsed, hits => \@hits },
@@ -171,7 +170,6 @@ _EOC_
     my @hits;
     print "HTTP/1.0 200 OK\n";
 	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
-    print "\n";
     my $first = 1;
     while (my $ref = $sth->fetchrow_hashref) {
         if ($first) {
