@@ -8,6 +8,8 @@ use strict;
 use warnings;
 use HTTP::Server::Simple;
 
+my $cssfile = 'Active.css';
+
 my $server = MyServer->new();
 $server->run();
 
@@ -48,8 +50,8 @@ sub handle_request {
         if (!update_modlist($cgi)) {
             return 0;
         }
-    } elsif ($file =~ m,/?Active.css$,i) {
-        dump_file($cgi, "$Config{installhtmldir}/Active.css");
+    } elsif ($file =~ m,/?$cssfile$,i) {
+        dump_file($cgi, "$Config{installhtmldir}/$cssfile");
         return;
     }
             
@@ -86,7 +88,7 @@ sub handle_request {
         "--recurse",
         "--infile=$file",
         "--outfile=$ENV{TEMP}/tmp.html",
-        "--css=/Active.css",
+        "--css=/$cssfile",
         "--header",
     );
     if (!open $fh, "$ENV{TEMP}/tmp.html") {
@@ -99,7 +101,6 @@ sub handle_request {
     undef $/;
 	print "HTTP/1.0 200 OK\n";
 	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
-    print "\n";
     print <$fh>;
     close $fh;
 }
