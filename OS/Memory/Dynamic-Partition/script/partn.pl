@@ -1,5 +1,5 @@
 #: partn.pl
-#: 2005-10-23 2005-10-25
+#: 2005-10-23 2005-11-13
 
 use warnings;
 use strict;
@@ -121,7 +121,7 @@ sub handle_request {
     warn "Refresh PNG output...\n";
     $stack->as_png('tmp.png');
 
-    print "HTTP/1.0 200 OK\n\n";
+    print "HTTP/1.0 200 OK\n";
     print $cgi->header(-type=>'text/html');
     my $time = time();
     my @reqs = map { $_->{pid} } @$req_tb;
@@ -199,9 +199,9 @@ sub send_png {
     binmode $in;
     local $/;
     my $data = <$in>;
-    print "HTTP/1.0 200 OK\n\n";
+    print "HTTP/1.0 200 OK\n";
     print $cgi->header(
-        -type=>'image/gif',
+        -type=>'image/png',
         -expires=>'0');
     print $data;
 }
