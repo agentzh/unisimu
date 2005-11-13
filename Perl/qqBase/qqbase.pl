@@ -2,7 +2,7 @@
 #: Set up the QQ log database
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-02 2005-11-09
+#: 2005-11-02 2005-11-13
 
 use strict;
 use warnings;
@@ -194,8 +194,18 @@ sub process_log {
             #die "$_ => $date\n";
             #($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
             #                                    localtime(msg_time);
-            $msg_from = $name eq $guest_name ? $guest : $host;
-            $msg_to   = $name eq $guest_name ? $host : $guest;
+            if ($name eq $guest_name) {
+                $msg_from = $guest;
+                $msg_to   = $host;
+            } elsif ($name eq $host_name) {
+                $msg_from = $host;
+                $msg_to   = $guest;
+            } else {
+                $msg_from = $guest;
+                $msg_to   = $host;
+            }
+            #$msg_from = $name eq $guest_name ? $guest : $host;
+            #$msg_to   = $name eq $guest_name ? $host : $guest;
             die "Internal assertion failed: $msg_from sent msg to itself"
                 if $msg_from eq $msg_to;
             $msg_body = '';
