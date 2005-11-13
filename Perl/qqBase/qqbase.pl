@@ -52,7 +52,7 @@ _EOC_
 );
 
 my $dsn = $ENV{DSN};
-die "No env DSN set.\n" unless $dsn;
+die "error: No env DSN set.\n" unless $dsn;
 
 my $dbh = DBI->connect($dsn, { PrintError => 1, RaiseError => 0 });
 
@@ -92,7 +92,7 @@ my @files = map glob, @ARGV;
 #$" = "\n";
 #die "@files\n";
 
-die "No file specified.\n" if !@files;
+die "error: No file specified.\n" if !@files;
 
 for my $file (@files) {
     process_log($file);
@@ -101,7 +101,7 @@ $msg_dup_sth->finish;
 $user_dup_sth->finish;
 $dbh->disconnect();
 
-warn "\ninfo: For total $TotalInsert message(s) inserted\n";
+warn "\ninfo: For total $TotalInsert message(s) inserted.\n";
 
 sub create_table {
     my $table = shift;
@@ -112,20 +112,20 @@ sub create_table {
 
 sub process_log {
     my $logfile = shift;
-    my $s = $logfile;
-    if ($logfile =~ m/.{29}$/) {
-        $s = "...$&";
+    my @dirs = File::Spec->splitdir($logfile);
+    my $s;
+    if (@dirs == 1) {
+        $s = $logfile;
     } else {
-        $s .= ' ' x (32 - length($s));
+        $s = join('/', $dirs[-2], $dirs[-1]);
     }
     print "info: $s\n";
     open my $in, $logfile or
         die "Can't open $logfile for reading: $!\n";
     #sleep(1);
-    my @dirs = File::Spec->splitdir($logfile);
     my $real_name = $dirs[-2] if @dirs >= 2;
     $real_name = ($real_name =~ /^[^\w]+$/) ? $real_name : undef;
-    warn "    info: $real_name\n" if $real_name;
+    #warn "    info: $real_name\n" if $real_name;
     my ($msg_from, $msg_to, $msg_time, $msg_body);
     my ($host, $host_name, $guest, $guest_name);
     my ($session_id, $offset);
