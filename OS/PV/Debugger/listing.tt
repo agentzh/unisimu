@@ -1,0 +1,74 @@
+[% DEFAULT
+    step_id = 0
+    ast = {
+        'sun' => ['P("abc");<br>', 'V("abc");<br>']
+        'daughter' => ['P("abc");<br>', 'V("abc");<br>']
+    }
+    focuses = {
+        'sun' => 0,
+        'daughter' => 2
+    }
+    active = 'sun'
+%]
+<html>
+<head>
+<title>
+Perl Multi-thread Debugger
+</title>
+</head>
+<body>
+<img src="/logo.png">
+<br>
+<hr>
+<br>
+<table width=100% border=1>
+[%- i = 1 %]
+[%- FOREACH key = ast.keys %]
+    [%- color = (active == key) ? "red" : "blue" %]
+    [%- IF i % 2 == 1 %]
+<tr>
+    [%- END %]
+<td>
+    <br>
+    <B><center><font color="[% color %]">[% key %]</font></center></B>
+    <br>
+    [%- lines = ast.$key -%]
+    [%- j = 0 -%]
+    [%- FOREACH line = lines -%]
+        [%- IF focuses.$key.defined AND focuses.$key == j -%]
+            <font name="Courier New" color="[% color %]" size=-1>[% line %]</font>
+
+        [%- ELSE %]
+            <font name="Courier New" size=-1>[%- line %]</font>
+
+        [%- END %]
+        [%- j = j + 1 %]
+    [%- END %]
+</td>
+    [%- IF i % 2 == 0 %]
+</tr>
+    [%- END %]
+    [%- i = i + 1 %]
+[% END %]
+</table>
+<p>
+<table width=100%>
+<tr>
+<td width=65%>
+&nbsp;
+&nbsp;
+</td>
+<td align="left">
+<form action="/" method=post id=fr1>
+<input type=submit name=restart value=" Restart ">
+</form>
+</td>
+<td>
+<form action="/step[% step_id %]" method=post id=fr2>
+<input type=submit name=next value="Step Over">
+</form>
+</td>
+</tr>
+</table>
+</body>
+</html>

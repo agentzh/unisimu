@@ -29,7 +29,7 @@ our $WholeWord = 0;
 
 sub handle_request {
     $time = Time::HiRes::time;
-    my ($self, $cgi) = @_;     #... do something, print output to default
+    my ($self, $cgi) = @_;
     my $base = $cgi->url;
     $base = quotemeta($base);
     #warn "base = $base\n";
