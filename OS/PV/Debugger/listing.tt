@@ -9,6 +9,7 @@
         'daughter' => 2
     }
     active = 'sun'
+    step_count = 120
 %]
 <html>
 <head>
@@ -54,9 +55,12 @@ Perl Multi-thread Debugger
 <p>
 <table width=100%>
 <tr>
-<td width=65%>
-&nbsp;
-&nbsp;
+<td align=left width=65%>
+[% IF step_id > 1 %]
+<form action="/step[% step_id - 2 %]" method=post id=fr3>
+<input type=submit name=next value="Step Back">
+</form>
+[% END %]
 </td>
 <td align="left">
 <form action="/" method=post id=fr1>
@@ -64,9 +68,11 @@ Perl Multi-thread Debugger
 </form>
 </td>
 <td>
+[% IF step_id <= step_count - 1 %]
 <form action="/step[% step_id %]" method=post id=fr2>
 <input type=submit name=next value="Step Over">
 </form>
+[% END %]
 </td>
 </tr>
 </table>

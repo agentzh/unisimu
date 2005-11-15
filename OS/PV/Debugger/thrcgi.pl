@@ -19,6 +19,7 @@ my $ast = Template::Ast->read($astfile) or
     die Template::Ast->error;
 
 my @steps = parse_res($resfile);
+warn "For total ".scalar(@steps)." steps\n";
 
 my $server = MyServer->new();
 $server->run();
@@ -65,7 +66,7 @@ sub handle_request {
         dump_listing($cgi);
     } elsif ($url =~ /logo.png$/) {
         dump_file($cgi, 'logo.png');
-    } elsif ($cgi->param('next')) {
+    } elsif ($url =~ /step(\d+)/ or $cgi->param('next')) {
         if ($url =~ /step(\d+)/) {
             my $step = $1;
             dump_listing($cgi, $step);
@@ -80,18 +81,21 @@ sub handle_request {
 sub dump_listing {
     my ($cgi, $step) = @_;
     $step = 0 unless defined $step;
-    print "HTTP/1.0 200 OK\n";
-	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
     if ($step >= @steps) {
+        warn "Reset step to 0...\n";
         $step = 0;
     }
+    print "HTTP/1.0 200 OK\n";
+	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
     my $tt = Template->new;
     $tt->process(
         'listing.tt',
         { focuses => $steps[$step]->{focuses},
           active => $steps[$step]->{active},
           ast => $ast,
-          step_id => ++$step },
+          step_id => ++$step,
+          step_count => scalar(@steps),
+        },
         \*STDOUT,
     ) || warn $tt->error();
 }
