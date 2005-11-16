@@ -1,4 +1,6 @@
 #: interp-cgi.pl
+#: Copyright (c) 2005 Agent Zhang
+#: 2005-11-16 2005-11-16
 
 use strict;
 use warnings;
