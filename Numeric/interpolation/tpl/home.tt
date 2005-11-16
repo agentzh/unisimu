@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<title>差商及牛顿插值多项式的 CGI 演示</title>
+</head>
+<body>
+<center><img src="/logo.png"></center>
+<br>
+<hr>
+<br>
+<form action="/" method=post id=f1>
+<center>
+<table border=1 width=50%>
+<tr>
+<td align=center><I><font face="Estrangelo Edessa" size=+1>x</font></I></td>
+<td width=40%><input type=text name=x size=40%></td>
+</tr>
+<tr>
+<td align=center><I><font face="Estrangelo Edessa" size=+1>f(x)</font></I></td>
+<td width=40%><input type=text name=y size=40%></td>
+</tr>
+</table>
+<table width=50%>
+<tr>
+<br>
+<td width=40%>&nbsp;&nbsp;</td><td align=center><input type=button name=btn value=Evaluate></td>
+</tr>
+</table>
+</center>
+</form>
+</body>
+</html>
