@@ -65,7 +65,7 @@ sub dump_result {
     my @cols = $newton->diff_quot;
     my $poly = $newton->polynomial;
     my $poly2 = $newton->maple->eval("collect($poly,x)");
-    my $res = $newton->test_polynomial($poly2) ? 'pass' : 'fail';
+    my $res = $newton->test_polynomial($poly) ? 'pass' : 'fail';
     print "HTTP/1.0 200 OK\n";
 	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
     my $tt = Template->new;

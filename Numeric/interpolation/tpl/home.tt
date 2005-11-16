@@ -95,11 +95,10 @@ tr.math, td.math {font-family:"Estrangelo Edessa"; font-size:17}
 </table>
 </center>
 [%- END %]
+[% IF poly %]
 <br>
 <hr>
 <br>
-
-[% IF poly %]
 <B><font color="red">&nbsp;牛顿插值多项式:</font></B><p>
 &nbsp;&nbsp;[% poly %]
 [% END %]
@@ -129,6 +128,9 @@ tr.math, td.math {font-family:"Estrangelo Edessa"; font-size:17}
   [%- END %]
 
 [%- IF msg %]
+<br>
+<hr>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<B><font color="red">[% msg %]</font></B>
 [%- END %]
 
