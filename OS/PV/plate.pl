@@ -84,7 +84,6 @@ sub new_semaphore {
 sub P {
     #sleep(1);
     my $name = shift;
-    warn threads->tid, ": Entering $name...\n";
     $semas{$name}->down;
     threads->yield;
 }

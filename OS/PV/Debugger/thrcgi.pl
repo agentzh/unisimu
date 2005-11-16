@@ -1,5 +1,5 @@
-use warnings;
 use strict;
+use warnings;
 
 use HTTP::Server::Simple;
 use Getopt::Std;
