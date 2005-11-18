@@ -15,7 +15,7 @@ use warnings;
 use strict;
 use URI::Escape;
 use Template;
-use Interp::Newton;
+use Interp::Newton::DiffQuots;
 
 use base qw(HTTP::Server::Simple::CGI);
 
@@ -63,7 +63,7 @@ sub dump_home {
 
 sub dump_result {
     my ($cgi, $x, $y) = @_;
-    my $newton = Interp::Newton->new(Xs => $x, Ys => $y);
+    my $newton = Interp::Newton::DiffQuots->new(Xs => $x, Ys => $y);
     my @cols = $newton->diff_quot;
     my $poly = $newton->polynomial;
     my $poly2 = $newton->maple->eval("collect($poly,x)");

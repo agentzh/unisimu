@@ -1,0 +1,8 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Interp.t
+lib/Interp.pm
+lib/Interp/Newton/Diffs.pm
+lib/Interp/Newton/DiffQuots.pm
