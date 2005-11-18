@@ -1,3 +1,7 @@
+#: Paging.pm
+#: Copyright (c) Agent Zhang
+#: 2005-11-17 2005-11-18
+
 package Paging;
 
 use strict;
