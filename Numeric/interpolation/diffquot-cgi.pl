@@ -1,6 +1,6 @@
-#: interp-cgi.pl
+#: diffquot-cgi.pl
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-16 2005-11-16
+#: 2005-11-16 2005-11-18
 
 use strict;
 use warnings;

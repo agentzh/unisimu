@@ -1,3 +1,9 @@
+#: Interp.pm
+#: Base class for interpolating classes
+#: v0.01
+#: Copyright (c) Agent Zhang
+#: 2005-11-17 2005-11-18
+
 package Interp;
 
 use strict;
