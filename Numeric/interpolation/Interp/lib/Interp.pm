@@ -12,9 +12,12 @@ use PerlMaple;
 
 our $VERSION = '0.01';
 
+our $error;
 our $maple;
+
 BEGIN {
     $maple = PerlMaple->new;
+    $maple->eval('interface(prettyprint=false)');
 }
 
 sub new {
@@ -30,6 +33,7 @@ sub new {
             push @y, $data{$_};
         }
     }
+    return undef if not $class->valid_xs(@x);
     my $self = {
         x => \@x,
         y => \@y,
@@ -54,9 +58,14 @@ sub test_polynomial {
     my @Ys = $self->Ys;
     foreach (0..@Xs-1) {
         my $res = $maple->eval(
-            "testeq(eval($poly, x=$Xs[$_]), $Ys[$_])"
+            "testeq(eval($poly, x=$Xs[$_]), $Ys[$_]);"
         );
+        if ($res =~ /bytes used=/) {
+            warn " !!! $res\n";
+        }
         if (!defined $res or $res ne 'true') {
+            #warn "test: $res\n";
+            #warn $maple->error, "\n" if $maple->error;
             return undef;
         }
     }
@@ -64,11 +73,28 @@ sub test_polynomial {
 }
 
 sub error {
-    return "Maple: ".$maple->error;
+    if ($maple->error) {
+        return "Maple: ".$maple->error;
+    } else {
+        return $error;
+    }
 }
 
 sub maple {
     return $maple;
+}
+
+sub valid_xs {
+    shift;
+    my @xs = @_;
+    @xs = sort { $a cmp $b } @xs;
+    for (my $i = 0; $i < @xs-1; $i++) {
+        if ($xs[$i+1] eq $xs[$i]) {
+            $error = "Redundant X";
+            return undef;
+        }
+    }
+    return 1;
 }
 
 1;

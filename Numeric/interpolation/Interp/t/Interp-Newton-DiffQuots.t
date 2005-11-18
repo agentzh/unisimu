@@ -3,8 +3,9 @@
 use strict;
 use warnings;
 
-use Test::More tests => 18;
+use Test::More tests => 168;
 use Test::Deep;
+#use Time::HiRes 'sleep';
 BEGIN { use_ok('Interp::Newton::DiffQuots'); }
 
 my $newton = Interp::Newton::DiffQuots->new(
@@ -53,7 +54,35 @@ foreach (0..@Xs-1) {
 ok $newton->test_polynomial($poly);
 (my $poly2 = $poly) =~ s/2/3/;
 ok !$newton->test_polynomial($poly2);
-$maple->eval('interface(prettyprint=true)');
 my $s = $maple->eval("$poly");
 die $newton->error() unless defined $s;
 print "\n*$s*\n";
+
+for (1..50) {
+    #sleep(0.1);
+    my $count = int rand(20) + 2;
+    my (@xs, @ys);
+    my %xs;
+    for (1..$count) {
+        my $x = int rand(204);
+        while (exists $xs{$x}) {
+            $x = int rand(204);
+        }
+        $xs{$x} = 1;
+        push @xs, $x;
+        push @ys, int rand(204);
+    }
+    #warn "Xs = @xs\n";
+    #warn "Ys = @ys\n";
+    my $newton = Interp::Newton::DiffQuots->new(
+        Xs => [@xs],
+        Ys => [@ys],
+    );
+    ok $newton;
+    $poly = $newton->polynomial;
+    #warn $poly, "\n";
+    ok $poly;
+    my $res = $newton->test_polynomial($poly);
+    ok $res, "@xs - @ys";
+    #warn "  $poly\n";
+}

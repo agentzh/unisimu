@@ -43,6 +43,8 @@ sub handle_request {
         my @y = split(/\s+/, $y);
         if (!@x or !@y or @x != @y) {
             dump_home($cgi, \@x, \@y, '有错误发生：坐标 x 的个数必须等于 f(x) 的个数');
+        } elsif (not Interp->valid_xs(@x)) {
+            dump_home($cgi, \@x, \@y, '有错误发生：横坐标 x 的必须互异');
         } else {
             dump_result($cgi, \@x, \@y);
         }
