@@ -43,3 +43,38 @@
 
 为什么要使用 T-SQL 呢？我宁可使用标准的可移值的 SQL 语言，呵呵。
 
+下面给出每一个查询目标的 SQL 代码及对应的查询结果。
+
+=over
+
+=item *
+
+检索上海产的零件的工程名称
+
+=begin SQL
+
+
+
+=end SQL
+
+=item *
+
+检索供应工程 J1 零件 P1 的供应商号 SNO
+
+=begin SQL
+
+
+
+=end SQL
+
+=item *
+
+检索供应工程 J1 零件为红色的供应商号 SNO；
+
+=begin SQL
+
+
+
+=end SQL
+
+=back
