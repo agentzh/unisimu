@@ -1,0 +1,3 @@
+given $a^2 > b_2$
+given $b_2 > 0$
+then $a^2 > 0$
