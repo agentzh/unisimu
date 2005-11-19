@@ -60,7 +60,9 @@ sub process_csv {
 		@flds = map { $_ eq '<NULL>' ? undef : $_ } @flds;
 		$" = ':';
 		#print "*@flds*\n";
-		$sth->execute(@flds);
+		if (not $sth->execute(@flds)) {
+			last;
+		}
 	}
 }
 

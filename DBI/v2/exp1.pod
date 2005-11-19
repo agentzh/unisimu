@@ -60,7 +60,12 @@ B<S.csv>
 
 =include "S.csv"
 
-注意，第一行是列名的列表。其顺序不一定与 Schema.sql 相同。
+注意，第一行是列名的列表。其顺序不一定与 Schema.sql 相同，因此提供很大的灵活性。其他三
+张表格 J, P, SPJ 是类似的。如果需要指定空值 (NULL)，可以这么写：
+
+	S1,精益,20,<NULL>
+
+此时第四个字段就被置为空。
 
 这些逗号分隔文件（CSV 文件）可以通过我的一个工具自动地导入到任意一个数据库中。方法是，
 首先在控制面板中创建目标数据库的 ODBC 数据源，比如叫做 foo. 然后在命令行上设置环境
@@ -72,7 +77,10 @@ B<S.csv>
 
 =begin shell
 
-perl csv2db S.csv
+perl csv2db S.csv J.csv P.csv SPJ.csv
 
 =end shell
 
+从输出我们不难看到操作全部成功。
+
+=head2 整个过程的自动化

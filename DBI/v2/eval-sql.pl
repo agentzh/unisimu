@@ -30,7 +30,9 @@ for (@files) {
     my $sqls = slurp($_);
     foreach my $sql (split(/\n\n/s, $sqls)) {
         next if $sql =~ m/^\s*$/s;
-        $dbh->do($sql);
+        if (not $dbh->do($sql)) {
+			last;
+		}
 		$count++;
     }
 }
