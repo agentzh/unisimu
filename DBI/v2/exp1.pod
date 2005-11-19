@@ -83,4 +83,15 @@ perl csv2db S.csv J.csv P.csv SPJ.csv
 
 从输出我们不难看到操作全部成功。
 
-=head2 整个过程的自动化
+=head2 建库全过程的自动化
+
+很容易就可以通过批处理文件或者 Makefile 对上述两个步骤完全自动化。我的 Makefile 文件
+类似下面这个样子：
+
+=include Makefile
+
+这样一旦我的数据库遭到了破坏或者需要重新建库，我就只需输入下面一行命令就万事大吉了：
+
+=shell nmake
+
+一切都是那么完美，呵呵。
