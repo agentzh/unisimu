@@ -5,8 +5,12 @@
 use strict;
 use warnings;
 use DBI;
+use Getopt::Std;
 
-my ($user, $password) = qw(zwy zwy);
+my %opts;
+getopts('u:p:', \%opts);
+
+my ($user, $password) = ($opts{u}, $opts{p});
 
 my @files = map glob, @ARGV;
 die "Usage: eval-sql <sql-file1> <sql-file2> ...\n" unless @files;
@@ -14,15 +18,23 @@ die "Usage: eval-sql <sql-file1> <sql-file2> ...\n" unless @files;
 my $dsn = $ENV{DSN};
 die "No env DSN set.\n" unless $dsn;
 
-my $dbh = DBI->connect($dsn, $user, $password, { PrintError => 1 });
+my $dbh;
+if ($user) {
+	$dbh = DBI->connect($dsn, $user, $password, { PrintError => 1 });
+} else {
+	$dbh = DBI->connect($dsn, { PrintError => 1 });
+}
 
+my $count = 0;
 for (@files) {
     my $sqls = slurp($_);
     foreach my $sql (split(/\n\n/s, $sqls)) {
         next if $sql =~ m/^\s*$/s;
         $dbh->do($sql);
+		$count++;
     }
 }
+print "eval-sql: For tatol $count SQL statements evaluated.\n";
 $dbh->disconnect();
 
 sub slurp {

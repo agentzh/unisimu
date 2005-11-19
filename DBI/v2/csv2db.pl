@@ -5,8 +5,12 @@
 use strict;
 use warnings;
 use DBI;
+use Getopt::Std;
 
-my ($user, $password) = qw(zwy zwy);
+my %opts;
+getopts('u:p:', \%opts);
+
+my ($user, $password) = ($opts{u}, $opts{p});
 
 my $csvfile = shift ||
     die "No CSV file given.\n";
@@ -21,16 +25,21 @@ if ($csvfile =~ /(\w+)\.\w+$/) {
 my $dsn = $ENV{DSN};
 die "No env DSN set.\n" unless $dsn;
 
-my $dbh = DBI->connect($dsn, $user, $password, { PrintError => 1 });
+my $dbh;
+if ($user) {
+	$dbh = DBI->connect($dsn, $user, $password, { PrintError => 1 });
+} else {
+	$dbh = DBI->connect($dsn, { PrintError => 1 });
+}
 
 open my $in, $csvfile or
     die "error: Can't open $csvfile: $!\n";
 $_ = <$in>;
 my @flds = split /,/, $_;
 my $nflds = @flds;
-@flds = map { '?' } @flds;
+@place_holders = map { '?' } @flds;
 
-my $sql = "insert into $table values (".join(',',@flds).')';
+my $sql = "insert into $table (@flds) values (".join(',',@place_holders).')';
 warn "sql: $sql\n";
 my $sth = $dbh->prepare($sql);
 
