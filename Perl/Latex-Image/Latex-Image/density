@@ -1,7 +1,0 @@
-\documentclass{article}
-\pagestyle{empty}
-\pdfoutput=1
-\usepackage{amsmath}
-\begin{document}
-t/foo.png
-\end{document}
