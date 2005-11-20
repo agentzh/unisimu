@@ -1,0 +1,6 @@
+given a > b
+and   b > c
+then  a > c
+but   c >= d
+and   d > e
+then  a > e

@@ -1,0 +1,6 @@
+given a > 0 (1)
+and   b > a
+then  b > 0
+given c > a
+and   (1)
+then  c > 0

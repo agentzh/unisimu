@@ -1,0 +1,104 @@
+# Lagrange 多项式的推导 《计算方法与实习》第 76 页 4.2.1 节
+# Copyright (c) 2005 Agent Zhang (章亦春)
+# 2005-11-10 2005-11-19
+
+given $P(x)$ is determined by $n+1$ points: \newline _
+      $(x_0,y_0), (x_1,y_1), \ldots, (x_n,y_n)$
+
+then  $ P(x) = f(x, x_0, y_0, x_1, y_1, \ldots, x_n, y_n) $
+
+then  $ P(x) = l_0(x) y_0 + l_1(x) y_1 + \cdots + l_n(x) y_n $           (3)
+
+but   $ P(x_0) = y_0, P(x_1) = y_1, \ldots, P(x_n) = y_n $
+
+then  \[ \begin{array}{llll} _
+        l_0(x_0) = 1, & l_0(x_1) = 0, & \ldots, & l_0(x_n) = 0 \\ _
+        l_1(x_0) = 0, & l_1(x_1) = 1, & \ldots, & l_1(x_n) = 0 \\ _
+        \ldots        & \ldots        & \ldots  & \ldots \\ _
+        l_n(x_0) = 0, & l_n(x_1) = 0, & \ldots, & l_n(x_n) = 1 _
+        \end{array} \]                                                   (1)
+
+then  \[ \begin{array}{lll} _
+        l_0(x) & = & A_0 (x - x_1) (x - x_2) \cdots (x - x_n) \\ _
+        l_1(x) & = & A_1 (x - x_0) (x - x_2) \cdots (x - x_n) \\ _
+               & \ldots & \\ _
+        l_n(x) & = & A_n (x - x_0) (x - x_1) \cdots (x - x_{n-1}) _
+        \end{array} \]
+
+then  \[ _
+        \begin{array}{l} _
+        l_i(x) = A_i \prod\limits_{ _
+            \begin{subarray}{l} _
+                k = 0 \\ _
+                k \ne i _
+            \end{subarray} _
+         } ^n {(x - x_k )} \\ _
+        i = 0, 1, \ldots, n _
+        \end{array} \]                                                   (2)
+
+given (1)
+
+then  $ l_i(x_i) = 1, \quad i = 0, 1, \ldots, n $
+
+but   (2)
+
+then  \[ _
+        \begin{array}{l} _
+        A_i \prod\limits_{ _
+            \begin{subarray}{l} _
+                k = 0 \\ _
+                k \ne i _
+            \end{subarray} _
+         } ^n {(x_i - x_k )} = 1 \\ _
+        i = 0, 1, \ldots, n _
+        \end{array} \]
+
+then  \[ _
+        \begin{array}{l} _
+        A_i = \frac{ _
+                \displaystyle _
+                1 _
+              }{ _
+                \prod\limits_{ _
+                    \begin{subarray}{l} _
+                        k = 0 \\ _
+                        k \ne i _
+                    \end{subarray} _
+                } ^n _
+                {(x_i - x_k )}} \\ _
+        i = 0, 1, \ldots, n _
+        \end{array} \]
+
+but   (2)
+
+then  \[ _
+        \begin{array}{l} _
+            l_i(x) = \prod\limits_{ _
+                \begin{subarray}{l} _
+                    k = 0 \\ _
+                    k \ne i _
+                \end{subarray} _
+            } ^n {\frac{ _
+                \displaystyle _
+                x - x_k _
+            }{ _
+                \displaystyle _
+                x_i -  x_k} _
+            } \\ _
+            i = 0, 1, \ldots, n _
+        \end{array} _
+      \]
+
+but   (3)
+
+then  \[ _
+        P_n(x) = \sum\limits_{i=0}^n {l_i(x) y_i} = _
+            \sum\limits_{i=0}^n { _
+                \prod\limits_{ _
+                    \begin{subarray}{l} _
+                        k = 0 \\ _
+                        k \ne i _
+                    \end{subarray} _
+                } ^n {\frac{x - x_k}{x_i - x_k} y_i} _
+            } _
+      \]

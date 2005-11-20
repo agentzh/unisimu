@@ -1,0 +1,6 @@
+Revision history for Perl extension Latex::Image.
+
+0.01  Sat Nov 19 17:57:27 2005
+	- original version; created by h2xs 1.23 with options
+		-AXO Latex::Image
+
