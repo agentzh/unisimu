@@ -1,4 +1,5 @@
 #: Interp/Newton/Diffs.pm
+#: 用差分法求解牛顿前插公式
 #: Copyright (c) 2005 Agent Zhang
 #: 2005-11-17 2005-11-18
 

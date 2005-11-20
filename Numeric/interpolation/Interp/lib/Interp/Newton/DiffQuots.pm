@@ -1,4 +1,5 @@
 #: Interp/Newton/DiffQuots.pm
+#: 用差商法求解牛顿插值公式
 #: v0.01
 #: Copyright (c) Agent Zhang
 #: 2005-11-14 2005-11-18
