@@ -22,6 +22,7 @@ use Pod::Html;
 
 use base qw(HTTP::Server::Simple::CGI);
 
+my $pod_dir;
 my $old_uri = '';
 
 sub handle_request {
@@ -35,12 +36,21 @@ sub handle_request {
     $file =~ s/^$base//;
     my $uri = $file;
     warn "File name: $file\n";
+    
+    if ($file =~ /(?:\.png|\.jpg|\.gif|\.bmp)$/i) {
+        #warn "POD DIR: $pod_dir";
+        dump_file($cgi, "$pod_dir/$file");
+        return;
+    }
+
     $file =~ s,^$old_uri,/, if $old_uri;
     $old_uri = $uri;
     $old_uri =~ s,[^/]+$,,;
 
     $file =~ s,//+,/,g;
     #warn "File now is $file!\n";
+
+
     if ($file eq '/' or $file eq '/home') {
         #warn "Here!!!!\n";
         $file = '/modlist';
@@ -62,14 +72,15 @@ sub handle_request {
     $file =~ s,-,/,g;
     $file =~ s,//+,/,g;
     warn "  File Name: $file\n";
-    foreach ('.', 'lib', $Config{installsitebin},
+    foreach my $dir ('.', 'lib', "$Config{archlib}/Pod", $Config{installsitebin},
              $Config{archlib}, $Config{installsitelib},
-             "$Config{archlib}/Pod") {
+            ) {
         for my $ext ('.pod','','.pm','.pl','.bat') {
-            my $temp = $_.$file.$ext;
+            my $temp = $dir.$file.$ext;
             #warn "  Trying ext $ext...\n";
             if (-f $temp) {
                 $file = $temp;
+                $pod_dir = $dir;
                 last;
             }
         }
