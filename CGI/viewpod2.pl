@@ -2,7 +2,7 @@
 #: Pod Dynamic Viewer 2
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-10-21 2005-10-29
+#: 2005-10-21 2005-11-25
 
 use strict;
 use warnings;

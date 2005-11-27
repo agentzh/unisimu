@@ -5,19 +5,28 @@
 
 use strict;
 use warnings;
-use Net::SMTP_auth;
+use Net::SMTP;
+use Authen::SASL qw(Perl);
 
 my ($user, $password) = ('agent2002', '840424');
 
-my $smtp = Net::SMTP_auth->new(
+my $sasl = Authen::SASL->new(
+    mechanism => 'LOGIN',
+    callback  => {
+      user => $user,
+      pass => $password,
+    },
+);
+
+my $smtp = Net::SMTP->new(
     'smtp.126.com',
     Timeout => 60,
     Debug => 1,
 );
-$smtp->auth('LOGIN', $user, $password);
+$smtp->auth($sasl);
 $smtp->mail('agent2002@126.com');
-$smtp->to('zhongxiang721@163.com');
-#$smtp->to('real_agent2002@163.com');
+#$smtp->to('zhongxiang721@163.com');
+$smtp->to('real_agent2002@163.com');
 #$smtp->to('agent2002@126.com');
 $smtp->data();
 $smtp->datasend("From: ียาเดบ [agent2002\@126.com]\n");
