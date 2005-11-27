@@ -1,0 +1,397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>实验二 - 数据库的查询实验</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;实验二 - 数据库的查询实验</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#cab5d1e9c4bfb5c4">实验目的</a></li>
+	<li><a href="#cab5d1e9d2aac7f3">实验要求</a></li>
+	<li><a href="#cab5d1e9bde1b9fb">实验结果</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>实验二 - 数据库的查询实验</p>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9c4bfb5c4">实验目的</a></h1>
+<p>要求学生掌握 SQL Server 查询分析器和 T-SQL 语言的使用方法，熟练掌握和使用简
+单表的数据查询、数据排序和数据连接查询、嵌套查询等操作方法。</p>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9d2aac7f3">实验要求</a></h1>
+<p>用 T-SQL 语言表示以下操作：</p>
+<ol>
+<li></li>
+检索上海产的零件的工程名称；
+<p></p>
+<li></li>
+检索供应工程 J1 零件 P1 的供应商号 SNO；
+<p></p>
+<li></li>
+检索供应工程 J1 零件为红色的供应商号 SNO；
+<p></p>
+<li></li>
+检索没有使用天津生产的红色零件的工程号 JNO；
+<p></p>
+<li></li>
+检索至少用了供应商 S1 所供应的全部零件的工程号 JNO；
+<p></p>
+<li></li>
+检索购买了零件 P1 的工程项目号 JNO 及数量 QTY，并要求对查询的结果按数量 QTY 降序排列。
+<p></p></ol>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9bde1b9fb">实验结果</a></h1>
+<p>为什么要使用 T-SQL 呢？我宁可使用标准的可移值的 SQL 语言，呵呵。</p>
+<p>首先给出数据库的数据吧：</p>
+<ul>
+<li></li>
+S 表
+<pre>
+    select * from S</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td>SNO</td><td>CITY</td><td>SNAME</td><td>STATUS</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>天津</td>
+<td>精益</td>
+<td>20</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>北京</td>
+<td>盛锡</td>
+<td>10</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>北京</td>
+<td>东方红</td>
+<td>30</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>天津</td>
+<td>丰泰盛</td>
+<td>20</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>S5</td>
+<td>上海</td>
+<td>为民</td>
+<td>30</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+P 表
+<pre>
+    select * from P</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td>COLOR</td><td>WEIGHT</td><td>PNO</td><td>PNAME</td>
+</tr>
+<tr>
+<td>红</td>
+<td>12</td>
+<td>P1</td>
+<td>螺母</td>
+</tr>
+<tr>
+<td>绿</td>
+<td>17</td>
+<td>P2</td>
+<td>螺栓</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>14</td>
+<td>P3</td>
+<td>螺丝刀</td>
+</tr>
+<tr>
+<td>红</td>
+<td>14</td>
+<td>P4</td>
+<td>螺丝刀</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>40</td>
+<td>P5</td>
+<td>凸轮</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>红</td>
+<td>30</td>
+<td>P6</td>
+<td>齿轮</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+J 表
+<pre>
+    select * from J</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td>JNAME</td><td>CITY</td><td>JNO</td>
+</tr>
+<tr>
+<td>三建</td>
+<td>北京</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>一汽</td>
+<td>长春</td>
+<td>J2</td>
+</tr>
+<tr>
+<td>弹簧厂</td>
+<td>天津</td>
+<td>J3</td>
+</tr>
+<tr>
+<td>造船厂</td>
+<td>天津</td>
+<td>J4</td>
+</tr>
+<tr>
+<td>机车厂</td>
+<td>唐山</td>
+<td>J5</td>
+</tr>
+<tr>
+<td>无线电厂</td>
+<td>常州</td>
+<td>J6</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>半导体厂</td>
+<td>南京</td>
+<td>J7</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+SPJ 表
+<pre>
+    select * from SPJ</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td>SNO</td><td>QTY</td><td>PNO</td><td>JNO</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>200</td>
+<td>P1</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>100</td>
+<td>P1</td>
+<td>J3</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>700</td>
+<td>P1</td>
+<td>J4</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>100</td>
+<td>P2</td>
+<td>J2</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>400</td>
+<td>P3</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>200</td>
+<td>P3</td>
+<td>J2</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>500</td>
+<td>P3</td>
+<td>J4</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>400</td>
+<td>P3</td>
+<td>J5</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>400</td>
+<td>P5</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>100</td>
+<td>P5</td>
+<td>J2</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>200</td>
+<td>P1</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>200</td>
+<td>P3</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>100</td>
+<td>P5</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>300</td>
+<td>P6</td>
+<td>J3</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>200</td>
+<td>P6</td>
+<td>J4</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>100</td>
+<td>P2</td>
+<td>J4</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>200</td>
+<td>P3</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>200</td>
+<td>P6</td>
+<td>J2</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>S5</td>
+<td>500</td>
+<td>P6</td>
+<td>J4</td>
+</tr>
+</table>
+</pre><p></p></ul>
+<p>下面给出每一个查询目标的 SQL 代码及对应的查询结果。</p>
+<ul>
+<li></li>
+检索上海产的零件的工程名称
+<pre>
+    select distinct JNAME
+    from S, SPJ, J
+    where S.SNO = SPJ.SNO and SPJ.JNO = J.JNO
+        and S.CITY = '上海'</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td>JNAME</td>
+</tr>
+<tr>
+<td>三建</td>
+</tr>
+<tr>
+<td>一汽</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>造船厂</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+检索供应工程 J1 零件 P1 的供应商号 SNO
+<pre>
+    select SNO
+    from SPJ
+    where JNO = 'J1' and PNO = 'P1'</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td>SNO</td>
+</tr>
+<tr>
+<td>S1</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>S3</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+检索供应工程 J1 零件为红色的供应商号 SNO；
+<pre>
+    select distinct SNO
+    from SPJ,P
+    where SPJ.PNO = P.PNO and JNO = 'J1' and
+        COLOR = '红'</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td>SNO</td>
+</tr>
+<tr>
+<td>S1</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>S3</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+从供应商关系中删除 S2 的记录，并从供应情况关系中删除相应的记录
+<pre>
+    delete from SPJ where SNO = 'S2'</pre>
+<p>[6 rows affected]</p>
+<pre>
+    delete from S where SNO = 'S2'</pre>
+<p>[1 row affected]</p>
+<p></p></ul>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;实验二 - 数据库的查询实验</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

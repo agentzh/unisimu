@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>实验1 - 数据库的定义和建立实验</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;实验1 - 数据库的定义和建立实验</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#cab5d1e9c4bfb5c4">实验目的</a></li>
+	<li><a href="#cab5d1e9d2aac7f3">实验要求</a></li>
+	<li><a href="#cab5d1e9bde1b9fb">实验结果</a></li>
+	<ul>
+
+		<li><a href="#cafdbeddbfe2c4a3cabdb5c4b4b4bda8">数据库模式的创建</a></li>
+		<li><a href="#cafdbeddbfe2cafdbeddb5c4b5bcc8eb">数据库数据的导入</a></li>
+		<li><a href="#bda8bfe2c8abb9fdb3ccb5c4d7d4b6afbbaf">建库全过程的自动化</a></li>
+	</ul>
+
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>实验1 - 数据库的定义和建立实验</p>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9c4bfb5c4">实验目的</a></h1>
+<p>要求学生熟练掌握和使用 T-SQL, SQL Server 企业管理器创建数据库，基本表，视
+图、索引和修改表结构，及向数据库输主数居的操作；学会创建和使用表的主外码和约
+束。</p>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9d2aac7f3">实验要求</a></h1>
+<p>本实验针对上述两个题目分别完成以下相应任务：</p>
+<ol>
+<li></li>
+创建相应的数据库和查看数据库属性；
+<p></p>
+<li></li>
+创建基本表、确定表的主码和相应的约束，为主码建索引；
+<p></p>
+<li></li>
+创建、查看视图
+<p></p>
+<li></li>
+创建表之间的关联
+<p></p>
+<li></li>
+利用 T-SQL 和 SQL Server 企业管理器向数据库输入数据。
+<p></p></ol>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9bde1b9fb">实验结果</a></h1>
+<p>显然，我没有完全按照上面的实验要求去做，因为我认为有更优雅的解决方案。</p>
+<p>
+</p>
+<h2><a name="cafdbeddbfe2c4a3cabdb5c4b4b4bda8">数据库模式的创建</a></h2>
+<p>我使用标准的 SQL 语句创建这里的数据库模式。这里代码放在一个单独的文本文件中，该
+文件名为 <em>Schema.sql</em>. 下面是该文件的内容：</p>
+<pre>
+    drop table SPJ</pre>
+<pre>
+    drop table S</pre>
+<pre>
+    drop table P</pre>
+<pre>
+    drop table J</pre>
+<pre>
+    create table S
+        (SNO varchar(8) primary key,
+         SNAME varchar(8),
+         STATUS integer,
+         CITY varchar(6))</pre>
+<pre>
+    create table P
+        (PNO varchar(8) primary key,
+         PNAME varchar(8),
+         COLOR varchar(4),
+         WEIGHT integer)</pre>
+<pre>
+    create table J
+        (JNO varchar(8) primary key,
+         JNAME varchar(8),
+         CITY varchar(8))</pre>
+<pre>
+    create table SPJ
+        (SNO varchar(8),
+         PNO varchar(8),
+         JNO varchar(8),
+         QTY integer,
+         primary key (SNO, PNO, JNO),
+         foreign key (SNO) references S,
+         foreign key (PNO) references P,
+         foreign key (JNO) references J)</pre>
+<p>然后，使用下面的命令在命令提示符下执行之：</p>
+<pre>
+    $ perl eval-sql.pl -u zwy -p zwy Schema.sql
+    eval-sql: For tatol 8 SQL statements evaluated.</pre>
+<p>
+</p>
+<h2><a name="cafdbeddbfe2cafdbeddb5c4b5bcc8eb">数据库数据的导入</a></h2>
+<p>由于我们现在处理的都是“玩具数据库”，表格中的数据都是从键盘敲入的，因此在 EditPlus 这
+样的源代码编辑器中以逗号分隔方式输入非常便利。下面就是表格 S 的原始数据：</p>
+<p><strong>S.csv</strong></p>
+<pre>
+    SNO,SNAME,STATUS,CITY
+    S1,精益,20,天津
+    S2,盛锡,10,北京
+    S3,东方红,30,北京
+    S4,丰泰盛,20,天津
+    S5,为民,30,上海</pre>
+<p>注意，第一行是列名的列表。其顺序不一定与 Schema.sql 相同，因此提供很大的灵活性。其他三
+张表格 J, P, SPJ 是类似的。如果需要指定空值 (NULL)，可以这么写：</p>
+<pre>
+        S1,精益,20,&lt;NULL&gt;</pre>
+<p>此时第四个字段就被置为空。</p>
+<p>这些逗号分隔文件（CSV 文件）可以通过我的一个工具自动地导入到任意一个数据库中。方法是，
+首先在控制面板中创建目标数据库的 ODBC 数据源，比如叫做 foo. 然后在命令行上设置环境
+变量</p>
+<pre>
+        set DSN=DBI:ODBC:foo</pre>
+<p>接着运行下面的命令即可：</p>
+<pre>
+    $ perl csv2db.pl -u zwy -p zwy S.csv J.csv P.csv SPJ.csv
+      sql: insert into S (SNO,SNAME,STATUS,CITY) values (?,?,?,?)
+    info: Inserting data to S...
+      sql: insert into J (JNO,JNAME,CITY) values (?,?,?)
+    info: Inserting data to J...
+      sql: insert into P (PNO,PNAME,COLOR,WEIGHT) values (?,?,?,?)
+    info: Inserting data to P...
+      sql: insert into SPJ (SNO,PNO,JNO,QTY) values (?,?,?,?)
+    info: Inserting data to SPJ...</pre>
+<p>从输出我们不难看到操作全部成功。</p>
+<p>
+</p>
+<h2><a name="bda8bfe2c8abb9fdb3ccb5c4d7d4b6afbbaf">建库全过程的自动化</a></h2>
+<p>很容易就可以通过批处理文件或者 Makefile 对上述两个步骤完全自动化。我的 Makefile 文件
+类似下面这个样子：</p>
+<pre>
+    RM_F = perl -MExtUtils::Command -e rm_f
+    FLAGS = -u zwy -p zwy</pre>
+<pre>
+    all:
+        perl eval-sql.pl -u zwy -p zwy $(FLAGS) schema.sql
+        perl csv2db.pl -u zwy -p zwy $(FLAGS) S.csv P.csv J.csv SPJ.csv</pre>
+<pre>
+    doc: exp1.podx exp1.pod exp1.html exp2.podx exp2.pod exp2.html</pre>
+<pre>
+    .SUFFIXES: .podt .podx .pod .html</pre>
+<pre>
+    .podt.podx:
+        perl prepro.pl -u zwy -p zwy $&lt; &gt; $@</pre>
+<pre>
+    .podx.pod:
+        podxc $&lt;</pre>
+<pre>
+    .pod.html:
+        podhtm -s Active.css $&lt;
+        $(RM_F) *.tmp</pre>
+<pre>
+    clean:
+        $(RM_F) *.pod *.podx</pre>
+<p>这样一旦我的数据库遭到了破坏或者需要重新建库，我就只需输入下面一行命令就万事大吉了：</p>
+<pre>
+    $ nmake
+    
+    Microsoft (R) 程序维护实用工具 7.10.3077 版
+    版权所有 (C) Microsoft Corporation。保留所有权利。
+    
+        perl eval-sql.pl -u zwy -p zwy -u zwy -p zwy schema.sql
+    eval-sql: For tatol 8 SQL statements evaluated.
+        perl csv2db.pl -u zwy -p zwy -u zwy -p zwy S.csv P.csv J.csv SPJ.csv
+      sql: insert into S (SNO,SNAME,STATUS,CITY) values (?,?,?,?)
+    info: Inserting data to S...
+      sql: insert into P (PNO,PNAME,COLOR,WEIGHT) values (?,?,?,?)
+    info: Inserting data to P...
+      sql: insert into J (JNO,JNAME,CITY) values (?,?,?)
+    info: Inserting data to J...
+      sql: insert into SPJ (SNO,PNO,JNO,QTY) values (?,?,?,?)
+    info: Inserting data to SPJ...</pre>
+<p>一切都是那么完美，呵呵。</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;实验1 - 数据库的定义和建立实验</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
