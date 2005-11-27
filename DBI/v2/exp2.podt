@@ -45,13 +45,33 @@
 
 首先给出数据库的数据吧：
 
+=over
+
+=item *
+
+S 表
+
 =SQL select * from S
+
+=item *
+
+P 表
 
 =SQL select * from P
 
+=item *
+
+J 表
+
 =SQL select * from J
 
+=item *
+
+SPJ 表
+
 =SQL select * from SPJ
+
+=back
 
 下面给出每一个查询目标的 SQL 代码及对应的查询结果。
 
@@ -78,7 +98,7 @@ where S.SNO = SPJ.SNO and SPJ.JNO = J.JNO
 
 select SNO
 from SPJ
-where 
+where JNO = 'J1' and PNO = 'P1'
 
 =end SQL
 
@@ -94,5 +114,13 @@ where SPJ.PNO = P.PNO and JNO = 'J1' and
 	COLOR = '红'
 
 =end SQL
+
+=item *
+
+从供应商关系中删除 S2 的记录，并从供应情况关系中删除相应的记录
+
+=SQL delete from SPJ where SNO = 'S2'
+
+=SQL delete from S where SNO = 'S2'
 
 =back

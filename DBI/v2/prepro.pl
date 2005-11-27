@@ -99,6 +99,42 @@ sub process_sql {
     #warn "---------------\n";
     #warn $sql, "\n";
     #warn "+++++++++++++++\n\n";
-    my $dbh = $dbh->do($sql);
-    while (my $
+    my @lines = split "\n", $sql;
+    map { $_ = "    $_" if $_ } @lines;
+    print join("\n", @lines),"\n\n";
+    my $sth = $dbh->prepare($sql);
+    my $rv = $sth->execute();
+    if (!$sth->{'NUM_OF_FIELDS'}) { # not a select statement
+		local $^W=0;
+		$rv = "undefined number of" unless defined $rv;
+		$rv = "unknown number of"   if $rv == -1;
+		print "[$rv row" . ($rv==1 ? "" : "s") . " affected]\n";
+        return;
+    }
+    print "\n=begin html\n\n";
+    print qq/<pre>        <table border=1>\n/;
+    my $firstTime = 1;
+    my $row = $sth->fetchrow_hashref();
+    while (1) {
+        my @flds = keys %$row;
+        last if not $row;
+        if ($firstTime) {
+            print qq/\n<tr style="border-top:2px;border-bottom:2px">\n/,
+                  join('', map { "<td>$_</td>" } @flds), "\n</tr>\n";
+            $firstTime = 0;
+        }
+        my %data = %$row;
+        $row = $sth->fetchrow_hashref();
+        if ($row) {
+            print "<tr>\n";
+        } else {
+            print qq[<tr style="border-bottom:2px">\n];
+        }
+        foreach my $fld (@flds) {
+            print "<td>$data{$fld}</td>\n";
+        }
+        print "</tr>\n";
+        last if not $row;
+    }
+    print "</table>\n</pre>\n\n=end html\n\n";
 }
