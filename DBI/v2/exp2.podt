@@ -43,6 +43,16 @@
 
 为什么要使用 T-SQL 呢？我宁可使用标准的可移值的 SQL 语言，呵呵。
 
+首先给出数据库的数据吧：
+
+=SQL select * from S
+
+=SQL select * from P
+
+=SQL select * from J
+
+=SQL select * from SPJ
+
 下面给出每一个查询目标的 SQL 代码及对应的查询结果。
 
 =over
@@ -53,7 +63,10 @@
 
 =begin SQL
 
-
+select distinct JNAME
+from S, SPJ, J
+where S.SNO = SPJ.SNO and SPJ.JNO = J.JNO
+	and S.CITY = '上海'
 
 =end SQL
 
@@ -63,7 +76,9 @@
 
 =begin SQL
 
-
+select SNO
+from SPJ
+where 
 
 =end SQL
 
@@ -73,7 +88,10 @@
 
 =begin SQL
 
-
+select distinct SNO
+from SPJ,P
+where SPJ.PNO = P.PNO and JNO = 'J1' and
+	COLOR = '红'
 
 =end SQL
 

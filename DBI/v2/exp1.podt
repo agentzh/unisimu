@@ -4,7 +4,7 @@
 
 =head1 实验目的
 
-要求学生熟练掌惶和使用 T-SQL, SQL Server 企业管理器创建数据库，基本表，视
+要求学生熟练掌握和使用 T-SQL, SQL Server 企业管理器创建数据库，基本表，视
 图、索引和修改表结构，及向数据库输主数居的操作；学会创建和使用表的主外码和约
 束。
 
@@ -34,6 +34,8 @@
 
 利用 T-SQL 和 SQL Server 企业管理器向数据库输入数据。
 
+=back
+
 =head1 实验结果
 
 显然，我没有完全按照上面的实验要求去做，因为我认为有更优雅的解决方案。
@@ -43,13 +45,13 @@
 我使用标准的 SQL 语句创建这里的数据库模式。这里代码放在一个单独的文本文件中，该
 文件名为 F<Schema.sql>. 下面是该文件的内容：
 
-=include "Schema.sql"
+=code "Schema.sql"
 
 然后，使用下面的命令在命令提示符下执行之：
 
 =begin shell
 
-perl eval-sql.pl Schema.sql
+perl eval-sql.pl -u zwy -p zwy Schema.sql
 
 =end shell
 
@@ -60,7 +62,7 @@ perl eval-sql.pl Schema.sql
 
 B<S.csv>
 
-=include "S.csv"
+=code "S.csv"
 
 注意，第一行是列名的列表。其顺序不一定与 Schema.sql 相同，因此提供很大的灵活性。其他三
 张表格 J, P, SPJ 是类似的。如果需要指定空值 (NULL)，可以这么写：
@@ -79,7 +81,7 @@ B<S.csv>
 
 =begin shell
 
-perl csv2db S.csv J.csv P.csv SPJ.csv
+perl csv2db.pl -u zwy -p zwy S.csv J.csv P.csv SPJ.csv
 
 =end shell
 
@@ -90,7 +92,7 @@ perl csv2db S.csv J.csv P.csv SPJ.csv
 很容易就可以通过批处理文件或者 Makefile 对上述两个步骤完全自动化。我的 Makefile 文件
 类似下面这个样子：
 
-=include Makefile
+=code Makefile
 
 这样一旦我的数据库遭到了破坏或者需要重新建库，我就只需输入下面一行命令就万事大吉了：
 
