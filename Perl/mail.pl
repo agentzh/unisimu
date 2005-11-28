@@ -6,28 +6,22 @@
 use strict;
 use warnings;
 use Net::SMTP;
-use Authen::SASL qw(Perl);
 
 my ($user, $password) = ('agent2002', '840424');
-
-my $sasl = Authen::SASL->new(
-    mechanism => 'LOGIN',
-    callback  => {
-      user => $user,
-      pass => $password,
-    },
-);
 
 my $smtp = Net::SMTP->new(
     'smtp.126.com',
     Timeout => 60,
     Debug => 1,
 );
-$smtp->auth($sasl);
+$smtp->auth($user, $password);
+
 $smtp->mail('agent2002@126.com');
+
 #$smtp->to('zhongxiang721@163.com');
 $smtp->to('real_agent2002@163.com');
 #$smtp->to('agent2002@126.com');
+
 $smtp->data();
 $smtp->datasend("From: 章亦春 [agent2002\@126.com]\n");
 my $time = localtime;
@@ -35,6 +29,7 @@ $smtp->datasend("Sent: $time\n");
 $smtp->datasend("To: 仲伟祥\n");
 $smtp->datasend("Subject:  通过 Perl 脚本自动发送的电子邮件\n");
 $smtp->datasend("\n");
+
 my $text = <<'_EOC_';
 祥子~~
 
