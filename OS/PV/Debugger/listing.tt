@@ -77,5 +77,11 @@ Perl Multi-thread Debugger
     [%- i = i + 1 %]
 [% END %]
 </table>
+[% IF output %]
+<H1> Output </H1>
+<pre>
+  [%- output %]
+<pre>
+[% END %]
 </body>
 </html>

@@ -30,12 +30,19 @@ sub parse_res {
         die "error: Can't open $resfile for reading: $!\n";
     my @steps;
     my %focuses;
+    my $output;
     while (<$in>) {
         if (/^#-# (\d*)..(.+)/) {
             my ($count, $active) = ($1, $2);
             $focuses{$active} = $count;
-            my $r = { focuses => {%focuses}, active => $active };
+            my $r = {
+                focuses => {%focuses},
+                active => $active,
+                output => $output
+            };
             push @steps, $r;
+        } else {
+            $output .= $_;
         }
     }
     close $in;
@@ -95,6 +102,7 @@ sub dump_listing {
           ast => $ast,
           step_id => ++$step,
           step_count => scalar(@steps),
+          output => $steps[$step]->{output},
         },
         \*STDOUT,
     ) || warn $tt->error();
