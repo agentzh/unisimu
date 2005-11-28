@@ -30,6 +30,7 @@ async { #-# R
 		P('R_enter');
 		my $s = read_data();
 		warn "R: Reading $s...\n" if defined $s;
+        threads->yield;
 		$buffer[$R_i] = $s;
 		$R_i = ($R_i + 1) % $K;
 		V('M_enter');
@@ -38,12 +39,15 @@ async { #-# R
     #-#
 }
 
+#sleep(3);
+
 async { #-# M
     while (1) {
         P('M_enter');
         my $s = $buffer[$M_i];
         my $new = chr($s + ord('A')) if defined $s;
 		warn "M: Converting $s to $new...\n" if defined $s;
+        threads->yield;
         $buffer[$M_i] = $new;
         $M_i = ($M_i + 1) % $K;
         V('P_enter');
@@ -51,6 +55,8 @@ async { #-# M
     }
     #-#
 }
+
+#sleep(3);
 
 async { #-# P
     while (1) {
