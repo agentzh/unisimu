@@ -30,7 +30,7 @@ sub start {
 	my $self = shift;
     $.distance = 0;
 	$.layout = [$.init_pos, @.plan];
-	@.layout = reverse sort { $a <=> $b } @.layout;
+	@.layout = sort { $a <=> $b } @.layout;
 	$.init_i = first_index { $_ eq $.init_pos } @.layout;
 	$.i = $.init_i;
     $.dir = $.init_dir;

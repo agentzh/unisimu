@@ -22,7 +22,7 @@ my $disp = $pack->new(
 );
 
 my @layout = (@plan, 100);
-@layout = reverse sort { $a <=> $b } @layout;
+@layout = sort { $a <=> $b } @layout;
 cmp_deeply [$disp->plan], \@plan;
 cmp_deeply $disp->{layout}, [@layout];
 

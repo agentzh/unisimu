@@ -17,18 +17,20 @@ sub move_next {
     ### $.i
     return if not @.layout or @.layout == 1;
 	if ($.i == 0) {
-        $.i++;
-        my $d = $self->diff($.i, $.i-1);
+        #$.i++;
+        my $d = $self->diff(1, 0);
         shift @.layout;
-        $.distance += abs $d;
-        $.dir = $d > 0 ? '+' : '-';
-        return $.layout[$.i];
+        $.distance += $d;
+        $.dir = '+';
+        return $.layout[0];
     } elsif ($.i == @.layout - 1) {
-        $.i--;
-        my $d = $self->diff($.i, $.i+1);
+        my $d = $self->diff($.i-1, $.i);
+        ### @.layout
+        ### require: $d <= 0
         pop @.layout;
-        $.distance += abs $d;
-        $.dir = $d > 0 ? '+' : '-';
+        $.i--;
+        $.distance += -$d;
+        $.dir = '-';
         return $.layout[$.i];
     } elsif ($.i < @.layout) {
         my $left_d  = $self->diff($.i-1, $.i);
@@ -36,15 +38,15 @@ sub move_next {
         if (abs $left_d < abs $right_d) {
             splice @.layout, $.i, 1;
             $.i--;
-            $.dir = $left_d > 0 ? '+' : '-';
-            $.distance += abs $left_d;
+            $.dir = '-';
+            $.distance += -$left_d;
             return $.layout[$.i];
         #} elsif (abs $left_d == abs $right_d) {
             #
         } else { # $left_d > $right_d
             splice @.layout, $.i, 1;
-            $.dir = $right_d > 0 ? '+' : '-';
-            $.distance += abs $right_d;
+            $.dir = '+';
+            $.distance += $right_d;
             return $.layout[$.i];
         }
     } else {
