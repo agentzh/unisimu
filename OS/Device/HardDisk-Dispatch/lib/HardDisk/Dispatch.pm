@@ -18,6 +18,7 @@ sub new {
 	my $pos = $args{pos};
 	my $self = bless {
 		init_pos => $pos,
+        init_dir => $args{dir},
 		dir => $args{dir},
 		plan => [ split(/\s+/, $args{plan}) ],
 	}, $class;
@@ -29,9 +30,10 @@ sub start {
 	my $self = shift;
     $.distance = 0;
 	$.layout = [$.init_pos, @.plan];
-	@.layout = sort { $a <=> $b } @.layout;
+	@.layout = reverse sort { $a <=> $b } @.layout;
 	$.init_i = first_index { $_ eq $.init_pos } @.layout;
 	$.i = $.init_i;
+    $.dir = $.init_dir;
 }
 
 sub plan {
@@ -52,6 +54,11 @@ sub dir {
 sub distance_moved {
     my $self = shift;
     return $.distance;
+}
+
+sub diff {
+    my ($self, $i, $j) = @_;
+    return $.layout[$i] - $.layout[$j];
 }
 
 1;
