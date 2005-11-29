@@ -6,6 +6,7 @@ t/01Base.t
 t/02FCFS.t
 t/03SSTF.t
 t/04SCAN.t
+t/05C_SCAN.t
 lib/HardDisk/Dispatch.pm
 lib/HardDisk/Dispatch/FCFS.pm
 lib/HardDisk/Dispatch/SSTF.pm

@@ -35,6 +35,7 @@ sub move_next {
             splice @.layout, $.i, 1;
             $.distance += -$d;
             $.dir = '-';
+            $.i--;
         } else {
             my $d = $self->diff($.i+1, $.i);
             splice @.layout, $.i, 1;

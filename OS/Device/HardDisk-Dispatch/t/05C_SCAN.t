@@ -1,4 +1,4 @@
-#: 04SCAN.t
+#: 05C_SCAN.t
 
 use strict;
 use warnings;
@@ -8,7 +8,7 @@ use Test::More tests => 114;
 
 my $pack;
 BEGIN {
-    $pack = 'HardDisk::Dispatch::SCAN';
+    $pack = 'HardDisk::Dispatch::C_SCAN';
     use_ok($pack);
 }
 
@@ -25,7 +25,7 @@ is $disp->dir, '+';
 is $disp->pos, 100;
 is $disp->distance_moved, 0;
 
-my @hist = qw(150 160 184 90 58 55 39 38 18);
+my @hist = qw(150 160 184 18 38 39 55 58 90);
 
 foreach (@hist) {
     my $pos = $disp->move_next;
@@ -34,7 +34,7 @@ foreach (@hist) {
     is $disp->pos, $_;
 }
 
-is $disp->distance_moved, 50+10+24+94+32+3+16+1+20;
+is $disp->distance_moved, 50+10+24+166+20+1+16+3+32;
 
 ok not $disp->move_next;
 
@@ -67,45 +67,45 @@ is $disp->distance_moved, 50+10+24;
 
 $pos = $disp->move_next;
 ok $pos;
-is $pos, 90;
-is $disp->pos, 90;
+is $pos, 18;
+is $disp->pos, 18;
 is $disp->dir, '-';
-is $disp->distance_moved, 50+10+24+94;
-
-$pos = $disp->move_next;
-ok $pos;
-is $pos, 58;
-is $disp->pos, 58;
-is $disp->dir, '-';
-is $disp->distance_moved, 50+10+24+94+32;
-
-$pos = $disp->move_next;
-ok $pos;
-is $pos, 55;
-is $disp->pos, 55;
-is $disp->dir, '-';
-is $disp->distance_moved, 50+10+24+94+32+3;
-
-$pos = $disp->move_next;
-ok $pos;
-is $pos, 39;
-is $disp->pos, 39;
-is $disp->dir, '-';
-is $disp->distance_moved, 50+10+24+94+32+3+16;
+is $disp->distance_moved, 50+10+24+166;
 
 $pos = $disp->move_next;
 ok $pos;
 is $pos, 38;
 is $disp->pos, 38;
-is $disp->dir, '-';
-is $disp->distance_moved, 50+10+24+94+32+3+16+1;
+is $disp->dir, '+';
+is $disp->distance_moved, 50+10+24+166+20;
 
 $pos = $disp->move_next;
 ok $pos;
-is $pos, 18;
-is $disp->pos, 18;
-is $disp->dir, '-';
-is $disp->distance_moved, 50+10+24+94+32+3+16+1+20;
+is $pos, 39;
+is $disp->pos, 39;
+is $disp->dir, '+';
+is $disp->distance_moved, 50+10+24+166+20+1;
+
+$pos = $disp->move_next;
+ok $pos;
+is $pos, 55;
+is $disp->pos, 55;
+is $disp->dir, '+';
+is $disp->distance_moved, 50+10+24+166+20+1+16;
+
+$pos = $disp->move_next;
+ok $pos;
+is $pos, 58;
+is $disp->pos, 58;
+is $disp->dir, '+';
+is $disp->distance_moved, 50+10+24+166+20+1+16+3;
+
+$pos = $disp->move_next;
+ok $pos;
+is $pos, 90;
+is $disp->pos, 90;
+is $disp->dir, '+';
+is $disp->distance_moved, 50+10+24+166+20+1+16+3+32;
 
 ok not $disp->move_next;
 
@@ -119,7 +119,7 @@ is $disp->dir, '-';
 is $disp->pos, 100;
 is $disp->distance_moved, 0;
 
-@hist = qw(90 58 55 39 38 18 150 160 184);
+@hist = qw(90 58 55 39 38 18 184 160 150);
 
 foreach (@hist) {
     my $pos = $disp->move_next;
