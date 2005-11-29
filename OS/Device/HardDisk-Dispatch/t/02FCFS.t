@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Test::Deep;
-use Test::More tests => 23;
+use Test::More tests => 62;
 
 my $pack;
 BEGIN {
@@ -28,6 +28,21 @@ foreach (@plan) {
     my $pos = $disp->move_next;
     ok $pos;
     is $pos, $_;
+    is $disp->pos, $_;
+}
+
+ok not $disp->move_next;
+
+$disp->start;
+
+is $disp->dir, '+';
+is $disp->pos, 100;
+
+foreach (@plan) {
+    my $pos = $disp->move_next;
+    ok $pos;
+    is $pos, $_;
+    is $disp->pos, $_;
 }
 
 ok not $disp->move_next;

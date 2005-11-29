@@ -1,3 +1,7 @@
+#: HardDisk/Dispatch/FCFS.pm
+#: Copyright (c) 2005 Agent Zhang
+#: 2005-11-29 2005-11-29
+
 package HardDisk::Dispatch::FCFS;
 
 use strict;
