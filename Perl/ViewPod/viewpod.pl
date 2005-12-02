@@ -80,11 +80,13 @@ __PACKAGE__->config(
 
 __PACKAGE__->setup(qw/Static::Simple/);
 
+# forward to modlist by default
 sub default : Private {
     my ( $self, $c ) = @_;
     $c->forward('/modlist');
 }
 
+# show error messages
 sub err : Private {
     my ( $self, $c ) = @_;
     my $html = $c->stash->{error};
@@ -92,6 +94,7 @@ sub err : Private {
     $c->res->output($html);
 }
 
+# show module list
 sub showmod : Regex('^([\w:-]+)$') {
     my ( $self, $c ) = @_;
     my $modname = $c->req->snippets->[0];
@@ -100,6 +103,7 @@ sub showmod : Regex('^([\w:-]+)$') {
     $c->forward('/findpod');
 }
 
+# show image files
 sub showimg : Regex('(.*(\.png|\.jpg|\.gif|\.bmp))') {
     my ( $self, $c ) = @_;
     my $path = $c->session->{dir};
@@ -113,12 +117,14 @@ sub showimg : Regex('(.*(\.png|\.jpg|\.gif|\.bmp))') {
     $c->res->output($content);
 }
 
+# returns css file
 sub cssfile : Regex('\.css') {
     my ( $self, $c ) = @_;
     my $content = slurp $cssfile;
     $c->res->output($content);
 }
 
+# locate POD file according to module name 
 sub findpod : Private {
     my ( $self, $c ) = @_;
     my $modname = $c->stash->{modname};
@@ -144,6 +150,7 @@ sub findpod : Private {
     $c->forward('/podhtm');
 }
 
+# check if a file contains POD directives
 sub has_pod {
     my $file = shift;
     my $in;
@@ -160,6 +167,7 @@ sub has_pod {
     return undef;
 }
 
+# convert POD to HTML
 sub podhtm : Private {
     my ( $self, $c ) = @_;
     my $infile = $c->stash->{podfile};
@@ -186,12 +194,14 @@ sub podhtm : Private {
     $c->res->output($html);
 }
 
+# adjust the URLs to other modules embedded in HTML doc
 sub adjust_url {
     my $url = shift;
     $url =~ s,/,::,g;
     return "/$url";
 }
 
+# generate module list
 sub modlist : Global {
     my ( $self, $c ) = @_;
     my $infile = "$Config{archlib}/perllocal.pod";
@@ -225,6 +235,7 @@ sub modlist : Global {
     $c->forward('/show_modlist');
 }
 
+# display the module list by dumping HTML code
 sub show_modlist : Private {
     my ( $self, $c ) = @_;
     my %modules = %{ $c->stash->{modlist} };
@@ -253,6 +264,7 @@ sub show_modlist : Private {
     $c->res->output($html);
 }
 
+# extract the outter namespace from module name
 sub namesp {
     if ($_[0] =~ /\w+/) { return $&; }
     else                { return ''; }
