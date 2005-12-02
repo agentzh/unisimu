@@ -13,6 +13,7 @@ use File::Spec;
 use POSIX 'mktime';
 use Getopt::Std;
 use Message::Splitter;
+#use Smart::Comments;
 #use encoding 'GBK';
 #use Encode qw(encode decode);
 
@@ -138,7 +139,6 @@ sub process_log {
         #$_ = decode('GBK', $_);
 		#warn "$_" if /;
 		s/\r//g;
-		#s/：/:/g;
 		#warn $_;
         if (/^$/ or /^-+$/) {
             $ready = 1;
@@ -146,8 +146,8 @@ sub process_log {
         }
         if ($state eq 'S_INIT') {
 			#warn $_;
-            if (/^用户(:|：)(\d+)\((.+)\)/) {
-                ($host, $host_name) = ($2, $3);
+            if (/^ 用户 (?: :|: ) \s* (\d+) \( (.+) \) /x) {
+                ($host, $host_name) = ($1, $2);
 				#warn "    info: $host_name";
                 check_user($host, $host_name, $real_name);
             } elsif (/^用户/) {
@@ -156,7 +156,7 @@ sub process_log {
 				#warn "    info: $host $host_name";
                 check_user($host, $host_name, $real_name);
 			}
-            if (/^消息对象:(\d+)\((.+)\)/) {
+            if (/^ 消息对象 (?: :|：) \s* (\d+) \( (.+) \) /x) {
                 ($guest, $guest_name) = ($1, $2);
 				#warn "$guest, $guest_name";
                 check_user($guest, $guest_name, $real_name);
@@ -211,6 +211,10 @@ sub process_log {
             #$msg_to   = $name eq $guest_name ? $host : $guest;
             die "Internal assertion failed: $msg_from sent msg to itself"
                 if $msg_from eq $msg_to;
+            ### $guest_name
+            ### $host_name
+            ### $guest
+            ### $host
             $msg_body = '';
             $ready = 0;
         }

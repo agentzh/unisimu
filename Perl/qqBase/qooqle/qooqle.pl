@@ -190,6 +190,7 @@ _EOC_
     my $tt = Template->new;
     $tt->process('tpl/session.tt', { hits => \@hits }, \*STDOUT)
       || warn $tt->error();
+    $sth->finish;
     $dbh->disconnect;
 }
 

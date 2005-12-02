@@ -43,7 +43,7 @@ sub handle_request {
         return;
     }
 
-    $file =~ s,^$old_uri,/, if $old_uri;
+    #$file =~ s,^$old_uri,/, if $old_uri;
     $old_uri = $uri;
     $old_uri =~ s,[^/]+$,,;
 
