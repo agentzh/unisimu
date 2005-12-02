@@ -272,7 +272,7 @@ sub namesp {
 
 ############################################################
 
-ViewPod->run( $port, 'localhost', {
+ViewPod->run( $port, undef, {
      argv         => [],
     'fork'        => $fork,
 } );
