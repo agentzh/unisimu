@@ -1,4 +1,4 @@
-#: er-diagram.pl
+#: er-diag.pl
 #: E-R Diagram generator based on Graphviz
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
