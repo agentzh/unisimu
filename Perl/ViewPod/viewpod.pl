@@ -95,23 +95,23 @@ sub err : Private {
     $c->res->output($html);
 }
 
-# show module list
-sub showmod : Regex('^([\w:-]+)$') {
-    my ( $self, $c ) = @_;
-    my $modname = $c->req->snippets->[0];
-    $modname =~ s,-,::,g;
-    $c->stash->{modname} = $modname;
-    $c->forward('/findpod');
-}
-
 # show POD file with explicit path
-sub showpath : Regex('^([A-Za-z]:[\\/].+\.(?:pod|pm|pl|bat))$') {
+sub showpath : Regex('^([A-Za-z]:[\\/].+\.(?:pod|bat|pm|pl))$') {
     my ( $self, $c ) = @_;
     my $file = $c->req->snippets->[0];
     my $dir = File::Spec->updir($file);
     $c->session->{dir} = '';
     $c->stash->{podfile} = $file;
     $c->forward('/podhtm');
+}
+
+# show the POD for a module
+sub showmod : Regex('^(\w+(?:(?:::|-)\w+)*)$') {
+    my ( $self, $c ) = @_;
+    my $modname = $c->req->snippets->[0];
+    $modname =~ s,-,::,g;
+    $c->stash->{modname} = $modname;
+    $c->forward('/findpod');
 }
 
 # show image files
@@ -131,7 +131,14 @@ sub showimg : Regex('(.*(\.png|\.jpg|\.gif|\.bmp))') {
 # returns css file
 sub cssfile : Regex('\.css') {
     my ( $self, $c ) = @_;
-    my $content = slurp $cssfile;
+    $c->stash->{file} = $cssfile;
+    $c->forward('/dumpfile');
+}
+
+# dump file out to the client side
+sub dumpfile : Private {
+    my ( $self, $c ) = @_;
+    my $content = slurp( $c->stash->{file} );
     $c->res->output($content);
 }
 
