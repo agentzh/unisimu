@@ -16,4 +16,8 @@ all: $(PNG_FILES)
 	perl er-diag.pl 02test.cm
 
 clean:
-	$(RM_F) $(PNG_FILES)
+	$(RM_F) $(PNG_FILES) er-diag.bat
+
+install:
+	pl2bat er-diag.pl
+	copy er-diag.bat E:\perl\bin\
