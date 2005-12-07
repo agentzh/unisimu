@@ -43,7 +43,11 @@
 
 为什么要使用 T-SQL 呢？我宁可使用标准的可移值的 SQL 语言，呵呵。
 
-首先给出数据库的数据吧：
+首先重建数据库以确保其完整性：
+
+=shell nmake /nologo
+
+接下来给出数据库中使用的所有数据：
 
 =over
 
@@ -86,7 +90,7 @@ SPJ 表
 select distinct JNAME
 from S, SPJ, J
 where S.SNO = SPJ.SNO and SPJ.JNO = J.JNO
-	and S.CITY = '上海'
+    and S.CITY = '上海'
 
 =end SQL
 
@@ -111,16 +115,119 @@ where JNO = 'J1' and PNO = 'P1'
 select distinct SNO
 from SPJ,P
 where SPJ.PNO = P.PNO and JNO = 'J1' and
-	COLOR = '红'
+    COLOR = '红'
 
 =end SQL
 
 =item *
 
-从供应商关系中删除 S2 的记录，并从供应情况关系中删除相应的记录
+检索没有使用天津生产的红色零件的工程号 JNO；
 
-=SQL delete from SPJ where SNO = 'S2'
+=begin SQL
 
-=SQL delete from S where SNO = 'S2'
+select JNO
+from J
+where JNO not in
+    (select JNO
+     from S,SPJ,P
+     where S.SNO = SPJ.SNO and SPJ.PNO = P.PNO and
+           S.CITY = '天津' and P.COLOR = '红')
+
+=end SQL
+
+=item *
+
+检索至少用了供应商 S1 所供应的全部零件的工程号 JNO；
+
+设我们要寻找的工程为 x, 并且令
+
+=over
+
+=item *
+
+工程 x 使用的所有 S1 生产的零件集合为 A，
+
+=item *
+
+供应商 S1 生产的所有零件的集合为 B
+
+=back
+
+如果 A 包含 B，
+
+    则工程 x 使用了 S1 生产的所有零件，即这样的 x 才是我们要找的。
+
+如果 A 不包含 B,
+
+    则工程 x 没有使用到 S1 生产的所有零件，这样的 x 不是我们要找的。
+
+集合 A 在 x 取 J1 的时候，可以用 SQL 代码表述成
+
+=begin SQL
+
+select PNO
+from SPJ
+where SNO = 'S1' and JNO = 'J1'
+
+=end SQL
+
+集合 B 用 SQL 可以表达为
+
+=begin SQL
+
+select distinct PNO
+from SPJ
+where SNO = 'S1'
+
+=end SQL
+
+A 不包含 B 的另一种表述是：B 中存在这样的元素，它没有出现在 A 当中
+
+当 x 取 J1 时用 SQL 伪码表述，便是
+
+=begin SQL
+
+select PNO
+from SPJ
+where SNO = 'S1' and
+      PNO not in
+        (select PNO
+         from SPJ
+         where SNO = 'S1' and JNO = 'J1')
+
+=end SQL
+
+将上面的代码片段粘接为完整的 SQL 查询便是
+
+=begin SQL
+
+select JNO
+from J
+where not exists
+    (select PNO
+     from SPJ
+     where SNO = 'S1' and
+        PNO not in
+            (select PNO
+             from SPJ
+             where SNO = 'S1' and JNO = 'J1'))
+
+=end SQL
+
+我们应当看到查询的结果为空。
+
+=item *
+
+检索购买了零件 P1 的工程项目号 JNO 及数量 QTY，并要求对查询的结果按数量 QTY 降序排列。
+
+=begin SQL
+
+select JNO, sum(QTY) QTY
+from SPJ
+where PNO = 'P1'
+group by JNO
+order by QTY desc
+
+=end SQL
 
 =back
