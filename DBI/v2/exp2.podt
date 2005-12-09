@@ -53,7 +53,7 @@
 
 首先重建数据库以确保其完整性：
 
-=shell nmake /nologo > NIL
+=shell nmake > NIL 2>&1
 
 接下来给出数据库中使用的所有数据：
 

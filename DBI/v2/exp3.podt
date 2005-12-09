@@ -1,0 +1,172 @@
+=head1 NAME
+
+实验三 - 数据库的维护实验
+
+=head1 AUTHOR
+
+章亦春 E<lt>agent2002@126.comE<gt>
+
+3030602110 计算机 0304 班
+
+计算机科学与通信工程学院 江苏大学
+
+=head1 实验目的
+
+要求学生熟练使用和掌握数据库的维护操作，包括数据的插入、检索、修改，
+掌握 SQL Server 中用户、角色及操作权限的管理方法，学会创建和使用
+规则、缺省和触发器。
+
+=head1 实验内容
+
+用 T-SQL 语言表示以下操作：
+
+=over
+
+=item 1.
+
+把全部红色零件颜色改为粉红色；
+
+=item 2.
+
+由 S1 供给 J1 的零件 P1 今改为由 S2 供应，作必要修改；
+
+=item 3.
+
+删去全部蓝色零件及相应的 SPJ 记录；
+
+=item 4.
+
+把全部螺母的重量置为 0；
+
+=item 5.
+
+为 SPJ 表的 QTY 字段设计 CHECK 约束： 0 < QTY < 1000；
+
+=item 6.
+
+实现对 SPJ 表的操作权限管理的使用。
+
+=back
+
+=head1 实验结果
+
+为确保数据库的状态是初始态，我们用下面的命令强制重建数据库：
+
+=shell nmake > NIL 2>&1
+
+然后我们再对它进行各种有趣的操作：
+
+=over
+
+=item 1.
+
+把全部红色零件颜色改为粉红色；
+
+零件颜色方面的信息是存储在 P 表中的。P 表最初是这个样子的：
+
+=SQL select * from P
+
+然后我们用下面的 update 语句对红色零件的颜色进行修改：
+
+=begin SQL
+
+update P
+set COLOR = '粉红'
+where COLOR = '红'
+
+=end SQL
+
+此时我们的 P 表成为下面这个样子：
+
+=SQL select * from P
+
+由于本操作更改了数据库，我们再用一个命令对数据库进行“恢复”，呵呵：
+
+=shell nmake > NIL 2>&1
+
+=item 2.
+
+由 S1 供给 J1 的零件 P1 今改为由 S2 供应，作必要修改；
+
+本题的 SQL 查询来自沈容舟同学，非常感谢他提供了一种标
+准 SQL 的解决方案，尽管在他的原始版本中有一个 typo.
+Jack++
+
+原始的 SPJ 表如下：
+
+=SQL select * from SPJ
+
+我们首先检查一下数据库中是否已经存在 S1,J1,P1 这条记录。如果是，
+则将 S1,J1,P1 的 QTY 加到 S2,J1,P1 的 QTY 上去。
+
+=begin SQL
+
+update SPJ
+set QTY =
+    (select sum(QTY)
+     from SPJ
+     where SNO in ('S1', 'S2') and JNO = 'J1' and PNO = 'P1')
+where SNO = 'S2' and JNO = 'J1' and PNO = 'P1' and exists
+    (select *
+     from SPJ
+     where SNO = 'S1' and JNO = 'J1' and PNO = 'P1')
+
+=end SQL
+
+接下来，如果已存在 S2,J1,P1 记录的话，就将 S1,J1,P1 记录全部删除：
+
+=begin SQL
+
+delete from SPJ
+where SNO = 'S1' and JNO = 'J1' and PNO = 'P1'
+    and exists
+        (select *
+         from SPJ
+         where SNO = 'S2' and JNO = 'J1' and PNO = 'P1')
+
+=end SQL
+
+最后如果数据库中不存在 S2,J1,P1 记录的话，我们就将 S1,J1,P1 记录的 S1 简
+单地改写为 S2：
+
+=begin SQL
+
+update SPJ
+set SNO = 'S2'
+where SNO = 'S1' and JNO = 'J1' and PNO = 'P1'
+    and not exists
+        (select *
+         from SPJ
+         where SNO = 'S2' and JNO = 'J1' and PNO = 'P1')
+
+=end SQL
+
+此时 SPJ 表成为下面这个样子：
+
+=SQL select * from SPJ
+
+我们看到，前两个查询都没有命中的记录，因为我们的数据库实在是太小了，并
+没有覆盖到我们考虑的特殊情况，于是这便是我们的实验指导老师的责任了，呵
+呵。
+
+最后还是例行的数据库还原操作：
+
+=shell nmake /nologo > NIL 2>&1
+
+=item 3.
+
+删去全部蓝色零件及相应的 SPJ 记录；
+
+=item 4.
+
+把全部螺母的重量置为 0；
+
+=item 5.
+
+为 SPJ 表的 QTY 字段设计 CHECK 约束： 0 < QTY < 1000；
+
+=item 6.
+
+实现对 SPJ 表的操作权限管理的使用。
+
+=back

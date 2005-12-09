@@ -20,4 +20,4 @@ doc: exp1.podx exp1.pod exp1.html exp2.podx exp2.pod exp2.html exp3.podx exp3.po
 	$(RM_F) *.tmp
 
 clean:
-	$(RM_F) *.pod *.podx
+	$(RM_F) *.pod *.podx NIL

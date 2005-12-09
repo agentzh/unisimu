@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>实验三 - 数据库的维护实验</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;实验三 - 数据库的维护实验</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#cab5d1e9c4bfb5c4">实验目的</a></li>
+	<li><a href="#cab5d1e9c4dac8dd">实验内容</a></li>
+	<li><a href="#cab5d1e9bde1b9fb">实验结果</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>实验三 - 数据库的维护实验</p>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>章亦春 &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<p>3030602110 计算机 0304 班</p>
+<p>计算机科学与通信工程学院 江苏大学</p>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9c4bfb5c4">实验目的</a></h1>
+<p>要求学生熟练使用和掌握数据库的维护操作，包括数据的插入、检索、修改，
+掌握 SQL Server 中用户、角色及操作权限的管理方法，学会创建和使用
+规则、缺省和触发器。</p>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9c4dac8dd">实验内容</a></h1>
+<p>用 T-SQL 语言表示以下操作：</p>
+<ol>
+<li></li>
+把全部红色零件颜色改为粉红色；
+<p></p>
+<li></li>
+由 S1 供给 J1 的零件 P1 今改为由 S2 供应，作必要修改；
+<p></p>
+<li></li>
+删去全部蓝色零件及相应的 SPJ 记录；
+<p></p>
+<li></li>
+把全部螺母的重量置为 0；
+<p></p>
+<li></li>
+为 SPJ 表的 QTY 字段设计 CHECK 约束： 0 &lt; QTY &lt; 1000；
+<p></p>
+<li></li>
+实现对 SPJ 表的操作权限管理的使用。
+<p></p></ol>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9bde1b9fb">实验结果</a></h1>
+<p>为确保数据库的状态是初始态，我们用下面的命令强制重建数据库：</p>
+<pre>
+    $ nmake &gt; NIL 2&gt;&amp;1</pre>
+<p>然后我们再对它进行各种有趣的操作：</p>
+<ol>
+<li></li>
+把全部红色零件颜色改为粉红色；
+<p>零件颜色方面的信息是存储在 P 表中的。P 表最初是这个样子的：</p>
+<pre>
+    select * from P</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
+</tr>
+<tr>
+<td>红</td>
+<td>螺母</td>
+<td>P1</td>
+<td>12</td>
+</tr>
+<tr>
+<td>绿</td>
+<td>螺栓</td>
+<td>P2</td>
+<td>17</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>螺丝刀</td>
+<td>P3</td>
+<td>14</td>
+</tr>
+<tr>
+<td>红</td>
+<td>螺丝刀</td>
+<td>P4</td>
+<td>14</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>凸轮</td>
+<td>P5</td>
+<td>40</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>红</td>
+<td>齿轮</td>
+<td>P6</td>
+<td>30</td>
+</tr>
+</table>
+</pre><p>然后我们用下面的 update 语句对红色零件的颜色进行修改：</p>
+<pre>
+    update P
+    set COLOR = '粉红'
+    where COLOR = '红'</pre>
+<p>[3 rows affected]</p>
+<p>此时我们的 P 表成为下面这个样子：</p>
+<pre>
+    select * from P</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
+</tr>
+<tr>
+<td>粉红</td>
+<td>螺母</td>
+<td>P1</td>
+<td>12</td>
+</tr>
+<tr>
+<td>绿</td>
+<td>螺栓</td>
+<td>P2</td>
+<td>17</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>螺丝刀</td>
+<td>P3</td>
+<td>14</td>
+</tr>
+<tr>
+<td>粉红</td>
+<td>螺丝刀</td>
+<td>P4</td>
+<td>14</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>凸轮</td>
+<td>P5</td>
+<td>40</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>粉红</td>
+<td>齿轮</td>
+<td>P6</td>
+<td>30</td>
+</tr>
+</table>
+</pre><p>由于本操作更改了数据库，我们再用一个命令对数据库进行“恢复”，呵呵：</p>
+<pre>
+    $ nmake &gt; NIL 2&gt;&amp;1</pre>
+<p></p>
+<li></li>
+由 S1 供给 J1 的零件 P1 今改为由 S2 供应，作必要修改；
+<p>本题的 SQL 查询来自沈容舟同学，非常感谢他提供了一种标
+准 SQL 的解决方案，尽管在他的原始版本中有一个 typo.
+Jack++</p>
+<p>原始的 SPJ 表如下：</p>
+<pre>
+    select * from SPJ</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>QTY</B></color></td><td><font color=blue><B>SNO</B></color></td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P1</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P1</td>
+<td>700</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P2</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P3</td>
+<td>200</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P3</td>
+<td>500</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J5</td>
+<td>P3</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P5</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P5</td>
+<td>100</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P5</td>
+<td>100</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P6</td>
+<td>300</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P6</td>
+<td>200</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P2</td>
+<td>100</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P6</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>J4</td>
+<td>P6</td>
+<td>500</td>
+<td>S5</td>
+</tr>
+</table>
+</pre><p>我们首先检查一下数据库中是否已经存在 S1,J1,P1 这条记录。如果是，
+则将 S1,J1,P1 的 QTY 加到 S2,J1,P1 的 QTY 上去。</p>
+<pre>
+    update SPJ
+    set QTY =
+        (select sum(QTY)
+         from SPJ
+         where SNO in ('S1', 'S2') and JNO = 'J1' and PNO = 'P1')
+    where SNO = 'S2' and JNO = 'J1' and PNO = 'P1' and exists
+        (select *
+         from SPJ
+         where SNO = 'S1' and JNO = 'J1' and PNO = 'P1')</pre>
+<p>[0E0 rows affected]</p>
+<p>接下来，如果已存在 S2,J1,P1 记录的话，就将 S1,J1,P1 记录全部删除：</p>
+<pre>
+    delete from SPJ
+    where SNO = 'S1' and JNO = 'J1' and PNO = 'P1'
+        and exists
+            (select *
+             from SPJ
+             where SNO = 'S2' and JNO = 'J1' and PNO = 'P1')</pre>
+<p>[0E0 rows affected]</p>
+<p>最后如果数据库中不存在 S2,J1,P1 记录的话，我们就将 S1,J1,P1 记录的 S1 简
+单地改写为 S2：</p>
+<pre>
+    update SPJ
+    set SNO = 'S2'
+    where SNO = 'S1' and JNO = 'J1' and PNO = 'P1'
+        and not exists
+            (select *
+             from SPJ
+             where SNO = 'S2' and JNO = 'J1' and PNO = 'P1')</pre>
+<p>[1 row affected]</p>
+<p>此时 SPJ 表成为下面这个样子：</p>
+<pre>
+    select * from SPJ</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>QTY</B></color></td><td><font color=blue><B>SNO</B></color></td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P1</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P1</td>
+<td>700</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P2</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P3</td>
+<td>200</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P3</td>
+<td>500</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J5</td>
+<td>P3</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P5</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P5</td>
+<td>100</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P5</td>
+<td>100</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P6</td>
+<td>300</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P6</td>
+<td>200</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P2</td>
+<td>100</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P6</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>J4</td>
+<td>P6</td>
+<td>500</td>
+<td>S5</td>
+</tr>
+</table>
+</pre><p>我们看到，前两个查询都没有命中的记录，因为我们的数据库实在是太小了，并
+没有覆盖到我们考虑的特殊情况，于是这便是我们的实验指导老师的责任了，呵
+呵。</p>
+<p>最后还是例行的数据库还原操作：</p>
+<pre>
+    $ nmake /nologo &gt; NIL 2&gt;&amp;1</pre>
+<p></p>
+<li></li>
+删去全部蓝色零件及相应的 SPJ 记录；
+<p></p>
+<li></li>
+把全部螺母的重量置为 0；
+<p></p>
+<li></li>
+为 SPJ 表的 QTY 字段设计 CHECK 约束： 0 &lt; QTY &lt; 1000；
+<p></p>
+<li></li>
+实现对 SPJ 表的操作权限管理的使用。
+<p></p></ol>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;实验三 - 数据库的维护实验</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
