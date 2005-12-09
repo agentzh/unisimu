@@ -81,7 +81,7 @@ SPJ 表
 
 =over
 
-=item *
+=item 1.
 
 检索上海产的零件的工程名称
 
@@ -94,7 +94,7 @@ where S.SNO = SPJ.SNO and SPJ.JNO = J.JNO
 
 =end SQL
 
-=item *
+=item 2.
 
 检索供应工程 J1 零件 P1 的供应商号 SNO
 
@@ -106,7 +106,7 @@ where JNO = 'J1' and PNO = 'P1'
 
 =end SQL
 
-=item *
+=item 3.
 
 检索供应工程 J1 零件为红色的供应商号 SNO；
 
@@ -119,7 +119,7 @@ where SPJ.PNO = P.PNO and JNO = 'J1' and
 
 =end SQL
 
-=item *
+=item 4.
 
 检索没有使用天津生产的红色零件的工程号 JNO；
 
@@ -135,7 +135,7 @@ where JNO not in
 
 =end SQL
 
-=item *
+=item 5.
 
 检索至少用了供应商 S1 所供应的全部零件的工程号 JNO；
 
@@ -216,7 +216,7 @@ where not exists
 
 我们应当看到查询的结果为空。
 
-=item *
+=item 6.
 
 检索购买了零件 P1 的工程项目号 JNO 及数量 QTY，并要求对查询的结果按数量 QTY 降序排列。
 
