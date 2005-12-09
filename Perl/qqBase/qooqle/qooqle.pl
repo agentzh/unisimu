@@ -2,13 +2,18 @@
 #: Web interface for qqBase
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-06 2005-11-11
+#: 2005-11-06 2005-12-09
 
 use strict;
 use warnings;
 
 use HTTP::Server::Simple;
 use DBI;
+
+my $LongReadLen = 2048;
+
+my $dsn = $ENV{DSN};
+die "No env DSN set. So no database is available\n" unless $dsn;
 
 my $time = 0;
 my $server = MyServer->new();
@@ -105,29 +110,29 @@ _EOC_
     $query .= "\norder by session_id asc";
     #warn "SQL: $query\n";
 
-	my $dbh = connect_db();
-	my $sth = $dbh->prepare($query);
+    my $dbh = connect_db();
+    my $sth = $dbh->prepare($query);
     $sth->execute;
 
     my @hits;
     while (my $ref = $sth->fetchrow_hashref) {
         #warn "REF: $ref\n";
-		my $msg = $ref->{msg_body};
-		my $matched = 0;
-		for my $word (@words) {
-			my $pat = quotemeta($word);
-			if ($word =~ m/\W/ or !$WholeWord) {
-				if ($msg =~ s,$pat,<B>$&</B>,isg) {
-    				$matched = 1;
+        my $msg = $ref->{msg_body};
+        my $matched = 0;
+        for my $word (@words) {
+            my $pat = quotemeta($word);
+            if ($word =~ m/\W/ or !$WholeWord) {
+                if ($msg =~ s,$pat,<B>$&</B>,isg) {
+                    $matched = 1;
                 }
-			}
-			elsif ($WholeWord and $msg =~ s,\b$pat\b,<B>$&</B>,isg) {
-				$matched = 1;
-			}
-		}
-		next if !$matched;
+            }
+            elsif ($WholeWord and $msg =~ s,\b$pat\b,<B>$&</B>,isg) {
+                $matched = 1;
+            }
+        }
+        next if !$matched;
 
-		$msg = quote_html($msg);
+        $msg = quote_html($msg);
         my $rec = {
             'time'   => scalar localtime($ref->{session_id}),
             session  => $ref->{session_id},
@@ -141,7 +146,7 @@ _EOC_
     my $elapsed = sprintf("%.2f", Time::HiRes::time - $time);
     my $tt = Template->new;
     print "HTTP/1.0 200 OK\n";
-	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
+    print $cgi->header(-type=>'text/html', -charset=>'gb2312');
     $tt->process(
         'tpl/list.tt',
         { whole_word => $WholeWord, query => join(' ', @words), 'elapsed' => $elapsed, hits => \@hits },
@@ -162,14 +167,14 @@ _EOC_
     $query .= "\norder by session_id, offset asc";
     #warn "SQL: $query\n";
 
-	my $dbh = connect_db();
-	my $sth = $dbh->prepare($query);
+    my $dbh = connect_db();
+    my $sth = $dbh->prepare($query);
     $sth->execute;
     
     my $session;
     my @hits;
     print "HTTP/1.0 200 OK\n";
-	print $cgi->header(-type=>'text/html', -charset=>'gb2312');
+    print $cgi->header(-type=>'text/html', -charset=>'gb2312');
     my $first = 1;
     while (my $ref = $sth->fetchrow_hashref) {
         if ($first) {
@@ -210,23 +215,23 @@ sub dump_file {
 }
 
 sub quote_html {
-	my $src = shift;
-	$src =~ s,>,&gt;,g;
-	$src =~ s,<,&lt;,g;
-	$src =~ s,&lt;B&gt;,<B>,g;
-	$src =~ s,&lt;/B&gt;,</B>,g;
-	$src =~ s/\n/<br>/gs;
-	$src =~ s/\t/    /g;
-	$src =~ s/ /&nbsp;/g;
+    my $src = shift;
+    $src =~ s,>,&gt;,g;
+    $src =~ s,<,&lt;,g;
+    $src =~ s,&lt;B&gt;,<B>,g;
+    $src =~ s,&lt;/B&gt;,</B>,g;
+    $src =~ s/\n/<br>/gs;
+    $src =~ s/\t/    /g;
+    $src =~ s/ /&nbsp;/g;
     $src =~ s/(\w)&nbsp;(\w)/$1 $2/g;
-	return $src;
+    return $src;
 }
 
 sub connect_db {
-	my $dsn = $ENV{DSN};
-	die "No env DSN set. So no database is available\n" unless $dsn;
     my $dbh = DBI->connect($dsn, { PrintError => 1, RaiseError => 0 });
-	return $dbh;
+    $dbh->{LongReadLen} = $LongReadLen;
+    $dbh->{LongTruncOk} = 1;
+    return $dbh;
 }
 
 sub dump_prev {
@@ -242,8 +247,8 @@ order by session_id desc
 _EOC_
     #warn "SQL: $query\n";
 
-	my $dbh = connect_db();
-	my $sth = $dbh->prepare($query);
+    my $dbh = connect_db();
+    my $sth = $dbh->prepare($query);
     $sth->execute;
 
     my @hits;
@@ -269,8 +274,8 @@ order by session_id asc
 _EOC_
     #warn "SQL: $query\n";
 
-	my $dbh = connect_db();
-	my $sth = $dbh->prepare($query);
+    my $dbh = connect_db();
+    my $sth = $dbh->prepare($query);
     $sth->execute;
 
     my @hits;
