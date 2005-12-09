@@ -195,7 +195,7 @@ A 不包含 B 的另一种表述是：B 中存在这样的元素，它没有出现在 A 当中
 
 =begin SQL
 
-select PNO
+select distinct PNO
 from SPJ
 where SNO = 'S1' and
       PNO not in
@@ -218,7 +218,7 @@ where not exists
         PNO not in
             (select PNO
              from SPJ
-             where SNO = 'S1' and JNO = 'J1'))
+             where SNO = 'S1' and JNO = J.JNO))
 
 =end SQL
 

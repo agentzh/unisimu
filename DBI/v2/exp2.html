@@ -461,7 +461,7 @@ SPJ 表
 </pre><p>A 不包含 B 的另一种表述是：B 中存在这样的元素，它没有出现在 A 当中</p>
 <p>当 x 取 J1 时用 SQL 伪码表述，便是</p>
 <pre>
-    select PNO
+    select distinct PNO
     from SPJ
     where SNO = 'S1' and
           PNO not in
@@ -486,7 +486,7 @@ SPJ 表
             PNO not in
                 (select PNO
                  from SPJ
-                 where SNO = 'S1' and JNO = 'J1'))</pre>
+                 where SNO = 'S1' and JNO = J.JNO))</pre>
 <pre>        <table border=1><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
 </table>
 </pre><p>我们应当看到查询的结果为空。</p>

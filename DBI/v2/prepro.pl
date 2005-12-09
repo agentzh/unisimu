@@ -88,7 +88,7 @@ sub process_cmd {
     return if not $cmd;
     print "    \$ $cmd\n";
     #warn $cmd;
-    if ($cmd =~ m/>\s*[^"'>]+\s*$/) {
+    if ($cmd =~ m/>\s*[^"'>]+\s*(?:2>\&1)?\s*$/) {
         system ($cmd);
     } else {
         system("$cmd > $tmpfile 2>&1");
