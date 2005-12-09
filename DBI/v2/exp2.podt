@@ -100,7 +100,7 @@ where S.SNO = SPJ.SNO and SPJ.JNO = J.JNO
 
 =begin SQL
 
-select SNO
+select distinct SNO
 from SPJ
 where JNO = 'J1' and PNO = 'P1'
 
@@ -165,7 +165,7 @@ where JNO not in
 
 =begin SQL
 
-select PNO
+select distinct PNO
 from SPJ
 where SNO = 'S1' and JNO = 'J1'
 

@@ -359,7 +359,7 @@ SPJ 表
 <li></li>
 检索供应工程 J1 零件 P1 的供应商号 SNO
 <pre>
-    select SNO
+    select distinct SNO
     from SPJ
     where JNO = 'J1' and PNO = 'P1'</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
@@ -436,7 +436,7 @@ SPJ 表
     则工程 x 没有使用到 S1 生产的所有零件，这样的 x 不是我们要找的。</pre>
 <p>集合 A 在 x 取 J1 的时候，可以用 SQL 代码表述成</p>
 <pre>
-    select PNO
+    select distinct PNO
     from SPJ
     where SNO = 'S1' and JNO = 'J1'</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
