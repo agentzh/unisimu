@@ -1,6 +1,6 @@
 #: eval-sql.pl
 #: Eval SQL file using environment 'DSN' as the dsn
-#: 2005-10-09 2005-10-19
+#: 2005-10-09 2005-12-09
 
 use strict;
 use warnings;
@@ -31,7 +31,7 @@ for (@files) {
     foreach my $sql (split(/\n\n/s, $sqls)) {
         next if $sql =~ m/^\s*$/s;
         if (not $dbh->do($sql)) {
-			last;
+			next;
 		}
 		$count++;
     }

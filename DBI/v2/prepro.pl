@@ -13,6 +13,7 @@ use File::Spec;
 
 use DBI;
 use Getopt::Std;
+use Scalar::Util qw/looks_like_number/;
 
 my %opts;
 getopts('u:p:', \%opts);
@@ -112,12 +113,17 @@ sub process_sql {
     map { $_ = "    $_" if $_ } @lines;
     print join("\n", @lines),"\n\n";
     my $sth = $dbh->prepare($sql);
-    my $rv = $sth->execute();
+    my $rv = $sth->execute() or print "$DBI::errstr\n\n";
     if (!$sth->{'NUM_OF_FIELDS'}) { # not a select statement
 		local $^W=0;
-		$rv = "undefined number of" unless defined $rv;
-		$rv = "unknown number of"   if $rv == -1;
-		print "[$rv row" . ($rv==1 ? "" : "s") . " affected]\n";
+        if (not defined $rv) {
+    		$rv = "undefined number of";
+        } elsif ($rv == -1) {
+    		$rv = "unknown number of";
+        }
+		print "[$rv row",
+            (looks_like_number($rv) && $rv==1 ? "" : "s"),
+            " affected]\n";
         return;
     }
     print "\n=begin html\n\n";

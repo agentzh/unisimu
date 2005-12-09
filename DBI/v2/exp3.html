@@ -21,6 +21,7 @@
 
 	<li><a href="#NAME">NAME</a></li>
 	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
 	<li><a href="#cab5d1e9c4bfb5c4">实验目的</a></li>
 	<li><a href="#cab5d1e9c4dac8dd">实验内容</a></li>
 	<li><a href="#cab5d1e9bde1b9fb">实验结果</a></li>
@@ -39,6 +40,15 @@
 <p>章亦春 &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
 <p>3030602110 计算机 0304 班</p>
 <p>计算机科学与通信工程学院 江苏大学</p>
+<p>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+   Maintainer: Agent Zhang &lt;agent2002@126.com&gt;
+   Date: 8 Dec 2005
+   Last Modified: 9 Dec 2005
+   Version: 0.01</pre>
 <p>
 </p>
 <hr />
@@ -77,11 +87,10 @@
 <p>为确保数据库的状态是初始态，我们用下面的命令强制重建数据库：</p>
 <pre>
     $ nmake &gt; NIL 2&gt;&amp;1</pre>
-<p>然后我们再对它进行各种有趣的操作：</p>
-<ol>
+<p>数据库中的各个表格如下：</p>
+<ul>
 <li></li>
-把全部红色零件颜色改为粉红色；
-<p>零件颜色方面的信息是存储在 P 表中的。P 表最初是这个样子的：</p>
+P 表
 <pre>
     select * from P</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
@@ -124,7 +133,218 @@
 <td>30</td>
 </tr>
 </table>
-</pre><p>然后我们用下面的 update 语句对红色零件的颜色进行修改：</p>
+</pre><p></p>
+<li></li>
+S 表
+<pre>
+    select * from S</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>CITY</B></color></td><td><font color=blue><B>SNAME</B></color></td><td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>STATUS</B></color></td>
+</tr>
+<tr>
+<td>天津</td>
+<td>精益</td>
+<td>S1</td>
+<td>20</td>
+</tr>
+<tr>
+<td>北京</td>
+<td>盛锡</td>
+<td>S2</td>
+<td>10</td>
+</tr>
+<tr>
+<td>北京</td>
+<td>东方红</td>
+<td>S3</td>
+<td>30</td>
+</tr>
+<tr>
+<td>天津</td>
+<td>丰泰盛</td>
+<td>S4</td>
+<td>20</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>上海</td>
+<td>为民</td>
+<td>S5</td>
+<td>30</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+J 表
+<pre>
+    select * from J</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>CITY</B></color></td><td><font color=blue><B>JNAME</B></color></td><td><font color=blue><B>JNO</B></color></td>
+</tr>
+<tr>
+<td>北京</td>
+<td>三建</td>
+<td>J1</td>
+</tr>
+<tr>
+<td>长春</td>
+<td>一汽</td>
+<td>J2</td>
+</tr>
+<tr>
+<td>天津</td>
+<td>弹簧厂</td>
+<td>J3</td>
+</tr>
+<tr>
+<td>天津</td>
+<td>造船厂</td>
+<td>J4</td>
+</tr>
+<tr>
+<td>唐山</td>
+<td>机车厂</td>
+<td>J5</td>
+</tr>
+<tr>
+<td>常州</td>
+<td>无线电厂</td>
+<td>J6</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>南京</td>
+<td>半导体厂</td>
+<td>J7</td>
+</tr>
+</table>
+</pre><p></p>
+<li></li>
+SPJ 表
+<pre>
+    select * from SPJ</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>QTY</B></color></td><td><font color=blue><B>SNO</B></color></td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P1</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P1</td>
+<td>700</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P2</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P3</td>
+<td>200</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P3</td>
+<td>500</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J5</td>
+<td>P3</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P5</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P5</td>
+<td>100</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P5</td>
+<td>100</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P6</td>
+<td>300</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P6</td>
+<td>200</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P2</td>
+<td>100</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P6</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>J4</td>
+<td>P6</td>
+<td>500</td>
+<td>S5</td>
+</tr>
+</table>
+</pre><p></p></ul>
+<p>然后我们再对它进行各种有趣的操作：</p>
+<ol>
+<li></li>
+把全部红色零件颜色改为粉红色；
+<p>零件颜色方面的信息是存储在 P 表中的，我们用下面的 update 语句对红色零件的颜色进行修改：</p>
 <pre>
     update P
     set COLOR = '粉红'
@@ -466,15 +686,228 @@ Jack++</p>
 <p></p>
 <li></li>
 删去全部蓝色零件及相应的 SPJ 记录；
+<p>我们首先删除蓝色零件在 SPJ 表中的相关记录：</p>
+<pre>
+    delete from SPJ
+    where PNO in
+        (select PNO
+         from P
+         where COLOR = '蓝')</pre>
+<p>[9 rows affected]</p>
+<p>执行完此操作后，SPJ 表成为</p>
+<pre>
+    select * from SPJ</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>QTY</B></color></td><td><font color=blue><B>SNO</B></color></td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P1</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P1</td>
+<td>700</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P2</td>
+<td>100</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P1</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J3</td>
+<td>P6</td>
+<td>300</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P6</td>
+<td>200</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P2</td>
+<td>100</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P6</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>J4</td>
+<td>P6</td>
+<td>500</td>
+<td>S5</td>
+</tr>
+</table>
+</pre><p>接下来我们再删除 P 表中所有蓝色零件的记录：</p>
+<pre>
+    delete from P
+    where COLOR = '蓝'</pre>
+<p>[2 rows affected]</p>
+<p>此时，P 表成为下面这个样子：</p>
+<pre>
+    select * from P</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
+</tr>
+<tr>
+<td>红</td>
+<td>螺母</td>
+<td>P1</td>
+<td>12</td>
+</tr>
+<tr>
+<td>绿</td>
+<td>螺栓</td>
+<td>P2</td>
+<td>17</td>
+</tr>
+<tr>
+<td>红</td>
+<td>螺丝刀</td>
+<td>P4</td>
+<td>14</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>红</td>
+<td>齿轮</td>
+<td>P6</td>
+<td>30</td>
+</tr>
+</table>
+</pre><p>最后对数据库进行恢复：</p>
+<pre>
+    $ nmake &gt; NIL 2&gt;&amp;1</pre>
 <p></p>
 <li></li>
 把全部螺母的重量置为 0；
-<p></p>
+<pre>
+    update P
+    set WEIGHT = 0
+    where PNAME = '螺母'</pre>
+<p>[1 row affected]</p>
+<p>此时，P 表成为下面这个样子：</p>
+<pre>
+    select * from P</pre>
+<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
+<td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
+</tr>
+<tr>
+<td>红</td>
+<td>螺母</td>
+<td>P1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>绿</td>
+<td>螺栓</td>
+<td>P2</td>
+<td>17</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>螺丝刀</td>
+<td>P3</td>
+<td>14</td>
+</tr>
+<tr>
+<td>红</td>
+<td>螺丝刀</td>
+<td>P4</td>
+<td>14</td>
+</tr>
+<tr>
+<td>蓝</td>
+<td>凸轮</td>
+<td>P5</td>
+<td>40</td>
+</tr>
+<tr style="border-bottom:2px">
+<td>红</td>
+<td>齿轮</td>
+<td>P6</td>
+<td>30</td>
+</tr>
+</table>
+</pre><p></p>
 <li></li>
 为 SPJ 表的 QTY 字段设计 CHECK 约束： 0 &lt; QTY &lt; 1000；
+<pre>
+    alter table SPJ
+    add check (QTY &gt; 0 and QTY &lt; 1000)</pre>
+<p>[0E0 rows affected]</p>
+<p>我们先尝试向 SPJ 表中插入一条 QTY = 999 的合法记录：</p>
+<pre>
+    insert into SPJ
+        (SNO, JNO, PNO, QTY)
+    values
+        ('S1','J4','P2', 999)</pre>
+<p>[1 row affected]</p>
+<p>Woot! 数据库返回的行数表明操作成功！</p>
+<p>然后我们再尝试插入一条非法记录（即破坏了我们刚设立的 QTY 的值域的记录）：</p>
+<pre>
+    insert into SPJ
+        (SNO, JNO, PNO, QTY)
+    values
+        ('S1','J4','P3',1000)</pre>
+<p>[Microsoft][ODBC SQL Server Driver][SQL Server]INSERT 语句与 COLUMN CHECK 约束 'CK__SPJ__QTY__69678A99' 冲突。该冲突发生于数据库 'zwy'，表 'SPJ', column 'QTY'。 (SQL-23000)
+[Microsoft][ODBC SQL Server Driver][SQL Server]语句已终止。 (SQL-01000)(DBD: st_execute/SQLExecute err=-1)</p>
+<p>[undefined number of rows affected]</p>
+<p>你应当看到，数据库会报怨说破坏了约束。</p>
+<p>注： 当然了，我在编写这篇文档的 POD 源
+码时是看不到的，数据库返回的表格和其他信息都是在生成这篇文档的时候根据文档
+中嵌入的 SQL 代码动态生成的。因此，如果你使用不同的 DBMA 来生成此文档，看
+到的输出可能会大相径庭。</p>
+<p>最后，像每一个好孩子那样，在玩耍之后做好清理工作：</p>
+<pre>
+    $ nmake &gt;NIL 2&gt;&amp;1</pre>
 <p></p>
 <li></li>
 实现对 SPJ 表的操作权限管理的使用。
+<p>嗯，使用下面的语句将 SPJ 表的查询权赋予我们的郑文怡老师（当然了，这只是象征性的）：</p>
+<pre>
+    grant select
+    on SPJ
+    to zwy</pre>
+<p>[Microsoft][ODBC SQL Server Driver][SQL Server]不存在这样的用户或组: 'zwy'。 (SQL-42000)(DBD: st_execute/SQLExecute err=-1)</p>
+<p>[undefined number of rows affected]</p>
+<p>啊，你看到，在我的机器上，zwy 不是一个合法的用户或组。当然了，如果我们临时创建
+一个 zwy 用户，然后再重新生成这篇文档的话，看到的输出就完全不同了，呵呵。</p>
+<p>下面我们把 P 表的所有权限都公开（这个是吴海周同学的“创意”，Wu++）：</p>
+<pre>
+    grant all privileges
+    on P
+    to public</pre>
+<p>[0E0 rows affected]</p>
+<p>这个操作理所当然应该成功哦。不久之后，我们便会意识到这么做并不是一个好主意，于是
+我们想收回所有的权利：</p>
+<pre>
+    revoke all privileges
+    on P
+    from public</pre>
+<p>[0E0 rows affected]</p>
 <p></p></ol>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">

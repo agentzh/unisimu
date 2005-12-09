@@ -10,6 +10,13 @@
 
 计算机科学与通信工程学院 江苏大学
 
+=head1 VERSION
+
+   Maintainer: Agent Zhang <agent2002@126.com>
+   Date: 19 Nov 2005
+   Last Modified: 9 Dec 2005
+   Version: 0.01
+
 =head1 实验目的
 
 要求学生掌握 SQL Server 查询分析器和 T-SQL 语言的使用方法，熟练掌握和使用简

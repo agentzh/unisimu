@@ -10,6 +10,13 @@
 
 计算机科学与通信工程学院 江苏大学
 
+=head1 VERSION
+
+   Maintainer: Agent Zhang <agent2002@126.com>
+   Date: 8 Dec 2005
+   Last Modified: 9 Dec 2005
+   Version: 0.01
+
 =head1 实验目的
 
 要求学生熟练使用和掌握数据库的维护操作，包括数据的插入、检索、修改，
@@ -54,6 +61,36 @@
 
 =shell nmake > NIL 2>&1
 
+数据库中的各个表格如下：
+
+=over
+
+=item *
+
+P 表
+
+=SQL select * from P
+
+=item *
+
+S 表
+
+=SQL select * from S
+
+=item *
+
+J 表
+
+=SQL select * from J
+
+=item *
+
+SPJ 表
+
+=SQL select * from SPJ
+
+=back
+
 然后我们再对它进行各种有趣的操作：
 
 =over
@@ -62,11 +99,7 @@
 
 把全部红色零件颜色改为粉红色；
 
-零件颜色方面的信息是存储在 P 表中的。P 表最初是这个样子的：
-
-=SQL select * from P
-
-然后我们用下面的 update 语句对红色零件的颜色进行修改：
+零件颜色方面的信息是存储在 P 表中的，我们用下面的 update 语句对红色零件的颜色进行修改：
 
 =begin SQL
 
@@ -157,16 +190,137 @@ where SNO = 'S1' and JNO = 'J1' and PNO = 'P1'
 
 删去全部蓝色零件及相应的 SPJ 记录；
 
+我们首先删除蓝色零件在 SPJ 表中的相关记录：
+
+=begin SQL
+
+delete from SPJ
+where PNO in
+    (select PNO
+     from P
+     where COLOR = '蓝')
+
+=end SQL
+
+执行完此操作后，SPJ 表成为
+
+=SQL select * from SPJ
+
+接下来我们再删除 P 表中所有蓝色零件的记录：
+
+=begin SQL
+
+delete from P
+where COLOR = '蓝'
+
+=end SQL
+
+此时，P 表成为下面这个样子：
+
+=SQL select * from P
+
+最后对数据库进行恢复：
+
+=shell nmake > NIL 2>&1
+
 =item 4.
 
 把全部螺母的重量置为 0；
+
+=begin SQL
+
+update P
+set WEIGHT = 0
+where PNAME = '螺母'
+
+=end SQL
+
+此时，P 表成为下面这个样子：
+
+=SQL select * from P
 
 =item 5.
 
 为 SPJ 表的 QTY 字段设计 CHECK 约束： 0 < QTY < 1000；
 
+=begin SQL
+
+alter table SPJ
+add check (QTY > 0 and QTY < 1000)
+
+=end SQL
+
+我们先尝试向 SPJ 表中插入一条 QTY = 999 的合法记录：
+
+=begin SQL
+
+insert into SPJ
+    (SNO, JNO, PNO, QTY)
+values
+    ('S1','J4','P2', 999)
+
+=end SQL
+
+Woot! 数据库返回的行数表明操作成功！
+
+然后我们再尝试插入一条非法记录（即破坏了我们刚设立的 QTY 的值域的记录）：
+
+=begin SQL
+
+insert into SPJ
+    (SNO, JNO, PNO, QTY)
+values
+    ('S1','J4','P3',1000)
+
+=end SQL
+
+你应当看到，数据库会报怨说破坏了约束。
+
+注： 当然了，我在编写这篇文档的 POD 源
+码时是看不到的，数据库返回的表格和其他信息都是在生成这篇文档的时候根据文档
+中嵌入的 SQL 代码动态生成的。因此，如果你使用不同的 DBMA 来生成此文档，看
+到的输出可能会大相径庭。
+
+最后，像每一个好孩子那样，在玩耍之后做好清理工作：
+
+=shell nmake >NIL 2>&1
+
 =item 6.
 
 实现对 SPJ 表的操作权限管理的使用。
+
+嗯，使用下面的语句将 SPJ 表的查询权赋予我们的郑文怡老师（当然了，这只是象征性的）：
+
+=begin SQL
+
+grant select
+on SPJ
+to zwy
+
+=end SQL
+
+啊，你看到，在我的机器上，zwy 不是一个合法的用户或组。当然了，如果我们临时创建
+一个 zwy 用户，然后再重新生成这篇文档的话，看到的输出就完全不同了，呵呵。
+
+下面我们把 P 表的所有权限都公开（这个是吴海周同学的“创意”，Wu++）：
+
+=begin SQL
+
+grant all privileges
+on P
+to public
+
+=end SQL
+
+这个操作理所当然应该成功哦。不久之后，我们便会意识到这么做并不是一个好主意，于是
+我们想收回所有的权利：
+
+=begin SQL
+
+revoke all privileges
+on P
+from public
+
+=end SQL
 
 =back

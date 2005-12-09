@@ -10,6 +10,13 @@
 
 计算机科学与通信工程学院 江苏大学
 
+=head1 VERSION
+
+   Maintainer: Agent Zhang <agent2002@126.com>
+   Date: 19 Nov 2005
+   Last Modified: 9 Dec 2005
+   Version: 0.01
+
 =head1 实验目的
 
 要求学生熟练掌握和使用 T-SQL, SQL Server 企业管理器创建数据库，基本表，视
