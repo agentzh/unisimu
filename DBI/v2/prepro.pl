@@ -128,29 +128,27 @@ sub process_sql {
     }
     print "\n=begin html\n\n";
     print qq/<pre>        <table border=1>\n/;
+    my @flds = @{ $sth->{NAME} };
     my $firstTime = 1;
-    my $row = $sth->fetchrow_hashref();
+    my $row = $sth->fetchrow_arrayref();
     if (!$row) {
         print "\n<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>\n";
     } else {
         while (1) {
-            my @flds = sort keys %$row;
             last if not $row;
             if ($firstTime) {
                 print qq/\n<tr style="border-top:2px;border-bottom:2px">\n/,
                       join('', map { "<td><font color=blue><B>$_</B></color></td>" } @flds), "\n</tr>\n";
                 $firstTime = 0;
             }
-            my %data = %$row;
-            $row = $sth->fetchrow_hashref();
+            my @data = @$row;
+            $row = $sth->fetchrow_arrayref();
             if ($row) {
                 print "<tr>\n";
             } else {
                 print qq[<tr style="border-bottom:2px">\n];
             }
-            foreach my $fld (@flds) {
-                print "<td>$data{$fld}</td>\n";
-            }
+            map { print "<td>$_</td>\n" } @data;
             print "</tr>\n";
             last if not $row;
         }

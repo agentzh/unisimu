@@ -125,10 +125,6 @@ where COLOR = '红'
 准 SQL 的解决方案，尽管在他的原始版本中有一个 typo.
 Jack++
 
-原始的 SPJ 表如下：
-
-=SQL select * from SPJ
-
 我们首先检查一下数据库中是否已经存在 S1,J1,P1 这条记录。如果是，
 则将 S1,J1,P1 的 QTY 加到 S2,J1,P1 的 QTY 上去。
 
