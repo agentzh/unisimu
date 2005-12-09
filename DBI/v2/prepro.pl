@@ -1,7 +1,7 @@
 #: prepro.pl
 #: POD preprocessor for =SQL and =shell
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-26 2005-12-07
+#: 2005-11-26 2005-12-08
 
 # TODO:
 #   Generalize this
@@ -88,13 +88,17 @@ sub process_cmd {
     return if not $cmd;
     print "    \$ $cmd\n";
     #warn $cmd;
-    system("$cmd > $tmpfile 2>&1");
-    open my $tmp, $tmpfile or
-        die "Can't open $tmpfile for reading: $!";
-    while (my $line = <$tmp>) {
-        print "    $line";
+    if ($cmd =~ m/>\s*[^"'>]+\s*$/) {
+        system ($cmd);
+    } else {
+        system("$cmd > $tmpfile 2>&1");
+        open my $tmp, $tmpfile or
+            die "Can't open $tmpfile for reading: $!";
+        while (my $line = <$tmp>) {
+            print "    $line";
+        }
+        close $tmp;
     }
-    close $tmp;
     print "\n";
 }
 
@@ -124,7 +128,7 @@ sub process_sql {
         print "\n<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>\n";
     } else {
         while (1) {
-            my @flds = keys %$row;
+            my @flds = sort keys %$row;
             last if not $row;
             if ($firstTime) {
                 print qq/\n<tr style="border-top:2px;border-bottom:2px">\n/,

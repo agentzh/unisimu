@@ -20,6 +20,7 @@
 <ul>
 
 	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
 	<li><a href="#cab5d1e9c4bfb5c4">实验目的</a></li>
 	<li><a href="#cab5d1e9d2aac7f3">实验要求</a></li>
 	<li><a href="#cab5d1e9bde1b9fb">实验结果</a></li>
@@ -31,6 +32,13 @@
 </p>
 <h1><a name="NAME">NAME</a></h1>
 <p>实验二 - 数据库的查询实验</p>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>章亦春 &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<p>3030602110 计算机0304班</p>
+<p>计算机科学与通信工程学院 江苏大学</p>
 <p>
 </p>
 <hr />
@@ -68,18 +76,7 @@
 <p>为什么要使用 T-SQL 呢？我宁可使用标准的可移值的 SQL 语言，呵呵。</p>
 <p>首先重建数据库以确保其完整性：</p>
 <pre>
-    $ nmake /nologo
-        perl eval-sql.pl -u zwy -p zwy -u zwy -p zwy schema.sql
-    eval-sql: For tatol 8 SQL statements evaluated.
-        perl csv2db.pl -u zwy -p zwy -u zwy -p zwy S.csv P.csv J.csv SPJ.csv
-      sql: insert into S (SNO,SNAME,STATUS,CITY) values (?,?,?,?)
-    info: Inserting data to S...
-      sql: insert into P (PNO,PNAME,COLOR,WEIGHT) values (?,?,?,?)
-    info: Inserting data to P...
-      sql: insert into J (JNO,JNAME,CITY) values (?,?,?)
-    info: Inserting data to J...
-      sql: insert into SPJ (SNO,PNO,JNO,QTY) values (?,?,?,?)
-    info: Inserting data to SPJ...</pre>
+    $ nmake /nologo &gt; NIL</pre>
 <p>接下来给出数据库中使用的所有数据：</p>
 <ul>
 <li></li>
@@ -87,36 +84,36 @@ S 表
 <pre>
     select * from S</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>CITY</B></color></td><td><font color=blue><B>SNAME</B></color></td><td><font color=blue><B>STATUS</B></color></td>
+<td><font color=blue><B>CITY</B></color></td><td><font color=blue><B>SNAME</B></color></td><td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>STATUS</B></color></td>
 </tr>
 <tr>
-<td>S1</td>
 <td>天津</td>
 <td>精益</td>
+<td>S1</td>
 <td>20</td>
 </tr>
 <tr>
-<td>S2</td>
 <td>北京</td>
 <td>盛锡</td>
+<td>S2</td>
 <td>10</td>
 </tr>
 <tr>
-<td>S3</td>
 <td>北京</td>
 <td>东方红</td>
+<td>S3</td>
 <td>30</td>
 </tr>
 <tr>
-<td>S4</td>
 <td>天津</td>
 <td>丰泰盛</td>
+<td>S4</td>
 <td>20</td>
 </tr>
 <tr style="border-bottom:2px">
-<td>S5</td>
 <td>上海</td>
 <td>为民</td>
+<td>S5</td>
 <td>30</td>
 </tr>
 </table>
@@ -126,43 +123,43 @@ P 表
 <pre>
     select * from P</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>WEIGHT</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>PNAME</B></color></td>
+<td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
 </tr>
 <tr>
 <td>红</td>
-<td>12</td>
-<td>P1</td>
 <td>螺母</td>
+<td>P1</td>
+<td>12</td>
 </tr>
 <tr>
 <td>绿</td>
-<td>17</td>
-<td>P2</td>
 <td>螺栓</td>
+<td>P2</td>
+<td>17</td>
 </tr>
 <tr>
 <td>蓝</td>
-<td>14</td>
-<td>P3</td>
 <td>螺丝刀</td>
+<td>P3</td>
+<td>14</td>
 </tr>
 <tr>
 <td>红</td>
-<td>14</td>
-<td>P4</td>
 <td>螺丝刀</td>
+<td>P4</td>
+<td>14</td>
 </tr>
 <tr>
 <td>蓝</td>
-<td>40</td>
-<td>P5</td>
 <td>凸轮</td>
+<td>P5</td>
+<td>40</td>
 </tr>
 <tr style="border-bottom:2px">
 <td>红</td>
-<td>30</td>
-<td>P6</td>
 <td>齿轮</td>
+<td>P6</td>
+<td>30</td>
 </tr>
 </table>
 </pre><p></p>
@@ -171,41 +168,41 @@ J 表
 <pre>
     select * from J</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>JNAME</B></color></td><td><font color=blue><B>CITY</B></color></td><td><font color=blue><B>JNO</B></color></td>
+<td><font color=blue><B>CITY</B></color></td><td><font color=blue><B>JNAME</B></color></td><td><font color=blue><B>JNO</B></color></td>
 </tr>
 <tr>
-<td>三建</td>
 <td>北京</td>
+<td>三建</td>
 <td>J1</td>
 </tr>
 <tr>
-<td>一汽</td>
 <td>长春</td>
+<td>一汽</td>
 <td>J2</td>
 </tr>
 <tr>
-<td>弹簧厂</td>
 <td>天津</td>
+<td>弹簧厂</td>
 <td>J3</td>
 </tr>
 <tr>
-<td>造船厂</td>
 <td>天津</td>
+<td>造船厂</td>
 <td>J4</td>
 </tr>
 <tr>
-<td>机车厂</td>
 <td>唐山</td>
+<td>机车厂</td>
 <td>J5</td>
 </tr>
 <tr>
-<td>无线电厂</td>
 <td>常州</td>
+<td>无线电厂</td>
 <td>J6</td>
 </tr>
 <tr style="border-bottom:2px">
-<td>半导体厂</td>
 <td>南京</td>
+<td>半导体厂</td>
 <td>J7</td>
 </tr>
 </table>
@@ -215,121 +212,121 @@ SPJ 表
 <pre>
     select * from SPJ</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>QTY</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>JNO</B></color></td>
+<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>QTY</B></color></td><td><font color=blue><B>SNO</B></color></td>
 </tr>
 <tr>
-<td>S1</td>
-<td>200</td>
-<td>P1</td>
 <td>J1</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>100</td>
 <td>P1</td>
-<td>J3</td>
+<td>200</td>
+<td>S1</td>
 </tr>
 <tr>
+<td>J3</td>
+<td>P1</td>
+<td>100</td>
 <td>S1</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P1</td>
 <td>700</td>
-<td>P1</td>
-<td>J4</td>
-</tr>
-<tr>
 <td>S1</td>
-<td>100</td>
+</tr>
+<tr>
+<td>J2</td>
 <td>P2</td>
-<td>J2</td>
+<td>100</td>
+<td>S1</td>
 </tr>
 <tr>
-<td>S2</td>
-<td>400</td>
-<td>P3</td>
 <td>J1</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>200</td>
 <td>P3</td>
-<td>J2</td>
+<td>400</td>
+<td>S2</td>
 </tr>
 <tr>
+<td>J2</td>
+<td>P3</td>
+<td>200</td>
 <td>S2</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P3</td>
 <td>500</td>
-<td>P3</td>
-<td>J4</td>
+<td>S2</td>
 </tr>
 <tr>
-<td>S2</td>
-<td>400</td>
-<td>P3</td>
 <td>J5</td>
-</tr>
-<tr>
-<td>S2</td>
+<td>P3</td>
 <td>400</td>
-<td>P5</td>
-<td>J1</td>
-</tr>
-<tr>
 <td>S2</td>
-<td>100</td>
-<td>P5</td>
-<td>J2</td>
 </tr>
 <tr>
-<td>S3</td>
-<td>200</td>
+<td>J1</td>
+<td>P5</td>
+<td>400</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>P5</td>
+<td>100</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>J1</td>
 <td>P1</td>
-<td>J1</td>
-</tr>
-<tr>
+<td>200</td>
 <td>S3</td>
-<td>200</td>
-<td>P3</td>
-<td>J1</td>
 </tr>
 <tr>
-<td>S4</td>
-<td>100</td>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>J1</td>
 <td>P5</td>
-<td>J1</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>300</td>
-<td>P6</td>
-<td>J3</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>200</td>
-<td>P6</td>
-<td>J4</td>
-</tr>
-<tr>
-<td>S5</td>
 <td>100</td>
-<td>P2</td>
-<td>J4</td>
+<td>S4</td>
 </tr>
 <tr>
-<td>S5</td>
-<td>200</td>
-<td>P3</td>
-<td>J1</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>200</td>
+<td>J3</td>
 <td>P6</td>
+<td>300</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P6</td>
+<td>200</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>J4</td>
+<td>P2</td>
+<td>100</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>P3</td>
+<td>200</td>
+<td>S5</td>
+</tr>
+<tr>
 <td>J2</td>
+<td>P6</td>
+<td>200</td>
+<td>S5</td>
 </tr>
 <tr style="border-bottom:2px">
-<td>S5</td>
-<td>500</td>
-<td>P6</td>
 <td>J4</td>
+<td>P6</td>
+<td>500</td>
+<td>S5</td>
 </tr>
 </table>
 </pre><p></p></ul>
@@ -502,19 +499,19 @@ SPJ 表
     group by JNO
     order by QTY desc</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>QTY</B></color></td><td><font color=blue><B>JNO</B></color></td>
+<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>QTY</B></color></td>
 </tr>
 <tr>
-<td>700</td>
 <td>J4</td>
+<td>700</td>
 </tr>
 <tr>
-<td>400</td>
 <td>J1</td>
+<td>400</td>
 </tr>
 <tr style="border-bottom:2px">
-<td>100</td>
 <td>J3</td>
+<td>100</td>
 </tr>
 </table>
 </pre><p></p></ol>

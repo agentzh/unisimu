@@ -2,6 +2,14 @@
 
 实验二 - 数据库的查询实验
 
+=head1 AUTHOR
+
+章亦春 E<lt>agent2002@126.comE<gt>
+
+3030602110 计算机0304班
+
+计算机科学与通信工程学院 江苏大学
+
 =head1 实验目的
 
 要求学生掌握 SQL Server 查询分析器和 T-SQL 语言的使用方法，熟练掌握和使用简
@@ -45,7 +53,7 @@
 
 首先重建数据库以确保其完整性：
 
-=shell nmake /nologo
+=shell nmake /nologo > NIL
 
 接下来给出数据库中使用的所有数据：
 
