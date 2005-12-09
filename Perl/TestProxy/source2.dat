@@ -1,0 +1,4 @@
+http://www.cnproxy.com/proxy1.html
+[% FOREACH record %]
+<tr><td>[% IP %]:[% port %]</td><td>HTTP</td><td>[% ... %]</td><td>[% ... %]</td></tr>
+[% END -%]

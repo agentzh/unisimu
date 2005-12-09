@@ -1,0 +1,19 @@
+http://proxy.spousecare.com/anonproxy/chineseproxy.htm
+[%- FOREACH record %]
+<TR bgColor=[% ... %]>
+<TD>[% IP %]</TD>
+<TD>[% port %]</TD>
+<TD>[% ... %]</TD>
+<TD>China</TD>
+<TD>[% ... %]</TD></TR>
+[% END -%]
+
+http://proxy.spousecare.com/anonproxy/proxy1.htm
+[%- FOREACH record %]
+<TR bgColor=[% ... %]>
+<TD>[% IP %]</TD>
+<TD>[% port %]</TD>
+<TD>[% ... %]</TD>
+<TD>[% ... %]</TD>
+<TD>[% ... %]</TD></TR>
+[% END -%]
