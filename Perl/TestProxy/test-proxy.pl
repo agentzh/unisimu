@@ -2,7 +2,7 @@
 #: test and filter out available proxies
 #: v0.04
 #: Agent2002. Copyright 2004-2005.
-#: 2005-01-01 2005-12-08
+#: 2005-01-01 2005-12-11
 
 use strict;
 use warnings;
@@ -62,7 +62,8 @@ open (my $fh, ">>$logfile") or
 local $| = 1;
 print $fh "\n\n" . "==" x 15 . "\n";
 print $fh "Time: ".scalar(localtime)."\n";
-print $fh "Target Web Site: $url\n\n";
+print $fh "Target Web Site: $url\n";
+print $fh "List File: @listfiles\n\n";
 
 my $thr_sema = Thread::Semaphore->new($MAX_THREADS);
 my $tm_sema = Thread::Semaphore->new(1);
@@ -111,7 +112,7 @@ foreach my $proxy (@proxies) {
         $tm_sema->down;
         my $elapsed = time() - $init;
         $tm_sema->up;
-        print $fh "$proxy  =>  $elapsed\n";
+        print $fh "$proxy  =>  $elapsed sec\n";
         warn "$tid: It seems good: $elapsed sec.\n";
         $thr_sema->up;
         {
@@ -122,35 +123,11 @@ foreach my $proxy (@proxies) {
     }
 }
 
-# Loop through all the threads 
-#foreach my $thr (threads->list) { 
-    # Don't join the main thread or ourselves 
-#    if ($thr->tid && !threads::equal($thr, threads->self)) { 
-#        my ($proxy, $elapsed) = $thr->join;
-#        push @testres, [$proxy, $elapsed] if $proxy;
-#    } 
-#}
-
 while ($nthrs != 0) {
     threads->yield;
 }
 
 exit(0);
-
-warn "No proxy available.\n" unless @testres;
-@testres = sort { $b->[1] <=> $a->[1] } @testres;
-print "\nTest Result ($url):\n";
-print $fh "\nTest Result ($url):\n";
-foreach (@testres) {
-    print "    $_->[0]  =>  $_->[1] sec\n";
-    print $fh "    $_->[0]  =>  $_->[1] sec\n";
-}
-close $fh;
-
-print STDERR "Press any key to continue";
-<STDIN>;
-
-0;
 
 sub read_proxy {
     my $fname = shift;
