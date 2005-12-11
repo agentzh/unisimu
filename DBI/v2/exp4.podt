@@ -42,5 +42,93 @@
 
 编程输出如下报表：
 
+=begin html
+
+<pre>
+    <table border=1>
+    <tr>
+    <td>&nbsp;<B>供应商</B>&nbsp;</td>
+    <td>&nbsp;<B>零件</B>&nbsp;</td>
+    <td>&nbsp;<B>工程项目</B>&nbsp;</td>
+    <td>&nbsp;<B>数量</B>&nbsp;</td>
+    </tr>
+    </table>
+</pre>
+
+=end html
+
 =back
 
+=head1 实验结果
+
+=over
+
+=item 1.
+
+找出向北京供应商购买重量大于 30 的零件的工程号
+
+=begin SQL
+
+select distinct JNO
+from S, SPJ, P
+where S.SNO = SPJ.SNO and SPJ.PNO = P.PNO and
+    S.CITY = '北京' and P.WEIGHT > 30
+
+=end SQL
+
+=item 2.
+
+找出工程项目 J2 使用的各种零件的名称及其数量；
+
+=begin SQL
+
+select PNAME, sum(QTY) QTY
+from SPJ, P
+where SPJ.PNO = P.PNO and JNO = 'J2'
+group by PNAME
+
+=end SQL
+
+=item 3.
+
+按工程号递增的顺序列出每个工程购买的零件总数；
+
+=begin SQL
+
+select JNO, sum(QTY) QTY
+from SPJ
+group by JNO
+order by JNO asc
+
+=end SQL
+
+=item 4.
+
+编程输出如下报表：
+
+=begin html
+
+<pre>
+    <table border=1>
+    <tr>
+    <td>&nbsp;<B>供应商</B>&nbsp;</td>
+    <td>&nbsp;<B>零件</B>&nbsp;</td>
+    <td>&nbsp;<B>工程项目</B>&nbsp;</td>
+    <td>&nbsp;<B>数量</B>&nbsp;</td>
+    </tr>
+    </table>
+</pre>
+
+=end html
+
+我们使用下面的 SQL 查询来生成报表：
+
+=begin SQL
+
+select SNAME 供应商, PNAME 零件, JNAME 工程项目, QTY 数量
+from S, J, P, SPJ
+where S.SNO = SPJ.SNO and J.JNO = SPJ.JNO and P.PNO = SPJ.PNO
+
+=end SQL
+
+=back
