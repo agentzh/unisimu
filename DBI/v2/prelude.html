@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>前序 - 数据库的概念模型与关系模型</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;前序 - 数据库的概念模型与关系模型</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#b8c5c4eec4a3d0cd">概念模型</a></li>
+	<li><a href="#b9d8cfb5c4a3d0cd">关系模型</a></li>
+	<li><a href="#cab5d1e9b1a8b8e6b5c4c9fab3c9">实验报告的生成</a></li>
+	<li><a href="#cec4b5b5c9fab3c9b9a4bedfb5c4bfc9d2c6d6b2d0d4b2e2cad4">文档生成工具的可移植性测试</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>前序 - 数据库的概念模型与关系模型</p>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>章亦春 &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<p>3030602110 计算机0304班</p>
+<p>计算机科学与通信工程学院 江苏大学</p>
+<p>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+   Maintainer: Agent Zhang &lt;agent2002@126.com&gt;
+   Date: 19 Nov 2005
+   Last Modified: 9 Dec 2005
+   Version: 0.01</pre>
+<p>
+</p>
+<hr />
+<h1><a name="b8c5c4eec4a3d0cd">概念模型</a></h1>
+<p>概念模型的描述如下：</p>
+<pre>
+    供应商（[供应商代码]，供应商名，供应商状态，所在城市）
+    零件（[零件代码]，零件名，颜色，重量）
+    工程项目（[工程项目代码]，工程项目名，所在城市）</pre>
+<pre>
+    供应情况 供应商:零件:工程项目 = m:n:p （供应数量）</pre>
+<p>其实上面的概念模型的描述记法已经正规化了，我编写了一个 E-R 图生成器，
+能够直接根据上面的概念模型描述生成对应的 E-R 图：</p>
+<pre>
+    <img src="er-diagram.png" alt="E-R Diagram"/>
+</pre><p>具体说来，概念模型的文字描述放在了 <em>er-diagram.cm</em> 文件中，然后用下面
+的命令便可以生成 PNG 格式的 E-R 图了：</p>
+<pre>
+    $ er-diag -s 4x4 er-diagram.cm
+    er-diagram.png generated.</pre>
+<p>Hooray!</p>
+<p>顺便提一下，``-s 4x4'' 的意思是将 PNG 图片的宽和高分别设为 4 英寸。</p>
+<p>
+</p>
+<hr />
+<h1><a name="b9d8cfb5c4a3d0cd">关系模型</a></h1>
+<p>在将概念模型转换到关系模型的过程中，命名方法亦从汉语转换成了英语：</p>
+<ul>
+<li></li>
+供应商（[供应商代码]，供应商名，供应商状态，所在城市）
+<pre>
+    S ( [SNO], SNAME, STATUS, CITY )</pre>
+<p></p>
+<li></li>
+零件（[零件代码]，零件名，颜色，重量）
+<pre>
+    P ( [PNO], PNAME, COLOR, WEIGHT )</pre>
+<p></p>
+<li></li>
+工程项目（[工程项目代码]，工程项目名，所在城市）
+<pre>
+    J ( [JNO], JNAME, CITY )</pre>
+<p></p>
+<li></li>
+供应情况 供应商:零件:工程项目 = m:n:p （供应数量）
+<pre>
+    SPJ ( [ {SNO}, {PNO}, {JNO} ], QTY )</pre>
+<p></p></ul>
+<p>使用 SQL DDL 描述就是：</p>
+<pre>
+    drop table SPJ</pre>
+<pre>
+    drop table S</pre>
+<pre>
+    drop table P</pre>
+<pre>
+    drop table J</pre>
+<pre>
+    create table S
+        (SNO varchar(8) primary key,
+         SNAME varchar(8),
+         STATUS integer,
+         CITY varchar(6))</pre>
+<pre>
+    create table P
+        (PNO varchar(8) primary key,
+         PNAME varchar(8),
+         COLOR varchar(4),
+         WEIGHT integer)</pre>
+<pre>
+    create table J
+        (JNO varchar(8) primary key,
+         JNAME varchar(8),
+         CITY varchar(8))</pre>
+<pre>
+    create table SPJ
+        (SNO varchar(8),
+         PNO varchar(8),
+         JNO varchar(8),
+         QTY integer,
+         primary key (SNO, PNO, JNO),
+         foreign key (SNO) references S,
+         foreign key (PNO) references P,
+         foreign key (JNO) references J)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="cab5d1e9b1a8b8e6b5c4c9fab3c9">实验报告的生成</a></h1>
+<p>本实验共有四个小实验，每个小实验都对应一份单独的报告。所有的 HTML 格式
+的报告都是程序自动生成的。下面是根据项目的 Makefile 自动生成的文件构造
+流程图：</p>
+<pre>
+    <img src="doc.png" alt="File building process" width=900/>
+</pre><p>
+</p>
+<hr />
+<h1><a name="cec4b5b5c9fab3c9b9a4bedfb5c4bfc9d2c6d6b2d0d4b2e2cad4">文档生成工具的可移植性测试</a></h1>
+<p>让我的文档生成工具使用完全不同的 RDBMS 是非常容易的。我们要做的只是在
+执行 ``nmake doc'' 命令之前设置适当的 DSN 环境变量，例如</p>
+<pre>
+    set DSN=DBI:SQLite:dbname=zwy.db</pre>
+<p>就会使我们的工具使用 SQLite 数据库，并将之创建在当前工作目录的 zwy.db
+文件中。</p>
+<p>使用 Windows 的 Access 或者 MS SQL Server 数据库也是很简单的，只需
+利用控制面板中的“ODBC数据源”工具建立指向目标数据库的 ODBC 数据源，比如
+取名叫 foo，则用下面的命令就可以使我们的文档生成器指向它：</p>
+<pre>
+    set DSN=DBI:ODBC:foo</pre>
+<p>这里的 foo 可以指向 ODBC 支持的任何种类的数据库，包括 MS Access,
+MS dBase, MS Excel, Oracle, Visual FoxPro, 以及
+MS SQL Server.</p>
+<p>经过测试，MS SQL Server 支持所有的四个报告中使用的 SQL 查询（事实上，
+在实验三中的几个 SQL 语句使用了 T-SQL 特有的语法）。</p>
+<p>MS Access 支持文档中的大部分 SQL 语句，但由于该数据库本身的局限性，实验
+二的最后一个稍微复杂了一些的查询和实验三的一些查询未能通过：</p>
+<pre>
+    select JNO, sum(QTY) as Quantity
+    from SPJ
+    where PNO = 'P1'
+    group by JNO
+    order by Quantity desc</pre>
+<p>DBD::ODBC::st execute failed: [Microsoft][ODBC Microsoft Access Driver]
+参数不足，期待是1。 (SQL-07002)(DBD: st_execute/SQLExecute err=-1)</p>
+<pre>
+    update SPJ
+    set QTY =
+        (select sum(QTY)
+         from SPJ
+         where SNO in ('S1', 'S2') and JNO = 'J1' and PNO = 'P1')
+    where SNO = 'S2' and JNO = 'J1' and PNO = 'P1' and exists
+        (select *
+         from SPJ
+         where SNO = 'S1' and JNO = 'J1' and PNO = 'P1')</pre>
+<p>DBD::ODBC::st execute failed: [Microsoft][ODBC Microsoft Access Driver]
+操作必须使用一个可更新的查询。 (SQL-HY000)(DBD: st_execute/SQLExecute err=-1)</p>
+<pre>
+    alter table SPJ
+    add check (QTY &gt; 0 and QTY &lt; 1000)</pre>
+<p>[Microsoft][ODBC Microsoft Access Driver] 字段定义语法错误。
+(SQL-42000)(DBD: st_prepare/SQLPrepare err=-1)</p>
+<pre>
+    grant select
+    on SPJ
+    to zwy</pre>
+<p>[Microsoft][ODBC Microsoft Access Driver] 无效的 SQL语句；
+期待 'DELETE'、'INSERT'、'PROCEDURE'、'SELECT'、或 'UPDATE'。
+(SQL-42000)(DBD: st_prepare/SQLPrepare err=-1)</p>
+<pre>
+    revoke all privileges
+    on P
+    from public</pre>
+<p>[Microsoft][ODBC Microsoft Access Driver] 无效的 SQL语句；
+期待 'DELETE'、'INSERT'、'PROCEDURE'、'SELECT'、或 'UPDATE'。
+(SQL-42000)(DBD: st_prepare/SQLPrepare err=-1)</p>
+<p>我还用 Linux 程序员们喜爱的 SQLite 进行了测试。结果表明，除实验三使用
+的与 check 和授权有关的查询之外，实验一、实验二和实验四所有的 SQL 语句
+都能成功执行。实验三中失败的几个查询如下：</p>
+<pre>
+    alter table SPJ
+    add check (QTY &gt; 0 and QTY &lt; 1000)</pre>
+<p>DBD::SQLite::db prepare failed: near ``check'':
+syntax <code>error(1)</code> at dbdimp.c line 269</p>
+<pre>
+    grant select
+    on SPJ
+    to zwy</pre>
+<p>near ``grant'': syntax <code>error(1)</code> at dbdimp.c line 269</p>
+<pre>
+    revoke all privileges
+    on P
+    from public</pre>
+<p>near ``revoke'': syntax <code>error(1)</code> at dbdimp.c line 269</p>
+<p>我们看到，SQLite 虽然小巧，但支持的标准 SQL 特性还是比较多的。</p>
+<p>从性能上讲，在我的 Windows 2000 的机器上，MS SQL Server 2000 的性能比
+MS Access 2003 和 SQLite 3.x 都要好得多；而后两者性能相近。</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;前序 - 数据库的概念模型与关系模型</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
