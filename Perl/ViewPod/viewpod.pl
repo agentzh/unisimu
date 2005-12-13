@@ -267,15 +267,23 @@ sub show_modlist : Private {
         <ul>
     _EOC_
     my $last_sp;
+    my $count = 0;
     foreach my $name (sort keys %modules) {
         if (!$last_sp or namesp($name) ne $last_sp) {
             $html .= "<p>\n";
             $last_sp = namesp($name);
         }
-        $html .= qq[    <li><a href="/$name"> $name </a></li>\n];
+        $html .= qq[    <li><a href="/$name"> $name&nbsp;&nbsp;&nbsp;&nbsp;
+        $modules{$name}->{ver}</a></li>\n];
+        $count++;
     }
-    $html .= <<'    _EOC_';
+    $html .= <<"    _EOC_";
         </ul>
+        <p>
+        <p>
+        <hr><br><center>
+        <font color=green><B>For Total $count Modules Installed.</B></font>
+            </center>
         </body>
         </html>
     _EOC_
