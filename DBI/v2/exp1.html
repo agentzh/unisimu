@@ -182,7 +182,9 @@
         perl csv2db.pl -u zwy -p zwy $(FLAGS) S.csv P.csv J.csv SPJ.csv</pre>
 <pre>
     doc: exp1.podx exp1.pod exp1.html exp2.podx exp2.pod exp2.html \
-        exp3.podx exp3.pod exp3.html exp4.podx exp4.pod exp4.html</pre>
+        exp3.podx exp3.pod exp3.html exp4.podx exp4.pod exp4.html \
+        prelude.podt prelude.pod prelude.html \
+        er-diagram.png</pre>
 <pre>
     .SUFFIXES: .podt .podx .pod .html</pre>
 <pre>
@@ -196,13 +198,16 @@
         podhtm -s Active.css $&lt;
         $(RM_F) *.tmp</pre>
 <pre>
+    er-diagram.png: er-diagram.cm
+        er-diag -s 4x4 er-diagram.cm</pre>
+<pre>
     clean:
         $(RM_F) *.pod *.podx NIL</pre>
 <p>这样一旦我的数据库遭到了破坏或者需要重新建库，我就只需输入下面一行命令就万事大吉了：</p>
 <pre>
     $ nmake
     
-    Microsoft (R) 程序维护实用工具 7.00.9466 版
+    Microsoft (R) 程序维护实用工具 7.10.3077 版
     版权所有 (C) Microsoft Corporation。保留所有权利。
     
         perl eval-sql.pl -u zwy -p zwy -u zwy -p zwy schema.sql
