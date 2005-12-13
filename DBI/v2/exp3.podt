@@ -125,8 +125,8 @@ where COLOR = '红'
 准 SQL 的解决方案，尽管在他的原始版本中有一个 typo.
 Jack++
 
-我们首先检查一下数据库中是否已经存在 S1,J1,P1 这条记录。如果是，
-则将 S1,J1,P1 的 QTY 加到 S2,J1,P1 的 QTY 上去。
+我们首先检查一下数据库中是否同时存在 S2,J1,P1 和 S1,J1,P1 这两条记录。
+如果是，则将 S1,J1,P1 的 QTY 加到 S2,J1,P1 的 QTY 上去。
 
 =begin SQL
 
@@ -142,7 +142,7 @@ where SNO = 'S2' and JNO = 'J1' and PNO = 'P1' and exists
 
 =end SQL
 
-接下来，如果已存在 S2,J1,P1 记录的话，就将 S1,J1,P1 记录全部删除：
+接下来，如果已存在 S2,J1,P1 记录的话，就将记录 S1,J1,P1 删除：
 
 =begin SQL
 
@@ -155,7 +155,7 @@ where SNO = 'S1' and JNO = 'J1' and PNO = 'P1'
 
 =end SQL
 
-最后如果数据库中不存在 S2,J1,P1 记录的话，我们就将 S1,J1,P1 记录的 S1 简
+最后，如果数据库中不存在 S2,J1,P1 记录的话，我们就将 S1,J1,P1 记录的 S1 简
 单地改写为 S2：
 
 =begin SQL
