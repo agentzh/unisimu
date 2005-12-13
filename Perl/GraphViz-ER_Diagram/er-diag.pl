@@ -2,7 +2,7 @@
 #: E-R Diagram generator based on Graphviz
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-12-03 2005-12-03
+#: 2005-12-03 2005-12-11
 
 use strict;
 use warnings;
@@ -18,7 +18,7 @@ use encoding 'GB2312';
 use Encode qw/decode/;
 
 my %opts;
-getopts('o:f:trh', \%opts);
+getopts('o:f:s:trh', \%opts);
 
 if ($opts{h}) {
     print <<'_EOC_';
@@ -33,6 +33,8 @@ options:
     -h             Print this help to stdout.
     -t             No properties (trim mode)
     -r             Relation only
+    -s <w>x<h>     Specify the size (both for
+                   width and height)
 
 Report bugs to Agent Zhang <agent2002@126.com>.
 _EOC_
@@ -42,6 +44,9 @@ _EOC_
 my $encoding = $opts{e} || 'GB2312';
 my $font = $opts{f} || 'simsun.ttc';
 my $trim = $opts{t};
+my $size = $opts{s};
+my ($width, $height);
+($width, $height) = split 'x', $opts{s} if $opts{s};
 my $rel_only = $opts{r};
 my $infile = shift or
     die "error: No input file specified.\n",
@@ -88,19 +93,17 @@ my %InitArgs = (
     ratio => 'auto',
     #no_overlap => 1,
     directed => 0,
-    height => 40,
-    width => 40,
-    pageheight => 100,
-    pageheight => 100,
+    height => $height,
+    width => $width,
     node => \%EntityStyle,
     edge => \%EdgeStyle,
 );
 
 #$InitArgs{layout} = 'fdp' if $rel_only;
-if (not $rel_only and not $trim) {
+#if (not $rel_only and not $trim) {
     #undef $InitArgs{height};
     #undef $InitArgs{width};
-}
+#}
 $InitArgs{no_overlap} = 1 if $rel_only;
 
 our %Nodes;
@@ -119,10 +122,11 @@ while (<$in>) {
     $_ = adjust($_);
     next if /^\s*$/;
     if (/^ \s* ($idpat) \s*
-          \( \s* ( $idpat2 (?: \s* , \s* $idpat2 )* ) \s* \) \s* $/x) {
+          \( \s* ( $idpat2 (?: \s* , \s* $idpat2 )* )? \s* \) \s* $/x) {
         #print "Match entity($.): $1 ==>\n";
         my ($entity, $list) = ($1, $2);
-        my @props = split( /\s*,\s*/, $list );
+        my @props;
+        @props = split( /\s*,\s*/, $list ) if $list;
         #print "@props\n";
         # add Entity node
         (my $key = $entity) =~ s/^\[|\]$//g;
@@ -156,20 +160,29 @@ while (<$in>) {
     }
     elsif (/^ \s* ($idpat) \s+
               ($idpat \s* : \s* $idpat (?: \s* : \s* $idpat )*) \s* =
-              \s* (\w+ \s* : \s* \w+ (?: \s* : \s* \w+ )*) \s* $/x) {
+              \s* (\w+ \s* : \s* \w+ (?: \s* : \s* \w+ )*)
+              (?: \s* \( \s* ($idpat (?: \s* , \s* $idpat )*) \s* \) )? \s* $/x) {
         #print "Match Relationshifp($.): $1 ==>\n";
-        my ($rel, $list1, $list2) = ($1, $2, $3);
+        my ($rel, $list1, $list2, $list3) = ($1, $2, $3, $4);
         my @entities = split /\s*:\s*/, $list1;
         my @scales = split /\s*:\s*/, $list2;
+        my @props;
+        @props = split /\s*,\s*/, $list3 if $list3;
         #print "@entities, @scales\n";
         my $rel_id = gen_id();
-        $gv->add_node($rel_id, label => $rel, %RelationStyle);
+        $gv->add_node($rel_id, label => $rel, %RelationStyle) if not $trim or @props;
         my $i = 0;
         foreach my $entity (@entities) {
             my $entity_id = $entity_ids{$entity} or
                 error("entity $entity not found");
             $gv->add_edge($rel_id => $entity_id, label => $scales[$i]) if not $trim;
             $i++;
+        }
+        foreach (@props) {
+            my $prop = gen_id();
+            # add property node
+            $gv->add_node($prop, label => $_, %PropStyle) if not $rel_only;
+            $gv->add_edge($prop => $rel_id) if not $rel_only;
         }
     }
     else {
