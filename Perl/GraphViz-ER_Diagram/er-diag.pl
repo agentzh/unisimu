@@ -2,15 +2,10 @@
 #: E-R Diagram generator based on Graphviz
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-12-03 2005-12-11
+#: 2005-12-03 2005-12-13
 
 use strict;
 use warnings;
-
-#BEGIN {
-#    binmode(\*STDOUT, ":utf8");
-#    binmode(\*STDERR, ":utf8");
-#}
 
 use GraphViz;
 use Getopt::Std;
@@ -99,17 +94,12 @@ my %InitArgs = (
     edge => \%EdgeStyle,
 );
 
-#$InitArgs{layout} = 'fdp' if $rel_only;
-#if (not $rel_only and not $trim) {
-    #undef $InitArgs{height};
-    #undef $InitArgs{width};
-#}
 $InitArgs{no_overlap} = 1 if $rel_only;
 
 our %Nodes;
 
 open my $in, $infile or
-	die "error: Can't open $infile for reading: $!\n";
+    die "error: Can't open $infile for reading: $!\n";
 
 my $gv = GraphViz->new(%InitArgs);
 
