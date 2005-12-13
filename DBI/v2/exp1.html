@@ -61,7 +61,7 @@
 <hr />
 <h1><a name="cab5d1e9c4bfb5c4">实验目的</a></h1>
 <p>要求学生熟练掌握和使用 T-SQL, SQL Server 企业管理器创建数据库，基本表，视
-图、索引和修改表结构，及向数据库输主数居的操作；学会创建和使用表的主外码和约
+图、索引和修改表结构，及向数据库输入数据的操作；学会创建和使用表的主、外码和约
 束。</p>
 <p>
 </p>
@@ -181,10 +181,12 @@
         perl eval-sql.pl -u zwy -p zwy $(FLAGS) schema.sql
         perl csv2db.pl -u zwy -p zwy $(FLAGS) S.csv P.csv J.csv SPJ.csv</pre>
 <pre>
-    doc: exp1.podx exp1.pod exp1.html exp2.podx exp2.pod exp2.html \
-        exp3.podx exp3.pod exp3.html exp4.podx exp4.pod exp4.html \
-        prelude.podt prelude.pod prelude.html \
-        er-diagram.png</pre>
+    doc: exp1.podx exp1.pod exp1.html \
+        exp2.podx exp2.pod exp2.html \
+        exp4.podx exp4.pod exp4.html \
+        prelude.podx prelude.pod prelude.html \
+        er-diagram.png \
+        exp3.podx exp3.pod exp3.html</pre>
 <pre>
     .SUFFIXES: .podt .podx .pod .html</pre>
 <pre>
@@ -207,7 +209,7 @@
 <pre>
     $ nmake
     
-    Microsoft (R) 程序维护实用工具 7.10.3077 版
+    Microsoft (R) 程序维护实用工具 7.00.9466 版
     版权所有 (C) Microsoft Corporation。保留所有权利。
     
         perl eval-sql.pl -u zwy -p zwy -u zwy -p zwy schema.sql

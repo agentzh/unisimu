@@ -107,60 +107,60 @@
 <li></li>
 找出工程项目 J2 使用的各种零件的名称及其数量；
 <pre>
-    select PNAME, sum(QTY) QTY
+    select PNAME, sum(QTY) as Quantity
     from SPJ, P
     where SPJ.PNO = P.PNO and JNO = 'J2'
     group by PNAME</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>QTY</B></color></td>
+<td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>Quantity</B></color></td>
 </tr>
 <tr>
 <td>齿轮</td>
-<td>200</td>
+<td>200.0</td>
 </tr>
 <tr>
 <td>螺栓</td>
-<td>100</td>
+<td>100.0</td>
 </tr>
 <tr>
 <td>螺丝刀</td>
-<td>200</td>
+<td>200.0</td>
 </tr>
 <tr style="border-bottom:2px">
 <td>凸轮</td>
-<td>100</td>
+<td>100.0</td>
 </tr>
 </table>
 </pre><p></p>
 <li></li>
 按工程号递增的顺序列出每个工程购买的零件总数；
 <pre>
-    select JNO, sum(QTY) QTY
+    select JNO, sum(QTY) as Quantity
     from SPJ
     group by JNO
     order by JNO asc</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>QTY</B></color></td>
+<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>Quantity</B></color></td>
 </tr>
 <tr>
 <td>J1</td>
-<td>1700</td>
+<td>1700.0</td>
 </tr>
 <tr>
 <td>J2</td>
-<td>600</td>
+<td>600.0</td>
 </tr>
 <tr>
 <td>J3</td>
-<td>400</td>
+<td>400.0</td>
 </tr>
 <tr>
 <td>J4</td>
-<td>2000</td>
+<td>2000.0</td>
 </tr>
 <tr style="border-bottom:2px">
 <td>J5</td>
-<td>400</td>
+<td>400.0</td>
 </tr>
 </table>
 </pre><p></p>
@@ -177,7 +177,7 @@
     </table>
 </pre><p>我们使用下面的 SQL 查询来生成报表：</p>
 <pre>
-    select SNAME 供应商, PNAME 零件, JNAME 工程项目, QTY 数量
+    select SNAME as 供应商, PNAME as 零件, JNAME as 工程项目, QTY as 数量
     from S, J, P, SPJ
     where S.SNO = SPJ.SNO and J.JNO = SPJ.JNO and P.PNO = SPJ.PNO</pre>
 <pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">

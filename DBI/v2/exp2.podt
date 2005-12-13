@@ -237,11 +237,11 @@ where not exists
 
 =begin SQL
 
-select JNO, sum(QTY) QTY
+select JNO, sum(QTY) as Quantity
 from SPJ
 where PNO = 'P1'
 group by JNO
-order by QTY desc
+order by Quantity desc
 
 =end SQL
 

@@ -5,10 +5,12 @@ all:
 	perl eval-sql.pl -u zwy -p zwy $(FLAGS) schema.sql
 	perl csv2db.pl -u zwy -p zwy $(FLAGS) S.csv P.csv J.csv SPJ.csv
 
-doc: exp1.podx exp1.pod exp1.html exp2.podx exp2.pod exp2.html \
-	exp3.podx exp3.pod exp3.html exp4.podx exp4.pod exp4.html \
-	prelude.podt prelude.pod prelude.html \
-	er-diagram.png
+doc: exp1.podx exp1.pod exp1.html \
+	exp2.podx exp2.pod exp2.html \
+	exp4.podx exp4.pod exp4.html \
+	prelude.podx prelude.pod prelude.html \
+	er-diagram.png \
+	exp3.podx exp3.pod exp3.html
 
 .SUFFIXES: .podt .podx .pod .html
 

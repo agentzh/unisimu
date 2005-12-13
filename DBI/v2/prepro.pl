@@ -1,7 +1,7 @@
 #: prepro.pl
 #: POD preprocessor for =SQL and =shell
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-26 2005-12-08
+#: 2005-11-26 2005-12-13
 
 # TODO:
 #   Generalize this
@@ -24,13 +24,6 @@ my ($user, $password) = ($opts{u}, $opts{p});
 
 my $dsn = $ENV{DSN};
 die "No env DSN set.\n" unless $dsn;
-
-my $dbh;
-if ($user) {
-	$dbh = DBI->connect($dsn, $user, $password, { PrintError => 1 });
-} else {
-	$dbh = DBI->connect($dsn, { PrintError => 1 });
-}
 
 my $tmpdir = File::Spec->tmpdir;
 my $tmpfile = "$tmpdir/prepro.tmp";
@@ -107,12 +100,19 @@ sub process_sql {
     my $sql = shift;
     $sql =~ s/^[\s\n]+|[\s\n]+$//sg;
     #warn "---------------\n";
-    #warn $sql, "\n";
+    #warn "**$sql**\n";
     #warn "+++++++++++++++\n\n";
+    #test();
     my @lines = split "\n", $sql;
     map { $_ = "    $_" if $_ } @lines;
     print join("\n", @lines),"\n\n";
+
+    my $dbh = connect_db();
     my $sth = $dbh->prepare($sql);
+    if (not $sth) {
+        print "$DBI::errstr\n\n";
+        return;
+    }
     my $rv = $sth->execute() or print "$DBI::errstr\n\n";
     if (!$sth->{'NUM_OF_FIELDS'}) { # not a select statement
 		local $^W=0;
@@ -124,6 +124,7 @@ sub process_sql {
 		print "[$rv row",
             (looks_like_number($rv) && $rv==1 ? "" : "s"),
             " affected]\n";
+        $dbh->disconnect;
         return;
     }
     print "\n=begin html\n\n";
@@ -154,4 +155,26 @@ sub process_sql {
         }
     }
     print "</table>\n</pre>\n\n=end html\n\n";
+    $dbh->disconnect;
+}
+
+sub connect_db {
+    my $dbh;
+    if ($user) {
+        $dbh = DBI->connect($dsn, $user, $password, { PrintError => 1 });
+    } else {
+        $dbh = DBI->connect($dsn, { PrintError => 1 });
+    }
+    return $dbh;
+}
+
+# debug purpose only
+sub test {
+    #my @tables = $dbh->tables;
+    #die "@tables tables";
+    my $dbh = connect_db();
+    my $sth = $dbh->prepare('select * from SPJ');
+    print $sth->execute, "\n";
+    my $rrows = $sth->fetchall_arrayref;
+    die scalar(@$rrows), " rows returned";
 }

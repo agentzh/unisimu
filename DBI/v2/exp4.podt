@@ -82,7 +82,7 @@ where S.SNO = SPJ.SNO and SPJ.PNO = P.PNO and
 
 =begin SQL
 
-select PNAME, sum(QTY) QTY
+select PNAME, sum(QTY) as Quantity
 from SPJ, P
 where SPJ.PNO = P.PNO and JNO = 'J2'
 group by PNAME
@@ -95,7 +95,7 @@ group by PNAME
 
 =begin SQL
 
-select JNO, sum(QTY) QTY
+select JNO, sum(QTY) as Quantity
 from SPJ
 group by JNO
 order by JNO asc
@@ -125,7 +125,7 @@ order by JNO asc
 
 =begin SQL
 
-select SNAME 供应商, PNAME 零件, JNAME 工程项目, QTY 数量
+select SNAME as 供应商, PNAME as 零件, JNAME as 工程项目, QTY as 数量
 from S, J, P, SPJ
 where S.SNO = SPJ.SNO and J.JNO = SPJ.JNO and P.PNO = SPJ.PNO
 
