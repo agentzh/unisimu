@@ -14,7 +14,7 @@ use Getopt::Std;
 use Switch 'Perl6';
 
 my %opts;
-getopts('o:d:e:f:t:h', \%opts);
+getopts('o:d:e:f:t:ch', \%opts);
 
 if ($opts{h}) {
     print <<'_EOC_';
@@ -32,6 +32,7 @@ options:
     -e <encoding>  Specify the encoding used by the
                      plain text (not LaTeX code).
     -h             Print this help to stdout.
+    -c             Open CJK support
 
 Report bugs to Agent Zhang <agent2002@126.com>.
 _EOC_
@@ -42,6 +43,20 @@ my $density = $opts{d} || '150x150';
 my $encoding = $opts{e};
 my $from = $opts{f} || 0;
 my $to = $opts{t};
+my $cn = $opts{c};
+
+my $header = <<'.';
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{CJK}
+\begin{document}
+\begin{CJK*}{GBK}{song}
+.
+
+my $footer = <<'.';
+\end{CJK*}
+\end{document}
+.
 
 my $counter = 0;
 
@@ -219,7 +234,13 @@ sub gen_png_files {
         next if $i < $from;
         last if defined $to and $i > $to;
         print "  index: $i\n";
-        Latex::Image->convert($latex, $pngfile, density => $density);
+        Latex::Image->convert(
+            $latex,
+            $pngfile,
+            density => $density,
+            header => $header,
+            footer => $footer
+        );
     } continue {
         $i++;
     }
