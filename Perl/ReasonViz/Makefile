@@ -14,6 +14,7 @@ run_test:
 	diff 02test.png ~02test.png
 	diff 03test.png ~03test.png
 	diff 04test.png ~04test.png
+	diff 05test.png ~05test.png
 
 clean:
 	$(RM_F) $(PNG_FILES)
