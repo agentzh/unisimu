@@ -39,14 +39,13 @@ package ViewTex;
 
 use strict;
 use warnings;
+
 use Perl6::Slurp;
+use File::Spec;
 
 use Catalyst qw/
     -Debug
     Static::Simple
-    Session
-    Session::Store::File
-    Session::State::Cookie
     Textile
 /;
 our $VERSION = '0.01';
@@ -56,7 +55,7 @@ __PACKAGE__->config(
     home => '.',
 );
 
-__PACKAGE__->setup(qw/Static::Simple Textile/);
+__PACKAGE__->setup(qw/Static::Simple/);
 
 # forward to modlist by default
 sub default : Private {
@@ -73,11 +72,10 @@ sub err : Private {
     $c->res->output($html);
 }
 
-# show POD file with explicit path
-sub show : Regex('(.+\.pdf)$') {
+# show PDF file directly
+sub showpdf : Regex('(.+\.pdf)$') {
     my ( $self, $c ) = @_;
-    my $file = $c->req->snippets->[0];
-    #my $dir = File::Spec->updir($file);
+    my $file = $c->stash->{texfile} || $c->req->snippets->[0];
     my $in;
     if (not open($in, $file)) {
         $c->stash->{error} = "Can't open $file for reading: $!";
@@ -88,6 +86,39 @@ sub show : Regex('(.+\.pdf)$') {
     $c->res->content_type("application/pdf");
     $c->res->output($content);
     close $in;
+}
+
+# show tex file through PDF
+sub showtex : Regex('(.+\.tex)$') {
+    my ( $self, $c ) = @_;
+    my $infile = $c->req->snippets->[0];
+
+    (my $outfile = $infile) =~ s/\.tex$/.pdf/;
+    warn "Outfile = $outfile";
+    unlink $outfile if -f $outfile;
+
+    my $dir;
+    my @dirs = File::Spec->splitdir($infile);
+    if (@dirs > 1) {
+        pop @dirs;
+        $dir = File::Spec->catfile(@dirs);
+    } else {
+        $dir = '.';
+    }
+    warn $dir;
+    warn $infile;
+
+    my $tmpdir = File::Spec->tmpdir;
+    open my $pipe, "pdflatex -output-directory=$dir -aux-directory=$tmpdir $infile |";
+    if (not $pipe) {
+        $c->stash->{error} = "Can't spawn pdflatex: $!";
+        $c->forward('/err');
+        return;
+    }
+    warn <$pipe>;
+    close $pipe;
+    $c->stash->{texfile} = $outfile;
+    $c->forward('/showpdf');
 }
 
 ############################################################
