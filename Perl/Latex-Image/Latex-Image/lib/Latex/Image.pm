@@ -1,7 +1,7 @@
 #: Latex/Image.pm
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-19 2005-11-19
+#: 2005-11-19 2005-12-15
 
 package Latex::Image;
 
@@ -9,7 +9,7 @@ use strict;
 use warnings;
 use File::Spec;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our $error = '';
 
 sub error {
@@ -33,14 +33,21 @@ sub convert {
 
     open my $out, ">$texfile" or
         die "error: Can't open $texfile for reading: $!\n";
+
+    my $header = $opts{header} || <<'_EOC_';
+\documentclass{article}
+\pagestyle{empty}
+\pdfoutput=1
+\usepackage{amsmath}
+\begin{document}
+_EOC_
+    my $footer = $opts{footer} || <<'_EOC_';
+\end{document}
+_EOC_
     my $src = <<_EOC_;
-\\documentclass{article}
-\\pagestyle{empty}
-\\pdfoutput=1
-\\usepackage{amsmath}
-\\begin{document}
+$header
 $latex
-\\end{document}
+$footer
 _EOC_
     print $out $src;
     close $out;
@@ -101,6 +108,27 @@ Latex::Image - Convert Latex string to image files
     die Latex::Image->error;
 
   # Don't choose .gif file, since it won't be cropped.
+
+  # We can also specify the Latex header and footer ourselves:
+  $header = <<'.';
+\documentclass{article}
+\usepackage{CJK}
+\begin{document}
+\begin{CJK*}{GBK}{fs}
+.
+
+  $footer = <<'.';
+\end{CJK*}
+\end{document}
+.
+
+  Latex::Image->convert(
+    $latex,
+    'equ.jpg',
+    density => '100x100',
+    header => $header,
+    footer => $footer,
+  ) or die Latex::Image->error;
 
 =head1 DESCRIPTION
 
