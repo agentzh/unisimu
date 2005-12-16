@@ -79,7 +79,7 @@ __PACKAGE__->config(
     ],
 );
 
-__PACKAGE__->setup(qw/Static::Simple/);
+__PACKAGE__->setup(qw/Static::Simple Textile/);
 
 # forward to modlist by default
 sub default : Private {
@@ -90,8 +90,8 @@ sub default : Private {
 # show error messages
 sub err : Private {
     my ( $self, $c ) = @_;
-    my $html = $c->stash->{error};
-    #my $html = $c->textile->process($c->stash->{error});
+    #my $html = $c->stash->{error};
+    my $html = $c->textile->process($c->stash->{error});
     $c->res->output($html);
 }
 
