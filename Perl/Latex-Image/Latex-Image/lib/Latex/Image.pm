@@ -41,6 +41,9 @@ sub convert {
 \usepackage{amsmath}
 \begin{document}
 _EOC_
+
+    $header =~ s/\\documentclass{[^}]+}\s*\n/$&\\pagestyle{empty}\n/si;
+
     my $footer = $opts{footer} || <<'_EOC_';
 \end{document}
 _EOC_
