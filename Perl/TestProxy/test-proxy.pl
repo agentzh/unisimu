@@ -2,7 +2,7 @@
 #: test and filter out available proxies
 #: v0.04
 #: Agent2002. Copyright 2004-2005.
-#: 2005-01-01 2005-12-11
+#: 2005-01-01 2005-12-17
 
 use strict;
 use warnings;
@@ -30,7 +30,8 @@ options:
     -h           print this help to stdout
     -s <string>  string expected to appear in the
                  target web page
-                 (default to "O'Reilly")
+                 (default to "O'Reilly" if 
+                  www.perl.com is used)
     -t <url>     the target web page for test,
                  default to http://www.perl.com
 _EOC_
@@ -44,10 +45,11 @@ my $url = $opts{t} || 'http://www.perl.com';
 $url = "http://$url" if $url =~ m/^www/o;
 print "Target URL: $url\n";
 
-my $str = $opts{s} || "O'Reilly";
+my $str = $opts{s} || '';
+$str = "O'Reilly" if $url eq 'http://www.perl.com';
 print "Target string: $str\n";
 
-my $logfile = File::Spec->rel2abs('', 'proxy_history.txt');
+my $logfile = File::Spec->rel2abs('', 'test-proxy.log');
 print "Log File: $logfile\n\n";
 
 my @proxies;
@@ -63,6 +65,7 @@ local $| = 1;
 print $fh "\n\n" . "==" x 15 . "\n";
 print $fh "Time: ".scalar(localtime)."\n";
 print $fh "Target Web Site: $url\n";
+print $fh "Test String: $str\n";
 print $fh "List File: @listfiles\n\n";
 
 my $thr_sema = Thread::Semaphore->new($MAX_THREADS);
@@ -111,8 +114,9 @@ foreach my $proxy (@proxies) {
 
         $tm_sema->down;
         my $elapsed = time() - $init;
-        $tm_sema->up;
+        local $| = 1;
         print $fh "$proxy  =>  $elapsed sec\n";
+        $tm_sema->up;
         warn "$tid: It seems good: $elapsed sec.\n";
         $thr_sema->up;
         {

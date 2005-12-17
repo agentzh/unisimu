@@ -1,7 +1,7 @@
 #: get-proxy.pl
 #: get proxy list from the web
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-12-08 2005-12-08
+#: 2005-12-08 2005-12-16
 
 use strict;
 use warnings;
@@ -16,7 +16,7 @@ getopts('ho:', \%opts);
 
 if ($opts{h}) {
     print <<_EOC_;
-usage: test-proxy.pl <config-file>
+usage: get-proxy.pl <config-file>
 _EOC_
     exit(0);
 }
@@ -81,3 +81,8 @@ foreach my $r (@records) {
 close $out;
 
 print "\nFor total ", scalar(@records), " proxy IP(s) obtained.\n";
+
+__END__
+
+This proxy is awfully fast: 202.189.126.86:3124
+But it can't connect to a SSL site and it also counts the requests on your IP.
