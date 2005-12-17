@@ -1,0 +1,20 @@
+name: Pod-Extend
+version: 0.01
+abstract: Perl extension for Pod extension
+author: Agent Zhang <agent2002@126.com>
+license: perl
+distribution_type: module
+build_requires:
+  Test::More: 0
+  File::Compare: 0
+requires:
+  DBI: 0
+  DBD::SQLite: 0
+  Text::Table: 0
+  Perl6::Slurp: 0
+  Scalar::Util: 0
+  PerlMaple: 0.02
+no_index:
+  directory:
+    - inc
+generated_by: Module::Install version 0.45

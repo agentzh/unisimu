@@ -1,0 +1,19 @@
+=head1 NAME
+
+02test - Test the include and shell directives
+
+=head1 TESTS
+
+B<t/02test.podx>
+
+=include "t/02test.podx"
+
+Let's invoke some perl one-linners:
+
+=shell perl -e print(1234)
+
+=begin shell
+
+perl -e print(567)
+
+=end shell

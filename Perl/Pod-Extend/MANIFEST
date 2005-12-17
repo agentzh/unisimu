@@ -1,0 +1,13 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Pod-Extend.t
+t/01test.podx
+t/~01test.pod
+t/02test.podx
+t/~02test.pod
+t/03test.podx
+t/~03test.pod
+lib/Pod/Extend.pm
+script/podx

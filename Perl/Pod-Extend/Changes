@@ -1,0 +1,6 @@
+Revision history for Perl extension Pod::Extend.
+
+0.01  Sat Dec 17 19:47:57 2005
+	- original version; created by h2xs 1.23 with options
+		-XA Pod::Extend
+

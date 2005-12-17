@@ -1,0 +1,230 @@
+=head1 NAME
+
+comb - Combinatorics
+
+=head1 Preparations
+
+为了方便起见, 我们先定义一些 Maple 函数.
+
+首先是组合数函数 C<C>:
+
+I<Maple>
+
+    C:=(n,m)->binomial(n,m):
+
+I<No Output>
+
+然后是排列数的计算函数 C<P>:
+
+I<Maple>
+
+    P:=(n,m)->n!/(n-m)!:
+
+I<No Output>
+
+我们下面来简单地测试一下组合数函数:
+
+I<Maple>
+
+    seq(C(4,i),i=0..4);
+
+I<Output>:
+
+    1, 4, 6, 4, 1
+
+然后是排列数函数:
+
+I<Maple>
+
+    seq(P(4,i),i=0..4);
+
+I<Output>:
+
+    1, 4, 12, 24, 24
+
+=head1 Verifications
+
+=over
+
+=item * 1000! 后有多少个0？
+
+1000! 可真的是一个天文数字，但令人惊愕的是 Maple 计算起来非常轻松，而且
+还是在我的 300 MHz 的老机器上！由于 1000! 的结果打印出来会占用大量的篇
+幅，因此我们只让 Perl 数一下末尾的 0 的个数：
+
+I<Perl>
+
+    my $num = $maple->eval('1000!');
+    $num =~ /(0+)$/ ? length($1) : 0;
+
+I<Output>:
+
+    249
+
+而在理论计算的时候，我们是看 1000! 的所有质因子当中有多少对 2 和 5.
+
+Maple 的 ifactor 函数可以直接对一个整数进行质因数分解, 比如
+
+I<Maple>
+
+    ifactor(7!);
+
+I<Output>:
+
+    ``(2)^4*``(3)^2*``(5)*``(7)
+
+注意, Maple 在这儿使用 I<empty symbol> (``) 来阻止有理数表达式的自动
+化简行为. 
+
+为了方便起见, 我们利用 Maple 的 ifactor 函数来实现一个
+数质因子个数的 Perl 例程:
+
+I<Perl>
+
+    sub num_of_factors {
+        my ($num, $factor) = @_;
+        local $_ = $maple->ifactor($num);
+        return $1 if /\($factor\)\^(\d+)/;
+        return 1 if /\($factor\)/;
+        0;
+    }
+
+I<No Output>
+
+我们先用它来测试一下前面 7! 的质因数分解结果:
+
+看看 7! 中有多少个质因子 2 ?
+
+I<Perl>
+
+    num_of_factors('7!', 2)
+
+I<Output>:
+
+    4
+
+有多少个 5 ?
+
+I<Perl>
+
+    num_of_factors('7!', 5)
+
+I<Output>:
+
+    1
+
+又有多少个 11 呢?
+
+I<Perl>
+
+    num_of_factors('7!', 11)
+
+I<Output>:
+
+    0
+
+下面我们就来数一下 1000! 当中有多少个 2, 又有多少个 5:
+
+I<Perl>
+
+    num_of_factors('1000!', 2)
+
+I<Output>:
+
+    994
+
+I<Perl>
+
+    num_of_factors('1000!', 5)
+
+I<Output>:
+
+    249
+
+我们看到，一共有 249 对 2 和 5. 于是 1000! 后面有 249 个 0.
+
+对于手工计算而言, 求 n! 中质因子 k 的个数, 可以使用如下算法:
+
+I<Maple>
+
+    num_factors := 
+        proc(n, k)
+            local c, val, i;
+            c := 0;
+            for i from 1 to infinity
+            do
+                val := floor(n/k^i);
+                if val = 0 then break end if;
+                c := c + val;
+            end do;
+            c;
+        end proc:
+
+I<No Output>
+
+我们现在用它来求 1000! 中含有的质因子 5 的个数:
+
+I<Maple>
+
+    num_factors(1000, 5);
+
+I<Output>:
+
+    249
+
+=item *
+
+有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
+这两个性质的整数？
+
+我们先看看满足这些条件的B<四位>整数有多少：
+
+I<Perl>
+
+    my $c = 0;
+    for (1000..9999) {
+        next if /(\d).*\1/ or /[27]/;
+        $c++ if $_ > 5400;
+    }
+    $c;
+
+I<Output>:
+
+    750
+
+而我们理论计算的结果是
+
+I<Maple>
+
+    C(4,1)*P(6,2) + C(3,1)*P(7,3);
+
+I<Output>:
+
+    750
+
+再来看看B<五位>整数有多少：
+
+I<Perl>
+
+    my $c = 0;
+    for (10000..99999) {
+        next if /[27]/ or /(\d).*\1/;
+        $c++ if $_ > 5400;
+    }
+    $c;
+
+I<Output>:
+
+    5880
+
+而理论计算的结果是
+
+I<Maple>
+
+    C(7,1)*P(7,4);
+
+I<Output>:
+
+    5880
+
+=back

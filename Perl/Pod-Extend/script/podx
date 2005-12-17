@@ -1,0 +1,32 @@
+#!perl
+#: podx.pl
+#: POD extension preprocessor
+#: 2005-12-16 2005-12-17
+
+use strict;
+use warnings;
+
+use Pod::Extend;
+use Getopt::Std;
+
+my %opts;
+getopts('u:p:', \%opts);
+
+my @files = map glob, @ARGV or
+    die "Usage: podx.pl [-u <username>] [-p <password>] <infile1> <infile2> ...\n";
+
+($Pod::Extend::dbi_user, $Pod::Extend::dbi_password) =
+    ($opts{u}, $opts{p});
+
+my $DSN = $ENV{DSN};
+
+my $parser = POD::Extend->new;
+foreach my $infile (@files) {
+    my $outfile = $infile;
+    if (not $outfile =~ s/\.podx$/.pod/i) {
+        $outfile .= '.pod';
+    }
+    if ($parser->parse_from_file($infile, $outfile)) {
+        print "info: $outfile generated.";
+    }
+}
