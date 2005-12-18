@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>comb - Combinatorics</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;comb - Combinatorics</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#Preparations">Preparations</a></li>
+	<li><a href="#Verifications">Verifications</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>comb - Combinatorics</p>
+<p>
+</p>
+<hr />
+<h1><a name="Preparations">Preparations</a></h1>
+<p>为了方便起见, 我们先定义一些 Maple 函数.</p>
+<p>首先是组合数函数 <code>C</code>:</p>
+<p><em>Maple</em></p>
+<pre>
+    C:=(n,m)-&gt;binomial(n,m):</pre>
+<p><em>No Output</em></p>
+<p>然后是排列数的计算函数 <code>P</code>:</p>
+<p><em>Maple</em></p>
+<pre>
+    P:=(n,m)-&gt;n!/(n-m)!:</pre>
+<p><em>No Output</em></p>
+<p>我们下面来简单地测试一下组合数函数:</p>
+<p><em>Maple</em></p>
+<pre>
+    seq(C(4,i),i=0..4);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1, 4, 6, 4, 1</pre>
+<p>然后是排列数函数:</p>
+<p><em>Maple</em></p>
+<pre>
+    seq(P(4,i),i=0..4);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1, 4, 12, 24, 24</pre>
+<p>
+</p>
+<hr />
+<h1><a name="Verifications">Verifications</a></h1>
+<ul>
+<li><strong><a name="item_10002521_25BAf3d3d025B6e0c9d925B8f6025A325BF">1000! 后有多少个0？</a></strong><br />
+</li>
+1000! 可真的是一个天文数字，但令人惊愕的是 Maple 计算起来非常轻松，而且
+还是在我的 300 MHz 的老机器上！由于 1000! 的结果打印出来会占用大量的篇
+幅，因此我们只让 Perl 数一下末尾的 0 的个数：
+<p><em>Perl</em></p>
+<pre>
+    my $num = $maple-&gt;eval('1000!');
+    $num =~ /(0+)$/ ? length($1) : 0;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    249</pre>
+<p>而在理论计算的时候，我们是看 1000! 的所有质因子当中有多少对 2 和 5.</p>
+<p>Maple 的 ifactor 函数可以直接对一个整数进行质因数分解, 比如</p>
+<p><em>Maple</em></p>
+<pre>
+    ifactor(7!);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ``(2)^4*``(3)^2*``(5)*``(7)</pre>
+<p>注意, Maple 在这儿使用 <em>empty symbol</em> (``) 来阻止有理数表达式的自动
+化简行为.</p>
+<p>为了方便起见, 我们利用 Maple 的 ifactor 函数来实现一个
+数质因子个数的 Perl 例程:</p>
+<p><em>Perl</em></p>
+<pre>
+    sub num_of_factors {
+        my ($num, $factor) = @_;
+        local $_ = $maple-&gt;ifactor($num);
+        return $1 if /\($factor\)\^(\d+)/;
+        return 1 if /\($factor\)/;
+        0;
+    }</pre>
+<p><em>No Output</em></p>
+<p>我们先用它来测试一下前面 7! 的质因数分解结果:</p>
+<p>看看 7! 中有多少个质因子 2 ?</p>
+<p><em>Perl</em></p>
+<pre>
+    num_of_factors('7!', 2)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    4</pre>
+<p>有多少个 5 ?</p>
+<p><em>Perl</em></p>
+<pre>
+    num_of_factors('7!', 5)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1</pre>
+<p>又有多少个 11 呢?</p>
+<p><em>Perl</em></p>
+<pre>
+    num_of_factors('7!', 11)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    0</pre>
+<p>下面我们就来数一下 1000! 当中有多少个 2, 又有多少个 5:</p>
+<p><em>Perl</em></p>
+<pre>
+    num_of_factors('1000!', 2)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    994</pre>
+<p><em>Perl</em></p>
+<pre>
+    num_of_factors('1000!', 5)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    249</pre>
+<p>我们看到，一共有 249 对 2 和 5. 于是 1000! 后面有 249 个 0.</p>
+<p>对于手工计算而言, 求 n! 中质因子 k 的个数, 可以使用如下算法:</p>
+<p><em>Maple</em></p>
+<pre>
+    num_factors := 
+        proc(n, k)
+            local c, val, i;
+            c := 0;
+            for i from 1 to infinity
+            do
+                val := floor(n/k^i);
+                if val = 0 then break end if;
+                c := c + val;
+            end do;
+            c;
+        end proc:</pre>
+<p><em>No Output</em></p>
+<p>我们现在用它来求 1000! 中含有的质因子 5 的个数:</p>
+<p><em>Maple</em></p>
+<pre>
+    num_factors(1000, 5);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    249</pre>
+<p></p>
+<li><strong><a name="item_e3">有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
+这两个性质的整数？</a></strong><br />
+</li>
+我们先看看满足这些条件的<strong>四位</strong>整数有多少：
+<p><em>Perl</em></p>
+<pre>
+    my $c = 0;
+    for (1000..9999) {
+        next if /(\d).*\1/ or /[27]/;
+        $c++ if $_ &gt; 5400;
+    }
+    $c;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    750</pre>
+<p>而我们理论计算的结果是</p>
+<p><em>Maple</em></p>
+<pre>
+    C(4,1)*P(6,2) + C(3,1)*P(7,3);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    750</pre>
+<p>再来看看<strong>五位</strong>整数有多少：</p>
+<p><em>Perl</em></p>
+<pre>
+    my $c = 0;
+    for (10000..99999) {
+        next if /[27]/ or /(\d).*\1/;
+        $c++ if $_ &gt; 5400;
+    }
+    $c;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    5880</pre>
+<p>而理论计算的结果是</p>
+<p><em>Maple</em></p>
+<pre>
+    C(7,1)*P(7,4);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    5880</pre>
+<p></p>
+<li><strong><a name="item_c7f3c725A125BAc3d3d0_28_25B8f6d2f225D7d325B5c425D7eed025A1d5fdd5fbcafd252E">求恰好有 28 个因子的最小正整数.</a></strong><br />
+</li>
+给定一个自然数, 要求其所有的因子, 基本思路是先对它进行质因数
+分解, 然后对所有的质因子(重复的也包括在内)进行任意的组合. 每
+一种不同的质因子组合, 其乘积便是原数的一个因子. 如果能得到所
+有可能的组合, 我们便可以求出其所有的因子.
+<p>我们以 28 为例. 28 分解质因子的结果为</p>
+<p><em>Maple</em></p>
+<pre>
+    ifactor(28);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ``(2)^2*``(7)</pre>
+<p>然后我们在 Perl 上下文中将质因子提取出来:</p>
+<p><em>Perl</em></p>
+<pre>
+    my $num = $maple-&gt;ifactor(28);
+    $num =~ s/``//g;
+    @factors = split /\*/, $num;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    (2)^2 (7)</pre>
+<p>接下来我们构造出所有质因子的组合所对应的母函数:</p>
+<p><em>Perl</em></p>
+<pre>
+    map {
+        s/^ \( \d+ \) $/$&amp;^1/x;
+        s/^ \( (\d+) \) \^ (\d+) $/sum(x$1^i,i=0..$2)/x;
+    } @factors;
+    $exp = join('*', @factors);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    sum(x2^i,i=0..2)*sum(x7^i,i=0..1)</pre>
+<p>我们据此可以得到因子构造的 Perl 实现:</p>
+<p><em>Perl</em></p>
+<pre>
+    sub factors {
+        my $num = shift;
+        my @factors = split /[`*]+/, $maple-&gt;ifactor($num);
+        map {
+            s/^ \( \d+ \) $/$&amp;^1/x;
+            s/^ \( (\d+) \) ^ (d+) $/sum(x$1^i,i=0..$2)/x;
+        } @factors;
+        my $exp = join('*', @factors);
+        $exp = $maple-&gt;expand($exp);
+        return sort map {
+            s/x(\d+)/$1/g;
+            $maple-&gt;eval($_);
+        } split /\+/, $_;
+    }</pre>
+<p><em>No Output</em></p>
+<p></p></ul>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;comb - Combinatorics</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
