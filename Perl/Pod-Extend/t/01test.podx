@@ -108,9 +108,7 @@ num_factors :=
 
 =Maple num_factors(1000, 5);
 
-=item *
-
-有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
+=item * 有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
 这两个性质的整数？
 
 我们先看看满足这些条件的B<四位>整数有多少：
@@ -147,4 +145,40 @@ $c;
 
 =Maple C(7,1)*P(7,4);
 
+=item * 求恰好有 28 个因子的最小正整数.
+
+给定一个自然数, 要求其所有的因子, 基本思路是先对它进行质因数
+分解, 然后对所有的质因子(重复的也包括在内)进行任意的组合. 每
+一种不同的质因子组合, 其乘积便是原数的一个因子. 如果能得到所
+有可能的组合, 我们便可以求出其所有的因子.
+
+我们以 28 为例. 28 分解质因子的结果为
+
+=Maple ifactor(28);
+
+然后我们在 Perl 上下文中将质因子提取出来:
+
+=Perl @factors = split /[`*]+/, $maple->ifactor(28);
+
+我们据此可以得到因子构造的 Perl 实现:
+
+=begin Perl
+
+sub factors {
+    my $num = shift;
+    my @factors = split /[`*]+/, $maple->ifactor($num);
+    map {
+        s/^ \( \d+ \) $/$&^1/x;
+        s/^ \( (\d+) \) ^ (d+) $/sum(x$1^i,i=0..$2)/x;
+    } @factors;
+    my $exp = $maple->expand( join('*', @factors) );
+    return sort map {
+        s/x(\d+)/$1/g;
+        $maple->eval($_);
+    } split /\+/, $_;
+}
+
+=end Perl
+
 =back
+

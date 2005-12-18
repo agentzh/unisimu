@@ -25,10 +25,11 @@ my %hooks = (
         my $code = shift;
         #print $code;
         package Pod::Extend::Temp;
+        no strict;
         $Pod::Extend::Temp::maple = $Pod::Extend::maple;
-        my $res = eval $code;
+        my @res = eval $code;
         package Pod::Extend;
-        $res = $@ || $res;
+        my $res = $@ || "@res";
         return fmt_code_res($code, $res, 'Perl');
     },
     maple => sub {

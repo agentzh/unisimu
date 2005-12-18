@@ -6,7 +6,7 @@ use Test::More tests => 9;
 use File::Compare 'compare_text';
 BEGIN { use_ok('Pod::Extend') };
 
-my $Debug = 0;
+my $Debug = 1;
 
 my $parser = Pod::Extend->new;
 ok $parser;
