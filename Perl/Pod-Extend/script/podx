@@ -15,7 +15,7 @@ getopts('u:p:', \%opts);
 my @files = map glob, @ARGV or
     die "Usage: podx.pl [-u <username>] [-p <password>] <infile1> <infile2> ...\n";
 
-($Pod::Extend::dbi_user, $Pod::Extend::dbi_password) =
+($Pod::Extend::dbi_username, $Pod::Extend::dbi_password) =
     ($opts{u}, $opts{p});
 
 my $DSN = $ENV{DSN};
@@ -27,6 +27,6 @@ foreach my $infile (@files) {
         $outfile .= '.pod';
     }
     if ($parser->parse_from_file($infile, $outfile)) {
-        print "info: $outfile generated.";
+        print "info: $outfile generated.\n";
     }
 }
