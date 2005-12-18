@@ -13,7 +13,7 @@ use Text::Table;
 use Scalar::Util qw/looks_like_number/;
 #use Smart::Comments;
 
-our $maple;
+my $maple;
 our $dbi_dsn;
 our $dbi_username;
 our $dbi_password;
@@ -24,7 +24,9 @@ my %hooks = (
     perl => sub {
         my $code = shift;
         #print $code;
+        package Pod::Extend::Temp;
         my $res = eval $code;
+        package Pod::Extend;
         $res = $@ || $res;
         return fmt_code_res($code, $res, 'Perl');
     },
