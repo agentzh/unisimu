@@ -20,7 +20,7 @@ my @files = map glob, @ARGV or
 
 my $DSN = $ENV{DSN};
 
-my $parser = POD::Extend->new;
+my $parser = Pod::Extend->new;
 foreach my $infile (@files) {
     my $outfile = $infile;
     if (not $outfile =~ s/\.podx$/.pod/i) {
