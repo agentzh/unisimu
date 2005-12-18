@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
 
 \usepackage{CJK}
 \usepackage{amsmath}
@@ -16,11 +16,11 @@
     1000! = 2^{P_2} 3^{P_3} 5^{P_5} 7^{P_7} \cdots
 \]
 
-从中我们不难发现, 考察 1000! 后有多少个零就等价于考察 1000! 的
+\noindent 从中我们不难发现, 考察 1000! 后有多少个零就等价于考察 1000! 的%
 所有质因子中含有多少对\ 2 和\ 5. 因为在所有质因子的乘积中只有
 $2 \times 5 = 10$.
 
-由于 1000! 中所含的 2 和 5 这两个质因子的数目不一定相等, 因此
+由于 1000! 中所含的 2 和 5 这两个质因子的数目不一定相等, 因此,
 要得到 2 和 5 的对数, 只需求出
 
 \[
@@ -36,7 +36,7 @@ $2 \times 5 = 10$.
           \ldots + 0
 \]
 
-由该式, 我们不难看出在 $n = 1000$ 的时候, 必有 $P_2 > P_5$. 因此
+\noindent 由该式, 我们不难看出在 $n = 1000$ 的时候, 必有 $P_2 > P_5$. 因此,
 
 \[
     P_5 = min \{ P_2, P_5 \}
@@ -57,12 +57,12 @@ $2 \times 5 = 10$.
 综上所述, 1000! 后共有 249 个 0.
 
 \section{
-    有多少个大于 5400 且满足 ① 每位数上的数值各不相同 ② 
-    2 和 7 不出现 这两个性质的整数?
+    有多少个大于 5400 且满足 ① 每位数上的数值各不相同, ② 
+    2 和 7 不出现, 这两个性质的整数?
 }
 
 根据题意, 这个数只能由 $\{0, 1, 3, 4, 5, 6, 8, 9\}$ 这 8
-个数字中的一个或多个构成. 但我们在这里不考虑数 0, 因为根据我们
+个数字中的一个或多个构成. 但我们在这里不考虑数 0, 因为根据我们%
 老师给出的"自然数"的定义, 0 不是自然数.
 
 此外, 为使每位上的数值不相同, 该数最多达到 8 位数. 而大于 5400
@@ -79,14 +79,14 @@ $2 \times 5 = 10$.
 
 \item
 
-当首位为 5 时, 为保证它大于 5400, 次高位只能取集合 $\{4, 6, 8, 9\}$ 中
+当首位为 5 时, 为保证它大于 5400, 次高位只能取集合 $\{4, 6, 8, 9\}$ 中%
 的一个数字, 其余 2 位则在余下的 $8 - 2 = 6$ 个数中任取. 因此, 此种情况下, 共有
 
 \[
-\mathrm{C}_4^1 \cdot \mathrm{P}_6^2 = 60
+\mathrm{C}_4^1 \cdot \mathrm{P}_6^2 = 120
 \]
 
-个数符合条件.
+\noindent 个数符合条件.
 
 \item
 
@@ -94,10 +94,10 @@ $2 \times 5 = 10$.
 3 位可以在剩下的 $8 - 1 = 7$ 个数中任取. 于在, 此时, 共有
 
 \[
-\mathrm{C}_3^1 \cdot \mathrm{P}_7^3 = 105
+\mathrm{C}_3^1 \cdot \mathrm{P}_7^3 = 630
 \]
 
-个数符合条件.
+\noindent 个数符合条件.
 
 \end{itemize}
 
@@ -107,7 +107,7 @@ $2 \times 5 = 10$.
 $\{1, 3, 4, 5, 6, 8, 9\}$ 中取. 其余 4 位可以在剩下的 $8 - 1 = 7$ 中任取.
 
 \[
-\mathrm{C}_7^1 \cdot \mathrm{P}_7^4 = 245
+\mathrm{C}_7^1 \cdot \mathrm{P}_7^4 = 5880
 \]
 
 \item
@@ -116,7 +116,7 @@ $\{1, 3, 4, 5, 6, 8, 9\}$ 中取. 其余 4 位可以在剩下的 $8 - 1 = 7$ 中任取.
 $8 - 1 = 7$ 中任取.
 
 \[
-\mathrm{C}_7^1 \cdot \mathrm{P}_7^5 = 147
+\mathrm{C}_7^1 \cdot \mathrm{P}_7^5 = 17640
 \]
 
 \item
@@ -125,7 +125,7 @@ $8 - 1 = 7$ 中任取.
 $8 - 1 = 7$ 中任取.
 
 \[
-\mathrm{C}_7^1 \cdot \mathrm{P}_7^6 = 49
+\mathrm{C}_7^1 \cdot \mathrm{P}_7^6 = 35280
 \]
 
 \item
@@ -134,10 +134,180 @@ $8 - 1 = 7$ 中任取.
 $8 - 1 = 7$ 中任取.
 
 \[
-\mathrm{C}_7^1 \cdot \mathrm{P}_7^7 = 7
+\mathrm{C}_7^1 \cdot \mathrm{P}_7^7 = 35280
 \]
 
 \end{itemize}
+
+综上所述, 共有 $120 + 630 + 5880 + 17640 + 35280 + 35280 = 94830$ 个数满足条件.
+
+\section{
+    求恰好有 28 个因子的最小正整数
+}
+
+设这个正整数为 $x$, 对它进行质因数分解得到
+
+\[
+    x = 2^{\alpha_2} \cdot 3^{\alpha_3} \cdot 5^{\alpha_5} \cdot
+        \cdots \cdot p_k^{\alpha_k}
+\]
+
+由于在 $x$ 的因子中, 每一个质因子 $p_i$ 分别可以取 $0, 1, 2, \ldots, i$ 个 (即 $i + 1$
+种取法), 因此 $x$ 共有
+
+\[
+    (\alpha_2 + 1)(\alpha_3 + 1)(\alpha_5 + 1) \cdots (\alpha_k + 1)
+\]
+
+\noindent 个不同的因子. 所以得到
+
+\[
+    28 = (\alpha_2 + 1)(\alpha_3 + 1)(\alpha_5 + 1) \cdots (\alpha_k + 1)
+\]
+
+下面我们要做的就是为 $\alpha_2, \alpha_3, \ldots, \alpha_k$ 这些变量赋值. 一旦每个质因%
+子的幂次确定了, $x$ 也就有了.
+
+为使原数 $x$ 最小, 显然应当遵循这个原则: 质因子越小, 赋予的幂次应当越大. 比如, $\alpha_2$
+应拥有最高的幂次, $\alpha_3$ 次之, $\alpha_5$ 再次, \ldots 依此类推.
+
+我们把 28 写成连乘积的形式:
+
+\begin{eqnarray}
+    28 & = & 28 \times 1 \times 1 \times \cdots \nonumber\\
+       & = & 14 \times 2 \times 1  \times 1 \times \cdots \nonumber\\
+       & = & 7 \times 4 \times 1 \times 1 \times \cdots \nonumber\\
+       & = & 7 \times 2 \times 2 \times 1 \times 1 \times \cdots \nonumber
+\end{eqnarray}
+
+\noindent 然后针对每一种不同的连乘积形式进行讨论:
+
+\begin{itemize}
+
+\item
+
+当 $28 = 28 \times 1 \times 1 \times \cdots$ 时, $\alpha_2$ 取 $28 - 1 = 27$,
+其余质因子幂次都取 $1 - 1 = 0$, 于是得
+
+\[
+    x_1 = 2^{27} \times 3^0 \times 5^0 \times \cdots = 2^{27}
+\]
+
+\item
+
+当 $28 = 14 \times 2 \times 1  \times 1 \times \cdots$ 时, $\alpha_2$ 取 $14 - 1 = 13$,
+$\alpha_3$ 取 $2 - 1 = 1$, 其余的质因子的幂次都取为 0, 所以得到
+
+\[
+    x_2 = 2^{13} \times 3^1 \times 5^0 \times 7^0 \times \cdots = 2^{13} \times 3
+\]
+
+\item
+
+当 $28 = 7 \times 4 \times 1 \times 1 \times \cdots$ 时, $\alpha_2$ 取 $7 - 1 = 6$,
+$\alpha_3$ 取 $4 - 1 = 3$, 其余的质因子的幂次都取为 0, 所以得到
+
+\[
+    x_3 = 2^6 \times 3^3 \times 5^0 \times 7^0 \times \cdots = 2^6 \times 3^3
+\]
+
+\item
+
+当 $28 = 7 \times 2 \times 2 \times 1 \times 1 \times \cdots$ 时, $\alpha_2$ 取 $7 - 1 = 6$,
+$\alpha_3$ 取 $2 - 1 = 1$, $\alpha_3$ 取 $2 - 1 = 1$, 其余的质因子的幂次都取为 0, 于是有
+
+\[
+    x_4 = 2^6 \times 3^1 \times 5^1 \times 7^0 \times 11^0 \times \cdots = 2^6 \times 15
+\]
+
+\end{itemize}
+
+综合上述四种情况, 我们可以得出
+
+\[
+    x = \min \{ x_1, x_2, x_3, x_4 \} = x_4 = 960
+\]
+
+\section{
+    证明: 从 $n$ 个不同的元素中取出 $r$ 个作允许重复的组合, 其组合数为 $C^r_{n+r-1}$.
+}
+
+我们对这 n 个不同的元素进行编号, 分别为 $1,\ 2,\ 3,\ \ldots,\ n$. 并且, 我们设取出的
+r 个允许重复的元素, 其编号自小到大依次为:
+
+\[
+    a_1,\ a_2,\ \ldots,\ a_r
+\]
+
+\noindent 于是很自然地,
+
+\[
+    1 \le a_1 \le a_2 \le \ldots \le a_r \le n
+\]
+
+
+\noindent 进一步, 我们根据
+
+\begin{eqnarray}
+    a_1 & < & a_2 + 1 \nonumber\\
+    a_2 & < & a_3 + 1 \nonumber\\
+    & \ldots & \nonumber\\
+    a_{r-1} & < & a_r + 1 \nonumber
+\end{eqnarray}
+
+\noindent 得到
+
+\[
+    1 \le a_1 < a_2 + 1 < a_3 + 2 < \cdots < a_r + r - 1 \le n + r - 1
+\]
+
+不妨令 $b_1 = a_1,\ b_2 = a_2 + 1,\ \ldots,\ b_r = a_r + r - 1$, 于是有
+
+\[
+    1 \le b_1 < b_2 < \ldots < b_r \le n + r - 1
+\]
+
+我们看到, $b_1,\ b_2,\ \ldots,\ b_r$ 的可以视作从 $n + r - 1$ 个不同的%
+元素中取出的 $r$ 个不同的元素所作的组合.
+
+反过来, 假设从 $n + r - 1$ 个编了号的元素中任取了 r 个不相同的元素, 其编号设为
+$b_1,\ b_2,\ \ldots,\ b_r$, 于是有
+
+\[
+    1 \le b_1 < b_2 < \ldots < b_r \le n + r - 1
+\]
+
+同时注意到
+
+\begin{eqnarray}
+    b_1 & \le & b_2 - 1 \nonumber\\
+    b_2 & \le & b_3 - 1 \nonumber\\
+    & \ldots & \nonumber\\
+    b_{r-1} & < & b_r - 1 \nonumber
+\end{eqnarray}
+
+因此得
+
+\[
+    1 \le b_1 \le b_2 - 1 \le b_3 - 2 \le \cdots \le b_{r} - r + 1
+    \le n + r - 1 - r + 1 = n
+\]
+
+如果令 $a_1 = b_1,\ a_2 = b_2 - 1,\ \ldots,\ a_r = b_r - r + 1$, 则有
+
+\[
+    1 \le a_1 \le a_2 \le \ldots \le a_r \le n
+\]
+
+\noindent 序列 $a_1,\ a_2,\ \ldots,\ a_r$ 的亦可视作从 $n$ 个不同的元%
+素中取出的 r 个元素, 作允许重复的组合.
+
+现在, 我们可以说, 从 $n$ 个不同的元素中任取出 r 个元素作允许重复的组合, 与%
+从 $n + r -1$ 个不同元素中任取出 r 个元素作不允许重复的组合之间, 存在着一%
+一对应的关系.
+
+所以, 从 $n$ 个不同的元素中任取出 r 个元素作允许重复的组合, 其组合数为
+$C^r_{n+r-1}$.
 
 \end{CJK}
 

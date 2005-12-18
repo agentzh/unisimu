@@ -199,6 +199,8 @@
 <p><em>Output</em>:</p>
 <pre>
     5880</pre>
+<p>由于六位数, 七位数, 和八位数需要更多的计算时间, 我们在这儿只进行
+理论计算:</p>
 <p></p>
 <li><strong><a name="item_c7f3c725A125BAc3d3d0_28_25B8f6d2f225D7d325B5c425D7eed025A1d5fdd5fbcafd252E">求恰好有 28 个因子的最小正整数.</a></strong><br />
 </li>
@@ -221,7 +223,7 @@
     @factors = split /\*/, $num;</pre>
 <p><em>Output</em>:</p>
 <pre>
-    (2)^2 (7)</pre>
+    (2)^2,(7)</pre>
 <p>接下来我们构造出所有质因子的组合所对应的母函数:</p>
 <p><em>Perl</em></p>
 <pre>
@@ -233,25 +235,95 @@
 <p><em>Output</em>:</p>
 <pre>
     sum(x2^i,i=0..2)*sum(x7^i,i=0..1)</pre>
-<p>我们据此可以得到因子构造的 Perl 实现:</p>
+<p>我们将母函数展开:</p>
+<p><em>Perl</em></p>
+<pre>
+    $exp = $maple-&gt;expand($exp);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1+x7+x2+x2*x7+x2^2+x2^2*x7</pre>
+<p>最后, 我们从母函数的展开式中提取出所有的因子组合:</p>
+<p><em>Perl</em></p>
+<pre>
+    sort { $a &lt;=&gt; $b }
+        map {
+            s/x(\d+)/$1/g;
+            $maple-&gt;eval($_);
+        } split /\+/, $exp;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1,2,4,7,14,28</pre>
+<p>将上面给出的代码片段拼接起来, 我们便可以得到因子构造的 Perl 实现:</p>
 <p><em>Perl</em></p>
 <pre>
     sub factors {
-        my $num = shift;
-        my @factors = split /[`*]+/, $maple-&gt;ifactor($num);
+        my $num = $maple-&gt;ifactor(shift);
+        $num =~ s/``//g;
+        my @factors = split /\*/, $num;
         map {
             s/^ \( \d+ \) $/$&amp;^1/x;
-            s/^ \( (\d+) \) ^ (d+) $/sum(x$1^i,i=0..$2)/x;
+            s/^ \( (\d+) \) \^ (\d+) $/sum(x$1^i,i=0..$2)/x;
         } @factors;
-        my $exp = join('*', @factors);
+        $exp = join('*', @factors);
         $exp = $maple-&gt;expand($exp);
-        return sort map {
-            s/x(\d+)/$1/g;
-            $maple-&gt;eval($_);
-        } split /\+/, $_;
+        @factors =
+            sort { $a &lt;=&gt; $b }
+                map {
+                    s/x(\d+)/$1/g;
+                    $maple-&gt;eval($_);
+                } split /\+/, $exp;
+        return wantarray ? @factors : scalar(@factors);
     }</pre>
 <p><em>No Output</em></p>
+<p>我们对这个函数简单地进行一下测试:</p>
+<p><em>Perl</em></p>
+<pre>
+    factors(28)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1,2,4,7,14,28</pre>
+<p><em>Perl</em></p>
+<pre>
+    factors(2)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1,2</pre>
+<p><em>Perl</em></p>
+<pre>
+    factors(1)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1</pre>
+<p>本题理论计算的结果是</p>
+<p><em>Maple</em></p>
+<pre>
+    min( 2^(28-1), 2^(14-1)*3^(2-1), 2^(7-1)*3^(4-1), 2^(7-1)*3^(2-1)*5^(2-1));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    960</pre>
 <p></p></ul>
+<p>我们来看看 960 的因子数是不是 28 个:</p>
+<p><em>Perl</em></p>
+<pre>
+    @factors = factors(960)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1,2,3,4,5,6,8,10,12,15,16,20,24,30,32,40,48,60,64,80,96,120,160,192,240,320,480,960</pre>
+<p>这些因子共有</p>
+<p><em>Perl</em></p>
+<pre>
+    scalar(@factors)</pre>
+<p><em>Output</em>:</p>
+<pre>
+    28</pre>
+<p>个.</p>
+<p>我们检查一下比 960 小的正整数中有没有刚好包含 28 个因子的:</p>
+<p><em>Perl</em></p>
+<pre>
+    use List::Util 'first';
+    first { factors($_) == 28 } 1..959;</pre>
+<p><em>No Output</em></p>
+<p>我们看到结果为空, 因此, 960 确实就是我们要找的数.</p>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
 <big><strong><span class="block">&nbsp;comb - Combinatorics</span></strong></big>
