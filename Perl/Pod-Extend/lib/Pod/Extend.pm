@@ -28,6 +28,7 @@ my %hooks = (
         no strict;
         $Pod::Extend::Temp::maple = $Pod::Extend::maple;
         my @res = eval $code;
+        @res = map { defined $_ ? $_ : '' } @res;
         package Pod::Extend;
         local $" = ',';
         my $res = $@ || "@res";

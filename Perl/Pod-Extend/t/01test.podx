@@ -178,26 +178,78 @@ $exp = join('*', @factors);
 
 =end Perl
 
-我们据此可以得到因子构造的 Perl 实现:
+我们将母函数展开:
+
+=Perl $exp = $maple->expand($exp);
+
+最后, 我们从母函数的展开式中提取出所有的因子组合:
+
+=begin Perl
+
+sort { $a <=> $b }
+    map {
+        s/x(\d+)/$1/g;
+        $maple->eval($_);
+    } split /\+/, $exp;
+
+=end Perl
+
+将上面给出的代码片段拼接起来, 我们便可以得到因子构造的 Perl 实现:
 
 =begin Perl
 
 sub factors {
-    my $num = shift;
-    my @factors = split /[`*]+/, $maple->ifactor($num);
+    my $num = $maple->ifactor(shift);
+    $num =~ s/``//g;
+    my @factors = split /\*/, $num;
     map {
         s/^ \( \d+ \) $/$&^1/x;
-        s/^ \( (\d+) \) ^ (d+) $/sum(x$1^i,i=0..$2)/x;
+        s/^ \( (\d+) \) \^ (\d+) $/sum(x$1^i,i=0..$2)/x;
     } @factors;
-    my $exp = join('*', @factors);
+    $exp = join('*', @factors);
     $exp = $maple->expand($exp);
-    return sort map {
-        s/x(\d+)/$1/g;
-        $maple->eval($_);
-    } split /\+/, $_;
+    @factors =
+        sort { $a <=> $b }
+            map {
+                s/x(\d+)/$1/g;
+                $maple->eval($_);
+            } split /\+/, $exp;
+    return wantarray ? @factors : scalar(@factors);
 }
 
 =end Perl
 
+我们对这个函数简单地进行一下测试:
+
+=Perl factors(28)
+
+=Perl factors(6)
+
+=Perl factors(2)
+
+=Perl factors(1)
+
+本题理论计算的结果是
+
+=Maple min( 2^(28-1), 2^(14-1)*3^(2-1), 2^(7-1)*3^(4-1), 2^(7-1)*3^(2-1)*5^(2-1));
+
 =back
 
+我们来看看 960 的因子数是不是 28 个:
+
+=Perl @factors = factors(960)
+
+这些因子共有
+
+=Perl scalar(@factors)
+
+个.
+
+我们检查一下比 960 小的正整数中有没有刚好有 28 个因子的:
+
+=begin Perl
+
+use List::Util 'first';
+first { factors($_) == 28 } 1..959;
+
+=end Perl
