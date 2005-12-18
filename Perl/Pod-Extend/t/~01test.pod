@@ -246,11 +246,27 @@ I<Output>:
 
 I<Perl>
 
-    @factors = split /[`*]+/, $maple->ifactor(28);
+    my $num = $maple->ifactor(28);
+    $num =~ s/``//g;
+    @factors = split /\*/, $num;
 
 I<Output>:
 
-     (2)^2 (7)
+    (2)^2,(7)
+
+接下来我们构造出所有质因子的组合所对应的母函数:
+
+I<Perl>
+
+    map {
+        s/^ \( \d+ \) $/$&^1/x;
+        s/^ \( (\d+) \) \^ (\d+) $/sum(x$1^i,i=0..$2)/x;
+    } @factors;
+    $exp = join('*', @factors);
+
+I<Output>:
+
+    sum(x2^i,i=0..2)*sum(x7^i,i=0..1)
 
 我们据此可以得到因子构造的 Perl 实现:
 
@@ -263,7 +279,8 @@ I<Perl>
             s/^ \( \d+ \) $/$&^1/x;
             s/^ \( (\d+) \) ^ (d+) $/sum(x$1^i,i=0..$2)/x;
         } @factors;
-        my $exp = $maple->expand( join('*', @factors) );
+        my $exp = join('*', @factors);
+        $exp = $maple->expand($exp);
         return sort map {
             s/x(\d+)/$1/g;
             $maple->eval($_);

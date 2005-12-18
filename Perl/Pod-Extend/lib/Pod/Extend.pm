@@ -29,6 +29,7 @@ my %hooks = (
         $Pod::Extend::Temp::maple = $Pod::Extend::maple;
         my @res = eval $code;
         package Pod::Extend;
+        local $" = ',';
         my $res = $@ || "@res";
         return fmt_code_res($code, $res, 'Perl');
     },

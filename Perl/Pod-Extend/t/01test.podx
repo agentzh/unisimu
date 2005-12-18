@@ -158,7 +158,25 @@ $c;
 
 然后我们在 Perl 上下文中将质因子提取出来:
 
-=Perl @factors = split /[`*]+/, $maple->ifactor(28);
+=begin Perl
+
+my $num = $maple->ifactor(28);
+$num =~ s/``//g;
+@factors = split /\*/, $num;
+
+=end Perl
+
+接下来我们构造出所有质因子的组合所对应的母函数:
+
+=begin Perl
+
+map {
+    s/^ \( \d+ \) $/$&^1/x;
+    s/^ \( (\d+) \) \^ (\d+) $/sum(x$1^i,i=0..$2)/x;
+} @factors;
+$exp = join('*', @factors);
+
+=end Perl
 
 我们据此可以得到因子构造的 Perl 实现:
 
@@ -171,7 +189,8 @@ sub factors {
         s/^ \( \d+ \) $/$&^1/x;
         s/^ \( (\d+) \) ^ (d+) $/sum(x$1^i,i=0..$2)/x;
     } @factors;
-    my $exp = $maple->expand( join('*', @factors) );
+    my $exp = join('*', @factors);
+    $exp = $maple->expand($exp);
     return sort map {
         s/x(\d+)/$1/g;
         $maple->eval($_);
