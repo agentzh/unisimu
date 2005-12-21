@@ -12,4 +12,4 @@ comb.pdf: comb.tex
 	pdflatex comb.tex
 
 clean:
-	$(RM_F) comb2.pod *.aux *.idx *.log *.pdf *.tmp
+	$(RM_F) comb2.pod *.aux *.idx *.log *.tmp

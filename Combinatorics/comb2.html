@@ -64,7 +64,7 @@
 <hr />
 <h1><a name="Verifications">Verifications</a></h1>
 <ul>
-<li><strong><a name="item_10002521_25BAf3d3d025B6e0c9d925B8f6025A325BF">1000! 后有多少个0？</a></strong><br />
+<li><strong><a name="item_10002521_25BA25F325D325D025B625E025C925D925B825F6025A325BF">1000! 后有多少个0？</a></strong><br />
 </li>
 1000! 可真的是一个天文数字，但令人惊愕的是 Maple 计算起来非常轻松，而且
 还是在我的 300 MHz 的老机器上！由于 1000! 的结果打印出来会占用大量的篇
@@ -158,7 +158,7 @@
 <pre>
     249</pre>
 <p></p>
-<li><strong><a name="item_e3">有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
+<li><strong><a name="item_25D325D025B625E025C925D925B425F325D325DA_5400_25C725D225C225FA25D">有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
 这两个性质的整数？</a></strong><br />
 </li>
 我们先看看满足这些条件的<strong>四位</strong>整数有多少：
@@ -199,10 +199,8 @@
 <p><em>Output</em>:</p>
 <pre>
     5880</pre>
-<p>由于六位数, 七位数, 和八位数需要更多的计算时间, 我们在这儿只进行
-理论计算:</p>
 <p></p>
-<li><strong><a name="item_c7f3c725A125BAc3d3d0_28_25B8f6d2f225D7d325B5c425D7eed025A1d5fdd5fbcafd252E">求恰好有 28 个因子的最小正整数.</a></strong><br />
+<li><strong><a name="item_25C725F325C725A125BA25C325D325D0_28_25B825F625D225F225D725D325B525">求恰好有 28 个因子的最小正整数.</a></strong><br />
 </li>
 给定一个自然数, 要求其所有的因子, 基本思路是先对它进行质因数
 分解, 然后对所有的质因子(重复的也包括在内)进行任意的组合. 每
@@ -301,7 +299,6 @@
 <p><em>Output</em>:</p>
 <pre>
     960</pre>
-<p></p></ul>
 <p>我们来看看 960 的因子数是不是 28 个:</p>
 <p><em>Perl</em></p>
 <pre>
@@ -324,6 +321,87 @@
     first { factors($_) == 28 } 1..959;</pre>
 <p><em>No Output</em></p>
 <p>我们看到结果为空, 因此, 960 确实就是我们要找的数.</p>
+<p></p>
+<li><strong><a name="item_25C725F3_n_25CE25BB25CA25AE25BD25F825D625C625CA25FD25D625D025B325F">求 n 位十进制数中出现偶数个 5 的数的个数</a></strong><br />
+</li>
+一开始，我们先设 n 位十进制数中出现偶数个 5 的数共有 <code>a(n)</code> 个，
+出现奇数个 5 的个数为 <code>b(n)</code> 个。
+<p>我们很容易就能用 Perl 写出一个判断任意整数中是否含有
+偶数个 5 的函数：</p>
+<p><em>Perl</em></p>
+<pre>
+    sub even_num_of_5 {
+        my $num = shift;
+        my $i = 0;
+        $num =~ s/5/$i++;$&amp;/eg;
+        return $i % 2 == 0;
+    }</pre>
+<p><em>No Output</em></p>
+<p>我们对它进行一下简单的测试：</p>
+<p><em>Perl</em></p>
+<pre>
+    even_num_of_5(5) ? 'true' : 'false'</pre>
+<p><em>Output</em>:</p>
+<pre>
+    false</pre>
+<p><em>Perl</em></p>
+<pre>
+    even_num_of_5(1325251) ? 'true' : 'false'</pre>
+<p><em>Output</em>:</p>
+<pre>
+    true</pre>
+<p>当 n 分别取 1 ~ 4 时，a(n) 依次为</p>
+<p><em>Perl</em></p>
+<pre>
+    my @res;
+    for my $n (1..4) {
+        my $count = 0;
+        for my $x ( 10**($n-1)..('9' x $n) ) {
+            $count++ if even_num_of_5($x);
+        }
+        push @res, $count;
+    }
+    @res;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    8,73,674,6292</pre>
+<p>不幸的是，用这种方法无法得到 <code>a(n)</code> 的一般形式，而且随着
+n 的增大，计算量也迅速提高。通过理论分析，我们可以得到
+下面的递推关系：</p>
+<p><em>Maple</em></p>
+<pre>
+    { a(n) = 9*a(n-1) + b(n-1), b(n) = a(n-1) + 9*b(n-1),
+          a(1) = 8, b(1) = 1 };</pre>
+<p><em>Output</em>:</p>
+<pre>
+    {a(n) = 9*a(n-1)+b(n-1), b(n) = a(n-1)+9*b(n-1), a(1) = 8, b(1) = 1}</pre>
+<p>我们利用 Maple 的 rsolve 进行求解，并用 Perl 提取结果：</p>
+<p><em>Perl</em></p>
+<pre>
+    use List::Util 'first';
+    $maple-&gt;ReturnAST(1);
+    my $res = $maple-&gt;rsolve(&quot;%&quot;, &quot;{a(n),b(n)}&quot;);
+    if ($res-&gt;type('set')) {
+        $a_n = first { $maple-&gt;lhs($_) eq 'a(n)' } $res-&gt;ops;
+        $a_n = $maple-&gt;rhs($a_n);
+    }
+    $a_n;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    9/20*10^n+7/16*8^n</pre>
+<p>我们利用两三行 Perl 代码就准确地从 Maple 的
+rsolve 函数返回的解集中提取出了通项 <code>a(n)</code> 的表达式。注意
+我们是如何直接对导入到 Perl 环境中的 Maple AST 进行操纵的，
+这避免了复杂且脆弱的正则匹配。</p>
+<p>下面我们就用 <code>a(n)</code> 的通项计算一下 n 取 1 ~ 4 时的值：</p>
+<p><em>Perl</em></p>
+<pre>
+    map { $maple-&gt;eval($a_n, &quot;n=$_&quot;) } 1..4;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    8,73,674,6292</pre>
+<p>我们看到，这与前面的“暴力法”得到的结果一致。</p>
+<p></p></ul>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
 <big><strong><span class="block">&nbsp;comb - Combinatorics</span></strong></big>
