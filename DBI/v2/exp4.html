@@ -88,82 +88,60 @@
 <ol>
 <li></li>
 找出向北京供应商购买重量大于 30 的零件的工程号
+<p><em>SQL</em></p>
 <pre>
     select distinct JNO
     from S, SPJ, P
     where S.SNO = SPJ.SNO and SPJ.PNO = P.PNO and
         S.CITY = '北京' and P.WEIGHT &gt; 30</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>JNO</B></color></td>
-</tr>
-<tr>
-<td>J1</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>J2</td>
-</tr>
-</table>
-</pre><p></p>
+<p><em>Output</em>:</p>
+<pre>
+    ---
+    JNO
+    ---
+    J1 
+    J2 
+    ---</pre>
+<p></p>
 <li></li>
 找出工程项目 J2 使用的各种零件的名称及其数量；
+<p><em>SQL</em></p>
 <pre>
     select PNAME, sum(QTY) as Quantity
     from SPJ, P
     where SPJ.PNO = P.PNO and JNO = 'J2'
     group by PNAME</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>Quantity</B></color></td>
-</tr>
-<tr>
-<td>齿轮</td>
-<td>200</td>
-</tr>
-<tr>
-<td>螺栓</td>
-<td>100</td>
-</tr>
-<tr>
-<td>螺丝刀</td>
-<td>200</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>凸轮</td>
-<td>100</td>
-</tr>
-</table>
-</pre><p></p>
+<p><em>Output</em>:</p>
+<pre>
+    ---------------
+    PNAME  Quantity
+    ---------------
+    齿轮   200     
+    螺栓   100     
+    螺丝刀 200     
+    凸轮   100     
+    ---------------</pre>
+<p></p>
 <li></li>
 按工程号递增的顺序列出每个工程购买的零件总数；
+<p><em>SQL</em></p>
 <pre>
     select JNO, sum(QTY) as Quantity
     from SPJ
     group by JNO
     order by JNO asc</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>Quantity</B></color></td>
-</tr>
-<tr>
-<td>J1</td>
-<td>1700</td>
-</tr>
-<tr>
-<td>J2</td>
-<td>600</td>
-</tr>
-<tr>
-<td>J3</td>
-<td>400</td>
-</tr>
-<tr>
-<td>J4</td>
-<td>2000</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>J5</td>
-<td>400</td>
-</tr>
-</table>
-</pre><p></p>
+<p><em>Output</em>:</p>
+<pre>
+    ------------
+    JNO Quantity
+    ------------
+    J1  1700    
+    J2   600    
+    J3   400    
+    J4  2000    
+    J5   400    
+    ------------</pre>
+<p></p>
 <li></li>
 编程输出如下报表：
 <pre>
@@ -176,129 +154,37 @@
     </tr>
     </table>
 </pre><p>我们使用下面的 SQL 查询来生成报表：</p>
+<p><em>SQL</em></p>
 <pre>
     select SNAME as 供应商, PNAME as 零件, JNAME as 工程项目, QTY as 数量
     from S, J, P, SPJ
     where S.SNO = SPJ.SNO and J.JNO = SPJ.JNO and P.PNO = SPJ.PNO</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>供应商</B></color></td><td><font color=blue><B>零件</B></color></td><td><font color=blue><B>工程项目</B></color></td><td><font color=blue><B>数量</B></color></td>
-</tr>
-<tr>
-<td>精益</td>
-<td>螺母</td>
-<td>三建</td>
-<td>200</td>
-</tr>
-<tr>
-<td>精益</td>
-<td>螺母</td>
-<td>弹簧厂</td>
-<td>100</td>
-</tr>
-<tr>
-<td>精益</td>
-<td>螺母</td>
-<td>造船厂</td>
-<td>700</td>
-</tr>
-<tr>
-<td>精益</td>
-<td>螺栓</td>
-<td>一汽</td>
-<td>100</td>
-</tr>
-<tr>
-<td>盛锡</td>
-<td>螺丝刀</td>
-<td>三建</td>
-<td>400</td>
-</tr>
-<tr>
-<td>盛锡</td>
-<td>螺丝刀</td>
-<td>一汽</td>
-<td>200</td>
-</tr>
-<tr>
-<td>盛锡</td>
-<td>螺丝刀</td>
-<td>造船厂</td>
-<td>500</td>
-</tr>
-<tr>
-<td>盛锡</td>
-<td>螺丝刀</td>
-<td>机车厂</td>
-<td>400</td>
-</tr>
-<tr>
-<td>盛锡</td>
-<td>凸轮</td>
-<td>三建</td>
-<td>400</td>
-</tr>
-<tr>
-<td>盛锡</td>
-<td>凸轮</td>
-<td>一汽</td>
-<td>100</td>
-</tr>
-<tr>
-<td>东方红</td>
-<td>螺母</td>
-<td>三建</td>
-<td>200</td>
-</tr>
-<tr>
-<td>东方红</td>
-<td>螺丝刀</td>
-<td>三建</td>
-<td>200</td>
-</tr>
-<tr>
-<td>丰泰盛</td>
-<td>凸轮</td>
-<td>三建</td>
-<td>100</td>
-</tr>
-<tr>
-<td>丰泰盛</td>
-<td>齿轮</td>
-<td>弹簧厂</td>
-<td>300</td>
-</tr>
-<tr>
-<td>丰泰盛</td>
-<td>齿轮</td>
-<td>造船厂</td>
-<td>200</td>
-</tr>
-<tr>
-<td>为民</td>
-<td>螺栓</td>
-<td>造船厂</td>
-<td>100</td>
-</tr>
-<tr>
-<td>为民</td>
-<td>螺丝刀</td>
-<td>三建</td>
-<td>200</td>
-</tr>
-<tr>
-<td>为民</td>
-<td>齿轮</td>
-<td>一汽</td>
-<td>200</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>为民</td>
-<td>齿轮</td>
-<td>造船厂</td>
-<td>500</td>
-</tr>
-</table>
-</pre><p></p></ol>
+<p><em>Output</em>:</p>
+<pre>
+    ---------------------------
+    供应商 零件   工程项目 数量
+    ---------------------------
+    精益   螺母   三建     200 
+    精益   螺母   弹簧厂   100 
+    精益   螺母   造船厂   700 
+    精益   螺栓   一汽     100 
+    盛锡   螺丝刀 三建     400 
+    盛锡   螺丝刀 一汽     200 
+    盛锡   螺丝刀 造船厂   500 
+    盛锡   螺丝刀 机车厂   400 
+    盛锡   凸轮   三建     400 
+    盛锡   凸轮   一汽     100 
+    东方红 螺母   三建     200 
+    东方红 螺丝刀 三建     200 
+    丰泰盛 凸轮   三建     100 
+    丰泰盛 齿轮   弹簧厂   300 
+    丰泰盛 齿轮   造船厂   200 
+    为民   螺栓   造船厂   100 
+    为民   螺丝刀 三建     200 
+    为民   齿轮   一汽     200 
+    为民   齿轮   造船厂   500 
+    ---------------------------</pre>
+<p></p></ol>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
 <big><strong><span class="block">&nbsp;实验四 - 数据库的统计输出实验</span></strong></big>

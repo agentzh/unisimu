@@ -58,8 +58,8 @@
 <pre>
     供应商（[供应商代码]，供应商名，供应商状态，所在城市）
     零件（[零件代码]，零件名，颜色，重量）
-    工程项目（[工程项目代码]，工程项目名，所在城市）</pre>
-<pre>
+    工程项目（[工程项目代码]，工程项目名，所在城市）
+    
     供应情况 供应商:零件:工程项目 = m:n:p （供应数量）</pre>
 <p>其实上面的概念模型的描述记法已经正规化了，我编写了一个 E-R 图生成器，
 能够直接根据上面的概念模型描述生成对应的 E-R 图：</p>
@@ -100,31 +100,31 @@
 <p></p></ul>
 <p>使用 SQL DDL 描述就是：</p>
 <pre>
-    drop table SPJ</pre>
-<pre>
-    drop table S</pre>
-<pre>
-    drop table P</pre>
-<pre>
-    drop table J</pre>
-<pre>
+    drop table SPJ
+    
+    drop table S
+    
+    drop table P
+    
+    drop table J
+    
     create table S
         (SNO varchar(8) primary key,
          SNAME varchar(8),
          STATUS integer,
-         CITY varchar(6))</pre>
-<pre>
+         CITY varchar(6))
+    
     create table P
         (PNO varchar(8) primary key,
          PNAME varchar(8),
          COLOR varchar(4),
-         WEIGHT integer)</pre>
-<pre>
+         WEIGHT integer)
+    
     create table J
         (JNO varchar(8) primary key,
          JNAME varchar(8),
-         CITY varchar(8))</pre>
-<pre>
+         CITY varchar(8))
+    
     create table SPJ
         (SNO varchar(8),
          PNO varchar(8),

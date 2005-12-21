@@ -91,309 +91,119 @@
 <ul>
 <li></li>
 P 表
+<p><em>SQL</em></p>
 <pre>
     select * from P</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
-</tr>
-<tr>
-<td>P1</td>
-<td>螺母</td>
-<td>红</td>
-<td>12</td>
-</tr>
-<tr>
-<td>P2</td>
-<td>螺栓</td>
-<td>绿</td>
-<td>17</td>
-</tr>
-<tr>
-<td>P3</td>
-<td>螺丝刀</td>
-<td>蓝</td>
-<td>14</td>
-</tr>
-<tr>
-<td>P4</td>
-<td>螺丝刀</td>
-<td>红</td>
-<td>14</td>
-</tr>
-<tr>
-<td>P5</td>
-<td>凸轮</td>
-<td>蓝</td>
-<td>40</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>P6</td>
-<td>齿轮</td>
-<td>红</td>
-<td>30</td>
-</tr>
-</table>
-</pre><p></p>
+<p><em>Output</em>:</p>
+<pre>
+    -----------------------
+    PNO PNAME  COLOR WEIGHT
+    -----------------------
+    P1  螺母   红    12    
+    P2  螺栓   绿    17    
+    P3  螺丝刀 蓝    14    
+    P4  螺丝刀 红    14    
+    P5  凸轮   蓝    40    
+    P6  齿轮   红    30    
+    -----------------------</pre>
+<p></p>
 <li></li>
 S 表
+<p><em>SQL</em></p>
 <pre>
     select * from S</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>SNAME</B></color></td><td><font color=blue><B>STATUS</B></color></td><td><font color=blue><B>CITY</B></color></td>
-</tr>
-<tr>
-<td>S1</td>
-<td>精益</td>
-<td>20</td>
-<td>天津</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>盛锡</td>
-<td>10</td>
-<td>北京</td>
-</tr>
-<tr>
-<td>S3</td>
-<td>东方红</td>
-<td>30</td>
-<td>北京</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>丰泰盛</td>
-<td>20</td>
-<td>天津</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>S5</td>
-<td>为民</td>
-<td>30</td>
-<td>上海</td>
-</tr>
-</table>
-</pre><p></p>
+<p><em>Output</em>:</p>
+<pre>
+    ----------------------
+    SNO SNAME  STATUS CITY
+    ----------------------
+    S1  精益   20     天津
+    S2  盛锡   10     北京
+    S3  东方红 30     北京
+    S4  丰泰盛 20     天津
+    S5  为民   30     上海
+    ----------------------</pre>
+<p></p>
 <li></li>
 J 表
+<p><em>SQL</em></p>
 <pre>
     select * from J</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>JNAME</B></color></td><td><font color=blue><B>CITY</B></color></td>
-</tr>
-<tr>
-<td>J1</td>
-<td>三建</td>
-<td>北京</td>
-</tr>
-<tr>
-<td>J2</td>
-<td>一汽</td>
-<td>长春</td>
-</tr>
-<tr>
-<td>J3</td>
-<td>弹簧厂</td>
-<td>天津</td>
-</tr>
-<tr>
-<td>J4</td>
-<td>造船厂</td>
-<td>天津</td>
-</tr>
-<tr>
-<td>J5</td>
-<td>机车厂</td>
-<td>唐山</td>
-</tr>
-<tr>
-<td>J6</td>
-<td>无线电厂</td>
-<td>常州</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>J7</td>
-<td>半导体厂</td>
-<td>南京</td>
-</tr>
-</table>
-</pre><p></p>
+<p><em>Output</em>:</p>
+<pre>
+    -----------------
+    JNO JNAME    CITY
+    -----------------
+    J1  三建     北京
+    J2  一汽     长春
+    J3  弹簧厂   天津
+    J4  造船厂   天津
+    J5  机车厂   唐山
+    J6  无线电厂 常州
+    J7  半导体厂 南京
+    -----------------</pre>
+<p></p>
 <li></li>
 SPJ 表
+<p><em>SQL</em></p>
 <pre>
     select * from SPJ</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>QTY</B></color></td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J3</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J4</td>
-<td>700</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P2</td>
-<td>J2</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J1</td>
-<td>400</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J2</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J4</td>
-<td>500</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J5</td>
-<td>400</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P5</td>
-<td>J1</td>
-<td>400</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P5</td>
-<td>J2</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S3</td>
-<td>P1</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S3</td>
-<td>P3</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P5</td>
-<td>J1</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P6</td>
-<td>J3</td>
-<td>300</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P6</td>
-<td>J4</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P2</td>
-<td>J4</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P3</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P6</td>
-<td>J2</td>
-<td>200</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>S5</td>
-<td>P6</td>
-<td>J4</td>
-<td>500</td>
-</tr>
-</table>
-</pre><p></p></ul>
+<p><em>Output</em>:</p>
+<pre>
+    ---------------
+    SNO PNO JNO QTY
+    ---------------
+    S1  P1  J1  200
+    S1  P1  J3  100
+    S1  P1  J4  700
+    S1  P2  J2  100
+    S2  P3  J1  400
+    S2  P3  J2  200
+    S2  P3  J4  500
+    S2  P3  J5  400
+    S2  P5  J1  400
+    S2  P5  J2  100
+    S3  P1  J1  200
+    S3  P3  J1  200
+    S4  P5  J1  100
+    S4  P6  J3  300
+    S4  P6  J4  200
+    S5  P2  J4  100
+    S5  P3  J1  200
+    S5  P6  J2  200
+    S5  P6  J4  500
+    ---------------</pre>
+<p></p></ul>
 <p>然后我们再对它进行各种有趣的操作：</p>
 <ol>
 <li></li>
 把全部红色零件颜色改为粉红色；
 <p>零件颜色方面的信息是存储在 P 表中的，我们用下面的 update 语句对红色零件的颜色进行修改：</p>
+<p><em>SQL</em></p>
 <pre>
     update P
     set COLOR = '粉红'
     where COLOR = '红'</pre>
-<p>[3 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [3 rows affected]</pre>
 <p>此时我们的 P 表成为下面这个样子：</p>
+<p><em>SQL</em></p>
 <pre>
     select * from P</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
-</tr>
-<tr>
-<td>P1</td>
-<td>螺母</td>
-<td>粉红</td>
-<td>12</td>
-</tr>
-<tr>
-<td>P2</td>
-<td>螺栓</td>
-<td>绿</td>
-<td>17</td>
-</tr>
-<tr>
-<td>P3</td>
-<td>螺丝刀</td>
-<td>蓝</td>
-<td>14</td>
-</tr>
-<tr>
-<td>P4</td>
-<td>螺丝刀</td>
-<td>粉红</td>
-<td>14</td>
-</tr>
-<tr>
-<td>P5</td>
-<td>凸轮</td>
-<td>蓝</td>
-<td>40</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>P6</td>
-<td>齿轮</td>
-<td>粉红</td>
-<td>30</td>
-</tr>
-</table>
-</pre><p>由于本操作更改了数据库，我们再用一个命令对数据库进行“恢复”，呵呵：</p>
+<p><em>Output</em>:</p>
+<pre>
+    -----------------------
+    PNO PNAME  COLOR WEIGHT
+    -----------------------
+    P1  螺母   粉红  12    
+    P2  螺栓   绿    17    
+    P3  螺丝刀 蓝    14    
+    P4  螺丝刀 粉红  14    
+    P5  凸轮   蓝    40    
+    P6  齿轮   粉红  30    
+    -----------------------</pre>
+<p>由于本操作更改了数据库，我们再用一个命令对数据库进行“恢复”，呵呵：</p>
 <pre>
     $ nmake &gt; NIL 2&gt;&amp;1</pre>
 <p></p>
@@ -404,6 +214,7 @@ SPJ 表
 Jack++</p>
 <p>我们首先检查一下数据库中是否同时存在 S2,J1,P1 和 S1,J1,P1 这两条记录。
 如果是，则将 S1,J1,P1 的 QTY 加到 S2,J1,P1 的 QTY 上去。</p>
+<p><em>SQL</em></p>
 <pre>
     update SPJ
     set QTY =
@@ -414,8 +225,11 @@ Jack++</p>
         (select *
          from SPJ
          where SNO = 'S1' and JNO = 'J1' and PNO = 'P1')</pre>
-<p>[0E0 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [0E0 rows affected]</pre>
 <p>接下来，如果已存在 S2,J1,P1 记录的话，就将记录 S1,J1,P1 删除：</p>
+<p><em>SQL</em></p>
 <pre>
     delete from SPJ
     where SNO = 'S1' and JNO = 'J1' and PNO = 'P1'
@@ -423,9 +237,12 @@ Jack++</p>
             (select *
              from SPJ
              where SNO = 'S2' and JNO = 'J1' and PNO = 'P1')</pre>
-<p>[0E0 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [0E0 rows affected]</pre>
 <p>最后，如果数据库中不存在 S2,J1,P1 记录的话，我们就将 S1,J1,P1 记录的 S1 简
 单地改写为 S2：</p>
+<p><em>SQL</em></p>
 <pre>
     update SPJ
     set SNO = 'S2'
@@ -434,129 +251,39 @@ Jack++</p>
             (select *
              from SPJ
              where SNO = 'S2' and JNO = 'J1' and PNO = 'P1')</pre>
-<p>[1 row affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [1 row affected]</pre>
 <p>此时 SPJ 表成为下面这个样子：</p>
+<p><em>SQL</em></p>
 <pre>
     select * from SPJ</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>QTY</B></color></td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J3</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J4</td>
-<td>700</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P2</td>
-<td>J2</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P1</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J1</td>
-<td>400</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J2</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J4</td>
-<td>500</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P3</td>
-<td>J5</td>
-<td>400</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P5</td>
-<td>J1</td>
-<td>400</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>P5</td>
-<td>J2</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S3</td>
-<td>P1</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S3</td>
-<td>P3</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P5</td>
-<td>J1</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P6</td>
-<td>J3</td>
-<td>300</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P6</td>
-<td>J4</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P2</td>
-<td>J4</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P3</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P6</td>
-<td>J2</td>
-<td>200</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>S5</td>
-<td>P6</td>
-<td>J4</td>
-<td>500</td>
-</tr>
-</table>
-</pre><p>我们看到，前两个查询都没有命中的记录，因为我们的数据库实在是太小了，并
+<p><em>Output</em>:</p>
+<pre>
+    ---------------
+    SNO PNO JNO QTY
+    ---------------
+    S1  P1  J3  100
+    S1  P1  J4  700
+    S1  P2  J2  100
+    S2  P1  J1  200
+    S2  P3  J1  400
+    S2  P3  J2  200
+    S2  P3  J4  500
+    S2  P3  J5  400
+    S2  P5  J1  400
+    S2  P5  J2  100
+    S3  P1  J1  200
+    S3  P3  J1  200
+    S4  P5  J1  100
+    S4  P6  J3  300
+    S4  P6  J4  200
+    S5  P2  J4  100
+    S5  P3  J1  200
+    S5  P6  J2  200
+    S5  P6  J4  500
+    ---------------</pre>
+<p>我们看到，前两个查询都没有命中的记录，因为我们的数据库实在是太小了，并
 没有覆盖到我们考虑的特殊情况，于是这便是我们的实验指导老师的责任了，呵
 呵。</p>
 <p>最后还是例行的数据库还原操作：</p>
@@ -566,194 +293,122 @@ Jack++</p>
 <li></li>
 删去全部蓝色零件及相应的 SPJ 记录；
 <p>我们首先删除蓝色零件在 SPJ 表中的相关记录：</p>
+<p><em>SQL</em></p>
 <pre>
     delete from SPJ
     where PNO in
         (select PNO
          from P
          where COLOR = '蓝')</pre>
-<p>[9 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [9 rows affected]</pre>
 <p>执行完此操作后，SPJ 表成为</p>
+<p><em>SQL</em></p>
 <pre>
     select * from SPJ</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>SNO</B></color></td><td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>JNO</B></color></td><td><font color=blue><B>QTY</B></color></td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J3</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P1</td>
-<td>J4</td>
-<td>700</td>
-</tr>
-<tr>
-<td>S1</td>
-<td>P2</td>
-<td>J2</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S3</td>
-<td>P1</td>
-<td>J1</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P6</td>
-<td>J3</td>
-<td>300</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>P6</td>
-<td>J4</td>
-<td>200</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P2</td>
-<td>J4</td>
-<td>100</td>
-</tr>
-<tr>
-<td>S5</td>
-<td>P6</td>
-<td>J2</td>
-<td>200</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>S5</td>
-<td>P6</td>
-<td>J4</td>
-<td>500</td>
-</tr>
-</table>
-</pre><p>接下来我们再删除 P 表中所有蓝色零件的记录：</p>
+<p><em>Output</em>:</p>
+<pre>
+    ---------------
+    SNO PNO JNO QTY
+    ---------------
+    S1  P1  J1  200
+    S1  P1  J3  100
+    S1  P1  J4  700
+    S1  P2  J2  100
+    S3  P1  J1  200
+    S4  P6  J3  300
+    S4  P6  J4  200
+    S5  P2  J4  100
+    S5  P6  J2  200
+    S5  P6  J4  500
+    ---------------</pre>
+<p>接下来我们再删除 P 表中所有蓝色零件的记录：</p>
+<p><em>SQL</em></p>
 <pre>
     delete from P
     where COLOR = '蓝'</pre>
-<p>[2 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [2 rows affected]</pre>
 <p>此时，P 表成为下面这个样子：</p>
+<p><em>SQL</em></p>
 <pre>
     select * from P</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
-</tr>
-<tr>
-<td>P1</td>
-<td>螺母</td>
-<td>红</td>
-<td>12</td>
-</tr>
-<tr>
-<td>P2</td>
-<td>螺栓</td>
-<td>绿</td>
-<td>17</td>
-</tr>
-<tr>
-<td>P4</td>
-<td>螺丝刀</td>
-<td>红</td>
-<td>14</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>P6</td>
-<td>齿轮</td>
-<td>红</td>
-<td>30</td>
-</tr>
-</table>
-</pre><p>最后对数据库进行恢复：</p>
+<p><em>Output</em>:</p>
+<pre>
+    -----------------------
+    PNO PNAME  COLOR WEIGHT
+    -----------------------
+    P1  螺母   红    12    
+    P2  螺栓   绿    17    
+    P4  螺丝刀 红    14    
+    P6  齿轮   红    30    
+    -----------------------</pre>
+<p>最后对数据库进行恢复：</p>
 <pre>
     $ nmake &gt; NIL 2&gt;&amp;1</pre>
 <p></p>
 <li></li>
 把全部螺母的重量置为 0；
+<p><em>SQL</em></p>
 <pre>
     update P
     set WEIGHT = 0
     where PNAME = '螺母'</pre>
-<p>[1 row affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [1 row affected]</pre>
 <p>此时，P 表成为下面这个样子：</p>
+<p><em>SQL</em></p>
 <pre>
     select * from P</pre>
-<pre>        <table border=1><tr style="border-top:2px;border-bottom:2px">
-<td><font color=blue><B>PNO</B></color></td><td><font color=blue><B>PNAME</B></color></td><td><font color=blue><B>COLOR</B></color></td><td><font color=blue><B>WEIGHT</B></color></td>
-</tr>
-<tr>
-<td>P1</td>
-<td>螺母</td>
-<td>红</td>
-<td>0</td>
-</tr>
-<tr>
-<td>P2</td>
-<td>螺栓</td>
-<td>绿</td>
-<td>17</td>
-</tr>
-<tr>
-<td>P3</td>
-<td>螺丝刀</td>
-<td>蓝</td>
-<td>14</td>
-</tr>
-<tr>
-<td>P4</td>
-<td>螺丝刀</td>
-<td>红</td>
-<td>14</td>
-</tr>
-<tr>
-<td>P5</td>
-<td>凸轮</td>
-<td>蓝</td>
-<td>40</td>
-</tr>
-<tr style="border-bottom:2px">
-<td>P6</td>
-<td>齿轮</td>
-<td>红</td>
-<td>30</td>
-</tr>
-</table>
-</pre><p></p>
+<p><em>Output</em>:</p>
+<pre>
+    -----------------------
+    PNO PNAME  COLOR WEIGHT
+    -----------------------
+    P1  螺母   红     0    
+    P2  螺栓   绿    17    
+    P3  螺丝刀 蓝    14    
+    P4  螺丝刀 红    14    
+    P5  凸轮   蓝    40    
+    P6  齿轮   红    30    
+    -----------------------</pre>
+<p></p>
 <li></li>
 为 SPJ 表的 QTY 字段设计 CHECK 约束： 0 &lt; QTY &lt; 1000；
+<p><em>SQL</em></p>
 <pre>
     alter table SPJ
     add check (QTY &gt; 0 and QTY &lt; 1000)</pre>
-<p>[0E0 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [0E0 rows affected]</pre>
 <p>我们先尝试向 SPJ 表中插入一条 QTY = 999 的合法记录：</p>
+<p><em>SQL</em></p>
 <pre>
     insert into SPJ
         (SNO, JNO, PNO, QTY)
     values
         ('S1','J4','P2', 999)</pre>
-<p>[1 row affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [1 row affected]</pre>
 <p>Woot! 数据库返回的行数表明操作成功！</p>
 <p>然后我们再尝试插入一条非法记录（即破坏了我们刚设立的 QTY 的值域的记录）：</p>
+<p><em>SQL</em></p>
 <pre>
     insert into SPJ
         (SNO, JNO, PNO, QTY)
     values
         ('S1','J4','P3',1000)</pre>
-<p>[Microsoft][ODBC SQL Server Driver][SQL Server]INSERT 语句与 COLUMN CHECK 约束 'CK__SPJ__QTY__715DB21C' 冲突。该冲突发生于数据库 'zwy'，表 'SPJ', column 'QTY'。 (SQL-23000)
-[Microsoft][ODBC SQL Server Driver][SQL Server]语句已终止。 (SQL-01000)(DBD: st_execute/SQLExecute err=-1)</p>
-<p>[undefined number of rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [Microsoft][ODBC SQL Server Driver][SQL Server]INSERT 语句与 COLUMN CHECK 约束 'CK__SPJ__QTY__259C7031' 冲突。该冲突发生于数据库 'zwy'，表 'SPJ', column 'QTY'。 (SQL-23000)
+    [Microsoft][ODBC SQL Server Driver][SQL Server]语句已终止。 (SQL-01000)(DBD: st_execute/SQLExecute err=-1)
+    
+    [undefined number of rows affected]</pre>
 <p>你应当看到，数据库会报怨说破坏了约束。</p>
 <p>注： 当然了，我在编写这篇文档的 POD 源
 码时是看不到的，数据库返回的表格和其他信息都是在生成这篇文档的时候根据文档
@@ -766,27 +421,37 @@ Jack++</p>
 <li></li>
 实现对 SPJ 表的操作权限管理的使用。
 <p>嗯，使用下面的语句将 SPJ 表的查询权赋予我们的郑文怡老师（当然了，这只是象征性的）：</p>
+<p><em>SQL</em></p>
 <pre>
     grant select
     on SPJ
     to zwy</pre>
-<p>[Microsoft][ODBC SQL Server Driver][SQL Server]不存在这样的用户或组: 'zwy'。 (SQL-42000)(DBD: st_execute/SQLExecute err=-1)</p>
-<p>[undefined number of rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [Microsoft][ODBC SQL Server Driver][SQL Server]不存在这样的用户或组: 'zwy'。 (SQL-42000)(DBD: st_execute/SQLExecute err=-1)
+    
+    [undefined number of rows affected]</pre>
 <p>啊，你看到，在我的机器上，zwy 不是一个合法的用户或组。当然了，如果我们临时创建
 一个 zwy 用户，然后再重新生成这篇文档的话，看到的输出就完全不同了，呵呵。</p>
 <p>下面我们把 P 表的所有权限都公开（这个是吴海周同学的“创意”，Wu++）：</p>
+<p><em>SQL</em></p>
 <pre>
     grant all privileges
     on P
     to public</pre>
-<p>[0E0 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [0E0 rows affected]</pre>
 <p>这个操作理所当然应该成功哦。不久之后，我们便会意识到这么做并不是一个好主意，于是
 我们想收回所有的权利：</p>
+<p><em>SQL</em></p>
 <pre>
     revoke all privileges
     on P
     from public</pre>
-<p>[0E0 rows affected]</p>
+<p><em>Output</em>:</p>
+<pre>
+    [0E0 rows affected]</pre>
 <p></p></ol>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">

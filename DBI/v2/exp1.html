@@ -95,31 +95,31 @@
 <p>我使用标准的 SQL 语句创建这里的数据库模式。这里代码放在一个单独的文本文件中，该
 文件名为 <em>Schema.sql</em>. 下面是该文件的内容：</p>
 <pre>
-    drop table SPJ</pre>
-<pre>
-    drop table S</pre>
-<pre>
-    drop table P</pre>
-<pre>
-    drop table J</pre>
-<pre>
+    drop table SPJ
+    
+    drop table S
+    
+    drop table P
+    
+    drop table J
+    
     create table S
         (SNO varchar(8) primary key,
          SNAME varchar(8),
          STATUS integer,
-         CITY varchar(6))</pre>
-<pre>
+         CITY varchar(6))
+    
     create table P
         (PNO varchar(8) primary key,
          PNAME varchar(8),
          COLOR varchar(4),
-         WEIGHT integer)</pre>
-<pre>
+         WEIGHT integer)
+    
     create table J
         (JNO varchar(8) primary key,
          JNAME varchar(8),
-         CITY varchar(8))</pre>
-<pre>
+         CITY varchar(8))
+    
     create table SPJ
         (SNO varchar(8),
          PNO varchar(8),
@@ -175,36 +175,31 @@
 类似下面这个样子：</p>
 <pre>
     RM_F = perl -MExtUtils::Command -e rm_f
-    FLAGS = -u zwy -p zwy</pre>
-<pre>
+    FLAGS = -u zwy -p zwy
+    
     all:
         perl eval-sql.pl -u zwy -p zwy $(FLAGS) schema.sql
-        perl csv2db.pl -u zwy -p zwy $(FLAGS) S.csv P.csv J.csv SPJ.csv</pre>
-<pre>
-    doc: exp1.podx exp1.pod exp1.html \
-        exp2.podx exp2.pod exp2.html \
-        exp4.podx exp4.pod exp4.html \
-        prelude.podx prelude.pod prelude.html \
-        er-diagram.png \
-        exp3.podx exp3.pod exp3.html</pre>
-<pre>
-    .SUFFIXES: .podt .podx .pod .html</pre>
-<pre>
-    .podt.podx:
-        perl prepro.pl -u zwy -p zwy $&lt; &gt; $@</pre>
-<pre>
+        perl csv2db.pl -u zwy -p zwy $(FLAGS) S.csv P.csv J.csv SPJ.csv
+    
+    doc: exp1.pod exp1.html \
+         exp2.pod exp2.html \
+         exp4.pod exp4.html \
+         prelude.pod prelude.html er-diagram.png \
+         exp3.pod exp3.html
+    
+    .SUFFIXES: .podx .pod .html
+    
     .podx.pod:
-        podxc $&lt;</pre>
-<pre>
+        podx $&lt;
+    
     .pod.html:
         podhtm -s Active.css $&lt;
-        $(RM_F) *.tmp</pre>
-<pre>
+    
     er-diagram.png: er-diagram.cm
-        er-diag -s 4x4 er-diagram.cm</pre>
-<pre>
+        er-diag -s 4x4 er-diagram.cm
+    
     clean:
-        $(RM_F) *.pod *.podx NIL</pre>
+        $(RM_F) *.tmp *.pod NIL</pre>
 <p>这样一旦我的数据库遭到了破坏或者需要重新建库，我就只需输入下面一行命令就万事大吉了：</p>
 <pre>
     $ nmake

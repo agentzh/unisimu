@@ -5,27 +5,22 @@ all:
 	perl eval-sql.pl -u zwy -p zwy $(FLAGS) schema.sql
 	perl csv2db.pl -u zwy -p zwy $(FLAGS) S.csv P.csv J.csv SPJ.csv
 
-doc: exp1.podx exp1.pod exp1.html \
-	exp2.podx exp2.pod exp2.html \
-	exp4.podx exp4.pod exp4.html \
-	prelude.podx prelude.pod prelude.html \
-	er-diagram.png \
-	exp3.podx exp3.pod exp3.html
+doc: exp1.pod exp1.html \
+	 exp2.pod exp2.html \
+	 exp4.pod exp4.html \
+	 prelude.pod prelude.html er-diagram.png \
+	 exp3.pod exp3.html
 
-.SUFFIXES: .podt .podx .pod .html
-
-.podt.podx:
-	perl prepro.pl -u zwy -p zwy $< > $@
+.SUFFIXES: .podx .pod .html
 
 .podx.pod:
-	podxc $<
+	podx $<
 
 .pod.html:
 	podhtm -s Active.css $<
-	$(RM_F) *.tmp
 
 er-diagram.png: er-diagram.cm
 	er-diag -s 4x4 er-diagram.cm
 
 clean:
-	$(RM_F) *.pod *.podx NIL
+	$(RM_F) *.tmp *.pod NIL
