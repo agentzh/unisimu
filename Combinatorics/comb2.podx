@@ -2,6 +2,19 @@
 
 comb - Combinatorics
 
+=head1 DESCRIPTION
+
+本文演示了如何使用 Perl 和 Maple 以及二者的“混合物”（通过 CPAN 上的 PerlMaple 模
+块）来进行组合计数和组合构造方面的计算机仿真。在运行下面的 Perl 代码之前必须加上下面
+两行代码：
+
+    use PerlMaple;
+    $maple = PerlMaple->new;
+
+关于 PerlMaple 模块的详细内容，请参见 CPAN 上的文档：
+
+L<http://search.cpan.org/dist/PerlMaple/>
+
 =head1 Preparations
 
 为了方便起见, 我们先定义一些 Maple 函数.
@@ -312,8 +325,8 @@ use List::Util 'first';
 $maple->ReturnAST(1);
 my $res = $maple->rsolve("%", "{a(n),b(n)}");
 if ($res->type('set')) {
-    $a_n = first { $maple->lhs($_) eq 'a(n)' } $res->ops;
-    $a_n = $maple->rhs($a_n);
+    $a_n = first { $_->lhs eq 'a(n)' } $res->ops;
+    $a_n = $a_n->rhs;
 }
 $a_n;
 
@@ -322,12 +335,36 @@ $a_n;
 我们利用两三行 Perl 代码就准确地从 Maple 的
 rsolve 函数返回的解集中提取出了通项 a(n) 的表达式。注意
 我们是如何直接对导入到 Perl 环境中的 Maple AST 进行操纵的，
-这避免了复杂且脆弱的正则匹配。
+这避免了复杂且脆弱的正则匹配。另外，更有趣的是，我们的
+Perl 代码看上去更像是 OO 版的 Maple 脚本，呵呵。
+
+这些代码在转换为 Perl6 之后相信会更加整洁，更加优雅！
+Perl6++
 
 下面我们就用 a(n) 的通项计算一下 n 取 1 ~ 4 时的值：
 
-=perl map { $maple->eval($a_n, "n=$_") } 1..4;
+=perl map { $a_n->eval("n=$_") } 1..4;
 
 我们看到，这与前面的“暴力法”得到的结果一致。
 
+=Perl $maple->ReturnAST(0);
+
+=begin Maple
+
+a:=rsolve({a(1)=1,a(2)=3,a(n)=a(n-1)+2*a(n-2)},a(n));
+latex(a);
+
+=end Maple
+
 =back
+
+=head1 AUTHOR
+
+章亦春 (Agent Zhang), E<lt>agent2002@126.comE<gt>
+
+=head1 COPYRIGHT
+
+Copyright 2005 Agent Zhang. All rights reserved.
+
+This document is free, you can modify and/or redistribute
+it under the same terms as Perl.
