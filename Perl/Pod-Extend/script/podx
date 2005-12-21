@@ -18,7 +18,7 @@ my @files = map glob, @ARGV or
 ($Pod::Extend::dbi_username, $Pod::Extend::dbi_password) =
     ($opts{u}, $opts{p});
 
-my $DSN = $ENV{DSN};
+$Pod::Extend::dbi_dsn = $ENV{DSN};
 
 my $parser = Pod::Extend->new;
 foreach my $infile (@files) {

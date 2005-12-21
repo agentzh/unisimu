@@ -79,7 +79,7 @@ my %hooks = (
         my $sql = shift;
         ### $sql
         $sql =~ s/^[\s\n]+|[\s\n]+$//sg;
-        my $res;
+        my $res = '';
 
         my $dbh = connect_db();
         if (not $dbh) {
@@ -93,7 +93,7 @@ my %hooks = (
             return $output;
         }
 
-        my $rv = $sth->execute() or print "$DBI::errstr\n\n";
+        my $rv = $sth->execute() or $res .= "$DBI::errstr\n\n";
         if (!$sth->{'NUM_OF_FIELDS'}) { # not a select statement
             local $^W=0;
             if (not defined $rv) {
@@ -101,7 +101,7 @@ my %hooks = (
             } elsif ($rv == -1) {
                 $rv = "unknown number of";
             }
-            $res = "[$rv row".
+            $res .= "[$rv row".
                 (looks_like_number($rv) && $rv==1 ? "" : "s").
                 " affected]\n";
             $dbh->disconnect;
