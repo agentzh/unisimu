@@ -69,6 +69,7 @@ sub err : Private {
     my ( $self, $c ) = @_;
     #my $html = $c->stash->{error};
     my $html = $c->textile->process($c->stash->{error});
+    $c->res->content_type("text/html");
     $c->res->output($html);
 }
 
