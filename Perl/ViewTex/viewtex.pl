@@ -2,7 +2,7 @@
 #: Pod Dynamic LaTeX Viewer
 #: v0.01
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-12-16 2005-12-16
+#: 2005-12-16 2005-12-22
 
 use strict;
 use warnings;
@@ -60,7 +60,7 @@ __PACKAGE__->setup(qw/Static::Simple/);
 # forward to modlist by default
 sub default : Private {
     my ( $self, $c ) = @_;
-    $c->stash->{error} = 'No PDF file specified.';
+    $c->stash->{error} = 'No PDF or LaTeX file specified.';
     $c->forward('/err');
 }
 
