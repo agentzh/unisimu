@@ -1,0 +1,16 @@
+唔，comb.pdf 内是马上组合数学的考试范围。该 PDF 
+是一件尚未完工的作品（唔，还有 10 题左右吧），我
+现在正在紧张地制作它。
+
+该目录中有 comb.pdf 的源代码，就在 comb.tex 里面。
+你看到，我是用 LaTeX 来描述那些可怕的数学公式的。
+生成 PDF 我使用的是 CTeX 套装中的 pdflatex 工具。
+
+comb2.html 很值得 Maple/Perl 程序员一看，在那里我
+演示了如何用 Perl 和 Maple 的组合来进行组合计数和
+组合构造方面的计算机仿真。值得一提的是，comb2.html
+是我的 podx 工具从 comb2.podx 文件自动生成的。
+
+Stay tuned!
+
+            章亦春
