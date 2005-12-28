@@ -2,7 +2,7 @@ RM_F = perl -MExtUtils::Command -e rm_f
 THRVIZ = Debugger/thrviz.pl
 THRCGI = thrcgi.pl
 
-all: plate.ast plate.out prime.ast prime.out RMP.ast RMP.out RMP2.ast RMP2.out
+all: bigplate.ast bigplate.out plate.ast plate.out prime.ast prime.out RMP.ast RMP.out RMP2.ast RMP2.out
 
 .SUFFIXES: .pl .ast .tmp .out
 
@@ -37,6 +37,13 @@ run_$(PROG): all
 	cd ..
 
 PROG = RMP2
+
+run_$(PROG): all
+	cd Debugger
+	perl $(THRCGI) -a ../$(PROG).ast -r ../$(PROG).out
+	cd ..
+
+PROG = bigplate
 
 run_$(PROG): all
 	cd Debugger
