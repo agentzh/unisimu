@@ -7,16 +7,14 @@ use warnings;
 
 use threads;
 use threads::shared;
-use Thread::Semaphore;
+use PV;
 
 $| = 1;
 my $max = 5;
 
-my %semas;
-
 my $plate : shared = 0;
 
-new_semaphore(
+semas(
     can_put        => 1,
     can_get_apple  => 0,
     can_get_orange => 0,
@@ -71,26 +69,4 @@ foreach $thr (threads->list) {
     if ($thr->tid && !threads::equal($thr, threads->self)) { 
         $thr->join; 
     } 
-}
-
-sub new_semaphore {
-	my %names = @_;
-	foreach (keys %names) {
-        #warn "$_ => $names{$_}\n";
-        $semas{$_} = Thread::Semaphore->new($names{$_});
-	}
-}
-
-sub P {
-    #sleep(1);
-    my $name = shift;
-    $semas{$name}->down;
-    threads->yield;
-}
-
-sub V {
-    #sleep(1);
-    my $name = shift;
-    $semas{$name}->up;
-    threads->yield;
 }

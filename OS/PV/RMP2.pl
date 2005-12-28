@@ -8,10 +8,9 @@ use warnings;
 
 use threads;
 use threads::shared;
-use Thread::Semaphore;
+use PV;
 
 my $in;
-my %semas;
 
 my @buf_A: shared = ();
 my @buf_B: shared = ();
@@ -22,7 +21,7 @@ my $M_i_A = 0;
 my $M_i_B = 0;
 my $P_i_B = 0;
 
-new_semaphore(
+semas(
 	R_enter_A => $K,
 	M_enter_A => 0,
     M_enter_B => $K,
@@ -89,26 +88,4 @@ sub read_data {
     my $s = <$in>;
     chomp $s if $s;
     return $s;
-}
-
-sub new_semaphore {
-	my %names = @_;
-	foreach (keys %names) {
-        #warn "$_ => $names{$_}\n";
-        $semas{$_} = Thread::Semaphore->new($names{$_});
-	}
-}
-
-sub P {
-    #sleep(1);
-    my $name = shift;
-    $semas{$name}->down;
-    threads->yield;
-}
-
-sub V {
-    #sleep(1);
-    my $name = shift;
-    $semas{$name}->up;
-    threads->yield;
 }

@@ -7,10 +7,9 @@ use warnings;
 
 use threads;
 use threads::shared;
-use Thread::Semaphore;
+use PV;
 
 my $in;
-my %semas;
 
 my @buffer: shared = ();
 my $K = 5;
@@ -19,7 +18,7 @@ my $R_i = 0;
 my $M_i = 0;
 my $P_i = 0;
 
-new_semaphore(
+semas(
 	R_enter => $K,
 	M_enter => 0,
 	P_enter => 0,
@@ -46,7 +45,7 @@ async { #-# M
         P('M_enter');
         my $s = $buffer[$M_i];
         my $new = chr($s + ord('A')) if defined $s;
-		warn "M: Converting $s to $new...\n" if defined $s;
+		#warn "M: Converting $s to $new...\n" if defined $s;
         threads->yield;
         $buffer[$M_i] = $new;
         $M_i = ($M_i + 1) % $K;
@@ -87,26 +86,4 @@ sub read_data {
     my $s = <$in>;
     chomp $s if $s;
     return $s;
-}
-
-sub new_semaphore {
-	my %names = @_;
-	foreach (keys %names) {
-        #warn "$_ => $names{$_}\n";
-        $semas{$_} = Thread::Semaphore->new($names{$_});
-	}
-}
-
-sub P {
-    #sleep(1);
-    my $name = shift;
-    $semas{$name}->down;
-    threads->yield;
-}
-
-sub V {
-    #sleep(1);
-    my $name = shift;
-    $semas{$name}->up;
-    threads->yield;
 }
