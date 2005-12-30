@@ -5,12 +5,12 @@ use strict;
 my $config_file = 'clean.cfg';
 
 open(IN, 'who am i|') or
-	die "Can't spawn whoami: $!";
+    die "Can't spawn whoami: $!";
 
 my $line = <IN>;
 my $dft_owner;
 if ($line =~ /^\S+/) {
-	$dft_owner = $&;
+    $dft_owner = $&;
 }
 close IN;
 
@@ -41,7 +41,7 @@ if (-f $config_file) {
     }
     close IN;
 } else {
-	warn "warning: clean.cfg not found.\n";
+    warn "warning: clean.cfg not found.\n";
 }
 
 warn "----------------------\n";
@@ -56,11 +56,11 @@ warn "----------------------\n";
 #map { sprintf("%x", $_) } @shm_keys;
 
 open(IN, "ipcs|") or
-	die "Can't open ipcs: $!";
+    die "Can't open ipcs: $!";
 
 while (<IN>) {
-	if (/^m\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
-		my $shmid = $1;
+    if (/^m\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
+        my $shmid = $1;
         my $hexkey = $2;
         foreach my $key (@shm_keys) {
             if ($key == hex($hexkey)) {
@@ -70,16 +70,24 @@ while (<IN>) {
                 last;
             }
         }
-	} elsif (/^s\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
-		my $semid = $1;
+		if (not @shm_keys) {
+            print "Removing shared memory 0x$hexkey ($shmid)...\n";
+            system("ipcrm -m $shmid");
+        }
+    } elsif (/^s\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
+        my $semid = $1;
         my $hexkey = $2;
         foreach my $key (@sem_keys) {
             if ($key == hex($hexkey)) {
                 print "Removing semaphore $key ($semid)...\n";
-        		system("ipcrm -s $semid");
+                system("ipcrm -s $semid");
                 $key = '';
                 last;
             }
+        }
+        if (not @sem_keys) {
+            print "Removing semaphore 0x$hexkey ($semid)...\n";
+            system("ipcrm -s $semid");
         }
     }
 }

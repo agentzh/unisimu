@@ -49,6 +49,7 @@ void err(char* fmt, ...){
     va_start(args, fmt);
     vfprintf(stderr, fmt, args);
     va_end(args);
+    fprintf(stderr, "\n");
     exit(2);
 }
 

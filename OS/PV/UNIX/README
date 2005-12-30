@@ -17,8 +17,25 @@ and then you can check the four processes output later:
 	cat s.out
 	cat d.out
 
+It's a good habit to clean up the shared resources when you has your job done. Simply
+put the following commands to do the cleaning:
+
+	./clean
+
 It's worth mentioning that the clean may not work in OSes other than Solaris, although
 it's written in Perl. Its portibility still needs love.
 
 When you modify the keys for semaphores or shared memories, you have to update the
 keys in clean.cfg accordingly.
+
+When you obtain the following error message from the ``init'' program:
+
+	Failed to create semaphore 'can_put'.
+
+then you should change the value for the SEED constant in ``app.h'' to another arbitrary
+value. Because someone else must has created a semaphore of the same key for
+himself/herself in the same environment. Remember to update the ``clean.cfg'' file
+accordingly. If this method still doesn't help, try to remove clean.cfg temporarily,
+and run the following command again:
+
+	./clean
