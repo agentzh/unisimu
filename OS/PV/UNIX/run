@@ -2,7 +2,7 @@
 
 use strict;
 
-`./app`;
+`./init`;
 `./father > f.out &`;
 `./mother > m.out &`;
 `./daughter > d.out &`;
