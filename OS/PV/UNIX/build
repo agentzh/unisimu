@@ -8,6 +8,7 @@ my $CC = shift || 'g++';
 
 `$CC -c pv.c`;
 `$CC -o init init.c pv.o`;
+`$CC -o destroy destroy.c pv.o`;
 `$CC -o father father.c pv.o`;
 `$CC -o mother mother.c pv.o`;
 `$CC -o son son.c pv.o`;

@@ -137,9 +137,19 @@ int free_shared_mem(int key, int len) {
     int shmid;
 
     shmid = shmget(key, len, 0777);
-    if (shmctl(shmid, IPC_RMID, &shm_desc) == -1) {
-        perror("free_shared_mem: shmctl: ");
+    if (shmid == -1 || shmctl(shmid, IPC_RMID, &shm_desc) == -1) {
+        perror("free_shared_mem: ");
         return FALSE;
     }
     return TRUE;
+}
+
+int free_sema(int key) {
+    int semid;
+
+    semid = semget(key, 1, 0777);
+    if (semid == -1 || semctl(semid, 0, IPC_RMID) == -1) {
+        perror("free_sema: ");
+        return FALSE;
+    }
 }

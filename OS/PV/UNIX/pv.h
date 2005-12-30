@@ -27,4 +27,6 @@ int commit_shared_ptr(void* shm_addr);
 
 int free_shared_mem(int key, int len);
 
+int free_sema(int key);
+
 #endif
