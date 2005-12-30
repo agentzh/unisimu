@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $owner = shift || 'n0304';
+open(IN, "ipcs|") or
+	die "Can't open ipcs: $!";
+
+while (<IN>) {
+	if (/^m\s+(\d+)\s+.*\b$owner\b/) {
+		my $shm = $1;
+		print "try to remove shared memory $shm...\n";
+		system("ipcrm -m $shm");
+	} elsif (/^s\s+(\d+)\s+.*\b$owner\b/) {
+		my $sema = $1;
+		print "try to remove semaphore $sema...\n";
+		system("ipcrm -s $sema");
+	}
+}
+close IN;

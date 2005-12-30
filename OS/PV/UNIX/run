@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+
+use strict;
+
+`./app`;
+`./daughter > d.out &`;
+`./son > s.out &`;
+`./mother > m.out &`;
+`./father > f.out &`;
