@@ -1,7 +1,7 @@
 /******************************************
     app.h
     Copyright (c) 2005 Agent Zhang
-    2005-12-29 2005-12-29
+    2005-12-29 2005-12-30
  ******************************************/ 
 
 #ifndef _APP_H_
@@ -11,9 +11,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include "eprintf.h"
 
 enum {
+    DEBUG = 0,
+
     /* user constants */
     PLATE_SZ = 4,
     TIMES    = 20,
@@ -50,5 +51,9 @@ void err(char* fmt, ...){
     va_end(args);
     exit(2);
 }
+
+#define HERE \
+    if (DEBUG) \
+        fprintf(stderr, "%s: line %d : GOT HERE!\n", __FILE__, __LINE__);
 
 #endif

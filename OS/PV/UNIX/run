@@ -3,7 +3,7 @@
 use strict;
 
 `./app`;
+`./father > f.out &`;
+`./mother > m.out &`;
 `./daughter > d.out &`;
 `./son > s.out &`;
-`./mother > m.out &`;
-`./father > f.out &`;

@@ -2,19 +2,98 @@
 
 use strict;
 
-my $owner = shift || 'n0304';
+my $config_file = 'clean.cfg';
+
+open(IN, 'who am i|') or
+	die "Can't spawn whoami: $!";
+
+my $line = <IN>;
+my $dft_owner;
+if ($line =~ /^\S+/) {
+	$dft_owner = $&;
+}
+close IN;
+
+my $owner = shift || $dft_owner;
+
+warn "The current owner is $owner.\n";
+
+my @sem_keys;
+my @shm_keys;
+if (-f $config_file) {
+    open(IN, $config_file) or
+        die "Can't open $config_file: $!";
+    my $type;
+    while (<IN>) {
+        next if /^\s*$/;
+        if ($type and /^\s*(\d+)\s*$/) {
+            my $key = $1;
+            if ($type eq 's') {
+                push @sem_keys, $key;
+            } else {
+                push @shm_keys, $key;
+            }
+        } elsif (/^\s*([ms])\s*$/i) {
+            $type = $1;
+        } else {
+            die "Syntax error: $config_file: line $.: $_";
+        }
+    }
+    close IN;
+} else {
+	warn "warning: clean.cfg not found.\n";
+}
+
+warn "----------------------\n";
+warn "Shared Memory:\n";
+warn "@shm_keys\n";
+warn "----------------------\n";
+warn "Semaphores:\n";
+warn "@sem_keys\n";
+warn "----------------------\n";
+
+#map { sprintf("%x", $_) } @sem_keys;
+#map { sprintf("%x", $_) } @shm_keys;
+
 open(IN, "ipcs|") or
 	die "Can't open ipcs: $!";
 
 while (<IN>) {
-	if (/^m\s+(\d+)\s+.*\b$owner\b/) {
-		my $shm = $1;
-		print "try to remove shared memory $shm...\n";
-		system("ipcrm -m $shm");
-	} elsif (/^s\s+(\d+)\s+.*\b$owner\b/) {
-		my $sema = $1;
-		print "try to remove semaphore $sema...\n";
-		system("ipcrm -s $sema");
-	}
+	if (/^m\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
+		my $shmid = $1;
+        my $hexkey = $2;
+        foreach my $key (@shm_keys) {
+            if ($key == hex($hexkey)) {
+                print "Removing shared memory $key ($shmid)...\n";
+                system("ipcrm -m $shmid");
+                $key = '';
+                last;
+            }
+        }
+	} elsif (/^s\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
+		my $semid = $1;
+        my $hexkey = $2;
+        foreach my $key (@sem_keys) {
+            if ($key == hex($hexkey)) {
+                print "Removing semaphore $key ($semid)...\n";
+        		system("ipcrm -s $semid");
+                $key = '';
+                last;
+            }
+        }
+    }
 }
 close IN;
+
+my $key;
+foreach $key (@shm_keys) {
+    if ($key) {
+        warn "warning: shared memory $key not found!\n";
+    }
+}
+
+foreach $key (@sem_keys) {
+    if ($key) {
+        warn "warning: semaphore $key not found!\n";
+    }
+}

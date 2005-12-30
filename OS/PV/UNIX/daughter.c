@@ -1,7 +1,7 @@
 /******************************************
     daughter.c
     Copyright (c) 2005 Agent Zhang
-    2005-12-29 2005-12-29
+    2005-12-29 2005-12-30
  ******************************************/ 
 
 #include "app.h"
@@ -25,12 +25,12 @@ void daughter(void) {
     char* plate;
     char fruit[BUFSIZE];
 
-    GOT_HERE
+    HERE
 
     P(SEM_CAN_GET_APPLE);
     P(SEM_APPLE_SP);
 
-    GOT_HERE
+    HERE
 
     apple_sp_ptr = (int*) get_shared_mem(SHM_APPLE_SP, SHM_APPLE_SP_SZ);
     if (apple_sp_ptr == NULL) err("Can't get 'apple_sp'.");
@@ -38,12 +38,12 @@ void daughter(void) {
 
     fprintf(stderr, "apple_sp = %d\n", apple_sp);
 
-    GOT_HERE
+    HERE
 
     plate = (char*) get_shared_mem(SHM_PLATE, SHM_PLATE_SZ);
     if (plate == NULL) err("Can't get 'plate'.");
 
-    GOT_HERE
+    HERE
 
     --apple_sp;
     strncpy(fruit, plate + apple_sp * BUFSIZE, BUFSIZE);
@@ -54,11 +54,11 @@ void daughter(void) {
     *apple_sp_ptr = apple_sp;
     commit_shared_ptr(apple_sp_ptr);
 
-    GOT_HERE
+    HERE
 
     commit_shared_ptr(plate);
 
-    GOT_HERE
+    HERE
 
     V(SEM_APPLE_SP);
     V(SEM_CAN_PUT);

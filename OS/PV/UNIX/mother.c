@@ -1,7 +1,7 @@
 /******************************************
     mother.c
     Copyright (c) 2005 Agent Zhang
-    2005-12-29 2005-12-29
+    2005-12-29 2005-12-30
  ******************************************/ 
 
 #include "app.h"
@@ -25,12 +25,12 @@ void mother(void) {
 
     char* plate;
 
-    GOT_HERE
+    HERE
 
     P(SEM_CAN_PUT);
     P(SEM_ORANGE_SP);
 
-    GOT_HERE
+    HERE
 
     orange_sp_ptr = (int*) get_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ);
     if (orange_sp_ptr == NULL) err("Can't get 'orange_sp'.");
@@ -38,7 +38,7 @@ void mother(void) {
 
     fprintf(stderr, "orange_sp = %d\n", orange_sp);
 
-    GOT_HERE
+    HERE
 
     plate = (char*) get_shared_mem(SHM_PLATE, SHM_PLATE_SZ);
     if (plate == NULL) err("Can't get 'plate'.");
@@ -49,16 +49,16 @@ void mother(void) {
     strcpy(plate + orange_sp * BUFSIZE, "orange");
     orange_sp--;
 
-    GOT_HERE
+    HERE
 
     *orange_sp_ptr = orange_sp;
     commit_shared_ptr(orange_sp_ptr);
 
-    GOT_HERE
+    HERE
 
     commit_shared_ptr(plate);
 
-    GOT_HERE
+    HERE
 
     V(SEM_ORANGE_SP);
     V(SEM_CAN_GET_ORANGE);

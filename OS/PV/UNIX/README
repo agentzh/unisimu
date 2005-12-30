@@ -1,0 +1,24 @@
+This is a UNIX C implemenation for bigplate.pl in the parent directory.
+
+To build this application, you need to enter the following commands under a UNIX shell:
+
+	chmod +x clean build run
+	./build
+	./clean
+
+To get the application running, you can simply enter the command
+
+	./run
+
+and then you can check the four processes output later:
+
+	cat f.out
+	cat m.out
+	cat s.out
+	cat d.out
+
+It's worth mentioning that the clean may not work in OSes other than Solaris, although
+it's written in Perl. Its portibility still needs love.
+
+When you modify the keys for semaphores or shared memories, you have to update the
+keys in clean.cfg accordingly.
