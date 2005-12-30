@@ -16,6 +16,10 @@
 #define FALSE 0
 #endif
 
+/* the mystic number 0777 stands for (S_IRWXU | S_IRWXG | S_IRWXO)
+   see UNIX reference for details.
+*/
+
 int P(int key) {
     int semid;
     struct sembuf p_buf;
