@@ -26,7 +26,7 @@ int P(int key) {
     p_buf.sem_flg = 0;
 
     if (semop(semid, &p_buf, 1) == -1) {
-        fprintf(stderr, "P(semid) failed\n");
+        perror("P operation failed: ");
         return FALSE;
     }
     return TRUE;
@@ -41,7 +41,7 @@ int V(int key) {
     v_buf.sem_op = 1;
     v_buf.sem_flg = 0;
     if (semop(semid, &v_buf, 1) == -1) {
-      fprintf(stderr, "V(semid) failed\n");
+      perror("V operation failed: ");
       return FALSE;
     }
     return TRUE;
@@ -56,19 +56,24 @@ static void set_sembuf_struct(struct sembuf *sem,int semnum, int semop,int semfl
 int create_shared_mem(int key, int len) {
     int shmid;
     char *addr;
+    struct shmid_ds shm_desc;
+
     shmid = shmget(key, len, 0777|IPC_CREAT|IPC_EXCL);
     if (shmid  == -1) {
         if (errno == EEXIST) {
            	shmid = shmget(key, len, 0777);
-          	if (shmctl(shmid, IPC_RMID, 0) >= 0)
+          	if (shmctl(shmid, IPC_RMID, &shm_desc) >= 0) {
                 shmid = shmget(key, len, 0777|IPC_CREAT|IPC_EXCL);
-            else
+            } else {
+                perror("create_shared_mem: shared memory exists and can't be removed: ");
                 return FALSE;
+            }
         } else {
+            perror("create_shared_mem: ");
             return FALSE;
         }
     }
-    addr = (char*)shmat(shmid, 0, 0);
+    addr = (char*)shmat(shmid, NULL, 0);
     memset(addr, 0, len);
     shmdt(addr);
     return TRUE;
@@ -79,13 +84,21 @@ int create_sema(int key, int val) {
     struct sembuf sem_tmp;
     semid = semget(key, 1, 0777|IPC_CREAT|IPC_EXCL);
     if(semid == -1) {
+        perror("create_sema: ");
         if (errno == EEXIST) {
             semid = semget(key, 1, 0777);
-            if (semctl(semid, 0, IPC_RMID) >= 0)
+            if (semctl(semid, 0, IPC_RMID) >= 0) {
                 semid = semget(key, 1, 0777|IPC_CREAT|IPC_EXCL);
-            else
+                if (semid == -1) {
+                    perror("create_sema: semget: ");
+                    return FALSE;
+                }
+            } else {
+                perror("create_sema: semaphore exists and can't be removed: ");
                 return FALSE;
+            }
         } else {
+            perror("create_sema: ");
             return FALSE;
         }
     }
@@ -96,10 +109,33 @@ int create_sema(int key, int val) {
 
 void* get_shared_mem(int key, int len) {
     int shmid;
+    void* shm_addr;
     shmid = shmget(key, len, 0777);
-    return shmat(shmid, NULL, 0);
+    shm_addr = shmat(shmid, NULL, 0);
+    if (!shm_addr) { /* operation failed. */
+        perror("get_shared_mem: shmat: ");
+        return NULL;
+    }
+    return shm_addr;
 }
 
-void commit_shared_ptr(void* ptr) {
-    shmdt(ptr);
+int commit_shared_ptr(void* shm_addr) {
+    if (shmdt(shm_addr) == -1) {
+        perror("commit_shared_ptr: shmdt: ");
+        return FALSE;
+    }
+    return TRUE;
+}
+
+/* de-allocate the shared memory segment. */
+int free_shared_mem(int key, int len) {
+    struct shmid_ds shm_desc;
+    int shmid;
+
+    shmid = shmget(key, len, 0777);
+    if (shmctl(shmid, IPC_RMID, &shm_desc) == -1) {
+        perror("free_shared_mem: shmctl: ");
+        return FALSE;
+    }
+    return TRUE;
 }

@@ -23,6 +23,8 @@ void* get_shared_mem(int key, int len);
 
 /* 当完成对 get_shard_mem 返回的共享指针
    的操作以后，退回该指针给 OS */
-void commit_shared_ptr(void* ptr);
+int commit_shared_ptr(void* shm_addr);
+
+int free_shared_mem(int key, int len);
 
 #endif

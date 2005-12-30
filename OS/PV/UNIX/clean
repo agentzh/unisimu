@@ -40,17 +40,17 @@ if (-f $config_file) {
         }
     }
     close IN;
+
+	warn "----------------------\n";
+	warn "Shared Memory:\n";
+	warn "@shm_keys\n";
+	warn "----------------------\n";
+	warn "Semaphores:\n";
+	warn "@sem_keys\n";
+	warn "----------------------\n";
 } else {
     warn "warning: clean.cfg not found.\n";
 }
-
-warn "----------------------\n";
-warn "Shared Memory:\n";
-warn "@shm_keys\n";
-warn "----------------------\n";
-warn "Semaphores:\n";
-warn "@sem_keys\n";
-warn "----------------------\n";
 
 #map { sprintf("%x", $_) } @sem_keys;
 #map { sprintf("%x", $_) } @shm_keys;
@@ -59,10 +59,16 @@ open(IN, "ipcs|") or
     die "Can't open ipcs: $!";
 
 while (<IN>) {
+	#warn $_;
     if (/^m\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
         my $shmid = $1;
         my $hexkey = $2;
-        foreach my $key (@shm_keys) {
+		if (not @shm_keys) {
+            print "Removing shared memory 0x$hexkey ($shmid)...\n";
+            system("ipcrm -m $shmid");
+			next;
+        }
+		foreach my $key (@shm_keys) {
             if ($key == hex($hexkey)) {
                 print "Removing shared memory $key ($shmid)...\n";
                 system("ipcrm -m $shmid");
@@ -70,13 +76,14 @@ while (<IN>) {
                 last;
             }
         }
-		if (not @shm_keys) {
-            print "Removing shared memory 0x$hexkey ($shmid)...\n";
-            system("ipcrm -m $shmid");
-        }
     } elsif (/^s\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
         my $semid = $1;
         my $hexkey = $2;
+        if (not @sem_keys) {
+            print "Removing semaphore 0x$hexkey ($semid)...\n";
+            system("ipcrm -s $semid");
+			next;
+        }
         foreach my $key (@sem_keys) {
             if ($key == hex($hexkey)) {
                 print "Removing semaphore $key ($semid)...\n";
@@ -85,10 +92,6 @@ while (<IN>) {
                 last;
             }
         }
-        if (not @sem_keys) {
-            print "Removing semaphore 0x$hexkey ($semid)...\n";
-            system("ipcrm -s $semid");
-        }
     }
 }
 close IN;
@@ -96,12 +99,14 @@ close IN;
 my $key;
 foreach $key (@shm_keys) {
     if ($key) {
-        warn "warning: shared memory $key not found!\n";
+		my $hexkey = sprintf("%x", $key);
+        warn "warning: shared memory $key (0x$hexkey) not found!\n";
     }
 }
 
 foreach $key (@sem_keys) {
     if ($key) {
-        warn "warning: semaphore $key not found!\n";
+		my $hexkey = sprintf("%x", $key);
+		warn "warning: semaphore $key (0x$hexkey) not found!\n";
     }
 }

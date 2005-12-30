@@ -43,14 +43,11 @@ enum {
 };
 
 /* err: print error message and exit */
-void err(char* fmt, ...){
-    va_list args;
-    fflush(stdout);
-    va_start(args, fmt);
-    vfprintf(stderr, fmt, args);
-    va_end(args);
-    fprintf(stderr, "\n");
-    exit(2);
+#define err(msg) { \
+    fprintf(stderr, "%s: line %d: " \
+        msg \
+        "\n", __FILE__, __LINE__); \
+    exit(2); \
 }
 
 #define HERE \

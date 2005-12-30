@@ -11,17 +11,14 @@ int main() {
     int orange_sp;
 
     /* set up shared memory buffers */
-    if (!create_shared_mem(SHM_PLATE, SHM_PLATE_SZ) ) {
+    if ( !create_shared_mem(SHM_PLATE, SHM_PLATE_SZ) )
         err("Failed to create shared memory 'plate'.");
-    }
 
-    if ( !create_shared_mem(SHM_APPLE_SP, SHM_APPLE_SP_SZ) ) {
+    if ( !create_shared_mem(SHM_APPLE_SP, SHM_APPLE_SP_SZ) )
         err("Failed to create shared memory 'apple_sp'.");
-    }
 
-    if ( !create_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ) ) {
+    if ( !create_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ) )
         err("Failed to create shared memory 'orange_sp'.");
-    }
 
     orange_sp_ptr = (int*) get_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ);
     if (orange_sp_ptr == NULL) err("Can't get 'orange_sp'.");
@@ -29,25 +26,20 @@ int main() {
     commit_shared_ptr(orange_sp_ptr);
 
     /* create semaphores */
-    if ( !create_sema(SEM_CAN_PUT, PLATE_SZ) ) {
+    if ( !create_sema(SEM_CAN_PUT, PLATE_SZ) )
         err("Failed to create semaphore 'can_put'.");
-    }
 
-    if ( !create_sema(SEM_CAN_GET_APPLE, 0) ) {
+    if ( !create_sema(SEM_CAN_GET_APPLE, 0) )
         err("Failed to create semaphore 'can_get_apple'.");
-    }
 
-    if ( !create_sema(SEM_CAN_GET_ORANGE, 0) ) {
+    if ( !create_sema(SEM_CAN_GET_ORANGE, 0) )
         err("Failed to create semaphore 'can_get_orange'.");
-    }
 
-    if ( !create_sema(SEM_APPLE_SP, 1) ) {
+    if ( !create_sema(SEM_APPLE_SP, 1) )
         err("Failed to create semaphore 'apple_sp'.");
-    }
 
-    if ( !create_sema(SEM_ORANGE_SP, 1) ) {
+    if ( !create_sema(SEM_ORANGE_SP, 1) )
         err("Failed to create semaphore 'orange_sp'.");
-    }
 
     return 0;
 }
