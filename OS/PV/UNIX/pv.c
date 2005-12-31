@@ -25,12 +25,16 @@ int P(int key) {
     struct sembuf p_buf;
 
     semid = semget(key, 1, 0777);
+	if (semid == -1) {
+        perror("P: semget: ");
+        return FALSE;
+	}
     p_buf.sem_num = 0;
     p_buf.sem_op = -1;
     p_buf.sem_flg = 0;
 
     if (semop(semid, &p_buf, 1) == -1) {
-        perror("P operation failed: ");
+        perror("P: semop: ");
         return FALSE;
     }
     return TRUE;
@@ -41,11 +45,16 @@ int V(int key) {
     struct sembuf v_buf;
 
     semid = semget(key, 1, 0777);
+	if (semid == -1) {
+        perror("V: semget: ");
+        return FALSE;
+	}
+
     v_buf.sem_num = 0;
     v_buf.sem_op = 1;
     v_buf.sem_flg = 0;
     if (semop(semid, &v_buf, 1) == -1) {
-      perror("V operation failed: ");
+      perror("V: semop: ");
       return FALSE;
     }
     return TRUE;
@@ -73,7 +82,7 @@ int create_shared_mem(int key, int len) {
                 return FALSE;
             }
         } else {
-            perror("create_shared_mem: ");
+            perror("create_shared_mem: shmget: ");
             return FALSE;
         }
     }
