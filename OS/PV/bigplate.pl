@@ -58,12 +58,12 @@ async { #-# mother
     #-#
 }
 
-async { #-# sun
+async { #-# son
     for (1..TIMES) {
         P('can_get_orange');
         P('orange_sp');
         my $fruit = $plate[++$orange_sp];
-        print "  Sun got an $fruit!\n";
+        print "  Son got an $fruit!\n";
         V('orange_sp');
         V('can_put');
     }
