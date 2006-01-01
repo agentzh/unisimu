@@ -1,3 +1,5 @@
+RM_F = perl -MExtUtils::Command -e rm_f
+
 CC = gcc
 EXES = init father mother son daughter
 
@@ -22,4 +24,12 @@ pv.o: pv.h pv.c
 	$(CC) -c pv.c
 
 clean::
-	rm $(EXES) pv.o *.out
+	$(RM_F) $(EXES) pv.o *.out report.pod *.exe *.tmp
+
+doc: report.html
+
+report.html: report.pod
+	podhtm -s Active.css -o $@ report.pod
+
+report.pod: report.podx
+	podx report.podx
