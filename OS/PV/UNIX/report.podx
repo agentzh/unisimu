@@ -1,0 +1,164 @@
+=head1 NAME
+
+report - OS Design Report
+
+=head1 AUTHOR
+
+章亦春 E<lt>agentz@tom.comE<gt>
+
+3030602110 计算机0304班
+
+计算机科学与通信工程学院 江苏大学
+
+=head1 VERSION
+
+   Maintainer: Agent Zhang <agent2002@126.com>
+   Date: 1 Jan 2006
+   Last Modified: 1 Jan 2006
+   Version: 0.01
+
+=head1 DESCRIPTION
+
+本文档是作为我的操作系统课程设计的报告编制的。在这个报告中，我
+不愿将网上到处都能找到的技术材料和用户文档塞在这里，或许这会让
+我的导师不高兴，但我希望自己写下的尽可能的是我自己的东西。正如
+我在 QQ 上批评我一个同学的报告 "full of dregs" 一样，我也会
+抨击自己的文章，如果它也充满了抄袭的话。
+
+=head1 UNIX 操作系统
+
+在这里我不愿意把注意力放在某一种特定的 UNIX 家族变种上。事实上，
+我们在课程设计期间使用的是 Solaris 8, 而在宿舍的机器上安装的是
+Redhat Linux 9. 从可移植性的角度出发，我也更倾向于使用符合
+POSIX 标准的通用特性。
+
+=head1 UNIX 文化
+
+我以为我们不应当将 UNIX 当作是一个包含了众多功能和特性的软件来
+看待。软件是死物，并没有生命。但是以 UNIX 为依托的文化却是最为
+宝贵的。
+
+UNIX 文化在我这个具有浓厚的 Windows 背景的程序员看来，是经常
+与“神奇”和“魔术”这一类词联系在一起的。UNIX 上的人们所做的事情
+乍一看，似乎落后而原始。因为他们最喜欢的是命令行和文本，而不是
+图形界面和鼠标。他们习惯去做其他平台的人看上去很可笑的事情，那
+就是围着单调乏味的命令团团转。呵呵
+
+起初，我也是这么看待 UNIX 文化的。然后，自从我学习了 Perl，这种
+出生成 UNIX 世界的语言之后，我开始被命令行和文本的力量所震撼。
+我万万没有想到看上去如此呆板的命令行界面在 UNIX 程序员们的手中
+居然充满了魔力。我只需输入几条甚至一条命令就能完成很复杂的任务，
+或者以“并联”和“串联”方式将几条命令拼接在一起。这其中的许多任务
+是在 GUI 方式下很难自动化的。
+
+下面是一个“串联”的例子：
+
+    get-data.pl | preprocess.tcl | process.py | postprocess.sh > output
+
+这儿是一个“并联”的例子：
+
+    ./init
+    ./father   > f.out &
+    ./mother   > m.out &
+    ./daughter > d.out &
+    ./son      > s.out &
+
+从 ActivePerl 在企业界的流行，我们不难看出 Perl 携带的 UNIX 文化
+对 Windows 文化的重要影响。虽然，这两种文化是如此不同，但是事实证明，
+它们是可以在许多方面融合起来的。
+
+比如，这篇文档就是用 Perl 的 POD 格式描述，再由一个叫做 podhtm 的
+Perl 脚本生成的。相信我们班还有好几个同学会选择 POD 来制作他们的课
+程设计报告。As witnessed on QQ:
+
+    章亦春  (2006-01-01 14:49:34)
+    I've seen sal's OS design report.
+
+    章亦春  (2006-01-01 14:49:47)
+    it's full of dregs. sigh.
+
+    章亦春  (2006-01-01 14:52:03)
+    but anyway, i do like the POD appearance of his report.
+    it looks pretty cute.
+
+    万珣新  (2006-01-01 14:54:55)
+    我现在正在用pod来做我的
+    os design
+
+    章亦春  (2006-01-01 14:55:20)
+    great! it seems to me that pod is quickly gaining ground
+    in our department. hooray!
+
+UNIX 文化是务实的文化，它不喜欢华而不实，或者矫揉造作。UNIX 文化是创
+造的文化，这里的人们都热衷于让机器来分担自己的工作，并且号称是因为自
+己“懒惰”。UNIX 文化又是魔法的文化，这儿的人们习惯于开发写程序的程序，
+并且梦想着有一天计算机能为它们写所有的程序，而这些技术在许多其他 OS 上
+的人们看来，简直就是魔术。
+
+我只能在这里简单地列举一下自己对 UNIX 文化的感悟，我不会尝试在这篇
+报告中去深入探究 UNIX 文化的真谛，因为这大大超出了我的能力范围。
+
+=head1 UNIX 的安装
+
+在 UNIX 大家族中，我只安装过 Redhat Linux 9，而且还是几年前的事情了。
+我只记得当初如何为 Linux 分配硬盘分区花费了我不少的功夫。好在最后终于
+搞清楚了 /hda 这样的符号的含义，这才安装成功。让 Linux 与 Windows “共
+享”一台机器是比较有趣的，而且常常了也是很有必要的。毕竟不是所有的硬件和软
+件都对 Linux 提供支持。（顺便提一下，在自由软件领域，则刚好相反，几乎
+所有项目都支持 Linux，但对 Windows 的支持往往很差。）
+
+这几日，我几年前购买的正版的 Linux 安装盘在本系的同学当中“辗转”。现在
+的情况是，大家都会装 Linux，就是我还不怎么清楚。
+
+=head1 UNIX 基本操作
+
+我对 UNIX 基本操作很熟悉，虽然我只在课程设计期间登录过学校的 Solaris 小
+型机系统。奥秘就在于我的 Windows 系统上总会安装 Cygwin，它利用 Windows
+API 摸拟了大部分的 UNIX POSIX API，从而使得许多 UNIX C/C++ 程序
+不加修改或者只需少许修改就可以移植到 Win32 平台上。它的思想让我想起了
+JVM，呵呵。现在我在每天的工作中既可以使用 Win32 命令，如 tree, dir, cl,
+notepad 之类，又可以使用 UNIX 命令，如 ls, time, grep, diff, gcc. 这种
+组合的确是令人振奋！
+
+我发现当系统中安装有多个版本的同一软件时， UNIX 世界的 which 命令非常有用，
+它可以告诉我 OS 在 PATH 环境变量中究竟首先找到的是哪个版本。下面是一个
+Cygwin 中的一个例子：
+
+    D:\Agent2002>which perl
+    /cygdrive/e/perl/bin/perl
+
+=head1 Apache 服务器的配置
+
+前不久我和万珣新一起尝试了 Apache 服务器在 Windows XP 上的安装与配置，
+我们成功地让 apache 启动了我用 Perl 的 Catalyst 框架开发的 Web 应用
+程序。它真的很不错，只不过刚开始的时候搞清楚如何修改它的配置文件花了我们
+不少的工夫。
+
+毫无疑问，CGI 是我们 Perl 程序员的骄傲。不幸的是，Windows NT 的 IIS
+服务器在运行 CGI 脚本方面有着诸多限制，因此作为开源软件的 Apache 无论
+是在可移植性上，还是在灵活性上都是更理想的选择。
+
+=head1 UNIX 进程通信案例
+
+老师让我们利用 UNIX IPC 系统调用进行 PV 操作的编程。题目是这样的：现
+有四个进程，分别名为 father, mother, daughter, 和 son. 它们共享
+OS 中的一块存储区域，名为 plate. 现在 father 不停地往 plate 中放
+苹果，mother 不停地往 plate 中放桔子，daughter 呢，则不停地从
+plate 中取苹果，son 则不停地从 plate 中取桔子。四个进程并发运行，要
+求 plate 中最多只能放 5 个水果。
+
+该应用用到了 UNIX 的 shared memory 和 semaphore 机构，因此无法在
+Cygwin 中工作（但可以成功编译），而我的机器上只安装了两个 Windows 2000
+操作系统，因此我只好每次登录到学校的 Solaris 小型机上进行程序调试。
+事实证明，Windows 上的 ftp 与 telnet 的组合工作得非常好，每次我在
+Windows 本地的 EditPlus 源代码编辑器上编辑好代码之后，就在 ftp 提
+示符下用 mput 或者 put 命令上传之，最好再在 telnet 提示符下向远方机
+器发送编译、运行等等命令。
+
+在那个 Solaris 上构造项目的过程还是比较痛苦的，因为它连 make 工具都
+没有提供，因此我只好使用 Perl 脚本来使项目构造和测试过程自动化。更要命
+的是它上面的 Perl 版本是如此之老，居然还是 5.005_4，这可是 Perl 5
+的第一个正式的版本哦。我在五年前学 Perl 的时候，版本号就已达到 5.6.1
+了，所以这是我平生第一次见到如此古老的 Perl 安装。
+
+
