@@ -163,6 +163,21 @@ plate 中取苹果，son 则不停地从 plate 中取桔子。四个进程并发运行，要
 
 =head2 Perl 多线程实现
 
+事实上，在和万珣新商量好基本算法之后，我就立刻用 Perl 的 ithread 多
+线程模型对算法本身进行了验证。同一个问题的 Perl 多线程实现比 C 要简洁
+清晰得多：
+
+B<bigplate.pl>
+
+=include "../bigplate.pl"
+
+这个脚本使用了我编写的 PV.pm 模块。该模块利用标准的 Thread::Semaphore
+模块来实现多线程条件下的 PV 操作。另外它还提供了创建信号量的简单接口。其
+源码如下所示：
+
+B<PV.pm>
+
+=include "../PV.pm"
 
 =head2 UNIX C 多进程实现
 
@@ -212,6 +227,64 @@ B<README>
 
 =over
 
+=item pv.h
+
+该头文件中放置了经过很好封装 IPC 应用所需的核心 API. 这些 API 是独立
+于具体应用的，也就是说，我们可以在其他的 IPC 项目中使用这个头文件提供
+的函数。下面是 pv.h 的定义：
+
+=include "pv.h"
+
+=item pv.c
+
+F<pv.c> 是 C<pv.h> 的实现文件。但凡使用了 C<pv.h> 的 C/C++ 文件都应与
+此文件一起编译链接。由于该文件篇幅较长，我把它放到了L</APPENDIX> 中。
+
+=item app.h
+
+该头文件中集中放置了整个项目所需的全局常量，包括共享内存和信号量的键值，
+调试开关 DEBUG，字符缓冲区的大小，以及一些调试用的 C/C++ 宏。
+
+=include "app.h"
+
+=item init.c
+
+这是本应用的初始化进程，它负责创建应用中的其他进程所需的 OS 级别上的共享
+资源。因此它必须先优于 F<father>, F<mother> 这样的进程执行。其实现代码
+请参见 L</APPENDIX>.
+
+=item father.c
+
+=item mother.c
+
+=item daughter.c
+
+=item son.c
+
+这四个 C 文件分别实现了 F<father>, F<mother>, F<daughter>, 和 F<son>
+这四个独立的进程。它们的源代码彼此很相近，你可以在 L</APPENDIX> 中看到它
+们完整的源代码列表。
+
+=item destroy.c
+
+F<destroy> 程序的作用请参见 L</资源泄漏> 一节。源代码亦放到了 L</APPENDIX>
+中。
+
+=item build
+
+编写 F<build> 脚本来自动化项目的构造过程其实实属无奈。如果小型机上安装有
+make 工具的话，我的 Makefile 是最好的选择。由于我不熟悉 UNIX shell，所
+以便用 Perl 脚本来做了：
+
+=include "build"
+
+注意，用户可以向 F<build> 脚本提供一个命令行参数以指定使用的 C/C++ 编译
+器。默认使用的是 g++. 事实上，我的这些代码既是合法的 C 代码，又是严格的
+C++ 代码，因此使用严格的 C++ 编译器可以在编译期间发现更多的潜在的错误。
+当然，你也可以改用 gcc 编译器，方法是：
+
+    ./build gcc
+
 =item clean
 
 我编写了一个 20 多行的 Perl 程序可以自动对指定用户的所有信息量(semaphore)
@@ -236,12 +309,9 @@ Linux, FreeBSD 等系统上的可移植性就不清楚了。
 
 由于 F<clean> 的代码是如此之少，所以我决定把它放在下面：
 
-B<clean>
-
 =include "clean"
 
 =item run
-
 
 用手工方式逐一启动 F<init>, F<father>, F<mother> ... 是通常的做法。
 无论是利用后台方式，还是多窗口方式，我都试过了，它们工作得非常之好。
@@ -251,11 +321,12 @@ B<clean>
 
 下面是它的源代码：
 
-B<run>
-
 =include "run"
 
 =back
+
+下图是我的 gvmake 工具根据项目的 F<Makefile> 绘制的，它清晰地描述了项目
+核心 C/C++ 代码文件的编译过程，以及它们之间的关系：
 
 =begin html
 
@@ -264,6 +335,14 @@ B<run>
 </pre>
 
 =end html
+
+上图所依据的 F<Makefile> 文件内容如下：
+
+=include "Makefile"
+
+事实上，上面的图片只绘制了 F<Makefile> 文件中以 C<all> 为根的生成树。根
+目标 C<clean> 没有绘制, 而 C<doc> 目标就对应于 L</UNIX 文化> 一节中给出
+的图片。
 
 =head3 问题及其解决方案
 
@@ -283,6 +362,20 @@ B<run>
 我想它应该非常类似于 Windows 环境下的“该程序执行了非法操作，即将关闭……”
 或者 Windows 里常见的 “XXX 指令引用内存无效的，该内存不能为 read/written”。我
 ，现在已经习已为常，并且知道该如何排错了。
+
+我使用 F<app.h> 头文件中定义的 HERE
+宏来辅助程序崩溃位置的确定。如果程序执行到 HERE 宏展开的位置，就会向 stderr 打
+印出该位置上的文件名和行号。HERE 宏的一组典型输出如下所示：
+
+    father.c: line 51 : GOT HERE!
+    father.c: line 56 : GOT HERE!
+    father.c: line 61 : GOT HERE!
+    father.c: line 65 : GOT HERE!
+    father.c: line 28 : GOT HERE!
+
+上面的输出其实是 F<father.c> 文件第 51，56，61，65，和 28 行上的 HERE 宏所产生
+的 stderr 调试输出。当然，如果我们不希望 HERE 宏继续喋喋不休的话，只需将 F<app.h>
+头文件中的 DEBUG 常数的取值改为 0 就可以了。
 
 说实话，C 版本的实现比我想象得还要容易，但是有几个阴险的错误，还是花费了我几个小时的调
 试与排错时间。都是内存未初始化或者内存指针非常存取之类的讨厌问题。万珣新告诉我，不少
@@ -315,8 +408,8 @@ Solaris 小型机在分配的共享资源的数量上是有限制的，而在本周的课程设计期间，又
 除自己的初始化进程创建的那些资源。我的 BigPlate 项目中的这个“收尾”程序
 名为 F<destroy>，其源文件是 F<destroy.c>
 
-F<destroy.c> 文件使用了 F<pv.h> 中新增的两个函数 C<free_shared_mem> 和
-C<free_sema>，它们的含义是一目了然的，对应的实现代码自然放在了 F<pv.c> 文件中。
+F<destroy.c> 文件使用了 C<pv.h> 中新增的两个函数 C<free_shared_mem> 和
+C<free_sema>，它们的含义是一目了然的，对应的实现代码自然放在了 C<pv.c> 文件中。
 
 F<destroy> 程序是由用户手工启动的（或由类似 F<run> 这样的驱动脚本启动），启动的时机是
 在我们完成有关 F<father>, F<mother>, F<daughter>, 和 F<son> 的操作和试验之后。
@@ -346,42 +439,20 @@ F<destroy> 程序正好与 F<init> 程序对应起来，前者在最后释放资源，后者在最初申请资
 
 =head2 Win32 Perl 多进程实现
 
-  I'll port the bigplate IPC application, say the father, mother, 
-  daughter, and son application to Win32 tomorrow, mostly for fun. 
-  Win32 supports the semaphore mechanisms, but lack the support for
-  shared memory among processes. But I can fake that stuff by virtue of disk files!
-  好的．  	  　不错啊．不过一定要给我看看．
-  Win32 supports the semaphore mechanisms very well, but seems to lack the 
-  support for shared memory among processes.  	  So anyway, porting this
-  IPC project to Win32 can be very interesting!  	 
-  　比较一下两种系统的实现ｓｅｍａｐｈｏｒｅ的不ｔｏｎｈｇ  	  
-  There's no obvious difference from the pointview of PV operations.  	 
-  But the only problem I can see so far is that I don't know how to remove an 
-  existing semaphore on Win32.  	  it won't help since i'm using Perl instead of C. 
-  I can't find such an interface in Win32::Semaphore's POD.  
-  Oh, I see how to properly initialize an existing semaphore on Win32!  
-  I can't effectively remove it but I can reset it to a proper intial value! 
-  okay, I think now there's no known obstacle in my way of tomorrow's porting efforts. yay!  
+利用 Perl 的 Win32::Mutex, Win32::Semaphore 模块将前面的 UNIX C 实现完整地移植
+到 Windows 平台是完全可能的。由于 Microsfot 未提供简单的进程间共享内存的接口（Win32
+的内存映射表是同种性质的东西，但是接口复杂），我以为将磁盘文件与信号量结合起来可以很
+好地模拟出共享内存。万珣新似乎对这个想法很感兴趣，可惜我现在没有足够的时机来完成它。
+
+现在我能想到一个问题是，Perl 的 Win32::Semaphore 未提供删除信号量的接口，这意味着我
+们只能创建，不能删除。于是无论从系统资源的利用率的角度，还是从应用重新初始化的角度，对
+我们来说都是比较困难的。
 
 =head1 APPENDIX
 
-=head2 BigPlate 项目 Perl 多线程实现的源代码列表
-
-B<bigplate.pl>
-
-=include "../bigplate.pl"
-
-=head2 BigPlate 项目 UNIX C 实现的源代码列表
+=head2 UNIX C 实现的源代码列表
 
 =over
-
-=item app.h
-
-=include "app.h"
-
-=item pv.h
-
-=include "pv.h"
 
 =item pv.c
 
@@ -390,10 +461,6 @@ B<bigplate.pl>
 =item init.c
 
 =include "init.c"
-
-=item destroy.c
-
-=include "destroy.c"
 
 =item father.c
 
@@ -411,16 +478,8 @@ B<bigplate.pl>
 
 =include "son.c"
 
-=item Makefile
+=item destroy.c
 
-=include "Makefile"
-
-=item build
-
-=include "build"
-
-=item clean
-
-=include "clean"
+=include "destroy.c"
 
 =back

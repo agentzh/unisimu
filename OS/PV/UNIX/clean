@@ -4,21 +4,17 @@ use strict;
 
 my $owner = shift || getlogin;
 warn "The current owner is $owner.\n";
-
 open(IN, "ipcs|") or
     die "Can't open ipcs: $!";
-
 while (<IN>) {
     #warn $_;
     if (/^m\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
-        my $shmid = $1;
-        my $hexkey = $2;
+        my ($shmid, $hexkey) = ($1, $2);
         print "Removing shared memory 0x$hexkey ($shmid)...\n";
         system("ipcrm -m $shmid");
         next;
     } elsif (/^s\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
-        my $semid = $1;
-        my $hexkey = $2;
+        my ($semid, $hexkey) = ($1, $2);
         print "Removing semaphore 0x$hexkey ($semid)...\n";
         system("ipcrm -s $semid");
     }
