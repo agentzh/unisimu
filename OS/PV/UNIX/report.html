@@ -24,11 +24,38 @@
 	<li><a href="#VERSION">VERSION</a></li>
 	<li><a href="#DESCRIPTION">DESCRIPTION</a></li>
 	<li><a href="#UNIX20b2d9d7f7cfb5cdb3">UNIX 操作系统</a></li>
-	<li><a href="#UNIX20cec4bbaf">UNIX 文化</a></li>
-	<li><a href="#UNIX20b5c4b0b2d7b0">UNIX 的安装</a></li>
-	<li><a href="#UNIX20bbf9b1beb2d9d7f7">UNIX 基本操作</a></li>
+	<ul>
+
+		<li><a href="#UNIX20cec4bbaf">UNIX 文化</a></li>
+		<li><a href="#UNIX20b5c4b0b2d7b0">UNIX 的安装</a></li>
+		<li><a href="#UNIX20bbf9b1beb2d9d7f7">UNIX 基本操作</a></li>
+	</ul>
+
 	<li><a href="#Apache20b7fecef1c6f7b5c4c5e4d6c3">Apache 服务器的配置</a></li>
 	<li><a href="#UNIX20bdf8b3cccda8d0c5b0b8c0fd">UNIX 进程通信案例</a></li>
+	<ul>
+
+		<li><a href="#Perl20b6e0cfdfb3cccab5cfd6">Perl 多线程实现</a></li>
+		<li><a href="#UNIX20C20b6e0bdf8b3cccab5cfd6">UNIX C 多进程实现</a></li>
+		<ul>
+
+			<li><a href="#bfaab7a2bbb7beb3">开发环境</a></li>
+			<li><a href="#c8e7bacebbf1c8a1cfeec4bfb5c4d4b4c2ebbacdcec4b5b5">如何获取项目的源码和文档</a></li>
+			<li><a href="#cfeec4bfb5c4c9fab3c9d3ebd4cbd0d0">项目的生成与运行</a></li>
+			<li><a href="#cfeec4bfb5c4cce5cfb5bde1b9b9">项目的体系结构</a></li>
+			<li><a href="#cecacce2bcb0c6e4bde2bef6b7bdb0b8">问题及其解决方案</a></li>
+		</ul>
+
+		<li><a href="#Win3220Perl20b6e0bdf8b3cccab5cfd6">Win32 Perl 多进程实现</a></li>
+	</ul>
+
+	<li><a href="#APPENDIX">APPENDIX</a></li>
+	<ul>
+
+		<li><a href="#BigPlate20cfeec4bf20Perl20b6e0cfdfb3cccab5cfd6b5c4d4b4b4fac2ebc1d0b1ed">BigPlate 项目 Perl 多线程实现的源代码列表</a></li>
+		<li><a href="#BigPlate20cfeec4bf20UNIX20C20cab5cfd6b5c4d4b4b4fac2ebc1d0b1ed">BigPlate 项目 UNIX C 实现的源代码列表</a></li>
+	</ul>
+
 </ul>
 <!-- INDEX END -->
 
@@ -49,7 +76,7 @@
 <hr />
 <h1><a name="VERSION">VERSION</a></h1>
 <pre>
-   Maintainer: Agent Zhang &lt;agent2002@126.com&gt;
+   Maintainer: Agent Zhang &lt;agentz@tom.com&gt;
    Date: 1 Jan 2006
    Last Modified: 1 Jan 2006
    Version: 0.01</pre>
@@ -72,8 +99,7 @@ Redhat Linux 9. 从可移植性的角度出发，我也更倾向于使用符合
 POSIX 标准的通用特性。</p>
 <p>
 </p>
-<hr />
-<h1><a name="UNIX20cec4bbaf">UNIX 文化</a></h1>
+<h2><a name="UNIX20cec4bbaf">UNIX 文化</a></h2>
 <p>我以为我们不应当将 UNIX 当作是一个包含了众多功能和特性的软件来
 看待。软件是死物，并没有生命。但是以 UNIX 为依托的文化却是最为
 宝贵的。</p>
@@ -122,6 +148,12 @@ Perl 脚本生成的。相信我们班还有好几个同学会选择 POD 来制作他们的课
     章亦春  (2006-01-01 14:55:20)
     great! it seems to me that pod is quickly gaining ground
     in our department. hooray!</pre>
+<p>这一篇文档生成的流程图如下所示：</p>
+<pre>
+    <img src="doc.png" alt="PODX to HTML conversion process"/>
+</pre><p>值得一提的是上面这张图也是我的一个叫做 gvmake 的 Perl 脚本自动根据该
+项目的 Makefile 文件自动生成的。其实上面这张图就叫 doc.png，你可以
+在图中看到它自己是如何生成的！Hooray for bootstrapping!</p>
 <p>UNIX 文化是务实的文化，它不喜欢华而不实，或者矫揉造作。UNIX 文化是创
 造的文化，这里的人们都热衷于让机器来分担自己的工作，并且号称是因为自
 己“懒惰”。UNIX 文化又是魔法的文化，这儿的人们习惯于开发写程序的程序，
@@ -131,20 +163,18 @@ Perl 脚本生成的。相信我们班还有好几个同学会选择 POD 来制作他们的课
 报告中去深入探究 UNIX 文化的真谛，因为这大大超出了我的能力范围。</p>
 <p>
 </p>
-<hr />
-<h1><a name="UNIX20b5c4b0b2d7b0">UNIX 的安装</a></h1>
+<h2><a name="UNIX20b5c4b0b2d7b0">UNIX 的安装</a></h2>
 <p>在 UNIX 大家族中，我只安装过 Redhat Linux 9，而且还是几年前的事情了。
 我只记得当初如何为 Linux 分配硬盘分区花费了我不少的功夫。好在最后终于
 搞清楚了 /hda 这样的符号的含义，这才安装成功。让 Linux 与 Windows “共
 享”一台机器是比较有趣的，而且常常了也是很有必要的。毕竟不是所有的硬件和软
 件都对 Linux 提供支持。（顺便提一下，在自由软件领域，则刚好相反，几乎
 所有项目都支持 Linux，但对 Windows 的支持往往很差。）</p>
-<p>这几日，我几年前购买的正版的 Linux 安装盘在本系的同学当中“碾转”。现在
+<p>这几日，我几年前购买的正版的 Linux 安装盘在本系的同学当中“辗转”。现在
 的情况是，大家都会装 Linux，就是我还不怎么清楚。</p>
 <p>
 </p>
-<hr />
-<h1><a name="UNIX20bbf9b1beb2d9d7f7">UNIX 基本操作</a></h1>
+<h2><a name="UNIX20bbf9b1beb2d9d7f7">UNIX 基本操作</a></h2>
 <p>我对 UNIX 基本操作很熟悉，虽然我只在课程设计期间登录过学校的 Solaris 小
 型机系统。奥秘就在于我的 Windows 系统上总会安装 Cygwin，它利用 Windows
 API 摸拟了大部分的 UNIX POSIX API，从而使得许多 UNIX C/C++ 程序
@@ -173,6 +203,1132 @@ Cygwin 中的一个例子：</p>
 </p>
 <hr />
 <h1><a name="UNIX20bdf8b3cccda8d0c5b0b8c0fd">UNIX 进程通信案例</a></h1>
+<p>老师让我们利用 UNIX IPC 系统调用进行 PV 操作的编程。题目是这样的：现
+有四个进程，分别名为 father, mother, daughter, 和 son. 它们共享
+OS 中的一块存储区域，名为 plate. 现在 father 不停地往 plate 中放
+苹果，mother 不停地往 plate 中放桔子，daughter 呢，则不停地从
+plate 中取苹果，son 则不停地从 plate 中取桔子。四个进程并发运行，要
+求 plate 中最多只能放 5 个水果。</p>
+<p>
+</p>
+<h2><a name="Perl20b6e0cfdfb3cccab5cfd6">Perl 多线程实现</a></h2>
+<p>
+</p>
+<h2><a name="UNIX20C20b6e0bdf8b3cccab5cfd6">UNIX C 多进程实现</a></h2>
+<p>
+</p>
+<h3><a name="bfaab7a2bbb7beb3">开发环境</a></h3>
+<p>该应用用到了 UNIX 的 shared memory 和 semaphore 机构，因此无法在
+Cygwin 中工作（但可以成功编译），而我的机器上只安装了两个 Windows 2000
+操作系统，因此我只好每次登录到学校的 Solaris 小型机上进行程序调试。
+事实证明，Windows 上的 ftp 与 telnet 的组合工作得非常好，每次我在
+Windows 本地的 EditPlus 源代码编辑器上编辑好代码之后，就在 ftp 提
+示符下用 mput 或者 put 命令上传之，最好再在 telnet 提示符下向远方机
+器发送编译、运行等等命令。</p>
+<p>在那个 Solaris 上构造项目的过程还是比较痛苦的，因为它连 make 工具都
+没有提供，因此我只好使用 Perl 脚本来使项目构造和测试过程自动化。更要命
+的是它上面的 Perl 版本是如此之老，居然还是 5.005_4，这可是 Perl 5
+的第一个正式的版本哦。我在五年前学 Perl 的时候，版本号就已达到 5.6.1
+了，所以这是我平生第一次见到如此古老的 Perl 安装。</p>
+<p>
+</p>
+<h3><a name="c8e7bacebbf1c8a1cfeec4bfb5c4d4b4c2ebbacdcec4b5b5">如何获取项目的源码和文档</a></h3>
+<p>我的这些 C 和 Perl 代码都已处在 SVN/SVK 的版本控制之下。你总是可以在
+任何时间，从我在德国的 SVN 服务器得到该项目的最新版本：</p>
+<p><a href="http://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX/">http://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX/</a></p>
+<p>你可以在 IE 中浏览这个 repository, 但更优雅的方式是通过 SVN 客户端自
+动地下载所有目录和文件。如果你使用 Windows， TortoiseSVN 是非常不错的选择，
+它不仅提供了集成到“我的电脑”中的图形界面，而且它是免费软件。你可以从它的
+官方主页得到：</p>
+<p><a href="http://tortoisesvn.tigris.org/">http://tortoisesvn.tigris.org/</a></p>
+<p>使用 SVN 客户端进行下载的时候，需要使用下面的 URL 进行 checkout：</p>
+<p><a href="https://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX">https://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX</a></p>
+<p>
+</p>
+<h3><a name="cfeec4bfb5c4c9fab3c9d3ebd4cbd0d0">项目的生成与运行</a></h3>
+<p>下面引用项目自述文件 (<em>README</em>) 来说明如何生成和运行此项目：</p>
+<p><strong>README</strong></p>
+<pre>
+    This is a UNIX C implemenation for bigplate.pl in the parent directory.
+    
+    To build this application, you need to enter the following commands under a UNIX shell:
+    
+        chmod +x clean build run
+        ./build
+        ./clean
+    
+    To get the application running, you can simply enter the command
+    
+        ./run
+    
+    and then you can check the four processes output later:
+    
+        cat f.out
+        cat m.out
+        cat s.out
+        cat d.out
+    
+    It's a good habit to clean up the shared resources when you has your job done. Simply
+    put the following commands to do the cleaning:
+    
+        ./destroy
+    
+    Another way to do cleaning is to use the ``clean'' script. Just put all the keys of your
+    requested shared memory segments and semaphores to the ``clean.cfg'' file, and run
+    ``clean'' directly:
+    
+        ./clean
+    
+    When you modify the keys for semaphores or shared memories, you have to update the
+    keys in clean.cfg accordingly, so it's not as convenient as using ``destroy''.
+    Because destroy.c also includes the global C/C++ header ``app.h''.
+    
+    When you obtain the following error message from the ``init'' program:
+    
+        create_sema: : No space left on device
+        create_sema: : No space left on device
+        init.c: line 30: Failed to create semaphore 'can_put'.
+    
+    then you should release the shared resources created by other users if you can.
+    Simply delete the clean.cfg, and run ``clean'' again. ``clean'' will try to
+    release all the shared memory segments and semaphores owned by the current login
+    name:
+    
+        rm clean.cfg
+        ./clean</pre>
+<p>
+</p>
+<h3><a name="cfeec4bfb5c4cce5cfb5bde1b9b9">项目的体系结构</a></h3>
+<pre>
+    <img src="all.png" alt="source file hierarchy">
+</pre><p>
+</p>
+<h3><a name="cecacce2bcb0c6e4bde2bef6b7bdb0b8">问题及其解决方案</a></h3>
+<ul>
+<li></li>
+段错误与内存管理
+<p></p>
+<li></li>
+资源泄漏
+<p>Solaris 小型机在分配的共享资源的数量上是有限制的。Solaris 小型机一个小时
+以前的空间不足，所以我刚才在运行 init （原名为 app）的时候得到了下面的出错
+信息：</p>
+<pre>
+    $ ./init
+    create_sema: : No space left on device
+    create_sema: : No space left on device
+    init.c: line 30: Failed to create semaphore 'can_put'.</pre>
+<p>于是我同时以 n0305, n0302 和 n0304 的身份登录，然后运行我的 <em>clean</em> 脚本对这些
+用户持有的所有共享内存和共享信号量进行清空。现在我的程序又可以正常工作了。</p>
+<p>运行 <em>clean</em> 脚本释放某个登录用户名所拥有的所有共享资源可能是不礼貌的行为。因为
+有可能有多个用户以同一登录名来使用计算机。因此我删除的资源很可能恰好是其他某个同学
+创建并正在使用的。比如万珣新就曾报怨说，我在他给老师作演示的时候他的所有共享资源
+都被我的 <em>clean</em> 删除了，导致他的程序“当众出错”。</p>
+<p>于是我认为最好的解决方案是，每个用户自己提供一个“收尾”程序，专门负责在最后清
+除自己的初始化进程创建的那些资源。我的 BigPlate 项目中的这个“收尾”程序
+名为 <em>destroy</em>，其源文件是 <em>destroy.c</em></p>
+<p><em>destroy.c</em> 文件使用了 <em>pv.h</em> 中新增的两个函数 <code>free_shared_mem</code> 和
+<code>free_sema</code>，它们的含义是一目了然的，对应的实现代码自然放在了 <em>pv.c</em> 文件中。</p>
+<p><em>destroy</em> 程序是由用户手工启动的（或由类似 <em>run</em> 这样的驱动脚本启动），启动的时机是
+在我们完成有关 <em>father</em>, <em>mother</em>, <em>daughter</em>, 和 <em>son</em> 的操作和试验之后。</p>
+<p>每一个好孩子在玩耍之后，都应该清理好游戏场地。 这也应该算是“游戏规则”的一部分。
+在使用完申请过的系统资源之后不及时释放，就会发生系统资源泄漏。</p>
+<p>事实上，我已经用 perl 写了一个通用的 <em>clean</em> 程序，它可以删除你指定的用户所持有的
+指定的资源。但更优雅的解决方案是，我们自己再为每一个 IPC 应用编写一个 C 程序，
+作为收尾，把 <em>init</em> 进程创建的共享资源全部删除。这么做的好处在于，每一次我们决定
+修改共享内存或信号量的键值的时候，就只需要修改一处定义，那就是 <em>app.h</em> 中的常量定义。
+否则，我们还必须在每次修改了 <em>app.h</em> 之后，再去修改 <em>clean.cfg</em> 文件中的内容，
+这无疑将增加手工的工作量，提高了出现不一致的可能性，违反了所谓的 <em>DRY</em> 原则
+(Don’t Repeat Yourself!).</p>
+<p><em>destroy</em> 程序正好与 <em>init</em> 程序对应起来，前者在最后释放资源，后者在最初申请资源。
+它们的关系让我想起了 C++ 里的 delete 和 new 运算符。 C++ 程序员们总是用 new 
+运算符动态地创建对象，使用完毕之后，再 delete 销毁对象。这是好的编程习惯。</p>
+<p>事实上，在 IPC 多进程的场合，不及时释放掉共享资源，比在 C++ 中忘记调用 delete，
+后果要严重得多。因为 C++ 进程在堆中申请的内存资源总是会在进程终止时强制地退还给 OS，
+但是 OS 级别上的共享内存和信号量则完全不同，即便申请它们的进程早已退出，如若我们不
+显式地释放，它们将会一直留存在 OS 中，直到用尽所有的 OS 资源。而对于这一点，我们
+从前似乎并未给予足够的重视。</p>
+<p></p></ul>
+<p>
+</p>
+<h2><a name="Win3220Perl20b6e0bdf8b3cccab5cfd6">Win32 Perl 多进程实现</a></h2>
+<pre>
+  I'll port the bigplate IPC application, say the father, mother, 
+  daughter, and son application to Win32 tomorrow, mostly for fun. 
+  Win32 supports the semaphore mechanisms, but lack the support for
+  shared memory among processes. But I can fake that stuff by virtue of disk files!
+  好的．          　不错啊．不过一定要给我看看．
+  Win32 supports the semaphore mechanisms very well, but seems to lack the 
+  support for shared memory among processes.      So anyway, porting this
+  IPC project to Win32 can be very interesting!          
+  　比较一下两种系统的实现ｓｅｍａｐｈｏｒｅ的不ｔｏｎｈｇ        
+  There's no obvious difference from the pointview of PV operations.     
+  But the only problem I can see so far is that I don't know how to remove an 
+  existing semaphore on Win32.            it won't help since i'm using Perl instead of C. 
+  I can't find such an interface in Win32::Semaphore's POD.  
+  Oh, I see how to properly initialize an existing semaphore on Win32!  
+  I can't effectively remove it but I can reset it to a proper intial value! 
+  okay, I think now there's no known obstacle in my way of tomorrow's porting efforts. yay!</pre>
+<p>
+</p>
+<hr />
+<h1><a name="APPENDIX">APPENDIX</a></h1>
+<p>
+</p>
+<h2><a name="BigPlate20cfeec4bf20Perl20b6e0cfdfb3cccab5cfd6b5c4d4b4b4fac2ebc1d0b1ed">BigPlate 项目 Perl 多线程实现的源代码列表</a></h2>
+<p><strong>bigplate.pl</strong></p>
+<pre>
+    # bigplate.pl
+    
+    use strict;
+    use warnings;
+    
+    use threads;
+    use threads::shared;
+    use PV;
+    
+    use constant {
+        TIMES =&gt; 15,
+        PLATE_SZ =&gt; 10,
+    };
+    
+    $| = 1;
+    
+    my @plate : shared := ();
+    
+    # apple stack pointer (stack grows downwards)
+    my $apple_sp : shared := 0;
+    
+    # orange stack pointer (stack grows upwards)
+    my $orange_sp : shared := PLATE_SZ - 1;
+    
+    semas(
+        can_put        =&gt; PLATE_SZ,
+        can_get_apple  =&gt; 0,
+        can_get_orange =&gt; 0,
+        apple_sp =&gt; 1,
+        orange_sp =&gt; 1,
+    );
+    
+    $PV::sleep = 0.03;
+    
+    async { #-# father
+        for (1..TIMES) {
+            P('can_put');
+            P('apple_sp');
+            print &quot;Father is putting an apple...\n&quot;;
+            $plate[$apple_sp] = 'apple';
+            $apple_sp++;
+            V('apple_sp');
+            V('can_get_apple');
+        }
+        #-#
+    }
+    
+    async { #-# mother
+        for (1..TIMES) {
+            P('can_put');
+            P('orange_sp');
+            print &quot;Mother is putting an orange...\n&quot;;
+            $plate[$orange_sp] = 'orange';
+            $orange_sp--;
+            V('orange_sp');
+            V('can_get_orange');
+        }
+        #-#
+    }
+    
+    async { #-# son
+        for (1..TIMES) {
+            P('can_get_orange');
+            P('orange_sp');
+            my $fruit = $plate[++$orange_sp];
+            print &quot;  Son got an $fruit!\n&quot;;
+            V('orange_sp');
+            V('can_put');
+        }
+        #-#
+    }
+    
+    async { #-# daughter
+        for (1..TIMES) {
+            P('can_get_apple');
+            P('apple_sp');
+            my $fruit = $plate[--$apple_sp];
+            print &quot;  Daughter got an $fruit!\n&quot;;
+            V('apple_sp');
+            V('can_put');
+        }
+        #-#
+    }
+    
+    my $thr;
+    foreach $thr (threads-&gt;list) { 
+        if ($thr-&gt;tid &amp;&amp; !threads::equal($thr, threads-&gt;self)) { 
+            $thr-&gt;join; 
+        } 
+    }</pre>
+<p>
+</p>
+<h2><a name="BigPlate20cfeec4bf20UNIX20C20cab5cfd6b5c4d4b4b4fac2ebc1d0b1ed">BigPlate 项目 UNIX C 实现的源代码列表</a></h2>
+<dl>
+<dt><strong><a name="item_app252Eh">app.h</a></strong><br />
+</dt>
+<dd>
+<pre>
+    /******************************************
+        app.h
+        Copyright (c) 2005 Agent Zhang
+        2005-12-29 2005-12-30
+     ******************************************/ 
+    
+    #ifndef _APP_H_
+    #define _APP_H_
+    
+    #include &quot;pv.h&quot;
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    #include &lt;stdarg.h&gt;
+    
+    enum {
+        DEBUG = 0,
+    
+        /* user constants */
+        PLATE_SZ = 4,
+        TIMES    = 20,
+        BUFSIZE  = 10,
+    
+        SEED = 123456,
+    
+        /* shared memeory keys */
+        SHM_PLATE = SEED,
+        SHM_APPLE_SP = SEED + 1,
+        SHM_ORANGE_SP = SEED + 2,
+    
+        /* synchronous semaphore keys */
+        SEM_CAN_PUT = SEED + 3,
+        SEM_CAN_GET_APPLE = SEED + 4,
+        SEM_CAN_GET_ORANGE = SEED + 5,
+    
+        /* exclusive semaphore keys */
+        SEM_APPLE_SP = SEED + 6,
+        SEM_ORANGE_SP = SEED + 7,
+    
+        /* shared memory sizes */
+        SHM_PLATE_SZ = PLATE_SZ * BUFSIZE,
+        SHM_APPLE_SP_SZ = sizeof(int),
+        SHM_ORANGE_SP_SZ = sizeof(int),
+    };
+    
+    /* err: print error message and exit */
+    #define err(msg) { \
+        fprintf(stderr, &quot;%s: line %d: &quot; \
+            msg \
+            &quot;\n&quot;, __FILE__, __LINE__); \
+        exit(2); \
+    }
+    
+    #define HERE \
+        if (DEBUG) \
+            fprintf(stderr, &quot;%s: line %d : GOT HERE!\n&quot;, __FILE__, __LINE__);
+    
+    #endif</pre>
+</dd>
+<dt><strong><a name="item_pv252Eh">pv.h</a></strong><br />
+</dt>
+<dd>
+<pre>
+    #ifndef _PV_H_
+    #define _PV_H_
+    
+    /* 下面返回类型为 int 的函数都以返回 1 表示操作成功，
+       返回 0 表示操作失败 */
+    
+    /* P 操作，key 是信号量的键值 */
+    int P(int key);
+    
+    /* V 操作，key 是信号量的键值 */
+    int V(int key);
+    
+    /* 创建共享内存，key 是该内存对应的键值,
+       len 是该内存的大小（以字节为单位）*/
+    int create_shared_mem(int key, int len);
+    
+    /* 以指定的键值 key 创建信号量，并赋初值为 val */
+    int create_sema(int key, int val);
+    
+    /* 获取键值 key 对应的共享内存的首地址,
+       len 必须与实际大小完全一致 */
+    void* get_shared_mem(int key, int len);
+    
+    /* 当完成对 get_shard_mem 返回的共享指针
+       的操作以后，退回该指针给 OS */
+    int commit_shared_ptr(void* shm_addr);
+    
+    int free_shared_mem(int key, int len);
+    
+    int free_sema(int key);
+    
+    #endif</pre>
+</dd>
+<dt><strong><a name="item_pv252Ec">pv.c</a></strong><br />
+</dt>
+<dd>
+<pre>
+    #include &quot;pv.h&quot;
+    #include &lt;stdlib.h&gt;
+    #include &lt;stdio.h&gt;
+    #include &lt;sys/types.h&gt;
+    #include &lt;sys/ipc.h&gt;
+    #include &lt;sys/shm.h&gt;
+    #include &lt;sys/sem.h&gt;
+    #include &lt;errno.h&gt;
+    #include &lt;string.h&gt;
+    
+    #ifndef TRUE
+    #define TRUE 1
+    #endif
+    
+    #ifndef FALSE
+    #define FALSE 0
+    #endif
+    
+    /* the mystic number 0777 stands for (S_IRWXU | S_IRWXG | S_IRWXO)
+       see UNIX reference for details.
+    */
+    
+    int P(int key) {
+        int semid;
+        struct sembuf p_buf;
+    
+        semid = semget(key, 1, 0777);
+        if (semid == -1) {
+            perror(&quot;P: semget: &quot;);
+            return FALSE;
+        }
+        p_buf.sem_num = 0;
+        p_buf.sem_op = -1;
+        p_buf.sem_flg = 0;
+    
+        if (semop(semid, &amp;p_buf, 1) == -1) {
+            perror(&quot;P: semop: &quot;);
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    int V(int key) {
+        int semid;
+        struct sembuf v_buf;
+    
+        semid = semget(key, 1, 0777);
+        if (semid == -1) {
+            perror(&quot;V: semget: &quot;);
+            return FALSE;
+        }
+    
+        v_buf.sem_num = 0;
+        v_buf.sem_op = 1;
+        v_buf.sem_flg = 0;
+        if (semop(semid, &amp;v_buf, 1) == -1) {
+          perror(&quot;V: semop: &quot;);
+          return FALSE;
+        }
+        return TRUE;
+    }
+    
+    static void set_sembuf_struct(struct sembuf *sem,int semnum, int semop,int semflg) {
+        sem-&gt;sem_num=semnum;
+        sem-&gt;sem_op=semop;
+        sem-&gt;sem_flg=semflg;
+    }
+    
+    int create_shared_mem(int key, int len) {
+        int shmid;
+        char *addr;
+        struct shmid_ds shm_desc;
+    
+        shmid = shmget(key, len, 0777|IPC_CREAT|IPC_EXCL);
+        if (shmid  == -1) {
+            if (errno == EEXIST) {
+                shmid = shmget(key, len, 0777);
+                if (shmctl(shmid, IPC_RMID, &amp;shm_desc) &gt;= 0) {
+                    shmid = shmget(key, len, 0777|IPC_CREAT|IPC_EXCL);
+                } else {
+                    perror(&quot;create_shared_mem: shared memory exists and can't be removed: &quot;);
+                    return FALSE;
+                }
+            } else {
+                perror(&quot;create_shared_mem: shmget: &quot;);
+                return FALSE;
+            }
+        }
+        addr = (char*)shmat(shmid, NULL, 0);
+        memset(addr, 0, len);
+        shmdt(addr);
+        return TRUE;
+    }
+    
+    int create_sema(int key, int val) {
+        int semid;
+        struct sembuf sem_tmp;
+        semid = semget(key, 1, 0777|IPC_CREAT|IPC_EXCL);
+        if(semid == -1) {
+            perror(&quot;create_sema: &quot;);
+            if (errno == EEXIST) {
+                semid = semget(key, 1, 0777);
+                if (semctl(semid, 0, IPC_RMID) &gt;= 0) {
+                    semid = semget(key, 1, 0777|IPC_CREAT|IPC_EXCL);
+                    if (semid == -1) {
+                        perror(&quot;create_sema: semget: &quot;);
+                        return FALSE;
+                    }
+                } else {
+                    perror(&quot;create_sema: semaphore exists and can't be removed: &quot;);
+                    return FALSE;
+                }
+            } else {
+                perror(&quot;create_sema: &quot;);
+                return FALSE;
+            }
+        }
+        set_sembuf_struct(&amp;sem_tmp, 0, val, 0);
+        semop(semid, &amp;sem_tmp, 1);
+        return TRUE;
+    }
+    
+    void* get_shared_mem(int key, int len) {
+        int shmid;
+        void* shm_addr;
+        shmid = shmget(key, len, 0777);
+        shm_addr = shmat(shmid, NULL, 0);
+        if (!shm_addr) { /* operation failed. */
+            perror(&quot;get_shared_mem: shmat: &quot;);
+            return NULL;
+        }
+        return shm_addr;
+    }
+    
+    int commit_shared_ptr(void* shm_addr) {
+        if (shmdt(shm_addr) == -1) {
+            perror(&quot;commit_shared_ptr: shmdt: &quot;);
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    /* de-allocate the shared memory segment. */
+    int free_shared_mem(int key, int len) {
+        struct shmid_ds shm_desc;
+        int shmid;
+    
+        shmid = shmget(key, len, 0777);
+        if (shmid == -1 || shmctl(shmid, IPC_RMID, &amp;shm_desc) == -1) {
+            perror(&quot;free_shared_mem: &quot;);
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    int free_sema(int key) {
+        int semid;
+    
+        semid = semget(key, 1, 0777);
+        if (semid == -1 || semctl(semid, 0, IPC_RMID) == -1) {
+            perror(&quot;free_sema: &quot;);
+            return FALSE;
+        }
+    }</pre>
+</dd>
+<dt><strong><a name="item_init252Ec">init.c</a></strong><br />
+</dt>
+<dd>
+<pre>
+    /******************************************
+        init.c
+        Copyright (c) 2005 Agent Zhang
+        2005-12-29 2005-12-29
+     ******************************************/ 
+    
+    #include &quot;app.h&quot;
+    
+    int main() {
+        int* orange_sp_ptr;
+        int orange_sp;
+    
+        /* set up shared memory buffers */
+        if ( !create_shared_mem(SHM_PLATE, SHM_PLATE_SZ) )
+            err(&quot;Failed to create shared memory 'plate'.&quot;);
+    
+        if ( !create_shared_mem(SHM_APPLE_SP, SHM_APPLE_SP_SZ) )
+            err(&quot;Failed to create shared memory 'apple_sp'.&quot;);
+    
+        if ( !create_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ) )
+            err(&quot;Failed to create shared memory 'orange_sp'.&quot;);
+    
+        orange_sp_ptr = (int*) get_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ);
+        if (orange_sp_ptr == NULL) err(&quot;Can't get 'orange_sp'.&quot;);
+        *orange_sp_ptr = PLATE_SZ - 1;
+        commit_shared_ptr(orange_sp_ptr);
+    
+        /* create semaphores */
+        if ( !create_sema(SEM_CAN_PUT, PLATE_SZ) )
+            err(&quot;Failed to create semaphore 'can_put'.&quot;);
+    
+        if ( !create_sema(SEM_CAN_GET_APPLE, 0) )
+            err(&quot;Failed to create semaphore 'can_get_apple'.&quot;);
+    
+        if ( !create_sema(SEM_CAN_GET_ORANGE, 0) )
+            err(&quot;Failed to create semaphore 'can_get_orange'.&quot;);
+    
+        if ( !create_sema(SEM_APPLE_SP, 1) )
+            err(&quot;Failed to create semaphore 'apple_sp'.&quot;);
+    
+        if ( !create_sema(SEM_ORANGE_SP, 1) )
+            err(&quot;Failed to create semaphore 'orange_sp'.&quot;);
+    
+        return 0;
+    }
+    
+    /*
+    
+    this program must be run first, or you will get the following error message on Solaris 8:
+    
+        总线错误－核心陷阱
+    
+    And you must clean all the semaphores and shared memory units before running ``init'':
+    
+        ./clean
+    
+    */</pre>
+</dd>
+<dt><strong><a name="item_destroy252Ec">destroy.c</a></strong><br />
+</dt>
+<dd>
+<pre>
+    /******************************************
+        destroy.c
+        Copyright (c) 2005 Agent Zhang
+        2005-12-30 2005-12-30
+     ******************************************/ 
+    
+    #include &quot;app.h&quot;
+    
+    int main(void) {
+        /* release shared memory buffers */
+        free_shared_mem(SHM_PLATE, SHM_PLATE_SZ);
+        free_shared_mem(SHM_APPLE_SP, SHM_APPLE_SP_SZ);
+        free_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ);
+    
+        /* release semaphores */
+        free_sema(SEM_CAN_PUT);
+        free_sema(SEM_CAN_GET_APPLE);
+        free_sema(SEM_CAN_GET_ORANGE);
+        free_sema(SEM_APPLE_SP);
+        free_sema(SEM_ORANGE_SP);
+    
+        return 0;
+    }</pre>
+</dd>
+<dt><strong><a name="item_father252Ec">father.c</a></strong><br />
+</dt>
+<dd>
+<pre>
+    /******************************************
+        father.c
+        Copyright (c) 2005 Agent Zhang
+        2005-12-29 2005-12-30
+     ******************************************/ 
+    
+    #include &quot;app.h&quot;
+    #include &lt;string.h&gt;
+    
+    /*
+        for (1..TIMES) {
+            P('can_put');
+            P('apple_sp');
+            print &quot;Father is putting an apple...\n&quot;;
+            $plate[$apple_sp] = 'apple';
+            $apple_sp++;
+            V('apple_sp');
+            V('can_get_apple');
+        }
+    */
+    
+    void father(void) {
+        int* apple_sp_ptr;
+        int apple_sp;
+    
+        char* plate;
+    
+        HERE
+    
+        P(SEM_CAN_PUT);
+        P(SEM_APPLE_SP);
+    
+        HERE
+    
+        apple_sp_ptr = (int*) get_shared_mem(SHM_APPLE_SP, SHM_APPLE_SP_SZ);
+        if (apple_sp_ptr == NULL) err(&quot;Can't get 'apple_sp'.&quot;);
+        apple_sp = *apple_sp_ptr;
+    
+        fprintf(stderr, &quot;apple_sp = %d\n&quot;, apple_sp);
+    
+        HERE
+    
+        plate = (char*) get_shared_mem(SHM_PLATE, SHM_PLATE_SZ);
+        if (plate == NULL) err(&quot;Can't get 'plate'.&quot;);
+    
+        HERE
+    
+        printf(&quot;Father is putting an apple...\n&quot;);
+        fflush(stdout);
+    
+        HERE
+    
+        strcpy(plate + apple_sp * BUFSIZE, &quot;apple&quot;);
+        apple_sp++;
+    
+        HERE
+    
+        *apple_sp_ptr = apple_sp;
+        commit_shared_ptr(apple_sp_ptr);
+    
+        HERE
+    
+        commit_shared_ptr(plate);
+    
+        HERE
+    
+        V(SEM_APPLE_SP);
+        V(SEM_CAN_GET_APPLE);
+    }
+    
+    int main(void) {
+        int i;
+        for (i = 0; i &lt; TIMES; i++) {
+            father();
+        }
+    }</pre>
+</dd>
+<dt><strong><a name="item_mother252Ec">mother.c</a></strong><br />
+</dt>
+<dd>
+<pre>
+    /******************************************
+        mother.c
+        Copyright (c) 2005 Agent Zhang
+        2005-12-29 2005-12-30
+     ******************************************/ 
+    
+    #include &quot;app.h&quot;
+    #include &lt;string.h&gt;
+    
+    /*
+        for (1..TIMES) {
+            P('can_put');
+            P('orange_sp');
+            print &quot;Mother is putting an orange...\n&quot;;
+            $plate[$orange_sp] = 'orange';
+            $orange_sp--;
+            V('orange_sp');
+            V('can_get_orange');
+        }
+    */
+    
+    void mother(void) {
+        int* orange_sp_ptr;
+        int orange_sp;
+    
+        char* plate;
+    
+        HERE
+    
+        P(SEM_CAN_PUT);
+        P(SEM_ORANGE_SP);
+    
+        HERE
+    
+        orange_sp_ptr = (int*) get_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ);
+        if (orange_sp_ptr == NULL) err(&quot;Can't get 'orange_sp'.&quot;);
+        orange_sp = *orange_sp_ptr;
+    
+        fprintf(stderr, &quot;orange_sp = %d\n&quot;, orange_sp);
+    
+        HERE
+    
+        plate = (char*) get_shared_mem(SHM_PLATE, SHM_PLATE_SZ);
+        if (plate == NULL) err(&quot;Can't get 'plate'.&quot;);
+    
+        printf(&quot;Mother is putting an orange...\n&quot;);
+        fflush(stdout);
+    
+        strcpy(plate + orange_sp * BUFSIZE, &quot;orange&quot;);
+        orange_sp--;
+    
+        HERE
+    
+        *orange_sp_ptr = orange_sp;
+        commit_shared_ptr(orange_sp_ptr);
+    
+        HERE
+    
+        commit_shared_ptr(plate);
+    
+        HERE
+    
+        V(SEM_ORANGE_SP);
+        V(SEM_CAN_GET_ORANGE);
+    }
+    
+    int main(void) {
+        int i;
+        for (i = 0; i &lt; TIMES; i++) {
+            mother();
+        }
+    }</pre>
+</dd>
+<dt><strong><a name="item_daughter252Ec">daughter.c</a></strong><br />
+</dt>
+<dd>
+<pre>
+    /******************************************
+        daughter.c
+        Copyright (c) 2005 Agent Zhang
+        2005-12-29 2005-12-30
+     ******************************************/ 
+    
+    #include &quot;app.h&quot;
+    #include &lt;string.h&gt;
+    
+    /*
+        for (1..TIMES) {
+            P('can_get_apple');
+            P('apple_sp');
+            my $fruit = $plate[--$apple_sp];
+            print &quot;  Daughter got an $fruit!\n&quot;;
+            V('apple_sp');
+            V('can_put');
+        }
+    */
+    
+    void daughter(void) {
+        int* apple_sp_ptr;
+        int apple_sp;
+    
+        char* plate;
+        char fruit[BUFSIZE];
+    
+        HERE
+    
+        P(SEM_CAN_GET_APPLE);
+        P(SEM_APPLE_SP);
+    
+        HERE
+    
+        apple_sp_ptr = (int*) get_shared_mem(SHM_APPLE_SP, SHM_APPLE_SP_SZ);
+        if (apple_sp_ptr == NULL) err(&quot;Can't get 'apple_sp'.&quot;);
+        apple_sp = *apple_sp_ptr;
+    
+        fprintf(stderr, &quot;apple_sp = %d\n&quot;, apple_sp);
+    
+        HERE
+    
+        plate = (char*) get_shared_mem(SHM_PLATE, SHM_PLATE_SZ);
+        if (plate == NULL) err(&quot;Can't get 'plate'.&quot;);
+    
+        HERE
+    
+        --apple_sp;
+        strncpy(fruit, plate + apple_sp * BUFSIZE, BUFSIZE);
+    
+        printf(&quot;  Daughter got an %s!\n&quot;, fruit);
+        fflush(stdout);
+    
+        *apple_sp_ptr = apple_sp;
+        commit_shared_ptr(apple_sp_ptr);
+    
+        HERE
+    
+        commit_shared_ptr(plate);
+    
+        HERE
+    
+        V(SEM_APPLE_SP);
+        V(SEM_CAN_PUT);
+    }
+    
+    int main(void) {
+        int i;
+        for (i = 0; i &lt; TIMES; i++) {
+            daughter();
+        }
+    }</pre>
+</dd>
+<dt><strong><a name="item_son252Ec">son.c</a></strong><br />
+</dt>
+<dd>
+<pre>
+    /******************************************
+        son.c
+        Copyright (c) 2005 Agent Zhang
+        2005-12-29 2005-12-30
+     ******************************************/
+    
+    #include &quot;app.h&quot;
+    #include &lt;string.h&gt;
+    
+    /*
+        for (1..TIMES) {
+            P('can_get_orange');
+            P('orange_sp');
+            my $fruit = $plate[++$orange_sp];
+            print &quot;  Son got an $fruit!\n&quot;;
+            V('orange_sp');
+            V('can_put');
+        }
+    */
+    
+    void son(void) {
+        int* orange_sp_ptr;
+        int orange_sp;
+    
+        char* plate;
+        char fruit[BUFSIZE];
+    
+        HERE
+    
+        P(SEM_CAN_GET_ORANGE);
+        P(SEM_ORANGE_SP);
+    
+        HERE
+    
+        orange_sp_ptr = (int*) get_shared_mem(SHM_ORANGE_SP, SHM_ORANGE_SP_SZ);
+        if (orange_sp_ptr == NULL) err(&quot;Can't get 'orange_sp'.&quot;);
+        orange_sp = *orange_sp_ptr;
+    
+        fprintf(stderr, &quot;orange_sp = %d\n&quot;, orange_sp);
+    
+        HERE
+    
+        plate = (char*) get_shared_mem(SHM_PLATE, SHM_PLATE_SZ);
+        if (plate == NULL) err(&quot;Can't get 'plate'.&quot;);
+    
+        HERE
+    
+        ++orange_sp;
+        strncpy(fruit, plate + orange_sp * BUFSIZE, BUFSIZE);
+    
+        printf(&quot;  Son got an %s!\n&quot;, fruit);
+        fflush(stdout);
+    
+        *orange_sp_ptr = orange_sp;
+        commit_shared_ptr(orange_sp_ptr);
+    
+        HERE
+    
+        commit_shared_ptr(plate);
+    
+        HERE
+    
+        V(SEM_ORANGE_SP);
+        V(SEM_CAN_PUT);
+    }
+    
+    int main(void) {
+        int i;
+        for (i = 0; i &lt; TIMES; i++) {
+            son();
+        }
+    }</pre>
+</dd>
+<dt><strong><a name="item_Makefile">Makefile</a></strong><br />
+</dt>
+<dd>
+<pre>
+    RM_F = perl -MExtUtils::Command -e rm_f
+    
+    CC = gcc
+    EXES = init father mother son daughter destroy 
+    
+    all: $(EXES)
+    
+    init: init.c app.h pv.o
+        $(CC) -o $@ init.c pv.o
+    
+    father: father.c app.h pv.o
+        $(CC) -o $@ father.c pv.o
+    
+    mother: mother.c app.h pv.o
+        $(CC) -o $@ mother.c pv.o
+    
+    son: son.c app.h pv.o
+        $(CC) -o $@ son.c pv.o
+    
+    daughter: daughter.c app.h pv.o
+        $(CC) -o $@ daughter.c pv.o
+    
+    pv.o: pv.h pv.c
+        $(CC) -c pv.c
+    
+    destroy: destroy.c app.h pv.o
+        $(CC) -o $@ destroy.c pv.o
+    
+    clean::
+        $(RM_F) $(EXES) pv.o *.out report.pod *.exe *.tmp
+    
+    doc: report.html Active.css all.png doc.png
+    
+    report.html: report.pod
+        podhtm -s Active.css -o $@ report.pod
+    
+    report.pod: report.podx
+        podx report.podx
+    
+    all.png: Makefile
+        gvmake -s 6x7
+    
+    doc.png: Makefile
+        gvmake -s 4x6 doc</pre>
+</dd>
+<dt><strong><a name="item_build">build</a></strong><br />
+</dt>
+<dd>
+<pre>
+    #!/usr/bin/perl -w
+    
+    use strict;
+    
+    my $CC = shift || 'g++';
+    
+    `g++ -o 01test 01test.cpp pv.c`;
+    
+    `$CC -c pv.c`;
+    `$CC -o init init.c pv.o`;
+    `$CC -o destroy destroy.c pv.o`;
+    `$CC -o father father.c pv.o`;
+    `$CC -o mother mother.c pv.o`;
+    `$CC -o son son.c pv.o`;
+    `$CC -o daughter daughter.c pv.o`;</pre>
+</dd>
+<dt><strong><a name="item_run">run</a></strong><br />
+</dt>
+<dd>
+<pre>
+    #!/usr/bin/perl
+    
+    use strict;
+    
+    `./init`;
+    `./father &gt; f.out &amp;`;
+    `./mother &gt; m.out &amp;`;
+    `./daughter &gt; d.out &amp;`;
+    `./son &gt; s.out &amp;`;</pre>
+</dd>
+<dt><strong><a name="item_clean">clean</a></strong><br />
+</dt>
+<dd>
+<pre>
+    #!/usr/bin/perl
+    
+    use strict;
+    
+    my $config_file = 'clean.cfg';
+    
+    my $owner = shift || getlogin;
+    warn &quot;The current owner is $owner.\n&quot;;
+    
+    my @sem_keys;
+    my @shm_keys;
+    if (-f $config_file) {
+        open(IN, $config_file) or
+            die &quot;Can't open $config_file: $!&quot;;
+        my $type;
+        while (&lt;IN&gt;) {
+            next if /^\s*$/;
+            if ($type and /^\s*(\d+)\s*$/) {
+                my $key = $1;
+                if ($type eq 's') {
+                    push @sem_keys, $key;
+                } else {
+                    push @shm_keys, $key;
+                }
+            } elsif (/^\s*([ms])\s*$/i) {
+                $type = $1;
+            } else {
+                die &quot;Syntax error: $config_file: line $.: $_&quot;;
+            }
+        }
+        close IN;
+    
+        warn &quot;----------------------\n&quot;;
+        warn &quot;Shared Memory:\n&quot;;
+        warn &quot;@shm_keys\n&quot;;
+        warn &quot;----------------------\n&quot;;
+        warn &quot;Semaphores:\n&quot;;
+        warn &quot;@sem_keys\n&quot;;
+        warn &quot;----------------------\n&quot;;
+    } else {
+        warn &quot;warning: clean.cfg not found.\n&quot;;
+    }
+    
+    open(IN, &quot;ipcs|&quot;) or
+        die &quot;Can't open ipcs: $!&quot;;
+    
+    while (&lt;IN&gt;) {
+        #warn $_;
+        if (/^m\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
+            my $shmid = $1;
+            my $hexkey = $2;
+            if (not @shm_keys) {
+                print &quot;Removing shared memory 0x$hexkey ($shmid)...\n&quot;;
+                system(&quot;ipcrm -m $shmid&quot;);
+                next;
+            }
+            foreach my $key (@shm_keys) {
+                if ($key == hex($hexkey)) {
+                    print &quot;Removing shared memory $key ($shmid)...\n&quot;;
+                    system(&quot;ipcrm -m $shmid&quot;);
+                    $key = '';
+                    last;
+                }
+            }
+        } elsif (/^s\s+(\d+)\s+0x(\w+).*\b$owner\b/) {
+            my $semid = $1;
+            my $hexkey = $2;
+            if (not @sem_keys) {
+                print &quot;Removing semaphore 0x$hexkey ($semid)...\n&quot;;
+                system(&quot;ipcrm -s $semid&quot;);
+                next;
+            }
+            foreach my $key (@sem_keys) {
+                if ($key == hex($hexkey)) {
+                    print &quot;Removing semaphore $key ($semid)...\n&quot;;
+                    system(&quot;ipcrm -s $semid&quot;);
+                    $key = '';
+                    last;
+                }
+            }
+        }
+    }
+    close IN;
+    
+    my $key;
+    foreach $key (@shm_keys) {
+        if ($key) {
+            my $hexkey = sprintf(&quot;%x&quot;, $key);
+            warn &quot;warning: shared memory $key (0x$hexkey) not found!\n&quot;;
+        }
+    }
+    
+    foreach $key (@sem_keys) {
+        if ($key) {
+            my $hexkey = sprintf(&quot;%x&quot;, $key);
+            warn &quot;warning: semaphore $key (0x$hexkey) not found!\n&quot;;
+        }
+    }</pre>
+</dd>
+</dl>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
 <big><strong><span class="block">&nbsp;report - OS Design Report</span></strong></big>

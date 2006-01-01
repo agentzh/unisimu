@@ -12,7 +12,7 @@ report - OS Design Report
 
 =head1 VERSION
 
-   Maintainer: Agent Zhang <agent2002@126.com>
+   Maintainer: Agent Zhang <agentz@tom.com>
    Date: 1 Jan 2006
    Last Modified: 1 Jan 2006
    Version: 0.01
@@ -32,7 +32,7 @@ report - OS Design Report
 Redhat Linux 9. 从可移植性的角度出发，我也更倾向于使用符合
 POSIX 标准的通用特性。
 
-=head1 UNIX 文化
+=head2 UNIX 文化
 
 我以为我们不应当将 UNIX 当作是一个包含了众多功能和特性的软件来
 看待。软件是死物，并没有生命。但是以 UNIX 为依托的文化却是最为
@@ -89,6 +89,20 @@ Perl 脚本生成的。相信我们班还有好几个同学会选择 POD 来制作他们的课
     great! it seems to me that pod is quickly gaining ground
     in our department. hooray!
 
+这一篇文档生成的流程图如下所示：
+
+=begin html
+
+<pre>
+    <img src="doc.png" alt="PODX to HTML conversion process"/>
+</pre>
+
+=end html
+
+值得一提的是上面这张图也是我的一个叫做 gvmake 的 Perl 脚本自动根据该
+项目的 Makefile 文件自动生成的。其实上面这张图就叫 doc.png，你可以
+在图中看到它自己是如何生成的！Hooray for bootstrapping!
+
 UNIX 文化是务实的文化，它不喜欢华而不实，或者矫揉造作。UNIX 文化是创
 造的文化，这里的人们都热衷于让机器来分担自己的工作，并且号称是因为自
 己“懒惰”。UNIX 文化又是魔法的文化，这儿的人们习惯于开发写程序的程序，
@@ -98,7 +112,7 @@ UNIX 文化是务实的文化，它不喜欢华而不实，或者矫揉造作。UNIX 文化是创
 我只能在这里简单地列举一下自己对 UNIX 文化的感悟，我不会尝试在这篇
 报告中去深入探究 UNIX 文化的真谛，因为这大大超出了我的能力范围。
 
-=head1 UNIX 的安装
+=head2 UNIX 的安装
 
 在 UNIX 大家族中，我只安装过 Redhat Linux 9，而且还是几年前的事情了。
 我只记得当初如何为 Linux 分配硬盘分区花费了我不少的功夫。好在最后终于
@@ -110,7 +124,7 @@ UNIX 文化是务实的文化，它不喜欢华而不实，或者矫揉造作。UNIX 文化是创
 这几日，我几年前购买的正版的 Linux 安装盘在本系的同学当中“辗转”。现在
 的情况是，大家都会装 Linux，就是我还不怎么清楚。
 
-=head1 UNIX 基本操作
+=head2 UNIX 基本操作
 
 我对 UNIX 基本操作很熟悉，虽然我只在课程设计期间登录过学校的 Solaris 小
 型机系统。奥秘就在于我的 Windows 系统上总会安装 Cygwin，它利用 Windows
@@ -147,6 +161,13 @@ OS 中的一块存储区域，名为 plate. 现在 father 不停地往 plate 中放
 plate 中取苹果，son 则不停地从 plate 中取桔子。四个进程并发运行，要
 求 plate 中最多只能放 5 个水果。
 
+=head2 Perl 多线程实现
+
+
+=head2 UNIX C 多进程实现
+
+=head3 开发环境
+
 该应用用到了 UNIX 的 shared memory 和 semaphore 机构，因此无法在
 Cygwin 中工作（但可以成功编译），而我的机器上只安装了两个 Windows 2000
 操作系统，因此我只好每次登录到学校的 Solaris 小型机上进行程序调试。
@@ -161,4 +182,245 @@ Windows 本地的 EditPlus 源代码编辑器上编辑好代码之后，就在 ftp 提
 的第一个正式的版本哦。我在五年前学 Perl 的时候，版本号就已达到 5.6.1
 了，所以这是我平生第一次见到如此古老的 Perl 安装。
 
+=head3 如何获取项目的源码和文档
 
+我的这些 C 和 Perl 代码都已处在 SVN/SVK 的版本控制之下。你总是可以在
+任何时间，从我在德国的 SVN 服务器得到该项目的最新版本：
+
+L<http://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX/>
+
+你可以在 IE 中浏览这个 repository, 但更优雅的方式是通过 SVN 客户端自
+动地下载所有目录和文件。如果你使用 Windows， TortoiseSVN 是非常不错的选择，
+它不仅提供了集成到“我的电脑”中的图形界面，而且它是免费软件。你可以从它的
+官方主页得到：
+
+L<http://tortoisesvn.tigris.org/>
+
+使用 SVN 客户端进行下载的时候，需要使用下面的 URL 进行 checkout：
+
+L<https://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX>
+
+=head3 项目的生成与运行
+
+下面引用项目自述文件 (F<README>) 来说明如何生成和运行此项目：
+
+B<README>
+
+=include "README"
+
+=head3 项目的体系结构
+
+=over
+
+=item clean
+
+我编写了一个 20 多行的 Perl 程序可以自动对指定用户的所有信息量(semaphore)
+和所有共享内存 (shared memory) 进行清空。每次我们运行我们的应用之前先运
+行这个 perl 脚本，集中地进行环境清理工作。这个 Perl 程序利用 UNIX 命令
+ipcs 得到当前环境中所有的信号量和共享内存的列表，然后利用正则表达式从中筛
+选出当前用户的信号量和共享内存的 ID，而后再自动调用 UNIX 命令 ipcrm 对
+它们进行逐一删除。我注意到，只有信号量和共享内存的所有者才有权限删除它们
+（或许系统管理员也有权限？）。
+
+用户可以通过命令行参数指定删除操作应用的帐户，比如
+
+    ./clean n0304
+
+就把 n0304 用户的共享资源全部删除。如果不提供任何参数，比如
+
+    ./clean
+
+则 F<clean> 脚本通过 Perl 内建函数 getlogin 获取当前登录用户的用户名。
+由于不清楚 ipcs 的输出格式是否在 UNIX 各个变种当中统一，因此 clean 在
+Linux, FreeBSD 等系统上的可移植性就不清楚了。
+
+由于 F<clean> 的代码是如此之少，所以我决定把它放在下面：
+
+B<clean>
+
+=include "clean"
+
+=item run
+
+
+用手工方式逐一启动 F<init>, F<father>, F<mother> ... 是通常的做法。
+无论是利用后台方式，还是多窗口方式，我都试过了，它们工作得非常之好。
+
+为了便于测试，我还用 perl 写了一个“驱动引擎”，名为 F<run>. 它可以异步
+地依次调用 father, mother, daughter, 和 son 这四个进程。
+
+下面是它的源代码：
+
+B<run>
+
+=include "run"
+
+=back
+
+=begin html
+
+<pre>
+    <img src="all.png" alt="source file hierarchy">
+</pre>
+
+=end html
+
+=head3 问题及其解决方案
+
+=over
+
+=item *
+
+“核心陷阱”与内存管理
+
+我在调试的 UNIX C 程序的过程中经常遇到下面的错误信息：
+
+    段错误--核心陷阱
+    
+初次遇到这个问题的时候，我显得手足无措，并且以为这是特定于 UNIX 共享操作的错误
+信息。果真如此的话，我也就没有什么东西可以依靠了。但是后来我发现，它其实非常普遍，
+即便是非 IPC 的 C 应用也会触发此错误。事实上，对内存的非法访问，就会触发该错误。
+我想它应该非常类似于 Windows 环境下的“该程序执行了非法操作，即将关闭……”
+或者 Windows 里常见的 “XXX 指令引用内存无效的，该内存不能为 read/written”。我
+，现在已经习已为常，并且知道该如何排错了。
+
+说实话，C 版本的实现比我想象得还要容易，但是有几个阴险的错误，还是花费了我几个小时的调
+试与排错时间。都是内存未初始化或者内存指针非常存取之类的讨厌问题。万珣新告诉我，不少
+同学，一提到指针，他们就犯糊涂，看来我们大家对这种类型的错误信息应该还是很熟悉的。徐飞
+进一步证实了我的推测：“对，别的同学也有这个问题”。
+
+=item *
+
+资源泄漏
+
+Solaris 小型机在分配的共享资源的数量上是有限制的，而在本周的课程设计期间，又
+有如此之多的同学登录 Solaris 小型机运行自己的 IPC 程序。由于老师没有提供任
+何清理程序，于是小型机经常出现无资源可分配的情形。所以当我在运行 init 的时候，
+就会得到下面的出错信息：
+
+    $ ./init
+    create_sema: : No space left on device
+    create_sema: : No space left on device
+    init.c: line 30: Failed to create semaphore 'can_put'.
+
+于是我先后以 n0305, n0302 和 n0304 的身份登录，然后运行我的 F<clean> 脚本对这些
+用户持有的所有共享内存和共享信号量进行清空。现在我的程序又可以正常工作了。
+
+运行 F<clean> 脚本释放某个登录用户名所拥有的所有共享资源可能是不礼貌的行为。因为
+有可能有多个用户以同一登录名来使用计算机。因此我删除的资源很可能恰好是其他某个同学
+创建并正在使用的。比如万珣新就曾报怨说，我在他给老师作演示的时候他的所有共享资源
+都被我的 F<clean> 删除了，导致他的程序“当众出错”。
+
+于是我认为最好的解决方案是，每个用户自己提供一个“收尾”程序，专门负责在最后清
+除自己的初始化进程创建的那些资源。我的 BigPlate 项目中的这个“收尾”程序
+名为 F<destroy>，其源文件是 F<destroy.c>
+
+F<destroy.c> 文件使用了 F<pv.h> 中新增的两个函数 C<free_shared_mem> 和
+C<free_sema>，它们的含义是一目了然的，对应的实现代码自然放在了 F<pv.c> 文件中。
+
+F<destroy> 程序是由用户手工启动的（或由类似 F<run> 这样的驱动脚本启动），启动的时机是
+在我们完成有关 F<father>, F<mother>, F<daughter>, 和 F<son> 的操作和试验之后。
+
+每一个好孩子在玩耍之后，都应该清理好游戏场地。 这也应该算是“游戏规则”的一部分。
+在使用完申请过的系统资源之后不及时释放，就会发生系统资源泄漏。
+
+事实上，我已经用 perl 写了一个通用的 F<clean> 程序，它可以删除你指定的用户所持有的
+指定的资源。但更优雅的解决方案是，我们自己再为每一个 IPC 应用编写一个 C 程序，
+作为收尾，把 F<init> 进程创建的共享资源全部删除。这么做的好处在于，每一次我们决定
+修改共享内存或信号量的键值的时候，就只需要修改一处定义，那就是 F<app.h> 中的常量定义。
+否则，我们还必须在每次修改了 F<app.h> 之后，再去修改 F<clean.cfg> 文件中的内容，
+这无疑将增加手工的工作量，提高了出现不一致的可能性，违反了所谓的 I<DRY> 原则
+(Don’t Repeat Yourself!).
+
+F<destroy> 程序正好与 F<init> 程序对应起来，前者在最后释放资源，后者在最初申请资源。
+它们的关系让我想起了 C++ 里的 delete 和 new 运算符。 C++ 程序员们总是用 new 
+运算符动态地创建对象，使用完毕之后，再 delete 销毁对象。这是好的编程习惯。
+
+事实上，在 IPC 多进程的场合，不及时释放掉共享资源，比在 C++ 中忘记调用 delete，
+后果要严重得多。因为 C++ 进程在堆中申请的内存资源总是会在进程终止时强制地退还给 OS，
+但是 OS 级别上的共享内存和信号量则完全不同，即便申请它们的进程早已退出，如若我们不
+显式地释放，它们将会一直留存在 OS 中，直到用尽所有的 OS 资源。而对于这一点，我们
+从前似乎并未给予足够的重视。
+
+=back
+
+=head2 Win32 Perl 多进程实现
+
+  I'll port the bigplate IPC application, say the father, mother, 
+  daughter, and son application to Win32 tomorrow, mostly for fun. 
+  Win32 supports the semaphore mechanisms, but lack the support for
+  shared memory among processes. But I can fake that stuff by virtue of disk files!
+  好的．  	  　不错啊．不过一定要给我看看．
+  Win32 supports the semaphore mechanisms very well, but seems to lack the 
+  support for shared memory among processes.  	  So anyway, porting this
+  IPC project to Win32 can be very interesting!  	 
+  　比较一下两种系统的实现ｓｅｍａｐｈｏｒｅ的不ｔｏｎｈｇ  	  
+  There's no obvious difference from the pointview of PV operations.  	 
+  But the only problem I can see so far is that I don't know how to remove an 
+  existing semaphore on Win32.  	  it won't help since i'm using Perl instead of C. 
+  I can't find such an interface in Win32::Semaphore's POD.  
+  Oh, I see how to properly initialize an existing semaphore on Win32!  
+  I can't effectively remove it but I can reset it to a proper intial value! 
+  okay, I think now there's no known obstacle in my way of tomorrow's porting efforts. yay!  
+
+=head1 APPENDIX
+
+=head2 BigPlate 项目 Perl 多线程实现的源代码列表
+
+B<bigplate.pl>
+
+=include "../bigplate.pl"
+
+=head2 BigPlate 项目 UNIX C 实现的源代码列表
+
+=over
+
+=item app.h
+
+=include "app.h"
+
+=item pv.h
+
+=include "pv.h"
+
+=item pv.c
+
+=include "pv.c"
+
+=item init.c
+
+=include "init.c"
+
+=item destroy.c
+
+=include "destroy.c"
+
+=item father.c
+
+=include "father.c"
+
+=item mother.c
+
+=include "mother.c"
+
+=item daughter.c
+
+=include "daughter.c"
+
+=item son.c
+
+=include "son.c"
+
+=item Makefile
+
+=include "Makefile"
+
+=item build
+
+=include "build"
+
+=item clean
+
+=include "clean"
+
+=back

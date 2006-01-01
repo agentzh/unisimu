@@ -22,12 +22,6 @@ put the following commands to do the cleaning:
 
 	./destroy
 
-Another way to do cleaning is to use the ``clean'' script. Just put all the keys of your
-requested shared memory segments and semaphores to the ``clean.cfg'' file, and run
-``clean'' directly:
-
-	./clean
-
 When you modify the keys for semaphores or shared memories, you have to update the
 keys in clean.cfg accordingly, so it's not as convenient as using ``destroy''.
 Because destroy.c also includes the global C/C++ header ``app.h''.
@@ -39,10 +33,8 @@ When you obtain the following error message from the ``init'' program:
 	init.c: line 30: Failed to create semaphore 'can_put'.
 
 then you should release the shared resources created by other users if you can.
-Simply delete the clean.cfg, and run ``clean'' again. ``clean'' will try to
-release all the shared memory segments and semaphores owned by the current login
-name:
+Run the ``clean'' script to release all the shared memory segments and semaphores
+owned by the current user:
 
-	rm clean.cfg
 	./clean
 
