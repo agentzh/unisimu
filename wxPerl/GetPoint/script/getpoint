@@ -1,0 +1,11 @@
+#!perl
+# getpoint
+# Copyright (c) 2006 Agent Zhang
+# 2006-01-03 2006-01-03
+
+use strict;
+use warnings;
+use GetPoint::App;
+
+my $app = GetPoint::App->new;
+$app->MainLoop;
