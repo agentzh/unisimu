@@ -7,6 +7,8 @@ t/Groups.t
 lib/GetPoint/App.pm
 lib/GetPoint/Frame.pm
 lib/GetPoint/Canvas.pm
-lib/GetPoint/Toolbar.pm
+lib/GetPoint/ToolBar.pm
 lib/GetPoint/Groups.pm
+lib/GetPoint/Text.pm
+lib/GetPoint/Tree.pm
 script/getpoint

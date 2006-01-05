@@ -7,13 +7,13 @@ package GetPoint::Canvas;
 use strict;
 use warnings;
 use Cwd;
-
-use GetPoint::App qw(testAppMode);
+use GetPoint::Groups;
+use GetPoint::App;
 
 use File::Spec;
 use Wx::Perl::Imagick;
 use Wx qw(wxCURSOR_HAND wxCURSOR_ARROW wxWHITE wxSOLID wxRED wxBLUE);
-use Wx::Event qw(EVT_MOTION EVT_LEFT_DOWN EVT_LEFT_UP);
+use Wx::Event qw(EVT_MOTION EVT_LEFT_DOWN EVT_LEFT_UP EVT_RIGHT_DOWN);
 
 use base qw(Wx::ScrolledWindow);
 
@@ -46,11 +46,11 @@ sub load {
     #}
 
     EVT_LEFT_DOWN($self, \&OnLeftDown);
-    #EVT_LEFT_UP($self, \&OnLeftUp);
+    EVT_LEFT_UP($self, \&OnLeftUp);
+    EVT_RIGHT_DOWN($self, \&OnRightDown);
     EVT_MOTION( $self, \&OnMouseMove );
 
-    $App::Points = [];
-    $self->set_cursor;
+    GetPoint::App::init_groups();
 }
 
 sub OnDraw {
@@ -62,9 +62,11 @@ sub OnDraw {
 
   #warn "@{$self->{Clicked}}";
   #warn "Yeah!";
-  foreach my $point ( @{$App::Points} ) {
-      #warn "replot @$point";
-      $self->draw_old_point($dc, @$point, wxBLUE);
+  foreach my $group ($App::Groups->GetGroups) {
+      foreach my $point ( $App::Groups->GetItems($group) ) {
+          #warn "replot @$point";
+          $self->draw_old_point($dc, split(/ /, $point), wxBLUE);
+      }
   }
   my $pending = $self->{PendingPoint};
   if ($pending) {
@@ -99,8 +101,7 @@ sub draw_old_point {
 sub OnMouseMove {
     my( $self, $event ) = @_;
 
-    return unless testAppMode('Drag');
-    return unless $event->Dragging;
+    return unless $event->Dragging and $event->LeftIsDown;
 
     my $prev = $self->{Point};
     return unless $prev;
@@ -118,19 +119,28 @@ sub OnLeftDown {
     #warn $event;
     my ($x, $y) = ($event->GetX, $event->GetY);
     $self->{Point} = [$x, $y];
-
-    if (testAppMode('Select')) {
-        Wx::LogMessage( "Clicked on point ($x, $y)." );
-        $self->draw_new_point($event);
-        #$self->Refresh;
-    }
+    #Wx::LogMessage( "Dragging the image..." );
+    $self->SetCursor( Wx::Cursor->new( wxCURSOR_HAND ) );
     $event->Skip;
 }
 
-sub set_cursor {
-    my $self = shift;
-    my $cursor = testAppMode('Drag') ? wxCURSOR_HAND : wxCURSOR_ARROW;
-    $self->SetCursor( Wx::Cursor->new( $cursor ) );
+sub OnLeftUp {
+    my ($self, $event) = @_;
+    #warn $event;
+    $self->SetCursor( Wx::Cursor->new( wxCURSOR_ARROW ) );
+    $event->Skip;
+}
+
+sub OnRightDown {
+    my ($self, $event) = @_;
+    #warn $event;
+    my ($x, $y) = ($event->GetX, $event->GetY);
+    $self->{Point} = [$x, $y];
+
+    #Wx::LogMessage( "Right clicked on point ($x, $y)." );
+    $self->draw_new_point($event);
+    #$self->Refresh;
+    $event->Skip;
 }
 
 1;

@@ -16,48 +16,65 @@ sub new {
     return $self;
 }
 
-sub addGroup {
+sub AddGroup {
     my $self = shift;
     foreach my $group (@_) {
         return undef if $self->{$group};
         $self->{$group} = [];
-        #warn "addGroup: groups: ", join('*', keys %$self);
+        #warn "AddGroup: groups: ", join('*', keys %$self);
     }
     return 1;
 }
 
-sub addItem {
+sub AddItem {
     my $self = shift;
     my $group = shift;
     $self->{$group} ||= [];
     foreach my $item (@_) {
-        #warn "addItem: pushing $item";
+        #warn "AddItem: pushing $item";
         push @{ $self->{$group} }, $item;
     }
     return 1;
 }
 
-sub getGroups {
+sub GetGroups {
     my $self = shift;
     my @groups = keys %$self;
-    #warn "getGroups: @groups";
+    #warn "GetGroups: @groups";
     return wantarray ? @groups : \@groups;
 }
 
-sub getItems {
+sub GetItems {
     my $self = shift;
     my $group = shift;
-    return wantarray ? @{ $self->{$group} } : $self->{$group};
+    my $data = $self->{$group};
+    $data ||= [];
+    return wantarray ? @$data : $data;
 }
 
-sub removeGroup {
+sub RemoveGroup {
     my $self = shift;
     foreach my $group (@_) {
         delete $self->{$group};
     }
 }
 
-sub removeItem {
+sub SetItem {
+    my ($self, $group, $index, $newval) = @_;
+    return undef if not $self->{$group};
+    $self->{$group}->[$index] = $newval;
+    return 1;
+}
+
+sub RenameGroup {
+    my ($self, $old, $new) = @_;
+    return undef if not $self->{$old} or $self->{$new};
+    $self->{$new} = $self->{$old};
+    delete $self->{$old};
+    return 1;
+}
+
+sub RemoveItem {
     my $self = shift;
     my $group = shift;
     my $data = $self->{$group};

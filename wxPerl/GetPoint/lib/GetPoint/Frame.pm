@@ -7,9 +7,11 @@ package GetPoint::Frame;
 use strict;
 use warnings;
 
-use GetPoint::App qw(setAppMode testAppMode);
+use GetPoint::App;
+use GetPoint::ToolBar;
 use GetPoint::Canvas;
-use GetPoint::Toolbar;
+use GetPoint::Text;
+use GetPoint::Tree;
 
 use Wx::Html;
 use Wx qw(:textctrl :sizer :window);
@@ -21,7 +23,7 @@ use Wx::Event qw(EVT_LEFT_DOWN EVT_MENU);
 
 use base qw/Wx::Frame/;
 
-my ($ID_OPEN_IMAGE, $ID_DRAG, $ID_SELECT) = (1..3);
+my ($ID_OPEN_IMAGE, $ID_TREE) = (1..2);
 
 our $PrevDir = '';
 our $PrevFile = '';
@@ -41,25 +43,14 @@ sub new {
     # Setup menus:
 
     my $file  = Wx::Menu->new;
-    $file->Append( $ID_OPEN_IMAGE, "&Open" );
-
-    my $mode  = Wx::Menu->new;
-    $mode->AppendCheckItem( $ID_DRAG, "&Drag" );
-    $mode->AppendCheckItem( $ID_SELECT, "&Select" );
+    $file->Append( $ID_OPEN_IMAGE, "&Open Image" );
 
     my $menu = Wx::MenuBar->new;
     $menu->Append( $file, "&File" );
-    $menu->Append( $mode, "&Mode" );
 
     $self->SetMenuBar( $menu );
 
-    $self->{ModeMenu} = $mode;
-    $mode->Enable($ID_DRAG, 0);
-    $mode->Enable($ID_SELECT, 0);
-
     EVT_MENU( $self, $ID_OPEN_IMAGE, \&OnOpenImage );
-    EVT_MENU( $self, $ID_DRAG, \&OnDragMode );
-    EVT_MENU( $self, $ID_SELECT, \&OnSelectMode );
 
     # Setup the toplevel layout:
 
@@ -72,46 +63,51 @@ sub new {
                                           wxDefaultSize,
                                           wxNO_FULL_REPAINT_ON_RESIZE
                                          |wxCLIP_CHILDREN);
-    my $split2 = Wx::SplitterWindow->new( $split1, -1, wxDefaultPosition,
-                                          wxDefaultSize,
-                                          wxNO_FULL_REPAINT_ON_RESIZE
-                                         |wxCLIP_CHILDREN );
-    my $tree = Wx::TreeCtrl->new( $split1, -1 );
-    my $text = Wx::TextCtrl->new( $split2, -1, "Welcome to GetPoint powered by wxPerl.\n",
-                                  wxDefaultPosition, wxDefaultSize,
-                                  wxTE_READONLY|wxTE_MULTILINE
-                                 |wxNO_FULL_REPAINT_ON_RESIZE );
-    my $log = Wx::LogTextCtrl->new( $text );
-    $self->{OLDLOG} = Wx::Log::SetActiveTarget( $log );
 
-    # create the main notebook
-
-    my $notebook = Wx::Notebook->new( $split2, -1, wxDefaultPosition, wxDefaultSize,
+    my $tree = GetPoint::Tree->new( $split1, $ID_TREE );
+    #$split1->{Tree} = $tree;
+    my $notebook = Wx::Notebook->new( $split1, -1, wxDefaultPosition, wxDefaultSize,
                                 wxNO_FULL_REPAINT_ON_RESIZE|wxCLIP_CHILDREN );
+
     my $canvas = GetPoint::Canvas->new( $notebook, -1, wxDefaultPosition, wxDefaultSize,
                                     wxNO_FULL_REPAINT_ON_RESIZE
                                    |wxCLIP_CHILDREN );
-    my $src = Wx::TextCtrl->new( $notebook, -1, '', wxDefaultPosition,
+    my $yaml = GetPoint::Text->new( $notebook, -1, '', wxDefaultPosition,
                                   wxDefaultSize, wxTE_READONLY|wxTE_MULTILINE
                                   |wxNO_FULL_REPAINT_ON_RESIZE );
 
     $notebook->AddPage( $canvas, "Image File", 0 );
-    $notebook->AddPage( $src, "Data File", 0 );
+    $notebook->AddPage( $yaml, "YAML File", 0 );
 
-    my $toolbar = GetPoint::Toolbar->new($split0, -1);
+    my $toolbar = GetPoint::ToolBar->new($split0, -1);
 
     $split0->SplitHorizontally( $toolbar, $split1, 30 );
-    $split1->SplitVertically( $tree, $split2, 150 );
-    $split2->SplitHorizontally( $notebook, $text, 460 );
+    $split1->SplitVertically( $tree, $notebook, 150 );
 
     $self->{Notebook} = $notebook;
     $self->{Canvas}   = $canvas;
-    $self->{Source}   = $src;
+    $self->{Yaml}     = $yaml;
     $self->{Tree}     = $tree;
 
     $App::Frame = $self;
 
     return $self;
+}
+
+sub notebook {
+    return $_[0]->{Notebook};
+}
+
+sub canvas {
+    return $_[0]->{Canvas};
+}
+
+sub yaml {
+    return $_[0]->{Yaml};
+}
+
+sub tree {
+    return $_[0]->{Tree};
 }
 
 sub OnOpenImage {
@@ -125,69 +121,23 @@ sub OnOpenImage {
 
     my $path;
     if( $dialog->ShowModal == wxID_CANCEL ) {
-        Wx::LogMessage( "User cancelled the Open Image File dialog" );
+        #Wx::LogMessage( "User cancelled the Open Image File dialog" );
     } else {
-        Wx::LogMessage( "Wildcard: %s", $dialog->GetWildcard);
+        #Wx::LogMessage( "Wildcard: %s", $dialog->GetWildcard);
         $path = $dialog->GetPath;
         $self->SetCursor( Wx::Cursor->new( wxCURSOR_WAIT ) );
         $self->{Canvas}->load($path);
         $self->{Canvas}->Refresh;
-        my $mode = $self->{ModeMenu};
-        $mode->Enable($ID_DRAG, 1);
-        $mode->Enable($ID_SELECT, 1);
-        if (testAppMode('Drag')) {
-            $mode->Check($ID_DRAG, 1);
-        } else {
-            $mode->Check($ID_SELECT, 1);
-        }
         $self->SetCursor( Wx::Cursor->new( wxCURSOR_ARROW ) );
     }
 
     if( $path ) {
-        Wx::LogMessage( "File \"$path\" selected" );
+        #Wx::LogMessage( "File \"$path\" selected" );
     } else {
-        Wx::LogMessage( "No file selected" );
+        #Wx::LogMessage( "No file selected" );
     }
 
     $dialog->Destroy;
-}
-
-sub OnDragMode {
-    my ( $self, $event ) = @_;
-    my $menu = $self->{ModeMenu};
-    if ($menu->IsChecked($ID_DRAG)) {
-        Wx::LogMessage( "Current mode is Drag." );
-        #$self->Check($ID_DRAG, 0);
-        $menu->Check($ID_SELECT, 0);
-        setAppMode('Drag');
-    } else {
-        Wx::LogMessage( "Current mode is Select." );
-        #$self->Check($ID_DRAG, 1);
-        $menu->Check($ID_SELECT, 1);
-        setAppMode('Select');
-    }
-    my $canvas = $self->{Canvas};
-    $canvas->set_cursor;
-    $event->Skip;
-}
-
-sub OnSelectMode {
-    my ( $self, $event ) = @_;
-    my $menu = $self->{ModeMenu};
-    if ($menu->IsChecked($ID_SELECT)) {
-        Wx::LogMessage( "Current mode is Select." );
-        #$menu->Check($ID_SELECT, 0);
-        $menu->Check($ID_DRAG, 0);
-        setAppMode('Select');
-    } else {
-        Wx::LogMessage( "Current mode is Drag." );
-        #$menu->Check($ID_SELECT, 1);
-        $menu->Check($ID_DRAG, 1);
-        setAppMode('Drag');
-    }
-    my $canvas = $self->{Canvas};
-    $canvas->set_cursor;
-    $event->Skip;
 }
 
 1;
