@@ -10,7 +10,6 @@ use base 'Pod::Parser';
 use Perl6::Slurp;
 use File::Spec;
 use Text::Table;
-use Cwd;
 use Scalar::Util qw/looks_like_number/;
 #use Smart::Comments;
 
@@ -38,12 +37,7 @@ my %hooks = (
     maple => sub {
         my $code = shift;
         require 'PerlMaple.pm';
-        if (not $maple) {
-            $maple = PerlMaple->new;
-            my $cwd = Cwd::cwd;
-            $cwd =~ s/\\/\\\\/g;
-            $maple->eval_cmd("currentdir(\"$cwd\");");
-        }
+        $maple ||= PerlMaple->new;
         my $res = $maple->eval_cmd($code);
         $res = defined $res ? $res : $maple->error;
         return fmt_code_res($code, $res, 'Maple');
