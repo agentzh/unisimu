@@ -12,12 +12,15 @@ use GetPoint::App;
 
 use File::Spec;
 use Wx::Perl::Imagick;
-use Wx qw(wxCURSOR_HAND wxCURSOR_ARROW wxWHITE wxSOLID wxRED wxBLUE);
+use Wx qw(wxCURSOR_HAND wxCURSOR_ARROW wxWHITE wxSOLID wxRED wxGREEN
+          wxBLUE wxTRANSPARENT wxTRANSPARENT_BRUSH);
 use Wx::Event qw(EVT_MOTION EVT_LEFT_DOWN EVT_LEFT_UP EVT_RIGHT_DOWN);
 
 use base qw(Wx::ScrolledWindow);
 
 our $PointSize = 1;
+our $MarkSize = 10;
+our $PenWidth = 4;
 
 sub load {
     my ($self, $file) = @_;
@@ -54,24 +57,30 @@ sub load {
 }
 
 sub OnDraw {
-  my( $self, $dc ) = @_;
+    my( $self, $dc ) = @_;
 
-  my $bmp = $self->{IMAGE};
-  return if (not $bmp);
-  $dc->DrawBitmap($bmp,0,0,1);
+    my $bmp = $self->{IMAGE};
+    return if (not $bmp);
+    $dc->DrawBitmap($bmp,0,0,1);
 
-  #warn "@{$self->{Clicked}}";
-  #warn "Yeah!";
-  foreach my $group ($App::Groups->GetGroups) {
-      foreach my $point ( $App::Groups->GetItems($group) ) {
-          #warn "replot @$point";
-          $self->draw_old_point($dc, split(/ /, $point), wxBLUE);
-      }
-  }
-  my $pending = $self->{PendingPoint};
-  if ($pending) {
-      $self->draw_old_point($dc, @$pending);
-  }
+    #warn "@{$self->{Clicked}}";
+    #warn "Yeah!";
+    foreach my $group ($App::Groups->GetGroups) {
+        foreach my $point ( $App::Groups->GetItems($group) ) {
+            #warn "replot @$point";
+            $self->draw_old_point($dc, split(/ /, $point), wxGREEN);
+        }
+    }
+    my $pending = $self->{PendingPoint};
+    if ($pending) {
+        $self->draw_old_point($dc, @$pending);
+    }
+    my $point = $self->{MarkedPoint};
+    return if not $point;
+    my ($x, $y) = @$point;
+    $dc->SetPen( Wx::Pen->new( wxRED, $PenWidth, 0 ) );
+    $dc->SetBrush( wxTRANSPARENT_BRUSH );
+    $dc->DrawCircle($x, $y, $MarkSize);
 }
 
 sub draw_new_point {
@@ -81,7 +90,7 @@ sub draw_new_point {
     my $pos = $event->GetLogicalPosition( $dc );
     my ($x, $y) = ($pos->x, $pos->y);
     #warn "Plot new point ($x, $y)";
-    $dc->SetPen( Wx::Pen->new( wxRED, 5, 0 ) );
+    $dc->SetPen( Wx::Pen->new( wxRED, $PenWidth, 0 ) );
     $dc->SetBrush( Wx::Brush->new( wxRED, wxSOLID ) );
     $dc->DrawCircle($x, $y, $PointSize);
     $self->{PendingPoint} = [$x, $y];
@@ -92,7 +101,7 @@ sub draw_old_point {
     my ($dc, $x, $y, $color) = @_;
     $color = wxRED if not defined $color;
     if (defined $x and defined $y) {
-        $dc->SetPen( Wx::Pen->new( $color, 5, 0 ) );
+        $dc->SetPen( Wx::Pen->new( $color, $PenWidth, 0 ) );
         $dc->SetBrush( Wx::Brush->new( $color, wxSOLID ) );
         $dc->DrawCircle($x, $y, $PointSize);
     }
@@ -141,6 +150,14 @@ sub OnRightDown {
     $self->draw_new_point($event);
     #$self->Refresh;
     $event->Skip;
+}
+
+sub markPoint {
+    my $self = shift;
+    my ($x, $y) = @_;
+    warn "Hey: ($x, $y)";
+    $self->{MarkedPoint} = [$x, $y];
+    $self->Refresh
 }
 
 1;

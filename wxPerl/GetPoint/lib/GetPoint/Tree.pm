@@ -188,6 +188,8 @@ sub OnSelChanged {
     return if not $frame;
     my $tree = $frame->tree;
     return if not $tree;
+    my $canvas = $frame->canvas;
+    return if not $canvas;
 
     my $data = $tree->GetPlData( $id );
     return if not $data;
@@ -198,6 +200,8 @@ sub OnSelChanged {
     } elsif ($data->[0] eq $POINT) {
         $App::ActiveGroup = $data->[1];
         $App::ActiveID = $id;
+        $canvas->markPoint(split /\s+/, $tree->GetItemText($id));
+        #$canvas->Refresh;
     } else {
         Wx::LogMessage( "OnSelChanged: Unknown node type $data->[0]" );
         return;

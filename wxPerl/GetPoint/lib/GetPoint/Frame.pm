@@ -23,7 +23,7 @@ use Wx::Event qw(EVT_LEFT_DOWN EVT_MENU);
 
 use base qw/Wx::Frame/;
 
-my ($ID_OPEN_IMAGE, $ID_TREE) = (1..2);
+my ($ID_OPEN_IMAGE, $ID_SAVE_YAML, $ID_SAVE_YAML_AS, $ID_TREE, $ID_YAML) = (1..5);
 
 our $PrevDir = '';
 our $PrevFile = '';
@@ -42,8 +42,10 @@ sub new {
 
     # Setup menus:
 
-    my $file  = Wx::Menu->new;
+    my $file = Wx::Menu->new;
     $file->Append( $ID_OPEN_IMAGE, "&Open Image" );
+    $file->Append( $ID_SAVE_YAML,  "&Save YAML" );
+    $file->Append( $ID_SAVE_YAML_AS,  "Save YAML &As" );
 
     my $menu = Wx::MenuBar->new;
     $menu->Append( $file, "&File" );
@@ -51,6 +53,8 @@ sub new {
     $self->SetMenuBar( $menu );
 
     EVT_MENU( $self, $ID_OPEN_IMAGE, \&OnOpenImage );
+    EVT_MENU( $self, $ID_SAVE_YAML,  \&OnSaveYaml );
+    EVT_MENU( $self, $ID_SAVE_YAML_AS, \&OnSaveYamlAs );
 
     # Setup the toplevel layout:
 
@@ -72,12 +76,10 @@ sub new {
     my $canvas = GetPoint::Canvas->new( $notebook, -1, wxDefaultPosition, wxDefaultSize,
                                     wxNO_FULL_REPAINT_ON_RESIZE
                                    |wxCLIP_CHILDREN );
-    my $yaml = GetPoint::Text->new( $notebook, -1, '', wxDefaultPosition,
-                                  wxDefaultSize, wxTE_READONLY|wxTE_MULTILINE
-                                  |wxNO_FULL_REPAINT_ON_RESIZE );
+    my $yaml = GetPoint::Text->new( $notebook, $ID_YAML );
 
-    $notebook->AddPage( $canvas, "Image File", 0 );
-    $notebook->AddPage( $yaml, "YAML File", 0 );
+    $notebook->AddPage( $canvas, "Image File", 1, 0 );
+    $notebook->AddPage( $yaml, "YAML File", 0, 1 );
 
     my $toolbar = GetPoint::ToolBar->new($split0, -1);
 
@@ -138,6 +140,26 @@ sub OnOpenImage {
     }
 
     $dialog->Destroy;
+}
+
+sub OnSaveYaml {
+    my ($self, $event) = @_;
+    my $frame = $App::Frame;
+    if (not $frame) {
+        Wx::LogMessage( "error: Can't save YAML file since no frame found" );
+        return;
+    }
+    $frame->yaml->save(0);
+}
+
+sub OnSaveYamlAs {
+    my ($self, $event) = @_;
+    my $frame = $App::Frame;
+    if (not $frame) {
+        Wx::LogMessage( "error: Can't save YAML file since no frame found" );
+        return;
+    }
+    $frame->yaml->save(1);
 }
 
 1;

@@ -15,21 +15,21 @@ use base 'Wx::Panel';
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new(@_);
+    my $btn_refresh = Wx::Button->new( $self, -1, "Refresh" );
     my $btn_add_g = Wx::Button->new( $self, -1, "Add Group" );
     my $btn_add_p = Wx::Button->new( $self, -1, "Add Point" );
-    my $btn_refresh = Wx::Button->new( $self, -1, "Refresh" );
 
     my $buttons = Wx::BoxSizer->new( wxHORIZONTAL );
+    $buttons->Add( $btn_refresh, 0, wxALL, 5 );
     $buttons->Add( $btn_add_g, 0, wxALL, 5 );
     $buttons->Add( $btn_add_p, 0, wxALL, 5 );
-    $buttons->Add( $btn_refresh, 0, wxALL, 5 );
 
     $self->SetSizer( $buttons );
     $self->SetAutoLayout( 1 );
 
+    EVT_BUTTON( $self, $btn_refresh, \&OnRefresh );
     EVT_BUTTON( $self, $btn_add_g, \&OnAddGroup );
     EVT_BUTTON( $self, $btn_add_p, \&OnAddPoint );
-    EVT_BUTTON( $self, $btn_refresh, \&OnRefresh );
 
     return $self;
 }

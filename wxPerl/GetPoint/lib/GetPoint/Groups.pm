@@ -80,6 +80,7 @@ sub RemoveItem {
     my $data = $self->{$group};
     foreach my $item (@_) {
         my $idx = first_index { $_ eq $item } @$data;
+        return if $idx == -1;
         splice @$data, $idx, 1;
     }
 }

@@ -30,6 +30,7 @@ sub init_groups {
     $App::Initialized = 1;
     my $frame = $App::Frame;
     return if not $frame;
+    $frame->yaml->newYaml;
     $frame->yaml->Refresh;
     $frame->canvas->Refresh;
     $frame->tree->Refresh;
