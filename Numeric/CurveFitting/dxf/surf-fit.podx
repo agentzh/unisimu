@@ -1,0 +1,25 @@
+=head1 NAME
+
+surf-fit - 坐标变换
+
+=head1 AUTHOR
+
+Agent Zhang (章亦春) E<lt>agent2002@126.comE<gt>
+
+=head1 VERSION
+
+    Create:      2005-01-07
+    Last Update: 2005-01-07
+
+=head1 DESCRIPTION
+
+本文将对 coord-trans 文档产生的理论坐标系中各条曲线上的采样点所对应的
+三维空间中的点进行研究。我们的目标是得到由这些点所确定的三维曲面。
+
+=head1 Get Points in 3-D Space
+
+
+
+=head1 First Impression
+
+我们利用 Maple 的 MESH 绘图功能将
