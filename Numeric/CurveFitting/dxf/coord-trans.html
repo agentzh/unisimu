@@ -21,6 +21,7 @@
 
 	<li><a href="#NAME">NAME</a></li>
 	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
 	<li><a href="#DESCRIPTION">DESCRIPTION</a></li>
 	<li><a href="#c0edc2dbd7f8b1eacfb5b5c4d4adb5e3">理论坐标系的原点</a></li>
 	<li><a href="#c0edc2dbd7f8b1eacfb5b1eab6c8b5c4c8b7b6a8">理论坐标系标度的确定</a></li>
@@ -38,6 +39,7 @@
 		<li><a href="#c6abd7aabdc7b5c4c6bdbef9d6b5">偏转角的平均值</a></li>
 	</ul>
 
+	<li><a href="#b6d4c7facfdfc9cfb5c4b2c9d1f9b5e3bdf8d0d0d7f8b1eab1e4bbbb">对曲线上的采样点进行坐标变换</a></li>
 </ul>
 <!-- INDEX END -->
 
@@ -51,6 +53,13 @@
 <hr />
 <h1><a name="AUTHOR">AUTHOR</a></h1>
 <p>Agent Zhang (章亦春) &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+    Create:      2005-01-05
+    Last Update: 2005-01-07</pre>
 <p>
 </p>
 <hr />
@@ -80,7 +89,15 @@ groups 数据结构：</p>
 <hr />
 <h1><a name="c0edc2dbd7f8b1eacfb5b5c4d4adb5e3">理论坐标系的原点</a></h1>
 <p>对于理论坐标系而言，其原点的象素坐标我们可以用下面的方法取得：</p>
-<p>首先读取对应的 YAML 文件：</p>
+<p>首先初始化 Maple 计算引擎 $maple:</p>
+<p><em>Perl</em></p>
+<pre>
+    use PerlMaple;
+    $maple = PerlMaple-&gt;new;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    PerlMaple=HASH(0x1d91710)</pre>
+<p>现在我们再读取原点对应的 YAML 文件：</p>
 <p><em>Perl</em></p>
 <pre>
     use YAML qw(LoadFile Dump);
@@ -104,6 +121,7 @@ groups 数据结构：</p>
     $x = ($p1-&gt;[0] + $p2-&gt;[0]) / 2;
     $y = ($p1-&gt;[1] + $p2-&gt;[1]) / 2;
     $origin = [$x, $y];
+    $maple-&gt;eval_cmd(&quot;x0:=$x; y0:=$y;&quot;);
     Dump($origin);</pre>
 <p><em>Output</em>:</p>
 <pre>
@@ -218,8 +236,6 @@ groups 数据结构：</p>
 <p>我们将之导入到 Maple 环境中去：</p>
 <p><em>Perl</em></p>
 <pre>
-    use PerlMaple;
-    $maple = PerlMaple-&gt;new;
     $maple-&gt;eval_cmd(&quot;dist_sum:=evalf($distance_sum);&quot;);</pre>
 <p><em>Output</em>:</p>
 <pre>
@@ -314,14 +330,14 @@ groups 数据结构：</p>
     @points = ([2.3,5.2], [1.3, 2.7], [2.0,3.7], [1.5, 4.2], [5.2, 3.1]);</pre>
 <p><em>Output</em>:</p>
 <pre>
-    ARRAY(0x1efb7b8),ARRAY(0x1f27864),ARRAY(0x1f2796c),ARRAY(0x1f27984),ARRAY(0x1f2799c)</pre>
+    ARRAY(0x3a04314),ARRAY(0x3a19280),ARRAY(0x3a19388),ARRAY(0x3a193a0),ARRAY(0x3a193b8)</pre>
 <p>用 best_points 计算出“最佳点”的坐标：</p>
 <p><em>Perl</em></p>
 <pre>
     @best = best_points(@points);</pre>
 <p><em>Output</em>:</p>
 <pre>
-    ARRAY(0x1efb6c8)</pre>
+    ARRAY(0x3a04224)</pre>
 <p>作出图象：</p>
 <p><em>Perl</em></p>
 <pre>
@@ -397,7 +413,8 @@ groups 数据结构：</p>
 <p>下面我们对这些值取平均值就得到一单位的理论纵坐标相当于多少单位的象素纵坐标了：</p>
 <p><em>Perl</em></p>
 <pre>
-    $y_scale = $maple-&gt;eval( '('.join('+', @vals).&quot;)/&quot;.scalar(@vals) );</pre>
+    $y_scale = $maple-&gt;eval( '('.join('+', @vals).&quot;)/&quot;.scalar(@vals) );
+    $maple-&gt;eval_cmd(&quot;y_scale:=$y_scale;&quot;);</pre>
 <p><em>Output</em>:</p>
 <pre>
     2.265628682</pre>
@@ -523,7 +540,8 @@ groups 数据结构：</p>
     2.3156532555631,2.30526571136605,2.47061227229203,2.38742073748591,2.29078589134821,2.47085511513727,2.31543732370367</pre>
 <p><em>Perl</em></p>
 <pre>
-    $x_scale = $maple-&gt;eval( '('.join('+', @vals).&quot;)/&quot;.scalar(@vals) );</pre>
+    $x_scale = $maple-&gt;eval( '('.join('+', @vals).&quot;)/&quot; . scalar(@vals) );
+    $maple-&gt;eval_cmd(&quot;x_scale:=$x_scale;&quot;);</pre>
 <p><em>Output</em>:</p>
 <pre>
     2.365147186</pre>
@@ -539,32 +557,32 @@ groups 数据结构：</p>
 <p><em>Perl</em></p>
 <pre>
     $groups = adjust_groups LoadFile 'data/y-axis.yml';
-    @points = @{ $groups-&gt;{'y-axis'} };
-    scalar(@points);</pre>
+    @y_points = @{ $groups-&gt;{'y-axis'} };
+    scalar(@y_points);</pre>
 <p><em>Output</em>:</p>
 <pre>
     34</pre>
-<p>现在我们已将 34 个采样点的象素坐标从 <em>y-axis.yml</em> 文件加载到 @points 数组中了。
+<p>现在我们已将 34 个采样点的象素坐标从 <em>y-axis.yml</em> 文件加载到 @y_points 数组中了。
 现在我们使用 Maple 的 CurveFitting 包提供的 LeastSquares 函数进行线性拟合：</p>
 <p><em>Perl</em></p>
 <pre>
-    my @s = map { '['.join(',', @$_).']' } @points;
-    $maple-&gt;eval_cmd(&quot;points:=[&quot;.join(',',@s).&quot;];&quot;);</pre>
+    my @s = map { '['.join(',', @$_).']' } @y_points;
+    $maple-&gt;eval_cmd(&quot;y_points:=[&quot;.join(',',@s).&quot;];&quot;);</pre>
 <p><em>Output</em>:</p>
 <pre>
     [[253, 1913], [255, 1838], [258, 1761], [258, 1714], [258, 1686], [262, 1595], [262, 1559], [262, 1574], [258, 1740], [267, 1441], [310, 113], [306, 178], [307, 210], [303, 314], [298, 454], [298, 401], [294, 577], [290, 674], [289, 730], [285, 837], [281, 1007], [280, 1053], [277, 1108], [276, 1144], [277, 1175], [272, 1330], [271, 1354], [272, 1381], [311, 134], [299, 427], [298, 505], [289, 700], [285, 870], [306, 194]]</pre>
 <p><em>Maple</em></p>
 <pre>
     with(CurveFitting):
-    ycurve := evalf(LeastSquares(points,x));</pre>
+    ycurve := evalf(LeastSquares(y_points,x));</pre>
 <p><em>Output</em>:</p>
 <pre>
     9884.261579-31.60592596*x</pre>
 <p>其图象如下所示：</p>
 <p><em>Maple</em></p>
 <pre>
-    plotsetup(gif,plotoutput=&quot;image/diag3.gif&quot;,plotoptions=&quot;height=300,width=300&quot;):
-    pplot := pointplot(points,symbol=CIRCLE,color=black):
+    plotsetup(gif, plotoutput=&quot;image/diag3.gif&quot;, plotoptions=&quot;height=300, width=300&quot;):
+    pplot := pointplot(y_points, symbol=CIRCLE, color=black):
     yplot := plot(ycurve, x=250..300, color=red):
     display([pplot,yplot],axes=BOXED);</pre>
 <p><em>No Output</em></p>
@@ -580,30 +598,212 @@ groups 数据结构：</p>
 <pre>
     <img src="image/diag4.gif"/>
 </pre><p>我们看到点全部挤到一起了，影响视觉效果。</p>
-<p>值得指出的是，上面两个图中的直线所对应的理论 y 轴，其正方向是向下的。因此，理论 y 轴正方向
-与象素 y 轴的正方向之间的夹角在 90 度到 180 度之间，我们可以用下面的方法求出该角：</p>
+<p>理论 y 轴与象素 y 轴之间的夹角我们可以用下面的方法求出：</p>
 <p><em>Maple</em></p>
 <pre>
     with(geometry):
     _EnvHorizontalName := 'x': _EnvVerticalName := 'y':
     line(L1, y=ycurve), line(L2, x = 0);
-    theta1:=Pi - FindAngle(L1, L2);</pre>
+    theta1:=FindAngle(L1, L2);</pre>
 <p><em>Output</em>:</p>
 <pre>
-    1/2*Pi+1.539167242</pre>
+    1/2*Pi-1.539167242</pre>
 <p>为了获得直观上的印象，我们将这个弧度值化成角度：</p>
 <p><em>Maple</em></p>
 <pre>
     evalf(convert(theta1, degrees));</pre>
 <p><em>Output</em>:</p>
 <pre>
-    178.1877869*degrees</pre>
+    1.812213081*degrees</pre>
 <p>
 </p>
 <h2><a name="c0edc2dbd7f8b1eacfb5b5c420X20d6e1b5c4c6abd7aabdc7">理论坐标系的 X 轴的偏转角</a></h2>
+<p>我们重复一下上面的过程就可以了：</p>
+<p><em>Perl</em></p>
+<pre>
+    $groups = adjust_groups LoadFile 'data/x-axis.yml';
+    @x_points = @{ $groups-&gt;{'x-axis'} };
+    scalar(@points);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    5</pre>
+<p>我们看到 x 轴的采样点多达 65 个，大约是 y 轴采样点个数的 2 倍。</p>
+<p><em>Perl</em></p>
+<pre>
+    my @s = map { '['.join(',', @$_).']' } @x_points;
+    $maple-&gt;eval_cmd(&quot;x_points:=[&quot;.join(',',@s).&quot;]:&quot;);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    [[254, 1914], [3086, 1978], [1043, 1931], [853, 1926], [687, 1922], [658, 1921], [890, 1926], [826, 1925], [872, 1926], [305, 1914], [282, 1916], [374, 1918], [410, 1918], [529, 1920], [554, 1920], [578, 1920], [611, 1920], [920, 1926], [986, 1930], [1008, 1929], [1025, 1932], [1065, 1931], [1144, 1933], [1186, 1933], [1199, 1934], [1261, 1937], [1286, 1936], [1320, 1939], [1352, 1938], [1375, 1938], [1397, 1939], [1459, 1943], [1487, 1942], [1511, 1943], [1569, 1946], [1602, 1945], [1621, 1946], [1641, 1946], [1662, 1946], [1683, 1945], [1709, 1945], [1777, 1949], [1799, 1951], [1828, 1950], [1846, 1950], [1814, 1951], [1873, 1951], [1941, 1954], [1961, 1955], [1985, 1954], [2021, 1956], [2001, 1955], [2041, 1955], [2075, 1955], [2137, 1959], [2191, 1960], [2503, 1967], [2399, 1964], [2558, 1967], [2677, 1972], [2747, 1973], [3033, 1980], [2931, 1976], [2888, 1975], [2710, 1972]]</pre>
+<p><em>Maple</em></p>
+<pre>
+    xcurve := evalf(LeastSquares(x_points,x));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1906.374991+.2397214161e-1*x</pre>
+<p><em>Maple</em></p>
+<pre>
+    plotsetup(gif, plotoutput=&quot;image/diag5.gif&quot;, plotoptions=&quot;height=300, width=300&quot;):
+    pplot := pointplot(x_points, symbol=CIRCLE, color=black):
+    xplot := plot(xcurve, x=200..3000, color=red):
+    display([pplot,xplot], axes=BOXED);</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/diag5.gif"/>
+</pre><p>现在我们来求理论 x 轴与象素 x 轴之间的夹角：</p>
+<p><em>Maple</em></p>
+<pre>
+    line(L1, y=xcurve), line(L2, y = 0);
+    theta2:=FindAngle(L1, L2);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    .2396755122e-1</pre>
+<p><em>Maple</em></p>
+<pre>
+    evalf(convert(theta2, degrees));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1.373239530*degrees</pre>
 <p>
 </p>
 <h2><a name="c6abd7aabdc7b5c4c6bdbef9d6b5">偏转角的平均值</a></h2>
+<p>我们对前面已求出了理论 y 轴与象素 y 轴的交角为</p>
+<p><em>Maple</em></p>
+<pre>
+    evalf(convert(theta1,degrees));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1.812213081*degrees</pre>
+<p>理论 x 轴与象素 x 轴的交角为</p>
+<p><em>Maple</em></p>
+<pre>
+    evalf(convert(theta2,degrees));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1.373239530*degrees</pre>
+<p>取此二角弧度的平均值，得到：</p>
+<p><em>Maple</em></p>
+<pre>
+    theta := (theta1 + theta2)/2;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1/4*Pi-.7575998454</pre>
+<p>化成角度就是</p>
+<p><em>Maple</em></p>
+<pre>
+    evalf(convert(theta, degrees));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1.592726304*degrees</pre>
+<p>
+</p>
+<hr />
+<h1><a name="b6d4c7facfdfc9cfb5c4b2c9d1f9b5e3bdf8d0d0d7f8b1eab1e4bbbb">对曲线上的采样点进行坐标变换</a></h1>
+<p>下面我们将开始对曲线上的采样点原始的象素坐标进行变换，以期得到
+它们在理论坐标系中的坐标。</p>
+<p>在开始之前，我们必须注意到象素坐标系是左手系，而理论坐标系却是
+右手系。因此理论坐标系不能通过对象素坐标系进行简单的平移和平面
+旋转来得到。为此，我们将所有采样点的象素坐标一律取成其相反数，
+即负值，这样就将两个坐标系统一为右手系了。</p>
+<p>我们先来研究一下单个点的变换过程。如不特别指明，下面所说的“坐标”
+一律是指象素坐标。</p>
+<p>已知理论坐标系原点的象素坐标为 (x0, y0)，理论坐标系相对于象素坐标
+系顺时针旋转了 Fi 角。曲线上某一点 P 的坐标为
+(x, y). 现在我们要求 P 的理论坐标。</p>
+<p><em>Maple</em></p>
+<pre>
+    with(geometry):
+    point(oldO, 0, 0), point(newO, x0, y0), point(P, x, y):
+    dsegment(r, newO, oldO):
+    translation(PP, P, r):
+    rotation(PP2, PP, theta, 'clockwise', oldO):
+    Point := evalf(coordinates(PP2));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    [.9996136516*x-306.0874852+.2779473806e-1*y, -.2779473806e-1*x-1905.728653+.9996136516*y]</pre>
+<p>我们把上面的表达式封装成 Maple 例程，以便于反复调用：</p>
+<p><em>Maple</em></p>
+<pre>
+    new_x := unapply(Point[1], [x,y]);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    proc (x, y) options operator, arrow; .9996136516*x-306.0874852+.2779473806e-1*y end proc</pre>
+<p><em>Maple</em></p>
+<pre>
+    new_y := unapply(Point[2], [x,y]);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    proc (x, y) options operator, arrow; -.2779473806e-1*x-1905.728653+.9996136516*y end proc</pre>
+<p>下面我们用这两个坐标变换例程来对理论 y 轴进行坐标变换：</p>
+<p><em>Maple</em></p>
+<pre>
+    y_new_points := map(i-&gt;[new_x(i[1],i[2])/x_scale, -new_y(i[1],i[2])/y_scale], y_points);
+    plotsetup(gif, plotoutput=&quot;image/diag6.gif&quot;, plotoptions=&quot;height=300, width=300&quot;):
+    pplot := pointplot(y_new_points, symbol=CIRCLE, color=black):
+    display(pplot, axes=BOXED, scaling=CONSTRAINED);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    [[-.5875909154e-2, .2206036691], [-.4197432218e-1, 33.33574456], [.3210669613, 67.34557000], [-.2312676662, 88.08234888], [-.5603180799, 100.4361747], [.6084133404e-1, 140.6351811], [-.3622234866, 156.5186713], [-.1859464783, 149.9005502], [.7427914890e-1, 76.61093911], [.3642806440, 208.6425634], [2.931552100, 795.0944006], [2.004845873, 766.3668044], [2.803546787, 752.2604143], [2.335160781, 706.3257032], [1.867196302, 644.4952338], [1.244350871, 667.8792615], [1.622094508, 590.1775695], [1.071445898, 547.3313151], [1.306903392, 522.6113950], [.8737727919, 475.3530601], [1.181005625, 400.2986165], [1.298945114, 379.9907778], [.6773642163, 355.6875296], [.6777856995, 339.7917718], [1.464734855, 326.1265890], [1.173047342, 257.6779989], [1.032447259, 247.0767374], [1.772389171, 235.1763876], [3.600983207, 785.8412997], [1.972540981, 656.4201199], [2.466538131, 621.9936224], [.9543493755, 535.8476372], [1.261582208, 460.7931936], [2.192874682, 759.3074755]]</pre>
+<pre>
+    <img src="image/diag6.gif"/>
+</pre><p>下面我们用这两个坐标变换例程来对理论 y 轴进行坐标变换：</p>
+<p><em>Maple</em></p>
+<pre>
+    x_new_points := map(i-&gt;[new_x(i[1],i[2])/x_scale, -new_y(i[1],i[2])/y_scale], x_points);
+    plotsetup(gif, plotoutput=&quot;image/diag7.gif&quot;, plotoptions=&quot;height=300, width=300&quot;):
+    pplot := pointplot(x_new_points, symbol=CIRCLE, color=black):
+    display(pplot, axes=BOXED, scaling=CONSTRAINED);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    [[.4285191873, -.2083364338], [1198.106508, 6.297330235], [334.0938770, 1.970580632], [253.7328876, 1.845700504], [183.5270898, 1.574044338], [171.2586818, 1.659480227], [269.3706903, 2.299616456], [242.3097663, 1.955672629], [261.7631106, 2.078792539], [21.98332833, .4173318459], [12.28603568, -.7472482201], [51.19272442, -.5010083996], [66.40788384, -.5936012422e-1], [116.7259421, .5181157925], [127.2920251, .8248160940], [137.4354647, 1.119248278], [151.3826941, 1.524092199], [282.0499898, 2.667656465], [309.9914560, 1.712512307], [319.2778572, 2.423616475], [326.4980489, 1.308548494], [343.3920298, 2.240476580], [376.8043553, 2.327232190], [394.5553748, 2.842488291], [400.0614895, 2.560764721], [426.3006307, 1.997756753], [436.8549620, 2.745664834], [451.2600900, 1.839152652], [464.7729243, 2.672936677], [474.4937206, 2.955100742], [483.8036253, 2.783788910], [510.0545184, 1.779572722], [521.8767793, 2.564284715], [532.0319710, 2.417508678], [556.5805383, 1.805428680], [570.5160165, 2.651480822], [578.5579909, 2.443364636], [587.0108572, 2.688724789], [595.8863670, 2.946353060], [604.7501253, 3.645189110], [615.7388515, 3.964157089], [644.5256037, 3.033549167], [653.8472604, 2.421029114], [666.0921647, 3.218008784], [673.6997445, 3.438832701], [660.1869102, 2.605049118], [685.1228658, 3.328861018], [713.8978669, 2.839461316], [722.3624851, 2.643612807], [732.4941726, 3.379253212], [747.7328360, 2.938485045], [739.2682178, 3.134333113], [756.1739504, 3.625052978], [770.5438231, 4.042165017], [796.7947158, 3.037949270], [819.6292072, 3.259213241], [951.5761845, 3.998373199], [907.5860241, 4.046125507], [974.8215670, 4.673113509], [1025.174880, 3.926965646], [1054.771664, 4.344517298], [1175.729915, 4.764710160], [1132.573290, 5.278205601], [1114.387876, 5.191890045], [1039.122110, 4.331809567]]</pre>
+<pre>
+    <img src="image/diag7.gif"/>
+</pre><p>我们将上面列举的从 YAML 文件导入到采样点坐标的变换封装成 Perl 函数。</p>
+<p><em>Perl</em></p>
+<pre>
+    $maple-&gt;ReturnAST(0);
+    %curves = ();
+    sub trans_curve {
+        my ($key, $id) = @_;
+        my $groups = adjust_groups LoadFile &quot;data/$key.yml&quot;;
+        my @points = @{ $groups-&gt;{$key} };
+        my @s = map { '['.join(',', @$_).']' } @points;
+        $maple-&gt;eval_cmd(&quot;points := [&quot;.join(',',@s).&quot;]:&quot;);
+        $maple-&gt;eval_cmd(
+            &quot;new_points_$id := map(i-&gt;[new_x(i[1],i[2])/x_scale, -new_y(i[1],i[2])/y_scale], points);&quot;
+        );
+        my $cmd = $maple-&gt;eval_cmd(&quot;new_points_$id;&quot;);
+        #warn $cmd;
+        $curves{$key} = eval($cmd);
+        die if $@;
+    }</pre>
+<p><em>No Output</em></p>
+<p><em>Perl</em></p>
+<pre>
+    my $id = 0;
+    my @plots;
+    my @keys = ('0.8mm', '1.0mm', '1.2mm', '1.6mm', '2.3mm', '3.2mm', '4.5mm', '5.0mm');
+    foreach my $key (@keys) {
+        trans_curve($key, $id);
+        $maple-&gt;eval_cmd(&quot;pplot$id := pointplot(new_points_$id, symbol=CIRCLE, color=red):&quot;);
+        push @plots, &quot;pplot$id&quot;;
+        $id++;
+    }
+    my $list = join(',', @plots);
+    $maple-&gt;eval_cmd(&lt;&lt;&quot;.&quot;);
+    plotsetup(gif, plotoutput=&quot;image/diag8.gif&quot;, plotoptions=&quot;height=700, width=700&quot;):
+    display([$list], axes=BOXED, scaling=CONSTRAINED);
+    .</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/diag8.gif"/>
+</pre><p>转换到理论坐标系的各条曲线上的采样点坐标现在都存放在 %curves 中了。我们以 YAML 格式导出：</p>
+<p><em>Perl</em></p>
+<pre>
+    YAML::DumpFile('data/final-points.yaml', \%curves);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1</pre>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
 <big><strong><span class="block">&nbsp;coord-trans - 坐标变换</span></strong></big>
