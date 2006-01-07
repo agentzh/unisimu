@@ -1,0 +1,615 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>coord-trans - 坐标变换</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;coord-trans - 坐标变换</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+	<li><a href="#c0edc2dbd7f8b1eacfb5b5c4d4adb5e3">理论坐标系的原点</a></li>
+	<li><a href="#c0edc2dbd7f8b1eacfb5b1eab6c8b5c4c8b7b6a8">理论坐标系标度的确定</a></li>
+	<ul>
+
+		<li><a href="#c0edc2dbd7ddd7f8b1eabfccb6c8b5c4c8b7b6a8">理论纵坐标刻度的确定</a></li>
+		<li><a href="#c0edc2dbbae1d7f8b1eabfccb6c8b5c4c8b7b6a8">理论横坐标刻度的确定</a></li>
+	</ul>
+
+	<li><a href="#c0edc2dbd7f8b1eacfb5cfe0b6d4d3dacff3cbd8d7f8b1eacfb5b5c4d0fdd7aabdc7b6c8">理论坐标系相对于象素坐标系的旋转角度</a></li>
+	<ul>
+
+		<li><a href="#c0edc2dbd7f8b1eacfb5b5c420Y20d6e1b5c4c6abd7aabdc7">理论坐标系的 Y 轴的偏转角</a></li>
+		<li><a href="#c0edc2dbd7f8b1eacfb5b5c420X20d6e1b5c4c6abd7aabdc7">理论坐标系的 X 轴的偏转角</a></li>
+		<li><a href="#c6abd7aabdc7b5c4c6bdbef9d6b5">偏转角的平均值</a></li>
+	</ul>
+
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>coord-trans - 坐标变换</p>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Agent Zhang (章亦春) &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="DESCRIPTION">DESCRIPTION</a></h1>
+<p>本文档将对来自扫描图片的原始象素坐标进行变换，以便得到图纸上的理论坐标。我们
+利用 GetPoint 软件的 GUI 界面已得到了几组包含有象素坐标列表的 YAML 数据文
+件。</p>
+<p>我们首期望得到有关坐标系本身的信息。事实上这儿有两个坐标系，一是象素坐标系，
+一是理论坐标系。YAML 文件中的坐标是象素坐标，我们希望找到一个转换函数，可
+以实现从象素坐标到理论坐标的变换。</p>
+<p>由于 GetPoint 设计上的失误，其导出的 YAML 文件中点的坐标表示成了字符串
+的形式，即横坐标与纵坐标以空格分隔的字符串。这使得我们在对坐标进行操作的
+时候很不方便，因此我编写了下面的 Perl 校正函数，用来校正从 YAML 读出的
+groups 数据结构：</p>
+<p><em>Perl</em></p>
+<pre>
+    sub adjust_groups {
+        my $groups = shift;
+        foreach my $points (values %$groups) {
+            map { $_ = [split /\s+/, $_] } @$points;
+        }
+        return $groups;
+    }</pre>
+<p><em>No Output</em></p>
+<p>
+</p>
+<hr />
+<h1><a name="c0edc2dbd7f8b1eacfb5b5c4d4adb5e3">理论坐标系的原点</a></h1>
+<p>对于理论坐标系而言，其原点的象素坐标我们可以用下面的方法取得：</p>
+<p>首先读取对应的 YAML 文件：</p>
+<p><em>Perl</em></p>
+<pre>
+    use YAML qw(LoadFile Dump);
+    $groups = adjust_groups LoadFile 'data/y-coord.yml';
+    Dump($groups-&gt;{o});</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ---
+    -
+      - 253
+      - 1914
+    -
+      - 253
+      - 1913</pre>
+<p>这是理论坐标系原点的两组象素坐标。我们以它们的中点为准：</p>
+<p><em>Perl</em></p>
+<pre>
+    my @points = @{ $groups-&gt;{o} };
+    my ($p1, $p2) = @points;
+    
+    $x = ($p1-&gt;[0] + $p2-&gt;[0]) / 2;
+    $y = ($p1-&gt;[1] + $p2-&gt;[1]) / 2;
+    $origin = [$x, $y];
+    Dump($origin);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ---
+    - 253
+    - 1913.5</pre>
+<p>
+</p>
+<hr />
+<h1><a name="c0edc2dbd7f8b1eacfb5b1eab6c8b5c4c8b7b6a8">理论坐标系标度的确定</a></h1>
+<p>
+</p>
+<h2><a name="c0edc2dbd7ddd7f8b1eabfccb6c8b5c4c8b7b6a8">理论纵坐标刻度的确定</a></h2>
+<p>我们现在已经将 Y 轴“刻度点”的象素坐标值读取到了 $groups 变量中。
+该变量中含有如下几组数据：</p>
+<p><em>Perl</em></p>
+<pre>
+    Dump($groups);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    --- !perl/GetPoint::Groups
+    o:
+      -
+        - 253
+        - 1914
+      -
+        - 253
+        - 1913
+    y-100:
+      -
+        - 257
+        - 1687
+      -
+        - 258
+        - 1687
+    y-200:
+      -
+        - 266
+        - 1459
+      -
+        - 267
+        - 1459
+    y-300:
+      -
+        - 276
+        - 1217
+      -
+        - 277
+        - 1217
+      -
+        - 275
+        - 1217
+    y-400:
+      -
+        - 280
+        - 988
+      -
+        - 283
+        - 990
+      -
+        - 280
+        - 989
+    y-500:
+      -
+        - 289
+        - 749
+      -
+        - 288
+        - 749
+    y-600:
+      -
+        - 297
+        - 521
+      -
+        - 296
+        - 522
+    y-700:
+      -
+        - 302
+        - 299
+      -
+        - 303
+        - 299
+      -
+        - 302
+        - 300
+    y-800:
+      -
+        - 310
+        - 102
+      -
+        - 315
+        - 102
+      -
+        - 309
+        - 102</pre>
+<p>其中 o 表示原点的采样数据，y-XXX 表示 XXX 刻度上的采样数据。
+每一组数据由几个采样点组成，我们需要从每一组点中得出“最佳”的一个
+点。我们以 y-700 为例进行讨论。我们设要找的点为 (x, y).
+则该组内所有点到 (x, y) 的距离之和为</p>
+<p><em>Perl</em></p>
+<pre>
+    my @points = @{ $groups-&gt;{'y-400'} };
+    my @terms = map { 
+        my ($x, $y) = @$_;
+        &quot;($x - x )^2 + ($y - y)^2&quot;;
+    } @points;
+    $distance_sum = join(' + ', @terms);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    (280 - x )^2 + (988 - y)^2 + (283 - x )^2 + (990 - y)^2 + (280 - x )^2 + (989 - y)^2</pre>
+<p>我们将之导入到 Maple 环境中去：</p>
+<p><em>Perl</em></p>
+<pre>
+    use PerlMaple;
+    $maple = PerlMaple-&gt;new;
+    $maple-&gt;eval_cmd(&quot;dist_sum:=evalf($distance_sum);&quot;);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    dist_sum := 2.*(280.-1.*x)^2+(988.-1.*y)^2+(283.-1.*x)^2+(990.-1.*y)^2+(989.-1.*y)^2</pre>
+<p>我们求该表示式的最小值：</p>
+<p><em>Maple</em></p>
+<pre>
+    res := minimize(dist_sum, location);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    res := 8., {[{x = 281., y = 989.}, 8.]}</pre>
+<p>下面我们提取出最小值点的坐标：</p>
+<p><em>Perl</em></p>
+<pre>
+    $maple-&gt;ReturnAST(1);
+    my $res = $maple-&gt;eval_cmd('res;');
+    my ($min, $set) = $res-&gt;ops;
+    my @sols = $set-&gt;ops;
+    my ($loc, $min2) = $sols[0]-&gt;ops;
+    my @eqns = $loc-&gt;ops;
+    my ($x, $y);
+    map { 
+        $_-&gt;lhs eq 'x' ? ($x = $_-&gt;rhs) : ($y = $_-&gt;rhs)
+    } @eqns;
+    ($x, $y);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    281.,989.</pre>
+<p>下面我们将上面的代码封装成一个可以复用的 Perl 函数：</p>
+<p><em>Perl</em></p>
+<pre>
+    sub best_points {
+        use strict;
+        my @points = @_;
+        my @terms = map { 
+            my ($x, $y) = @$_;
+            &quot;($x - x )^2 + ($y - y)^2&quot;;
+        } @points;
+        my $dist_sum = join(' + ', @terms);
+        my $maple = PerlMaple-&gt;new(ReturnAST =&gt; 1);
+        my $res = $maple-&gt;eval_cmd( &quot;evalf($dist_sum);&quot; );
+        $res = $maple-&gt;eval_cmd( &quot;minimize($res, location);&quot; );
+        my ($min, $set) = $res-&gt;ops;
+        my @sols = $set-&gt;ops;
+        my @best;
+        foreach my $sol (@sols) {
+            my ($loc, $min) = $sol-&gt;ops;
+            my @eqns = $loc-&gt;ops;
+            my ($x, $y);
+            map { 
+                $_-&gt;lhs eq 'x' ? ($x = $_-&gt;rhs) : ($y = $_-&gt;rhs);
+            } @eqns;
+            if ($x &gt;= 0 and $y &gt;= 0) {
+                push @best, [&quot;$x&quot;, &quot;$y&quot;];
+            }
+        }
+        return @best;
+    }</pre>
+<p><em>No Output</em></p>
+<p>我们用上面的例子来测试一下 best_points:</p>
+<p><em>Perl</em></p>
+<pre>
+    undef $x; undef $y;
+    @points = @{ $groups-&gt;{'y-700'} };
+    @best = best_points( @points );
+    $y_scale{700} = $best[0];
+    @{ $best[0] };</pre>
+<p><em>Output</em>:</p>
+<pre>
+    302.3333333,299.3333333</pre>
+<p>我们不妨将采样点和“最佳点”的图像画出来：</p>
+<p><em>Perl</em></p>
+<pre>
+    map { $_ = '['.join(',', @$_).']' } @points;
+    my $point_list = join(',', @points);
+    my $best_point = '['.join(',', @{ $best[0] }).']';
+    $maple-&gt;eval_cmd(&lt;&lt;&quot;.&quot;);
+    with(plots):
+    plotsetup(gif,plotoutput=&quot;image/diag1.gif&quot;,plotoptions=&quot;height=200,width=200&quot;):
+    plot1:=pointplot({$point_list},color=red):
+    plot2:=pointplot({$best_point},color=blue):
+    display({plot1, plot2},axes=BOXED,symbol=CIRCLE);
+    .</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/diag1.gif"/>
+</pre><p>图中，红色的点是实验测得的点，蓝色的点是我们的 best_points 得到的“最佳点”。我们看到，
+“最佳点”的位置与我们的直观结论是一致的。</p>
+<p>我们再试一个复杂一些的例子。我们任意给出 5 个点的坐标：</p>
+<p><em>Perl</em></p>
+<pre>
+    @points = ([2.3,5.2], [1.3, 2.7], [2.0,3.7], [1.5, 4.2], [5.2, 3.1]);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ARRAY(0x1efb7b8),ARRAY(0x1f27864),ARRAY(0x1f2796c),ARRAY(0x1f27984),ARRAY(0x1f2799c)</pre>
+<p>用 best_points 计算出“最佳点”的坐标：</p>
+<p><em>Perl</em></p>
+<pre>
+    @best = best_points(@points);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ARRAY(0x1efb6c8)</pre>
+<p>作出图象：</p>
+<p><em>Perl</em></p>
+<pre>
+    map { $_ = '['.join(',', @$_).']' } @points;
+    my $point_list = join(',', @points);
+    my $best_point = '['.join(',', @{ $best[0] }).']';
+    $maple-&gt;eval_cmd(&lt;&lt;&quot;.&quot;);
+    with(plots):
+    plotsetup(gif,plotoutput=&quot;image/diag2.gif&quot;,plotoptions=&quot;height=200,width=200&quot;):
+    plot1:=pointplot({$point_list},color=red):
+    plot2:=pointplot({$best_point},color=blue):
+    display({plot1, plot2},axes=BOXED,symbol=CIRCLE);
+    .</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/diag2.gif"/>
+</pre><p>现在我们可以用 best_points 来计算余下所有组的坐标了：</p>
+<p><em>Perl</em></p>
+<pre>
+    $groups-&gt;{'y-0'} = $groups-&gt;{o};
+    foreach my $key (qw(0 100 200 300 400 500 600 800)) {
+        my @points = @{ $groups-&gt;{&quot;y-$key&quot;} };
+        my @best = best_points( @points );
+        die &quot;not a unique solution&quot; if @best != 1;
+        $y_scale{$key} = $best[0];
+    }
+    Dump(\%y_scale);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ---
+    0:
+      - 253.
+      - 1913.500000
+    100:
+      - 257.5000000
+      - 1687.
+    200:
+      - 266.5000000
+      - 1459.
+    300:
+      - 276.
+      - 1217.
+    400:
+      - 281.
+      - 989.
+    500:
+      - 288.5000000
+      - 749.
+    600:
+      - 296.5000000
+      - 521.5000000
+    700:
+      - 302.3333333
+      - 299.3333333
+    800:
+      - 311.3333333
+      - 102.</pre>
+<p>下面一步是解出一单位的理论纵坐标相当于多少单位的象素纵坐标。</p>
+<p><em>Perl</em></p>
+<pre>
+    my @s = sort { $a &lt;=&gt; $b } keys %y_scale;
+    @vals = ();
+    for my $i (0..@s-2) {
+        my $p1 = $y_scale{ $s[$i] };
+        my $p2 = $y_scale{ $s[$i+1] };
+        my $d = sqrt( ($p2-&gt;[0] - $p1-&gt;[0])**2 + ($p2-&gt;[1] - $p1-&gt;[1])**2 );
+        push @vals, $d / ( $s[$i+1] - $s[$i] );
+    }
+    @vals;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    2.26544697576439,2.28177562437677,2.4218639515877,2.28054817971469,2.40117158903732,2.27640615883897,2.22243235150089,1.975384631693</pre>
+<p>下面我们对这些值取平均值就得到一单位的理论纵坐标相当于多少单位的象素纵坐标了：</p>
+<p><em>Perl</em></p>
+<pre>
+    $y_scale = $maple-&gt;eval( '('.join('+', @vals).&quot;)/&quot;.scalar(@vals) );</pre>
+<p><em>Output</em>:</p>
+<pre>
+    2.265628682</pre>
+<p>
+</p>
+<h2><a name="c0edc2dbbae1d7f8b1eabfccb6c8b5c4c8b7b6a8">理论横坐标刻度的确定</a></h2>
+<p>这是前面纵坐标刻度的确定过程是完全类似地：</p>
+<p><em>Perl</em></p>
+<pre>
+    $groups2 = adjust_groups LoadFile 'data/x-coord.yml';
+    $groups2-&gt;{'x-0'} = $groups-&gt;{'y-0'};
+    Dump($groups2);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    --- !perl/GetPoint::Groups
+    x-0:
+      -
+        - 253
+        - 1914
+      -
+        - 253
+        - 1913
+    x-100:
+      -
+        - 484
+        - 1919
+      -
+        - 485
+        - 1919
+    x-200:
+      -
+        - 715
+        - 1923
+      -
+        - 715
+        - 1922
+    x-300:
+      -
+        - 961
+        - 1928
+      -
+        - 963
+        - 1928
+    x-600:
+      -
+        - 1678
+        - 1946
+      -
+        - 1678
+        - 1946
+    x-700:
+      -
+        - 1907
+        - 1951
+      -
+        - 1907
+        - 1953
+    x-800:
+      -
+        - 2154
+        - 1958
+      -
+        - 2154
+        - 1959
+    x-900:
+      -
+        - 2385
+        - 1963
+      -
+        - 2386
+        - 1963</pre>
+<p>然后，找到每个刻度的“最佳点”：</p>
+<p><em>Perl</em></p>
+<pre>
+    foreach my $key (qw(0 100 200 300 600 700 800 900)) {
+        my @points = @{ $groups2-&gt;{&quot;x-$key&quot;} };
+        my @best = best_points( @points );
+        die &quot;not a unique solution&quot; if @best != 1;
+        $x_scale{$key} = $best[0];
+    }
+    Dump(\%x_scale);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ---
+    0:
+      - 253.
+      - 1913.500000
+    100:
+      - 484.5000000
+      - 1919.
+    200:
+      - 715.
+      - 1922.500000
+    300:
+      - 962.
+      - 1928.
+    600:
+      - 1678.
+      - 1946.
+    700:
+      - 1907.
+      - 1952.
+    800:
+      - 2154.
+      - 1958.500000
+    900:
+      - 2385.500000
+      - 1963.</pre>
+<p>余下的过程也完全相同：</p>
+<p><em>Perl</em></p>
+<pre>
+    my @s = sort { $a &lt;=&gt; $b } keys %x_scale;
+    @vals = ();
+    for my $i (0..@s-2) {
+        my $p1 = $x_scale{ $s[$i] };
+        my $p2 = $x_scale{ $s[$i+1] };
+        my $d = sqrt( ($p2-&gt;[0] - $p1-&gt;[0])**2 + ($p2-&gt;[1] - $p1-&gt;[1])**2 );
+        push @vals, $d / ( $s[$i+1] - $s[$i] );
+    }
+    @vals;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    2.3156532555631,2.30526571136605,2.47061227229203,2.38742073748591,2.29078589134821,2.47085511513727,2.31543732370367</pre>
+<p><em>Perl</em></p>
+<pre>
+    $x_scale = $maple-&gt;eval( '('.join('+', @vals).&quot;)/&quot;.scalar(@vals) );</pre>
+<p><em>Output</em>:</p>
+<pre>
+    2.365147186</pre>
+<p>
+</p>
+<hr />
+<h1><a name="c0edc2dbd7f8b1eacfb5cfe0b6d4d3dacff3cbd8d7f8b1eacfb5b5c4d0fdd7aabdc7b6c8">理论坐标系相对于象素坐标系的旋转角度</a></h1>
+<p>
+</p>
+<h2><a name="c0edc2dbd7f8b1eacfb5b5c420Y20d6e1b5c4c6abd7aabdc7">理论坐标系的 Y 轴的偏转角</a></h2>
+<p>我们首先尝试能过最小二乘法拟合出理论坐标系 Y 轴在象素坐标系中的方程。首先读取 Y 轴上
+的采样点坐标的列表：</p>
+<p><em>Perl</em></p>
+<pre>
+    $groups = adjust_groups LoadFile 'data/y-axis.yml';
+    @points = @{ $groups-&gt;{'y-axis'} };
+    scalar(@points);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    34</pre>
+<p>现在我们已将 34 个采样点的象素坐标从 <em>y-axis.yml</em> 文件加载到 @points 数组中了。
+现在我们使用 Maple 的 CurveFitting 包提供的 LeastSquares 函数进行线性拟合：</p>
+<p><em>Perl</em></p>
+<pre>
+    my @s = map { '['.join(',', @$_).']' } @points;
+    $maple-&gt;eval_cmd(&quot;points:=[&quot;.join(',',@s).&quot;];&quot;);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    [[253, 1913], [255, 1838], [258, 1761], [258, 1714], [258, 1686], [262, 1595], [262, 1559], [262, 1574], [258, 1740], [267, 1441], [310, 113], [306, 178], [307, 210], [303, 314], [298, 454], [298, 401], [294, 577], [290, 674], [289, 730], [285, 837], [281, 1007], [280, 1053], [277, 1108], [276, 1144], [277, 1175], [272, 1330], [271, 1354], [272, 1381], [311, 134], [299, 427], [298, 505], [289, 700], [285, 870], [306, 194]]</pre>
+<p><em>Maple</em></p>
+<pre>
+    with(CurveFitting):
+    ycurve := evalf(LeastSquares(points,x));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    9884.261579-31.60592596*x</pre>
+<p>其图象如下所示：</p>
+<p><em>Maple</em></p>
+<pre>
+    plotsetup(gif,plotoutput=&quot;image/diag3.gif&quot;,plotoptions=&quot;height=300,width=300&quot;):
+    pplot := pointplot(points,symbol=CIRCLE,color=black):
+    yplot := plot(ycurve, x=250..300, color=red):
+    display([pplot,yplot],axes=BOXED);</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/diag3.gif"/>
+</pre><p>注意上图中直线的倾斜角其实是很小的，之所以在图中看起来很大是因为 Maple 为了布局尽可能地好看，
+改变了横坐标和纵坐标的比例。按相同的横纵坐标比例画出的图应该是下面的样子：</p>
+<p><em>Maple</em></p>
+<pre>
+    plotsetup(gif,plotoutput=&quot;image/diag4.gif&quot;,plotoptions=&quot;height=300,width=300&quot;):
+    display([pplot,yplot],axes=BOXED,scaling=CONSTRAINED);</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/diag4.gif"/>
+</pre><p>我们看到点全部挤到一起了，影响视觉效果。</p>
+<p>值得指出的是，上面两个图中的直线所对应的理论 y 轴，其正方向是向下的。因此，理论 y 轴正方向
+与象素 y 轴的正方向之间的夹角在 90 度到 180 度之间，我们可以用下面的方法求出该角：</p>
+<p><em>Maple</em></p>
+<pre>
+    with(geometry):
+    _EnvHorizontalName := 'x': _EnvVerticalName := 'y':
+    line(L1, y=ycurve), line(L2, x = 0);
+    theta1:=Pi - FindAngle(L1, L2);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1/2*Pi+1.539167242</pre>
+<p>为了获得直观上的印象，我们将这个弧度值化成角度：</p>
+<p><em>Maple</em></p>
+<pre>
+    evalf(convert(theta1, degrees));</pre>
+<p><em>Output</em>:</p>
+<pre>
+    178.1877869*degrees</pre>
+<p>
+</p>
+<h2><a name="c0edc2dbd7f8b1eacfb5b5c420X20d6e1b5c4c6abd7aabdc7">理论坐标系的 X 轴的偏转角</a></h2>
+<p>
+</p>
+<h2><a name="c6abd7aabdc7b5c4c6bdbef9d6b5">偏转角的平均值</a></h2>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;coord-trans - 坐标变换</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
