@@ -1,0 +1,35 @@
+=head1 NAME
+
+surf-fit2 - Surface Fitting (volume 2)
+
+=head1 AUTHOR
+
+Agent Zhang (章亦春) E<lt>agent2002@126.comE<gt>
+
+=head1 VERSION
+
+    Create:      2005-01-08
+    Last Update: 2005-01-08
+
+=head1 DESCRIPTION
+
+本文将接着 surf-fit 一文继续求解三维曲面的经验公式。
+
+=head1 三维曲面经验公式的寻找与拟合
+
+surf-fit 一文已经求出了 x-y 平面上 8 条曲线的经验公式，为了
+参照的方便，我把它们列在下面：
+
+=begin Perl
+
+use YAML qw(LoadFile Dump DumpFile);
+@eqns = @{ LoadFile 'data/xy-eqns.yml' };
+Dump(\@eqns);
+
+=end Perl
+
+=head2 a-z 平面上的拟合
+
+=head2 b-z 平面上的拟合
+
+=head2 三维经验曲面

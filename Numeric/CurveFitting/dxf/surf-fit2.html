@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>surf-fit2 - Surface Fitting</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;surf-fit2 - Surface Fitting</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+	<li><a href="#c8fdceacc7fac3e6beadd1e9b9abcabdb5c4d1b0d5d2d3ebc4e2bacf">三维曲面经验公式的寻找与拟合</a></li>
+	<ul>
+
+		<li><a href="#a2dz20c6bdc3e6c9cfb5c4c4e2bacf">a-z 平面上的拟合</a></li>
+		<li><a href="#b2dz20c6bdc3e6c9cfb5c4c4e2bacf">b-z 平面上的拟合</a></li>
+		<li><a href="#c8fdceacbeadd1e9c7fac3e6">三维经验曲面</a></li>
+	</ul>
+
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>surf-fit2 - Surface Fitting (volume 2)</p>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Agent Zhang (章亦春) &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+    Create:      2005-01-08
+    Last Update: 2005-01-08</pre>
+<p>
+</p>
+<hr />
+<h1><a name="DESCRIPTION">DESCRIPTION</a></h1>
+<p>本文将接着 surf-fit 一文继续求解三维曲面的经验公式。</p>
+<p>
+</p>
+<hr />
+<h1><a name="c8fdceacc7fac3e6beadd1e9b9abcabdb5c4d1b0d5d2d3ebc4e2bacf">三维曲面经验公式的寻找与拟合</a></h1>
+<p>surf-fit 一文已经求出了 x-y 平面上 8 条曲线的经验公式，为了
+参照的方便，我把它们列在下面：</p>
+<p><em>Perl</em></p>
+<pre>
+    use YAML qw(LoadFile Dump DumpFile);
+    @eqns = @{ LoadFile 'data/xy-eqns.yml' };
+    Dump(\@eqns);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ---
+    -
+      - 0.8
+      - 1.285763168*ln(x+1.)^2.784
+    -
+      - 1
+      - .9886632949*ln(x+1.)^3.038
+    -
+      - 1.2
+      - .8728541916*ln(x+1.)^3.188
+    -
+      - 1.6
+      - .5770046871*ln(x+1.)^3.468
+    -
+      - 2.3
+      - .2866047752*ln(x+1.)^3.891
+    -
+      - 3.2
+      - .1043025567*ln(x+1.)^4.539
+    -
+      - 4.5
+      - .565881945e-1*ln(x+1.)^4.936
+    -
+      - 5
+      - .171426539e-1*ln(x+1.)^5.635</pre>
+<p>
+</p>
+<h2><a name="a2dz20c6bdc3e6c9cfb5c4c4e2bacf">a-z 平面上的拟合</a></h2>
+<p>
+</p>
+<h2><a name="b2dz20c6bdc3e6c9cfb5c4c4e2bacf">b-z 平面上的拟合</a></h2>
+<p>
+</p>
+<h2><a name="c8fdceacbeadd1e9c7fac3e6">三维经验曲面</a></h2>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;surf-fit2 - Surface Fitting</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
