@@ -1,6 +1,6 @@
 =head1 NAME
 
-surf-fit - 坐标变换
+surf-fit - Surface Fitting (volume 1)
 
 =head1 AUTHOR
 
@@ -9,7 +9,7 @@ Agent Zhang (章亦春) E<lt>agent2002@126.comE<gt>
 =head1 VERSION
 
     Create:      2005-01-07
-    Last Update: 2005-01-07
+    Last Update: 2005-01-08
 
 =head1 DESCRIPTION
 
@@ -18,8 +18,737 @@ Agent Zhang (章亦春) E<lt>agent2002@126.comE<gt>
 
 =head1 Get Points in 3-D Space
 
+我们首先从 F<data/2d-points.yml> 文件读取各条曲线上的二维点的坐标：
 
+=begin Perl
+
+use YAML qw(LoadFile Dump DumpFile);
+$curves = LoadFile "data/2d-points.yml";
+
+=end Perl
+
+下面我们将之转换成三维坐标（将各条曲线所对应的键值 XXXmm 中的数 XXX
+作为第三个分量：
+
+=begin Perl
+
+use Scalar::Util qw(looks_like_number);
+@points_3d = ();
+for my $key (keys %$curves) {
+    my $z = $key;
+    $z =~ s/\s+|mm$//g;
+    die if not looks_like_number($z);
+    my @points = @{ $curves->{$key} };
+    @points = map { [@$_, $z] } @points;
+    unshift @points_3d, @points;
+}
+scalar(@points_3d);
+
+=end Perl
+
+此时我们所有的实验数据就“浓缩”成了一组三维空间中的点的坐标。
 
 =head1 First Impression
 
-我们利用 Maple 的 MESH 绘图功能将
+下面不妨用 Maple 的 MESH 绘图功能将这些三维点所在的曲面作出来以便
+获得“第一印象”。这对随后的经验公式形式的选择工作而言是至关重要的。
+
+先将数据导入到 Maple 上下文中：
+
+=begin Perl
+
+use PerlMaple;
+$maple = PerlMaple->new;
+
+my @points = map { '['.join(',', @$_).']' } @points_3d;
+my $expr = '['.join(',', @points).']';
+$maple->eval_cmd("points := $expr:");
+
+=end Perl
+
+=begin Maple
+
+with(plots):
+plotsetup(gif,plotoutput="image/diag1a.gif",plotoptions="height=300,width=300"):
+surfdata(points, axes=BOXED, labels=[z,x,y], color=yellow);
+
+=end Maple
+
+=begin html
+
+<pre>
+    <img src="image/diag1a.gif"/>
+</pre>
+
+=end html
+
+很遗憾，我们看到，由于采样点过于集中在那几条曲线上，导致 MESH 不能画出平滑的
+曲面。
+
+=head1 三维曲面经验公式的寻找与拟合
+
+=head2 x-y 平面上的拟合
+
+通过观察采样点在 x-y 平面上的分布：
+
+=begin html
+
+<pre>
+    <img src="image/diag8.gif"/>
+</pre>
+
+=end html
+
+我们不难发现，在 z 一定的情况下，采样点构成一条形状类似对数函数的曲线，
+且通过坐标原点。因此我不妨设此时的经验公式为 y = a*ln(x+1)^b 的形式（这
+里 a 和 b 都是待定常数，且都由 z 决定）。
+
+为了使用最小二乘法进行拟合，我们必须先给定常数 b. 我们不妨先设 b = 1.
+则我们现在就可以用此经验公式对 z = 0.8 的曲线进行最小二乘拟合了：
+
+=begin Perl
+
+my @points = map { '['.join(',', @$_).']' } @{ $curves->{'0.8mm'} };
+my $expr = '['.join(',', @points).']';
+$maple->eval_cmd("points := $expr;");
+
+=end Perl
+
+=begin Maple
+
+with(CurveFitting):
+LeastSquares(points, x, curve=a*ln(x+1)^1):
+c := evalf(%);
+
+=end Maple
+
+=begin Maple
+
+c := eval(c, I=0);
+with(plots):
+plotsetup(gif, plotoutput="image/diag2a.gif", plotoptions="height=300, width=600"):
+pplot := pointplot(points, symbol=CIRCLE, color=black):
+cplot := plot(c, x=0..1200, color=red):
+display([cplot, pplot], axes=BOXED, scaling=CONSTRAINED);
+
+=end Maple
+
+=begin html
+
+<pre>
+    <img src="image/diag2a.gif"/>
+</pre>
+
+=end html
+
+我们看到，曲线拟合得并不理想，看来我们的经验公式还不够合适。于是我们想到了对 ln 进行平方：
+y = a*ln(x+1)^2
+
+为了方便起见，我们将上面的拟合和绘图代码进行函数封装：
+
+=begin Perl
+
+sub fit_curve {
+    my ($key, $degree) = @_;
+    my @points = map { '['.join(',', @$_).']' } @{ $curves->{$key} };
+    my $expr = '['.join(',', @points).']';
+    $maple->eval_cmd(<<".");
+points := $expr;
+with(CurveFitting):
+LeastSquares(points, x, curve=a*ln(x+1)^$degree):
+c := evalf(%);
+c := eval(c, I=0);
+f := unapply(c, x);
+.
+    return $maple->eval_cmd("c;");
+}
+
+sub plot_curve {
+    my $imfile = shift;
+    $maple->eval_cmd(<<".");
+with(plots):
+plotsetup(gif, plotoutput="$imfile", plotoptions="height=300, width=600"):
+pplot := pointplot(points, symbol=CIRCLE, color=black):
+cplot := plot(c, x=0..1200, color=red):
+display([cplot, pplot], axes=BOXED, scaling=CONSTRAINED);
+.
+}
+
+=end Perl
+
+然后我们尝试 ln 的次数为 2 的经验函数：
+
+=begin Perl
+
+fit_curve('0.8mm', 2);
+plot_curve('image/diag3a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag3a.gif"/>
+</pre>
+
+=end html
+
+显然此时的拟合效果比 b = 1 的时候好得多。我们再尝试一下 b = 3，看看拟合下来的结果是不
+是会更加接近采样点：
+
+=begin Perl
+
+fit_curve('0.8mm', 3);
+plot_curve('image/diag4a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag4a.gif"/>
+</pre>
+
+=end html
+
+哇，几乎完全重合了耶！我们再试一试 b = 4 看看呢？
+
+=begin Perl
+
+fit_curve('0.8mm', 4);
+plot_curve('image/diag5a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag5a.gif"/>
+</pre>
+
+=end html
+
+啊，这一回看来随着 b 的增加，拟合出来的经验曲线反而开始远离我们的采样点了。
+由此可见，我们应该可以 2 到 3 之间找到一个数 b，使得我们的经验曲线与所有采样点
+的误差达到最小。如何去导找这个数 b 呢？我们下面就对此进行讨论。
+
+=head3 初次尝试（笨办法）
+
+以固定步长，比如 0.1，尝试 2.1 ~ 3.9
+之间共 19 个数作为 b 的取值，分别代入到我们的经验公式，使用最小二乘法对采样点
+进行拟合，便可以得到 19 个对应的 a 的取值。比较这 9 个拟合得到的经验公式相对
+于采样点的误差，其中误差最小的一个经验公式便是我们想要的。
+
+为了方便起见，我们定义如下误差计算函数：
+
+=begin Maple
+
+calc_err := proc()
+    evalf(convert(map(i->( i[2] - eval(f(i[1]), I=0) )^2, points), `+`));
+end proc:
+
+=end Maple
+
+哇，我没想到用一行 Maple 代码就把误差的计算给搞定了！下面我们就开始以 0.1
+为步长遍历 2.1 ~ 3.9 这个区间：
+
+=begin Perl
+
+$maple->ReturnAST(0);
+@errs = ();
+my $b = 2.1;
+while ($b <= 3.9) {
+    my @rec = fit_curve('0.8mm', $b);
+    push @rec, $maple->calc_err();
+    push @errs, [@rec];
+    $b += 0.1;
+}
+Dump(@errs);
+
+=end Perl
+
+我们从中筛选出误差最小的一个经验公式：
+
+=begin Perl
+
+@errs = sort { $a->[1] <=> $b->[1] } @errs;
+Dump $errs[0];
+
+=end Perl
+
+我们画出 b = 2.8 时的经验曲线和采样点：
+
+=begin Perl
+
+fit_curve('0.8mm', 2.8);
+plot_curve('image/diag6a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag6a.gif"/>
+</pre>
+
+=end html
+
+我们看到此时的经验曲线比先前任何一条都要接近采样点，从而证明了我们
+前面以固定步长进行区间遍历的方法是有效的。然而不幸的是，如果我们
+将步长减小到 0.01，即让 b 的有效数字位数提高 1，则我们所需的计算
+量也将提高一个数量级。然且当我们的遍历区间变大，比如变成 1 ~ 5 的
+话，计算量也会显著提高。由此可见，我们的这种方法不是很有效率。
+
+为此，我们需要寻找更为聪明的方法。
+
+=head3 再次冲击
+
+通过检查前面的那些图象和遍历生成的误差列表，我们可以发现以下规律：
+
+=over
+
+=item *
+
+经验曲线的误差随 b 的变化规律是，当 b 很小或很大的时候，误差都较大。
+当 b 从很小的取值逐渐增大时，误差会先随着 b 的增大而减小，当达到
+最小值（即“理想值”）时，反而又会随着 b 的增大而增大。
+
+=item *
+
+当 b 比“理想值”小的时候，曲线的左半段在采样点的上方，而右半段则在采
+样点的下方。因此如果用曲线上的点的纵坐标，减去横坐标相同的采样点的纵
+坐标，我们得到的各点的误差序列的符号将类似于下面这种模式：
+
+    +++++++++++++++-----------------
+
+当然，实际的符号序列可能会稍有出入，但总的趋势应该如此。
+
+=item *
+
+当 b 比“理想值”大的时候，则跟上一种情况恰好相反：曲线的右半段在采
+样点的下方，而右半段在采样点的上方。因此，如果用曲线上的点的纵坐标
+减去对应的采样点的纵坐样的话，得到的各点的误差符号将类似于下面的模式：
+
+    ---------------+++++++++++++++++
+
+=back
+
+我们下面就来看看对于实际得到的误差的符号序列是怎样的。
+
+为了方便起见，我们定义一个 Perl 函数来计算正负号序列：
+
+=begin Perl
+
+sub sign_seq {
+    $maple->ReturnAST(1);
+    my $list = $maple->eval('lst');
+    $maple->ReturnAST(0);
+    return map { "$_" > 0 ? '+' : '-'; } $list->ops;
+}
+
+=end Perl
+
+我们来简单测试一下它：
+
+=begin Perl
+
+$maple->eval_cmd("lst := [-3, 5, -1, -5, 9, 10];");
+join(' ', sign_seq);
+
+=end Perl
+
+我们还需要一个 Maple 函数用来计算纵坐标误差序列：
+
+=begin Maple
+
+err_seq := proc()
+    global lst;
+    lst := map(i->i[2]-eval(f(i[1]),I=0), points);
+end proc:
+
+=end Maple
+
+现在我们可以来看看当 b 以 0.1 为步长时在区间 [2.1, 3.9] 上取值
+时，经验函数的误差的符号序列了：
+
+=begin Perl
+
+$maple->ReturnAST(0);
+@res = ();
+my $b = 1.5;
+while ($b <= 3.9) {
+    my @rec = fit_curve('0.8mm', $b);
+    $maple->err_seq();
+    my @signs = sign_seq;
+    push @res, join('', @signs);
+    $res[-1] .= ' *' if $b eq 2.8;
+    $b += 0.1;
+}
+join "\n", @res;
+
+=end Perl
+
+我们在图中亦用 * 将前面的“笨方法”得到的“最佳位置”，即 b = 0.8 所对应的误差行
+标出。我们从图案中容易看到下面的规律：
+
+=over
+
+=item *
+
+对于“最佳行”而言，其左、右两半边的负号数目相近（但不一定相等）。
+
+=item *
+
+对于“最佳行”以上的各行而言，其左半边的负号数目明显比右半边的负号数目多。
+
+=item *
+
+对于“最佳行”以下的各行而言，其左半边的负号数目明显比右半边的负号数目少。
+
+=back
+
+由于对各行来说，正负号的总数是一致的，因此如果改为统计正号的数目，则我们
+也能得到类似的规律。
+
+我们不妨再用一条其他的曲线来进行验证：
+
+对于曲线 3.2mm 而言，其最佳 b 值可以用“笨方法”求出：
+
+=begin Perl
+
+$maple->ReturnAST(0);
+@errs = ();
+my $b = 3.5;
+while ($b <= 5.5) {
+    my @rec = fit_curve('3.2mm', $b);
+    push @rec, $maple->calc_err();
+    push @errs, [@rec];
+    $b += 0.1;
+}
+Dump(@errs);
+
+=end Perl
+
+我们从中筛选出误差最小的一个经验公式：
+
+=begin Perl
+
+@errs = sort { $a->[1] <=> $b->[1] } @errs;
+Dump $errs[0];
+
+=end Perl
+
+我们画出 b = 2.8 时的经验曲线和采样点：
+
+=begin Perl
+
+fit_curve('3.2mm', 4.5);
+plot_curve('image/diag7a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag7a.gif"/>
+</pre>
+
+=end html
+
+=begin Perl
+
+$maple->ReturnAST(0);
+@res = ();
+my $b = 3.5;
+while ($b <= 5.5) {
+    my @rec = fit_curve('3.2mm', $b);
+    $maple->err_seq();
+    my @signs = sign_seq;
+    push @res, join('', @signs);
+    $res[-1] .= ' *' if $b eq 4.5;
+    $b += 0.1;
+}
+join "\n", @res;
+
+=end Perl
+
+从这幅图案，我们看到，原先定下的三条规律已不再严格遵守了。事实上，
+从图上看，我倒是觉得 4.6 更像是“最佳值”，但是误差计算的结果却给
+出了否定的结论。不过，老实说，4.6 与 4.5 的误差值真的还是很接近的。
+从这个案例我们至少可以说，前面的三条规则只能帮助我们找到最佳值
+所在的一个比较小的区间，真正的高精度的 b 值只能靠所谓的“笨办法”，即
+以固定步长对区间进行遍历的办法才能取得。
+
+因此两种方法应该结合起来使用。
+
+迫于时间的压力，我打算利用目测法来替代 +/- 号计数法来选择最佳值的合
+理区间。现在的当务之急还是迅速得到 x-y 平面上的 8 条曲线的经验公式。
+
+为了便于调用，我使用函数对前面的代码进行封装：
+
+=begin Perl
+
+sub fit_curve_between {
+    my ($key, $left, $right, $step) = @_;
+    $maple->ReturnAST(0);
+    my @errs;
+    $b = $left;
+    while ($b <= $right) {
+        my @rec = fit_curve($key, $b);
+        push @rec, $b;
+        push @rec, $maple->calc_err();
+        push @errs, [@rec];
+        $b += $step;
+    }
+    @errs = sort { $a->[2] <=> $b->[2] } @errs;
+    return (@{ $errs[0] });
+}
+
+=end Perl
+
+现在我们就可以反复调用了：
+
+=over
+
+=item *
+
+0.8mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('0.8mm', 2.771, 2.789, 0.001);
+@eqns = ();
+push @eqns, [0.8, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('0.8mm', $b);
+plot_curve('image/diag8a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag8a.gif"/>
+</pre>
+
+=end html
+
+=item *
+
+1.0mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('1.0mm', 3.031, 3.049, 0.001);
+push @eqns, [1.0, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('1.0mm', $b);
+plot_curve('image/diag9a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag9a.gif"/>
+</pre>
+
+=end html
+
+=item *
+
+1.2mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('1.2mm', 3.181, 3.199, 0.001);
+push @eqns, [1.2, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('1.2mm', $b);
+plot_curve('image/diag10a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag10a.gif"/>
+</pre>
+
+=end html
+
+=item *
+
+1.6mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('1.6mm', 3.451, 3.469, 0.001);
+push @eqns, [1.6, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('1.6mm', $b);
+plot_curve('image/diag11a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag11a.gif"/>
+</pre>
+
+=end html
+
+=item *
+
+2.3mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('2.3mm', 3.881, 3.899, 0.001);
+push @eqns, [2.3, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('2.3mm', $b);
+plot_curve('image/diag12a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag12a.gif"/>
+</pre>
+
+=end html
+
+=item *
+
+3.2mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('3.2mm', 4.531, 4.549, 0.001);
+push @eqns, [3.2, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('3.2mm', $b);
+plot_curve('image/diag13a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag13a.gif"/>
+</pre>
+
+=end html
+
+=item *
+
+4.5mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('4.5mm', 4.931, 4.949, 0.001);
+push @eqns, [4.5, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('4.5mm', $b);
+plot_curve('image/diag14a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag14a.gif"/>
+</pre>
+
+=end html
+
+=item *
+
+5.0mm
+
+=begin Perl
+
+($eqn, $b, $err) = fit_curve_between('5.0mm', 5.631, 5.649, 0.001);
+push @eqns, [5.0, $eqn];
+($eqn, $b, $err);
+
+=end Perl
+
+我们作出该经验公式的图象：
+
+=begin Perl
+
+fit_curve('5.0mm', $b);
+plot_curve('image/diag15a.gif');
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag15a.gif"/>
+</pre>
+
+=end html
+
+最后我们将八条曲线的经验公式输入到 YAML 文件：
+
+=begin Perl
+
+DumpFile('data/xy-eqns.yml', \@eqns);
+
+=end Perl
+
+=back

@@ -594,7 +594,7 @@ foreach my $key (@keys) {
 }
 my $list = join(',', @plots);
 $maple->eval_cmd(<<".");
-plotsetup(gif, plotoutput="image/diag8.gif", plotoptions="height=700, width=700"):
+plotsetup(gif, plotoutput="image/diag8.gif", plotoptions="height=500, width=700"):
 display([$list], axes=BOXED, scaling=CONSTRAINED);
 .
 
