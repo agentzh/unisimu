@@ -29,6 +29,6 @@ create table SPJ
      JNO varchar(8),
      QTY integer,
      primary key (SNO, PNO, JNO),
-     foreign key (SNO) references S,
-     foreign key (PNO) references P,
-     foreign key (JNO) references J)
+     foreign key (SNO) references S (SNO),
+     foreign key (PNO) references P (PNO),
+     foreign key (JNO) references J (JNO))
