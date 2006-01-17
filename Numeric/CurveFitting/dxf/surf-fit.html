@@ -74,7 +74,7 @@
     $curves = LoadFile &quot;data/2d-points.yml&quot;;</pre>
 <p><em>Output</em>:</p>
 <pre>
-    HASH(0x1ee3970)</pre>
+    HASH(0x1e786b4)</pre>
 <p>下面我们将之转换成三维坐标（将各条曲线所对应的键值 XXXmm 中的数 XXX
 作为第三个分量：</p>
 <p><em>Perl</em></p>
@@ -762,7 +762,50 @@ y = a*ln(x+1)^2</p>
 <p><em>Output</em>:</p>
 <pre>
     1</pre>
-<p></p></ul>
+<p>我们下面不妨将 8 条曲线画到一线图中：</p>
+<p><em>Perl</em></p>
+<pre>
+    use YAML qw(LoadFile Dump DumpFile);
+    @eqns = @{ LoadFile 'data/xy-eqns.yml' };
+    Dump(\@eqns);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ---
+    -
+      - 0.8
+      - 1.285763168*ln(x+1.)^2.784
+    -
+      - 1
+      - .9886632949*ln(x+1.)^3.038
+    -
+      - 1.2
+      - .8728541916*ln(x+1.)^3.188
+    -
+      - 1.6
+      - .5770046871*ln(x+1.)^3.468
+    -
+      - 2.3
+      - .2866047752*ln(x+1.)^3.891
+    -
+      - 3.2
+      - .1043025567*ln(x+1.)^4.539
+    -
+      - 4.5
+      - .565881945e-1*ln(x+1.)^4.936
+    -
+      - 5
+      - .171426539e-1*ln(x+1.)^5.635</pre>
+<p><em>Perl</em></p>
+<pre>
+    &quot;);
+    
+    @list2;</pre>
+<p><em>Output</em>:</p>
+<pre>
+    z_0,z_1,z_2,z_3,z_4,z_5,z_6,z_7</pre>
+<pre>
+    <img src="image/diag16a.gif"/>
+</pre><p></p></ul>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
 <big><strong><span class="block">&nbsp;surf-fit - Surface Fitting</span></strong></big>

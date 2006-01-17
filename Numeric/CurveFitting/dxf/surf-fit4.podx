@@ -1,6 +1,6 @@
 =head1 NAME
 
-surf-fit2 - Surface Fitting (volume 2)
+surf-fit4 - Surface Fitting (volume 4)
 
 =head1 AUTHOR
 
@@ -25,7 +25,7 @@ surf-fit 一文已经求出了 x-y 平面上 8 条曲线的经验公式，为了
 =begin Perl
 
 use YAML qw(LoadFile Dump DumpFile);
-@eqns = @{ LoadFile 'data/xy-eqns.yml' };
+@eqns = @{ LoadFile 'data/tmp.yml' };
 Dump(\@eqns);
 
 =end Perl
@@ -88,7 +88,7 @@ my $list = '['.join(',', @s).']';
 $maple->eval_cmd(<<".");
 az_points := $list:
 with(plots):
-plotsetup(gif, plotoutput="image/diag1b.gif", plotoptions="height=300, width=600"):
+plotsetup(gif, plotoutput="image/diag1c.gif", plotoptions="height=300, width=600"):
 az_pplot := pointplot(az_points, symbol=CIRCLE, color=black):
 display([az_pplot], axes=BOXED);
 .
@@ -98,7 +98,7 @@ display([az_pplot], axes=BOXED);
 =begin html
 
 <pre>
-    <img src="image/diag1b.gif"/>
+    <img src="image/diag1c.gif"/>
 </pre>
 
 =end html
@@ -110,7 +110,7 @@ display([az_pplot], axes=BOXED);
 =begin Maple
 
 with(CurveFitting):
-LeastSquares(az_points, z, curve=c1/z+c2):
+LeastSquares(az_points, z, curve=c6*z^6+c5*z^5+c4*z^4+c3*z^3+c2*z^2+c1*z^1+c0):
 az := evalf(%);
 
 =end Maple
@@ -120,7 +120,7 @@ az := evalf(%);
 =begin Maple
 
 with(plots):
-plotsetup(gif, plotoutput="image/diag2b.gif", plotoptions="height=300, width=600"):
+plotsetup(gif, plotoutput="image/diag2c.gif", plotoptions="height=300, width=600"):
 az_plot := plot(az, z=0.5..5.5, color=red):
 display([az_plot, az_pplot], axes=BOXED);
 
@@ -129,7 +129,7 @@ display([az_plot, az_pplot], axes=BOXED);
 =begin html
 
 <pre>
-    <img src="image/diag2b.gif"/>
+    <img src="image/diag2c.gif"/>
 </pre>
 
 =end html
@@ -147,7 +147,7 @@ my $list = '['.join(',', @s).']';
 $maple->eval_cmd(<<".");
 bz_points := $list:
 with(plots):
-plotsetup(gif, plotoutput="image/diag4b.gif", plotoptions="height=300, width=600"):
+plotsetup(gif, plotoutput="image/diag4c.gif", plotoptions="height=300, width=600"):
 bz_pplot := pointplot(bz_points, symbol=CROSS, color=black):
 display([bz_pplot], axes=BOXED);
 .
@@ -157,13 +157,13 @@ display([bz_pplot], axes=BOXED);
 =begin html
 
 <pre>
-    <img src="image/diag4b.gif"/>
+    <img src="image/diag4c.gif"/>
 </pre>
 
 =end html
 
-接下来就得为 b-z 曲线选择经验函数了。从图上看，很像是直线，因此我们
-不妨将经验公式设为 b = c1*z+c2 的形式。这里 c1 和 c2 是待定常数。很高兴
+接下来就得为 b-z 曲线选择经验函数了。从图上看，很像是双曲函数，因此我们
+不妨将经验公式设为 b = c1*z^2+c2*z+c3 的形式。这里 c1 和 c2 是待定常数。很高兴
 的是我们可以直接用最小二乘法解出 c1 和 c2：
 
 =begin Maple
@@ -180,7 +180,7 @@ bz := 2.381966012+.618033988*z;
 =begin Maple
 
 with(plots):
-plotsetup(gif, plotoutput="image/diag5b.gif", plotoptions="height=300, width=600"):
+plotsetup(gif, plotoutput="image/diag5c.gif", plotoptions="height=300, width=600"):
 bz_plot := plot(bz, z=0.5..5.5, color=red):
 display([bz_plot, bz_pplot], axes=BOXED);
 
@@ -189,7 +189,7 @@ display([bz_plot, bz_pplot], axes=BOXED);
 =begin html
 
 <pre>
-    <img src="image/diag5b.gif"/>
+    <img src="image/diag5c.gif"/>
 </pre>
 
 =end html
@@ -202,7 +202,7 @@ display([bz_plot, bz_pplot], axes=BOXED);
 
 =begin Maple
 
-plotsetup(gif, plotoutput="image/diag6b.gif", plotoptions="height=600, width=600"):
+plotsetup(gif, plotoutput="image/diag6c.gif", plotoptions="height=600, width=600"):
 plot3d(surf, x=0..1000, z=0.8..5.0, axes=boxed, labels=[x,z,y]);
 
 =end Maple
@@ -210,7 +210,7 @@ plot3d(surf, x=0..1000, z=0.8..5.0, axes=boxed, labels=[x,z,y]);
 =begin html
 
 <pre>
-    <img src="image/diag6b.gif"/>
+    <img src="image/diag6c.gif"/>
 </pre>
 
 =end html
@@ -255,7 +255,7 @@ foreach (1..$i-1) {
 }
 my $list = '['.join(',', @list).']';
 $maple->eval_cmd(<<".");
-plotsetup(gif, plotoutput="image/diag7b.gif", plotoptions="height=600, width=600"):
+plotsetup(gif, plotoutput="image/diag7c.gif", plotoptions="height=600, width=600"):
 display($list, axes=BOXED);
 .
 
@@ -264,10 +264,7 @@ display($list, axes=BOXED);
 =begin html
 
 <pre>
-    <img src="image/diag7b.gif"/>
+    <img src="image/diag7c.gif"/>
 </pre>
 
 =end html
-
-我们看到三维曲面在 x-y 平面上的投影与原始的 x-y 曲线系相去甚远。这表明，我们在
-a-z 和 b-z 拟合中哪怕是很小的误差，都会给 x-y 平面上的拟合曲线带来可观的误差。

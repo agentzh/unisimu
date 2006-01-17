@@ -1,24 +1,46 @@
 RM_F = perl -MExtUtils::Command -e rm_f
 
-all: coord-trans.html surf-fit.html surf-fit2.html
+all: coord-trans.html surf-fit.html surf-fit2.html surf-fit3.html surf-fit4.html
 
-coord-trans.html: coord-trans.pod
-	podhtm -s Active.css coord-trans.pod
+NAME = coord-trans
 
-coord-trans.pod: coord-trans.podx
-	podx coord-trans.podx
+$(NAME).html: $(NAME).pod
+	podhtm -s Active.css $(NAME).pod
 
-surf-fit.html: surf-fit.pod
-	podhtm -s Active.css surf-fit.pod
+$(NAME).pod: $(NAME).podx
+	podx $(NAME).podx
 
-surf-fit.pod: surf-fit.podx
-	podx surf-fit.podx
+NAME = surf-fit
 
-surf-fit2.html: surf-fit2.pod
-	podhtm -s Active.css surf-fit2.pod
+$(NAME).html: $(NAME).pod
+	podhtm -s Active.css $(NAME).pod
 
-surf-fit2.pod: surf-fit2.podx
-	podx surf-fit2.podx
+$(NAME).pod: $(NAME).podx
+	podx $(NAME).podx
+
+NAME = surf-fit2
+
+$(NAME).html: $(NAME).pod
+	podhtm -s Active.css $(NAME).pod
+
+$(NAME).pod: $(NAME).podx
+	podx $(NAME).podx
+
+NAME = surf-fit3
+
+$(NAME).html: $(NAME).pod
+	podhtm -s Active.css $(NAME).pod
+
+$(NAME).pod: $(NAME).podx
+	podx $(NAME).podx
+
+NAME = surf-fit4
+
+$(NAME).html: $(NAME).pod
+	podhtm -s Active.css $(NAME).pod
+
+$(NAME).pod: $(NAME).podx
+	podx $(NAME).podx
 
 clean::
 	$(RM_F) *.pod *.tmp

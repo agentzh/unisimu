@@ -751,4 +751,50 @@ DumpFile('data/xy-eqns.yml', \@eqns);
 
 =end Perl
 
+我们下面不妨将 8 条曲线画到一线图中：
+
+=begin Perl
+
+use YAML qw(LoadFile Dump DumpFile);
+@eqns = @{ LoadFile 'data/xy-eqns.yml' };
+Dump(\@eqns);
+
+=end Perl
+
+=begin Perl
+
+my $i = 0;
+for my $item (@eqns) {
+    my ($z, $eqn) = @$item;
+    $maple->eval_cmd("f_$i := $eqn; z_$i := \"${z}mm\";");
+    $i++;
+}
+Dump(\@az, \@bz);
+
+@list1 = ();
+@list2 = ();
+foreach my $i (0..@eqns-1) {
+    push @list1, "f_$i";
+    push @list2, "z_$i";
+}
+$list1 = '['.join(',', @list1).']';
+$list2 = '['.join(',', @list2).']';
+$maple->eval_cmd(<<"_EOC_");
+plotsetup(gif, plotoutput="image/diag16a.gif", plotoptions="height=600, width=600"):
+plot($list1, x=0..1200, color=black, scaling=CONSTRAINED);
+_EOC_
+
+@list2;
+
+=end Perl
+
+=begin html
+
+<pre>
+    <img src="image/diag16a.gif"/>
+</pre>
+
+=end html
+
+
 =back

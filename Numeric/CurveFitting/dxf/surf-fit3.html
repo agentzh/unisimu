@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>surf-fit3 - Surface Fitting</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;surf-fit3 - Surface Fitting</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>surf-fit3 - Surface Fitting (volume 3)</p>
+<p><em>Maple</em></p>
+<pre>
+    1:</pre>
+<p><em>No Output</em></p>
+<p><em>Perl</em></p>
+<pre>
+    use YAML qw(LoadFile Dump DumpFile);
+    $curves = LoadFile &quot;data/2d-points.yml&quot;;
+    
+    sub fit_curve {
+        my ($key, $degree) = @_;
+        my @points = map { '['.join(',', @$_).']' } @{ $curves-&gt;{$key} };
+        my $expr = '['.join(',', @points).']';
+        $maple-&gt;eval_cmd(&lt;&lt;&quot;.&quot;);
+    points := $expr;
+    with(CurveFitting):
+    LeastSquares(points, x, curve=a*ln(x+1)^$degree):
+    c := evalf(%);
+    c := eval(c, I=0);
+    f := unapply(c, x);
+    .
+        return $maple-&gt;eval_cmd(&quot;c;&quot;);
+    }
+    
+    sub plot_curve {
+        my $imfile = shift;
+        $maple-&gt;eval_cmd(&lt;&lt;&quot;.&quot;);
+    with(plots):
+    plotsetup(gif, plotoutput=&quot;$imfile&quot;, plotoptions=&quot;height=300, width=600&quot;):
+    pplot := pointplot(points, symbol=CIRCLE, color=black):
+    cplot := plot(c, x=0..1200, color=red):
+    display([cplot, pplot], axes=BOXED, scaling=CONSTRAINED);
+    .
+    }</pre>
+<p><em>Output</em>:</p>
+<pre>
+    HASH(0x2458f68)</pre>
+<p><em>Maple</em></p>
+<pre>
+    ff := z -&gt; eval(2.381966012+.618033988*z, I=0);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    ff := proc (z) options operator, arrow; eval(2.381966012+.618033988*z,I = 0) end proc</pre>
+<p><em>Perl</em></p>
+<pre>
+    $z = '0.8';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    0.8,1.081229152*ln(x+1.)^2.876393202</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp1.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp1.gif"/>
+</pre><p><em>Perl</em></p>
+<pre>
+    $z = '1.0';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1.0,1.061924903*ln(x+1.)^3.000000000</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp2.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp2.gif"/>
+</pre><p><em>Perl</em></p>
+<pre>
+    $z = '1.2';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1.2,.9847457878*ln(x+1.)^3.123606798</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp3.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp3.gif"/>
+</pre><p><em>Perl</em></p>
+<pre>
+    $z = '1.6';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1.6,.6924739503*ln(x+1.)^3.370820393</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp4.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp4.gif"/>
+</pre><p><em>Perl</em></p>
+<pre>
+    $z = '2.3';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    2.3,.3380097044*ln(x+1.)^3.803444184</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp5.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp5.gif"/>
+</pre><p>###</p>
+<p><em>Perl</em></p>
+<pre>
+    $z = '3.2';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    3.2,.1461270560*ln(x+1.)^4.359674774</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp6.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp6.gif"/>
+</pre><p>###</p>
+<p><em>Perl</em></p>
+<pre>
+    $z = '4.5';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    4.5,.369842477e-1*ln(x+1.)^5.163118958</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp7.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp7.gif"/>
+</pre><p>###</p>
+<p><em>Perl</em></p>
+<pre>
+    $z = '5.0';
+    $eqn = fit_curve(&quot;${z}mm&quot;, $maple-&gt;ff($z));
+    push @eqns, [$z, $eqn];
+    ($z, $eqn);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    5.0,.231793513e-1*ln(x+1.)^5.472135952</pre>
+<p><em>Perl</em></p>
+<pre>
+    plot_curve('image/tmp8.gif');</pre>
+<p><em>No Output</em></p>
+<pre>
+    <img src="image/tmp8.gif"/>
+</pre><p><em>Perl</em></p>
+<pre>
+    DumpFile('data/tmp.yml', \@eqns);</pre>
+<p><em>Output</em>:</p>
+<pre>
+    1</pre>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;surf-fit3 - Surface Fitting</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

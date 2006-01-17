@@ -1,0 +1,204 @@
+=head1 NAME
+
+surf-fit3 - Surface Fitting (volume 3)
+
+=Maple 1:
+
+=begin Perl
+
+use YAML qw(LoadFile Dump DumpFile);
+$curves = LoadFile "data/2d-points.yml";
+
+sub fit_curve {
+    my ($key, $degree) = @_;
+    my @points = map { '['.join(',', @$_).']' } @{ $curves->{$key} };
+    my $expr = '['.join(',', @points).']';
+    $maple->eval_cmd(<<".");
+points := $expr;
+with(CurveFitting):
+LeastSquares(points, x, curve=a*ln(x+1)^$degree):
+c := evalf(%);
+c := eval(c, I=0);
+f := unapply(c, x);
+.
+    return $maple->eval_cmd("c;");
+}
+
+sub plot_curve {
+    my $imfile = shift;
+    $maple->eval_cmd(<<".");
+with(plots):
+plotsetup(gif, plotoutput="$imfile", plotoptions="height=300, width=600"):
+pplot := pointplot(points, symbol=CIRCLE, color=black):
+cplot := plot(c, x=0..1200, color=red):
+display([cplot, pplot], axes=BOXED, scaling=CONSTRAINED);
+.
+}
+
+=end Perl
+
+=begin Maple
+
+ff := z -> eval(2.381966012+.618033988*z, I=0);
+
+=end Maple
+
+=begin Perl
+
+$z = '0.8';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp1.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp1.gif"/>
+</pre>
+
+=end html
+
+=begin Perl
+
+$z = '1.0';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp2.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp2.gif"/>
+</pre>
+
+=end html
+
+=begin Perl
+
+$z = '1.2';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp3.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp3.gif"/>
+</pre>
+
+=end html
+
+=begin Perl
+
+$z = '1.6';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp4.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp4.gif"/>
+</pre>
+
+=end html
+
+=begin Perl
+
+$z = '2.3';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp5.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp5.gif"/>
+</pre>
+
+=end html
+
+###
+
+=begin Perl
+
+$z = '3.2';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp6.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp6.gif"/>
+</pre>
+
+=end html
+
+###
+
+=begin Perl
+
+$z = '4.5';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp7.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp7.gif"/>
+</pre>
+
+=end html
+
+###
+
+=begin Perl
+
+$z = '5.0';
+$eqn = fit_curve("${z}mm", $maple->ff($z));
+push @eqns, [$z, $eqn];
+($z, $eqn);
+
+=end Perl
+
+=Perl plot_curve('image/tmp8.gif');
+
+=begin html
+
+<pre>
+    <img src="image/tmp8.gif"/>
+</pre>
+
+=end html
+
+=Perl DumpFile('data/tmp.yml', \@eqns);
