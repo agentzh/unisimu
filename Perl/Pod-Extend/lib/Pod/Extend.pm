@@ -30,7 +30,7 @@ my %hooks = (
 
 		$Pod::Extend::Temp::code = $code;
 		my @res = eval $code;
-		my $code = $Pod::Extend::Temp::code;
+		$code = $Pod::Extend::Temp::code;
 
 		@res = map { defined $_ ? $_ : '' } @res;
         package Pod::Extend;
