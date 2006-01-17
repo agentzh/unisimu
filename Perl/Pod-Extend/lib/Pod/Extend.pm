@@ -23,12 +23,16 @@ my $code = '';
 my %hooks = (
     perl => sub {
         my $code = shift;
-        #print $code;
-        package Pod::Extend::Temp;
+
+		package Pod::Extend::Temp;
         no strict;
         $Pod::Extend::Temp::maple = $Pod::Extend::maple;
-        my @res = eval $code;
-        @res = map { defined $_ ? $_ : '' } @res;
+
+		$Pod::Extend::Temp::code = $code;
+		my @res = eval $code;
+		my $code = $Pod::Extend::Temp::code;
+
+		@res = map { defined $_ ? $_ : '' } @res;
         package Pod::Extend;
         local $" = ',';
         my $res = $@ || "@res";
@@ -137,11 +141,14 @@ sub connect_db {
 
 sub fmt_code_res {
     my ($code, $res, $lang) = @_;
+	#warn "\n-------\n";
+	#warn "$code\n";
+	#warn "-------\n\n";
     $code =~ s/^/    /smg;
     $res = '' if not defined $res;
     $res =~ s/^/    /smg;
-    $code =~ s/^\n+|\s*\n*$//gs;
-    $res =~ s/^\n+|\s*\n*$//gs;
+    $code =~ s/^\n+|[\s\n]+$//gs;
+    $res  =~ s/^\n+|[\s\n]+$//gs;
     $lang = $lang ? "I<$lang>\n\n" : '';
     if ($res) {
         return "$lang$code\n\nI<Output>:\n\n$res\n\n";
