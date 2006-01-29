@@ -1,6 +1,8 @@
 RM_F = perl -MExtUtils::Command -e rm_f
 WRAPPERS = prog timer
 
+.SUFFIXES: .obj .exe .c
+
 all: test2.exe test.exe
 
 .obj.exe:
