@@ -1,3 +1,3 @@
 @echo off
 
-call copier -t I:\Agent2002 D:\Agent2002
+call copier -t J:\Agent2002 D:\Agent2002
