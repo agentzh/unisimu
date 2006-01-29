@@ -69,7 +69,7 @@ sub send_request {
             if ($response->content =~ m[<title>\s*(.*\S)\s*</title>]si) {
                 my $title = $1;
                 $title =~ s/\n/ /gs;
-                $proxy->log( STATUS, 'TITLE', $1);
+                $proxy->log( STATUS, 'TITLE', $title);
             }
         }
     }
