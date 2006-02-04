@@ -1,4 +1,4 @@
-#: svk-ci.pl
+#: svkci.pl
 #: drop-in replacement (and also a wrapper) for `svk ci'
 #: Copyright (c) 2006 Agent Zhang
 #: 2006-02-04 2006-02-04
@@ -11,6 +11,7 @@ use Date::Simple ('today');
 
 my $DatePat = qr/\d{4}-\d{1,2}-\d{1,2}/o;
 my $Fatals = 0;
+my @Errors = ();
 
 {
     open my $in, 'svk status |' or
@@ -19,12 +20,14 @@ my $Fatals = 0;
         if (/^M\s+(\S+)/o) {
             my $file = $1;
             print "info: checking file $file...\n";
-            process_file($file);
+            process_file($file) if -f $file;
         }
     }
     close $in;
 
     if ($Fatals) {
+        print "\n";
+        warn "* $_\n" for (@Errors);
         die "\nFor total $Fatals fatal errors. Commit Stop.\n";
     }
     system('svk ci');
@@ -48,27 +51,34 @@ sub process_pl {
         last if /^[^\#]/o;
         if (/^ \#: \s* ($DatePat) \s+ ($DatePat) \s* $/ox) {
             my ($a, $b) = ($1, $2);
+
             my $create_dt = new_date($file, $a);
-            print "  Create:         $create_dt\n";
+            last if not defined $create_dt;
+
             my $update_dt = new_date($file, $b);
-            print "  Last Modified:  $update_dt\n";
-            print "  Today:          $today_dt\n\n";
+            last if not defined $update_dt;
+
             if ($create_dt > $update_dt) {
                 log_error(
                     $file,
-                    "Create Date is more recent than Last Modified Date",
+                    "Create Date ($create_dt) is more recent than ",
+                    "Last Modified Date ($update_dt)",
                 );
                 last;
-            } elsif ($update_dt > $today_dt) {
+            }
+            if ($update_dt > $today_dt) {
                 log_error(
                     $file,
-                    "Last Modified Date is more recent than today",
+                    "Last Modified Date ($update_dt) is more recent ",
+                    "than today ($today_dt)",
                 );
                 last;
-            } elsif ($update_dt < $today_dt) {
+            }
+            if ($update_dt < $today_dt) {
                 log_error(
                     $file,
-                    "Last Modified Date is not today",
+                    "Last Modified Date ($update_dt) is not today ",
+                    "($today_dt)",
                 );
                 $out_of_date = 1;
                 last;
@@ -89,9 +99,9 @@ sub new_date {
     my ($file, $s) = @_;
     $s =~ s/-(\d)-/-0$1-/og;
     $s =~ s/-(\d)$/-0$1/o;
-    my $date;
-    eval { $date = Date::Simple->new($s); };
-    die "error: $file: $.: $@" if $@;
+    my $date = Date::Simple->new($s);
+    log_error($file, "Date $s is invalid")
+        if not defined $date;
     return $date;
 }
 
@@ -114,13 +124,15 @@ sub update_file {
 
 sub dos2unix {
     my $file = shift;
-    if ($^O eq 'MSWin23' and -T $file) {
+    if ($^O eq 'MSWin32' and -T $file) {
+        print "dos2unix: ";
         system("dos2unix $file");
     }
 }
 
 sub log_error {
-    my ($file, $msg) = @_;
-    warn "* $file: line $.: error: $msg.\n";
+    my $file = shift;
+    my $msg  = join('', @_);
+    push @Errors, "$file: line $.: error: $msg.";
     $Fatals++;
 }
