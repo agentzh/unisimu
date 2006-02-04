@@ -94,7 +94,7 @@ sub process_pl ($) {
             my $year = today()->year();
             #warn "YEAR: $year";
             if ($s !~ /$year/) {
-                log_error($file, "Copyright out-of-date, it's $year already");
+                log_error($file, "Copyright out-of-date. It's $year already");
             }
             $first = 0;
         } elsif (/^ \#: \s* ($DatePat) \s+ ($DatePat) \s* $/ox) {

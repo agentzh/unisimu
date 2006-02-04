@@ -201,9 +201,10 @@ use Date::Simple qw(today);
 sub filter_date {
     my $s = shift;
     my $today = today();
-    $s =~ s/\^+today+\^+/$today/gsie;
-    $s =~ s/\^+tomorrow\^+/$today+1/gsie;
-    $s =~ s/\^+yesterday\^+/$today-1/gsie;
+    $s =~ s/\^today\^/$today/gsie;
+    $s =~ s/\^tomorrow\^/$today+1/gsie;
+    $s =~ s/\^yesterday\^/$today-1/gsie;
+    $s =~ s/\^year\^/$today->year/gsie;
     return $s;
 }
 

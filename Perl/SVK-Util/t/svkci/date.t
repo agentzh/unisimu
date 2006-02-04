@@ -33,7 +33,7 @@ M foo
 
 
 
-=== TEST 1: create < modif > today
+=== TEST 1: create < modif > today, but foo not in list
 file foo not appear in the output of `svk status'
 --- filename:   foo
 --- content
@@ -87,6 +87,46 @@ svk status invoked\.
 \* foo: line 1: error: Last Modified Date \(^yesterday^\) is not today \(^today^\).
 
 For total 2 fatal errors. Commiting Stop.
+--- success:    false
+--- svk_status
+M foo
+
+
+
+=== TEST 4: create > modif < today
+--- filename:   foo
+--- content
+#: ^yesterday^ ^today^
+
+blah blah blah
+
+--- stdout_like
+info: checking file foo...[.\n]*
+--- stderr_like
+svk status invoked\.
+(.|\n)*
+svk ci invoked\.
+--- success:    true
+--- svk_status
+M foo
+
+
+
+=== TEST 4: create < modif < today
+--- filename:   foo
+--- content
+#:  2000-2-1   2000-2-3
+
+blah blah blah
+
+--- stdout_like
+info: checking file foo...[.\n]*
+--- stderr_like
+svk status invoked\.
+.+
+\* foo: line 1: error: Last Modified Date \(2000-02-03\) is not today \(^today^\).
+
+For total 1 fatal error. Commiting Stop.
 --- success:    false
 --- svk_status
 M foo
