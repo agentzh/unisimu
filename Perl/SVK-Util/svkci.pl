@@ -6,12 +6,19 @@
 use strict;
 use warnings;
 
+use File::Basename;
 use File::Copy;
 use Date::Simple ('today');
 
 my $DatePat = qr/\d{4}-\d{1,2}-\d{1,2}/o;
 my $Fatals = 0;
 my @Errors = ();
+
+my $SVK;
+
+BEGIN {
+    $SVK = $ENV{SVK_PATH} || 'svk';
+}
 
 sub log_error (@) {
     my $file = shift;
@@ -71,10 +78,29 @@ sub process_pl ($) {
     my $file = shift;
     open my $in, $file or
         die "error: Can't open $file for reading: $!";
+    my $first = 1;
     while (<$in>) {
         last if /^[^\#]/o;
-        if (/^ \#: \s* ($DatePat) \s+ ($DatePat) \s* $/ox) {
+        if ($first and m{^ \#: \s* (\S+) \s* $}xo) {
+            my $fname = $1;
+            #warn "File Name: $fname\n";
+            if (basename($fname) ne basename($file)) {
+                log_error($file, "File name ($fname) malformed");
+            }
+            $first = 0;
+        } elsif (/^ \#: \s* Copyright \s+ (.+) /xio) {
+            # ...
+            my $s = $1;
+            my $year = today()->year();
+            #warn "YEAR: $year";
+            if ($s !~ /$year/) {
+                log_error($file, "Copyright out-of-date, it's $year already");
+            }
+            $first = 0;
+        } elsif (/^ \#: \s* ($DatePat) \s+ ($DatePat) \s* $/ox) {
             last if not check_dates($file, $1, $2);
+        } elsif ($first and /^\#:/) {
+            $first = 0;
         }
     }
     close $in;
@@ -83,20 +109,18 @@ sub process_pl ($) {
 sub dos2unix ($) {
     my $file = shift;
     if ($^O eq 'MSWin32' and -T $file) {
-        print "dos2unix: ";
+        print STDERR "dos2unix: ";
         system("dos2unix $file");
     }
 }
 
 sub process_file {
     my $file = shift;
-    if ($file =~ /\.(?:pl|pm|t)$/o or $file =~ /^[^\.]$/o) {
-        process_pl($file);
-    }
+    process_pl($file);
     dos2unix($file);
 }
 
-open my $in, 'svk status |' or
+open my $in, "$SVK status |" or
     die "error: Can't spawn `svk status': $!";
 while (<$in>) {
     if (/^[MA]\s+(\S+)/o) {
@@ -114,4 +138,4 @@ if ($Fatals) {
     die "\nFor total $Fatals fatal $noun. Commiting Stop.\n";
 }
 
-system('svk ci');
+system("$SVK ci");
