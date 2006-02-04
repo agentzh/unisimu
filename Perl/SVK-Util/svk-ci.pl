@@ -7,10 +7,10 @@ use strict;
 use warnings;
 
 use File::Copy;
-use File::Temp ('tempfile');
 use Date::Simple ('today');
 
 my $DatePat = qr/\d{4}-\d{1,2}-\d{1,2}/o;
+my $Fatals = 0;
 
 {
     open my $in, 'svk status |' or
@@ -18,11 +18,15 @@ my $DatePat = qr/\d{4}-\d{1,2}-\d{1,2}/o;
     while (<$in>) {
         if (/^M\s+(\S+)/o) {
             my $file = $1;
-            print "info: processing $file...\n";
+            print "info: checking file $file...\n";
             process_file($file);
         }
     }
     close $in;
+
+    if ($Fatals) {
+        die "\nFor total $Fatals fatal errors. Commit Stop.\n";
+    }
     system('svk ci');
 }
 
@@ -45,25 +49,39 @@ sub process_pl {
         if (/^ \#: \s* ($DatePat) \s+ ($DatePat) \s* $/ox) {
             my ($a, $b) = ($1, $2);
             my $create_dt = new_date($file, $a);
+            print "  Create:         $create_dt\n";
             my $update_dt = new_date($file, $b);
+            print "  Last Modified:  $update_dt\n";
+            print "  Today:          $today_dt\n\n";
             if ($create_dt > $update_dt) {
-                die "error: $file: line $.: ",
-                    "Create Date is more recent than Last Modified Date.";
+                log_error(
+                    $file,
+                    "Create Date is more recent than Last Modified Date",
+                );
+                last;
             } elsif ($update_dt > $today_dt) {
-                die "error: $file: line $.: ",
-                    "Last Modified Date is more recent than today.";
+                log_error(
+                    $file,
+                    "Last Modified Date is more recent than today",
+                );
+                last;
             } elsif ($update_dt < $today_dt) {
+                log_error(
+                    $file,
+                    "Last Modified Date is not today",
+                );
                 $out_of_date = 1;
                 last;
             }
         }
-
     }
     close $in;
     if ($out_of_date) {
-        print "info: updating ${file}'s Last Modified Date ",
-            "to $today_dt...\n";
-        update_file($file, $today_dt);
+        # Updating existing file may flush the history cache of 
+        # user's editor unintentionally, so the following line
+        # is currently commented out.
+
+        #update_file($file, $today_dt);
     }
 }
 
@@ -71,7 +89,6 @@ sub new_date {
     my ($file, $s) = @_;
     $s =~ s/-(\d)-/-0$1-/og;
     $s =~ s/-(\d)$/-0$1/o;
-    warn "  new_date: $s\n";
     my $date;
     eval { $date = Date::Simple->new($s); };
     die "error: $file: $.: $@" if $@;
@@ -85,7 +102,7 @@ sub update_file {
     open my $in, $file or
         die "error: Can't open $file for reading: $!";
     while (<$in>) {
-        s/^ ( \#: \s* $DatePat ) \s+ $DatePat \s* $/$1 $today/ox;
+        s/^ ( \#: \s* $DatePat ) \s+ $DatePat \s* \n/$1 $today\n/ox;
         print $tmp $_;
     }
     close $in;
@@ -100,4 +117,10 @@ sub dos2unix {
     if ($^O eq 'MSWin23' and -T $file) {
         system("dos2unix $file");
     }
+}
+
+sub log_error {
+    my ($file, $msg) = @_;
+    warn "* $file: line $.: error: $msg.\n";
+    $Fatals++;
 }
