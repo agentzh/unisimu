@@ -1,4 +1,5 @@
 @echo off
 
 call pl2bat minver.pl
-move minver.bat E:\perl\bin\
+copy minver.bat E:\perl\bin\
+del minver.bat
