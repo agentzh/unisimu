@@ -1,0 +1,418 @@
+//////////////////////////////////
+
+Module:
+    ModuleDeclaration DeclDefs
+    DeclDefs
+
+DeclDefs:
+    DeclDef
+    DeclDef DeclDefs
+
+DeclDef:
+    AttributeSpecifier
+    ImportDeclaration
+    EnumDeclaration
+    ClassDeclaration
+    InterfaceDeclaration
+    AggregateDeclaration
+    Declaration
+    Constructor
+    Destructor
+    Invariant
+    Unittest
+    StaticConstructor
+    StaticDestructor
+    DebugSpecification
+    VersionSpecification
+    ;
+
+//////////////////////////////////
+
+ModuleDeclaration:
+    module ModuleName ;
+
+ModuleName:
+    Identifier
+//    ModuleName . Identifier
+
+// Added by agent:
+
+Identifier:
+    qr/[_A-Za-z]\w*/
+
+//////////////////////////////////
+
+ImportDeclaration:
+    import ModuleNameList ;
+
+ModuleNameList:
+    ModuleName
+    ModuleName , ModuleNameList
+
+//////////////////////////////////
+
+Declaration:
+    typedef Decl
+    alias Decl
+    Decl
+
+Decl:
+    StorageClass Decl
+    BasicType Declarators ;
+    BasicType Declarator FunctionBody
+
+Declarators:
+    DeclaratorInitializer
+    DeclaratorInitializer , DeclaratorIdentifierList
+
+DeclaratorInitializer:
+    Declarator
+    Declarator = Initializer
+
+DeclaratorIdentifierList:
+    DeclaratorIdentifier
+    DeclaratorIdentifier , DeclaratorIdentifierList
+
+DeclaratorIdentifier:
+    Identifier
+    Identifier = Initializer
+
+BasicType:
+    bit
+    byte
+    ubyte
+    short
+    ushort
+    int
+    uint
+    long
+    ulong
+    char
+    wchar
+    dchar
+    float
+    double
+    real
+    ifloat
+    idouble
+    ireal
+    cfloat
+    cdouble
+    creal
+    void
+    . IdentifierList
+    IdentifierList
+    Typeof
+    Typeof . IdentifierList
+
+BasicType2:
+    *
+    [ ]
+    [ Expression ]
+    [ Type ]
+    delegate ( ParameterList )
+    function ( ParameterList )
+
+Declarator:
+    BasicType2 Declarator
+    Identifier
+    ( Declarator )
+    Identifier DeclaratorSuffixes
+    ( Declarator ) DeclaratorSuffixes
+
+DeclaratorSuffixes:
+    DeclaratorSuffix
+    DeclaratorSuffix DeclaratorSuffixes
+
+DeclaratorSuffix:
+    [ ]
+    [ Expression ]
+    [ Type ]
+    ( ParameterList )
+    IdentifierList
+    Identifier
+    Identifier . IdentifierList
+    TemplateInstance
+    TemplateInstance . IdentifierList
+
+// Added by agent:
+
+IdentifierList:
+    Identifier
+    Identifier , IdentifierList
+
+Typeof:
+    typeof ( Expression )
+
+StorageClass:
+    abstract
+    auto
+    const
+    deprecated
+    final
+    override
+    static
+    synchronized
+
+Type:
+    BasicType
+    BasicType Declarator2
+
+//Declarator2:
+//    BasicType2 Declarator2
+//    ( Declarator2 )
+//    ( Declarator2 ) DeclaratorSuffixes
+
+ParameterList:
+    Parameter
+    Parameter , ParameterList
+    ...
+
+Parameter:
+    Declarator
+    Declarator = AssignExpression
+    InOut Declarator
+    InOut Declarator = AssignExpression
+
+InOut:
+    in
+    out
+    inout
+
+//////////////////////////////////
+
+AttributeSpecifier:
+    Attribute :
+    Attribute DeclDefBlock
+    Pragma ;
+
+AttributeElseSpecifier:
+    AttributeElse :
+    AttributeElse DeclDefBlock
+    AttributeElse DeclDefBlock else DeclDefBlock
+
+Attribute:
+    LinkageAttribute
+    AlignAttribute
+    Pragma
+    deprecated
+    private
+    package
+    protected
+    public
+    export
+    static
+    final
+    override
+    abstract
+    const
+    auto
+
+AttributeElse:
+    DebugAttribute
+    VersionAttribute
+    DeclDefBlock
+    DeclDef
+    { }
+    { DeclDefs }
+
+//////////////////////////////////
+
+LinkageAttribute:
+    extern
+    extern ( LinkageType )
+
+LinkageType:
+    C
+    D
+    Windows
+    Pascal
+
+//////////////////////////////////
+
+AlignAttribute:
+    align
+    align ( Integer )
+
+// Added by agent:
+
+Integer:
+    Decimal
+    Binary
+    Octal
+    Hexadecimal
+
+Decimal:
+    0
+    qr/[1-9][0-9_]*/
+
+Binary:
+    qr/0[bB][01]+/
+
+Octal:
+    qr/0[0-7]+/
+
+Hexadecimal:
+    qr/0[xX][A-F0-9]+/
+
+//////////////////////////////////
+
+Pragma:
+    pragma ( Identifier )
+    pragma ( Identifier , ExpressionList )
+
+//////////////////////////////////
+
+Expression:
+    AssignExpression
+    AssignExpression , Expression
+
+AssignExpression:
+    ConditionalExpression
+    ConditionalExpression = AssignExpression
+    ConditionalExpression += AssignExpression
+    ConditionalExpression -= AssignExpression
+    ConditionalExpression *= AssignExpression
+    ConditionalExpression /= AssignExpression
+    ConditionalExpression %= AssignExpression
+    ConditionalExpression &= AssignExpression
+    ConditionalExpression |= AssignExpression
+    ConditionalExpression ^= AssignExpression
+    ConditionalExpression ~= AssignExpression
+    ConditionalExpression <<= AssignExpression
+    ConditionalExpression >>= AssignExpression
+    ConditionalExpression >>>= AssignExpression
+
+ConditionalExpression:
+    OrOrExpression
+    OrOrExpression ? Expression : ConditionalExpression
+
+OrOrExpression:
+    AndAndExpression
+    OrOrExpression || AndAndExpression
+
+AndAndExpression:
+    OrExpression
+    AndAndExpression && OrExpression
+
+OrExpression:
+    XorExpression
+    OrExpression | XorExpression
+
+XorExpression:
+    AndExpression
+    XorExpression ^ AndExpression
+
+AndExpression:
+    EqualExpression
+    AndExpression & EqualExpression
+
+EqualExpression:
+    RelExpression
+    EqualExpression == RelExpression
+    EqualExpression != RelExpression
+    EqualExpression is RelExpression
+
+RelExpression:
+    ShiftExpression
+    InExpression
+    RelExpression < ShiftExpression
+    RelExpression <= ShiftExpression
+    RelExpression > ShiftExpression
+    RelExpression >= ShiftExpression
+    RelExpression !<>= ShiftExpression
+    RelExpression !<> ShiftExpression
+    RelExpression <> ShiftExpression
+    RelExpression <>= ShiftExpression
+    RelExpression !> ShiftExpression
+    RelExpression !>= ShiftExpression
+    RelExpression !< ShiftExpression
+    RelExpression !<= ShiftExpression
+
+InExpression:
+    RelExpression in ShiftExpression
+
+ShiftExpression:
+    AddExpression
+    ShiftExpression << AddExpression
+    ShiftExpression >> AddExpression
+    ShiftExpression >>> AddExpression
+
+AddExpression:
+    MulExpression
+    AddExpression + MulExpression
+    AddExpression - MulExpression
+    AddExpression ~ MulExpression
+
+MulExpression:
+    UnaryExpression
+    MulExpression * UnaryExpression
+    MulExpression / UnaryExpression
+    MulExpression % UnaryExpression
+
+UnaryExpression:
+    PostfixExpression
+    & UnaryExpression
+    ++ UnaryExpression
+    -- UnaryExpression
+    * UnaryExpression
+    - UnaryExpression
+    + UnaryExpression
+    ! UnaryExpression
+    ~ UnaryExpression
+    delete UnaryExpression
+    NewExpression
+    cast ( Type ) UnaryExpression
+    ( Type ) . Identifier
+    ( Expression )
+
+PostfixExpression:
+    PrimaryExpression
+    PostfixExpression . Identifier
+    PostfixExpression ++
+    PostfixExpression --
+    PostfixExpression ( ArgumentList )
+    IndexExpression
+    SliceExpression
+
+IndexExpression:
+    PostfixExpression [ ArgumentList ]
+
+SliceExpression:
+    PostfixExpression [ AssignExpression .. AssignExpression ]
+
+PrimaryExpression:
+    Identifier
+    . Identifier
+    this
+    super
+    null
+    true
+    false
+    NumericLiteral
+    CharacterLiteral
+    StringLiteral
+    FunctionLiteral
+    AssertExpression
+    BasicType . Identifier
+    typeid ( Type )
+
+AssertExpression:
+    assert ( Expression )
+
+ArgumentList:
+    AssignExpression
+    AssignExpression , ArgumentList
+
+NewExpression:
+    new BasicType Stars [ AssignExpression ] Declarator
+    new BasicType Stars ( ArgumentList )
+    new BasicType Stars
+    new ( ArgumentList ) BasicType Stars [ AssignExpression ]
+    Declarator
+    new ( ArgumentList ) BasicType Stars ( ArgumentList )
+    new ( ArgumentList ) BasicType Stars
+    Stars
+    nothing
+    *
+    * Stars

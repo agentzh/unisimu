@@ -1,0 +1,342 @@
+Token:
+	Identifier
+	StringLiteral
+	CharacterLiteral
+	IntegerLiteral
+	FloatLiteral
+	Keyword
+	/
+	/=
+	.
+	..
+	...
+	&
+	&=
+	&&
+	|
+	|=
+	||
+	-
+	-=
+	--
+	+
+	+=
+	++
+	<
+	<=
+	<<
+	<<=
+	<>
+	<>=
+	>
+	>=
+	>>=
+	>>>=
+	>>
+	>>>
+	!
+	!=
+	!==
+	!<>
+	!<>=
+	!<
+	!<=
+	!>
+	!>=
+	(
+	)
+	[
+	]
+	{
+	}
+	?
+	,
+	;
+	:
+	$
+	=
+	==
+	===
+	*
+	*=
+	%
+	%=
+	^
+	^=
+	~
+	~=
+
+///////////////////////////////////////////////
+
+Identifier:
+    IdentifierStart
+    IdentifierStart IdentifierChars
+
+IdentifierChars:
+    IdentifierChar
+    IdentifierChar IdentifierChars
+
+IdentifierStart:
+    _
+    Letter
+    UniversalAlpha
+
+IdentifierChar:
+    IdentifierStart
+    Digit
+
+// Added by agent
+
+Letter:
+    qr/[A-Za-z]/
+
+// Added by agent
+
+UniversalAlpha:
+    Letter
+
+///////////////////////////////////////////////
+
+StringLiteral:
+    WysiwygString
+    AlternateWysiwygString
+    DoubleQuotedString
+    EscapeSequence
+    HexString
+
+WysiwygString:
+    r" WysiwygCharacters "
+
+AlternateWysiwygString:
+    ` WysiwygCharacters `
+
+WysiwygCharacter:
+    Character
+    EndOfLine
+
+DoubleQuotedString:
+    " DoubleQuotedCharacters "
+
+// Added by agent
+
+DoubleQuotedCharacters:
+    DoubleQuotedCharacter
+    DoubleQuotedCharacters DoubleQuotedCharacter
+
+DoubleQuotedCharacter:
+    Character
+    EscapeSequence
+    EndOfLine
+
+EscapeSequence:
+    \'
+    \"
+    \?
+    \\
+    \a
+    \b
+    \f
+    \n
+    \r
+    \t
+    \v
+    \ EndOfFile
+    \x HexDigit HexDigit
+    \ OctalDigit
+    \ OctalDigit OctalDigit
+    \ OctalDigit OctalDigit OctalDigit
+    \u HexDigit HexDigit HexDigit HexDigit
+    \U HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
+    HexDigit HexDigit
+
+HexString:
+    x" HexStringChars "
+    HexStringChar
+    HexDigit
+    WhiteSpace
+    EndOfLine
+
+///////////////////////////////////////////////
+
+CharacterLiteral:
+    ' SingleQuotedCharacter '
+    SingleQuotedCharacter
+    Character
+    EscapeSequence
+
+// Added by agent:
+
+SingleQuotedCharacter:
+    Character
+    EscapeSequence
+    EndOfLine
+
+///////////////////////////////////////////////
+
+IntegerLiteral:
+    Integer
+    Integer IntegerSuffix
+
+Integer:
+    Decimal
+    Binary
+    Octal
+    Hexadecimal
+    Integer _
+
+IntegerSuffix:
+    l
+    L
+    u
+    U
+    lu
+    Lu
+    lU
+    LU
+    ul
+    uL
+    Ul
+    UL
+
+Decimal:
+    0
+    NonZeroDigit
+    NonZeroDigit Decimal
+    NonZeroDigit _ Decimal
+
+Binary:
+    0b BinaryDigits
+    0B BinaryDigits
+
+Octal:
+    0 OctalDigits
+
+Hexadecimal:
+    0x HexDigits
+    0X HexDigits
+
+///////////////////////////////////////////////
+
+FloatLiteral:
+    Float
+    Float FloatSuffix
+    Float ImaginarySuffix
+    Float FloatSuffix ImaginarySuffix
+
+Float:
+    DecimalFloat
+    HexFloat
+    Float _
+
+FloatSuffix:
+    f
+    F
+    l
+    L
+
+ImaginarySuffix:
+    i
+    I
+
+///////////////////////////////////////////////
+
+Keyword:
+    abstract
+    alias
+    align
+    asm
+    assert
+    auto
+    bit
+    body
+    break
+    byte
+    case
+    cast
+    catch
+    cdouble
+    cent
+    cfloat
+    char
+    class
+    const
+    continue
+    creal
+    dchar
+    debug
+    default
+    delegate
+    delete
+    deprecated
+    do
+    double
+    else
+    enum
+    export
+    extern
+    false
+    final
+    finally
+    float
+    for
+    foreach
+    function
+    goto
+    idouble
+    if
+    ifloat
+    import
+    in
+    inout
+    int
+    interface
+    invariant
+    ireal
+    is
+    long
+    mixin
+    module
+    new
+    null
+    out
+    override
+    package
+    pragma
+    private
+    protected
+    public
+    real
+    return
+    short
+    static
+    struct
+    super
+    switch
+    synchronized
+    template
+    this
+    throw
+    true
+    try
+    typedef
+    typeof
+    ubyte
+    ucent
+    uint
+    ulong
+    union
+    unittest
+    ushort
+    version
+    void
+    volatile
+    wchar
+    while
+    with
+
+SpecialTokenSequence:
+    # line Integer EndOfLine
+    # line Integer Filespec EndOfLine
+
+Filespec:
+    " Characters "
