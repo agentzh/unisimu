@@ -9,7 +9,6 @@ plan tests => 1 * blocks;
 
 run_cmd_tests("$^X binary_tree_set2.pl");
 
-
 __END__
 
 === TEST 1
