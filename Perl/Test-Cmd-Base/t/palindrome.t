@@ -1,0 +1,43 @@
+#: palindrome.t
+#: test palindrome.pl
+#: Copyright (c) 2006 Agent Zhang
+#: 2006-02-27 2006-02-27
+
+use Test::Cmd::Base;
+use FindBin;
+
+plan tests => 1 * blocks;
+
+run_cmd_tests("$^X $FindBin::Bin/palindrome.pl");
+
+__DATA__
+
+=== TEST 1
+--- stdin
+abba
+--- stdout
+palindrome
+
+
+
+=== TEST 2
+--- stdin
+abbaa
+--- stdout
+not palindrome
+
+
+
+=== TEST 3
+--- stdin
+a bb a
+--- stdout
+palindrome
+
+
+
+=== TEST 4
+--- stdin
+a ba
+--- stdout
+combinational palindrome
