@@ -1,0 +1,6 @@
+Revision history for Perl extension Test::Cmd::Base.
+
+0.01  Mon Feb 27 17:00:20 2006
+	- original version; created by h2xs 1.23 with options
+		-PXAO -b 5.6.1 Test::Cmd::Base
+

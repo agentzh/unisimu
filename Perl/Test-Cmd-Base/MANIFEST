@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Test-Cmd-Base.t
+lib/Test/Cmd/Base.pm
