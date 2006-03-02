@@ -1,12 +1,14 @@
 use strict;
 use warnings;
+
 use encoding 'GBK';
-use Encode 'decode';
+#use Encode 'decode';
 
 my (%chars, $total);
 while (<>){
-    $_ = decode('GBK', $_);
-    s/[^,£¬¡£.\n ]/$chars{$&}++;$total++/ge;
+    #$_ = decode('GBK', $_);
+    s/[^,£¬¡£.\n\r ]/$chars{$&}++;$total++/gem;
+    #warn "$total";
 }
 printf "$_: %.3f\n", $chars{$_}/$total for (sort keys %chars);
 
