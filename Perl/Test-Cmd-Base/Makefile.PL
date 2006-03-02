@@ -1,8 +1,9 @@
 use strict;
 use inc::Module::Install;
 
+name        ('Test-Cmd-Base');
+license     ('perl');
 all_from    ('lib/Test/Cmd/Base.pm');
-license         ('perl');
 
 requires  ('Test::Base');
 requires  ('IPC::Run3');

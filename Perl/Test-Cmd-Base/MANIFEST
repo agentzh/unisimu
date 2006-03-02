@@ -2,5 +2,6 @@ Changes
 Makefile.PL
 MANIFEST
 README
-t/Test-Cmd-Base.t
+t/palindrome.t
+t/palindrome.pl
 lib/Test/Cmd/Base.pm
