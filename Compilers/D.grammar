@@ -33,7 +33,7 @@ ModuleDeclaration:
 
 ModuleName:
     Identifier
-//    ModuleName . Identifier
+    ModuleName . Identifier
 
 // Added by agent:
 

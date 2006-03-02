@@ -79,7 +79,7 @@
 <hr />
 <h1><a name="Verifications">Verifications</a></h1>
 <ul>
-<li><strong><a name="item_10002521_25BAf3d3d025B6e0c9d925B8f6025A325BF">1000! 后有多少个0？</a></strong><br />
+<li><strong><a name="item_10002521_25BA25F325D325D025B625E025C925D925B825F6025A325BF">1000! 后有多少个0？</a></strong><br />
 </li>
 1000! 可真的是一个天文数字，但令人惊愕的是 Maple 计算起来非常轻松，而且
 还是在我的 300 MHz 的老机器上！由于 1000! 的结果打印出来会占用大量的篇
@@ -173,7 +173,7 @@
 <pre>
     249</pre>
 <p></p>
-<li><strong><a name="item_e3">有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
+<li><strong><a name="item_25D325D025B625E025C925D925B425F325D325DA_5400_25C725D225C225FA25D">有多少大于 5400 且满足 (1) 每位数上的数值各不相同, (2) 2 和 7 不出现,
 这两个性质的整数？</a></strong><br />
 </li>
 我们先看看满足这些条件的<strong>四位</strong>整数有多少：
@@ -215,7 +215,7 @@
 <pre>
     5880</pre>
 <p></p>
-<li><strong><a name="item_c7f3c725A125BAc3d3d0_28_25B8f6d2f225D7d325B5c425D7eed025A1d5fdd5fbcafd252E">求恰好有 28 个因子的最小正整数.</a></strong><br />
+<li><strong><a name="item_25C725F325C725A125BA25C325D325D0_28_25B825F625D225F225D725D325B525">求恰好有 28 个因子的最小正整数.</a></strong><br />
 </li>
 给定一个自然数, 要求其所有的因子, 基本思路是先对它进行质因数
 分解, 然后对所有的质因子(重复的也包括在内)进行任意的组合. 每
@@ -337,7 +337,7 @@
 <p><em>No Output</em></p>
 <p>我们看到结果为空, 因此, 960 确实就是我们要找的数.</p>
 <p></p>
-<li><strong><a name="item_c7f3_n_ce25BBca25AE25BDf8d6c6cafdd6d0b3f6cfd6c525BCcafd25B8f6_5_25B5c4cafd25B5c4">求 n 位十进制数中出现偶数个 5 的数的个数</a></strong><br />
+<li><strong><a name="item_25C725F3_n_25CE25BB25CA25AE25BD25F825D625C625CA25FD25D625D025B325F">求 n 位十进制数中出现偶数个 5 的数的个数</a></strong><br />
 </li>
 一开始，我们先设 n 位十进制数中出现偶数个 5 的数共有 <code>a(n)</code> 个，
 出现奇数个 5 的个数为 <code>b(n)</code> 个。
@@ -403,7 +403,7 @@ n 的增大，计算量也迅速提高。通过理论分析，我们可以得到
     $a_n;</pre>
 <p><em>Output</em>:</p>
 <pre>
-    9/20*10^n+7/16*8^n</pre>
+    7/16*8^n+9/20*10^n</pre>
 <p>我们利用两三行 Perl 代码就准确地从 Maple 的
 rsolve 函数返回的解集中提取出了通项 <code>a(n)</code> 的表达式。注意
 我们是如何直接对导入到 Perl 环境中的 Maple AST 进行操纵的，
@@ -431,7 +431,7 @@ Perl6++</p>
     latex(a);</pre>
 <p><em>Output</em>:</p>
 <pre>
-    2/3\,{2}^{n}+1/3\, \left( -1 \right) ^{n}</pre>
+    1/3\, \left( -1 \right) ^{n}+2/3\,{2}^{n}</pre>
 <p></p></ul>
 <p>
 </p>

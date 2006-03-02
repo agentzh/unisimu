@@ -1,6 +1,6 @@
 #: parse.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-17 2006-02-17
+#: 2006-02-17 2006-02-27
 
 use strict;
 use warnings;
@@ -30,7 +30,7 @@ my %rules;
 
 while (<$in>) {
     next if (/^\/\//);
-    if (!$in_rule and /^([A-Z][A-Za-z]+[a-z2]):$/) {
+    if (!$in_rule and /^(\w+):$/) {
         $rule_name = $1;
         #warn "Parsing rule $rule_name...\n";
         die "line $.: $rule_name redefined" if $rules{$rule_name};
@@ -38,7 +38,7 @@ while (<$in>) {
         $in_rule = 1;
     } elsif ($in_rule and /^\s+(.+)/) {
         my $rule = $1;
-        if ($rule =~ /^([A-Z][A-Za-z]+[a-z2]):$/) {
+        if ($rule =~ /^(\w+):$/) {
             warn "Warning: $rule: maybe indented rule header?\n";
         }
         my @chunks = split (/\s+/, $rule);
@@ -54,15 +54,15 @@ close $in;
 
 #print Dump(%rules);
 
-#while (1) {
+while (1) {
     #print "Goal?";
     #my $goal = <STDIN>;
     #chomp $goal;
     #print "Source?";
     #my $source = <STDIN>;
     #chomp $source;
-    my $goal = 'ModuleDeclaration';
-    my $source = 'module abc;';
+    my $goal = 'statement';
+    my $source = 'font ( xvz )';
     my $parser = compile($goal);
     my $ok = parse($parser, $source);
     if (defined $ok) {
@@ -70,7 +70,7 @@ close $in;
     } else {
         print "Unmatched! :=(\n";
     }
-#}
+}
 
 sub emit_nonterminal {
     my $name = shift;
@@ -125,6 +125,8 @@ sub emit_concat {
 
 sub emit_literal {
     my $elem = shift;
+    $elem =~ s/^'(.+)'$/$1/;
+    $elem =~ s/^"(.+)"$/$1/;
     my $noop = noop();
     warn "emit_literal: $elem";
     if ($elem =~ m[^qr/(.+)/[a-z]*$]) {

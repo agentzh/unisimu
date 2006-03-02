@@ -1,6 +1,6 @@
 #: randgen.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-17 2006-02-17
+#: 2006-02-17 2006-02-27
 
 use strict;
 use warnings;
@@ -28,7 +28,7 @@ my %rules;
 
 while (<$in>) {
     next if (/^\/\//);
-    if (!$in_rule and /^([A-Z][A-Za-z]+[a-z2]):$/) {
+    if (!$in_rule and /^(\w+):$/) {
         $rule_name = $1;
         #warn "Parsing rule $rule_name...\n";
         die "line $.: $rule_name redefined" if $rules{$rule_name};
@@ -36,7 +36,7 @@ while (<$in>) {
         $in_rule = 1;
     } elsif ($in_rule and /^\s+(.+)/) {
         my $rule = $1;
-        if ($rule =~ /^([A-Z][A-Za-z]+[a-z2]):$/) {
+        if ($rule =~ /^(\w+):$/) {
             warn "Warning: $rule: maybe indented rule header?\n";
         }
         my @chunks = split (/\s+/, $rule);
@@ -101,14 +101,16 @@ sub gen_concat {
         }
     }
     $str =~ s/\s\s+/ /g;
-    $str =~ s/([^\w\s,=*\]]) (\w)/$1$2/g;
-    $str =~ s/(\w) ([^\[\w\s=])/$1$2/g;
-    $str =~ s/([^\w\s,=]) ([^\w\s=])/$1$2/g;
+    #$str =~ s/([^\w\s,=*\]]) (\w)/$1$2/g;
+    #$str =~ s/(\w) ([^\[\w\s=])/$1$2/g;
+    #$str =~ s/([^\w\s,=]) ([^\w\s=])/$1$2/g;
     return $str;
 }
 
 sub gen_literal {
     my $elem = shift;
+    $elem =~ s/^'(.+)'$/$1/;
+    $elem =~ s/^"(.+)"$/$1/;
     if ($elem =~ m[^qr/(.+)/[a-z]*$]) {
         my $regex = eval($elem);
         die "$elem: $@" if $@;
