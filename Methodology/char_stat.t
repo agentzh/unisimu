@@ -1,10 +1,9 @@
 #: char_stat.t
 #: Test char_stat.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-27 2006-02-27
+#: 2006-02-27 2006-02-28
 
 use Test::Cmd::Base;
-use FindBin;
 
 plan tests => 1 * blocks;
 
@@ -13,7 +12,7 @@ filters {
     stdout => [qw< norm >],
 };
 
-run_cmd_tests("$^X $FindBin::Bin/char_stat.pl");
+run_cmd_tests("$^X char_stat.pl");
 
 __DATA__
 

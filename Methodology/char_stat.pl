@@ -19,3 +19,6 @@ while (<>){
     s/[^,.\n ]/$c{$&}++;$t++/ge;
 }
 printf "$_: %.3f\n", $c{$_}/$t for (sort keys %c);
+
+# The problem:
+

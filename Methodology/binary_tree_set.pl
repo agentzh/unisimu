@@ -32,8 +32,8 @@ sub plot_tree {
     $gv->add_node($root);
     return if not $tree{$root};
     my ($left, $right) = @{ $tree{$root} };
-    $gv->add_edge($root, $left) if defined $left;
-    $gv->add_edge($root, $right) if defined $right;
+    $gv->add_edge($root, $left, label => 'L') if defined $left;
+    $gv->add_edge($root, $right, label => 'R') if defined $right;
     plot_tree($left);
     plot_tree($right);
 }
@@ -68,13 +68,13 @@ sub adjust_child {
     }
 }
 
-adjust_tree(1);
+#adjust_tree(1);
 $gv = GraphViz->new(
     node => {shape => 'circle', style => 'filled', fillcolor => 'yellow'},
     edge => {color => 'red'},
 );
-plot_tree(1);
-$gv->as_png('set2.png');
+#plot_tree(1);
+#$gv->as_png('set2.png');
 
 sub del_edge {
     my ($parent, $child) = @_;
@@ -102,6 +102,8 @@ sub refactor {
 
 refactor(1);
 #die Data::Dumper->Dump([\@levels], [qw(levels)]);
+
+print join("\n", map { join(' ', @$_) } @levels), "\n";
 
 foreach my $i (1..$#levels) {
     die "Assumption failed for level $i and " . ($i-1)
