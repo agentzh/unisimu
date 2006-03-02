@@ -1,3 +1,7 @@
+#: Test/Cmd/Base.pm
+#: Coyright (c) 2006 Agent Zhang
+#: 2006-02-27 2006-02-28
+
 package Test::Cmd::Base;
 
 use strict;
@@ -17,10 +21,14 @@ our @EXPORT = qw(
     run_cmd_tests
 );
 
-our (@Exe, %Filters, $PWD, $INFILE, $Script);
+our (@Exe, %Filters, $PWD, $INFILE, $Script, $USE_TEMP_DIR);
 
 filters_delay();
 our $DelimPat = gen_delimited_pat(q{"});
+
+sub use_temp_dir {
+    $USE_TEMP_DIR = 1;
+}
 
 sub process_pre ($) {
     my $block = shift;
@@ -173,10 +181,13 @@ sub process_utouch ($) {
 sub run_cmd_test ($) {
     my $block = shift;
 
-    my $tempdir = tempdir( 'backend_XXXXXX', TMPDIR => 1, CLEANUP => 1 );
-    my $saved_cwd = Cwd::cwd;
-    chdir $tempdir;
-    $PWD = $tempdir;
+    my ($saved_cwd);
+    if ($USE_TEMP_DIR) {
+        my $tempdir = tempdir( 'backend_XXXXXX', TMPDIR => 1, CLEANUP => 1 );
+        $saved_cwd = Cwd::cwd;
+        chdir $tempdir;
+    }
+    $PWD = Cwd::cwd;
     $PWD =~ s,\\,/,g;
 
     my $filename = $block->filename;
@@ -212,7 +223,9 @@ sub run_cmd_test ($) {
     process_found($block);
     process_not_found($block);
 
-    chdir $saved_cwd;
+    if ($USE_TEMP_DIR) {
+        chdir $saved_cwd;
+    }
     #warn "\nstderr: $stderr\nstdout: $stdout\n";
 }
 
