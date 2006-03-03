@@ -1,13 +1,16 @@
 #: binary_tree_set2.t
 #: Test the script binary_tree_set2.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-28 2006-02-28
+#: 2006-02-28 2006-03-03
 
 use Test::Cmd::Base;
 
 plan tests => 1 * blocks;
 
-run_cmd_tests("$^X binary_tree_set2.pl");
+my $script = $ARGV[0] || "binary_tree_set2.pl";
+#warn $script;
+
+run_cmd_tests("$^X $script");
 
 __END__
 
@@ -62,4 +65,4 @@ __END__
 === TEST 7
 --- options
 0
---- stdout:
+--- stdout eval: "\n"

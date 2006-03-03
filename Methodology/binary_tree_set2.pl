@@ -1,13 +1,16 @@
 #: binary_tree_set2.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-28 2006-02-28
+#: 2006-02-28 2006-03-03
 
 use strict;
 use warnings;
 
 # find m minimal nodes:
 my $m = shift;
-exit(0) if $m <= 0;
+#warn "m = $m";
+if (! defined $m or $m < 0) {
+    die "No n specified or n is invalid.\n";
+}
 
 # global counter which indicates the maximal
 # depth we should reach:
