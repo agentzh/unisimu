@@ -10,7 +10,11 @@ plan tests => 1 * blocks;
 my $script = $ARGV[0] || "binary_tree_set2.pl";
 #warn $script;
 
-run_cmd_tests("$^X $script");
+if ($script =~ /\.pl$/i) {
+    run_cmd_tests("$^X $script");
+} else {
+    run_cmd_tests($script);
+}
 
 __END__
 
