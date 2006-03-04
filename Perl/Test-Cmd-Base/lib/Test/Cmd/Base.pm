@@ -1,6 +1,6 @@
 #: Test/Cmd/Base.pm
 #: Coyright (c) 2006 Agent Zhang
-#: 2006-02-27 2006-02-28
+#: 2006-02-27 2006-03-04
 
 package Test::Cmd::Base;
 
@@ -81,6 +81,7 @@ sub process_not_found ($) {
 sub compare ($$$) {
     my ($got, $expected, $desc) = @_;
     return if not defined $expected;
+    $got =~ s/\r\n/\n/gs;
     if ($desc =~ /\w+_like/) {
         Test::More::like($got, qr/$expected/, $desc);
     } else {
