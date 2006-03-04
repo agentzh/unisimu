@@ -25,19 +25,17 @@ int main (char[][] args) {
     // (partially) store the set M and also the n minimals:
     int[] M = new int[n];
     M[0] = 1;
-    int p2 = 0;
-    int p3 = 0;
+    int pL = 0;
+    int pR = 0;
     for (int i = 1; i < M.length; i++) {
-        int L = L( M[p2] ); int R = R( M[p3] );
+        int L = L( M[pL] ); int R = R( M[pR] );
         if (L < R) {
-            M[i] = L;
-            p2++;
+            M[i] = L; pL++;
         } else if (R < L) {
-            M[i] = R;
-            p3++;
+            M[i] = R; pR++;
         } else { // R == L
             M[i] = L;
-            p2++; p3++;
+            pL++; pR++;
         }
     }
     //printf("M.len = %d\n", M.length);

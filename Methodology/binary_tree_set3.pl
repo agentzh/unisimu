@@ -1,7 +1,7 @@
 #: binary_tree_set3.pl
 #: algorithm proposed by our instructor Mao Qirong
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-03 2006-03-03
+#: 2006-03-03 2006-03-04
 
 use strict;
 use warnings;
@@ -15,18 +15,16 @@ if (! defined $n or $n < 0) {
 # (partially) store the set M and also the n minimals:
 my @M = (1);
 
-my ($p2, $p3) = (0, 0);
+my ($pL, $pR) = (0, 0);
 for my $i (1..$n-1) {
-    my ($L, $R) = (L($p2), R($p3));
+    my ($L, $R) = (L($pL), R($pR));
     if ($L < $R) {
-        $M[$i] = $L;
-        $p2++;
+        $M[$i] = $L; $pL++;
     } elsif ($R < $L) {
-        $M[$i] = $R;
-        $p3++;
+        $M[$i] = $R; $pR++;
     } else { # $R == $L
         $M[$i] = $L;
-        $p2++; $p3++;
+        $pL++; $pR++;
     }
 }
 print "@M" if $n > 0;
