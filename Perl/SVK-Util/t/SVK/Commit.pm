@@ -1,5 +1,5 @@
 #: t/SVK/Commit.pm
-#: 2006-02-04 2006-02-04
+#: 2006-02-04 2006-03-04
 
 package t::SVK::Commit;
 
@@ -23,7 +23,7 @@ filters {
     content     => [qw<filter_date>],
 };
 
-my $script = "$FindBin::Bin/../../svkci.pl";
+my $script = "$FindBin::Bin/../../../svkci.pl";
 
 our @EXPORT = qw(
     run_test run_tests

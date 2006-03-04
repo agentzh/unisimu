@@ -1,7 +1,7 @@
 #: filename.t
 #: Test the file name verification feature of `svkci.pl'
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-04 2006-02-04
+#: 2006-02-04 2006-03-04
 
 use t::SVK::Commit;
 

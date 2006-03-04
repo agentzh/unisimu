@@ -1,7 +1,7 @@
 #: date.t
 #: Test the date checking feature
 #: Copyright (C) 2006 Agent Zhang
-#: 2006-02-04 2006-02-04
+#: 2006-02-04 2006-03-04
 
 use t::SVK::Commit;
 use Date::Simple qw(today);
@@ -15,7 +15,7 @@ __DATA__
 === TEST 0: create < modif > today
 --- filename:   foo
 --- content
-#: ^today^ ^tomorrow^
+//: ^today^ ^tomorrow^
 
 blah blah blah
 
@@ -37,7 +37,7 @@ M foo
 file foo not appear in the output of `svk status'
 --- filename:   foo
 --- content
-#: ^today^ ^tomorrow^
+//: ^today^ ^tomorrow^
 
 blah blah blah
 
@@ -55,7 +55,7 @@ M barbar
 === TEST 2: create = modif = today
 --- filename:   bar
 --- content
-#: ^today^ ^today^
+//: ^today^ ^today^
 
 blah blah blah
 
@@ -74,7 +74,7 @@ M bar
 === TEST 3: create > modif < today
 --- filename:   foo
 --- content
-#: ^today^ ^yesterday^
+//: ^today^ ^yesterday^
 
 blah blah blah
 
@@ -96,7 +96,7 @@ M foo
 === TEST 4: create > modif < today
 --- filename:   foo
 --- content
-#: ^yesterday^ ^today^
+//: ^yesterday^ ^today^
 
 blah blah blah
 
@@ -115,7 +115,7 @@ M foo
 === TEST 4: create < modif < today
 --- filename:   foo
 --- content
-#:  2000-2-1   2000-2-3
+//:  2000-2-1   2000-2-3
 
 blah blah blah
 

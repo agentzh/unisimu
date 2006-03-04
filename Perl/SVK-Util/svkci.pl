@@ -1,7 +1,7 @@
 #: svkci.pl
 #: drop-in replacement (and also a wrapper) for `svk ci'
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-04 2006-02-04
+#: 2006-02-04 2006-03-04
 
 use strict;
 use warnings;
@@ -10,6 +10,7 @@ use File::Basename;
 use File::Copy;
 use Date::Simple ('today');
 
+my $CommentPat = qr[(?:#|//)];
 my $DatePat = qr/\d{4}-\d{1,2}-\d{1,2}/o;
 my $Fatals = 0;
 my @Errors = ();
@@ -80,15 +81,15 @@ sub process_pl ($) {
         die "error: Can't open $file for reading: $!";
     my $first = 1;
     while (<$in>) {
-        last if /^[^\#]/o;
-        if ($first and m{^ \#: \s* (\S+) \s* $}xo) {
+        last if not /$CommentPat/o;
+        if ($first and m{^ $CommentPat: \s* (\S+) \s* $}xo) {
             my $fname = $1;
             #warn "File Name: $fname\n";
             if (basename($fname) ne basename($file)) {
                 log_error($file, "File name ($fname) malformed");
             }
             $first = 0;
-        } elsif (/^ \#: \s* Copyright \s+ (.+) /xio) {
+        } elsif (/^ $CommentPat: \s* Copyright \s+ (.+) /xio) {
             # ...
             my $s = $1;
             my $year = today()->year();
@@ -97,9 +98,9 @@ sub process_pl ($) {
                 log_error($file, "Copyright out-of-date. It's $year already");
             }
             $first = 0;
-        } elsif (/^ \#: \s* ($DatePat) \s+ ($DatePat) \s* $/ox) {
+        } elsif (/^ $CommentPat: \s* ($DatePat) \s+ ($DatePat) \s* $/ox) {
             last if not check_dates($file, $1, $2);
-        } elsif ($first and /^\#:/) {
+        } elsif ($first and /^$CommentPat:/) {
             $first = 0;
         }
     }
