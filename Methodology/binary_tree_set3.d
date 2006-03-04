@@ -1,7 +1,7 @@
 //: binary_tree_set3.d
 //: D port for binary_tree_set3.pl
 //: Copyright (c) 2006 Agent Zhang
-//: 2006-03-03 2006-03-03
+//: 2006-03-03 2006-03-04
 
 import std.conv;
 import std.stdio;
