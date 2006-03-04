@@ -6,6 +6,5 @@
 
 use strict;
 use warnings;
-use FindBin;
 
-system("$^X $FindBin::Bin/binary_tree_set2.t binary_tree_set3.exe");
+system("$^X binary_tree_set2.t binary_tree_set3.exe");

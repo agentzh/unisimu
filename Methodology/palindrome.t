@@ -1,13 +1,19 @@
 #: palindrome.t
 #: test palindrome.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-02-27 2006-02-28
+#: 2006-02-27 2006-03-04
 
 use Test::Cmd::Base;
 
 plan tests => 1 * blocks;
 
-run_cmd_tests("$^X palindrome.pl");
+my $script = shift || 'palindrome.pl';
+
+if ($script =~ /\.pl$/i) {
+    run_cmd_tests("$^X $script");
+} else {
+    run_cmd_tests($script);
+}
 
 __DATA__
 
