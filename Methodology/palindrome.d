@@ -1,7 +1,7 @@
 //: palindrome.d
 //: D port for palindrome.pl
 //: Copyright (c) 2006 Agent Zhang
-//: 2006-03-04 2006-03-04
+//: 2006-03-04 2006-03-06
 
 import std.cstream;
 import std.string;
@@ -24,13 +24,14 @@ int main () {
 }
 
 char[] readline() {
-    const int INIT_SIZE = 1;
+    const int INIT_SIZE = 0;
     char[] buf = new char[INIT_SIZE];
     char c;
     int i = 0;
-    while ((c = din.getc()) != '\n') {
-        if (i == buf.length)
-            buf.length = buf.length + 1;
+    while (!din.eof()) {
+        char c = din.getc();
+        if (c == '\n') return buf;
+        buf.length = buf.length + 1;
         buf[i++] = c;
     }
     return buf;
