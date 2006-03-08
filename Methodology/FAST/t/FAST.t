@@ -6,9 +6,10 @@
 use strict;
 use warnings;
 
-use Test::More tests => 38;
+use Test::More tests => 51;
+
 use Test::MockObject;
-use File::Compare;
+use Test::Differences;
 
 BEGIN { use_ok('FAST'); }
 
@@ -161,4 +162,76 @@ is_deeply(
             '<p>' => ['[a]'],
         }
     );
+
+    my $asm = $g->as_asm;
+    ok not $asm;
+    is( $g->error, "as_asm: No `entry' node found.\n" );
+}
+
+{
+    # Test the method as_asm:
+
+    my $src = <<'.';
+entry => <p>
+<p> => [c]
+[c] => <q>
+<p> => [a]
+<q> => <p>
+<q> => exit
+[a] => [b]
+[b] => exit
+.
+
+    $g = FAST->new(\$src);
+    ok $g;
+    isa_ok ($g, 'FAST');
+
+    # Test method node2asm:
+
+    is $g->node2asm('<p>'), 'test p';
+    is $g->node2asm('[a]'), 'do   a';
+    is $g->node2asm('exit'), 'exit';
+
+    my $asm = $g->as_asm;
+    eq_or_diff( $asm, <<'_EOC_', 'as_asm' );
+L1:
+    test p
+    jno  L2
+    do   c
+    test q
+    jno  L3
+    jmp  L1
+L2:
+    do   a
+    do   b
+L3:
+    exit
+_EOC_
+
+    $g = FAST->new('t/01sample');
+    ok $g;
+    isa_ok ($g, 'FAST');
+
+    my $asmfile = 't/01sample.asm';
+    unlink $asmfile if -f $asmfile;
+    ok $g->as_asm($asmfile);
+    open (my $in, $asmfile);
+    ok $in;
+    undef $/;
+    $asm = <$in>;
+    eq_or_diff $asm, <<'_EOC_';
+L1:
+    test p
+    jno  L2
+    do   c
+    test q
+    jno  L3
+    jmp  L1
+L2:
+    do   a
+    do   b
+L3:
+    exit
+_EOC_
+    close $in;
 }

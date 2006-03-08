@@ -4,6 +4,9 @@ META.yml
 script/fplot.pl
 script/fast.pl
 t/FAST.t
+t/01sample
+t/01sample.png
+t/02sample
 lib/FAST.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Base.pm

@@ -13,7 +13,7 @@ requires        ('GraphViz');
 
 build_requires  ('Test::Simple');
 build_requires  ('Test::MockObject');
-build_requires  ('File::Compare');
+build_requires  ('Test::Differences');
 
 #makemaker_args  (
 #    test => { TESTS => "t/*.t t/*/*.t t/*/*/*.t" },

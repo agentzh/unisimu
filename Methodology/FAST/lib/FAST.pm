@@ -142,6 +142,75 @@ sub plot_node {
 }
 
 sub as_asm {
+    my ($self, $outfile) = @_;
+    my $out;
+    my $buf;
+    if ($outfile) {
+        if (!open $out, ">$outfile") {
+            $Error = "as_asm: Can't open `$outfile' for writing: $!\n";
+        }
+    } else {
+        open $out, '>', \$buf;
+    }
+
+    my %edge_from = %{ $self->{edge_from} };
+    my %edge_to   = %{ $self->{edge_to} };
+
+    my (%labels, %visited, @tasks);
+    if (! $edge_to{entry}) {
+        $Error = "as_asm: No `entry' node found.\n";
+        return undef;
+    }
+    my $c = 1;
+    my $cur = $edge_to{entry}->[0];
+    my $prev;
+    while ($cur) {
+        if ($visited{$cur}) {
+            my $label = $labels{$cur};
+            #warn "JMP!!! $cur - $label";
+            if ($prev ne 'exit') {
+                print $out "    jmp  $label\n";
+            }
+            $prev = undef;
+            $cur = shift @tasks;
+            next;
+        }
+        if (@{ $edge_from{$cur} } > 1) {
+            $labels{$cur} ||= 'L' . $c++;
+            my $label = $labels{$cur};
+            print $out "$label:\n";
+            $visited{$cur} = 1;
+        } elsif ($labels{$cur}) {
+            print $out "$labels{$cur}:\n";
+        }
+        print $out "    ".$self->node2asm($cur)."\n";
+        $prev = $cur;
+        my @next = @{ $edge_to{$cur} };
+        if (@next > 1) {
+            $labels{$next[1]} ||= 'L'.$c++;
+            my $label = $labels{$next[1]};
+            print $out "    jno  $label\n";
+            push @tasks, $next[1];
+            $cur = $next[0];
+        } elsif (@next == 1) {
+            $cur = $next[0];
+        } else {
+            $cur = shift @tasks;
+        }
+    }
+    close $out;
+    return $outfile ? 1 : $buf;
+}
+
+sub node2asm {
+    my ($self, $node) = @_;
+    if ($node =~ /^<(.*)>$/) {
+        return "test $1";
+    } elsif ($node =~ /^\[(.*)\]$/) {
+        return "do   $1";
+    } else {
+        return $node;
+    }
 }
 
 sub structured {
@@ -159,7 +228,7 @@ FAST - Library for Flowchart Abstract Syntax Tree
 
     use FAST;
 
-    $src = <<.
+    $src = <<'.';
     entry => <p>
     <p> => [c]
     [c] => <q>
