@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 51;
+use Test::More tests => 60;
 
 use Test::MockObject;
 use Test::Differences;
@@ -112,7 +112,7 @@ is_deeply(
 }
 
 {
-    # Test method as_png
+    # Test method as_png using t/01sample
     my $data = $g->as_png;
     ok $data;
     my $outfile = 't/01sample.png';
@@ -122,14 +122,27 @@ is_deeply(
 }
 
 {
+    # Test method as_png using t/02sample
+    $g = FAST->new('t/02sample') or warn FAST->error;
+    ok $g;
+    isa_ok $g, 'FAST';
+    my $data = $g->as_png;
+    ok $data;
+    my $outfile = 't/02sample.png';
+    unlink $outfile if -f $outfile;
+    $g->as_png($outfile);
+    ok -f $outfile;
+}
+
+{
     # Test the new/parse/error methods:
     my $g = FAST->new;
     ok !defined $g, 'call ->new with no arguments';
-    is( FAST->error, "FAST::new: No input source specified.\n" );
+    is( FAST->error, "FAST::new: No input source specified." );
 
     $g = FAST->new('no_such_file');
     ok !defined $g, 'call ->new with invalid file name';
-    is( FAST->error, "FAST::parse: Can't open `no_such_file' for reading: $!\n" );
+    is( FAST->error, "FAST::parse: Can't open `no_such_file' for reading: $!" );
 
     my $src = <<'.';
 [a] => [c]
@@ -165,7 +178,7 @@ is_deeply(
 
     my $asm = $g->as_asm;
     ok not $asm;
-    is( $g->error, "as_asm: No `entry' node found.\n" );
+    is( $g->error, "as_asm: No `entry' node found." );
 }
 
 {
@@ -208,6 +221,11 @@ L3:
     exit
 _EOC_
 
+}
+
+{
+    # Test method as_asm:
+
     $g = FAST->new('t/01sample');
     ok $g;
     isa_ok ($g, 'FAST');
@@ -218,7 +236,7 @@ _EOC_
     open (my $in, $asmfile);
     ok $in;
     undef $/;
-    $asm = <$in>;
+    my $asm = <$in>;
     eq_or_diff $asm, <<'_EOC_';
 L1:
     test p
@@ -232,6 +250,37 @@ L2:
     do   b
 L3:
     exit
+_EOC_
+    close $in;
+}
+
+{
+    # Test method as_asm:
+
+    $g = FAST->new('t/02sample') or warn FAST->error;
+    ok $g;
+    isa_ok ($g, 'FAST');
+
+    my $asmfile = 't/02sample.asm';
+    unlink $asmfile if -f $asmfile;
+    ok $g->as_asm($asmfile);
+    open (my $in, $asmfile);
+    ok $in;
+    undef $/;
+    my $asm = <$in>;
+    eq_or_diff $asm, <<'_EOC_';
+    test p
+    jno  L1
+    do   f
+L2:
+    do   h
+L3:
+    exit
+L1:
+    do   g
+    test q
+    jno  L3
+    jmp  L2
 _EOC_
     close $in;
 }

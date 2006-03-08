@@ -23,7 +23,7 @@ our $Error;
 sub new {
     my ($proto, $src) = @_;
     if (not $src) {
-        $Error = "FAST::new: No input source specified.\n";
+        $Error = "FAST::new: No input source specified.";
         return undef;
     }
     my $class = ref $proto || $proto;
@@ -41,11 +41,12 @@ sub parse {
     } else {
         $fname = $src;
         if (not open $in, $fname) {
-            $Error = "FAST::parse: Can't open `$fname' for reading: $!\n";
+            $Error = "FAST::parse: Can't open `$fname' for reading: $!";
             return undef;
         }
     }
     my (%edge_from, %edge_to);
+    local $/ = "\n";
     while (<$in>) {
         next if /^\s*$/;
         if (/^\s* (\S+) \s* => \s* (\S+) \s*$/xo) {
@@ -147,7 +148,7 @@ sub as_asm {
     my $buf;
     if ($outfile) {
         if (!open $out, ">$outfile") {
-            $Error = "as_asm: Can't open `$outfile' for writing: $!\n";
+            $Error = "as_asm: Can't open `$outfile' for writing: $!";
         }
     } else {
         open $out, '>', \$buf;
@@ -158,20 +159,20 @@ sub as_asm {
 
     my (%labels, %visited, @tasks);
     if (! $edge_to{entry}) {
-        $Error = "as_asm: No `entry' node found.\n";
+        $Error = "as_asm: No `entry' node found.";
         return undef;
     }
     my $c = 1;
     my $cur = $edge_to{entry}->[0];
-    my $prev;
+    my $head = 1;
     while ($cur) {
         if ($visited{$cur}) {
             my $label = $labels{$cur};
-            #warn "JMP!!! $cur - $label";
-            if ($prev ne 'exit') {
+            #warn "JMP!!! $prev - $cur - $label";
+            if (!$head) {
                 print $out "    jmp  $label\n";
+                $head = 1;
             }
-            $prev = undef;
             $cur = shift @tasks;
             next;
         }
@@ -183,8 +184,9 @@ sub as_asm {
         } elsif ($labels{$cur}) {
             print $out "$labels{$cur}:\n";
         }
-        print $out "    ".$self->node2asm($cur)."\n";
-        $prev = $cur;
+        my $cmd = $self->node2asm($cur);
+        print $out "    $cmd\n";
+        $head = $cmd eq 'exit';
         my @next = @{ $edge_to{$cur} };
         if (@next > 1) {
             $labels{$next[1]} ||= 'L'.$c++;
