@@ -15,6 +15,12 @@ t/03sample
 t/03sample.asm
 t/03sample.png
 lib/FAST.pm
+lib/FAST/Element.pm
+lib/FAST/Node.pm
+lib/FAST/Struct.pm
+lib/FAST/Struct/Seq.pm
+lib/FAST/Struct/If.pm
+lib/FAST/Struct/While.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Scripts.pm
