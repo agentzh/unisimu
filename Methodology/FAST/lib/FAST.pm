@@ -18,20 +18,33 @@ our %FluxNodeStyle = (
     filllcolor => 'yellow',
 );
 
+our $Error;
+
 sub new {
-    my ($proto, $infile) = @_;
-    return undef if not $infile;
+    my ($proto, $src) = @_;
+    if (not $src) {
+        $Error = "FAST::new: No input source specified.\n";
+        return undef;
+    }
     my $class = ref $proto || $proto;
     my $self = bless {
     }, $class;
-    $self->parse($infile);
-    return $self;
+    return $self->parse($src) ? $self : undef;
 }
 
 sub parse {
-    my ($self, $fname) = @_;
-    open my $in, $fname or
-        die "error: Can't open $fname for reading: $!\n";
+    my ($self, $src) = @_;
+    my ($fname, $in);
+    if (ref $src) {
+        open $in, '<', $src;
+        $fname = 'STRING';
+    } else {
+        $fname = $src;
+        if (not open $in, $fname) {
+            $Error = "FAST::parse: Can't open `$fname' for reading: $!\n";
+            return undef;
+        }
+    }
     my (%edge_from, %edge_to);
     while (<$in>) {
         next if /^\s*$/;
@@ -44,12 +57,19 @@ sub parse {
             $edge_to{$to}   ||= [];
             push @{ $edge_to{$from} }, $to;
         } else {
-            die "$fname: line $.: syntax error: $_";
+            $Error = "FAST::parse: $fname: line $.: syntax error: $_";
+            close $in;
+            return undef;
         }
     }
     close $in;
     $self->{edge_from} = \%edge_from;
     $self->{edge_to}   = \%edge_to;
+    return 1;
+}
+
+sub error {
+    return $Error;
 }
 
 sub as_png {
@@ -136,6 +156,39 @@ __END__
 FAST - Library for Flowchart Abstract Syntax Tree
 
 =head1 SYNOPSIS
+
+    use FAST;
+
+    $src = <<.
+    entry => <p>
+    <p> => [c]
+    [c] => <q>
+    <p> => [a]
+    <q> => <p>
+    <q> => exit
+    [a] => [b]
+    [b] => exit
+    .
+
+    # Load from string:
+    $g = FAST->new(\$src) or
+        die FAST->error;
+
+    # Load from disk file:
+    $g = FAST->new('foo.in') or
+        die FAST->error;
+
+    # Generate PNG image:
+    $g->as_png('blah.png');
+
+    # Or return the image data directly:
+    $bin_data = $g->as_png;
+
+    # Generate pseud assembly code dipicting the flowchart:
+    $g->as_asm('blah.asm');
+
+    # Or return the ASM code directly:
+    $asm_src = $g->as_asm;
 
 =head1 DESCRIPTION
 

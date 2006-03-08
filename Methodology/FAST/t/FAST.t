@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 28;
+use Test::More tests => 38;
 use Test::MockObject;
 use File::Compare;
 
@@ -118,4 +118,47 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
+}
+
+{
+    # Test the new/parse/error methods:
+    my $g = FAST->new;
+    ok !defined $g, 'call ->new with no arguments';
+    is( FAST->error, "FAST::new: No input source specified.\n" );
+
+    $g = FAST->new('no_such_file');
+    ok !defined $g, 'call ->new with invalid file name';
+    is( FAST->error, "FAST::parse: Can't open `no_such_file' for reading: $!\n" );
+
+    my $src = <<'.';
+[a] => [c]
+[a => d s
+.
+    $g = FAST->new(\$src);
+    ok !defined $g, 'syntax error in the source';
+    is( FAST->error, "FAST::parse: STRING: line 2: syntax error: [a => d s\n" );
+
+    $src = <<'.';
+[a] => <p>
+<p> => [a]
+.
+    $g = FAST->new(\$src);
+    ok $g;
+    isa_ok $g, 'FAST';
+
+    is_deeply(
+        $g->{edge_to},
+        {
+            '[a]' => ['<p>'],
+            '<p>' => ['[a]'],
+        }
+    );
+
+    is_deeply(
+        $g->{edge_from},
+        {
+            '[a]' => ['<p>'],
+            '<p>' => ['[a]'],
+        }
+    );
 }

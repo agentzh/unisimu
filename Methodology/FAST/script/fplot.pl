@@ -16,7 +16,7 @@ if ($opts{h}) { Usage(0); }
 my $infile = shift;
 if (not $infile) { Usage(1); }
 
-my $g = FAST->new($infile);
+my $g = FAST->new($infile) or die FAST::error;
 my $outfile = $opts{o} || "$infile.png";
 $g->as_png($outfile);
 
