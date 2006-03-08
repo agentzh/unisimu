@@ -82,8 +82,9 @@ sub as_png {
         layout => 'dot',
         edge => {color => 'red'},
         node => {
+            fillcolor => '#f1e1f4',
+            color => '#918194',
             style => 'filled',
-            fillcolor => 'yellow',
         },
     );
 

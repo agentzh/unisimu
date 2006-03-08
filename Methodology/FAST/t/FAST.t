@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 60;
+use Test::More tests => 64;
 
 use Test::MockObject;
 use Test::Differences;
@@ -135,6 +135,19 @@ is_deeply(
 }
 
 {
+    # Test method as_png using t/03sample
+    $g = FAST->new('t/03sample') or warn FAST->error;
+    ok $g;
+    isa_ok $g, 'FAST';
+    my $data = $g->as_png;
+    ok $data;
+    my $outfile = 't/03sample.png';
+    unlink $outfile if -f $outfile;
+    $g->as_png($outfile);
+    ok -f $outfile;
+}
+
+{
     # Test the new/parse/error methods:
     my $g = FAST->new;
     ok !defined $g, 'call ->new with no arguments';
@@ -224,7 +237,7 @@ _EOC_
 }
 
 {
-    # Test method as_asm:
+    # Test method as_asm using t/01sample:
 
     $g = FAST->new('t/01sample');
     ok $g;
@@ -255,13 +268,13 @@ _EOC_
 }
 
 {
-    # Test method as_asm:
+    # Test method as_asm using t/03sample:
 
-    $g = FAST->new('t/02sample') or warn FAST->error;
+    $g = FAST->new('t/03sample') or warn FAST->error;
     ok $g;
     isa_ok ($g, 'FAST');
 
-    my $asmfile = 't/02sample.asm';
+    my $asmfile = 't/03sample.asm';
     unlink $asmfile if -f $asmfile;
     ok $g->as_asm($asmfile);
     open (my $in, $asmfile);
@@ -269,18 +282,18 @@ _EOC_
     undef $/;
     my $asm = <$in>;
     eq_or_diff $asm, <<'_EOC_';
-    test p
-    jno  L1
+L1:
     do   f
+    test p
+    jno  L2
+    do   g
+    test q
+    jno  L3
+    jmp  L1
 L2:
     do   h
 L3:
     exit
-L1:
-    do   g
-    test q
-    jno  L3
-    jmp  L2
 _EOC_
     close $in;
 }

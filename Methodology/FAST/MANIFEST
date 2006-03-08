@@ -6,7 +6,11 @@ script/fast.pl
 t/FAST.t
 t/01sample
 t/01sample.png
+t/01sample.asm
 t/02sample
+t/02sample.png
+t/02sample.asm
+t/03sample
 lib/FAST.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Base.pm
