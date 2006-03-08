@@ -40,10 +40,18 @@ sub subs {
     return $done;
 }
 
+sub might_pass {
+    my ($self, $label) = @_;
+    for my $e ($self->elems) {
+        return 1 if $e->might_pass($label);
+    }
+    return undef;
+}
+
 # FAST::Node wrapper
 sub _node {
     my ($self, $n) = @_;
-    return ref($n) ? $n : FAST::Node->new($n);
+    return ($n and ref($n)) ? $n : FAST::Node->new($n);
 }
 
 1;

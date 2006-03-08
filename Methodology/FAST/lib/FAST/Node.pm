@@ -13,6 +13,7 @@ our $VERSION = '0.01';
 
 sub new {
     my ($proto, $label) = @_;
+    $label = '' if not defined $label;
     my $self = $proto->SUPER::new;
     $self->{label} = $label;
     return $self;
@@ -20,6 +21,16 @@ sub new {
 
 sub label {
     return $_[0]->{label};
+}
+
+sub might_pass {
+    my ($self, $label) = @_;
+    return $label eq $self->label;
+}
+
+sub must_pass {
+    my ($self, $label) = @_;
+    return $label eq $self->label;
 }
 
 1;

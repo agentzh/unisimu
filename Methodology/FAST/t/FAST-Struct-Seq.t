@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 23;
 #use Data::Dumper::Simple;
 
 BEGIN { use_ok('FAST::Struct::Seq'); }
@@ -16,6 +16,10 @@ my $class = 'FAST::Struct::Seq';
 my $seq = $class->new('[f]', '[L:=1]');
 ok $seq;
 isa_ok $seq, $class;
+
+# Test $seq->entry/$seq->exit:
+is $seq->entry->label, '[f]';
+is $seq->exit->label, '[L:=1]';
 
 # Test $seq->first:
 my $first = $seq->first;
@@ -43,3 +47,12 @@ is( $relems->[1]->label, '[L:=1]' );
 $relems->[1] = 'exit';
 is( $seq->second, 'exit' );
 is( $seq->first->label,  '<p>' );
+
+# Test $seq->entry:
+is $seq->entry->label, '<p>';
+
+# Test methods `might_pass' and `must_pass':
+ok $seq->might_pass('<p>');
+ok !$seq->might_pass('[f]');
+ok $seq->must_pass('<p>');
+ok !$seq->must_pass('[f]');

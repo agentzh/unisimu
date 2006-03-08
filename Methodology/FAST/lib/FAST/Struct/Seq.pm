@@ -7,6 +7,7 @@ package FAST::Struct::Seq;
 
 use strict;
 use warnings;
+
 use base 'FAST::Struct';
 use FAST::Node;
 
@@ -32,6 +33,26 @@ sub first {
 sub second {
     my $self = shift;
     return ($self->elems)[1];
+}
+
+sub entry {
+    return $_[0]->first;
+}
+
+sub exit {
+    return $_[0]->second;
+}
+
+sub might_pass {
+    my ($self, $label) = @_;
+    return $self->first->might_pass($label) or
+        $self->second->might_pass($label);
+}
+
+sub must_pass {
+    my ($self, $label) = @_;
+    return $self->first->must_pass($label) or
+        $self->second->must_pass($label);
 }
 
 1;
