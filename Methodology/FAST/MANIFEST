@@ -1,3 +1,4 @@
+Makefile.PL
 README
 MANIFEST
 META.yml
@@ -11,6 +12,8 @@ t/02sample
 t/02sample.png
 t/02sample.asm
 t/03sample
+t/03sample.asm
+t/03sample.png
 lib/FAST.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Base.pm
