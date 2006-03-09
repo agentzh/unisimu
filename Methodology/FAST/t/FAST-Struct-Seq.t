@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 48;
+use Test::More tests => 68;
 #use Data::Dumper::Simple;
 
 BEGIN { use_ok('FAST::Struct::Seq'); }
@@ -105,4 +105,41 @@ _EOC_
     ok( $s->might_pass('[L:=3]') );
     ok( $s->might_pass('[L:=4]') );
     ok( not $s->might_pass('[L:=5]') );
+
+    my $saved_s = $s->clone;
+    ok $saved_s;
+    isa_ok $saved_s, 'FAST::Struct::Seq';
+    isnt( $saved_s->id, $s->id, 'clone works' );
+    is( $saved_s->as_c, "do L:=1\ndo L:=2\ndo L:=3\ndo L:=4\n", 'clone works' );
+
+    ok $s->subs('[L:=1]', '[a]');
+    is( $s->as_c, "do a\ndo L:=2\ndo L:=3\ndo L:=4\n" );
+    is( $saved_s->as_c, "do L:=1\ndo L:=2\ndo L:=3\ndo L:=4\n", 'cloned copy stays intact' );
+
+    ok $s->subs('[L:=3]', '[c]');
+    is( $s->as_c, "do a\ndo L:=2\ndo c\ndo L:=4\n" );
+
+    ok $s->subs('[L:=4]', '[d]');
+    is( $s->as_c, "do a\ndo L:=2\ndo c\ndo d\n" );
+
+    ok ! $s->subs('[L:=4]', '[e]');
+    is( $s->as_c, "do a\ndo L:=2\ndo c\ndo d\n" );
+
+    ok ! $s->subs('[L:=5]', '[e]');
+    is( $s->as_c, "do a\ndo L:=2\ndo c\ndo d\n" );
+
+    ok $s->subs('[L:=2]', FAST::Node->new('[b]'));
+    is( $s->as_c, "do a\ndo b\ndo c\ndo d\n" );
+    is( $saved_s->as_c, "do L:=1\ndo L:=2\ndo L:=3\ndo L:=4\n" );
+
+    ok $s->subs('[b]', $saved_s);
+    is( $s->as_c, <<'_EOC_' );
+do a
+do L:=1
+do L:=2
+do L:=3
+do L:=4
+do c
+do d
+_EOC_
 }

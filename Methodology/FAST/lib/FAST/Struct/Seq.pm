@@ -68,6 +68,13 @@ __END__
 
 FAST::Struct::Seq - Sequential structure in FAST DOM tree
 
+=head1 INHERITANCE
+
+    FAST::Struct::Seq
+        isa FAST::Struct
+            isa FAST::Element
+                isa Clone
+
 =head1 SYNOPSIS
 
     use FAST::Struct::Seq;
@@ -78,12 +85,6 @@ FAST::Struct::Seq - Sequential structure in FAST DOM tree
     print $seq->id;
     @elems = $seq->elems;
     $sucess = $seq->subs('[p]', '[L:=3]');
-
-=head1 INHERITANCE
-
-    FAST::Struct::Seq
-        isa FAST::Struct
-            isa FAST::Element
 
 =head1 DESCRIPTION
 

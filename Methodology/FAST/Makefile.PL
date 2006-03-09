@@ -10,6 +10,7 @@ install_script  ('script/fplot.pl');
 
 #requires        ('Data::Dumper::Simple');
 requires        ('GraphViz');
+requires        ('Clone');
 
 build_requires  ('Test::Simple');
 build_requires  ('Test::MockObject');
@@ -18,5 +19,7 @@ build_requires  ('Test::Differences');
 #makemaker_args  (
 #    test => { TESTS => "t/*.t t/*/*.t t/*/*/*.t" },
 #);
+
+auto_install;
 
 &WriteAll;

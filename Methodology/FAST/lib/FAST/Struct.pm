@@ -1,7 +1,7 @@
 #: FAST/Struct.pm
 #: Base class for various FAST DOM tree structures
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-08
+#: 2006-03-08 2006-03-09
 
 package FAST::Struct;
 
@@ -60,6 +60,12 @@ __END__
 =head1 NAME
 
 FAST::Struct - Base class for various FAST DOM tree structures
+
+=head1 INHERITANCE
+
+    FAST::Struct
+        isa FAST::Element
+            isa Clone
 
 =head1 SYNOPSIS
 
