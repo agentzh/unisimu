@@ -79,7 +79,7 @@ sub as_png {
     my %edge_to   = %{ $self->{edge_to} };
 
     my $gv = GraphViz->new(
-        layout => 'dot',
+        layout => 'neato',
         edge => {color => 'red'},
         node => {
             fillcolor => '#f1e1f4',

@@ -57,7 +57,7 @@ sub as_png {
         },
     );
 
-    $self->_visualize($gv);
+    $self->visualize($gv);
     require 'FAST.pm';
     FAST->plot_node($gv, 'entry');
     FAST->plot_node($gv, 'exit');
