@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 64;
+use Test::More tests => 68;
 
 use Test::MockObject;
 use Test::Differences;
@@ -301,4 +301,49 @@ L3:
 _EOC_
     close $in;
     unlink $asmfile if -f $asmfile;
+}
+
+SKIP: {
+    skip( "The `structured' method is not yet implemented.", 4 );
+
+    # Test method structured using t/01sample:
+
+    my $g = FAST->new('t/01sample');
+    ok $g;
+    my $ast = $g->structured;
+    isa_ok $ast, 'FAST::Struct';
+    isa_ok $ast, 'FAST::Struct::Seq';
+    eq_or_diff( $ast->as_c, <<'_EOC_' );
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (p) {
+            do L:=4
+        } else {
+            do L:=2
+        }
+    } else {
+        if (L=2) {
+            do L:=3
+        } else {
+            if (L=3) {
+                do L:=5
+            } else {
+                if (L=4) {
+                    do L:=5
+                } else {
+                    if (L=5) {
+                        if (q) {
+                            do L:=1
+                        } else {
+                            do L:=0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+_EOC_
+
 }

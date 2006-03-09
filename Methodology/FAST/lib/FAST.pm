@@ -9,6 +9,7 @@ use 5.006001;
 use strict;
 use warnings;
 use GraphViz;
+use Data::Dumper::Simple;
 
 our $VERSION = '0.01';
 
@@ -220,9 +221,31 @@ sub node2asm {
 }
 
 sub structured {
-    my ($self) = @_;
+    my $self = shift;
+    my %opts = @_;
+    my %edge_to   = %{ $self->{edge_to} };
+    my $entry = $edge_to{entry}->[0];
+    my @nodes =
+        grep { $_ ne $entry and (/^\[.*\]$/ or /^<.*>$/) }
+            keys %edge_to;
+    @nodes = sort { _core_label($a) cmp _core_label($b) } @nodes;
+    unshift @nodes, $entry;
+    warn Dumper(@nodes);
+    if (not $opts{simplified}) {
+    } else {
+    }
 }
 
+sub _core_label {
+    my $node = shift;
+    if ($node =~ /^<(.*)>$/) {
+        return $1;
+    } elsif ($node =~ /^\[(.*)\]$/) {
+        return $1;
+    } else {
+        return $node;
+    }
+}
 
 1;
 __END__
