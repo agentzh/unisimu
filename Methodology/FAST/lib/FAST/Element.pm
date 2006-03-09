@@ -42,7 +42,30 @@ sub visualize { die; }
 
 sub as_c { die; }
 
-sub as_png { die; }
+sub as_png {
+    my ($self, $outfile) = @_;
+    my %edge_from = %{ $self->{edge_from} };
+    my %edge_to   = %{ $self->{edge_to} };
+
+    my $gv = GraphViz->new(
+        layout => 'dot',
+        edge => {color => 'red'},
+        node => {
+            fillcolor => '#f1e1f4',
+            color => '#918194',
+            style => 'filled',
+        },
+    );
+
+    $self->_visualize($gv);
+    require 'FAST.pm';
+    FAST->plot_node($gv, 'entry');
+    FAST->plot_node($gv, 'exit');
+    $gv->add_edge('entry' => $self->entry);
+    $gv->add_edge('exit'  => $self->exit);
+
+    $gv->as_png($outfile);
+}
 
 1;
 __END__

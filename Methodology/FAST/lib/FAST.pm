@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-08
+#: 2006-03-08 2006-03-09
 
 package FAST;
 
@@ -99,11 +99,11 @@ sub as_png {
                 if ($edge_to{$from}->[0] eq $key) {
                     $edge_to{$from}->[0] = $flux_node;
                 }
-                $self->plot_edge($gv, $from => $flux_node);
+                $self->_plot_edge($gv, $from => $flux_node);
             }
         } elsif (@$val == 1) {
             $self->plot_node($gv, $key);
-            $self->plot_edge($gv, $val->[0] => $key);
+            $self->_plot_edge($gv, $val->[0] => $key);
         } else {
             $self->plot_node($gv, $key);
         }
@@ -112,7 +112,7 @@ sub as_png {
     $gv->as_png($outfile);
 }
 
-sub plot_edge {
+sub _plot_edge {
     my ($self, $gv, $from, $to) = @_;
     my @to_nodes = @{ $self->{edge_to}->{$from} };
     my $label;

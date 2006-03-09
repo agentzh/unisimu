@@ -44,13 +44,13 @@ is_deeply(
 );
 
 {
-    # Test the plot_edge method:
+    # Test the _plot_edge method:
     my $mock = Test::MockObject->new;
     $mock->set_true( 'add_edge' );
 
-    $g->plot_edge($mock, '<p>', '[c]');
-    $g->plot_edge($mock, '<p>', '[a]');
-    $g->plot_edge($mock, '[a]', '[b]');
+    $g->_plot_edge($mock, '<p>', '[c]');
+    $g->_plot_edge($mock, '<p>', '[a]');
+    $g->_plot_edge($mock, '[a]', '[b]');
 
     is( $mock->call_pos(1),  'add_edge', 'plot_edge calls $gv->add_edge' );
     my @args = $mock->call_args(1);
@@ -119,7 +119,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
-    unlink $outfile if -f $outfile;
+    #unlink $outfile if -f $outfile;
 }
 
 {
@@ -133,7 +133,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
-    unlink $outfile if -f $outfile;
+    #unlink $outfile if -f $outfile;
 }
 
 {
@@ -147,7 +147,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
-    unlink $outfile if -f $outfile;
+    #unlink $outfile if -f $outfile;
 }
 
 {
