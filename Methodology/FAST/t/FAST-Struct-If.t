@@ -8,6 +8,7 @@ use warnings;
 
 use Test::More tests => 92;
 use Test::Differences;
+use FAST::Struct::Seq;
 #use Data::Dumper::Simple;
 
 BEGIN { use_ok('FAST::Struct::If'); }

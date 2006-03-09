@@ -20,6 +20,6 @@ build_requires  ('Test::Differences');
 #    test => { TESTS => "t/*.t t/*/*.t t/*/*/*.t" },
 #);
 
-auto_install;
+&auto_install;
 
 &WriteAll;

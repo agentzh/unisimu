@@ -32,8 +32,13 @@ sub id {
 sub clone {
     my $self = shift;
     my $clone = $self->SUPER::clone;
-    $clone->{id} = "$clone";
+    $clone->_update_id;
     return $clone;
+}
+
+sub _update_id {
+    my $self = shift;
+    $self->{id} = "$self";
 }
 
 sub entry { confess "Not implemented"; }

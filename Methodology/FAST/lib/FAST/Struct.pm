@@ -21,6 +21,12 @@ sub elems {
     return wantarray ? @{ $self->{elems} } : $self->{elems};
 }
 
+sub _update_id {
+    my ($self) = @_;
+    $self->SUPER::_update_id;
+    map { $_->_update_id } $self->elems;
+}
+
 # Substitue $label with $dest in the current FAST::Struct
 sub subs {
     my ($self, $label, $dest) = @_;
@@ -30,11 +36,11 @@ sub subs {
     for my $e (@$relems) {
         if ($e->isa('FAST::Node')) {
             if ($e->label eq $label) {
-                $e = $dest;
+                $e = $dest->clone;
                 $done = 1;
             }
         } else {
-            $done ||= $e->subs($label, $dest);
+            $done = $e->subs($label, $dest) || $done;
         }
     }
     return $done;

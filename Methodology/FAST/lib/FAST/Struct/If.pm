@@ -14,14 +14,13 @@ use FAST::Node;
 our $VERSION = '0.01';
 
 sub new {
-    my ($proto, $cond, $yes, $no, $tail) = @_;
+    my ($proto, $cond, $yes, $no) = @_;
     my $self = $proto->SUPER::new;
-    $tail = $self->_node($tail);
     $self->_set_elems(
         $self->_node($cond),
         $self->_node($yes),
         $self->_node($no),
-        $self->_node($tail),
+        $self->_node(''),
     );
     return $self;
 }
@@ -67,11 +66,11 @@ sub must_pass {
 sub as_c {
     my ($self, $level) = @_;
     $level ||= 0;
-    my $head = $self->condition->as_c($level);
+    my $cond = $self->condition->as_c($level);
     my $block1 = $self->true_branch->as_c($level+1);
     my $block2 = $self->false_branch->as_c($level+1);
     my $indent = ' ' x (4 * $level);
-    return "${head}${block1}${indent}} else {\n${block2}${indent}}\n";
+    return "${indent}if ($cond) {\n${block1}${indent}} else {\n${block2}${indent}}\n";
 }
 
 sub visualize {
@@ -116,6 +115,7 @@ FAST::Struct::If - Branching structure in FAST DOM tree
     FAST::Struct::If
         isa FAST::Struct
             isa FAST::Element
+                isa Clone
 
 =head1 DESCRIPTION
 

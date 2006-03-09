@@ -46,7 +46,7 @@ sub as_c {
     if ($label =~ /^\[(.*)\]$/) {
         return "${indent}do $1\n";
     } elsif ($label =~ /^\<(.*)\>$/) {
-        return "${indent}if ($1) {\n";
+        return $1;
     } else {
         return "${indent}$label\n";
     }

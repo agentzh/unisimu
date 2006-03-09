@@ -49,7 +49,7 @@ my $relems = $seq->elems;
 is( $relems->[0]->label, '<p>' );
 is( $relems->[1]->label, '[L:=1]' );
 
-is $seq->as_c, "if (p) {\ndo L:=1\n";
+is $seq->as_c, "pdo L:=1\n";
 
 $relems->[1] = 'exit';
 is( $seq->second, 'exit' );
