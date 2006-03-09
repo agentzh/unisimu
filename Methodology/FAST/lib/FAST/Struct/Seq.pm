@@ -36,11 +36,11 @@ sub second {
 }
 
 sub entry {
-    return $_[0]->first;
+    return $_[0]->first->entry;
 }
 
 sub exit {
-    return $_[0]->second;
+    return $_[0]->second->exit;
 }
 
 sub might_pass {
@@ -59,6 +59,15 @@ sub as_c {
     my ($self, $level) = @_;
     return $self->first->as_c($level) .
         $self->second->as_c($level);
+}
+
+sub visualize {
+    my ($self, $gv) = @_;
+    die if not defined $gv;
+    my ($first, $second) = ($self->first, $self->second);
+    $first->visualize($gv);
+    $second->visualize($gv);
+    $gv->add_edge($first->exit->id => $second->entry->id);
 }
 
 1;

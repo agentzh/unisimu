@@ -59,7 +59,7 @@ sub as_png {
     FAST->plot_node($gv, 'entry');
     FAST->plot_node($gv, 'exit');
     $gv->add_edge('entry' => $self->entry);
-    $gv->add_edge('exit'  => $self->exit);
+    $gv->add_edge($self->exit => 'exit');
     $gv->as_png($outfile);
 }
 

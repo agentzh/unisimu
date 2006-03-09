@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 70;
+use Test::More tests => 73;
 #use Data::Dumper::Simple;
 
 BEGIN { use_ok('FAST::Struct::Seq'); }
@@ -78,6 +78,9 @@ ok !$seq->must_pass('[f]');
     is( $s->second->first->label, '[L:=3]' );
     is( $s->second->second->label, '[L:=4]' );
 
+    is( $s->entry, $s->first->first, "`entry' is the first node" );
+    is( $s->exit,  $s->second->second, "`exit' is the last node" );
+
     is( $s->first->as_c, "do L:=1\ndo L:=2\n" );
     is( $s->second->as_c, "do L:=3\ndo L:=4\n" );
     is( $s->as_c, "do L:=1\ndo L:=2\ndo L:=3\ndo L:=4\n" );
@@ -144,4 +147,9 @@ do L:=4
 do c
 do d
 _EOC_
+
+    my $outfile = 't/02basic.png';
+    unlink $outfile if not -f $outfile;
+    $s->as_png($outfile);
+    ok -f $outfile;
 }

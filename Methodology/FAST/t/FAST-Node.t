@@ -77,7 +77,7 @@ $node = FAST::Node->new('[a]');
 ok $node;
 is( $node->entry, $node, 'the entry of a node is itself' );
 is( $node->exit, $node, 'the exit of a node is also itself' );
-my $outfile = 't/tmp.png';
+my $outfile = 't/01basic.png';
 unlink $outfile if -f $outfile;
 $node->as_png($outfile);
 ok -f $outfile;
