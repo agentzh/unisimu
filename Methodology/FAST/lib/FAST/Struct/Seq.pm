@@ -1,7 +1,7 @@
 #: FAST/Struct/Seq.pm
 #: Sequential structure in FAST DOM tree
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-08
+#: 2006-03-08 2006-03-09
 
 package FAST::Struct::Seq;
 
@@ -45,14 +45,20 @@ sub exit {
 
 sub might_pass {
     my ($self, $label) = @_;
-    return $self->first->might_pass($label) or
+    return $self->first->might_pass($label) ||
         $self->second->might_pass($label);
 }
 
 sub must_pass {
     my ($self, $label) = @_;
-    return $self->first->must_pass($label) or
+    return $self->first->must_pass($label) ||
         $self->second->must_pass($label);
+}
+
+sub as_c {
+    my ($self, $level) = @_;
+    return $self->first->as_c($level) .
+        $self->second->as_c($level);
 }
 
 1;

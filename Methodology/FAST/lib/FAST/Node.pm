@@ -1,7 +1,7 @@
 #: FAST/Node.pm
 #: Non-structured FAST node
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-08
+#: 2006-03-08 2006-03-09
 
 package FAST::Node;
 
@@ -31,6 +31,21 @@ sub might_pass {
 sub must_pass {
     my ($self, $label) = @_;
     return $label eq $self->label;
+}
+
+sub as_c {
+    my ($self, $level) = @_;
+    $level ||= 0;
+    my $indent = ' ' x (4 * $level);
+    my $label = $self->label;
+    return '' if $label eq '';
+    if ($label =~ /^\[(.*)\]$/) {
+        return "${indent}do $1\n";
+    } elsif ($label =~ /^\<(.*)\>$/) {
+        return "${indent}if ($1) {\n";
+    } else {
+        return "${indent}$label\n";
+    }
 }
 
 1;
