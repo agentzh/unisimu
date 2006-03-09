@@ -5,7 +5,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 40;
+use Test::More tests => 44;
 
 BEGIN { use_ok('FAST::Node'); }
 
@@ -66,3 +66,9 @@ $node = FAST::Node->new('<a > 4>');
 ok $node;
 isa_ok $node, 'FAST::Node';
 is( $node->as_c, "if (a > 4) {\n", 'as_c for <a > 4> node' );
+
+my $saved_node = $node->clone;
+ok $saved_node;
+isa_ok $saved_node, 'FAST::Node';
+is( $saved_node->as_c, "if (a > 4) {\n", 'as_c for <a > 4> node' );
+isnt( $saved_node->id, $node->id );
