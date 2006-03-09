@@ -43,12 +43,6 @@ sub exit {
     return $_[0]->second->exit;
 }
 
-sub might_pass {
-    my ($self, $label) = @_;
-    return $self->first->might_pass($label) ||
-        $self->second->might_pass($label);
-}
-
 sub must_pass {
     my ($self, $label) = @_;
     return $self->first->must_pass($label) ||

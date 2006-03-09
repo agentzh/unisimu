@@ -9,6 +9,7 @@ use strict;
 use warnings;
 use base 'Clone';
 use GraphViz;
+use Carp 'confess';
 
 sub new {
     my ($proto) = @_;
@@ -20,9 +21,9 @@ sub new {
     return $self;
 }
 
-sub might_pass { die; }
+sub might_pass { confess "Not implemented"; }
 
-sub must_pass { die; }
+sub must_pass { confess "Not implemented"; }
 
 sub id {
     return $_[0]->{id};
@@ -35,13 +36,13 @@ sub clone {
     return $clone;
 }
 
-sub entry { die; }
+sub entry { confess "Not implemented"; }
 
-sub exit { die; }
+sub exit { confess "Not implemented"; }
 
-sub visualize { die; }
+sub visualize { confess "Not implemented"; }
 
-sub as_c { die; }
+sub as_c { confess "Not implemented"; }
 
 sub as_png {
     my ($self, $outfile) = @_;

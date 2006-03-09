@@ -66,7 +66,7 @@ ok $seq->must_pass('<p>');
 ok !$seq->must_pass('[f]');
 
 {
-    # Test embedded FAST::Struct::Seq:
+    # Test nested FAST::Struct::Seq:
     my $e1 = $class->new('[L:=1]', '[L:=2]');
     my $e2 = $class->new('[L:=3]', '[L:=4]');
     my $s  = $class->new($e1, $e2);

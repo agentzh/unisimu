@@ -92,7 +92,7 @@ sub as_png {
     while (my ($key, $val) = each %edge_from) {
         if (@$val > 1) {
             my $flux_node = "flux_" . $c++;
-            $gv->add_node($flux_node, label => '', %FluxNodeStyle);
+            $self->plot_node($gv, '', $flux_node);
             $self->plot_node($gv, $key);
             $gv->add_edge($flux_node => $key);
             for my $from (@$val) {
@@ -129,7 +129,9 @@ sub _plot_edge {
 sub plot_node {
     my ($self, $gv, $node, $id) = @_;
     $id = $node if not defined $id;
-    if ($node =~ /^\[(.*)\]$/) {
+    if ($node =~ /^\s*$/) {
+        $gv->add_node($id, label => ' ', %FluxNodeStyle);
+    } elsif ($node =~ /^\[(.*)\]$/) {
         $gv->add_node($id, label => $1, shape => 'box');
     } elsif ($node =~ /^<(.*)>$/) {
         $gv->add_node($id, label => $1, shape => 'diamond');
@@ -218,6 +220,7 @@ sub node2asm {
 }
 
 sub structured {
+    my ($self) = @_;
 }
 
 

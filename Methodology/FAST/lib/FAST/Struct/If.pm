@@ -1,7 +1,7 @@
 #: FAST/Struct/If.pm
 #: Branching structure in FAST DOM tree
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-08
+#: 2006-03-08 2006-03-09
 
 package FAST::Struct::If;
 
@@ -15,8 +15,8 @@ our $VERSION = '0.01';
 
 sub new {
     my ($proto, $cond, $yes, $no, $tail) = @_;
-    $tail = _node($tail);
     my $self = $proto->SUPER::new;
+    $tail = $self->_node($tail);
     $self->_set_elems(
         $self->_node($cond),
         $self->_node($yes),
@@ -59,9 +59,35 @@ sub exit {
 
 sub must_pass {
     my ($self, $label) = @_;
-    return $self->condition->must_pass($label) or
-        ($self->true_branch->must_pass($label) and
-         $self->false_branch->must_pass($label);
+    return $self->condition->must_pass($label) ||
+        ($self->true_branch->must_pass($label) &&
+         $self->false_branch->must_pass($label));
+}
+
+sub as_c {
+    my ($self, $level) = @_;
+    $level ||= 0;
+    my $head = $self->condition->as_c($level);
+    my $block1 = $self->true_branch->as_c($level+1);
+    my $block2 = $self->false_branch->as_c($level+1);
+    my $indent = ' ' x (4 * $level);
+    return "${head}${block1}${indent}} else {\n${block2}${indent}}\n";
+}
+
+sub visualize {
+    my ($self, $gv) = @_;
+    die if not defined $gv;
+    my ($cond, $blk1, $blk2, $tail) = 
+        ($self->condition, $self->true_branch,
+         $self->false_branch, $self->tail);
+    $cond->visualize($gv);
+    $blk1->visualize($gv);
+    $blk2->visualize($gv);
+    $tail->visualize($gv);
+    $gv->add_edge($cond->id => $blk1->entry->id, label => 'Y');
+    $gv->add_edge($blk1->exit->id => $tail->id);
+    $gv->add_edge($cond->id => $blk2->entry->id, label => 'N');
+    $gv->add_edge($blk2->exit->id => $tail->id);
 }
 
 1;
