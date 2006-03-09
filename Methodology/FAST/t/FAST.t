@@ -1,7 +1,7 @@
 #: FAST.t
 #: Test lib/FAST.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-08
+#: 2006-03-08 2006-03-09
 
 use strict;
 use warnings;
@@ -119,6 +119,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
+    unlink $outfile if -f $outfile;
 }
 
 {
@@ -132,6 +133,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
+    unlink $outfile if -f $outfile;
 }
 
 {
@@ -145,6 +147,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
+    unlink $outfile if -f $outfile;
 }
 
 {
@@ -265,6 +268,7 @@ L3:
     exit
 _EOC_
     close $in;
+    unlink $asmfile if -f $asmfile;
 }
 
 {
@@ -296,4 +300,5 @@ L3:
     exit
 _EOC_
     close $in;
+    unlink $asmfile if -f $asmfile;
 }
