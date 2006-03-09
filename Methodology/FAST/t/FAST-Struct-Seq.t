@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 68;
+use Test::More tests => 70;
 #use Data::Dumper::Simple;
 
 BEGIN { use_ok('FAST::Struct::Seq'); }
@@ -18,6 +18,8 @@ ok $seq;
 isa_ok $seq, $class;
 
 # Test $seq->entry/$seq->exit:
+is( $seq->entry, $seq->first, "`entry' is `first'" );
+is( $seq->exit,  $seq->second, "`exit' is `second'" );
 is $seq->entry->label, '[f]';
 is $seq->exit->label, '[L:=1]';
 

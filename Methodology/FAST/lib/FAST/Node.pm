@@ -23,6 +23,10 @@ sub label {
     return $_[0]->{label};
 }
 
+sub exit { return $_[0]; }
+
+sub entry { return $_[0]; }
+
 sub might_pass {
     my ($self, $label) = @_;
     return $label eq $self->label;
@@ -46,6 +50,12 @@ sub as_c {
     } else {
         return "${indent}$label\n";
     }
+}
+
+sub visualize {
+    my ($self, $gv) = @_;
+    require 'FAST.pm';
+    FAST->plot_node($gv, $self->label, $self->id);
 }
 
 1;

@@ -8,6 +8,7 @@ package FAST::Element;
 use strict;
 use warnings;
 use base 'Clone';
+use GraphViz;
 
 sub new {
     my ($proto) = @_;
@@ -44,9 +45,6 @@ sub as_c { die; }
 
 sub as_png {
     my ($self, $outfile) = @_;
-    my %edge_from = %{ $self->{edge_from} };
-    my %edge_to   = %{ $self->{edge_to} };
-
     my $gv = GraphViz->new(
         layout => 'dot',
         edge => {color => 'red'},
@@ -56,14 +54,12 @@ sub as_png {
             style => 'filled',
         },
     );
-
     $self->visualize($gv);
     require 'FAST.pm';
     FAST->plot_node($gv, 'entry');
     FAST->plot_node($gv, 'exit');
     $gv->add_edge('entry' => $self->entry);
     $gv->add_edge('exit'  => $self->exit);
-
     $gv->as_png($outfile);
 }
 

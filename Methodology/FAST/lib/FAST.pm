@@ -127,14 +127,15 @@ sub _plot_edge {
 }
 
 sub plot_node {
-    my ($self, $gv, $node) = @_;
+    my ($self, $gv, $node, $id) = @_;
+    $id = $node if not defined $id;
     if ($node =~ /^\[(.*)\]$/) {
-        $gv->add_node($node, label => $1, shape => 'box');
+        $gv->add_node($id, label => $1, shape => 'box');
     } elsif ($node =~ /^<(.*)>$/) {
-        $gv->add_node($node, label => $1, shape => 'diamond');
+        $gv->add_node($id, label => $1, shape => 'diamond');
     } else {
         $gv->add_node(
-            $node,
+            $id,
             label => $node,
             shape => 'plaintext',
             style => 'filled',

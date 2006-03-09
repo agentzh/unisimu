@@ -5,7 +5,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 44;
+use Test::More tests => 48;
 
 BEGIN { use_ok('FAST::Node'); }
 
@@ -72,3 +72,12 @@ ok $saved_node;
 isa_ok $saved_node, 'FAST::Node';
 is( $saved_node->as_c, "if (a > 4) {\n", 'as_c for <a > 4> node' );
 isnt( $saved_node->id, $node->id );
+
+$node = FAST::Node->new('[a]');
+ok $node;
+is( $node->entry, $node, 'the entry of a node is itself' );
+is( $node->exit, $node, 'the exit of a node is also itself' );
+my $outfile = 't/tmp.png';
+unlink $outfile if -f $outfile;
+$node->as_png($outfile);
+ok -f $outfile;
