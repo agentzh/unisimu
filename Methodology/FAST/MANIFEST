@@ -7,9 +7,13 @@ script/fast.pl
 t/FAST.t
 t/01sample
 t/01sample.png
+t/01sample.unopt.png
+t/01sample.opt.png
 t/~01sample.asm
 t/02sample
 t/02sample.png
+t/02sample.unopt.png
+t/02sample.opt.png
 t/~02sample.asm
 t/03sample
 t/03sample.png
