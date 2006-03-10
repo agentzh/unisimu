@@ -1,12 +1,12 @@
 #: FAST-Struct-If.t
 #: Test FAST::Struct::If
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-09 2006-03-09
+#: 2006-03-09 2006-03-10
 
 use strict;
 use warnings;
 
-use Test::More tests => 92;
+use Test::More tests => 96;
 use Test::Differences;
 use FAST::Struct::Seq;
 #use Data::Dumper::Simple;
@@ -277,4 +277,25 @@ _EOC_
     unlink $outfile if not -f $outfile;
     $if->as_png($outfile);
     ok -f $outfile;
+}
+
+{
+    # empty false branch not dump out:
+    my $if = FAST::Struct::If->new('<p>', '[L:=1]', '');
+    ok $if;
+    is( $if->as_c, <<'_EOC_' );
+if (p) {
+    do L:=1
+}
+_EOC_
+
+    $if = FAST::Struct::If->new('<p>', '', '[hello]');
+    ok $if;
+    is( $if->as_c, <<'_EOC_' );
+if (p) {
+} else {
+    do hello
+}
+_EOC_
+
 }

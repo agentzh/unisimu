@@ -1,7 +1,7 @@
 #: FAST.t
 #: Test lib/FAST.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-10
 
 use strict;
 use warnings;
@@ -303,9 +303,7 @@ _EOC_
     unlink $asmfile if -f $asmfile;
 }
 
-SKIP: {
-    skip( "The `structured' method is not yet implemented.", 4 );
-
+{
     # Test method structured using t/01sample:
 
     my $g = FAST->new('t/01sample');
@@ -324,12 +322,15 @@ while (L>0) {
         }
     } else {
         if (L=2) {
+            do a
             do L:=3
         } else {
             if (L=3) {
-                do L:=5
+                do b
+                do L:=0
             } else {
                 if (L=4) {
+                    do c
                     do L:=5
                 } else {
                     if (L=5) {

@@ -1,7 +1,7 @@
 #: FAST/Struct/If.pm
 #: Branching structure in FAST DOM tree
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-10
 
 package FAST::Struct::If;
 
@@ -70,6 +70,9 @@ sub as_c {
     my $block1 = $self->true_branch->as_c($level+1);
     my $block2 = $self->false_branch->as_c($level+1);
     my $indent = ' ' x (4 * $level);
+    if ($block2 eq '') {
+        return "${indent}if ($cond) {\n${block1}${indent}}\n";
+    }
     return "${indent}if ($cond) {\n${block1}${indent}} else {\n${block2}${indent}}\n";
 }
 

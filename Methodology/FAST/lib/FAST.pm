@@ -1,14 +1,19 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-10
 
 package FAST;
 
 use 5.006001;
 use strict;
 use warnings;
+
 use GraphViz;
+use FAST::Struct::Seq;
+use FAST::Struct::While;
+use FAST::Struct::If;
+
 use Data::Dumper::Simple;
 
 our $VERSION = '0.01';
@@ -230,9 +235,29 @@ sub structured {
             keys %edge_to;
     @nodes = sort { _core_label($a) cmp _core_label($b) } @nodes;
     unshift @nodes, $entry;
-    warn Dumper(@nodes);
-    if (not $opts{simplified}) {
+    #warn Dumper(@nodes);
+    my %ids;
+    for (0..$#nodes) {
+        $ids{ $nodes[$_] } = $_ + 1;
+    }
+    #warn Dumper(%ids);
+
+    my @g;
+    my $i = 1;
+    for my $node (@nodes) {
+        my @next = map { $ids{$_} || 0 } @{ $edge_to{$node} };
+        #warn "$node with @next";
+        if (@next == 1) {
+            $g[$i] = FAST::Struct::Seq->new($node, "[L:=$next[0]]");
+        } else {
+            $g[$i] = FAST::Struct::If->new($node, "[L:=$next[0]]", "[L:=$next[1]]");
+        }
+        $i++;
+    }
+    if (not $opts{optimized}) {
+        return _gen_unoptimized_ast(@g);
     } else {
+        return _gen_optimized_ast(@g);
     }
 }
 
@@ -245,6 +270,45 @@ sub _core_label {
     } else {
         return $node;
     }
+}
+
+sub _gen_unoptimized_ast {
+    my @g = @_;
+    my $i = $#g;
+    my $prev = '';
+    while ($i >= 1) {
+        $prev = FAST::Struct::If->new("<L=$i>", $g[$i], $prev);
+        $i--;
+    }
+    my $loop = FAST::Struct::While->new('<L>0>', $prev);
+    my $ast = FAST::Struct::Seq->new('[L:=1]', $loop);
+    return $ast;
+}
+
+sub _gen_optimized_ast {
+    my @g = @_;
+    my @new_g;
+    my $i = $#g;
+    while ($i > 1) {
+        if ($g[$i]->might_pass("[L:=$i]")) {
+            push @new_g, $g[$i];
+            next;
+        }
+        map { $_->subs("[L:=$i]", $g[$i]) } @g[1..$i-1];
+        $i--;
+    }
+    if (@new_g > 1) {
+        return _gen_unoptimized_ast(@new_g);
+    }
+    my $g = $g[0];
+    if ($g->must_pass('[L:=0]')) {
+        $g->subs('[L:=0]', '');
+        return $g;
+    }
+    $g->subs('[L:=1]', '');
+    my $loop = FAST::Struct::While->new('<L>0>', $g);
+    my $ast = FAST::Struct::Seq->new('[L:=1]', $g);
+    return $ast;
 }
 
 1;
