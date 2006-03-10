@@ -119,7 +119,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
-    #unlink $outfile if -f $outfile;
+    unlink $outfile if -f $outfile;
 }
 
 {
@@ -133,7 +133,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
-    #unlink $outfile if -f $outfile;
+    unlink $outfile if -f $outfile;
 }
 
 {
@@ -147,7 +147,7 @@ is_deeply(
     unlink $outfile if -f $outfile;
     $g->as_png($outfile);
     ok -f $outfile;
-    #unlink $outfile if -f $outfile;
+    unlink $outfile if -f $outfile;
 }
 
 {
@@ -450,8 +450,12 @@ _EOC_
     # Test a bug in FAST::as_png and FAST::as_asm
     #   %edge_from and %edge_to should be cloned deeply
     $g = FAST->new('t/01sample');
-    $g->as_png('t/01sample.png');
-    my $outfile = 't/01sample.asm';
+
+    my $outfile = 't/01sample.png';
+    $g->as_png($outfile);
+    unlink $outfile if -f $outfile;
+
+    $outfile = 't/01sample.asm';
     $g->as_asm($outfile);
     ok -f $outfile;
     unlink $outfile if -f $outfile;
