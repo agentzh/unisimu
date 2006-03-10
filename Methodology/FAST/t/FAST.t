@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 68;
+use Test::More tests => 69;
 
 use Test::MockObject;
 use Test::Differences;
@@ -346,5 +346,7 @@ while (L>0) {
     }
 }
 _EOC_
-
+    my $outfile = 't/01sample.unopt.png';
+    $ast->as_png($outfile);
+    ok -f $outfile;
 }
