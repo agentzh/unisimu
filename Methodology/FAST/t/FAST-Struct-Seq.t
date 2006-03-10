@@ -1,12 +1,12 @@
 #: FAST-Struct-Seq.t
 #: Test FAST::Struct::Seq
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-10
 
 use strict;
 use warnings;
 
-use Test::More tests => 73;
+use Test::More tests => 81;
 #use Data::Dumper::Simple;
 
 BEGIN { use_ok('FAST::Struct::Seq'); }
@@ -152,4 +152,22 @@ _EOC_
     unlink $outfile if not -f $outfile;
     $s->as_png($outfile);
     ok -f $outfile;
+}
+
+{
+    # Test methods entry/exit (skiping flux nodes):
+    my $s = FAST::Struct::Seq->new('[L:=1]', '');
+    is( $s->first->label, '[L:=1]' );
+    is( $s->second->label, '' );
+
+    is( $s->entry, $s->first );
+    is( $s->exit, $s->first );
+
+    $s = FAST::Struct::Seq->new('', '[L:=2]');
+    is( $s->first->label, '' );
+    is( $s->second->label, '[L:=2]' );
+
+    is( $s->entry, $s->second );
+    is( $s->exit, $s->second );
+
 }

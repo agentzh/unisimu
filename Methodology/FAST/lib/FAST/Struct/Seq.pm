@@ -1,7 +1,7 @@
 #: FAST/Struct/Seq.pm
 #: Sequential structure in FAST DOM tree
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-10
 
 package FAST::Struct::Seq;
 
@@ -36,11 +36,21 @@ sub second {
 }
 
 sub entry {
-    return $_[0]->first->entry;
+    my $self = shift;
+    my $first = $self->first;
+    if ($first->isa('FAST::Node') and $first->label eq '') {
+        return $self->second->entry;
+    }
+    return $first->entry;
 }
 
 sub exit {
-    return $_[0]->second->exit;
+    my $self = shift;
+    my $second = $self->second;
+    if ($second->isa('FAST::Node') and $second->label eq '') {
+        return $self->first->exit;
+    }
+    return $second->exit;
 }
 
 sub must_pass {
@@ -59,9 +69,20 @@ sub visualize {
     my ($self, $gv) = @_;
     die if not defined $gv;
     my ($first, $second) = ($self->first, $self->second);
-    $first->visualize($gv);
-    $second->visualize($gv);
-    $gv->add_edge($first->exit->id => $second->entry->id);
+    my $dual = 1;
+    if ($first->isa('FAST::Node') and $first->label eq '') {
+        $dual = 0;
+    } else {
+        $first->visualize($gv);
+    }
+    if ($second->isa('FAST::Node') and $second->label eq '') {
+        $dual = 0;
+    } else {
+        $second->visualize($gv);
+    }
+    if ($dual) {
+        $gv->add_edge($first->exit->id => $second->entry->id);
+    }
 }
 
 1;
