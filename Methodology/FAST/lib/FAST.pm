@@ -13,6 +13,7 @@ use GraphViz;
 use FAST::Struct::Seq;
 use FAST::Struct::While;
 use FAST::Struct::If;
+use Clone;
 
 use Data::Dumper::Simple;
 
@@ -81,8 +82,8 @@ sub error {
 
 sub as_png {
     my ($self, $outfile) = @_;
-    my %edge_from = %{ $self->{edge_from} };
-    my %edge_to   = %{ $self->{edge_to} };
+    my %edge_from = %{ Clone::clone($self->{edge_from}) };
+    my %edge_to   = %{ Clone::clone($self->{edge_to}) };
 
     my $gv = GraphViz->new(
         layout => 'neato',
@@ -154,8 +155,7 @@ sub plot_node {
 
 sub as_asm {
     my ($self, $outfile) = @_;
-    my $out;
-    my $buf;
+    my ($out, $buf);
     if ($outfile) {
         if (!open $out, ">$outfile") {
             $Error = "as_asm: Can't open `$outfile' for writing: $!";
@@ -164,8 +164,8 @@ sub as_asm {
         open $out, '>', \$buf;
     }
 
-    my %edge_from = %{ $self->{edge_from} };
-    my %edge_to   = %{ $self->{edge_to} };
+    my %edge_from = %{ Clone::clone($self->{edge_from}) };
+    my %edge_to   = %{ Clone::clone($self->{edge_to}) };
 
     my (%labels, %visited, @tasks);
     if (! $edge_to{entry}) {
@@ -186,7 +186,9 @@ sub as_asm {
             $cur = shift @tasks;
             next;
         }
-        if (@{ $edge_from{$cur} } > 1) {
+        my $r_prev = $edge_from{$cur};
+        warn "$cur" if not $r_prev;
+        if (@{ $r_prev } > 1) {
             $labels{$cur} ||= 'L' . $c++;
             my $label = $labels{$cur};
             print $out "$label:\n";

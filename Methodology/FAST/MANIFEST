@@ -2,7 +2,6 @@ Makefile.PL
 README
 MANIFEST
 META.yml
-script/fplot.pl
 script/fast.pl
 t/FAST.t
 t/01sample

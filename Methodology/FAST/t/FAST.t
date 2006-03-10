@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 82;
+use Test::More tests => 83;
 
 use Test::MockObject;
 use Test::Differences;
@@ -444,4 +444,15 @@ _EOC_
     $outfile = 't/02sample.opt.png';
     $ast->as_png($outfile);
     ok -f $outfile;
+}
+
+{
+    # Test a bug in FAST::as_png and FAST::as_asm
+    #   %edge_from and %edge_to should be cloned deeply
+    $g = FAST->new('t/01sample');
+    $g->as_png('t/01sample.png');
+    my $outfile = 't/01sample.asm';
+    $g->as_asm($outfile);
+    ok -f $outfile;
+    unlink $outfile if -f $outfile;
 }

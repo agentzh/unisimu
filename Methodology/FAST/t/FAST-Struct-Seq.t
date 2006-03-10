@@ -169,5 +169,4 @@ _EOC_
 
     is( $s->entry, $s->second );
     is( $s->exit, $s->second );
-
 }
