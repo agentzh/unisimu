@@ -1,7 +1,7 @@
 #: FAST/Struct/While.pm
 #: Branching structure in FAST DOM tree
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-11
 
 package FAST::Struct::While;
 
@@ -17,6 +17,7 @@ sub new {
     my ($proto, $cond, $body) = @_;
     my $self = $proto->SUPER::new;
     $self->_set_elems(
+        $self->_node(''),
         $self->_node($cond),
         $self->_node($body),
         $self->_node(''),
@@ -24,25 +25,30 @@ sub new {
     return $self;
 }
 
+sub head {
+    my $self = shift;
+    return ($self->elems)[0];
+}
+
 # Return the conditional statement of the while loop:
 sub condition {
     my $self = shift;
-    return ($self->elems)[0];
+    return ($self->elems)[1];
 }
 
 # Return the `body' of the while loop:
 sub body {
     my $self = shift;
-    return ($self->elems)[1];
+    return ($self->elems)[2];
 }
 
 sub tail {
     my $self = shift;
-    return ($self->elems)[2];
+    return ($self->elems)[3];
 }
 
 sub entry {
-    return $_[0]->condition;
+    return $_[0]->head;
 }
 
 sub exit {
@@ -66,13 +72,15 @@ sub as_c {
 sub visualize {
     my ($self, $gv) = @_;
     die if not defined $gv;
-    my ($cond, $body, $tail) = 
-        ($self->condition, $self->body, $self->tail);
+    my ($head, $cond, $body, $tail) = 
+        ($self->head, $self->condition, $self->body, $self->tail);
+    $head->visualize($gv);
     $cond->visualize($gv);
     $body->visualize($gv);
     $tail->visualize($gv);
+    $gv->add_edge($head->id => $cond->id);
     $gv->add_edge($cond->id => $body->entry->id, label => 'Y');
-    $gv->add_edge($body->exit->id => $cond->id);
+    $gv->add_edge($body->exit->id => $head->id);
     $gv->add_edge($cond->id => $tail->id, label => 'N');
 }
 

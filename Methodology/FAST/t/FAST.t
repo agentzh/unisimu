@@ -1,12 +1,12 @@
 #: FAST.t
 #: Test lib/FAST.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-10
+#: 2006-03-08 2006-03-11
 
 use strict;
 use warnings;
 
-use Test::More tests => 83;
+use Test::More tests => 92;
 
 use Test::MockObject;
 use Test::Differences;
@@ -459,4 +459,78 @@ _EOC_
     $g->as_asm($outfile);
     ok -f $outfile;
     unlink $outfile if -f $outfile;
+}
+
+{
+    # Test method `structured' using t/02sample:
+
+    my $g = FAST->new('t/03sample');
+    ok $g;
+
+    # Get unoptimized AST:
+    my $ast = $g->structured;
+    isa_ok $ast, 'FAST::Struct';
+    isa_ok $ast, 'FAST::Struct::Seq';
+    eq_or_diff( $ast->as_c, <<'_EOC_' );
+do L:=1
+while (L>0) {
+    if (L=1) {
+        do f
+        do L:=4
+    } else {
+        if (L=2) {
+            do g
+            do L:=5
+        } else {
+            if (L=3) {
+                do h
+                do L:=0
+            } else {
+                if (L=4) {
+                    if (p) {
+                        do L:=2
+                    } else {
+                        do L:=3
+                    }
+                } else {
+                    if (L=5) {
+                        if (q) {
+                            do L:=1
+                        } else {
+                            do L:=0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+_EOC_
+    my $outfile = 't/03sample.unopt.png';
+    $ast->as_png($outfile);
+    ok -f $outfile;
+
+    # Get optimized AST:
+    $ast = $g->structured( optimized => 1 );
+    isa_ok $ast, 'FAST::Struct';
+    isa_ok $ast, 'FAST::Struct::Seq';
+    eq_or_diff( $ast->as_c, <<'_EOC_' );
+do L:=1
+while (L>0) {
+    do f
+    if (p) {
+        do g
+        if (q) {
+        } else {
+            do L:=0
+        }
+    } else {
+        do h
+        do L:=0
+    }
+}
+_EOC_
+    $outfile = 't/03sample.opt.png';
+    $ast->as_png($outfile);
+    ok -f $outfile;
 }

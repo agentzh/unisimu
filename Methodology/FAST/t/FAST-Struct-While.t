@@ -1,12 +1,12 @@
 #: FAST-Struct-While.t
 #: Test FAST::Struct::While
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-09 2006-03-09
+#: 2006-03-09 2006-03-11
 
 use strict;
 use warnings;
 
-use Test::More tests => 80;
+use Test::More tests => 84;
 use Test::Differences;
 use FAST::Struct::Seq;
 #use Data::Dumper::Simple;
@@ -20,12 +20,14 @@ ok $while;
 isa_ok $while, $class;
 
 # Test $while->entry/$while->exit:
-is( $while->entry, $while->condition, "`entry' is `condition'" );
+is( $while->entry, $while->head, "`entry' is `head'" );
+isnt( $while->entry, $while->condition, "`entry' is not `condition'" );
 isnt( $while->exit,  $while->body, "`exit' is not `body'" );
 is( $while->exit,  $while->tail, "`exit' is `tail'" );
 
 is( $while->condition->label, '<p>' );
 is( $while->body->label, '[L:=1]' );
+is( $while->head->label, '' );
 is( $while->tail->label, '' );
 is( $while->exit->label, '' );
 
@@ -62,8 +64,10 @@ _EOC_
 # Test ->subs
 ok $while->subs('<p>', '<q>');
 my @elems = $while->elems;
-is( $elems[0]->label, '<q>' );
-is( $elems[1]->label, '[L:=1]' );
+is( $elems[0]->label, '' );
+is( $elems[1]->label, '<q>' );
+is( $elems[2]->label, '[L:=1]' );
+is( $elems[3]->label, '' );
 
 # Test method `might_pass'
 ok $while->might_pass('<q>');
@@ -108,7 +112,7 @@ ok -f $outfile;
     is( $while->body->condition->label, '<p>' );
     is( $while->body->body->label, '[L:=1]' );
 
-    is( $while->entry, $while->condition, "`entry' is the first node" );
+    is( $while->entry, $while->head, "`entry' is the first node" );
     is( $while->exit,  $while->tail, "`exit' is the last node" );
 
     eq_or_diff( $while->as_c, <<'_EOC_' );
