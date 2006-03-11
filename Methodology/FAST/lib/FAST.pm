@@ -15,7 +15,7 @@ use FAST::Struct::While;
 use FAST::Struct::If;
 use Clone;
 
-use Data::Dumper::Simple;
+#use Data::Dumper::Simple;
 
 our $VERSION = '0.01';
 
@@ -105,12 +105,14 @@ sub as_png {
             for my $from (@$val) {
                 if ($edge_to{$from}->[0] eq $key) {
                     $edge_to{$from}->[0] = $flux_node;
+                } else {
+                    $edge_to{$from}->[1] = $flux_node;
                 }
-                $self->_plot_edge($gv, $from => $flux_node);
+                $self->_plot_edge($gv, $from => $flux_node, \%edge_to);
             }
         } elsif (@$val == 1) {
             $self->plot_node($gv, $key);
-            $self->_plot_edge($gv, $val->[0] => $key);
+            $self->_plot_edge($gv, $val->[0] => $key, \%edge_to);
         } else {
             $self->plot_node($gv, $key);
         }
@@ -120,8 +122,8 @@ sub as_png {
 }
 
 sub _plot_edge {
-    my ($self, $gv, $from, $to) = @_;
-    my @to_nodes = @{ $self->{edge_to}->{$from} };
+    my ($self, $gv, $from, $to, $redge_to) = @_;
+    my @to_nodes = @{ $redge_to->{$from} };
     my $label;
     if (@to_nodes > 1) {
         $label = $to eq $to_nodes[0] ? 'Y' : 'N';

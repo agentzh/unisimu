@@ -48,9 +48,9 @@ is_deeply(
     my $mock = Test::MockObject->new;
     $mock->set_true( 'add_edge' );
 
-    $g->_plot_edge($mock, '<p>', '[c]');
-    $g->_plot_edge($mock, '<p>', '[a]');
-    $g->_plot_edge($mock, '[a]', '[b]');
+    $g->_plot_edge($mock, '<p>', '[c]', $g->{edge_to});
+    $g->_plot_edge($mock, '<p>', '[a]', $g->{edge_to});
+    $g->_plot_edge($mock, '[a]', '[b]', $g->{edge_to});
 
     is( $mock->call_pos(1),  'add_edge', 'plot_edge calls $gv->add_edge' );
     my @args = $mock->call_args(1);
