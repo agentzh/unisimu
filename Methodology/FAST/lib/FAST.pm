@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-10
+#: 2006-03-08 2006-03-11
 
 package FAST;
 
@@ -262,6 +262,7 @@ sub structured {
         }
         $i++;
     }
+    #warn Dumper(@g);
     if (not $opts{optimized}) {
         return _gen_unoptimized_ast(@g);
     } else {
@@ -285,7 +286,9 @@ sub _gen_unoptimized_ast {
     my $i = $#g;
     my $prev = '';
     while ($i >= 1) {
+        next if not defined $g[$i];
         $prev = FAST::Struct::If->new("<L=$i>", $g[$i], $prev);
+    } continue {
         $i--;
     }
     my $loop = FAST::Struct::While->new('<L>0>', $prev);
@@ -295,18 +298,20 @@ sub _gen_unoptimized_ast {
 
 sub _gen_optimized_ast {
     my @g = @_;
-    my @new_g;
     my $i = $#g;
     while ($i > 1) {
         if ($g[$i]->might_pass("[L:=$i]")) {
-            push @new_g, $g[$i];
+            #warn "info: g[$i] is recursive";
             next;
         }
+        #warn "info: g[$i] should be substituted out";
         map { $_->subs("[L:=$i]", $g[$i]) } @g[1..$i-1];
+        $g[$i] = undef;
+    } continue {
         $i--;
     }
-    if (@new_g > 1) {
-        return _gen_unoptimized_ast(@new_g);
+    if ((grep { defined $_ } @g) > 1) {
+        return _gen_unoptimized_ast(@g);
     }
     my $g = $g[1];
     if ($g->must_pass('[L:=0]')) {

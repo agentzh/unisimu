@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 92;
+use Test::More tests => 101;
 
 use Test::MockObject;
 use Test::Differences;
@@ -531,6 +531,80 @@ while (L>0) {
 }
 _EOC_
     $outfile = 't/03sample.opt.png';
+    $ast->as_png($outfile);
+    ok -f $outfile;
+}
+
+{
+    # Test method `structured' using t/02sample:
+
+    my $g = FAST->new('t/04sample');
+    ok $g;
+
+    # Get unoptimized AST:
+    my $ast = $g->structured;
+    isa_ok $ast, 'FAST::Struct';
+    isa_ok $ast, 'FAST::Struct::Seq';
+    eq_or_diff( $ast->as_c, <<'_EOC_' );
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (p) {
+            do L:=2
+        } else {
+            do L:=0
+        }
+    } else {
+        if (L=2) {
+            do f
+            do L:=3
+        } else {
+            if (L=3) {
+                if (q) {
+                    do L:=0
+                } else {
+                    do L:=2
+                }
+            }
+        }
+    }
+}
+_EOC_
+    my $outfile = 't/04sample.unopt.png';
+    $ast->as_png($outfile);
+    ok -f $outfile;
+
+    #warn "#!!!";
+
+    # Get optimized AST:
+    $ast = $g->structured( optimized => 1 );
+
+    #warn "#???";
+
+    isa_ok $ast, 'FAST::Struct';
+    isa_ok $ast, 'FAST::Struct::Seq';
+    eq_or_diff( $ast->as_c, <<'_EOC_' );
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (p) {
+            do L:=2
+        } else {
+            do L:=0
+        }
+    } else {
+        if (L=2) {
+            do f
+            if (q) {
+                do L:=0
+            } else {
+                do L:=2
+            }
+        }
+    }
+}
+_EOC_
+    $outfile = 't/04sample.opt.png';
     $ast->as_png($outfile);
     ok -f $outfile;
 }
