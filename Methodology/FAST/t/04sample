@@ -1,0 +1,6 @@
+entry => <p>
+<p> => [f]
+<p> => exit
+[f] => <q>
+<q> => exit
+<q> => [f]
