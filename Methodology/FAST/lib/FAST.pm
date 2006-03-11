@@ -305,7 +305,10 @@ sub _gen_optimized_ast {
             next;
         }
         #warn "info: g[$i] should be substituted out";
-        map { $_->subs("[L:=$i]", $g[$i]) } @g[1..$i-1];
+        map {
+            defined $_ and $_ ne $g[$i] and
+            $_->subs("[L:=$i]", $g[$i])
+        } @g;
         $g[$i] = undef;
     } continue {
         $i--;

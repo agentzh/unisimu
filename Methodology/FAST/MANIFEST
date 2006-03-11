@@ -19,6 +19,11 @@ t/~03sample.png
 t/~03sample.asm
 t/03sample.unopt.png
 t/03sample.opt.png
+t/04sample
+t/~04sample.png
+t/~04sample.asm
+t/04sample.unopt.png
+t/04sample.opt.png
 t/01basic.png
 t/02basic.png
 t/03basic.png
