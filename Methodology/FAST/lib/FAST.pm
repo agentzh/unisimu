@@ -232,8 +232,9 @@ sub node2asm {
 sub structured {
     my $self = shift;
     my %opts = @_;
-    if (%opts and !$opts{optimized}) {
-        die "FAST::structured: Options %opts not recognized";
+    if (%opts and not exists $opts{optimized}) {
+        my @opts = %opts;
+        die "FAST::structured: Options @opts not recognized";
     }
     my %edge_to   = %{ $self->{edge_to} };
     my $entry = $edge_to{entry}->[0];
