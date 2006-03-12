@@ -22,8 +22,7 @@ my $g = FAST->new($infile);
 if (! $g) {
     my $error = FAST::error;
     $error =~ s/^FAST::\w+:\s*//;
-    warn "$error\n";
-    die "Processing terminated due to compilation errors.\n";
+    die "$error\n";
 }
 my $out;
 
