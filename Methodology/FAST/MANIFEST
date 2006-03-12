@@ -15,6 +15,13 @@ t/01sample
 t/02sample
 t/03sample
 t/04sample
+samples/01sample
+samples/02sample
+samples/03sample
+samples/04sample
+samples/Makefile
+samples/Active.css
+samples/samples.podx.tt
 lib/FAST.pm
 lib/FAST/Element.pm
 lib/FAST/Node.pm
