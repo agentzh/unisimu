@@ -17,6 +17,7 @@ run {
     my $g = FAST->new(\$src);
     ok $g, 'obj ok - '.$block->name;
     warn FAST->error() if not $g;
+    $g->as_png('tmp.png');
     my $ast = $g->structured(optimized => 0);
     is( $block->unopt, $ast->as_c, 'unopt ok - '.$block->name );
     $ast = $g->structured(optimized => 1);
@@ -88,5 +89,71 @@ while (L>0) {
     if (p) {
     } else {
         do L:=0
+    }
+}
+
+
+
+=== TEST 4: Test a special program with 3 recursive basic (composite) programs
+--- src
+entry => <g>
+<g> => <p>
+<g> => <q>
+<p> => <p>
+<p> => <g>
+<q> => <q>
+<q> => exit
+--- unopt
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (g) {
+            do L:=2
+        } else {
+            do L:=3
+        }
+    } else {
+        if (L=2) {
+            if (p) {
+                do L:=2
+            } else {
+                do L:=1
+            }
+        } else {
+            if (L=3) {
+                if (q) {
+                    do L:=3
+                } else {
+                    do L:=0
+                }
+            }
+        }
+    }
+}
+--- opt
+if (g) {
+    do L:=2
+} else {
+    do L:=3
+}
+while (L>0) {
+    if (L=2) {
+        if (p) {
+            do L:=2
+        } else {
+            if (g) {
+                do L:=2
+            } else {
+                do L:=3
+            }
+        }
+    } else {
+        if (L=3) {
+            if (q) {
+                do L:=3
+            } else {
+                do L:=0
+            }
+        }
     }
 }

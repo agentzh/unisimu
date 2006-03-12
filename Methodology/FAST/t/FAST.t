@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 122;
+use Test::More tests => 126;
 
 use Test::MockObject;
 use Test::Differences;
@@ -578,18 +578,22 @@ _EOC_
     isa_ok $ast, 'FAST::Struct';
     isa_ok $ast, 'FAST::Struct::Seq';
     eq_or_diff( $ast->as_c, <<'_EOC_' );
-if (p) {
-    do L:=2
-} else {
-    do L:=0
-}
+do L:=1
 while (L>0) {
-    if (L=2) {
-        do f
-        if (q) {
-            do L:=0
-        } else {
+    if (L=1) {
+        if (p) {
             do L:=2
+        } else {
+            do L:=0
+        }
+    } else {
+        if (L=2) {
+            do f
+            if (q) {
+                do L:=0
+            } else {
+                do L:=2
+            }
         }
     }
 }
@@ -629,4 +633,41 @@ _EOC_
     ok ! FAST::_check_node_name('[a] ');
     ok ! FAST::_check_node_name(' <p>');
     ok ! FAST::_check_node_name('<p> ');
+}
+
+{
+    my $src = <<'_EOC_';
+entry => <g>
+<g> => <p>
+<g> => <q>
+<p> => <p>
+<p> => <g>
+<q> => <q>
+<q> => exit
+_EOC_
+    my $g = FAST->new(\$src);
+    ok $g;
+    isa_ok $g, 'FAST';
+
+    is_deeply(
+        $g->{edge_to},
+        {
+            entry => ['<g>'],
+            '<g>' => [qw( <p> <q> )],
+            '<p>' => [qw( <p> <g> )],
+            '<q>' => [qw( <q> exit )],
+            'exit' => [],
+        }
+    );
+
+    is_deeply(
+        $g->{edge_from},
+        {
+            'entry' => [],
+            '<g>'   => [qw( entry <p> )],
+            '<p>'   => [qw( <g> <p> )],
+            '<q>'   => [qw( <g> <q> )],
+            'exit'  => [qw( <q> )],
+        }
+    );
 }
