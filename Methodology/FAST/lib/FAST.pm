@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-11
+#: 2006-03-08 2006-03-12
 
 package FAST;
 
@@ -30,7 +30,7 @@ our $Error;
 sub new {
     my ($proto, $src) = @_;
     if (not $src) {
-        $Error = "FAST::new: No input source specified.";
+        $Error = "FAST::new: error: No input source specified.";
         return undef;
     }
     my $class = ref $proto || $proto;
@@ -54,26 +54,135 @@ sub parse {
     }
     my (%edge_from, %edge_to);
     local $/ = "\n";
+    my $done = 1;
     while (<$in>) {
         next if /^\s*$/;
-        if (/^\s* (\S+) \s* => \s* (\S+) \s*$/xo) {
+        if (/^\s* (.*\S) \s* => \s* (.*\S) \s*$/xo) {
             my ($from, $to) = ($1, $2);
+            if (not _check_node_name($from)) {
+                parse_error(
+                    $fname,
+                    "syntax error: Use of invalid node name `$from'"
+                );
+                $done = 0;
+                last;
+            } elsif (not _check_node_name($to)) {
+                parse_error(
+                    $fname,
+                    "syntax error: Use of invalid node name `$to'"
+                );
+                $done = 0;
+                last;
+            }
+            if ($to eq 'entry') {
+                parse_error(
+                    $fname,
+                    "syntax error: `entry' node used on right-hand-side"
+                );
+                $done = 0;
+                last;
+            }
+            if ($from eq 'exit') {
+                parse_error(
+                    $fname,
+                    "syntax error: `exit' node used on left-hand-side"
+                );
+                $done = 0;
+                last;
+            }
+
             $edge_from{$to} ||= [];
             $edge_from{$from} ||= [];
-            push @{ $edge_from{$to} }, $from;
             $edge_to{$from} ||= [];
             $edge_to{$to}   ||= [];
+
+            if ($from eq 'entry' and @{ $edge_to{entry} } > 0) {
+                parse_error($fname, "error: More than one `entry' node specified");
+                $done = 0;
+                last;
+            }
+            if ($from =~ /^<.*>$/ and @{ $edge_to{$from} } == 2) {
+                parse_error(
+                    $fname,
+                    "error: Predicate node `$from' has more than two descendants"
+                );
+                $done = 0;
+                last;
+            }
+            if ($from =~ /^\[.*\]$/ and @{ $edge_to{$from} } == 1) {
+                parse_error(
+                    $fname,
+                    "error: Function node `$from' has more than one descendant"
+                );
+                $done = 0;
+                last;
+            }
+
+            push @{ $edge_from{$to} }, $from;
             push @{ $edge_to{$from} }, $to;
         } else {
-            $Error = "FAST::parse: $fname: line $.: syntax error: $_";
-            close $in;
-            return undef;
+            chomp $_;
+            parse_error($fname, "syntax error: `$_'");
+            $done = 0;
+            last;
         }
     }
     close $in;
+    return undef if not $done;
+
+    if (! $edge_to{entry}) {
+        parse_error($fname, "error: No `entry' node found");
+        return undef;
+    }
+    if (! $edge_from{exit}) {
+        parse_error($fname, "error: No `exit' node found");
+        return undef;
+    }
+    while (my ($k, $v) = each %edge_to) {
+        if ($k =~ /^<.*>$/ and @$v != 2) {
+            if (@$v == 1) {
+                parse_error(
+                    $fname,
+                    "error: Predicate node `$k' has only one descendant"
+                );
+            } elsif (@$v == 0) {
+                parse_error(
+                    $fname,
+                    "error: Predicate node `$k' has no descendants"
+                );
+             }
+            return undef;
+        } elsif ($k =~ /^\[.*\]$/ and @$v != 1) {
+            if (@$v == 0) {
+                parse_error(
+                    $fname,
+                    "error: Function node `$k' has no descendants"
+                );
+            }
+            return undef;
+        }
+    }
+
+
     $self->{edge_from} = \%edge_from;
     $self->{edge_to}   = \%edge_to;
     return 1;
+}
+
+sub _check_node_name {
+    my $name = shift;
+    return $name =~ /^\[.*\]$/ ||
+        $name =~ /^<.*>$/ ||
+        $name eq 'exit' || $name eq 'entry';
+}
+
+sub parse_error {
+    my ($fname, $msg) = @_;
+    if ($.) {
+        $Error = "FAST::parse: $fname: line $.: $msg.";
+    } else {
+        $Error = "FAST::parse: $fname: $msg.";
+    }
 }
 
 sub error {

@@ -1,12 +1,12 @@
 #: FAST.t
 #: Test lib/FAST.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-11
+#: 2006-03-08 2006-03-12
 
 use strict;
 use warnings;
 
-use Test::More tests => 101;
+use Test::More tests => 122;
 
 use Test::MockObject;
 use Test::Differences;
@@ -154,23 +154,17 @@ is_deeply(
     # Test the new/parse/error methods:
     my $g = FAST->new;
     ok !defined $g, 'call ->new with no arguments';
-    is( FAST->error, "FAST::new: No input source specified." );
+    is( FAST->error, "FAST::new: error: No input source specified." );
 
     $g = FAST->new('no_such_file');
     ok !defined $g, 'call ->new with invalid file name';
     is( FAST->error, "FAST::parse: Can't open `no_such_file' for reading: $!" );
 
     my $src = <<'.';
-[a] => [c]
-[a => d s
-.
-    $g = FAST->new(\$src);
-    ok !defined $g, 'syntax error in the source';
-    is( FAST->error, "FAST::parse: STRING: line 2: syntax error: [a => d s\n" );
-
-    $src = <<'.';
+entry => [a]
 [a] => <p>
 <p> => [a]
+<p> => exit
 .
     $g = FAST->new(\$src);
     ok $g;
@@ -179,22 +173,22 @@ is_deeply(
     is_deeply(
         $g->{edge_to},
         {
-            '[a]' => ['<p>'],
-            '<p>' => ['[a]'],
+            'entry' => ['[a]'],
+            '[a]'   => ['<p>'],
+            '<p>'   => ['[a]', 'exit'],
+            'exit'  => [],
         }
     );
 
     is_deeply(
         $g->{edge_from},
         {
-            '[a]' => ['<p>'],
+            '[a]' => ['entry', '<p>'],
             '<p>' => ['[a]'],
+            'exit' => ['<p>'],
+            'entry' => [],
         }
     );
-
-    my $asm = $g->as_asm;
-    ok not $asm;
-    is( $g->error, "as_asm: No `entry' node found." );
 }
 
 {
@@ -607,4 +601,36 @@ _EOC_
     $outfile = 't/04sample.opt.png';
     $ast->as_png($outfile);
     ok -f $outfile;
+}
+
+{
+    # Test sub _check_node_name:
+    ok FAST::_check_node_name('[a]');
+    ok FAST::_check_node_name('[a a]');
+    ok FAST::_check_node_name('[]');
+    ok FAST::_check_node_name('[ ]');
+
+    ok FAST::_check_node_name('<p>');
+    ok FAST::_check_node_name('<p >');
+    ok FAST::_check_node_name('< p >');
+    ok FAST::_check_node_name('<a > 0>');
+    ok FAST::_check_node_name('<a < 0>');
+    ok FAST::_check_node_name('<>');
+    ok FAST::_check_node_name('< >');
+
+    ok FAST::_check_node_name('exit');
+    ok FAST::_check_node_name('entry');
+
+    ok ! FAST::_check_node_name('');
+    ok ! FAST::_check_node_name(' exit');
+    ok ! FAST::_check_node_name('exit ');
+    ok ! FAST::_check_node_name('entry ');
+    ok ! FAST::_check_node_name(' entry');
+    ok ! FAST::_check_node_name('Entry');
+    ok ! FAST::_check_node_name('Exit');
+    ok ! FAST::_check_node_name('a');
+    ok ! FAST::_check_node_name(' [a]');
+    ok ! FAST::_check_node_name('[a] ');
+    ok ! FAST::_check_node_name(' <p>');
+    ok ! FAST::_check_node_name('<p> ');
 }

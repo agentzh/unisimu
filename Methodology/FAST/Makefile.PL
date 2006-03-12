@@ -14,6 +14,7 @@ requires        ('Clone');
 build_requires  ('Test::Simple');
 build_requires  ('Test::MockObject');
 build_requires  ('Test::Differences');
+build_requires  ('Test::Base');
 
 #makemaker_args  (
 #    test => { TESTS => "t/*.t t/*/*.t t/*/*/*.t" },

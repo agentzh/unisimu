@@ -4,6 +4,11 @@ MANIFEST
 META.yml
 script/fast.pl
 t/FAST.t
+t/FAST-Struct-Seq.t
+t/FAST-Struct-If.t
+t/FAST-Struct-While.t
+t/FAST-Node.t
+t/errors.t
 t/01sample
 t/~01sample.png
 t/01sample.unopt.png

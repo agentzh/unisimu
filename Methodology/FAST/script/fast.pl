@@ -1,7 +1,7 @@
 #: fast.pl
 #: Flowchar AST structuralization tool
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-10 2006-03-10
+#: 2006-03-10 2006-03-12
 
 use strict;
 use warnings;
@@ -17,8 +17,14 @@ if ($opts{h}) { Usage(0); }
 my $infile = shift;
 if (not $infile) { Usage(1); }
 
-my $g = FAST->new($infile) or die FAST::error;
+my $g = FAST->new($infile);
 
+if (! $g) {
+    my $error = FAST::error;
+    $error =~ s/^FAST::\w+:\s*//;
+    warn "$error\n";
+    die "Processing terminated due to compilation errors.\n";
+}
 my $out;
 
 print "Generating original flowchart graphical output...\n";
@@ -31,7 +37,7 @@ $outfile = "$infile.asm";
 $g->as_asm($outfile);
 print "  `$outfile' generated.\n" if -f $outfile;
 
-my $ast = $g->structured(optimized => 0) or die FAST::error;
+my $ast = $g->structured(optimized => 0);
 
 print "Generating graphical output for the (unoptimized) structuralized program...\n";
 $outfile = "$infile.unopt.png";
@@ -46,7 +52,7 @@ print $out $ast->as_c();
 close $out;
 print "  `$outfile' generated.\n" if -f $outfile;
 
-$ast = $g->structured(optimized => 1) or die FAST::error;
+$ast = $g->structured(optimized => 1);
 
 print "Generating graphical output for the (optimized) structuralized program...\n";
 $outfile = "$infile.opt.png";
