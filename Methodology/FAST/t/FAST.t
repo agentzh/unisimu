@@ -578,22 +578,18 @@ _EOC_
     isa_ok $ast, 'FAST::Struct';
     isa_ok $ast, 'FAST::Struct::Seq';
     eq_or_diff( $ast->as_c, <<'_EOC_' );
-do L:=1
+if (p) {
+    do L:=2
+} else {
+    do L:=0
+}
 while (L>0) {
-    if (L=1) {
-        if (p) {
-            do L:=2
-        } else {
+    if (L=2) {
+        do f
+        if (q) {
             do L:=0
-        }
-    } else {
-        if (L=2) {
-            do f
-            if (q) {
-                do L:=0
-            } else {
-                do L:=2
-            }
+        } else {
+            do L:=2
         }
     }
 }
