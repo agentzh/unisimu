@@ -19,7 +19,7 @@ run {
     is( (!$g ? FAST->error()."\n" : undef), $block->err, $block->name );
 };
 
-__DATA__
+__END__
 
 === TEST 1: random rats
 --- src

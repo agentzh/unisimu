@@ -427,15 +427,7 @@ sub _gen_optimized_ast {
         $i--;
     }
     if ((grep { defined $_ } @g) > 1) {
-        if (not $g[1]->might_pass('[L:=1]')) {
-            my $g1 = $g[1];
-            $g[1] = undef;
-            my $ast = _gen_unoptimized_ast(@g);
-            $ast->subs('[L:=1]', $g1);
-            return $ast;
-        } else {
-            return _gen_unoptimized_ast(@g);
-        }
+        return _gen_unoptimized_ast(@g);
     }
     my $g = $g[1];
     if ($g->must_pass('[L:=0]')) {
