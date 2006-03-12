@@ -17,7 +17,7 @@ run {
     my $g = FAST->new(\$src);
     ok $g, 'obj ok - '.$block->name;
     warn FAST->error() if not $g;
-    $g->as_png('tmp.png');
+    #$g->as_png('tmp.png');
     my $ast = $g->structured(optimized => 0);
     is( $block->unopt, $ast->as_c, 'unopt ok - '.$block->name );
     $ast = $g->structured(optimized => 1);
