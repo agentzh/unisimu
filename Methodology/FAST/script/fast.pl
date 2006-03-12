@@ -77,3 +77,10 @@ sub Usage {
         exit($retval);
     }
 }
+
+__END__
+
+=head1 NAME
+
+fast.pl - Driver for FAST
+

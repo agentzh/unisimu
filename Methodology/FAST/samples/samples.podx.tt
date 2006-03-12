@@ -1,0 +1,75 @@
+=head1 NAME
+
+samples - Samples for the fast.pl script
+
+=head1 DESCRIPTION
+
+This document provides some samples which use fast.pl to
+do flowchart AST transformation.
+
+=head1 EXAMPLES
+
+[% FOREACH i = [ 1..4 ] %]
+
+=head2 0[% i %]sample
+
+The user's input file is as follows:
+
+B<0[% i %]sample>
+
+=include "0[% i %]sample"
+
+Entering the following command to start fast.pl:
+
+=shell fast 0[% i %]sample
+
+Then you will get 6 files generated in the current working directory:
+
+B<0[% i %]sample.png>
+
+=begin html
+
+<pre>
+    <img width=300 src="0[% i %]sample.png">
+</pre>
+
+=end html
+
+B<0[% i %]sample.asm>
+
+=include "0[% i %]sample.asm"
+
+B<0[% i %]sample.unopt.png>
+
+=begin html
+
+<pre>
+    <img width=150 src="0[% i %]sample.unopt.png">
+</pre>
+
+=end html
+
+B<0[% i %]sample.unopt.c>
+
+=include "0[% i %]sample.unopt.c"
+
+B<0[% i %]sample.opt.png>
+
+=begin html
+
+<pre>
+    <img width=220 src="0[% i %]sample.opt.png">
+</pre>
+
+=end html
+
+B<0[% i %]sample.opt.c>
+
+=include "0[% i %]sample.opt.c"
+
+[% END %]
+
+=head1 AUTHOR
+
+Agent Zhang L<mailto:agentzh@gmail.com>
+
