@@ -208,17 +208,13 @@ sub as_png {
     while (my ($key, $val) = each %edge_from) {
         if (@$val > 1) {
             my $flux_node = "flux_" . $c++;
-            #warn "\nCreating flux node $flux_node for node $key...";
             $self->plot_node($gv, '', $flux_node);
             $self->plot_node($gv, $key);
-
-            $edge_to{$flux_node} = [$key];
             $gv->add_edge($flux_node => $key);
-
             for my $from (@$val) {
                 if ($edge_to{$from}->[0] eq $key) {
                     $edge_to{$from}->[0] = $flux_node;
-                } elsif ($edge_to{$from}->[1] eq $key) {
+                } else {
                     $edge_to{$from}->[1] = $flux_node;
                 }
                 $self->_plot_edge($gv, $from => $flux_node, \%edge_to);
@@ -427,7 +423,15 @@ sub _gen_optimized_ast {
         $i--;
     }
     if ((grep { defined $_ } @g) > 1) {
-        return _gen_unoptimized_ast(@g);
+        if (not $g[1]->might_pass('[L:=1]')) {
+            my $g1 = $g[1];
+            $g[1] = undef;
+            my $ast = _gen_unoptimized_ast(@g);
+            $ast->subs('[L:=1]', $g1);
+            return $ast;
+        } else {
+            return _gen_unoptimized_ast(@g);
+        }
     }
     my $g = $g[1];
     if ($g->must_pass('[L:=0]')) {
