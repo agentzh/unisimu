@@ -15,7 +15,7 @@ getopts('h', \%opts);
 if ($opts{h}) { Usage(0); }
 
 my $infile = shift;
-if (not $infile) { Usage(1); }
+if (not $infile) { Usage(0); }
 
 my $g = FAST->new($infile);
 
