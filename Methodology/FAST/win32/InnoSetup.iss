@@ -11,7 +11,7 @@ DefaultGroupName=FAST
 AllowNoIcons=yes
 LicenseFile=Artistic.txt
 OutputDir=..\release
-OutputBaseFilename=FAST-0.01-r295
+OutputBaseFilename=FAST-0.01-r298
 Compression=lzma
 SolidCompression=yes
 
@@ -23,7 +23,7 @@ Source: ".\*"; Excludes: "unins000*"; DestDir: "{app}"; Flags: ignoreversion ove
 
 [Icons]
 Name: "{group}\FAST Doucments"; Filename: "{app}\samples\samples.html"
-Name: "{group}\Uninstall AgentPerl"; Filename: "{uninstallexe}"
+Name: "{group}\Uninstall FAST"; Filename: "{uninstallexe}"
 
 [Run]
 Filename: "{app}\bin\regenv.exe"; Parameters: "/q prepend user PATH ""{app}\bin;"""; Description: "Set PATH environment for the current user"; Flags: shellexec postinstall
