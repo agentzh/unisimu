@@ -1,7 +1,7 @@
 #: sanity.t
 #: Test the basic flowchart programs using FAST's as_c
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-12 2006-03-12
+#: 2006-03-12 2006-03-14
 
 use strict;
 use warnings;
@@ -17,11 +17,13 @@ run {
     my $g = FAST->new(\$src);
     ok $g, 'obj ok - '.$block->name;
     warn FAST->error() if not $g;
-    #$g->as_png('tmp.png');
+    #$g->as_png('tmp1.png');
     my $ast = $g->structured(optimized => 0);
     is( $block->unopt, $ast->as_c, 'unopt ok - '.$block->name );
+    #$ast->as_png('tmp2.png');
     $ast = $g->structured(optimized => 1);
     is( $block->opt, $ast->as_c, 'opt ok - '.$block->name );
+    #$ast->as_png('tmp3.png');
 };
 
 __DATA__
@@ -157,3 +159,15 @@ while (L>0) {
         }
     }
 }
+
+
+
+=== TEST 5: Test the bug concerning `entry => exit'
+This is a bug reported by xiaoke++ and xunxin++
+--- src
+entry => exit
+<a> => exit
+<a> => [b]
+[b] => <a>
+--- unopt
+--- opt

@@ -1,7 +1,7 @@
 #: FAST/Struct/Seq.pm
 #: Sequential structure in FAST DOM tree
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-10
+#: 2006-03-08 2006-03-14
 
 package FAST::Struct::Seq;
 
@@ -38,17 +38,27 @@ sub second {
 sub entry {
     my $self = shift;
     my $first = $self->first;
+    my $second = $self->second;
     if ($first->isa('FAST::Node') and $first->label eq '') {
-        return $self->second->entry;
+        if ($second->isa('FAST::Node') and $second->label eq '') {
+            return $second;
+        } else {
+            return $second->entry;
+        }
     }
     return $first->entry;
 }
 
 sub exit {
     my $self = shift;
+    my $first = $self->first;
     my $second = $self->second;
     if ($second->isa('FAST::Node') and $second->label eq '') {
-        return $self->first->exit;
+        if ($first->isa('FAST::Node') and $first->label eq '') {
+            return $second;
+        } else {
+            return $first->exit;
+        }
     }
     return $second->exit;
 }
@@ -69,18 +79,19 @@ sub visualize {
     my ($self, $gv) = @_;
     die if not defined $gv;
     my ($first, $second) = ($self->first, $self->second);
-    my $dual = 1;
-    if ($first->isa('FAST::Node') and $first->label eq '') {
-        $dual = 0;
-    } else {
-        $first->visualize($gv);
-    }
-    if ($second->isa('FAST::Node') and $second->label eq '') {
-        $dual = 0;
-    } else {
+    my $empty1 = $first->isa('FAST::Node') && $first->label eq '';
+    my $empty2 = $second->isa('FAST::Node') && $second->label eq '';
+    if ($empty1 and $empty2) {
         $second->visualize($gv);
+    } else {
+        if (!$empty1) {
+            $first->visualize($gv);
+        }
+        if (!$empty2) {
+            $second->visualize($gv);
+        }
     }
-    if ($dual) {
+    if (!$empty1 and !$empty2) {
         $gv->add_edge($first->exit->id => $second->entry->id);
     }
 }

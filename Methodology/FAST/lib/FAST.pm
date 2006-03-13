@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-12
+#: 2006-03-08 2006-03-14
 
 package FAST;
 
@@ -246,6 +246,7 @@ sub _plot_edge {
 
 sub plot_node {
     my ($self, $gv, $node, $id) = @_;
+    die if not $gv;
     $id = $node if not defined $id;
     if ($node =~ /^\s*$/) {
         $gv->add_node($id, label => ' ', %FluxNodeStyle);
@@ -347,6 +348,9 @@ sub structured {
     }
     my %edge_to   = %{ $self->{edge_to} };
     my $entry = $edge_to{entry}->[0];
+    if ($entry eq 'exit') {
+        return FAST::Struct::Seq->new('', '');
+    }
     my @nodes =
         grep { $_ ne $entry and (/^\[.*\]$/ or /^<.*>$/) }
             keys %edge_to;

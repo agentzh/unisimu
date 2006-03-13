@@ -1,12 +1,12 @@
 #: FAST-Struct-Seq.t
 #: Test FAST::Struct::Seq
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-10
+#: 2006-03-08 2006-03-14
 
 use strict;
 use warnings;
 
-use Test::More tests => 81;
+use Test::More tests => 87;
 #use Data::Dumper::Simple;
 
 BEGIN { use_ok('FAST::Struct::Seq'); }
@@ -167,6 +167,17 @@ _EOC_
     is( $s->first->label, '' );
     is( $s->second->label, '[L:=2]' );
 
+    is( $s->entry, $s->second );
+    is( $s->exit, $s->second );
+}
+
+{
+    # Test totally empty FAST::Struct::Seq object
+    my $s = FAST::Struct::Seq->new('', '');
+    ok( $s->first );
+    ok( $s->second );
+    is( $s->first->label, '' );
+    is( $s->second->label, '' );
     is( $s->entry, $s->second );
     is( $s->exit, $s->second );
 }
