@@ -496,19 +496,19 @@ FAST - Library for Flowchart Abstract Syntax Tree
 =head1 CODE COVERAGE
 
 I use L<Devel::Cover> to test the code coverage of my tests, below is the
-L<Devel::Cover> report on this module's test suite (version 0.01 rev 300):
+L<Devel::Cover> report on this module's test suite (version 0.01 rev 302):
 
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
     File                           stmt   bran   cond    sub    pod   time  total
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
-    blib/lib/FAST.pm               97.5   91.7   88.0  100.0    0.0   67.9   93.4
-    blib/lib/FAST/Element.pm       85.7    n/a   33.3   62.5    0.0    3.8   66.2
-    blib/lib/FAST/Node.pm         100.0  100.0  100.0  100.0    0.0    1.9   87.1
-    blib/lib/FAST/Struct.pm       100.0  100.0  100.0  100.0    0.0    5.7   95.2
-    blib/lib/FAST/Struct/If.pm    100.0   75.0  100.0  100.0    0.0   13.2   86.9
-    blib/lib/FAST/Struct/Seq.pm    98.1   83.3   77.8  100.0    0.0    3.8   84.7
-    .../lib/FAST/Struct/While.pm  100.0   50.0  100.0  100.0    0.0    3.8   84.9
-    Total                          97.4   90.7   85.7   93.9    0.0  100.0   88.8
+    blib/lib/FAST.pm               97.5   91.8   88.0  100.0    0.0   77.7   93.5
+    blib/lib/FAST/Element.pm       85.7    n/a   33.3   62.5    0.0    3.9   66.2
+    blib/lib/FAST/Node.pm         100.0  100.0  100.0  100.0    0.0    4.9   87.1
+    blib/lib/FAST/Struct.pm       100.0  100.0  100.0  100.0    0.0    1.9   95.2
+    blib/lib/FAST/Struct/If.pm    100.0   75.0  100.0  100.0    0.0    9.7   86.9
+    blib/lib/FAST/Struct/Seq.pm    98.1   83.3   77.8  100.0    0.0    1.9   84.7
+    .../lib/FAST/Struct/While.pm  100.0   50.0  100.0  100.0    0.0    0.0   84.9
+    Total                          97.4   90.9   85.7   93.9    0.0  100.0   88.9
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
 
 =head1 AUTHOR
