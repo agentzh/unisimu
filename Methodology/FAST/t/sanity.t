@@ -9,7 +9,7 @@ use warnings;
 use Test::Base;
 use FAST;
 
-plan tests => 3 * blocks;
+plan tests => 3 * blocks() + 1;
 
 run {
     my $block = shift;
@@ -18,6 +18,7 @@ run {
     ok $g, 'obj ok - '.$block->name;
     warn FAST->error() if not $g;
     #$g->as_png('tmp1.png');
+    is( $g->as_asm, $block->asm ) if defined $block->asm;
     my $ast = $g->structured(optimized => 0);
     is( $block->unopt, $ast->as_c, 'unopt ok - '.$block->name );
     #$ast->as_png('tmp2.png');
@@ -169,5 +170,7 @@ entry => exit
 <a> => exit
 <a> => [b]
 [b] => <a>
+--- asm
+exit
 --- unopt
 --- opt

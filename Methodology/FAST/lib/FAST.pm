@@ -286,6 +286,7 @@ sub as_asm {
     }
     my $c = 1;
     my $cur = $edge_to{entry}->[0];
+    return "exit\n" if $cur eq 'exit';
     my $head = 1;
     while ($cur) {
         if ($visited{$cur}) {
