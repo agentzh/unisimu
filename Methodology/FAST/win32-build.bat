@@ -2,6 +2,7 @@
 
 perl Makefile.PL
 nmake
+nmake install
 nmake dist
 cp -v FAST*.tar.gz win32/src
 call pp -x -p -o fast.par script/fast.pl
