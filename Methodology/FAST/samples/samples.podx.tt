@@ -1,3 +1,5 @@
+[% DEFAULT print = 0 %]
+
 =head1 NAME
 
 samples - Samples for the fast.pl script
@@ -9,7 +11,7 @@ do flowchart AST transformation.
 
 =head1 EXAMPLES
 
-[% FOREACH i = [ 1..4 ] %]
+[% FOREACH i = [ 1..5 ] %]
 
 =head2 0[% i %]sample
 
@@ -44,7 +46,11 @@ B<0[% i %]sample.unopt.png>
 =begin html
 
 <pre>
+[% IF print %]
     <img width=150 src="0[% i %]sample.unopt.png">
+[% ELSE %]
+    <img src="0[% i %]sample.unopt.png">
+[% END %]
 </pre>
 
 =end html
@@ -58,7 +64,11 @@ B<0[% i %]sample.opt.png>
 =begin html
 
 <pre>
+[% IF print %]
     <img width=150 src="0[% i %]sample.opt.png">
+[% ELSE %]
+    <img src="0[% i %]sample.unopt.png">
+[% END %]
 </pre>
 
 =end html

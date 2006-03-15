@@ -1,0 +1,4 @@
+entry => exit
+<a> => exit
+<a> => [b]
+[b] => <a>

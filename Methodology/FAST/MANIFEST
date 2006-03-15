@@ -9,6 +9,7 @@ t/FAST-Struct-Seq.t
 t/FAST-Struct-If.t
 t/FAST-Struct-While.t
 t/FAST-Node.t
+t/basic.t
 t/errors.t
 t/sanity.t
 t/01sample
@@ -19,6 +20,7 @@ samples/01sample
 samples/02sample
 samples/03sample
 samples/04sample
+samples/05sample
 samples/Makefile
 samples/Active.css
 samples/samples.podx.tt

@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-14
+#: 2006-03-08 2006-03-15
 
 package FAST;
 
@@ -284,9 +284,15 @@ sub as_asm {
         $Error = "as_asm: No `entry' node found.";
         return undef;
     }
-    my $c = 1;
+
     my $cur = $edge_to{entry}->[0];
-    return "exit\n" if $cur eq 'exit';
+    if ($cur eq 'exit') {
+        print $out "exit\n";
+        close $out;
+        return $outfile ? 1 : $buf;
+    }
+
+    my $c = 1;
     my $head = 1;
     while ($cur) {
         if ($visited{$cur}) {
