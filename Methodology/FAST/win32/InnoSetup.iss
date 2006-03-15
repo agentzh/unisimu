@@ -11,7 +11,7 @@ DefaultGroupName=FAST
 AllowNoIcons=yes
 LicenseFile=Artistic.txt
 OutputDir=..\release
-OutputBaseFilename=FAST-0.01-r307
+OutputBaseFilename=FAST-0.01-r310
 Compression=lzma
 SolidCompression=yes
 

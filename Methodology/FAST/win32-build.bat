@@ -4,15 +4,14 @@ perl Makefile.PL
 nmake -nologo
 nmake -nologo install
 
-nmake dist
+nmake -nologo dist
 cp -v FAST*.tar.gz win32/src
 
 rm -rf tmp
 mkdir tmp
 
-call pp -M POSIX -B -x -p -o fast.par script/fast.pl
+call pp -x -p -o fast.par script/fast.pl
 unzip -o -d tmp fast.par
-rm -rf win32/site/lib
 cp -vr tmp/lib win32
 
 rm fast.par
