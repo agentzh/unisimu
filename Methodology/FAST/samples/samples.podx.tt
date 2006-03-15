@@ -2,11 +2,11 @@
 
 =head1 NAME
 
-samples - Samples for the fast.pl script
+samples - Samples for the `fast' script
 
 =head1 DESCRIPTION
 
-This document provides some samples which use fast.pl to
+This document provides some samples which use the F<fast> script to
 do flowchart AST transformation.
 
 =head1 EXAMPLES
@@ -15,17 +15,17 @@ do flowchart AST transformation.
 
 =head2 0[% i %]sample
 
-The user's input file is as follows:
+In this example, the user's input file is named F<0[% i %]sample>:
 
 B<0[% i %]sample>
 
 =include "0[% i %]sample"
 
-Entering the following command to start fast.pl:
+Now let's enter the following command to feed the input file into I<fast>'s mouth:
 
 =shell fast 0[% i %]sample
 
-Then you will get 6 files generated in the current working directory:
+Then you will get 6 output files generated in the current working directory:
 
 B<0[% i %]sample.png>
 
@@ -41,6 +41,10 @@ B<0[% i %]sample.asm>
 
 =include "0[% i %]sample.asm"
 
+B<0[% i %]sample.unopt.c>
+
+=include "0[% i %]sample.unopt.c"
+
 B<0[% i %]sample.unopt.png>
 
 =begin html
@@ -55,9 +59,9 @@ B<0[% i %]sample.unopt.png>
 
 =end html
 
-B<0[% i %]sample.unopt.c>
+B<0[% i %]sample.opt.c>
 
-=include "0[% i %]sample.unopt.c"
+=include "0[% i %]sample.opt.c"
 
 B<0[% i %]sample.opt.png>
 
@@ -72,10 +76,6 @@ B<0[% i %]sample.opt.png>
 </pre>
 
 =end html
-
-B<0[% i %]sample.opt.c>
-
-=include "0[% i %]sample.opt.c"
 
 [% END %]
 
