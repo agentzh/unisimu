@@ -1,7 +1,7 @@
 #: sanity.t
 #: Test the basic flowchart programs using FAST's as_c
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-12 2006-03-14
+#: 2006-03-12 2006-03-15
 
 use strict;
 use warnings;
@@ -20,10 +20,10 @@ run {
     #$g->as_png('tmp1.png');
     is( $g->as_asm, $block->asm ) if defined $block->asm;
     my $ast = $g->structured(optimized => 0);
-    is( $block->unopt, $ast->as_c, 'unopt ok - '.$block->name );
+    is( $ast->as_c, $block->unopt, 'unopt ok - '.$block->name );
     #$ast->as_png('tmp2.png');
     $ast = $g->structured(optimized => 1);
-    is( $block->opt, $ast->as_c, 'opt ok - '.$block->name );
+    is( $ast->as_c, $block->opt, 'opt ok - '.$block->name );
     #$ast->as_png('tmp3.png');
 };
 
