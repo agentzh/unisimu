@@ -6,7 +6,7 @@
 
 use t::FAST;
 
-plan tests => 3 * blocks();
+plan tests => 4 * blocks();
 
 run_tests;
 
@@ -18,6 +18,12 @@ entry => <p>
 <p> => [f]
 [f] => exit
 <p> => exit
+--- asm
+    test p
+    jno  L1
+    do   f
+L1:
+    exit
 --- unopt
 do L:=1
 while (L>0) {
@@ -49,6 +55,15 @@ entry => <p>
 [f] => exit
 <p> => [g]
 [g] => exit
+--- asm
+    test p
+    jno  L1
+    do   f
+L2:
+    exit
+L1:
+    do   g
+    jmp  L2
 --- unopt
 do L:=1
 while (L>0) {
@@ -85,6 +100,14 @@ entry => <p>
 <p> => [f]
 [f] => <p>
 <p> => exit
+--- asm
+L1:
+    test p
+    jno  L2
+    do   f
+    jmp  L1
+L2:
+    exit
 --- unopt
 do L:=1
 while (L>0) {
@@ -119,6 +142,12 @@ entry => [f]
 [f] => <p> 
 <p> => exit
 <p> => [f]
+--- asm
+L1:
+    do   f
+    test p
+    jno  L1
+    exit
 --- unopt
 do L:=1
 while (L>0) {
@@ -154,6 +183,15 @@ entry => [f]
 <p> => [g]
 <p> => exit
 [g] => [f]
+--- asm
+L1:
+    do   f
+    test p
+    jno  L2
+    do   g
+    jmp  L1
+L2:
+    exit
 --- unopt
 do L:=1
 while (L>0) {

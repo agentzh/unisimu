@@ -4,6 +4,7 @@ README
 MANIFEST
 META.yml
 script/fast.pl
+t/FAST.pm
 t/FAST.t
 t/FAST-Struct-Seq.t
 t/FAST-Struct-If.t

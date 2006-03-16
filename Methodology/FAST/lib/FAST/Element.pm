@@ -1,7 +1,7 @@
 #: FAST/Element.pm
 #: Common base class for all FAST DOM tree entities
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-16
 
 package FAST::Element;
 
@@ -21,9 +21,9 @@ sub new {
     return $self;
 }
 
-sub might_pass { confess "Not implemented"; }
+#sub might_pass { confess "Not implemented"; }
 
-sub must_pass { confess "Not implemented"; }
+#sub must_pass { confess "Not implemented"; }
 
 sub id {
     return $_[0]->{id};
@@ -41,13 +41,13 @@ sub _update_id {
     $self->{id} = "$self";
 }
 
-sub entry { confess "Not implemented"; }
+#sub entry { confess "Not implemented"; }
 
-sub exit { confess "Not implemented"; }
+#sub exit { confess "Not implemented"; }
 
-sub visualize { confess "Not implemented"; }
+#sub visualize { confess "Not implemented"; }
 
-sub as_c { confess "Not implemented"; }
+#sub as_c { confess "Not implemented"; }
 
 sub as_png {
     my ($self, $outfile) = @_;
