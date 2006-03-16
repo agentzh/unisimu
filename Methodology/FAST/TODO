@@ -1,0 +1,10 @@
+= TODO List for the FAST Module
+
+* Test as_png via GraphViz's as_debug method
+* Added README.html to win32
+* Test FAST tensely by evaluating the flowchart ASTs randomly
+* Port FAST (and also its dependencies, Test::More, GraphViz, etc.) to Groovy
+* Add detailed POD docs to every .pm file
+* More robust Path env handling for Win32 FAST setup
+* Merge FAST and FlowViz into one project
+* Upload FAST to CPAN when it's ready
