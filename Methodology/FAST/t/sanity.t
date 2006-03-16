@@ -1,31 +1,13 @@
 #: sanity.t
 #: Test the basic flowchart programs using FAST's as_c
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-12 2006-03-15
+#: 2006-03-12 2006-03-16
 
-use strict;
-use warnings;
-
-use Test::Base;
-use FAST;
+use t::FAST;
 
 plan tests => 3 * blocks() + 1;
 
-run {
-    my $block = shift;
-    my $src = $block->src;
-    my $g = FAST->new(\$src);
-    ok $g, 'obj ok - '.$block->name;
-    warn FAST->error() if not $g;
-    #$g->as_png('tmp1.png');
-    is( $g->as_asm, $block->asm ) if defined $block->asm;
-    my $ast = $g->structured(optimized => 0);
-    is( $ast->as_c, $block->unopt, 'unopt ok - '.$block->name );
-    #$ast->as_png('tmp2.png');
-    $ast = $g->structured(optimized => 1);
-    is( $ast->as_c, $block->opt, 'opt ok - '.$block->name );
-    #$ast->as_png('tmp3.png');
-};
+run_tests;
 
 __DATA__
 
