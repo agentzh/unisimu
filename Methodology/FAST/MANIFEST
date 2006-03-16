@@ -1,6 +1,7 @@
 Makefile.PL
 Changes
 README
+TODO
 MANIFEST
 META.yml
 script/fast.pl
