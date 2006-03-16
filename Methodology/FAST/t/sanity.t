@@ -5,16 +5,21 @@
 
 use t::FAST;
 
-plan tests => 3 * blocks() + 1;
+plan tests => 4 * blocks();
+
+#debug(1);
 
 run_tests;
 
 __DATA__
 
-=== TEST 1: program with single func node
+=== TEST 1: program with a single func node
 --- src
 entry => [a]
 [a] => exit
+--- asm
+    do   a
+    exit
 --- unopt
 do L:=1
 while (L>0) {
@@ -33,6 +38,10 @@ do a
 entry => [a]
 [a] => [b]
 [b] => exit
+--- asm
+    do   a
+    do   b
+    exit
 --- unopt
 do L:=1
 while (L>0) {
@@ -57,6 +66,13 @@ do b
 entry => <p>
 <p> => <p>
 <p> => exit
+--- asm
+L1:
+    test p
+    jno  L2
+    jmp  L1
+L2:
+    exit
 --- unopt
 do L:=1
 while (L>0) {
@@ -88,6 +104,20 @@ entry => <g>
 <p> => <g>
 <q> => <q>
 <q> => exit
+--- asm
+L1:
+    test g
+    jno  L2
+L3:
+    test p
+    jno  L1
+    jmp  L3
+L2:
+    test q
+    jno  L4
+    jmp  L2
+L4:
+    exit
 --- unopt
 do L:=1
 while (L>0) {
@@ -153,6 +183,6 @@ entry => exit
 <a> => [b]
 [b] => <a>
 --- asm
-exit
+    exit
 --- unopt
 --- opt

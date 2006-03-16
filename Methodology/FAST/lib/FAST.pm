@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-15
+#: 2006-03-08 2006-03-16
 
 package FAST;
 
@@ -273,6 +273,7 @@ sub as_asm {
             $Error = "as_asm: Can't open `$outfile' for writing: $!";
         }
     } else {
+        $buf = '';
         open $out, '>', \$buf;
     }
 
@@ -287,7 +288,7 @@ sub as_asm {
 
     my $cur = $edge_to{entry}->[0];
     if ($cur eq 'exit') {
-        print $out "exit\n";
+        print $out "    exit\n";
         close $out;
         return $outfile ? 1 : $buf;
     }

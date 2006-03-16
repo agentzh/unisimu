@@ -6,9 +6,16 @@
 package t::FAST;
 
 use Test::Base -Base;
+use Test::Differences;
 use FAST;
 
-our @EXPORT = qw(run_tests);
+our @EXPORT = qw(run_tests debug);
+
+our $Debug;
+
+sub debug ($) {
+    $Debug = shift;
+}
 
 sub run_tests () {
     for my $block (blocks()) {
@@ -22,14 +29,14 @@ sub run_test ($) {
     my $g = FAST->new(\$src);
     ok $g, 'obj ok - '.$block->name;
     warn FAST->error() if not $g;
-    #$g->as_png('tmp1.png');
-    is( $g->as_asm, $block->asm ) if defined $block->asm;
+    $g->as_png('t_FAST_asm.png') if $Debug;
+    eq_or_diff( $g->as_asm, $block->asm ) if defined $block->asm;
     my $ast = $g->structured(optimized => 0);
-    is( $ast->as_c, $block->unopt, 'unopt ok - '.$block->name );
-    #$ast->as_png('tmp2.png');
+    eq_or_diff( $ast->as_c, $block->unopt, 'unopt ok - '.$block->name );
+    $ast->as_png('t_FAST_unopt.png') if $Debug;
     $ast = $g->structured(optimized => 1);
-    is( $ast->as_c, $block->opt, 'opt ok - '.$block->name );
-    #$ast->as_png('tmp3.png');
+    eq_or_diff( $ast->as_c, $block->opt, 'opt ok - '.$block->name );
+    $ast->as_png('t_FAST_opt.png') if $Debug;
 }
 
 1;
