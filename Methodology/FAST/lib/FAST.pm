@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-16
+#: 2006-03-08 2006-03-17
 
 package FAST;
 
@@ -139,6 +139,13 @@ sub parse {
         return undef;
     }
     while (my ($k, $v) = each %edge_to) {
+        if ($k ne 'entry' and @{ $edge_from{$k} } == 0) {
+            parse_error(
+                $fname,
+                "error: There is no way to reach node $k",
+            );
+            return undef;
+        }
         if ($k =~ /^<.*>$/ and @$v != 2) {
             if (@$v == 1) {
                 parse_error(
@@ -150,7 +157,7 @@ sub parse {
                     $fname,
                     "error: Predicate node `$k' has no descendants"
                 );
-             }
+            }
             return undef;
         } elsif ($k =~ /^\[.*\]$/ and @$v != 1) {
             if (@$v == 0) {

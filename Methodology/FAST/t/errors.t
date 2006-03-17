@@ -1,7 +1,7 @@
 #: errors.t
 #: Test error handling of FAST parser
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-12 2006-03-16
+#: 2006-03-12 2006-03-17
 
 use Test::Base;
 use FAST;
@@ -105,8 +105,9 @@ FAST::parse: STRING: error: Predicate node `<a>' has only one descendant.
 
 === TEST 10: <..> node must have at least two children (0)
 --- src
-entry => <a>
-[b] => exit
+entry => <p>
+<p> => <a>
+<p> => exit
 --- err
 FAST::parse: STRING: error: Predicate node `<a>' has no descendants.
 
@@ -162,3 +163,26 @@ entry => [b]
 [a] => exit
 --- err
 FAST::parse: STRING: line 1: syntax error: `[b] => '.
+
+
+
+=== TEST 16: func node should always have a parent (xiaoke++)
+--- src
+entry =><b>
+<b> => exit
+<b> => [c]
+[c] => exit
+[a] => exit  
+--- err
+FAST::parse: STRING: error: There is no way to reach node [a].
+
+
+
+=== TEST 17: predicate node should always have a parent (xiaoke++)
+--- src
+entry =>exit
+<p> => exit
+<p> => [a]
+[a] => exit
+--- err
+FAST::parse: STRING: error: There is no way to reach node <p>.
