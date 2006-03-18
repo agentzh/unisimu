@@ -179,3 +179,10 @@ entry =>exit
 [a] => exit
 --- err
 FAST::parse: STRING: error: There is no way to reach node <p>.
+
+
+
+=== TEST 18: emtpy input file
+--- src
+--- err
+FAST::parse: STRING: error: No `entry' node found.
