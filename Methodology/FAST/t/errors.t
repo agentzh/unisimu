@@ -3,18 +3,11 @@
 #: Copyright (c) 2006 Agent Zhang
 #: 2006-03-12 2006-03-17
 
-use Test::Base;
-use FAST;
+use t::FAST;
 
 plan tests => 2 * blocks;
 
-run {
-    my $block = shift;
-    my $src = $block->src;
-    my $g = FAST->new(\$src);
-    ok( !defined $g, $block->name );
-    is( (!$g ? FAST->error()."\n" : undef), $block->err, $block->name );
-};
+run_tests;
 
 __DATA__
 

@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Test scaffold framework for t/sanity.t, t/basic.t, and etc.
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-16 2006-03-16
+#: 2006-03-16 2006-03-18
 
 package t::FAST;
 
@@ -27,16 +27,23 @@ sub run_test ($) {
     my $block = shift;
     my $src = $block->src;
     my $g = FAST->new(\$src);
-    ok $g, 'obj ok - '.$block->name;
-    warn FAST->error() if not $g;
-    $g->as_png('t_FAST_asm.png') if $Debug;
-    eq_or_diff( $g->as_asm, $block->asm ) if defined $block->asm;
-    my $ast = $g->structured(optimized => 0);
-    eq_or_diff( $ast->as_c, $block->unopt, 'unopt ok - '.$block->name );
-    $ast->as_png('t_FAST_unopt.png') if $Debug;
-    $ast = $g->structured(optimized => 1);
-    eq_or_diff( $ast->as_c, $block->opt, 'opt ok - '.$block->name );
-    $ast->as_png('t_FAST_opt.png') if $Debug;
+
+    my $err = $block->err;
+    if ($err) {
+        ok( !defined $g, $block->name );
+        is( (!$g ? FAST->error()."\n" : undef), $err, $block->name );
+    } else {
+        ok $g, 'obj ok - '.$block->name;
+        warn FAST->error() if not $g;
+        $g->as_png('t_FAST_asm.png') if $Debug;
+        eq_or_diff( $g->as_asm, $block->asm ) if defined $block->asm;
+        my $ast = $g->structured(optimized => 0);
+        eq_or_diff( $ast->as_c, $block->unopt, 'unopt ok - '.$block->name );
+        $ast->as_png('t_FAST_unopt.png') if $Debug;
+        $ast = $g->structured(optimized => 1);
+        eq_or_diff( $ast->as_c, $block->opt, 'opt ok - '.$block->name );
+        $ast->as_png('t_FAST_opt.png') if $Debug;
+    }
 }
 
 1;
