@@ -1,7 +1,7 @@
 #: errors.t
 #: Test error handling of FAST parser
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-12 2006-03-17
+#: 2006-03-12 2006-03-18
 
 use t::FAST;
 
