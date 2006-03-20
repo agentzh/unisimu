@@ -1,7 +1,7 @@
 #: sanity.t
 #: Test the basic flowchart programs using FAST's as_c
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-12 2006-03-16
+#: 2006-03-12 2006-03-20
 
 use t::FAST;
 
@@ -186,3 +186,42 @@ entry => exit
     exit
 --- unopt
 --- opt
+
+
+
+=== TEST 6: Test <b> and [b]:
+This test case is contributed by xiaoke++
+--- src
+entry =><b>
+<b> => exit
+<b> => [b]
+[b] => exit
+--- asm
+    test b
+    jno  L1
+L2:
+    exit
+L1:
+    do   b
+    jmp  L2
+--- unopt
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (b) {
+            do L:=0
+        } else {
+            do L:=2
+        }
+    } else {
+        if (L=2) {
+            do b
+            do L:=0
+        }
+    }
+}
+--- opt
+if (b) {
+} else {
+    do b
+}
