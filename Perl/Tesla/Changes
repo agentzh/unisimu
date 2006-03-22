@@ -1,0 +1,6 @@
+Revision history for Perl extension Tesla.
+
+0.01  Sat Dec  4 19:26:08 2004
+	- original version; created by h2xs 1.23 with options
+		-PXOA -n Tesla
+

@@ -1,0 +1,455 @@
+--: std.t.tsl
+--: Test components in std.tm with no gate delay.
+--: Tesla v0.05
+--: Agent2002. All rights reserved.
+--: 04-11-13 04-12-15
+
+perl use Test::More tests => 42;
+
+-- debug;
+
+-- FLD refers to "Fundamentals of Logic Design (5th Edition)"
+
+library std;
+
+-------------------------
+-- Test HalfAdder:
+-------------------------
+component HalfAdder;
+-- XOR : 0.2; 
+-- AND : 0.2;
+
+signal X, Y, Cout, Sum;
+HalfAdder( X, Y; Cout, Sum );
+
+X <= [ 0@0, 1@2 ];
+Y <= [ 0@0, 1@1, 0@2, 1@3 ];
+run 5;
+
+perl is( $Cout->histp, '0@0,1@3' );
+perl is( $Sum->histp, '0@0,1@1,0@3' );
+
+-------------------------
+-- Test FullAdder:
+-------------------------
+clear;
+component FullAdder;
+
+-- FLD Page 99, FIGURE 4-4:
+
+-- signal X, Y, Cout, Sum;
+signal Cin;
+FullAdder( X, Y, Cin; Cout, Sum );
+
+X <= [ 0@0, 1@4 ];
+Y <= [ 0@0, 1@2, 0@4, 1@6 ];
+Cin <= [ 0@0, 1@1, 0@2, 1@3, 0@4, 1@5, 0@6, 1@7 ];
+run 8;
+
+perl is( $Cout->histp, '0@0,1@3,0@4,1@5' );
+perl is( $Sum->histp, '0@0,1@1,0@3,1@4,0@5,1@7' );
+
+-------------------------
+-- Test SRLatch:
+-------------------------
+clear;
+component SRLatch;
+
+-- FLD Page 298, FIGURE 11-7:
+
+signal S, R, Q, Qp;
+SRLatch( S, R; Q, Qp );
+
+S <= [ 0@0, 1@11, 0@20 ];
+R <= [ 0@0, 1@28 ];
+Q <= [ 0@0 ];
+run 50;
+
+perl is( $Q->histp, '0@0,1@11,0@28' );
+perl is( $Qp->histp, '1@0,0@11,1@28' );
+
+-- FLD Page 299, FIGURE 11-9:
+
+reset;
+S <= [ 0@0, 1@80, 0@81, 1@82, 0@83, 1@84 ];
+R <= [ 1@0, 0@30, 1@31, 0@32, 1@33, 0@34 ];
+Q <= [ 0@0 ];
+run 100;
+
+perl is( $Q->histp,  '0@0,1@80' );
+perl is( $Qp->histp, '1@0,0@80' );
+
+-------------------------
+-- Test DLatch:
+-------------------------
+-- debug;
+-- NOT: 0.3;
+-- AND: 0.5;
+-- OR: 0.5;
+-- NAND: 0.3;
+-- NOR: 0.3;
+
+clear;
+-- perl warn $Q->value, $Qp->value;
+
+component DLatch;
+
+-- PLD Page 300, FIGURE 11-11 (b):
+
+-- signal Q, Qp;
+signal G, D;
+DLatch( D, G; Q, Qp );
+
+G <= [ 0@0, 1@4, 0@9 ];
+D <= [ 0@0, 1@1, 0@2, 1@3, 0@5, 1@6, 0@7, 1@8, 0@10 ];
+Q <= [ 0@0 ];
+run 15;
+
+perl is( $Q->histp, '0@0,1@4,0@5,1@6,0@7,1@8' );
+perl is( $Qp->histp, '1@0,0@4,1@5,0@6,1@7,0@8' );
+
+-- dump G, D;
+-- perl exit(0);
+
+-------------------------
+-- Test DFlipFlop:
+-------------------------
+clear;
+-- debug;
+component DFlipFlop;
+
+-- FLD Page 301, FIGURE 11-14:
+
+-- signal D, Q, Qp;
+signal Ck;
+signal CkN;
+CkN <= NOT(Ck);
+DFlipFlop( D, CkN, Q, Qp );
+
+D  <= [ 1@0, 0@21, 1@41, 0@82, 1@102, 0@109 ];
+Ck <= [ 0@0, 1@10 ] -repeat 6;
+Ck <= [ 0@120 ];
+Q  <= [ 0@0 ];
+run 130;
+
+perl is( $Q->histp,  '0@0,1@20,0@40,1@60,0@100' );
+perl is( $Qp->histp, '1@0,0@20,1@40,0@60,1@100' );
+
+-- FLD Page 302, FIGURE 11-15 (b):
+
+clear;
+DFlipFlop( D, Ck, Q, Qp );
+
+Ck <= [ 0@0,             1@20,             0@35,        1@50 ];
+D  <= [ 0@0,1@5,0@10,1@13,   0@23,1@26,0@29,   1@40,0@45,   1@54,0@58 ];
+Q  <= [ 0@0 ];
+run 60;
+
+perl is( $Q->histp,  '0@0,1@20,0@50' );
+perl is( $Qp->histp, '1@0,0@20,1@50' );
+
+-------------------------
+-- Test SRFlipFlop:
+-------------------------
+clear;
+component SRFlipFlop;
+
+-- FLD Page 304, FIGURE 11-19(b):
+
+signal CLK;
+SRFlipFlop( S, CLK, R; Q, Qp );
+
+CLK <= [ 0@0, 1@10 ] -repeat 3;
+S <= [ 1@0, 0@12, 1@32, 0@47 ];
+R <= [ 0@0, 1@12, 0@32 ];
+Q <= [ 0@0 ];
+run 60;
+
+perl is( $Q->histp,  '0@0,1@10,0@30,1@50' );
+perl is( $Qp->histp, '1@0,0@10,1@30,0@50' );
+
+-------------------------
+-- Test JKFlipFlop:
+-------------------------
+clear;
+component JKFlipFlop;
+
+-- FLD Page 304, FIGURE 11-19(b):
+
+JKFlipFlop( S, CLK, R; Q, Qp );
+
+CLK <= [ 0@0, 1@10 ] -repeat 3;
+S <= [ 1@0, 0@12, 1@32, 0@47 ];
+R <= [ 0@0, 1@12, 0@32 ];
+Q <= [ 0@0 ];
+run 60;
+
+perl is( $Q->histp,  '0@0,1@10,0@30,1@50' );
+perl is( $Qp->histp, '1@0,0@10,1@30,0@50' );
+
+-- FLD Page 305, FIGURE 11-20(c):
+
+clear;
+signal J, K, Clock;
+JKFlipFlop( J, Clock, K; Q, Qp );
+
+Clock <= [ 1@0, 0@5, 1@15, 0@25, 1@35, 0@45, 1@55 ];
+J <= [ 1@0, 0@20, 1@40 ];
+K <= [ 0@0, 1@20 ];
+Q <= [ 0@0 ];
+run 60;
+
+perl is( $Q->histp,  '0@0,1@15,0@35,1@55' );
+perl is( $Qp->histp, '1@0,0@15,1@35,0@55' );
+
+-------------------------
+-- Test TFlipFlop:
+-------------------------
+clear;
+component TFlipFlop;
+
+-- FLD Page 306, FIGURE 11-23:
+
+signal T;
+CkN <= NOT(Ck);
+TFlipFlop( T, CkN; Q, Qp );
+
+Ck <= [ 0@0, 1@10 ] -repeat 4;
+Ck <= [ 0@80 ];
+T <= [ 0@0, 1@25, 0@45, 1@65 ];
+Q <= [ 0@0 ];
+run 100;
+
+perl is( $Q->histp,  '0@0,1@40,0@80' );
+perl is( $Qp->histp, '1@0,0@40,1@80' );
+
+
+-----------------------------
+-- FLD Page 211 FIGURE 8-8
+-----------------------------
+clear;
+
+AND : 10;
+OR  : 10;
+NOT : 10;
+
+signal A, B, Bp, C, E, F;
+F <= OR( D, E );
+D <= AND( A, Bp );
+Bp <= NOT(B);
+E <= AND( B, C );
+
+A <= [ 1@0 ];
+C <= [ 1@0 ];
+B <= [ 1@0, 0@20 ];
+D <= [ 0@0 ];
+E <= [ 1@0 ];
+F <= [ 1@0 ];
+
+run 65;
+
+-- print "FLD Page 211 FIGURE 8-8";
+-- history B, D, E, F;
+perl is( $D->histp, '0@0,1@40' );
+perl is( $E->histp, '1@0,0@30' );
+perl is( $F->histp, '1@0,0@40,1@50' );
+
+-- FLD Page 212 FIGURE 8-10
+clear;
+
+AND : 5;
+OR  : 5;
+NOT : 3;
+
+signal Ap, Dp, W, H, Z;
+W <= OR( C, A );
+Ap <= NOT(A);
+Dp <= NOT(D);
+H <= OR( Ap, Dp );
+Bp <= NOT(B);
+X <= NOT(C);
+Y <= OR( Bp, D, X );
+Z <= AND( W, H, Y );
+
+A <= [ 0@0 ];
+B <= [ 1@0 ];
+D <= [ 0@0 ];
+C <= [ 0@0, 1@5 ];
+W <= [ 0@0 ];
+X <= [ 1@0 ];
+Y <= [ 1@0 ];
+Z <= [ 0@0 ];
+
+run 22;
+
+-- print "FLD Page 212 FIGURE 8-10";
+-- history C, W, X, Y, Z;
+perl is( $W->histp, '0@0,1@10' );
+perl is( $X->histp, '1@0,0@8' );
+perl is( $Y->histp, '1@0,0@13' );
+perl is( $Z->histp, '0@0,1@15,0@18' );
+
+
+-----------------------------
+-- FLD Page 365 FIGURE 13-5
+-----------------------------
+clear;
+-- debug;
+
+library std;
+component DFlipFlop;
+
+signal D_A, D_B;
+
+Z <= XOR( A, B );
+DFlipFlop( D_A, Clock; A, Ap );
+DFlipFlop( D_B, Clock; B, Bp );
+D_A <= XOR( X, Bp );
+D_B <= OR( A, X );
+
+X <= [ 0@0, 1@1.6, 0@5.5, 1@7.4 ];
+Clock <= [ 0@0, 1@1 ] -repeat 5;
+Clock <= [ 0@10 ];
+Z <= [ 0@0 ];
+
+run 12;
+
+-- print "FLD Page 365 FIGURE 13-6";
+-- history X, Clock, A, B, Z;
+-- perl $"=" ";
+-- perl print "@{$Z->{_hist}}\n";
+perl is( $A->histp, '0@0,1@1,0@3,1@5,0@7,1@9' );
+perl is( $B->histp, '0@0,1@3' );
+perl is( $Z->histp, '0@0,1@1,0@5,1@7,0@9' );
+
+
+-----------------------------
+-- FLD Page 366 FIGURE 13-8
+-----------------------------
+clear;
+component JKFlipFlop;
+
+signal I, Xp, ClockN;
+
+Z <= OR( E, F, G );
+E <= AND( X, Bp );
+F <= AND( X, A );
+G <= AND( Xp, Ap, B );
+Xp <= NOT(X);
+
+H <= AND( X, B );
+I <= AND( X, A );
+
+JKFlipFlop( H, ClockN, X; A, Ap );
+JKFlipFlop( X, ClockN, I; B, Bp );
+ClockN <= NOT(Clock);
+
+X <= [ 1@0, 0@10 ] -repeat 2;
+X <= [ 1@40 ];
+-- Clock <= [ 0@0, 1@6, 0@8, 1@16, 0@18, 1@26, 0@28, 1@36, 0@38, 1@46, 0@48 ];
+Clock <= [ 0@0 ];
+Clock <= [ 1@6, 0@8 ] -repeat 5 -step 10;
+
+run 50;
+
+-- print "FLD Page 366 FIGURE 13-8";
+-- history X, Clock, A, B, Z;
+perl is( $A->histp, '0@0,1@28,0@48' );
+perl is( $B->histp, '0@0,1@8,0@48' );
+perl is( $Z->histp, '1@0,0@8,1@10,0@20,1@28,0@30,1@40' );
+
+
+-----------------------------
+-- Page 135 习题与思考题 4.7
+-----------------------------
+clear;
+
+component DFlipFlopEx;
+
+signal CP, R_D, S_D;
+DFlipFlopEx( D, CP, S_D, R_D; Q, Qp );
+
+CP <= [ 0@0, 1@1 ] -repeat 5 -step 2;
+CP <= [ 0@10 ];
+D  <= [ 0@0, 1@0.4, 0@1.5, 1@2.3, 0@3.1, 1@5.5, 0@6.1, 1@6.5, 0@8.8 ];
+R_D <= [ 1@0, 0@2, 1@2.8, 0@7.2, 1@7.8 ];
+S_D <= [ 1@0, 0@5.2, 1@6.1, 0@9.4, 1@10.2 ];
+
+run 10.5;
+
+-- print "Page 136 Problem 4.7 (Rising-Edge)";
+-- history CP, D, R_D, S_D, Q;
+perl is( $Q->histp, '0@0,1@1,0@2,1@3,0@5,1@5.2,0@7.2,1@9.4' );
+
+clear;
+
+component DFlipFlopEx;
+
+signal CPp;
+CPp <= NOT( CP );
+DFlipFlopEx( D, CPp, S_D, R_D; Q, Qp );
+
+CP <= [ 0@0, 1@1 ] -repeat 5;
+CP <=  [ 0@10 ];
+D  <= [ 0@0, 1@0.4, 0@1.5, 1@2.3, 0@3.1, 1@5.5, 0@6.1, 1@6.5, 0@8.8 ];
+R_D <= [ 1@0, 0@2, 1@2.8, 0@7.2, 1@7.8 ];
+S_D <= [ 1@0, 0@5.2, 1@6.1, 0@9.4, 1@10.2 ];
+
+run 10.5;
+
+-- print "Page 136 Problem 4.7 (Falling-Edge)";
+-- history CP, D, R_D, S_D, Q;
+perl is( $Q->histp, '0@0,1@5.2,0@7.2,1@8' );
+
+
+-----------------------------
+-- Page 197 习题与思考题 5.6
+-----------------------------
+clear;
+
+component JKFlipFlop;
+
+Z <= XOR( X, Q );
+CPp <= NOT(CP);
+JKFlipFlop( Z, CPp, Z; Q, Qp );
+
+X <= [ 0@0, 1@14, 0@32, 1@44, 0@54, 1@64 ];
+CP <= [ 0@0, 1@7 ] -repeat 7 -step 10;
+CP <= [ 0@70 ];
+
+run 75;
+
+-- print "Page 197 Problem 5.6";
+-- history X, CP, Q, Z;
+perl is( $Q->histp, '0@0,1@20,0@40,1@50,0@60,1@70' );
+perl is( $Z->histp, '0@0,1@14,0@20,1@32,0@40,1@44,0@50,1@54,0@60,1@64,0@70' );
+
+
+-----------------------------
+-- Page 198 习题与思考题 5.7
+-----------------------------
+clear;
+
+signal J0, Y0, Y0p, K1, K1p, Y1, Y1p;
+K1p <= NAND( Y0, X );
+K1  <= NOT(K1p);
+Xp <= NOT(X);
+CPp <= NOT(CP);
+JKFlipFlop( Xp, CPp, K1; Y1, Y1p );
+
+Z <= NAND( K1, Y1 );
+
+J0 <= NAND( Y1, X );
+JKFlipFlop( J0, CPp, X; Y0, Y0p );
+
+X <= [ 0@0, 1@13, 0@33, 1@43, 0@63 ];
+CP <= [ 0@0, 1@7 ] -repeat 7 -step 10;
+CP <= [ 0@70 ];
+
+run 75;
+
+-- print  "Page 198 Problem 5.7";
+-- history X, CP, Y0, Y1, Z;
+perl is( $Y0->histp, '0@0,1@10,0@20,1@30,0@50,1@60' );
+perl is( $Y1->histp, '0@0,1@10,0@20,1@40,0@50,1@70' );
+perl is( $Z->histp, '1@0,0@13,1@20,0@43,1@50' );

@@ -1,0 +1,80 @@
+-- : SR_latch.tsl
+-- : Simple test using S-R latch
+-- : Tesla v0.04
+-- : Agent2002. All rights reserved.
+-- : 04-11-10 04-11-10
+
+-- NOR gate delay is 3 ns:
+NOR : 1.5;
+
+-- Define the signals:
+signal S, R, Q, Qp;
+
+-- Contruct the logic circuit:
+Qp <= NOR( S, Q );
+Q  <= NOR( R, Qp );
+
+-- Make a plan by assigning values to some signals at future times:
+S <= [ 0@0, 1@10, 0@20 ];
+R <= [ 0@0, 1@30 ];
+-- Qp <= [ 1@0 ];
+Q <= [ 0@0 ];
+
+-- start simulation for 50 ns:
+run 50;
+
+-- output the simulation result:
+history Q, Qp;
+
+-- do a second simulation:
+reset;
+
+S <= [ 0@0, 1@80, 0@84, 1@88, 0@92, 1@96 ];
+R <= [ 1@0, 0@35, 1@39, 0@43, 1@47, 0@51 ];
+Qp <= [ 1@0 ];
+
+run 150;
+-- print "Debouncing:\n";
+history Q, Qp;
+
+-- do a complete new simulation:
+
+clear;
+NOR : 1.5;
+
+signal A, B, C, D;
+
+component SRLatch( S, R, Q, Qp )
+    signal C;
+    Qp <= NOR( S, Q );
+    Q  <= NOR( R, Qp );
+end component;
+
+SRLatch( A, B, C, D );
+
+D <= [ 1@0 ];
+A <= [ 0@0, 1@10, 0@20 ];
+B <= [ 0@0, 1@30 ];
+
+run 50;
+
+history C, D;
+
+clear;
+NOR : 1.5;
+
+component SRLatch2( S, R, Q, Qp )
+    signal C;
+    Qp <= NOR( S, Q );
+    Q  <= NOR( R, Qp );
+end component;
+
+SRLatch2( A, B, C, D );
+
+D <= [ 1@0 ];
+A <= [ 0@0, 1@10, 0@20 ];
+B <= [ 0@0, 1@30 ];
+
+run 50;
+
+history C, D;

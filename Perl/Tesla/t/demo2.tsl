@@ -1,0 +1,213 @@
+--: demo.tsl
+
+-- FLD refers to "Fundamentals of Logic Design (5th Edition)"
+
+library std;
+
+AND : 0.8;
+OR : 0.8;
+NOT : 0.5;
+NAND : 0.5;
+NOR : 0.5;
+XOR : 0.5;
+
+-------------------------
+-- Test HalfAdder:
+-------------------------
+component HalfAdder;
+
+signal X, Y, Cout, Sum;
+HalfAdder( X, Y; Cout, Sum );
+
+X <= [ 0@0, 1@2 ];
+Y <= [ 0@0, 1@1, 0@2, 1@3 ];
+run 5;
+
+print "Half Adder\n";
+history X, Y, Cout, Sum;
+
+-------------------------
+-- Test FullAdder:
+-------------------------
+clear;
+component FullAdder;
+
+-- FLD Page 99, FIGURE 4-4:
+
+signal Cin;
+FullAdder( X, Y, Cin; Cout, Sum );
+
+X <= [ 0@0, 1@4 ];
+Y <= [ 0@0, 1@2, 0@4, 1@6 ];
+Cin <= [ 0@0, 1@1, 0@2, 1@3, 0@4, 1@5, 0@6, 1@7 ];
+run 8;
+
+print "Timing for Full Adder\n";
+history X, Y, Cin, Cout, Sum;
+
+-------------------------
+-- Test SRLatch:
+-------------------------
+clear;
+component SRLatch;
+
+-- FLD Page 298, FIGURE 11-7:
+
+signal S, R, Q, Qp;
+SRLatch( S, R; Q, Qp );
+
+S <= [ 0@0, 1@11, 0@20 ];
+R <= [ 0@0, 1@28 ];
+Q <= [ 0@0 ];
+run 50;
+
+print "Timing for Set-Reset Latch\n";
+history S, R, Q, Qp;
+
+-- FLD Page 299, FIGURE 11-9:
+
+reset;
+S <= [ 0@0, 1@50, 0@51, 1@52, 0@53, 1@54, 1@80 ];
+R <= [ 1@0, 0@30, 1@31, 0@32, 1@33, 0@34 ];
+Q <= [ 0@0 ];
+run 100;
+
+print "Timing for Set-Reset Latch\n";
+history S, R, Q, Qp;
+
+-------------------------
+-- Test DLatch:
+-------------------------
+clear;
+component DLatch;
+
+-- PLD Page 300, FIGURE 11-11 (b):
+
+signal G, D;
+DLatch( D, G; Q, Qp );
+
+G <= [ 0@0, 1@4, 0@9 ];
+D <= [ 0@0, 1@1, 0@2, 1@3, 0@5, 1@6, 0@7, 1@8, 0@10 ];
+Q <= [ 0@0 ];
+run 15;
+
+print "Timing for Gated D Latch\n";
+history G, D, Q, Qp;
+
+-------------------------
+-- Test DFlipFlop:
+-------------------------
+clear;
+component DFlipFlop;
+
+-- FLD Page 301, FIGURE 11-14:
+
+signal Ck;
+signal CkN;
+CkN <= NOT(Ck);
+DFlipFlop( D, CkN, Q, Qp );
+
+D  <= [ 1@0, 0@21, 1@41, 0@82, 1@102, 0@109 ];
+Ck <= [ 0@0, 1@10 ] -repeat 6;
+Ck <= [ 0@120 ];
+Q  <= [ 0@0 ];
+Qp <= [ 1@0 ];
+run 130;
+
+print "Timing for D Flip-Flop (Falling-Edge Trigger)\n";
+history D, Ck, Q, Qp;
+
+-- FLD Page 302, FIGURE 11-15 (b):
+
+clear;
+DFlipFlop( D, Ck, Q, Qp );
+
+Ck <= [ 0@0,             1@20,             0@35,        1@50 ];
+D  <= [ 0@0,1@5,0@10,1@13,   0@23,1@26,0@29,   1@40,0@45,   1@54,0@58 ];
+Q  <= [ 0@0 ];
+Qp <= [ 1@0 ];
+run 60;
+
+print "Timing for D Flip-Flop (Rising-Edge Trigger)\n";
+history Ck, D, Q, Qp;
+
+-------------------------
+-- Test SRFlipFlop:
+-------------------------
+clear;
+component SRFlipFlop;
+
+-- FLD Page 304, FIGURE 11-19(b):
+
+signal CLK;
+SRFlipFlop( S, CLK, R; Q, Qp );
+
+CLK <= [ 0@0, 1@10 ] -repeat 3;
+S <= [ 1@0, 0@12, 1@32, 0@47 ];
+R <= [ 0@0, 1@12, 0@32 ];
+Q <= [ 0@0 ];
+Qp <= [ 1@0 ];
+run 60;
+
+print "Timing for S-R Flip-Flop (Rising-Edge Trigger)\n";
+history CLK, S, R, Q, Qp;
+
+-------------------------
+-- Test JKFlipFlop:
+-------------------------
+clear;
+component JKFlipFlop;
+
+-- FLD Page 304, FIGURE 11-19(b):
+
+signal J, K;
+JKFlipFlop( J, CLK, K; Q, Qp );
+
+CLK <= [ 0@0, 1@10 ] -repeat 3;
+J <= [ 1@0, 0@12, 1@32, 0@47 ];
+K <= [ 0@0, 1@12, 0@32 ];
+Q <= [ 0@0 ];
+Qp <= [ 1@0 ];
+run 60;
+
+print "J-K Flip-Flop Timing (Rising-Edge Trigger)\n";
+history CLK, J, K, Q, Qp;
+
+-- FLD Page 305, FIGURE 11-20(c):
+
+clear;
+signal Clock;
+JKFlipFlop( J, Clock, K; Q, Qp );
+
+Clock <= [ 1@0, 0@5, 1@15, 0@25, 1@35, 0@45, 1@55 ];
+J <= [ 1@0, 0@20, 1@40 ];
+K <= [ 0@0, 1@20 ];
+Q <= [ 0@0 ];
+Qp <= [ 1@0 ];
+run 60;
+
+print "J-K Flip-Flop Timing (Rising-Edge Trigger)\n";
+history Clock, J, K, Q, Qp;
+
+-------------------------
+-- Test TFlipFlop:
+-------------------------
+clear;
+component TFlipFlop;
+
+-- FLD Page 306, FIGURE 11-23:
+
+signal T;
+CkN <= NOT(Ck);
+TFlipFlop( T, CkN; Q, Qp );
+
+Ck <= [ 0@0, 1@10 ] -repeat 4;
+Ck <= [ 0@80 ];
+T <= [ 0@0, 1@25, 0@45, 1@65 ];
+Q <= [ 0@0 ];
+Qp <= [ 1@0 ];
+run 100;
+
+print "Timing Diagram for T Flip-Flop (Falling-Edge Trigger)\n";
+history Ck, T, Q, Qp;
+

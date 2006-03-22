@@ -1,0 +1,24 @@
+-- : simple.tsl
+-- : Simple test using only one OR gate
+-- : Tesla v0.04
+-- : Agent2002. All rights reserved.
+-- : 04-11-10 04-11-10
+
+OR: 0.2;
+signal A, B, C;
+C <= OR( A, B );
+A <= [ 0@0, 1@2.2, 0@6.5, 1@12.2, 1@15 ];
+B <= [ 0@0, 1@1, 0@2, 1@3, 0@4, 1@5, 0@6, 1@7, 0@8, 1@9, 0@10, 1@11, 0@12, 1@13, 0@14, 1@15 ];
+run 16;
+history C;
+
+---------------------------------
+-- Test Inverter with feedback:
+---------------------------------
+clear;
+NOT: 1;
+signal X;
+X <= NOT(X);
+X <= [0@0];
+run 5;
+history X;
