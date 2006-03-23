@@ -11,7 +11,7 @@ do flowchart AST transformation.
 
 =head1 EXAMPLES
 
-[% FOREACH i = [ 1..5 ] %]
+[% FOREACH i = [ 1..6 ] %]
 
 =head2 0[% i %]sample
 
