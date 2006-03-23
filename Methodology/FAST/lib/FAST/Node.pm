@@ -1,13 +1,14 @@
 #: FAST/Node.pm
 #: Non-structured FAST node
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-03-23
 
 package FAST::Node;
 
 use strict;
 use warnings;
 use base 'FAST::Element';
+use FAST;
 
 our $VERSION = '0.01';
 
@@ -43,9 +44,9 @@ sub as_c {
     my $indent = ' ' x (4 * $level);
     my $label = $self->label;
     return '' if $label eq '';
-    if ($label =~ /^\[(.*)\]$/) {
+    if ($label =~ /^\[$FAST::NodeIdPat?(.*)\]$/) {
         return "${indent}do $1\n";
-    } elsif ($label =~ /^\<(.*)\>$/) {
+    } elsif ($label =~ /^\<$FAST::NodeIdPat?(.*)\>$/) {
         return $1;
     } else {
         return "${indent}$label\n";
@@ -54,7 +55,6 @@ sub as_c {
 
 sub visualize {
     my ($self, $gv) = @_;
-    require 'FAST.pm';
     FAST->plot_node($gv, $self->label, $self->id);
 }
 

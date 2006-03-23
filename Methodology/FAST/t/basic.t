@@ -2,7 +2,7 @@
 #: Test the basic  programs
 #: Copyright (c) 2006 Wan Xunxin
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-15 2006-03-16
+#: 2006-03-15 2006-03-23
 
 use t::FAST;
 
@@ -219,6 +219,85 @@ while (L>0) {
     do f
     if (p) {
         do g
+    } else {
+        do L:=0
+    }
+}
+
+
+
+=== TEST 6: func nodes with IDs
+--- src
+entry => [1:a]
+[1:a] => [2:a]
+[2:a] => exit
+--- asm
+    do   a
+    do   a
+    exit
+--- unopt
+do L:=1
+while (L>0) {
+    if (L=1) {
+        do a
+        do L:=2
+    } else {
+        if (L=2) {
+            do a
+            do L:=0
+        }
+    }
+}
+--- opt
+do a
+do a
+
+
+
+=== TEST 6: predicate nodes with IDs
+[TODO] There're obviously some potential optimzations here
+--- src
+entry => <1:p>
+<1:p> => <2:p>
+<1:p> => exit
+<2:p> => <1:p>
+<2:p> => exit
+--- asm
+L1:
+    test p
+    jno  L2
+    test p
+    jno  L2
+    jmp  L1
+L2:
+    exit
+--- unopt
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (p) {
+            do L:=2
+        } else {
+            do L:=0
+        }
+    } else {
+        if (L=2) {
+            if (p) {
+                do L:=1
+            } else {
+                do L:=0
+            }
+        }
+    }
+}
+--- opt
+do L:=1
+while (L>0) {
+    if (p) {
+        if (p) {
+        } else {
+            do L:=0
+        }
     } else {
         do L:=0
     }

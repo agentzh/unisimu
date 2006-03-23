@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-17
+#: 2006-03-08 2006-03-23
 
 package FAST;
 
@@ -26,6 +26,8 @@ our %FluxNodeStyle = (
 );
 
 our $Error;
+
+our $NodeIdPat = qr/(?:\d+:)?/;
 
 sub new {
     my ($proto, $src) = @_;
@@ -257,9 +259,9 @@ sub plot_node {
     $id = $node if not defined $id;
     if ($node =~ /^\s*$/) {
         $gv->add_node($id, label => ' ', %FluxNodeStyle);
-    } elsif ($node =~ /^\[(.*)\]$/) {
+    } elsif ($node =~ /^\[$NodeIdPat?(.*)\]$/) {
         $gv->add_node($id, label => $1, shape => 'box');
-    } elsif ($node =~ /^<(.*)>$/) {
+    } elsif ($node =~ /^<$NodeIdPat?(.*)>$/) {
         $gv->add_node($id, label => $1, shape => 'diamond');
     } else {
         $gv->add_node(
@@ -345,9 +347,9 @@ sub as_asm {
 
 sub node2asm {
     my ($self, $node) = @_;
-    if ($node =~ /^<(.*)>$/) {
+    if ($node =~ /^<$NodeIdPat?(.*)>$/) {
         return "test $1";
-    } elsif ($node =~ /^\[(.*)\]$/) {
+    } elsif ($node =~ /^\[$NodeIdPat?(.*)\]$/) {
         return "do   $1";
     } else {
         return $node;
