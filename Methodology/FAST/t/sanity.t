@@ -1,7 +1,7 @@
 #: sanity.t
 #: Test the basic flowchart programs using FAST's as_c
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-12 2006-03-20
+#: 2006-03-12 2006-03-24
 
 use t::FAST;
 
@@ -224,4 +224,177 @@ while (L>0) {
 if (b) {
 } else {
     do b
+}
+
+
+
+=== TEST 7: Example 2.1 in our textbook
+contributed by xiaoke++
+--- src
+entry => <p>
+<p> => [e]
+<p> => <q>
+<q> => exit
+<q> => [h]
+[h] => <p>
+[e] => exit
+--- asm
+L1:
+    test p
+    jno  L2
+    do   e
+L3:
+    exit
+L2:
+    test q
+    jno  L4
+    jmp  L3
+L4:
+    do   h
+    jmp  L1
+--- unopt
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (p) {
+            do L:=2
+        } else {
+            do L:=4
+        }
+    } else {
+        if (L=2) {
+            do e
+            do L:=0
+        } else {
+            if (L=3) {
+                do h
+                do L:=1
+            } else {
+                if (L=4) {
+                    if (q) {
+                        do L:=0
+                    } else {
+                        do L:=3
+                    }
+                }
+            }
+        }
+    }
+}
+--- opt
+do L:=1
+while (L>0) {
+    if (p) {
+        do e
+        do L:=0
+    } else {
+        if (q) {
+            do L:=0
+        } else {
+            do h
+        }
+    }
+}
+
+
+
+=== TEST 8: Example 2.2 in our textbook
+contributed by xiaoke++
+--- src
+entry => <p> 
+<p> => [f]
+[f] => <q>
+<q> => [h]
+<q> => <r>
+<p> => [g]
+[g] => <r>
+<r> => [h]
+<r> => [k]
+[h] => exit
+[k] => exit
+--- asm
+    test p
+    jno  L1
+    do   f
+    test q
+    jno  L2
+L3:
+    do   h
+L4:
+    exit
+L1:
+    do   g
+L2:
+    test r
+    jno  L5
+    jmp  L3
+L5:
+    do   k
+    jmp  L4
+--- unopt
+do L:=1
+while (L>0) {
+    if (L=1) {
+        if (p) {
+            do L:=2
+        } else {
+            do L:=3
+        }
+    } else {
+        if (L=2) {
+            do f
+            do L:=6
+        } else {
+            if (L=3) {
+                do g
+                do L:=7
+            } else {
+                if (L=4) {
+                    do h
+                    do L:=0
+                } else {
+                    if (L=5) {
+                        do k
+                        do L:=0
+                    } else {
+                        if (L=6) {
+                            if (q) {
+                                do L:=4
+                            } else {
+                                do L:=7
+                            }
+                        } else {
+                            if (L=7) {
+                                if (r) {
+                                    do L:=4
+                                } else {
+                                    do L:=5
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+--- opt
+if (p) {
+    do f
+    if (q) {
+        do h
+    } else {
+        if (r) {
+            do h
+        } else {
+            do k
+        }
+    }
+} else {
+    do g
+    if (r) {
+        do h
+    } else {
+        do k
+    }
 }
