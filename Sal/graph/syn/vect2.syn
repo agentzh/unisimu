@@ -1,0 +1,8 @@
+item1
+equation
+	x = a * sin(2*t)
+	y = b * cos(3*t)
+coefficient
+	a = 40
+	b = 80
+END

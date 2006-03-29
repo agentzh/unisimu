@@ -1,0 +1,10 @@
+item2:
+equation:
+	x = c + a*cos(t)
+	y = d + b*sin(t)
+coefficient:
+	a = 50
+	b = 100	
+	c = 20
+	d = 30
+END

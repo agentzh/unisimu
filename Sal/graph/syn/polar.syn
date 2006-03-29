@@ -1,0 +1,6 @@
+item1:
+equation:
+	r = 100*cos(4/t)
+coefficient:
+
+END

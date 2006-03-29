@@ -1,0 +1,16 @@
+item1:
+equation:
+	x = (ax*t**2 + bx*t + cx)/(1+t)
+	y = (ay*t**2 + by*t + cy)/(1+t)
+coefficient:
+	ax = x0 - 3*x1 + 2*x2
+	bx = -2*x0 + 3*x1
+	cx = x0
+	ay = y0 - 3*y1 + 2*y2
+	by = -2*y0 + 3*y1
+	cy = y0
+points:
+	(x0, y0) = (150, 200)
+	(x1, y1) = (200, 250)
+	(x2, y2) = (250, 200)
+END

@@ -1,0 +1,7 @@
+=item2
+=equation
+	r = a - b0*sin(5*t)
+=coefficient
+	a = 50
+	b = 30
+END
