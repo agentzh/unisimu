@@ -48,13 +48,8 @@ sub get_repos {
     my $fname = pop (@a);
     warn "${indent}Fetching $url...\n";
     $mech->get( $url );
-    for (1..3) {
-        last if $mech->success;
-        warn "${indent}Reloading $url...\n";
-        $mech->reload();
-        if ($_ == 3) {
-            warn "Warning: Can't get $url: ", $mech->status(), "\n";
-        }
+    if (not $mech->success and not retry($url, 3, $indent)) {
+        return;
     }
     #my $base = $mech->base;
     if (!-d $dir) {
@@ -75,7 +70,30 @@ sub get_repos {
 
 sub get_file {
     my ($fname, $dir, $level) = @_;
+    my $res = $mech->get( $fname );
+    if (not $mech->success and not retry($fname, 3)) {
+        return;
+    }
     my $indent = '  ' x $level;
     warn "${indent}Saving $fname to $dir...\n";
-    $mech->save_content("$dir/$fname");
+    my $path = "$dir/$fname";
+    open my $out, "> $path" or
+        die "Can't open $path for writing: $!";
+    binmode $out;
+    print $out $res->content();
+    close $out;
+    $mech->back;
+}
+
+sub retry {
+    my ($url, $max, $indent) = @_;
+    for (1..3) {
+        warn "${indent}Reloading $url...\n";
+        $mech->reload();
+        return 1 if $mech->success;
+        if ($_ == 3) {
+            warn "Warning: Can't get $url: ", $mech->status(), "\n";
+            return undef;
+        }
+    }
 }
