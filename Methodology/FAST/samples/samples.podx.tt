@@ -71,7 +71,7 @@ B<0[% i %]sample.opt.png>
 [% IF print %]
     <img width=150 src="0[% i %]sample.opt.png">
 [% ELSE %]
-    <img src="0[% i %]sample.unopt.png">
+    <img src="0[% i %]sample.opt.png">
 [% END %]
 </pre>
 
