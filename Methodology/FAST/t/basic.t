@@ -2,11 +2,11 @@
 #: Test the basic  programs
 #: Copyright (c) 2006 Wan Xunxin
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-15 2006-03-23
+#: 2006-03-15 2006-04-03
 
 use t::FAST;
 
-plan tests => 4 * blocks();
+plan tests => 4 * blocks() + 2;
 
 run_tests;
 
@@ -40,11 +40,44 @@ while (L>0) {
         }
     }
 }
+--- unopt_img
+digraph test {
+	ratio="fill";
+	node [color="#918194", fillcolor="#f1e1f4", style="filled"];
+	edge [color="red"];
+	entry [fillcolor="white", label="entry", shape="plaintext", style="filled"];
+	node1 [label="p", shape="diamond"];
+	flux_0 [filllcolor="yellow", label=" ", shape="circle", style="filled"];
+	exit [fillcolor="white", label="exit", shape="plaintext", style="filled"];
+	node2 [label="f", shape="box"];
+	node1 -> node2 [label="Y"];
+	node1 -> flux_0 [label="N"];
+	node2 -> flux_0;
+	entry -> node1;
+	flux_0 -> exit;
+}
 --- opt
 if (p) {
     do f
 }
-
+--- opt_img
+digraph test {
+	ratio="fill";
+	node [color="#918194", fillcolor="#f1e1f4", style="filled"];
+	edge [color="red"];
+	node1 [label="p", shape="diamond"];
+	node2 [label="f", shape="box"];
+	node3 [filllcolor="yellow", label=" ", shape="circle", style="filled"];
+	node4 [filllcolor="yellow", label=" ", shape="circle", style="filled"];
+	entry [fillcolor="white", label="entry", shape="plaintext", style="filled"];
+	exit [fillcolor="white", label="exit", shape="plaintext", style="filled"];
+	node1 -> node2 [label="Y"];
+	node1 -> node3 [label="N"];
+	node4 -> exit;
+	node2 -> node4;
+	node3 -> node4;
+	entry -> node1;
+}
 
 
 

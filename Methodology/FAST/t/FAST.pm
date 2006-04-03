@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Test scaffold framework for t/sanity.t, t/basic.t, and etc.
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-16 2006-03-18
+#: 2006-03-16 2006-04-03
 
 package t::FAST;
 
@@ -37,12 +37,20 @@ sub run_test ($) {
         warn FAST->error() if not $g;
         $g->as_png('t_FAST_asm.png') if $Debug;
         eq_or_diff( $g->as_asm, $block->asm ) if defined $block->asm;
+        is( $g->as_debug, $block->unopt_img, 'unopt img ok - '.$block->name)
+            if defined $block->unopt_img;
+
         my $ast = $g->structured(optimized => 0);
+
         eq_or_diff( $ast->as_c, $block->unopt, 'unopt ok - '.$block->name );
         $ast->as_png('t_FAST_unopt.png') if $Debug;
+
         $ast = $g->structured(optimized => 1);
+
         eq_or_diff( $ast->as_c, $block->opt, 'opt ok - '.$block->name );
         $ast->as_png('t_FAST_opt.png') if $Debug;
+        is( $ast->as_debug, $block->opt_img, 'opt img ok - '.$block->name)
+            if defined $block->opt_img;
     }
 }
 
