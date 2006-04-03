@@ -1,7 +1,7 @@
 #: FAST/Element.pm
 #: Common base class for all FAST DOM tree entities
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-16
+#: 2006-03-08 2006-04-02
 
 package FAST::Element;
 
@@ -51,6 +51,18 @@ sub _update_id {
 
 sub as_png {
     my ($self, $outfile) = @_;
+    my $gv = $self->as_img;
+    $gv->as_png($outfile);
+}
+
+sub as_debug {
+    my ($self, $outfile) = @_;
+    my $gv = $self->as_img;
+    $gv->as_debug($outfile);
+}
+
+sub as_img {
+    my ($self) = @_;
     my $gv = GraphViz->new(
         layout => 'dot',
         edge => {color => 'red'},
@@ -66,7 +78,7 @@ sub as_png {
     FAST->plot_node($gv, 'exit');
     $gv->add_edge('entry' => $self->entry);
     $gv->add_edge($self->exit => 'exit');
-    $gv->as_png($outfile);
+    return $gv;
 }
 
 1;

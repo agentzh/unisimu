@@ -1,7 +1,7 @@
 #: FAST.pm
 #: Global application class for FAST
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-23
+#: 2006-03-08 2006-04-02
 
 package FAST;
 
@@ -200,6 +200,18 @@ sub error {
 
 sub as_png {
     my ($self, $outfile) = @_;
+    my $gv = $self->as_img;
+    $gv->as_png($outfile);
+}
+
+sub as_debug {
+    my ($self, $outfile) = @_;
+    my $gv = $self->as_img;
+    $gv->as_debug($outfile);
+}
+
+sub as_img {
+    my ($self) = @_;
     my %edge_from = %{ Clone::clone($self->{edge_from}) };
     my %edge_to   = %{ Clone::clone($self->{edge_to}) };
 
@@ -235,8 +247,7 @@ sub as_png {
             $self->plot_node($gv, $key);
         }
     }
-
-    $gv->as_png($outfile);
+    return $gv;
 }
 
 sub _plot_edge {
