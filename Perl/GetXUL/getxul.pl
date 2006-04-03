@@ -52,7 +52,8 @@ sub get_file {
     my $fname = shift;
     my $res = $mech->get($fname);
     if (! $mech->success) {
-        die "Can't get $fname: ".$mech->status;
+        warn "Can't get $fname: ".$mech->status;
     }
     save_file($res, $fname);
+    $mech->back;
 }
