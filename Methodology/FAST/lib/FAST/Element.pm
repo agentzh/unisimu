@@ -1,7 +1,7 @@
 #: FAST/Element.pm
 #: Common base class for all FAST DOM tree entities
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-04-02
+#: 2006-03-08 2006-04-03
 
 package FAST::Element;
 
@@ -58,7 +58,15 @@ sub as_png {
 sub as_debug {
     my ($self, $outfile) = @_;
     my $gv = $self->as_img;
-    $gv->as_debug($outfile);
+    my $content = $gv->as_debug($outfile);
+    if ($outfile) {
+        open my $out, "> $outfile" or
+            die "Can't open $outfile for writing: $!";
+        print $out $content;
+        close $out;
+    } else {
+        return $content;
+    }
 }
 
 sub as_img {
