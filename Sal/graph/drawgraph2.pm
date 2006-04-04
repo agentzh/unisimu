@@ -11,30 +11,50 @@ use GD::Simple;
 use Win32::GuiTest qw(:ALL);
 
 my $n = 1000;
-
-
+my ($off_x, $off_y);
 
 sub animate {
+	($off_x, $off_y) = (0, 0);
 	my($fh, $t) = @_;
 	#die %$fh;
 
-	system "start /max mspaint";
-	#my @paint =WaitWindowLike(undef, "ç”»å›¾");
+	#print "here";
+	my @paint = FindWindowLike(0, "»­Í¼", "");
+	#SetForegroundWindow($paint[0]) if ;
+	#die @paint if not @paint;
+	
+	unless(@paint) {
+		print "new palette will start!\n";
+		system "start /max mspaint";
+	    @paint = WaitWindowLike(0, "»­Í¼", "");
 
-	sleep(1);
-	warn "i can find painting window!\n";	
-	#SetForegroundWindow($paint[0]);	
-	#die;
-	SendKeys("%ia");
-	sleep(1);
-	SendKeys("1024{TAB}768");
-	SendKeys("~");
-	sleep(1);	
+	 
+		warn "i can find painting window!\n";	
+		SetForegroundWindow($paint[0]);	
+		sleep 2;
+		#die;
+		SendKeys("%ia");
+		sleep(1);
+		SendKeys("1024{TAB}768");
+		SendKeys("~");
+		sleep(1);
+	}	
 	for my $i (1..$n) {
 		#die;
+		SetForegroundWindow($paint[0]);	
 		my($x, $y) = get_point($fh, $t, $i);
-		
-		(MouseMoveAbsPix($x, $y), SendLButtonDown()) if $i == 1;	
+		if ($i == 1) {
+			$off_x = 500 - $x;
+			$off_y = 380 - $y;
+			next;
+			
+		} 
+		if($i == 2) {
+			MouseMoveAbsPix($x, $y);
+			SendLButtonDown();	
+			print $x, "=> ", $y, "\n";
+			next;
+		}
 		MouseMoveAbsPix($x, $y);
 	}
 	SendLButtonUp();
@@ -49,10 +69,11 @@ sub animate {
 		$name .= $mt[5-$_];
 	}
 
-	SendKeys("D:\\zwx\\$name.jpg");
-	SendKeys("~");
-	SendKeys("{PAU 1000}%{F4}");
-	
+	SendKeys("E:\\samples\\$name.jpg");
+	SendKeys("%s");
+	sleep 4;
+	SendKeys("%fn");
+	sleep 4;		
 }	
 
 sub gen_img {
@@ -81,16 +102,16 @@ sub get_point {
 	#print $s, "\n";
 	my($x, $y);
 	if ($t == 1) {
-		($x, $y) = (200 + getvalue($exp->{'x'}, $s), 200 + getvalue($exp->{'y'}, $s));	
+		($x, $y) = ($off_x + getvalue($exp->{'x'}, $s), $off_y + getvalue($exp->{'y'}, $s));	
 		#print $x, "=> ", $y, "\n";
 		#warn "here 1\n";
 		
 	} elsif($t == 2) {
-		($x, $y) = (200 + getvalue($exp->{'x'}, $s), 200 + getvalue($exp->{'y'}, $s));
+		($x, $y) = ($off_x + getvalue($exp->{'x'}, $s), $off_y + getvalue($exp->{'y'}, $s));
 		#warn "here 2\n";
 	} else {
 		
-		($x, $y) = (200 + getvalue($exp->{'r'}, $s) * cos($s), 200 + getvalue($exp->{'r'}, $s) * sin($s));
+		($x, $y) = ($off_x + getvalue($exp->{'r'}, $s) * cos($s), $off_y + getvalue($exp->{'r'}, $s) * sin($s));
 		#warn $x, "=> ", $y, "\n";		
 		#warn "here 3\n";
 	}
@@ -104,7 +125,9 @@ sub getvalue {
 	#print $step;
 	$expression =~ s/t/$step/g;
 	#print $expression;
-	return eval ($expression);
+	my $res = eval ($expression);
+	return $res unless $@;
+	#die;
 }
 
 sub synerror {
@@ -131,4 +154,3 @@ sub synerror {
 #animate("ellipse.txt", 2);
 
 1;
-

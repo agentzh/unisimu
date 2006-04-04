@@ -1,7 +1,25 @@
-=item1
-=equation
-	r = a - b0*cos(5*t)
-=coefficient
+item1
+equation
+	r = a - b*cos(5*t)
+coefficient
 	a = 50
 	b = 30
+item2
+equation
+	r = a - b*sin(5*t)
+coefficient
+	a = 50
+	b = 30
+item3
+equation
+	r = a*sin(3*t) + b*(sin(2*t))**2
+coefficient
+	a = 50
+	b = 50
+item4
+equation
+	r = a*cos(2*t) + b*(cos(3*t))**2
+coefficient
+	a = 40
+	b = 40
 END
