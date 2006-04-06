@@ -410,6 +410,12 @@ named {{#x|$node_name}} in {{#x|$tree1}}.
 ----
  {{img src="images/tree04.png" width="952" height="456"}}
 ----
+The {{#x|subs}} method is also
+{{#ci|21}}
+lines of code !
+----
+{{img src="images/subs.png" width="811" height="558"}}
+----
 Composite Pattern
 {{#c|✓ Visualizing the tree is easy}}
 ----
