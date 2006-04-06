@@ -1,0 +1,84 @@
+digraph structs {
+    node [shape=record, fillcolor="#f1e1f4", style="filled"];
+    edge [color=red];
+
+    struct1 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4" colspan="2">FAST::Struct::Seq</td></tr>
+  <tr bgcolor="white"><td port="child0" > first </td><td port="child1" > second </td></tr>
+</table>>];
+
+    struct2_5 [shape=plaintext, color="red", style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4" colspan="3">FAST::Struct::If</td></tr>
+  <tr bgcolor="white"><td port="child0" > cond </td><td port="child1" > then </td><td port="child2" > else </td></tr>
+</table>>];
+
+    struct2_6 [shape=plaintext, color="red", style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">L=1</td></tr>
+</table>>];
+
+    struct2_7 [shape=plaintext, color="red", style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">a</td></tr>
+</table>>];
+
+    struct2_8 [shape=plaintext, color="red", style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">b</td></tr>
+</table>>];
+
+    struct3 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4" colspan="2">FAST::Struct::While</td></tr>
+  <tr bgcolor="white"><td port="child0" > cond </td><td port="child1" > body </td></tr>
+</table>>];
+
+    struct4 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">L&gt;0</td></tr>
+</table>>];
+
+    struct5 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4" colspan="3">FAST::Struct::If</td></tr>
+  <tr bgcolor="white"><td port="child0" > cond </td><td port="child1" > then </td><td port="child2" > else </td></tr>
+</table>>];
+
+    struct6 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">L=1</td></tr>
+</table>>];
+
+    struct7 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">a</td></tr>
+</table>>];
+
+    struct8 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">b</td></tr>
+</table>>];
+
+    struct1:child0 -> struct2_5:title
+    struct1:child1 -> struct3:title
+
+    struct2_5:child0 -> struct2_6:title
+    struct2_5:child1 -> struct2_7:title
+    struct2_5:child1 -> struct2_8:title
+
+    struct3:child0 -> struct4:title
+    struct3:child1 -> struct5:title
+
+    struct5:child0 -> struct6:title
+    struct5:child1 -> struct7:title
+    struct5:child2 -> struct8:title
+}

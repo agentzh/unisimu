@@ -1,0 +1,88 @@
+digraph uml {
+    size="5, 6.3"
+    node [shape=record, fillcolor="#f1e1f4", style="filled"];
+    edge [color=red];
+
+    elem [shape=plaintext, style="", label=<
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Element</td></tr>
+  <tr>
+  <td port="members" bgcolor="white" align="left">
+    id<br align="left"/>
+    clone<br align="left"/>
+    might_pass<br align="left"/>
+    must_pass<br align="left"/>
+    entry<br align="left"/>
+    exit<br align="left"/>
+    visualize<br align="left"/>
+    as_png<br align="left"/>
+    as_c &nbsp; &nbsp; &nbsp; &nbsp;
+  </td></tr>
+</table>>];
+
+    mynode [shape=plaintext, style="", label=<
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr>
+  <td port="members" bgcolor="white" align="left">
+  label
+  </td></tr>
+</table>>];
+
+    struct [shape=plaintext, style="", label=<
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Struct</td></tr>
+  <tr>
+  <td port="members" bgcolor="white" align="left">
+  elems<br align="left"/>
+  subs &nbsp;
+  </td></tr>
+</table>>];
+
+    seq [shape=plaintext, style="", label=<
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Struct::Seq</td></tr>
+  <tr>
+  <td port="members" bgcolor="white" align="left">
+  first<br align="left"/>
+  second
+  </td></tr>
+</table>>];
+
+    if [shape=plaintext, style="", label=<
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Struct::If</td></tr>
+  <tr>
+  <td port="members" bgcolor="white" align="left">
+  condition<br align="left"/>
+  true_branch<br align="left"/>
+  false_branch<br align="left"/>
+  tail &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  </td></tr>
+</table>>];
+
+    while [label="FAST::Struct::While"];
+    while [shape=plaintext, style="", label=<
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Struct::While</td></tr>
+  <tr>
+  <td port="members" bgcolor="white" align="left">
+  head<br align="left"/>
+  condition<br align="left"/>
+  body<br align="left"/>
+  tail &nbsp; &nbsp; &nbsp; &nbsp;
+  </td></tr>
+</table>>];
+
+    node [shape="triangle", fillcolor=yellow, height=0.3, width=0.3];
+    tri1 [label=""];
+    tri2 [label=""];
+
+    elem:members -> tri1
+    tri1 -> mynode:title
+    tri1 -> struct:title
+    struct:members -> tri2
+    tri2 -> seq:title
+    tri2 -> while
+    tri2 -> if
+}

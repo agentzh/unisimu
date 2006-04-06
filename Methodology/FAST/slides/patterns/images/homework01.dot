@@ -1,0 +1,24 @@
+digraph test {
+	ratio="fill";
+	node [color="#918194", fillcolor="#f1e1f4", style="filled"];
+	edge [color="black"];
+	node1 [label="g", shape="box"];
+	node2 [label="p", shape="diamond"];
+	node3 [label="q", shape="diamond"];
+	entry [fillcolor="white", label="entry", shape="plaintext", style="filled"];
+	flux_0 [filllcolor="yellow", label=" ", shape="circle", style="filled"];
+	exit [fillcolor="white", label="exit", shape="plaintext", style="filled"];
+	node4 [label="h", shape="box"];
+	flux_1 [filllcolor="yellow", label=" ", shape="circle", style="filled"];
+	node5 [label="f", shape="box"];
+	node2 -> node5 [label="Y"];
+	node2 -> node1 [label="N"];
+	node3 -> flux_0 [label="N"];
+	node3 -> flux_1 [label="Y"];
+	node5 -> flux_1;
+	node1 -> node3;
+	node4 -> flux_0;
+	entry -> node2 [style=bold, color=red];
+	flux_0 -> exit;
+	flux_1 -> node4;
+}

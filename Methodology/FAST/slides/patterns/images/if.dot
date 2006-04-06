@@ -1,0 +1,18 @@
+digraph test {
+    height=5;
+	ratio="fill";
+	node [color="#918194", fillcolor="#f1e1f4", style="filled"];
+	edge [color="red"];
+	node1 [label="L=1", shape="diamond"];
+	node2 [label="a", shape="box"];
+	node3 [label="b", shape="box"];
+	node4 [filllcolor="yellow", label=" ", shape="circle", style="filled"];
+	entry [fillcolor="white", label="entry", shape="plaintext", style="filled"];
+	exit [fillcolor="white", label="exit", shape="plaintext", style="filled"];
+	node1 -> node2 [label="Y"];
+	node1 -> node3 [label="N"];
+	node2 -> node4;
+	node3 -> node4;
+	node4 -> exit;
+	entry -> node1;
+}

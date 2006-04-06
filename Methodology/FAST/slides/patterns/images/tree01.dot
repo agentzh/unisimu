@@ -1,0 +1,32 @@
+digraph structs {
+    node [shape=record, fillcolor="#f1e1f4", style="filled"];
+    edge [color=red];
+
+    struct5 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4" colspan="3">FAST::Struct::If</td></tr>
+  <tr bgcolor="white"><td port="child0" > cond </td><td port="child1" > then </td><td port="child2" > else </td></tr>
+</table>>];
+
+    struct6 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">L=1</td></tr>
+</table>>];
+
+    struct7 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">a</td></tr>
+</table>>];
+
+    struct8 [shape=plaintext, style="", label = <
+<table BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <tr><td port="title" bgcolor="#f1e1f4">FAST::Node</td></tr>
+  <tr><td port="content" bgcolor="white">b</td></tr>
+</table>>];
+
+    struct5:child0 -> struct6:title
+    struct5:child1 -> struct7:title
+    struct5:child2 -> struct8:title
+}
