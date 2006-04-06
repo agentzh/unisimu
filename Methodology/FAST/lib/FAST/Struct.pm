@@ -1,7 +1,7 @@
 #: FAST/Struct.pm
 #: Base class for various FAST DOM tree structures
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-03-08 2006-03-09
+#: 2006-03-08 2006-04-06
 
 package FAST::Struct;
 
@@ -27,7 +27,8 @@ sub _update_id {
     map { $_->_update_id } $self->elems;
 }
 
-# Substitue $label with $dest in the current FAST::Struct
+# Substitue a copy of $dest for every node named $label
+# in the current FAST::Struct subtree:
 sub subs {
     my ($self, $label, $dest) = @_;
     $dest = $self->_node($dest);
