@@ -447,6 +447,9 @@ These slides are powered by
 {{#x|Mozilla}} {{#ci|XUL}} technology
 tailored by {{#i|Audrey Tang}}
 ----
+ {{img src="images/grin.png" width="65" height="65"}}
+{{#ci|Takahashi}}{{#x|++}}
+----
 Most of the images used here
 were {{#ci|dawn}} by {{#i|AT&amp;T}}'s
 {{#x|Graphviz}} tools and libraries.
