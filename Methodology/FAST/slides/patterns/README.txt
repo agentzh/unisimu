@@ -1,4 +1,4 @@
-﻿README
+README
 =======
 
 Please use Mozilla Firefox to open the .xul file in this directory.
