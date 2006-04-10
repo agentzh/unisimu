@@ -15,24 +15,11 @@ embperl.lib : perlxsi.obj plstub.obj plinterp.obj plsv.obj plav.obj plhv.obj
 					plinterp.obj plsv.obj plav.obj plhv.obj \
 					$(PERL_LIB_FILE)
 
-perlxsi.obj : perlxsi.c
-	cl $(CFLAGS_C) perlxsi.c
+%.obj : %.c
+	cl $(CFLAGS_C) $<
 
-plstub.obj : plstub.c
-	cl $(CFLAGS_C) plstub.c
-
-plinterp.obj : plinterp.cpp plproxy.hpp embperl.h
-	cl $(CFLAGS_CPP) plinterp.cpp
-
-plsv.obj : plsv.cpp plproxy.hpp embperl.h
-	cl $(CFLAGS_CPP) plsv.cpp
-
-plav.obj : plav.cpp plproxy.hpp embperl.h
-	cl $(CFLAGS_CPP) plav.cpp
-
-plhv.obj : plhv.cpp plproxy.hpp embperl.h
-	cl $(CFLAGS_CPP) plhv.cpp
-
+pl%.obj : pl%.cpp plproxy.hpp embperl.h
+	cl $(CFLAGS_CPP) $<
 
 clean:
 	$(RM_F) *.obj *.lib t/*.obj t/*.exe vc70.pdb t/*.t
