@@ -26,8 +26,8 @@ Why {{#ct|Design Pattern}}?
 Design Patterns
 {{#c|✓ Robustness}}
 ----
-Something {{#c|proven}} to work
-is always nice!
+Something {{#x|proven}} to work
+is always {{#ci|nice}}!
 ----
 Design Patterns
 {{#c|✓ Efficiency}}

@@ -35,7 +35,7 @@ comb - Combinatorics
 =begin Perl
 
 my $num = $maple->eval('1000!');
-$num =~ /(0+)$/ ? length($1) : 0;
+print $num =~ /(0+)$/ ? length($1) : 0;
 
 =end Perl
 
@@ -67,21 +67,21 @@ sub num_of_factors {
 
 看看 7! 中有多少个质因子 2 ?
 
-=Perl num_of_factors('7!', 2)
+=Perl print num_of_factors('7!', 2)
 
 有多少个 5 ?
 
-=Perl num_of_factors('7!', 5)
+=Perl print num_of_factors('7!', 5)
 
 又有多少个 11 呢?
 
-=Perl num_of_factors('7!', 11)
+=Perl print num_of_factors('7!', 11)
 
 下面我们就来数一下 1000! 当中有多少个 2, 又有多少个 5:
 
-=Perl num_of_factors('1000!', 2)
+=Perl print num_of_factors('1000!', 2)
 
-=Perl num_of_factors('1000!', 5)
+=Perl print num_of_factors('1000!', 5)
 
 我们看到，一共有 249 对 2 和 5. 于是 1000! 后面有 249 个 0.
 
@@ -120,7 +120,7 @@ for (1000..9999) {
     next if /(\d).*\1/ or /[27]/;
     $c++ if $_ > 5400;
 }
-$c;
+print $c;
 
 =end Perl
 
@@ -137,7 +137,7 @@ for (10000..99999) {
     next if /[27]/ or /(\d).*\1/;
     $c++ if $_ > 5400;
 }
-$c;
+print $c;
 
 =end Perl
 
@@ -163,6 +163,7 @@ $c;
 my $num = $maple->ifactor(28);
 $num =~ s/``//g;
 @factors = split /\*/, $num;
+print @factors;
 
 =end Perl
 
@@ -175,6 +176,7 @@ map {
     s/^ \( (\d+) \) \^ (\d+) $/sum(x$1^i,i=0..$2)/x;
 } @factors;
 $exp = join('*', @factors);
+print $exp;
 
 =end Perl
 
@@ -186,7 +188,7 @@ $exp = join('*', @factors);
 
 =begin Perl
 
-sort { $a <=> $b }
+print sort { $a <=> $b }
     map {
         s/x(\d+)/$1/g;
         $maple->eval($_);
@@ -250,6 +252,6 @@ sub factors {
 =begin Perl
 
 use List::Util 'first';
-first { factors($_) == 28 } 1..959;
+print first { factors($_) == 28 } 1..959;
 
 =end Perl
