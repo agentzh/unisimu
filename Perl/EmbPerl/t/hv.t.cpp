@@ -5,11 +5,13 @@
 
 #include <stdio.h>
 #include <embperl.h>
+#include <vector>
+#include <algorithm>
 
 #include <cpptest.h>
 
 int main( int argc, char* argv[], char* env[] ){
-	test_plan(6);
+	test_plan(13);
 
 	{
 		Perl::Interp pl;
@@ -26,6 +28,22 @@ int main( int argc, char* argv[], char* env[] ){
         ok( ! hv.fetch("blah").defined() );
         hv["blah"] = "abc";
         is( hv["blah"].c_str(), "abc" );
+
+        Perl::HV::iterator it = hv.getIterator();
+
+        std::vector<std::string> keys;
+
+        while( it.moveNext() ) {
+            keys.push_back( it.curKey() );
+            is( it.curVal().c_str(), hv[it.curKey()].c_str() );
+        }
+
+        std::sort( keys.begin(), keys.end() );
+        
+        is( keys.size(), 3 );
+        is( keys[0].c_str(), "blah" );
+        is( keys[1].c_str(), "cat" );
+        is( keys[2].c_str(), "dog" );
     }
 
     summary();
