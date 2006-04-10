@@ -3,15 +3,14 @@
 //: Copyright (c) 2004-2006 Agent Zhang
 //: 2004-03-23 2006-04-10
 
-#include <stdio.h>
 #include <embperl.h>
 #include <vector>
 #include <algorithm>
-
 #include <cpptest.h>
 
 int main( int argc, char* argv[], char* env[] ){
-	test_plan(13);
+
+    test_plan(13);
 
 	{
 		Perl::Interp pl;

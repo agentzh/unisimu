@@ -3,9 +3,7 @@
 //: Copyright (c) 2004-2006 Agent Zhang
 //: 2004-03-23 2006-04-10
 
-#include <stdio.h>
 #include <embperl.h>
-
 #include <cpptest.h>
 
 void type_check(Perl::SV sv, int is_int, int is_double, int is_string, int is_ref) {
