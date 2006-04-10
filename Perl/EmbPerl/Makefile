@@ -47,7 +47,7 @@ test: all t\interp.t.exe t\sv.t.exe t\av.t.exe t\hv.t.exe
 %.t.obj: %.t.cpp embperl.h
 	cl /EHsc /I. /c /nologo $<
 
-install:
+install: all
 	cp embperl.lib WinRel/
 	cp embperl.h WinRel/
 
