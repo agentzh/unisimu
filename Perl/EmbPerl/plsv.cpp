@@ -1,8 +1,7 @@
 //: plsv.cpp
 //: implementation for the Perl::SV class
-//: v0.03
-//: Agent2002. All rights reserved.
-//: 04-04-17 04-04-17
+//: Copyright (c) 2004-2006 Agent Zhang
+//: 2004-04-17 2006-04-10
 
 #include "embperl.h"
 #include "plproxy.hpp"

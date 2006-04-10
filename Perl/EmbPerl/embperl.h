@@ -1,8 +1,7 @@
 //: embperl.h
-//: interface for the Embedded Perl Library
-//: v0.03
-//: Agent2002. All rights reserved.
-//: 04-04-17 04-04-28
+//: Header for the embperl Library
+//: Copyright (c) 2004-2006 Agent Zhang
+//: 2004-04-17 2006-04-10
 
 #ifndef EMBPERL_H_
 #define EMBPERL_H_
