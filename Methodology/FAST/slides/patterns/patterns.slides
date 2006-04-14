@@ -449,9 +449,9 @@ Get {{#x|FAST}} and the {{#x|slides}} today!
     
 {{http://yxy.ujs.edu.cn/images/index.html}}
 ----
-These slides are powered by
-{{#x|Mozilla}} {{#ci|XUL}} technology
-tailored by {{#i|Audrey Tang}}
+These slides are
+{{#ci|powered}} by
+{{#x|Sporx}} and...
 ----
  {{img src="images/grin.png" width="65" height="65"}}
 {{#ci|Takahashi}}{{#x|++}}
