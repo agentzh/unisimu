@@ -410,7 +410,8 @@ named {{#x|$node_name}} in {{#x|$tree1}}.
 ----
  {{img src="images/tree04.png" width="952" height="456"}}
 ----
-The {{#x|subs}} method is also
+The {{#x|subs}} method
+is {{#t|also}}
 +{{#ci|21}} lines of code !
 ----
 {{img src="images/subs.png" width="811" height="558"}}
@@ -420,15 +421,15 @@ Composite Pattern
 ----
  $if->{{#x|as_png}}('if.png');
   
-{{img src="images/if.png" width="181" height="491"}}
++{{img src="images/if.png" width="181" height="491"}}
 ----
  $while->{{#x|as_png}}('while.png');
   
-{{img src="images/while.png" width="298" height="490"}}
++{{img src="images/while.png" width="298" height="490"}}
 ----
  $seq->{{#x|as_png}}('seq.png');
   
-{{img src="images/seq.png" width="296" height="489"}}
++{{img src="images/seq.png" width="296" height="489"}}
 ----
 The operations of {{#x|trees}} and {{#x|nodes}}
 are {{#ci|unified}} !
