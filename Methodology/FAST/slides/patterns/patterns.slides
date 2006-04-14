@@ -377,18 +377,18 @@ Composite Pattern
 ----
  $if = {{#c|FAST::Struct::If}}->new({{#x|'&lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
     
-{{img src="images/tree01.png" width="453" height="211"}}
++{{img src="images/tree01.png" width="453" height="211"}}
 ----
  $if = {{#c|FAST::Struct::If}}->new({{#x|'&lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
  $while = {{#c|FAST::Struct::While}}->new({{#x|'&lt;L>0>'}}, {{#x|$if}});
     
-{{img src="images/tree02.png" width="488" height="333"}}
++{{img src="images/tree02.png" width="488" height="333"}}
 ----
  $if = {{#c|FAST::Struct::If}}->new({{#x|'&lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
  $while = {{#c|FAST::Struct::While}}->new({{#x|'&lt;L>0>'}}, {{#x|$if}});
  $seq = {{#c|FAST::Struct::Seq}}->new({{#x|'L:=1'}}, {{#x|$while}});
     
-{{img src="images/fastast.png" width="577" height="456"}}
++{{img src="images/fastast.png" width="577" height="456"}}
 ----
 Composite Pattern
 {{#c|✓ Handling the tree is easy}}
@@ -411,8 +411,7 @@ named {{#x|$node_name}} in {{#x|$tree1}}.
  {{img src="images/tree04.png" width="952" height="456"}}
 ----
 The {{#x|subs}} method is also
-{{#ci|21}}
-lines of code !
++{{#ci|21}} lines of code !
 ----
 {{img src="images/subs.png" width="811" height="558"}}
 ----
@@ -447,18 +446,18 @@ You can find them
 Get {{#x|FAST}} and the {{#x|slides}} today!
 {{#c|♨}}
     
-{{http://yxy.ujs.edu.cn/images/index.html}}
++{{http://yxy.ujs.edu.cn/images/index.html}}
 ----
 These slides are
 {{#ci|powered}} by
-{{#x|Sporx}} and...
++{{#x|Sporx}} and...
 ----
  {{img src="images/grin.png" width="65" height="65"}}
 {{#ci|Takahashi}}{{#x|++}}
 ----
-Most of the images used here
-were {{#ci|dawn}} by {{#i|AT&amp;T}}'s
-{{#x|Graphviz}} tools and libraries.
+Most of the {{#x|images}} used here
+were {{#ci|dawn}} by
++{{#i|AT&amp;T}}'s {{#x|Graphviz}}
 ----
 {{#c|Thank you!}}
 ☺
