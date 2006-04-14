@@ -1,5 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="chrome://global/skin/" type="text/css"?><?xml-stylesheet href="euroscon.css" type="text/css"?><page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="presentation" xmlns:html="http:/www.w3.org/1999/xhtml" orient="vertical" onkeypress="Presentation.onKeyPress(event);"><html:textarea id="builtinCode" style="visibility: collapse">
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="css/agentzh.css" type="text/css"?>
 
+<page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="sporx" xmlns:html="http:/www.w3.org/1999/xhtml" orient="vertical" onkeypress="Sporx.onKeyPress(event);">
+
+<html:textarea id="builtinCode" style="visibility: collapse">----
+{{#t|Design Patterns - Using FAST}}
+----
 {{#x|Design Patterns}} in
 ☺{{#c|FAST}}☺
 {{#t|Agent Zhang}}
@@ -157,8 +164,7 @@ Let's look {{#ci|back}}...
 Does keyboard
 really {{#x|suck}} ?
 ----
-Does keyboard
-really {{#xs|suck}} ?
+$_ = $__.replace(/#x/, '#xs');
 ----
 Pattern #1
 {{#c|♡ Interpreter}}
@@ -210,14 +216,14 @@ The {{#ci|grammar}} for this
 {{#x|mini-language}}...
 ----
     {{#kw|program}} : {{#kw|statement}}(s)
-
+ 
     {{#kw|statement}} : {{#kw|node}} {{#x|'=>'}} {{#kw|node}}
-
+ 
     {{#kw|node}} : {{#x|'entry'}}
-         | {{#x|'exit'}}
-         | {{#x|'['}} {{#kw|string}} {{#x|']'}}
-         | {{#x|'&lt;'}} {{#kw|string}} {{#x|'>'}}
-
+          | {{#x|'exit'}}
+          | {{#x|'['}} {{#kw|string}} {{#x|']'}}
+          | {{#x|'&amp;lt;'}} {{#kw|string}} {{#x|'>'}}
+ 
     {{#kw|string}} : {{#kw|char}}(s)
 ----
 How to {{#ci|implement}}
@@ -239,14 +245,14 @@ It only costs me
 {{#ci|1}} {{#x|input}} file ``{{#ci|bar}}''
 ----
    
-    entry {{#c|=>}} &lt;p>
-    &lt;p> {{#c|=>}} [f]
+    entry {{#c|=>}} &amp;lt;p>
+    &amp;lt;p> {{#c|=>}} [f]
     [f] {{#c|=>}} [h]
     [h] {{#c|=>}} exit
-    &lt;p> {{#c|=>}} [g]
-    [g] {{#c|=>}} &lt;q>
-    &lt;q> {{#c|=>}} [h]
-    &lt;q> {{#c|=>}} exit
+    &amp;lt;p> {{#c|=>}} [g]
+    [g] {{#c|=>}} &amp;lt;q>
+    &amp;lt;q> {{#c|=>}} [h]
+    &amp;lt;q> {{#c|=>}} exit
    
 ----
   C:\> {{#c|fast}} {{#i|bar}}
@@ -375,17 +381,17 @@ the {{#ci|UML}} thingy...
 Composite Pattern
 {{#c|✓ Building the tree is easy}}
 ----
- $if = {{#c|FAST::Struct::If}}->new({{#x|'&lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
+ $if = {{#c|FAST::Struct::If}}->new({{#x|'&amp;lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
     
 {{img src="images/tree01.png" width="453" height="211"}}
 ----
- $if = {{#c|FAST::Struct::If}}->new({{#x|'&lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
- $while = {{#c|FAST::Struct::While}}->new({{#x|'&lt;L>0>'}}, {{#x|$if}});
+ $if = {{#c|FAST::Struct::If}}->new({{#x|'&amp;lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
+ $while = {{#c|FAST::Struct::While}}->new({{#x|'&amp;lt;L>0>'}}, {{#x|$if}});
     
 {{img src="images/tree02.png" width="488" height="333"}}
 ----
- $if = {{#c|FAST::Struct::If}}->new({{#x|'&lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
- $while = {{#c|FAST::Struct::While}}->new({{#x|'&lt;L>0>'}}, {{#x|$if}});
+ $if = {{#c|FAST::Struct::If}}->new({{#x|'&amp;lt;L=1>'}}, {{#x|'[a]'}}, {{#x|'[b]'}});
+ $while = {{#c|FAST::Struct::While}}->new({{#x|'&amp;lt;L>0>'}}, {{#x|$if}});
  $seq = {{#c|FAST::Struct::Seq}}->new({{#x|'L:=1'}}, {{#x|$while}});
     
 {{img src="images/fastast.png" width="577" height="456"}}
@@ -457,21 +463,107 @@ tailored by {{#i|Audrey Tang}}
 {{#ci|Takahashi}}{{#x|++}}
 ----
 Most of the images used here
-were {{#ci|dawn}} by {{#i|AT&amp;T}}'s
+were {{#ci|dawn}} by {{#i|AT&amp;amp;T}}'s
 {{#x|Graphviz}} tools and libraries.
 ----
 {{#c|Thank you!}}
 ☺
-
-
-
-
-
-
-
-
 </html:textarea>
-<deck flex="1" id="deck"><vbox flex="1" onmousemove="Presentation.onMouseMoveOnCanvas(event);"><toolbox id="canvasToolbar"><toolbar><toolbarbutton oncommand="Presentation.home()" label="|&lt;&lt;" observes="canBack"/><toolbarbutton oncommand="Presentation.back()" label="&lt;" observes="canBack"/><toolbarbutton oncommand="Presentation.forward()" label="&gt;" observes="canForward"/><toolbarbutton oncommand="Presentation.end()" label="&gt;&gt;|" observes="canForward"/><toolbarseparator/><hbox align="center"><textbox id="current_page" size="4" oninput="if (this.value) Presentation.showPage(parseInt(this.value)-1);"/><description value="/"/><description id="max_page"/></hbox><toolbarseparator/><vbox flex="2"><spacer flex="1"/><scrollbar id="scroller" align="center" orient="horizontal" oncommand="Presentation.showPage(parseInt(event.target.getAttribute('curpos')));" onclick="Presentation.showPage(parseInt(event.target.getAttribute('curpos')));" onmousedown="Presentation.onScrollerDragStart();" onmousemove="Presentation.onScrollerDragMove();" onmouseup="Presentation.onScrollerDragDrop();"/><spacer flex="1"/></vbox><toolbarseparator/><spacer flex="1"/><toolbarseparator/><toolbarbutton id="toggleEva" label="Eva" type="checkbox" autoCheck="false" oncommand="Presentation.toggleEvaMode();"/><toolbarseparator/><toolbarbutton label="Edit" oncommand="Presentation.toggleEditMode();"/><toolbarbutton oncommand="Presentation.reload();" label="Reload"/></toolbar></toolbox><vbox flex="1" id="canvas" onclick="Presentation.onPresentationClick(event);"><spacer flex="1"/><hbox flex="1"><spacer flex="1"/><vbox id="content"/><spacer flex="1"/></hbox><spacer flex="1"/></vbox></vbox><vbox flex="1" id="edit"><toolbox><toolbar><toolbarbutton label="New Page" oncommand="Presentation.addPage()"/><spacer flex="1"/><toolbarseparator/><toolbarbutton label="View" oncommand="Presentation.toggleEditMode();"/><toolbarbutton oncommand="Presentation.reload();" label="Reload"/></toolbar></toolbox><textbox id="textField" flex="1" multiline="true" oninput="Presentation.onEdit()"/><hbox collapsed="true"><iframe id="dataLoader" onload="if (window.Presentation) Presentation.onDataLoad();"/></hbox></vbox></deck><broadcasterset><broadcaster id="canBack"/><broadcaster id="canForward"/></broadcasterset><commandset><command id="cmd_forward" oncommand="if (Presentation.isPresentationMode) Presentation.forward();"/><command id="cmd_back" oncommand="if (Presentation.isPresentationMode) Presentation.back();"/><command id="cmd_home" oncommand="if (Presentation.isPresentationMode) Presentation.home();"/><command id="cmd_end" oncommand="if (Presentation.isPresentationMode) Presentation.end();"/></commandset><keyset><key keycode="VK_ENTER"      command="cmd_forward"/><key keycode="VK_RETURN"     command="cmd_forward"/><key keycode="VK_PAGE_DOWN"  command="cmd_forward"/><key keycode="VK_RIGHT"      command="cmd_forward"/><key keycode="VK_DOWN"       command="cmd_forward"/><!--key keycode="VK_BACK_SPACE" command="cmd_back"/--><key keycode="VK_UP"    command="cmd_back"/><key keycode="VK_PAGE_UP"    command="cmd_back"/><!--<key keycode="VK_BACK_UP"    command="cmd_back"/>--><!--<key keycode="VK_BACK_LEFT"  command="cmd_back"/>--><key keycode="VK_HOME"       command="cmd_home"/><!--<key keycode="VK_END"        command="cmd_end"/>--><key key="n" modifiers="accel" oncommand="Presentation.addPage();"/><key key="r" modifiers="accel" oncommand="window.location.reload();"/><key key="e" modifiers="accel" oncommand="Presentation.toggleEditMode();"/><key key="a" modifiers="accel" oncommand="Presentation.toggleEvaMode();"/></keyset><script src="takahashi.js" type="application/x-javascript" /></page>
+
+<deck flex="1" id="deck">
+ <vbox flex="1" onmousemove="Sporx.onMouseMoveOnCanvas(event);">
+  <toolbox id="canvasToolbar">
+   <toolbar>
+    <toolbarbutton oncommand="Sporx.home()" label="|&lt;&lt;" observes="canBack"/>
+    <toolbarbutton oncommand="Sporx.back()" label="&lt;" observes="canBack"/>
+    <toolbarbutton oncommand="Sporx.forward()" label="&gt;" observes="canForward"/>
+    <toolbarbutton oncommand="Sporx.end()" label="&gt;&gt;|" observes="canForward"/>
+    <toolbarseparator/>
+    <hbox align="center">
+     <textbox id="current_page" size="4" oninput="if (this.value) Sporx.showPage(parseInt(this.value)-1);"/>
+     <description value="/"/>
+     <description id="max_page"/>
+    </hbox>
+    <toolbarseparator/>
+    <vbox flex="2">
+     <spacer flex="1"/>
+     <scrollbar id="scroller" align="center" orient="horizontal" oncommand="Sporx.showPage(parseInt(event.target.getAttribute('curpos')));" onclick="Sporx.showPage(parseInt(event.target.getAttribute('curpos')));" onmousedown="Sporx.onScrollerDragStart();" onmousemove="Sporx.onScrollerDragMove();" onmouseup="Sporx.onScrollerDragDrop();"/>
+     <spacer flex="1"/>
+    </vbox>
+    <toolbarseparator/>
+    <spacer flex="1"/>
+    <toolbarseparator/>
+    <toolbarbutton id="toggleEva" label="Eva" type="checkbox" autoCheck="false" oncommand="Sporx.toggleEvaMode();"/>
+    <toolbarseparator/>
+    <toolbarbutton label="Edit" oncommand="Sporx.toggleEditMode();"/>
+    <toolbarbutton oncommand="Sporx.reload();" label="Reload"/>
+   </toolbar>
+  </toolbox>
+  <vbox flex="1" id="canvas" onclick="Sporx.onPresentationClick(event);">
+   <spacer flex="1"/>
+   <hbox flex="1">
+    <spacer flex="1"/>
+    <vbox id="content"/>
+    <spacer flex="1"/>
+   </hbox>
+   <spacer flex="1"/>
+  </vbox>
+ </vbox>
+ <vbox flex="1" id="edit">
+  <toolbox>
+   <toolbar>
+    <toolbarbutton label="New Page" oncommand="Sporx.addPage()"/>
+    <spacer flex="1"/>
+    <toolbarseparator/>
+    <toolbarbutton label="View" oncommand="Sporx.toggleEditMode();"/>
+    <toolbarbutton oncommand="Sporx.reload();" label="Reload"/>
+   </toolbar>
+  </toolbox>
+  <textbox id="textField" flex="1" multiline="true" oninput="Sporx.onEdit()"/>
+  <hbox collapsed="true">
+   <iframe id="dataLoader" onload="if (window.Sporx) Sporx.onDataLoad();"/>
+  </hbox>
+ </vbox>
+</deck>
+
+<broadcasterset>
+ <broadcaster id="canBack"/>
+ <broadcaster id="canForward"/>
+</broadcasterset>
+
+<commandset>
+ <command id="cmd_forward" oncommand="if (Sporx.isPresentationMode) Sporx.forward();"/>
+ <command id="cmd_back" oncommand="if (Sporx.isPresentationMode) Sporx.back();"/>
+ <command id="cmd_home" oncommand="if (Sporx.isPresentationMode) Sporx.home();"/>
+ <command id="cmd_end" oncommand="if (Sporx.isPresentationMode) Sporx.end();"/>
+</commandset>
+
+<keyset>
+ <key key=" "                   command="cmd_forward"/>
+ <key keycode="VK_ENTER"        command="cmd_forward"/>
+ <key keycode="VK_RETURN"       command="cmd_forward"/>
+ <key keycode="VK_PAGE_DOWN"    command="cmd_forward"/>
+ <key keycode="VK_RIGHT"        command="cmd_forward"/>
+ <key keycode="VK_DOWN"         command="cmd_forward"/>
+ <!--key keycode="VK_BACK_SPACE"   command="cmd_back"/-->
+ <key keycode="VK_UP"           command="cmd_back"/>
+ <key keycode="VK_PAGE_UP"      command="cmd_back"/>
+ <!--<key keycode="VK_BACK_UP"    command="cmd_back"/>-->
+ <!--<key keycode="VK_BACK_LEFT"  command="cmd_back"/>-->
+ <key keycode="VK_HOME"         command="cmd_home"/>
+ <!--<key keycode="VK_END"        command="cmd_end"/>-->
+
+ <key key="n" modifiers="accel" oncommand="Sporx.addPage();"/>
+ <key key="r" modifiers="accel" oncommand="window.location.reload();"/>
+ <key key="e" modifiers="accel" oncommand="Sporx.toggleEditMode();"/>
+ <key key="a" modifiers="accel" oncommand="Sporx.toggleEvaMode();"/>
+</keyset>
+
+
+<script src="lib/sporx.js" type="application/x-javascript" />
+
+</page>
+
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1
    -
@@ -494,3 +586,4 @@ were {{#ci|dawn}} by {{#i|AT&amp;T}}'s
    - Contributor(s): SHIMODA Hiroshi <piro@p.club.ne.jp>
    -
    - ***** END LICENSE BLOCK ***** -->
+
