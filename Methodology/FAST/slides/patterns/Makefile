@@ -1,4 +1,4 @@
-all: patterns.xul
+all: patterns.xul patterns2.xul
 
-patterns.xul: patterns.slides template/*
+%.xul: %.slides template/*
 	perl bin/render-template $< $@
