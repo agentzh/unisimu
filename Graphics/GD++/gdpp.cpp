@@ -1,7 +1,7 @@
 //: gdpp.cpp
 //: implementation for GD++
 //: Copyright (c) 2006 Agent Zhang
-//: 2006-04-10 2006-04-10
+//: 2006-04-10 2006-04-17
 
 #include "gdpp.h"
 #include <embperl.h>
@@ -17,16 +17,45 @@ namespace GD {
     bool Debug = 0;
 
     Simple::Simple(int width, int height) {
-        perl.eval("use GD::Simple;");
-        m_id = "$im" + itos( (int)this );
+        init();
         string w = itos(width);
         string h = itos(height);
         string cmd = m_id + " = GD::Simple->new("
-            + w + ", " + h + ");";
+            + w + ", " + h + ") or die $!;";
         if (Debug)
             weprintf("GD::Simple::Simple: %s\n", cmd.c_str());
 
         perl.eval(cmd);
+    }
+
+    Simple::Simple(string filename) {
+        init();
+        string cmd1 = "$temp = GD::Image->new('" + filename + "') or die $!;";
+        string cmd2 = m_id + " = GD::Simple->new($temp) or die $!;";
+        if (Debug)
+            weprintf("GD::Simple::Simple: %s\n", (cmd1 + cmd2).c_str());
+        perl.eval(cmd1 + cmd2);
+    }
+
+    void Simple::init(void) {
+        perl.eval("use GD::Simple;");
+        m_id = "$im" + itos( (int)this );
+    }
+
+    void Simple::getBounds(int& width, int& height) {
+        perl.eval("($w, $h) = " + m_id + "->getBounds;");
+        width = perl.SV("w");
+        height = perl.SV("h");
+    }
+
+    int Simple::width(void) {
+        perl.eval("$w = " + m_id + "->width");
+        return perl.SV("w");
+    }
+
+    int Simple::height(void) {
+        perl.eval("$h = " + m_id + "->height");
+        return perl.SV("h");
     }
 
     Color Simple::colorAllocate(int R, int G, int B) {
@@ -60,12 +89,13 @@ namespace GD {
     Color Simple::getPixel(int x, int y) {
         string xx = itos(x);
         string yy = itos(y);
-        string cmd = "($R, $G, $B) = " + m_id + "->getPixel(" +
+        string cmd1 = "$index = " + m_id + "->getPixel(" +
             xx + ", " + yy + ");";
+        string cmd2 = "($R, $G, $B) = " + m_id + "->rgb($index);";
         if (Debug)
-            weprintf("GD::Simple::getPixel: %s\n", cmd.c_str());
+            weprintf("GD::Simple::getPixel: %s\n", (cmd1+cmd2).c_str());
 
-        perl.eval(cmd);
+        perl.eval(cmd1 + cmd2);
 
         int R = perl.SV("R");
         int G = perl.SV("G");

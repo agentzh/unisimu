@@ -1,7 +1,7 @@
 //: gdpp.h
 //: header for GD++
 //: Copyright (c) 2006 Agent Zhang
-//: 2006-04-10 2006-04-10
+//: 2006-04-10 2006-04-17
 
 #include <string>
 
@@ -29,6 +29,11 @@ namespace GD {
     class Simple {
     public:
         Simple(int width, int height);
+        Simple(string filename);
+
+        void getBounds(int& width, int& height);
+        int width(void);
+        int height(void);
 
         Color colorAllocate(int R, int G, int B);
 
@@ -43,8 +48,11 @@ namespace GD {
         void ellipse(int width, int height);
 
         void as_png(std::string fname);
+
+        static string itos (int i);
     private:
-        string itos (int i);
+        void init(void);
+
         string m_id;
     };
 
