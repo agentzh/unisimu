@@ -1,6 +1,6 @@
 RM_F = perl -MExtUtils::Command -e rm_f
 
-.PHONY: all test clean
+.PHONY: all test clean release
 
 all: gdpp.lib
 
@@ -25,3 +25,10 @@ test: all t\line.exe t\line2.exe t\circles.exe t\imcmp.exe
 
 clean:
 	$(RM_F) *.lib *.obj t/*.exe t/*.obj *.png imcmp.out
+
+release:
+	cp gdpp.h release/
+	cp gdpp.lib release/
+	cp t/*.cpp release/
+	tar.gz release
+	cp release.tar.gz GD++.tar.gz
