@@ -1,0 +1,50 @@
+Here is a BNF-like grammar for FAST input scripts:
+
+program : statements
+            ;
+
+statements : statement
+                | statements
+                ;
+
+statement : node "=>" node
+              ;
+
+node: "entry"
+      | "exit"
+      | predicate_node
+      | function_node
+      ;
+
+predicate_node : "<" node_name ">"
+                      ;
+
+node_name : node_label
+                 | node_id ":" node_label
+                 ;
+
+node_label : /.+/
+               ;
+
+node_id : /\d+/
+           ;
+
+function_node : "[" node_name "]"
+                    ;
+
+Note that every /.../ in the grammar is a Perl regexp. To be honest,
+the definition of node_label is a bit fuzzy. The following string are
+all valid node_labels:
+  "a > b"
+  "53 < a+5"
+  "aaaa          bbbb <>   dsd"
+So the grammar given above can not be implemented by a shift/reduce parser.
+
+It should be mentioned that whitespaces are not taken into account in
+the preceding grammar. The FAST input language is based on lines.
+Every statement should be placed in a single line (empty lines are
+okay). Whitespaces are okay between terminals and nonterminals.
+They'll be ignored silently outside node_names, but will be preserved
+within node_names.
+
+Last but not least, the FAST input language is case-sensitive, like Java. :)
