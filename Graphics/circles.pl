@@ -1,6 +1,6 @@
 #: circles.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-10 2006-04-10
+#: 2006-04-10 2006-04-17
 
 use strict;
 use warnings;
@@ -28,10 +28,9 @@ sub draw_circles {
 	my $R = $D * $R_scale;
 	$img->moveTo($x0, $y0);
 	$img->ellipse(2 * $R, 2 * $R);
-	my $angle = 0;
 	my $delta_angle = 2 * PI / $nelems;
 	for my $i (1..$nelems) {
-		my $angle += $delta_angle * $i;
+		my $angle = $delta_angle * $i;
 		my $x = $D * cos($angle) + $x0;
 		my $y = $D * sin($angle) + $y0;
 		draw_circles($img, $x, $y, $D * $D_scale, $depth+1);
