@@ -31,7 +31,7 @@ test: all $(PNG_FILES) t\imcmp.exe
 clean:
 	$(RM_F) *.lib *.obj t/*.exe t/*.obj *.png imcmp.out
 
-release:
+release: all
 	cp gdpp.h release/
 	cp gdpp.lib release/
 	cp t/*.cpp release/
