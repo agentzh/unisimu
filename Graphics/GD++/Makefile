@@ -37,3 +37,4 @@ release: all
 	cp t/*.cpp release/
 	tar.gz release
 	cp release.tar.gz GD++.tar.gz
+	rm release.tar.gz
