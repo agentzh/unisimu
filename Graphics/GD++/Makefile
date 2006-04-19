@@ -1,6 +1,9 @@
 RM_F = perl -MExtUtils::Command -e rm_f
+PNG_FILES = line.png line2.png circles.png dda.png bresenham.png
 
 .PHONY: all test clean release
+
+.PRECIOUS: %.exe
 
 all: gdpp.lib
 
@@ -10,17 +13,17 @@ gdpp.lib: gdpp.obj
 gdpp.obj: gdpp.cpp gdpp.h
 	cl /EHsc /c /nologo $<
 
-test: all t\line.exe t\line2.exe t\circles.exe t\imcmp.exe t\dda.exe
-	t\line.exe
-	t\line2.exe
-	t\circles.exe
+test: all $(PNG_FILES) t\imcmp.exe
 	-t/imcmp.exe t/~line.png t/~line2.png > imcmp.out
-	t\dda.exe
 	cmp line.png t\~line.png
 	cmp line2.png t\~line2.png
 	cmp circles.png t\~circles.png
 	diff imcmp.out t\~imcmp.out
 	cmp dda.png t\~line.png
+	cmp bresenham.png t\~line.png
+
+%.png: t\%.exe
+	$<
 
 %.exe: %.cpp gdpp.lib
 	cl /I. /EHsc /nologo /o $@ $^ /link /NODEFAULTLIB:MSVCRT
