@@ -1,3 +1,7 @@
+#: sniffer.pl
+#: Copyright (c) 2006 Agent Zhang
+#: 2006-03-07 2006-04-20
+
 use strict;
 use warnings;
 
@@ -6,7 +10,7 @@ use HTTP::Response;
 use Getopt::Std;
 
 my %opts;
-getopts('hp:oie', \%opts);
+getopts('hp:oive', \%opts);
 
 if ($opts{h}) {
     print <<".";
@@ -19,6 +23,7 @@ Options:
     -i                 log the request string
     -o                 log the response string
     -e                 use *_proxy env
+    -v                 being verbose
 .
 
     exit(0);
@@ -36,6 +41,7 @@ my $agent = MyUA->new(
 
 my $proxy = HTTP::Proxy->new;
 
+warn "Log file: $logfile\n";
 $proxy->max_clients(100);
 $proxy->agent( $agent );
 
@@ -43,13 +49,8 @@ $proxy->agent( $agent );
 $proxy->host(undef);
 $proxy->port($port);
 
-while (1) {
-    print "Starting the proxy...\n";
-    eval {
-        $proxy->start();
-    };
-    warn $@;
-}
+print "Starting the proxy 127.0.0.1:3128...\n";
+$proxy->start();
 
 package MyUA;
 
@@ -76,7 +77,7 @@ sub send_request {
     local $|;
     if ($self->{file} and $opts{i}) {
         my $str = $request->as_string() . "\n\n---\n\n";
-        print $str;
+        warn $str;
         write_file( $self->{file}, {append => 1}, $str );
     }
     my $response;
@@ -89,6 +90,7 @@ sub send_request {
     }
     if ($self->{file} and $opts{o}) {
         my $str = $response->as_string() . "\n\n---\n\n";
+        warn $str if $opts{v};
         write_file( $self->{file}, {append => 1}, $str );
     }
     die "undef res" if not defined $response;
