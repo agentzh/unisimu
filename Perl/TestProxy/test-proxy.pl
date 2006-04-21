@@ -141,7 +141,7 @@ sub read_proxy {
     local $/ = "\n";
     while (<$in>) {
         next if m/^\s*$/o;
-        if (m/\b\d+\.\d+\.\d+.\d+:\d{2,4}\b/o) {
+        if (m/(?:\w+:\w+\@)?\d+\.\d+\.\d+.\d+:\d{2,4}\b/o) {
             warn "Loading $&...\n";
             push @retvals, $&;
         }
