@@ -1,6 +1,6 @@
 #: circles.pl
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-10 2006-04-17
+#: 2006-04-10 2006-04-21
 
 use strict;
 use warnings;
@@ -10,6 +10,8 @@ use constant {
 	MAX_DEPTH => 5,
 };
 
+# $R_scale 表示大圆的半径 $R 与大小圆圆心径 $D 的比例
+# $D_scale 表示相邻上下两层的圆心距的比例
 my ($R_scale, $D_scale) = (0.5, 0.2);
 my $nelems = 10;
 my ($width, $height) = (600, 600);
@@ -22,7 +24,8 @@ binmode \*STDOUT;
 print $img->png;
 
 sub draw_circles {
-	my ($img, $x0, $y0, $D, $depth) = @_;
+    # $R 表示大圆的半径，$D 表示大小圆之间的圆心距
+    my ($img, $x0, $y0, $D, $depth) = @_;
 	$depth ||= 1;
 	return if $depth == MAX_DEPTH;
 	my $R = $D * $R_scale;
