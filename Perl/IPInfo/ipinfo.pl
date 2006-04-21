@@ -64,7 +64,7 @@ sub domain2ip {
             push @ips, $rr->address;
         }
     } else {
-        warn "DNS resolving failed: ", $dns->errorstring, "\n";
+        die "DNS resolving failed: ", $dns->errorstring, "\n";
     }
     return @ips;
 }
