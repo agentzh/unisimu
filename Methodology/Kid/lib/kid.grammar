@@ -1,0 +1,43 @@
+<autotree>
+
+program: statement_list eofile
+
+statement_list: statement(s /;/)
+
+statement: if_statement
+         | assignment
+
+if_statement: 'if' <commit> '(' condition ')' block
+              ('else' else_block)(?)
+            | <error?> <reject>
+
+condition: expression rel_op <commit> rhs_expression
+         | <error?> <reject>
+
+rel_op: />=|>|<=|<|=/
+
+rhs_expression: expression
+
+assignment: var ':=' <commit> expression
+          | <error?> <reject>
+
+else_block: block
+
+block: '{' <commit> statement_list /;?/ '}'
+     | <error?> <reject>
+
+var: identifier
+
+identifier: /[A-Za-z][A-Za-z0-9_]*/
+
+expression: <leftop: term /([-+])/ term>
+
+term: <leftop: factor /([*\/])/ factor>
+
+factor: var
+      | number
+      | '(' expression ')'
+
+number: /\d+(?:\.\d+)?/
+
+eofile: /^\Z/

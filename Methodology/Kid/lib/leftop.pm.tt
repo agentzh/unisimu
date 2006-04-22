@@ -1,0 +1,60 @@
+[% DEFAULT
+    parent = "expression"
+    child  = "term"
+    op = 'yes'
+    key = "__DIRECTIVE1__"
+-%]
+#: [% parent %].pm - generated from leftop.tt
+
+package [% parent %];
+
+use strict;
+use warnings;
+#use Data::Dumper::Simple;
+
+use base 'Kid::Element';
+
+sub [% parent %] {
+    my $self = shift;
+    if (!exists $self->{[% parent %]}) {
+        my @[% child %]s = @{ $self->{'[% key %]'} };
+        my $[% child %] = pop @[% child %]s;
+    [%- IF op == 'yes' %]
+        my $op = pop @[% child %]s;
+    [%- END %]
+        my $[% parent %];
+        if (@[% child %]s) {
+            $[% parent %] = bless {'[% key %]' => \@[% child %]s}, ref $self;
+        } else {
+            $[% parent %] = bless {}, 'nil';
+        }
+        $self->{[% parent %]} = $[% parent %];
+        $self->{[% child %]} = $[% child %];
+    [%- IF op == 'yes' %]
+        $self->{op} = $op;
+    [%- END %]
+        delete $self->{'[% key %]'};
+        #warn Dumper($self);
+    }
+    return $self->{[% parent %]};
+}
+
+sub [% child %] {
+    my $self = shift;
+    if (!exists $self->{[% child %]}) {
+        $self->[% parent %];
+    }
+    return $self->{[% child %]};
+}
+
+[%- IF op == 'yes' %]
+sub op {
+    my $self = shift;
+    if (!exists $self->{op}) {
+        $self->[% parent %];
+    }
+    return $self->{op};
+}
+[%- END %]
+
+1;
