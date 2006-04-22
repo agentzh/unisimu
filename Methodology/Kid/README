@@ -1,0 +1,7 @@
+This is a multi-backend compiler for the Kid programming
+language designed by Agent Zhang. The main goal of Kid 
+is to demonstrate compiler construction and structrual
+program correctness proving techniques.
+
+The parser for Kid (Kid::Parser) is mostly done, and the
+Perl backend (Kid::Perl) is implemented and tested.
