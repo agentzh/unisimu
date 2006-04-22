@@ -7,7 +7,7 @@ package Kid::Perl;
 use strict;
 use warnings;
 
-use Data::Dumper;
+#use Data::Dumper;
 use Scalar::Util qw( looks_like_number );
 use Kid;
 use Language::AttributeGrammar;
