@@ -2,10 +2,10 @@
 
 program: statement_list eofile
 
-statement_list: statement(s /;/)
+statement_list: statement(s)
 
 statement: if_statement
-         | assignment
+         | assignment /;?/
 
 if_statement: 'if' <commit> '(' condition ')' block
               ('else' else_block)(?)
@@ -38,6 +38,6 @@ factor: var
       | number
       | '(' expression ')'
 
-number: /\d+(?:\.\d+)?/
+number: /-?\d+(?:\.\d+)?/
 
 eofile: /^\Z/

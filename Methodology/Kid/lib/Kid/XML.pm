@@ -33,7 +33,7 @@ var:        $/.xml = { "<var>\n" . $<identifier>.xml . "</var>\n" }
 
 assignment: $/.xml = { ::emit_assign( $<var>.xml, $<expression>.xml ) }
 
-block:           $/.xml = { "<block>\n" . $<statement_list>.xml . "</block>\n" }
+block:           $/.xml = { ::emit_block( $<statement_list>.xml ); }
 else_block:      $/.xml = { $<block>.xml }
 rhs_expression:  $/.xml = { $<expression>.xml }
 
@@ -73,6 +73,7 @@ sub emit_cond {
 $lhs</expression>
 $op<expression>
 $rhs</expression>
+</condition>
 EOC
 }
 
@@ -91,6 +92,16 @@ sub emit_assign {
 $var<expression>
 $expr</expression>
 </assignment>
+EOC
+}
+
+sub emit_block {
+    my ($stmt_list) = @_;
+    return <<EOC;
+<block>
+<statement_list>
+$stmt_list</statement_list>
+</block>
 EOC
 }
 

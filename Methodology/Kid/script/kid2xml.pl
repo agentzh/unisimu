@@ -1,7 +1,7 @@
-#: kid2pl.pl
-#: Convert .kid source to .pl source
+#: kid2xml.pl
+#: Convert .kid source to .xml listing
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-22 2006-04-22
+#: 2006-04-23 2006-04-23
 
 use strict;
 use warnings;
@@ -9,15 +9,15 @@ use warnings;
 use FindBin;
 #use lib "$FindBin::Bin/../lib";
 use Getopt::Std;
-use Kid::Perl;
+use Kid::XML;
 
 my %opts;
 getopts('o:', \%opts);
 my $infile = shift;
-die "Usage: kid2pl [-o <outfile>] <infile>\n" if !$infile;
+die "Usage: kid2xml [-o <outfile>] <infile>\n" if !$infile;
 my $outfile;
-if (($outfile = $infile) !~ s/\.kid$/.pl/i) {
-    $outfile .= '.pl';
+if (($outfile = $infile) !~ s/\.kid$/.xml/i) {
+    $outfile .= '.xml';
 }
 
 open my $in, $infile or
@@ -29,9 +29,9 @@ my $src;
 }
 close $in;
 
-my $perl = Kid::Perl::translate($src);
+my $perl = Kid::XML::translate($src);
 defined $perl or
-    die "Can't generate Perl code due to compilation errors.\n";
+    die "Can't generate XML code due to compilation errors.\n";
 
 open my $out, "> $outfile" or
     die "error: Can't open $outfile for writing: $!\n";

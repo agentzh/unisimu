@@ -24,4 +24,4 @@ test: all
 	prove -Ilib t/*/*.t t/*.t
 
 clean:
-	$(RM_F) $(PM_FILES) t/01test.pl t/02test.pl
+	$(RM_F) $(PM_FILES) t/01test.pl t/02test.pl t/01test.xml t/02test.xml
