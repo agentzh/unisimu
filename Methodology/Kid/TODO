@@ -1,12 +1,9 @@
-* XML backend for Kid
-** add Kid::XML module which also uses AG to process the AST
+TODO
+======
 
 * Maple backend for Kid
 ** generate systems of equalities and inequalities for every route
    of Kid programs
-
-* C/C++/Java/MASM backends for Kid
-** variable type inferencing
 
 * New operators
 ** exponential operator (^)
@@ -16,3 +13,6 @@
 ** sub declarations
 ** vars declarations
 ** I/O mechanisms
+
+* C/C++/Java/MASM backends for Kid
+** variable type inferencing
