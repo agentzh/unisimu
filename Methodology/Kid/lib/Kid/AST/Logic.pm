@@ -11,6 +11,7 @@ use warnings;
 use Kid;
 use Language::AttributeGrammar;
 use Kid::Maple;
+use Clone;
 
 our ($TransGrammar, $TextGrammar);
 
@@ -92,7 +93,7 @@ package Atom;
 
 sub new {
     my ($class, $child) = @_;
-    bless { child => $child }, $class;
+    bless { child => Clone::clone( $child ) }, $class;
 }
 
 package Binary;
