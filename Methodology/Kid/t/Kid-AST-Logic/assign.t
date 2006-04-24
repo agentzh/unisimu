@@ -1,8 +1,5 @@
 #: assign.t
 
-use strict;
-use warnings;
-
 use t::Kid_AST_Logic;
 
 plan tests => 1 * blocks();
