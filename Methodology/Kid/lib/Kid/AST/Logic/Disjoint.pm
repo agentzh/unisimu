@@ -36,7 +36,7 @@ sub emit_disjoint {
 And:  $/.space = { Kid::AST::Logic::Disjoint::inner_join( $<first>.space, $<second>.space ) }
 Or:   $/.space = { Kid::AST::Logic::Disjoint::outer_join( $<first>.space, $<second>.space ) }
 Not:  $/.space = { Kid::AST::Logic::Disjoint::emit_not( $<child> ) }
-Atom: $/.space = { [[ $<child> ]] }
+Atom: $/.space = { [[ Clone::clone( $<child> ) ]] }
 
 END_GRAMMAR
     $Grammar->apply($logic_ast, 'space');
@@ -63,7 +63,7 @@ sub emit_not {
     my $cond = $atom->{child};
     die ref $cond if ref $cond ne 'condition';
     reverse_op( $cond->{rel_op}->{__VALUE__} );
-    [[ $cond ]];
+    [[ Clone::clone($cond) ]];
 }
 
 sub reverse_op {
