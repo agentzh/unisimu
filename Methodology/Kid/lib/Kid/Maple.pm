@@ -33,7 +33,7 @@ var:        $/.maple = { $<identifier>.maple }
 
 assignment: $/.maple = { $<var>.maple . ':=' . $<expression>.maple . ";\n" }
 
-block:           $/.maple = { "do\n" . $<statement_list>.maple . "od;\n" }
+block:           $/.maple = { $<statement_list>.maple }
 else_block:      $/.maple = { $<block>.maple }
 rhs_expression:  $/.maple = { $<expression>.maple }
 
@@ -64,9 +64,9 @@ sub emit_factor {
 sub emit_if {
     my ($cond, $if_block, $else_block) = @_;
     if ($else_block) {
-        return "if $cond then ${if_block}else ${else_block}fi;";
+        return "if $cond then\n${if_block}else\n${else_block}end if;\n";
     } else {
-        return "if $cond then ${if_block}fi;";
+        return "if $cond then\n${if_block}end if;\n";
     }
 }
 

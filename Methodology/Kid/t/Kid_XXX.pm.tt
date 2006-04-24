@@ -1,0 +1,27 @@
+[% DEFAULT
+    lang = 'Perl';
+   USE Perl;
+-%]
+[% SET name = Perl.lc(lang) -%]
+#: t/Kid_[% lang %].pm
+#: This file was generated from Kid_XXX.pm.tt
+
+package t::Kid_[% lang %];
+use Test::Base -Base;
+use Kid::[% lang %];
+
+our @EXPORT = qw(run_tests);
+
+*translate = \&Kid::[% lang %]::translate;
+
+sub run_tests {
+    for my $block (blocks()) {
+        if ($block->[% name %]) {
+            is translate($block->kid), $block->[% name %], $block->name;
+        } elsif ($block->error) {
+            ok !defined translate($block->kid), $block->name;
+        }
+    }
+}
+
+1;
