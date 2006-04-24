@@ -8,7 +8,6 @@ use strict;
 use warnings;
 
 #use Data::Dumper;
-use Scalar::Util qw( looks_like_number );
 use Kid;
 use Language::AttributeGrammar;
 
@@ -23,7 +22,7 @@ sub emit_perl {
     my $ast = shift;
     my $grammar = new Language::AttributeGrammar <<'END_GRAMMAR';
 number:     $/.perl = { $<__VALUE__> }
-factor:     $/.perl = { Kid::Perl::emit_factor($<child>.perl) }
+factor:     $/.perl = { ::emit_factor($<child>.perl) }
 
 term:       $/.perl = { $<term>.perl . $<op> . $<factor>.perl }
 expression: $/.perl = { $<expression>.perl . $<op> . $<term>.perl }
@@ -40,7 +39,7 @@ rhs_expression:  $/.perl = { $<expression>.perl }
 
 rel_op:       $/.perl = { $<__VALUE__> }
 condition:    $/.perl = { $<expression>.perl . $<rel_op>.perl . $<rhs_expression>.perl }
-if_statement: $/.perl = { Kid::Perl::emit_if( $<condition>.perl, $<block>.perl, $<else_block>.perl ); }
+if_statement: $/.perl = { ::emit_if( $<condition>.perl, $<block>.perl, $<else_block>.perl ); }
 
 statement:      $/.perl = { $<child>.perl }
 statement_list: $/.perl = { $<statement_list>.perl . $<statement>.perl }
@@ -50,6 +49,12 @@ program:    $/.perl = { $<statement_list>.perl }
 END_GRAMMAR
     return $grammar->apply($ast, 'perl');
 }
+
+package main;
+
+use strict;
+use warnings;
+use Scalar::Util qw( looks_like_number );
 
 sub emit_factor {
     my $s = shift;

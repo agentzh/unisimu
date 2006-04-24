@@ -1,3 +1,4 @@
+MV_F = perl -MFile::Copy -e "File::Copy::move(@ARGV)"
 RM_F = perl -MExtUtils::Command -e rm_f
 PM_FILES = lib/Kid/Expression.pm lib/Kid/Term.pm lib/Kid/Parser.pm \
            lib/Kid/Statements.pm
@@ -18,7 +19,7 @@ lib/Kid/Statements.pm: lib/leftop.pm.tt
 
 lib/Kid/Parser.pm: lib/kid.grammar
 	perl -MParse::RecDescent - $< Kid::Parser
-	mv Parser.pm lib/Kid/
+	$(MV_F) Parser.pm lib/Kid/
 
 test: all
 	prove -Ilib t/*/*.t t/*.t
