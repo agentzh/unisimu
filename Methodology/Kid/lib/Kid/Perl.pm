@@ -1,6 +1,6 @@
 #: Kid/Perl.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-22 2006-04-22
+#: 2006-04-22 2006-04-24
 
 package Kid::Perl;
 
@@ -37,7 +37,7 @@ block:           $/.perl = { "{\n" . $<statement_list>.perl . "}\n" }
 else_block:      $/.perl = { $<block>.perl }
 rhs_expression:  $/.perl = { $<expression>.perl }
 
-rel_op:       $/.perl = { $<__VALUE__> }
+rel_op:       $/.perl = { ::emit_rel_op( $<__VALUE__> ) }
 condition:    $/.perl = { $<expression>.perl . $<rel_op>.perl . $<rhs_expression>.perl }
 if_statement: $/.perl = { ::emit_if( $<condition>.perl, $<block>.perl, $<else_block>.perl ); }
 
@@ -68,6 +68,11 @@ sub emit_if {
     } else {
         return "if($cond)$if_block";
     }
+}
+
+sub emit_rel_op {
+    my ($op) = @_;
+    $op eq '=' ? '==' : $op;
 }
 
 1;
