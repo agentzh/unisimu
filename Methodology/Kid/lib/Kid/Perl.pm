@@ -72,7 +72,9 @@ sub emit_if {
 
 sub emit_rel_op {
     my ($op) = @_;
-    $op eq '=' ? '==' : $op;
+    if ($op eq '=') { return '=='; }
+    if ($op eq '<>') { return '!='; }
+    $op;
 }
 
 1;

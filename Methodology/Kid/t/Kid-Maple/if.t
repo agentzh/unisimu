@@ -37,10 +37,10 @@ end if;
 
 === TEST 3
 --- kid
-if (5>x) { x:= 3; } else {
+if (5 <> x) { x:= 3; } else {
     y:=x-1; x:=x+1 }
 --- maple
-if 5>x then
+if 5<>x then
 x:=3;
 else
 y:=x-1;

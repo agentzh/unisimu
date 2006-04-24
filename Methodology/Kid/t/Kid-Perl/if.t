@@ -37,10 +37,10 @@ $x=$x-$y;
 
 === TEST 3
 --- kid
-if (5>x) { x:= 3; } else {
+if (5 <> x) { x:= 3; } else {
     y:=x-1; x:=x+1 }
 --- perl
-if(5>$x){
+if(5!=$x){
 $x=3;
 }
 else{

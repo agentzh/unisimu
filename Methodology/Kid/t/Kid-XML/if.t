@@ -169,7 +169,7 @@ if (5 = x_) { yylex:=1 }
 
 === TEST 3
 --- kid
-if (5>x) { x:= 3; } else {
+if (5 <> x) { x:= 3; } else {
     y:=-1 }
 --- xml
 <?xml version="1.0"?>
@@ -185,7 +185,7 @@ if (5>x) { x:= 3; } else {
 </factor>
 </term>
 </expression>
-<rel_op>&gt;</rel_op>
+<rel_op>&lt;&gt;</rel_op>
 <expression>
 <term>
 <factor>

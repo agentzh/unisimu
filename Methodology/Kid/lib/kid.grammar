@@ -14,7 +14,7 @@ if_statement: 'if' <commit> '(' condition ')' block
 condition: expression rel_op <commit> rhs_expression
          | <error?> <reject>
 
-rel_op: />=|>|<=|<|=/
+rel_op: />=|>|<=|<>|<|=/
 
 rhs_expression: expression
 
