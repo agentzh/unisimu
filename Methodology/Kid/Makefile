@@ -3,7 +3,8 @@ RM_F = perl -MExtUtils::Command -e rm_f
 PM_FILES = lib/Kid/Expression.pm lib/Kid/Term.pm lib/Kid/Parser.pm \
            lib/Kid/Statements.pm
 T_MODULES = t/Kid_Maple.pm t/Kid_XML.pm t/Kid_Perl.pm \
-            t/Kid_AST_Logic.pm t/Kid_AST_Logic_Disjoint.pm
+            t/Kid_AST_Logic.pm t/Kid_AST_Logic_Disjoint.pm \
+			t/Kid_MathModel.pm
 
 .PHONY: all test clean
 
