@@ -1,6 +1,6 @@
 #: Kid/Maple.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-22 2006-04-22
+#: 2006-04-22 2006-04-24
 
 package Kid::Maple;
 
@@ -11,6 +11,8 @@ use warnings;
 use Kid;
 use Language::AttributeGrammar;
 
+our $Grammar;
+
 sub translate {
     my $src = shift;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
@@ -20,7 +22,7 @@ sub translate {
 
 sub emit_maple {
     my $ast = shift;
-    my $grammar = new Language::AttributeGrammar <<'END_GRAMMAR';
+    $Grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 number:     $/.maple = { $<__VALUE__> }
 factor:     $/.maple = { ::emit_factor($<child>.maple) }
 
@@ -47,7 +49,7 @@ statement_list: $/.maple = { $<statement_list>.maple . $<statement>.maple }
 program:    $/.maple = { $<statement_list>.maple }
 
 END_GRAMMAR
-    return $grammar->apply($ast, 'maple');
+    return $Grammar->apply($ast, 'maple');
 }
 
 package main;

@@ -1,6 +1,6 @@
 #: Kid/XML.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-23 2006-04-23
+#: 2006-04-23 2006-04-24
 
 package Kid::XML;
 
@@ -11,6 +11,8 @@ use warnings;
 use Kid;
 use Language::AttributeGrammar;
 
+our $Grammar;
+
 sub translate {
     my $src = shift;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
@@ -20,7 +22,7 @@ sub translate {
 
 sub emit_xml {
     my $ast = shift;
-    my $grammar = new Language::AttributeGrammar <<'END_GRAMMAR';
+    $Grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 number:     $/.xml = { "<number>" . $<__VALUE__> . "</number>\n" }
 factor:     $/.xml = { ::emit_factor( $<child>.xml ); }
 
@@ -47,7 +49,7 @@ statement_list: $/.xml = { $<statement_list>.xml . $<statement>.xml }
 program:    $/.xml = { ::emit_program( $<statement_list>.xml ); }
 
 END_GRAMMAR
-    return $grammar->apply($ast, 'xml');
+    return $Grammar->apply($ast, 'xml');
 }
 
 package main;

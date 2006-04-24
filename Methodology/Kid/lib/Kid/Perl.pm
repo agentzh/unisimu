@@ -11,6 +11,8 @@ use warnings;
 use Kid;
 use Language::AttributeGrammar;
 
+our $Grammar;
+
 sub translate {
     my $src = shift;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
@@ -20,7 +22,7 @@ sub translate {
 
 sub emit_perl {
     my $ast = shift;
-    my $grammar = new Language::AttributeGrammar <<'END_GRAMMAR';
+    $Grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 number:     $/.perl = { $<__VALUE__> }
 factor:     $/.perl = { ::emit_factor($<child>.perl) }
 
@@ -47,7 +49,7 @@ statement_list: $/.perl = { $<statement_list>.perl . $<statement>.perl }
 program:    $/.perl = { $<statement_list>.perl }
 
 END_GRAMMAR
-    return $grammar->apply($ast, 'perl');
+    return $Grammar->apply($ast, 'perl');
 }
 
 package main;
