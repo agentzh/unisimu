@@ -64,11 +64,11 @@ sub emit_factor {
 }
 
 sub emit_if {
-    my ($cond, $if_block, $else_block) = @_;
-    if ($else_block) {
-        return "if($cond)${if_block}else$else_block";
+    my ($cond, $then, $else) = @_;
+    if ($else) {
+        return "if($cond)${then}else${else}";
     } else {
-        return "if($cond)$if_block";
+        return "if($cond)$then";
     }
 }
 
