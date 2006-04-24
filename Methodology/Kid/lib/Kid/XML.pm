@@ -23,39 +23,35 @@ sub translate {
 sub emit_xml {
     my $ast = shift;
     $Grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
-number:     $/.xml = { "<number>" . $<__VALUE__> . "</number>\n" }
-factor:     $/.xml = { ::emit_factor( $<child>.xml ); }
 
-term:       $/.xml = { $<term>.xml . ::emit_op( $<op> ) . $<factor>.xml }
-expression: $/.xml = { ::emit_expr( $<expression>.xml, $<op>, $<term>.xml ) }
+number:     $/.xml = { "<number>" . $<__VALUE__> . "</number>\n" }
+factor:     $/.xml = { Kid::XML::emit_factor( $<child>.xml ); }
+
+term:       $/.xml = { $<term>.xml . Kid::XML::emit_op( $<op> ) . $<factor>.xml }
+expression: $/.xml = { Kid::XML::emit_expr( $<expression>.xml, $<op>, $<term>.xml ) }
 
 nil:        $/.xml = { '' }
 identifier: $/.xml = { "<identifier>" . $<__VALUE__> . "</identifier>\n" }
 var:        $/.xml = { "<var>\n" . $<identifier>.xml . "</var>\n" }
 
-assignment: $/.xml = { ::emit_assign( $<var>.xml, $<expression>.xml ) }
+assignment: $/.xml = { Kid::XML::emit_assign( $<var>.xml, $<expression>.xml ) }
 
-block:           $/.xml = { ::emit_block( $<statement_list>.xml ); }
+block:           $/.xml = { Kid::XML::emit_block( $<statement_list>.xml ); }
 else_block:      $/.xml = { $<block>.xml }
 rhs_expression:  $/.xml = { $<expression>.xml }
 
-rel_op:       $/.xml = { "<rel_op>" . ::escape( $<__VALUE__> ) . "</rel_op>\n" }
-condition:    $/.xml = { ::emit_cond( $<expression>.xml, $<rel_op>.xml, $<rhs_expression>.xml ) }
-if_statement: $/.xml = { ::emit_if( $<condition>.xml, $<block>.xml, $<else_block>.xml ) }
+rel_op:       $/.xml = { "<rel_op>" . Kid::XML::escape( $<__VALUE__> ) . "</rel_op>\n" }
+condition:    $/.xml = { Kid::XML::emit_cond( $<expression>.xml, $<rel_op>.xml, $<rhs_expression>.xml ) }
+if_statement: $/.xml = { Kid::XML::emit_if( $<condition>.xml, $<block>.xml, $<else_block>.xml ) }
 
 statement:      $/.xml = { "<statement>\n" .$<child>.xml . "</statement>\n" }
 statement_list: $/.xml = { $<statement_list>.xml . $<statement>.xml }
 
-program:    $/.xml = { ::emit_program( $<statement_list>.xml ); }
+program:    $/.xml = { Kid::XML::emit_program( $<statement_list>.xml ); }
 
 END_GRAMMAR
     return $Grammar->apply($ast, 'xml');
 }
-
-package main;
-
-use strict;
-use warnings;
 
 sub emit_program {
     my ($statement_list) = @_;

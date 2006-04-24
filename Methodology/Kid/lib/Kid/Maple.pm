@@ -10,6 +10,7 @@ use warnings;
 #use Data::Dumper;
 use Kid;
 use Language::AttributeGrammar;
+use Scalar::Util qw( looks_like_number );
 
 our $Grammar;
 
@@ -23,8 +24,9 @@ sub translate {
 sub emit_maple {
     my $ast = shift;
     $Grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
+
 number:     $/.maple = { $<__VALUE__> }
-factor:     $/.maple = { ::emit_factor($<child>.maple) }
+factor:     $/.maple = { Kid::Maple::emit_factor($<child>.maple) }
 
 term:       $/.maple = { $<term>.maple . $<op> . $<factor>.maple }
 expression: $/.maple = { $<expression>.maple . $<op> . $<term>.maple }
@@ -41,7 +43,7 @@ rhs_expression:  $/.maple = { $<expression>.maple }
 
 rel_op:       $/.maple = { $<__VALUE__> }
 condition:    $/.maple = { $<expression>.maple . $<rel_op>.maple . $<rhs_expression>.maple }
-if_statement: $/.maple = { ::emit_if( $<condition>.maple, $<block>.maple, $<else_block>.maple ); }
+if_statement: $/.maple = { Kid::Maple::emit_if( $<condition>.maple, $<block>.maple, $<else_block>.maple ); }
 
 statement:      $/.maple = { $<child>.maple }
 statement_list: $/.maple = { $<statement_list>.maple . $<statement>.maple }
@@ -51,12 +53,6 @@ program:    $/.maple = { $<statement_list>.maple }
 END_GRAMMAR
     return $Grammar->apply($ast, 'maple');
 }
-
-package main;
-
-use strict;
-use warnings;
-use Scalar::Util qw( looks_like_number );
 
 sub emit_factor {
     my $s = shift;
