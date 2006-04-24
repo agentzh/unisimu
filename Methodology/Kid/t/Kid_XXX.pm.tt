@@ -1,23 +1,26 @@
 [% DEFAULT
-    lang = 'Perl';
+    name = 'Perl';
    USE Perl;
 -%]
-[% SET name = Perl.lc(lang) -%]
-#: t/Kid_[% lang %].pm
+[% method = Perl.lc(name);
+   module = name.replace('_', '::');
+   module = 'Kid::' _ module;
+-%]
+#: t/Kid_[% name %].pm
 #: This file was generated from Kid_XXX.pm.tt
 
-package t::Kid_[% lang %];
+package t::Kid_[% name %];
 use Test::Base -Base;
-use Kid::[% lang %];
+use [% module %];
 
 our @EXPORT = qw(run_tests);
 
-*translate = \&Kid::[% lang %]::translate;
+*translate = \&[% module %]::translate;
 
 sub run_tests {
     for my $block (blocks()) {
-        if ($block->[% name %]) {
-            is translate($block->kid), $block->[% name %], $block->name;
+        if ($block->[% method %]) {
+            is translate($block->kid), $block->[% method %], $block->name;
         } elsif ($block->error) {
             ok !defined translate($block->kid), $block->name;
         }

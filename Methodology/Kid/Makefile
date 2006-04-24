@@ -2,7 +2,7 @@ MV_F = perl -MFile::Copy -e "File::Copy::mv(@ARGV)"
 RM_F = perl -MExtUtils::Command -e rm_f
 PM_FILES = lib/Kid/Expression.pm lib/Kid/Term.pm lib/Kid/Parser.pm \
            lib/Kid/Statements.pm
-T_MODULES = t/Kid_Maple.pm t/Kid_XML.pm t/Kid_Perl.pm
+T_MODULES = t/Kid_Maple.pm t/Kid_XML.pm t/Kid_Perl.pm t/Kid_AST_Logic.pm
 
 .PHONY: all test clean
 
@@ -26,7 +26,7 @@ test: all $(T_MODULES)
 	prove -Ilib t/*/*.t t/*.t
 
 $(T_MODULES): t/Kid_XXX.pm.tt
-	tpage --define lang=$(patsubst t/Kid_%.pm,%,$@) $< > $@
+	tpage --define name=$(patsubst t/Kid_%.pm,%,$@) $< > $@
 
 clean:
 	$(RM_F) $(PM_FILES) t/0*test.pl t/0*test.xml t/0*test.mpl $(T_MODULES)
