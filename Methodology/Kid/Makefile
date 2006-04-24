@@ -1,4 +1,4 @@
-MV_F = perl -MFile::Copy -e "File::Copy::move(@ARGV)"
+MV_F = perl -MFile::Copy -e "File::Copy::mv(@ARGV)"
 RM_F = perl -MExtUtils::Command -e rm_f
 PM_FILES = lib/Kid/Expression.pm lib/Kid/Term.pm lib/Kid/Parser.pm \
            lib/Kid/Statements.pm
