@@ -7,7 +7,7 @@
    module = 'Kid::' _ module;
 -%]
 #: t/Kid_[% name %].pm
-#: This file was generated from Kid_XXX.pm.tt
+#: This file was generated from [% template.name %]
 
 package t::Kid_[% name %];
 use Test::Base -Base;
