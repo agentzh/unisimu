@@ -1,0 +1,26 @@
+> A:=1.988705564*ln(x+1.)^2.51499999999999;
+B:=1.076246214*ln(x+1.)^2.99999999999998;
+C:=1.016240927*ln(x+1.)^2.96499999999998;
+
+
+
+> with(plots):
+Aplot:=plot(A, x=0..1200, color=red):
+Bplot:=plot(B, x=0..1200, color=green):
+Cplot:=plot(C, x=0..1200, color=black):
+display([Aplot, Bplot, Cplot], axes=BOXED, scaling=UNCONSTRAINED);
+
+
+> eval(A,x=300);
+
+> eval(B,x=300);
+
+> eval(C,x=300);
+
+B0 是通过所有实验数据拟合得到的曲线公式，在此作为真值。
+> B0:=.9886632949*ln(x+1.)^3.038;
+
+> eval(B0,x=300);
+
+> 
+
