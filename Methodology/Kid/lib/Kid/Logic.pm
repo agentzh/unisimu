@@ -1,6 +1,6 @@
 #: Kid/Logic.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-24 2006-04-25
+#: 2006-04-24 2006-04-26
 
 package Kid::Logic;
 
@@ -76,8 +76,8 @@ sub translate {
 
 And:  $/.text = { "(and " . $<first>.text . " " . $<second>.text . ")" }
 Or:   $/.text = { "(or "  . $<first>.text . " " . $<second>.text . ")" }
-Not:  $/.text = { "(not " . $<child>.text . ")" }
-Atom: $/.text = { Kid::Logic::emit_atom( $<child> ); }
+Not:  $/.text = { "(not " . $<operand>.text . ")" }
+Atom: $/.text = { Kid::Logic::emit_atom( $<__VALUE__> ); }
 
 END_GRAMMAR
     $TextGrammar->apply($logic_ast, 'text') . "\n";
@@ -90,13 +90,15 @@ sub emit_atom {
 }
 
 package Atom;
+use base 'Kid::AST::Element';
 
 sub new {
     my ($class, $child) = @_;
-    bless { child => Clone::clone( $child ) }, $class;
+    bless { __VALUE__ => Clone::clone( $child ) }, $class;
 }
 
 package Binary;
+use base 'Kid::AST::Element';
 
 sub new {
     my ($class, $first, $second) = @_;
@@ -106,17 +108,15 @@ sub new {
     }, $class;
 }
 
-package And;
-use base 'Binary';
-
-package Or;
-use base 'Binary';
+@And::ISA = 'Binary';
+@Or::ISA  = 'Binary';
 
 package Not;
+use base 'Kid::AST::Element';
 
 sub new {
-    my ($class, $child) = @_;
-    bless { child => $child }, $class;
+    my ($class, $operand) = @_;
+    bless { operand => $operand }, $class;
 }
 
 1;

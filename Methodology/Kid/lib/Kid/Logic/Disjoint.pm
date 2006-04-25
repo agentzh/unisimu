@@ -1,6 +1,6 @@
 #: Kid/Logic/Disjoint.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-24 2006-04-25
+#: 2006-04-24 2006-04-26
 
 package Kid::Logic::Disjoint;
 
@@ -35,8 +35,8 @@ sub emit_disjoint {
 
 And:  $/.space = { Kid::Logic::Disjoint::inner_join( $<first>.space, $<second>.space ) }
 Or:   $/.space = { Kid::Logic::Disjoint::outer_join( $<first>.space, $<second>.space ) }
-Not:  $/.space = { Kid::Logic::Disjoint::emit_not( $<child> ) }
-Atom: $/.space = { [[ Clone::clone( $<child> ) ]] }
+Not:  $/.space = { Kid::Logic::Disjoint::emit_not( $<operand> ) }
+Atom: $/.space = { [[ Clone::clone( $<__VALUE__> ) ]] }
 
 END_GRAMMAR
     $Grammar->apply($logic_ast, 'space');
@@ -60,14 +60,11 @@ sub outer_join {
 
 sub emit_not {
     my ($atom) = @_;
-    my $cond = $atom->{child};
-    die ref $cond if ref $cond ne 'condition';
-    reverse_op( $cond->{rel_op}->{__VALUE__} );
+    my $cond = $atom->value;
+    die ref $cond if !ref $cond or ref $cond ne 'condition';
+    my $rel_op = $cond->rel_op;
+    $rel_op->value( $ReverseOp{ $rel_op->value } );
     [[ Clone::clone($cond) ]];
-}
-
-sub reverse_op {
-    $_[0] = $ReverseOp{ $_[0] };
 }
 
 sub translate {
