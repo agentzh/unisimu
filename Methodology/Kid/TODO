@@ -1,18 +1,25 @@
 TODO
 ======
 
-* Maple backend for Kid
-** generate systems of equalities and inequalities for every route
-   of Kid programs
+* Maple Evaluator for Kid's MathModel backend
+** Kid::MathModel::Eval
 
-* New operators
-** exponential operator (^)
-** mod operator (%)
+* Pod generator for Kid::MathModel::Eval
 
 * New language structs
-** sub declarations
+** proc calls and definitions
+** return statement
 ** vars declarations
 ** I/O mechanisms
+
+* Relational operators
+** and
+** or
+** not
+
+* New arithmetic operators
+** exponential operator (^)
+** mod operator (%)
 
 * C/C++/Java/MASM backends for Kid
 ** variable type inferencing

@@ -1,7 +1,22 @@
+DESCRIPTION
+
 This is a multi-backend compiler for the Kid programming
 language designed by Agent Zhang. The main goal of Kid 
 is to demonstrate compiler construction and structrual
 program correctness proving techniques.
 
+STATUS
+
 The parser for Kid (Kid::Parser) is mostly done, and the
-Perl backend (Kid::Perl) is implemented and tested.
+Perl backend (Kid::Perl), XML backend (Kid::XML),
+Maple backend (Kid::Maple), Logical expression backend
+(Kid::Logic and Kid::Logic::Disjoint), and mathematical
+model backend (Kid::MathModel) are both implemented and
+tested.
+
+COPYRIGHT
+
+Copyright (c) 2006 Agent Zhang. All rights reserved.
+
+This library is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.
