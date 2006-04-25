@@ -34,4 +34,5 @@ $(T_MODULES): template/t_Kid.pm.tt
 	tpage --define name=$(patsubst t/Kid_%.pm,%,$@) $< > $@
 
 clean:
-	$(RM_F) $(PM_FILES) t/0*test.pl t/0*test.xml t/0*test.mpl $(T_MODULES)
+	$(RM_F) $(PM_FILES) t/0*test.pl t/0*test.xml t/0*test.mpl \
+	        t/0*test.mm $(T_MODULES)
