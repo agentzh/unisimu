@@ -23,7 +23,7 @@ lib/Kid/AST/Expression.pm: template/leftop.pm.tt
 lib/Kid/AST/Term.pm: template/leftop.pm.tt
 	tpage --define parent=term --define child=factor $< > $@
 
-lib/Kid/Parser.pm: lib/kid.grammar
+lib/Kid/Parser.pm: grammar/kid.grammar
 	perl -MParse::RecDescent - $< Kid::Parser
 	$(MV_F) Parser.pm lib/Kid/
 
