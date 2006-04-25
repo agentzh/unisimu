@@ -11,7 +11,7 @@ __DATA__
 === TEST 1
 --- kid
 if (x > 5) { x:=x+1 }
---- ast_logic_disjoint
+--- logic_disjoint
 (or
 (and x>5 x:=x+1)
 (and x<=5)
@@ -25,7 +25,7 @@ if (x + 3*(y - 6.7)<= 4*x/(52.1 - 3) ) {
     y := x-5 + y;
     x := x - y;
 }
---- ast_logic_disjoint
+--- logic_disjoint
 (or
 (and x+3*(y-6.7)<=4*x/(52.1-3) y:=x-5+y x:=x-y)
 (and x+3*(y-6.7)>4*x/(52.1-3))
@@ -37,7 +37,7 @@ if (x + 3*(y - 6.7)<= 4*x/(52.1 - 3) ) {
 --- kid
 if (5 <> x) { x:= 3; } else {
     y:=x-1; x:=x+1 }
---- ast_logic_disjoint
+--- logic_disjoint
 (or
 (and 5<>x x:=3)
 (and 5=x y:=x-1 x:=x+1)
@@ -59,7 +59,7 @@ if (x > 0) {
         y := y + 1
     }
 }
---- ast_logic_disjoint
+--- logic_disjoint
 (or
 (and x>0 x:=x+2 x<y y:=x)
 (and x>0 x:=x+2 x>=y)
@@ -75,7 +75,7 @@ if (6.3<= 0.232) {
     x:=2;
 }
 if (5 = x_) { yylex:=1 }
---- ast_logic_disjoint
+--- logic_disjoint
 (or
 (and 6.3<=0.232 x:=2 5=x_ yylex:=1)
 (and 6.3<=0.232 x:=2 5<>x_)

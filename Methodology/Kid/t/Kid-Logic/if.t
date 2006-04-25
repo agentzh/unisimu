@@ -11,7 +11,7 @@ __DATA__
 === TEST 1
 --- kid
 if (x > 5) { x:=x+1 }
---- ast_logic
+--- logic
 (or (and x>5 x:=x+1) (not x>5))
 
 
@@ -22,7 +22,7 @@ if (x + 3*(y - 6.7)<= 4*x/(52.1 - 3) ) {
     y := x-5 + y;
     x := x - y;
 }
---- ast_logic
+--- logic
 (or (and x+3*(y-6.7)<=4*x/(52.1-3) (and y:=x-5+y x:=x-y)) (not x+3*(y-6.7)<=4*x/(52.1-3)))
 
 
@@ -31,7 +31,7 @@ if (x + 3*(y - 6.7)<= 4*x/(52.1 - 3) ) {
 --- kid
 if (5 <> x) { x:= 3; } else {
     y:=x-1; x:=x+1 }
---- ast_logic
+--- logic
 (or (and 5<>x x:=3) (and (not 5<>x) (and y:=x-1 x:=x+1)))
 
 
@@ -50,7 +50,7 @@ if (x > 0) {
         y := y + 1
     }
 }
---- ast_logic
+--- logic
 (or (and x>0 (and x:=x+2 (or (and x<y y:=x) (not x<y)))) (and (not x>0) (or (and y+3<x*5 y:=x/2) (and (not y+3<x*5) y:=y+1))))
 
 
@@ -61,5 +61,5 @@ if (6.3<= 0.232) {
     x:=2;
 }
 if (5 = x_) { yylex:=1 }
---- ast_logic
+--- logic
 (and (or (and 6.3<=0.232 x:=2) (not 6.3<=0.232)) (or (and 5=x_ yylex:=1) (not 5=x_)))
