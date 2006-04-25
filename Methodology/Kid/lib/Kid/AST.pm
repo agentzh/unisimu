@@ -5,19 +5,30 @@
 
 package Kid::AST;
 
+use strict;
+use warnings;
+
 use Kid::AST::Element;
 use Kid::AST::Statements;
 use Kid::AST::Expression;
 use Kid::AST::Term;
 
-package factor;
-use base 'Kid::AST::Element';
+my @rules = qw(
+    identifier number 
+    factor term expression
+    condition rel_op
+    nil
+    if_statement assignment
+    block else_block
+    statement statements
+);
 
-package statement;
-use base 'Kid::AST::Element';
+for my $rule (@rules) {
+    no strict 'refs';
+    push @{"${rule}::ISA"}, "Kid::AST::Element";
+}
 
 package if_statement;
-use base 'Kid::AST::Element';
 
 sub else_block {
     my $self = shift;
@@ -30,9 +41,6 @@ sub else_block {
         return bless {}, 'nil';
     }
 }
-
-package rel_op;
-use base 'Kid::AST::Element';
 
 1;
 __END__

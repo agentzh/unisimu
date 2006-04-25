@@ -12,8 +12,6 @@ use strict;
 use warnings;
 #use Data::Dumper::Simple;
 
-use base 'Kid::AST::Element';
-
 sub [% parent %] {
     my $self = shift;
     if (!exists $self->{[% parent %]}) {
