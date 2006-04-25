@@ -4,7 +4,7 @@
     op = 'yes'
     key = "__DIRECTIVE1__"
 -%]
-#: [% parent %].pm - generated from leftop.tt
+#: Kid/AST/[% parent %].pm - generated from leftop.tt
 
 package [% parent %];
 
@@ -12,7 +12,7 @@ use strict;
 use warnings;
 #use Data::Dumper::Simple;
 
-use base 'Kid::Element';
+use base 'Kid::AST::Element';
 
 sub [% parent %] {
     my $self = shift;

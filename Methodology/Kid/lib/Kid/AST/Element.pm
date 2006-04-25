@@ -1,4 +1,4 @@
-package Kid::Element;
+package Kid::AST::Element;
 
 use strict;
 use warnings;
