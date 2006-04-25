@@ -9,7 +9,7 @@ use warnings;
 
 use Data::Dumper::Simple;
 use Kid;
-use Kid::AST::Logic::Disjoint;
+use Kid::Logic::Disjoint;
 use Language::AttributeGrammar;
 use Clone;
 
@@ -20,8 +20,8 @@ sub translate {
     #warn $src;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
     my $parse_tree = $parser->program( $src ) or return undef;
-    my $logic_ast = Kid::AST::Logic::transform( $parse_tree );
-    my $disjoint_ast = Kid::AST::Logic::Disjoint::transform( $logic_ast );
+    my $logic_ast = Kid::Logic::transform( $parse_tree );
+    my $disjoint_ast = Kid::Logic::Disjoint::transform( $logic_ast );
     my @sets;
     for my $route (@$disjoint_ast) {
         push @sets, process_route($route);
