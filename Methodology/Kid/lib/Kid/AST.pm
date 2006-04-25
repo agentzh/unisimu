@@ -14,8 +14,8 @@ use Kid::AST::Expression;
 use Kid::AST::Term;
 
 my @rules = qw(
-    identifier number 
-    factor term expression
+    identifier number var
+    factor term expression rhs_expression
     condition rel_op
     nil
     if_statement assignment

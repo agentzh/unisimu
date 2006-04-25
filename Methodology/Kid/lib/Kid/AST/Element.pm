@@ -16,7 +16,11 @@ sub new {
     for (@_) {
         my $key = ref $_;
         if (! $key) {
-            $self->{__VALUE__} = $_;
+            if (@_ == 1) {
+                $self->{__VALUE__} = $_;
+            } else {
+                $self->{op} = $_;
+            }
         } else {
             $self->{$key} = $_;
         }

@@ -15,7 +15,9 @@ use warnings;
 sub [% parent %] {
     my $self = shift;
     if (!exists $self->{[% parent %]}) {
-        my @[% child %]s = @{ $self->{'[% key %]'} };
+        my $rlist = $self->{'[% key %]'};
+        return nil->new if not $rlist;
+        my @[% child %]s = @$rlist;
         my $[% child %] = pop @[% child %]s;
     [%- IF op == 'yes' %]
         my $op = pop @[% child %]s;
@@ -24,14 +26,14 @@ sub [% parent %] {
         if (@[% child %]s) {
             $[% parent %] = bless {'[% key %]' => \@[% child %]s}, ref $self;
         } else {
-            $[% parent %] = bless {}, 'nil';
+            $[% parent %] = nil->new;
         }
         $self->{[% parent %]} = $[% parent %];
         $self->{[% child %]} = $[% child %];
     [%- IF op == 'yes' %]
         $self->{op} = $op;
     [%- END %]
-        delete $self->{'[% key %]'};
+        #delete $self->{'[% key %]'};
         #warn Dumper($self);
     }
     return $self->{[% parent %]};
