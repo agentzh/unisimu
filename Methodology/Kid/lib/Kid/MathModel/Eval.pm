@@ -6,6 +6,7 @@ package Kid::MathModel::Eval;
 
 use strict;
 use warnings;
+
 use Kid::MathModel;
 use PerlMaple;
 
@@ -13,11 +14,13 @@ our @Logs;
 
 sub log_code {
     push @Logs, ">> @_";
+    #log_comment(caller);
     "@_";
 }
 
 sub log_ans {
     push @Logs, "\t@_";
+    #log_comment(caller);
     wantarray ? @_ : $_[0];
 }
 
@@ -34,47 +37,67 @@ sub eval_mm {
 
     my @mms;
     for my $set (@$mm_ast) {
-        my @inits   = sort @{ $set->{init_vars}   };
         my @finals  = sort @{ $set->{final_vars}  };
-        
+        # if there's no final var at all, it's a no-op
         next if ! @finals;
 
-        my @rels    = Kid::MathModel::to_maple( @{ $set->{relationals}} );
         my @assigns = Kid::MathModel::to_maple( @{ $set->{assignments}} );
+        # if there's no assignment at all, it's also a no-op
+        next if ! @assigns;
+
+        my @rels    = Kid::MathModel::to_maple( @{ $set->{relationals}} );
+        my @inits   = sort @{ $set->{init_vars}   };
 
         my $mplcode = log_code join(';', @assigns).';';
         log_ans $maple->eval_cmd($mplcode);
 
-        my $rels = '{' . join(',', @rels) . '}';
-        $mplcode = log_code "solve($rels, {" . join(',', @inits) . '});';
-        $maple->ReturnAST(1);
-        my $set = log_ans $maple->eval_cmd($mplcode);
-
         my (@lhs, @rhs);
         for my $final (@finals) {
+            next if !$final or $final =~ /_0$/;
             my $value = log_ans $maple->eval_cmd( log_code "$final;" );
-            $value = denumber($maple, $value, @inits);
+            if ($value =~ /[A-Za-z_]/) {
+                $value = denumber($maple, $value, @inits);
+            }
             push @rhs, $value;
             (my $var = $final) =~ s/_\d+$//;
             push @lhs, $var;
         }
 
         my @sols;
-        if ($set and $set->type('set')) {
-            $set = denumber($maple, $set, @inits);
-            foreach ($set->ops) {
-                if ($maple->evalb($_) ne 'true') {
-                    push @sols, "$_";
-                }
+        $maple->ReturnAST(1);
+        if (@rels) {
+            # Maple's solve function may filter out inequalities in the form
+            # x <> y, so we have to preserve them manually
+            my @neqs;
+            for (@rels) {
+                next if !/<>/;
+                push @neqs, denumber($maple, $_, @inits);
             }
-        } elsif ($set =~ /solutions may have been lost/) {
-            push @sols, $rels;
-        } elsif ($set =~ /no solutions found/) {
-            warn log_comment "eval_mm: illegalize $rels";
-        } else {
-            warn log_comment "eval_mm: unexpected result: $set";
+            my $rels = '{' . join(',', @rels) . '}';
+            $mplcode = log_code "solve($rels, {" . join(',', @inits) . '});';
+            my $set = log_ans $maple->eval_cmd($mplcode);
+
+            if ($set and $set->type('set')) {
+                $set = denumber($maple, $set, @inits);
+                foreach ($set->ops) {
+                    if ($maple->evalb($_) ne 'true') {
+                        my $sol = "$_";
+                        $sol =~ s/\s+//g;
+                        push @sols, $sol;
+                    }
+                }
+            } elsif ($set =~ /solutions may have been lost/) {
+                push @sols, $rels;
+            } elsif ($set =~ /no solutions found/) {
+                log_comment("Inconsistent model: $rels");
+                next;
+            } else {
+                warn log_comment("eval_mm: unexpected result: $set"), "\n";
+                next;
+            }
+            push @sols, map { s/\s+//g; $_ } @neqs;
+            @sols = sort @sols;
         }
-        @sols = sort @sols;
         push @mms, { conditions => \@sols, lhs => \@lhs, rhs => \@rhs };
     }
     \@mms;
@@ -100,19 +123,23 @@ sub translate {
     my $mms_ast = eval_mm( $mm_ast );
     my $s = '';
     for (@$mms_ast) {
-        my $conds   = join(', ', @{ $_->{conditions} });
+        my $conds = join(', ', @{ $_->{conditions} });
         my $lhs = join(', ', @{ $_->{lhs} });
         my $rhs = join(', ', @{ $_->{rhs} });
+        my $assign = "$lhs := $rhs";
         $s .= <<_EOC_;
 --
  - $conds
- - $lhs := $rhs
+ - $assign
 _EOC_
     }
-    open my $out, ">> eval.log" or
+    open my $out, ">> maple.log" or
         die "Can't open tmp.log for writing: $!";
-    print $out join("\n", @Logs);
+    print $out "----" x 5, " ", scalar(localtime),
+        " ", "----" x 5, "\n\n";
+    print $out join("\n", @Logs), "\n\n";
     close $out;
+    @Logs = ();
     $s =~ s/\s+\n/\n/sg;
     $s;
 }
