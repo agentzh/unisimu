@@ -8,7 +8,7 @@ PM_FILES = lib/Kid/AST/Statements.pm lib/Kid/AST/Expression.pm lib/Kid/AST/Term.
 LEFTOP_TT = template/leftop.pm.tt
 T_MODULES = t/Kid_Maple.pm t/Kid_XML.pm t/Kid_Perl.pm \
             t/Kid_Logic.pm t/Kid_Logic_Disjoint.pm \
-			t/Kid_MathModel.pm
+			t/Kid_MathModel.pm t/Kid_MathModel_Eval.pm
 
 SCRIPT_TT = template/kid2xxx.pl.tt
 SCRIPTS = script/kid2xml.pl script/kid2mpl.pl script/kid2pl.pl script/kid2mm.pl
