@@ -11,7 +11,8 @@ T_MODULES = t/Kid_Maple.pm t/Kid_XML.pm t/Kid_Perl.pm \
 			t/Kid_MathModel.pm t/Kid_MathModel_Eval.pm
 
 SCRIPT_TT = template/kid2xxx.pl.tt
-SCRIPTS = script/kid2xml.pl script/kid2mpl.pl script/kid2pl.pl script/kid2mm.pl
+SCRIPTS = script/kid2xml.pl script/kid2mpl.pl script/kid2pl.pl script/kid2mm.pl \
+          script/kid2mms.pl
 
 T_SCRIPT_TT = template/kid2xxx.t.tt
 T_SCRIPTS = $(patsubst %.pl,t/%.t,$(SCRIPTS))
@@ -48,4 +49,4 @@ $(T_MODULES): template/t_Kid.pm.tt
 
 clean:
 	$(RM_F) $(PM_FILES) t/script/0*test.pl t/script/0*test.xml t/script/0*test.mpl \
-	        t/script/0*test.mm $(T_MODULES) $(SCRIPTS) $(T_SCRIPTS)
+	        t/script/0*test.mm* $(T_MODULES) $(SCRIPTS) $(T_SCRIPTS)

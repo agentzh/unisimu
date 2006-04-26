@@ -3,6 +3,7 @@
    SET
     table = {
         mm  = 'MathModel',
+        mms = 'MathModel::Eval',
         xml = 'XML',
         mpl = 'Maple',
         pl  = 'Perl',
