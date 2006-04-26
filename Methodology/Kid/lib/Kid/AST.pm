@@ -17,7 +17,7 @@ my @rules = qw(
     identifier number var
     factor term expression rhs_expression
     condition rel_op
-    nil
+    neg nil
     if_statement assignment
     block else_block
     statement statements
@@ -38,8 +38,16 @@ sub else_block {
     if ($else_block) {
         return $else_block;
     } else {
-        return bless {}, 'nil';
+        return nil->new;
     }
+}
+
+package term;
+
+sub neg {
+    my $self = shift;
+    if ($self->{neg}) { return $self->{neg}; }
+    else { return nil->new; }
 }
 
 1;

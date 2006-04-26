@@ -96,8 +96,8 @@ sub eval_mm {
                 next;
             }
             push @sols, map { s/\s+//g; $_ } @neqs;
-            @sols = sort @sols;
         }
+        @sols = sort @sols;
         push @mms, { conditions => \@sols, lhs => \@lhs, rhs => \@rhs };
     }
     \@mms;

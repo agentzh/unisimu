@@ -1,6 +1,6 @@
 #: Kid/Maple.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-22 2006-04-24
+#: 2006-04-22 2006-04-27
 
 package Kid::Maple;
 
@@ -28,7 +28,8 @@ sub emit_maple {
 number:     $/.maple = { $<__VALUE__> }
 factor:     $/.maple = { Kid::Maple::emit_factor($<child>.maple) }
 
-term:       $/.maple = { $<term>.maple . $<op> . $<factor>.maple }
+neg:        $/.maple = { '-' }
+term:       $/.maple = { $<neg>.maple . $<term>.maple . $<op> . $<factor>.maple }
 expression: $/.maple = { $<expression>.maple . $<op> . $<term>.maple }
 
 nil:        $/.maple = { '' }

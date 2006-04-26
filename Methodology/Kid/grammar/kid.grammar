@@ -1,14 +1,16 @@
 <autotree>
 
 program: statement_list eofile
+       | <error>
 
 statement_list: statement(s)
 
 statement: if_statement
          | assignment /;?/
+         | <error>
 
-if_statement: 'if' <commit> '(' condition ')' block
-              ('else' else_block)(?)
+if_statement: 'if' <commit> '(' condition ')' block <uncommit>
+              ('else' <commit> else_block)(?)
             | <error?> <reject>
 
 condition: expression rel_op <commit> rhs_expression
@@ -18,13 +20,13 @@ rel_op: />=|>|<=|<>|<|=/
 
 rhs_expression: expression
 
-assignment: var ':=' <commit> expression
-          | <error?> <reject>
-
 else_block: block
 
-block: '{' <commit> statement_list /;?/ '}'
+block: '{' <commit> statement_list '}'
      | <error?> <reject>
+
+assignment: var ':=' <commit> expression
+          | <error?> <reject>
 
 var: identifier
 
@@ -33,10 +35,13 @@ identifier: /[A-Za-z][A-Za-z0-9_]*/
 expression: <leftop: term /([-+])/ term>
 
 term: <leftop: factor /([*\/])/ factor>
+    | neg <leftop: factor /([*\/])/ factor>
+
+neg: '-'
 
 factor: var
       | number
-      | '(' expression ')'
+      | '(' <commit> expression ')'
 
 number: /-?\d+(?:\.\d+)?/
 

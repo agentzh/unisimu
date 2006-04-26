@@ -1,6 +1,6 @@
 #: Kid/XML.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-23 2006-04-24
+#: 2006-04-23 2006-04-27
 
 package Kid::XML;
 
@@ -27,7 +27,8 @@ sub emit_xml {
 number:     $/.xml = { "<number>" . $<__VALUE__> . "</number>\n" }
 factor:     $/.xml = { Kid::XML::emit_factor( $<child>.xml ); }
 
-term:       $/.xml = { $<term>.xml . Kid::XML::emit_op( $<op> ) . $<factor>.xml }
+neg:        $/.xml = { "<negative/>\n" }
+term:       $/.xml = { $<neg>.xml . $<term>.xml . Kid::XML::emit_op( $<op> ) . $<factor>.xml }
 expression: $/.xml = { Kid::XML::emit_expr( $<expression>.xml, $<op>, $<term>.xml ) }
 
 nil:        $/.xml = { '' }

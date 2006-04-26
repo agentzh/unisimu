@@ -471,3 +471,32 @@ a:=3+2; b:=5*6  ;c:=1*2
 </statement>
 </statement_list>
 </program>
+
+
+
+=== TEST 11
+--- kid
+x:=-y;
+--- xml
+<?xml version="1.0"?>
+<program>
+<statement_list>
+<statement>
+<assignment>
+<var>
+<identifier>x</identifier>
+</var>
+<expression>
+<term>
+<negative/>
+<factor>
+<var>
+<identifier>y</identifier>
+</var>
+</factor>
+</term>
+</expression>
+</assignment>
+</statement>
+</statement_list>
+</program>

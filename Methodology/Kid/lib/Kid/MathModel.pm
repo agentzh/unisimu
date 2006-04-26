@@ -60,7 +60,8 @@ sub rename_vars {
 number:     $/.mm = { number->new( $<__VALUE__> ); }
 factor:     $/.mm = { factor->new( $<child>.mm ); }
 
-term:       $/.mm = { term->new( $<term>.mm, $<op>, $<factor>.mm ); }
+neg:        $/.mm = { neg->new('-') }
+term:       $/.mm = { term->new( $<neg>.mm, $<term>.mm, $<op>, $<factor>.mm ); }
 expression: $/.mm = { expression->new( $<expression>.mm, $<op>, $<term>.mm ); }
 
 nil:        $/.mm = { nil->new; }

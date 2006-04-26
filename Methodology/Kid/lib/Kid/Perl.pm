@@ -1,6 +1,6 @@
 #: Kid/Perl.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-22 2006-04-24
+#: 2006-04-22 2006-04-27
 
 package Kid::Perl;
 
@@ -25,30 +25,32 @@ sub emit_perl {
     my $ast = shift;
     $Grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 
-number:     $/.perl = { $<__VALUE__> }
-factor:     $/.perl = { Kid::Perl::emit_factor($<child>.perl) }
+program:    $/.perl = { $<statement_list>.perl }
 
-term:       $/.perl = { $<term>.perl . $<op> . $<factor>.perl }
-expression: $/.perl = { $<expression>.perl . $<op> . $<term>.perl }
+statement_list: $/.perl = { $<statement_list>.perl . $<statement>.perl }
+statement:      $/.perl = { $<child>.perl }
 
-nil:        $/.perl = { '' }
-identifier: $/.perl = { $<__VALUE__> }
-var:        $/.perl = { '$'.$<identifier>.perl }
+if_statement: $/.perl = { Kid::Perl::emit_if( $<condition>.perl, $<block>.perl, $<else_block>.perl ); }
 
-assignment: $/.perl = { $<var>.perl . '=' . $<expression>.perl . ";\n" }
+condition:    $/.perl = { $<expression>.perl . $<rel_op>.perl . $<rhs_expression>.perl }
+rel_op:       $/.perl = { Kid::Perl::emit_rel_op( $<__VALUE__> ) }
+rhs_expression:  $/.perl = { $<expression>.perl }
 
 block:           $/.perl = { "{\n" . $<statement_list>.perl . "}\n" }
 else_block:      $/.perl = { $<block>.perl }
-rhs_expression:  $/.perl = { $<expression>.perl }
 
-rel_op:       $/.perl = { Kid::Perl::emit_rel_op( $<__VALUE__> ) }
-condition:    $/.perl = { $<expression>.perl . $<rel_op>.perl . $<rhs_expression>.perl }
-if_statement: $/.perl = { Kid::Perl::emit_if( $<condition>.perl, $<block>.perl, $<else_block>.perl ); }
+assignment: $/.perl = { $<var>.perl . '=' . $<expression>.perl . ";\n" }
 
-statement:      $/.perl = { $<child>.perl }
-statement_list: $/.perl = { $<statement_list>.perl . $<statement>.perl }
+var:        $/.perl = { '$'.$<identifier>.perl }
+identifier: $/.perl = { $<__VALUE__> }
 
-program:    $/.perl = { $<statement_list>.perl }
+expression: $/.perl = { $<expression>.perl . $<op> . $<term>.perl }
+term:       $/.perl = { $<neg>.perl . $<term>.perl . $<op> . $<factor>.perl }
+neg:        $/.perl = { '-' }
+factor:     $/.perl = { Kid::Perl::emit_factor($<child>.perl) }
+number:     $/.perl = { $<__VALUE__> }
+
+nil:        $/.perl = { '' }
 
 END_GRAMMAR
     return $Grammar->apply($ast, 'perl');
