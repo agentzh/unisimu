@@ -29,7 +29,7 @@ block: '{' <commit> statement_list '}'
 
 declaration: proc_decl
 
-proc_decl: 'proc' identifier '(' identifier_list ')' block
+proc_decl: 'proc' <commit> identifier '(' identifier_list ')' block
 
 identifier_list: identifier(s /,/)
 
