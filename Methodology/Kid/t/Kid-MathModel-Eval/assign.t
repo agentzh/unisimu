@@ -37,3 +37,18 @@ a:=a+1; a:=a+a; b:=b+a; c:=c+c+c+a+a+b
 --
  -
  - a, b, c := 2*a+2, b+2*a+2, 3*c+6*a+6+b
+
+
+
+=== TEST 4
+--- kid
+proc foo(x) {
+    foo:=x+1;
+}
+
+y:=3*foo(x+1)-1;
+
+--- mathmodel_eval
+--
+ -
+ - y := 3*x+5

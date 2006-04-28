@@ -10,6 +10,7 @@ use Carp qw( croak );
 
 #use Data::Dumper::Simple;
 use Kid;
+use Kid::Proc;
 use Kid::Logic::Disjoint;
 use Language::AttributeGrammar;
 use Clone;
@@ -28,11 +29,17 @@ sub transform {
 
 sub process_route {
     my $route = shift;
+    $route = Clone::clone($route);
     %Context = ();
     my (@rels, @assigns);
     for my $expr (@$route) {
         next if ! $expr;
-        my $expr = rename_vars($expr);
+
+        #warn $expr->dump;
+        delete $expr->{parent};
+        $expr = rename_vars( Clone::clone($expr) );
+        #$expr = Kid::Proc::transform($expr);
+        #warn $expr->dump;
         if ($expr->isa('condition')) {
             push @rels, $expr;
         } elsif ($expr->isa('assignment')) {
@@ -66,8 +73,8 @@ term:       $/.mm = { term->new( $<neg>.mm, $<term>.mm, $<op>, $<factor>.mm ); }
 expression: $/.mm = { expression->new( $<expression>.mm, $<op>, $<term>.mm ); }
 
 nil:        $/.mm = { nil->new; }
-identifier: $/.mm = { Kid::MathModel::emit_id( $<__VALUE__> ); }
-var:        $/.mm = { var->new( $<identifier>.mm ) }
+identifier: $/.mm = { identifier->new( $<__VALUE__> ); }
+var:        $/.mm = { Kid::MathModel::emit_var( $<identifier>.mm ) }
 
 assignment: $/.mm = { Kid::MathModel::emit_assign( $<expression>.mm, $<var>.mm ); }
 
@@ -76,34 +83,36 @@ rel_op:       $/.mm = { rel_op->new( $<__VALUE__> ); }
 condition:    $/.mm = { condition->new( $<expression>.mm, $<rel_op>.mm, $<rhs_expression>.mm ); }
 
 END_GRAMMAR
-    return '' if ! $tree;
+    #return '' if ! $tree;
     return $Grammar->apply($tree, 'mm');
 }
 
-sub emit_id {
-    my $id_val = shift;
-    $Context{$id_val} ||= 0;
+sub emit_var {
+    my $id = shift;
+    my $varname = $id->value;
+    $Context{$varname} ||= 0;
     #warn "emit_id: ${id_val}_$Context{$id_val}";
-    identifier->new( "${id_val}_$Context{$id_val}" );
+    $id->value("${varname}_$Context{$varname}");
+    var->new( $id );
 }
 
 sub emit_assign {
     my ($expr_ast, $var_ast) = @_;
-    my $id_ast = $var_ast->identifier;
-    my $id_val = $id_ast->value;
-    $id_val =~ s/_\d+$//;
-    $Context{$id_val}++;
+    my $varname = $var_ast->identifier->value;
+    $varname =~ s/_\d+$//;
+    $Context{$varname}++;
     #warn "emit_assign: ${id_val}_$Context{$id_val}";
-    $id_ast->value( "${id_val}_$Context{$id_val}" );
-    return assignment->new($var_ast, $expr_ast);
+    $var_ast->identifier->value( "${varname}_$Context{$varname}" );
+    assignment->new($var_ast, $expr_ast);
 }
 
 sub translate {
     my $src = $_[0];
     #warn $src;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
-    my $parse_tree = $parser->program( $src ) or return undef;
-    my $logic_ast = Kid::Logic::transform( $parse_tree );
+    my $ptree = $parser->program( $src ) or return undef;
+    my $ast = Kid::Proc::transform( $ptree );
+    my $logic_ast = Kid::Logic::transform( $ast );
     my $disjoint_ast = Kid::Logic::Disjoint::transform( $logic_ast );
     my $mm_ast = transform( $disjoint_ast );
     my $s = '';
@@ -126,8 +135,12 @@ _EOC_
 }
 
 sub to_maple {
-    map { 
+    map {
+        #warn "entering emit_maple...";
+        #warn $_->dump;
+        #warn $_->kid;
         my $code = Kid::Maple::emit_maple($_);
+        #warn "leaving maple...";
         $code =~ s/;\n$//;
         $code;
     } @_;

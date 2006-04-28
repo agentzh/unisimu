@@ -236,4 +236,3 @@ proc min(x, y) {
 --
  - 0<y, x-y<=0, x<0
  - z := x
---- ONLY

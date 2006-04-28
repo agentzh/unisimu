@@ -35,3 +35,18 @@ x:=-y*z-6; y:=53+(-x/z+5);
 (or
 (and x:=-y*z-6 y:=53+(-x/z+5))
 )
+
+
+
+=== TEST 4
+--- kid
+proc foo(x) {
+    foo:=x+1;
+}
+
+y:=3*foo(x+1)-1;
+
+--- logic_disjoint
+(or
+(and _foo_1_x:=x+1 _foo_1_foo:=_foo_1_x+1 y:=3*_foo_1_foo-1)
+)

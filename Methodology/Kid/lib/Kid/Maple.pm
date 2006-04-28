@@ -31,12 +31,18 @@ factor:     $/.maple = { Kid::Maple::emit_factor($<child>.maple) }
 neg:        $/.maple = { '-' }
 term:       $/.maple = { $<neg>.maple . $<term>.maple . $<op> . $<factor>.maple }
 expression: $/.maple = { $<expression>.maple . $<op> . $<term>.maple }
+expression_list: $/.maple = { Kid::Maple::emit_list( $<expression_list>.maple, $<expression>.maple ); }
 
 nil:        $/.maple = { '' }
 identifier: $/.maple = { $<__VALUE__> }
 var:        $/.maple = { $<identifier>.maple }
+identifier_list: $/.maple = { Kid::Maple::emit_list( $<identifier_list>.maple, $<identifier>.maple ); }
 
 assignment: $/.maple = { $<var>.maple . ':=' . $<expression>.maple . ";\n" }
+
+declaration: $/.maple = { $<child>.maple }
+proc_decl: $/.maple = { Kid::Maple::emit_proc( $<identifier>.maple, $<identifier_list>.maple, $<block>.maple ); }
+proc_call: $/.maple = { $<identifier>.maple . "(" . $<expression_list>.maple . ")"; }
 
 block:           $/.maple = { $<statement_list>.maple }
 else_statement:  $/.maple = { $<statement>.maple }
@@ -55,9 +61,23 @@ END_GRAMMAR
     return $Grammar->apply($ast, 'maple');
 }
 
+sub emit_proc {
+    my ($proc_name, $arg_list, $block) = @_;
+    "$proc_name:=proc($arg_list)\nlocal $proc_name;\n${block}${proc_name};\nend proc;\n";
+}
+
+sub emit_list {
+    my ($a, $b) = @_;
+    if ($a) {
+        "$a,$b";
+    } else {
+        $b;
+    }
+}
+
 sub emit_factor {
     my $s = shift;
-    return (looks_like_number($s) || $s =~ /^\(.*\)$/ || $s =~ /^\w+$/) ? $s : "($s)";
+    (looks_like_number($s) || $s =~ /^\w*\(.*\)$/ || $s =~ /^\w+$/) ? $s : "($s)";
 }
 
 sub emit_if {

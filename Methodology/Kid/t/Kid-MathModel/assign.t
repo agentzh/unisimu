@@ -53,3 +53,20 @@ x:=-y*z-6; y:=53+(-x/z+5);
  - x_1, y_1, z_0
  -
  - x_1:=-y_0*z_0-6, y_1:=53+(-x_1/z_0+5)
+
+
+
+=== TEST 5
+--- kid
+proc foo(x) {
+    foo:=x+1;
+}
+
+y:=3+foo(x+1)-1;
+
+--- mathmodel
+--
+ - _foo_1_foo_0, _foo_1_x_0, x_0, y_0
+ - _foo_1_foo_1, _foo_1_x_1, x_0, y_1
+ -
+ - _foo_1_x_1:=x_0+1, _foo_1_foo_1:=_foo_1_x_1+1, y_1:=3+_foo_1_foo_1-1

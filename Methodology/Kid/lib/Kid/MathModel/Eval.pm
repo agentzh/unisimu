@@ -54,7 +54,7 @@ sub eval_mm {
 
         my (@lhs, @rhs);
         for my $final (@finals) {
-            next if !$final or $final =~ /_0$/;
+            next if !$final or $final =~ /^_|_0$/;
             my $value = log_ans $maple->eval_cmd( log_code "$final;" );
             if ($value =~ /[A-Za-z_]/) {
                 $value = denumber($maple, $value, @inits);
@@ -109,7 +109,7 @@ sub denumber {
     my $expr  = shift;
     my @inits = @_;
     my @raws = map { /(.+)_\d+$/; "$_=$1" } @inits;
-    my $mplcode = log_code "eval(normal($expr), {" . join(',', @raws) . '});';
+    my $mplcode = log_code "normal(eval($expr, {" . join(',', @raws) . '}));';
     log_ans $maple->eval_cmd($mplcode);
 }
 

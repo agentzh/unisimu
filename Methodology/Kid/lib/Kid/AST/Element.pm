@@ -8,13 +8,17 @@ package Kid::AST::Element;
 use strict;
 use warnings;
 use Kid::Kid;
+use Kid::XML;
 use Carp qw( croak );
 use Clone;
+use Data::Dumper;
+
 use vars qw( $AUTOLOAD );
 
 sub new {
     my $class = shift;
     my $self = bless {}, $class;
+    #warn "Creating $self using @_";
     for (@_) {
         my $key = ref $_;
         if (! $key) {
@@ -34,14 +38,30 @@ sub new {
 sub child {
     my $self = shift;
     while (my ($key, $val) = each %$self) {
-        next if $key =~ /^__[A-Z]+/;
+        next if $key =~ /[A-Z]/;
+        next if $key eq 'nil';
         #warn "$key - $val";
+        #warn "Child of $self set to $key: $val";
         return $val;
     }
+    undef;
 }
 
 sub kid {
     Kid::Kid::emit(Clone::clone( $_[0] ));
+}
+
+sub xml {
+    Kid::XML::emit_xml(Clone::clone( $_[0] ));
+}
+
+sub dump {
+    my $self = shift;
+    $Data::Dumper::Indent=1;
+    #use YAML;
+    my $s = Data::Dumper->Dump([$self], ["$self"]);
+    $s =~ s/\s+'__PARENT__.*//gm;
+    $s;
 }
 
 sub AUTOLOAD {

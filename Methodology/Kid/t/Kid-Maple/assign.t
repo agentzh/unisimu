@@ -96,3 +96,21 @@ x:=-y*z-6; y:=53+(-x/z+5);
 --- maple
 x:=-y*z-6;
 y:=53+(-x/z+5);
+
+
+
+=== TEST 12
+--- kid
+proc foo(x) {
+    foo:=x+1;
+}
+
+y:=3*foo(x+1)-1;
+
+--- maple unindent
+foo:=proc(x)
+    local foo;
+    foo:=x+1;
+    foo;
+end proc;
+y:=3*foo(x+1)-1;

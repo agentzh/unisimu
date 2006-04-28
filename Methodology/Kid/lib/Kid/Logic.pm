@@ -1,6 +1,6 @@
 #: Kid/Logic.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-24 2006-04-27
+#: 2006-04-24 2006-04-29
 
 package Kid::Logic;
 
@@ -9,6 +9,7 @@ use warnings;
 
 #use Data::Dumper::Simple;
 use Kid;
+use Kid::Proc;
 use Language::AttributeGrammar;
 use Kid::Maple;
 use Clone;
@@ -26,7 +27,7 @@ sub emit_logic {
 
 assignment: $/.logic = { Atom->new( $/ ); }
 
-nil:         $/.logic = { ''; }
+nil:         $/.logic = { nil->new; }
 block:       $/.logic = { $<statement_list>.logic }
 
 else_statement:  $/.logic = { $<statement>.logic }
@@ -71,17 +72,32 @@ sub translate {
     my $src = $_[0];
     #warn $src;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
-    my $parse_tree = $parser->program($src) or return undef;
-    my $logic_ast = transform($parse_tree);
+    my $ptree = $parser->program($src) or return undef;
+    my $ast = Kid::Proc::transform($ptree);
+    my $logic_ast = transform($ast);
     $TextGrammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 
-And:  $/.text = { "(and " . $<first>.text . " " . $<second>.text . ")" }
-Or:   $/.text = { "(or "  . $<first>.text . " " . $<second>.text . ")" }
+And:  $/.text = { Kid::Logic::emit_group( 'and', $<first>.text, $<second>.text ); }
+Or:   $/.text = { Kid::Logic::emit_group( 'or',  $<first>.text, $<second>.text ); }
 Not:  $/.text = { "(not " . $<operand>.text . ")" }
-Atom: $/.text = { Kid::Logic::emit_atom( $<__VALUE__> ); }
+Atom: $/.text = { Kid::Logic::emit_atom( $<__VALUE__>.text ); }
+nil:  $/.text = { '' }
+assignment: $/.text = { Clone::clone($/); }
+condition:  $/.text = { Clone::clone($/); }
 
 END_GRAMMAR
     $TextGrammar->apply($logic_ast, 'text') . "\n";
+}
+
+sub emit_group {
+    my ($name, $first, $second) = @_;
+    if (! $second) {
+        return $first;
+    }
+    if (! $first) {
+        return $second;
+    }
+    "($name $first $second)";
 }
 
 sub emit_atom {

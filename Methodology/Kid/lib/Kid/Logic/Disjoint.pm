@@ -7,8 +7,9 @@ package Kid::Logic::Disjoint;
 use strict;
 use warnings;
 
-use Data::Dumper::Simple;
+#use Data::Dumper::Simple;
 use Kid;
+use Kid::Proc;
 use Language::AttributeGrammar;
 use Kid::Logic;
 use Clone;
@@ -37,6 +38,7 @@ And:  $/.space = { Kid::Logic::Disjoint::inner_join( $<first>.space, $<second>.s
 Or:   $/.space = { Kid::Logic::Disjoint::outer_join( $<first>.space, $<second>.space ) }
 Not:  $/.space = { Kid::Logic::Disjoint::emit_not( $<operand> ) }
 Atom: $/.space = { [[ Clone::clone( $<__VALUE__> ) ]] }
+nil:  $/.space = { [[]] }
 
 END_GRAMMAR
     $Grammar->apply($logic_ast, 'space');
@@ -71,8 +73,9 @@ sub translate {
     my $src = $_[0];
     #warn $src;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
-    my $parse_tree = $parser->program($src) or return undef;
-    my $logic_ast = Kid::Logic::transform($parse_tree);
+    my $ptree = $parser->program($src) or return undef;
+    my $ast = Kid::Proc::transform($ptree);
+    my $logic_ast = Kid::Logic::transform($ast);
     my $disjoint_ast = transform($logic_ast);
     my @ands;
     for my $conj (@$disjoint_ast) {

@@ -10,7 +10,7 @@ use warnings;
 use Kid;
 use Kid::Perl;
 use Language::AttributeGrammar;
-use Data::Dumper::Simple;
+#use Data::Dumper::Simple;
 use Clone;
 use Data::Visitor::Callback;
 
@@ -30,6 +30,7 @@ sub transform {
     my $ptree = shift;
     my $ast = read_proc($ptree);
     $ast = expand_proc($ast);
+    rm_proc_decls($ast);
 }
 
 sub read_proc {
@@ -41,7 +42,7 @@ program:    $/.ast = { program->new( $<statement_list>.ast ) }
 statement_list: $/.ast = { statement_list->new( $<statement_list>.ast, $<statement>.ast ); }
 statement:      $/.ast = { statement->new( $<child>.ast ); }
 
-declaration:     $/.ast = { $<child>.ast; nil->new; }
+declaration:     $/.ast = { declaration->new( $<child>.ast ); }
 proc_decl:       $/.ast = { Kid::Proc::emit_proc_decl( $<identifier>.ast, $<identifier_list>.ast, $<block>.ast ); }
 identifier_list: $/.ast = { identifier_list->new( $<identifier_list>.ast, $<identifier>.ast ) }
 
@@ -91,9 +92,10 @@ sub emit_proc_call {
 
 sub emit_proc_decl {
     my ($id, $id_list, $block) = @_;
-    $Kid::Proc::decls{$id->value} = proc_decl->new($id, $id_list, $block);
+    my $proc_decl = proc_decl->new($id, $id_list, $block);
+    $Kid::Proc::decls{$id->value} = $proc_decl;
     #warn "emit_proc_decl: ", $block->kid;
-    nil->new;
+    $proc_decl;
 }
 
 sub expand_proc {
@@ -102,6 +104,9 @@ sub expand_proc {
     for my $call (@Kid::Proc::calls) {
         my $proc_name = $call->identifier->value;
         my $expr_list = $call->expression_list;
+
+        die "error: proc $proc_name not defined"
+            if !defined $Kid::Proc::decls{$proc_name};
         #warn "LISP: ($proc_name (", $expr_list->kid, "))";
 
         my $prefix = "_${proc_name}_" . ++$c{$proc_name} . "_";
@@ -109,7 +114,7 @@ sub expand_proc {
         #warn "Retval: ", $retval->kid;
 
         my $term = $call->parent->parent;
-        $term->factor($retval);
+        $term->factor( factor->new($retval) );
         #warn "term: ", $term, ": ", $term->kid;
         die "$term is not a term" if ref $term ne 'term';
 
@@ -219,6 +224,20 @@ sub emit_var {
     my $id = shift;
     $id->value( $Kid::Proc::rename_vars::p . $id->value );
     var->new($id);
+}
+
+sub rm_proc_decls {
+    my $ast = shift;
+    for my $proc_decl (values %Kid::Proc::decls) {
+        my $decl = $proc_decl->parent;
+        die $decl if ref $decl ne 'declaration';
+        my $stmt = $decl->parent;
+        die $stmt if ref $stmt ne 'statement';
+        #warn "12345 ", $stmt->kid, "12345";
+        $stmt->parent->statement(nil->new);
+    }
+    %Kid::Proc::decls = ();
+    $ast;
 }
 
 1;
