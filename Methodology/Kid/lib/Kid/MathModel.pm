@@ -31,6 +31,7 @@ sub process_route {
     %Context = ();
     my (@rels, @assigns);
     for my $expr (@$route) {
+        next if ! $expr;
         my $expr = rename_vars($expr);
         if ($expr->isa('condition')) {
             push @rels, $expr;
@@ -75,6 +76,7 @@ rel_op:       $/.mm = { rel_op->new( $<__VALUE__> ); }
 condition:    $/.mm = { condition->new( $<expression>.mm, $<rel_op>.mm, $<rhs_expression>.mm ); }
 
 END_GRAMMAR
+    return '' if ! $tree;
     return $Grammar->apply($tree, 'mm');
 }
 

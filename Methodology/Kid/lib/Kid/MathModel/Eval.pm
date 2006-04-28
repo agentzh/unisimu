@@ -8,6 +8,7 @@ use strict;
 use warnings;
 
 use Kid::MathModel;
+use Kid::Proc;
 use PerlMaple;
 
 our @Logs;
@@ -108,7 +109,7 @@ sub denumber {
     my $expr  = shift;
     my @inits = @_;
     my @raws = map { /(.+)_\d+$/; "$_=$1" } @inits;
-    my $mplcode = log_code "eval($expr, {" . join(',', @raws) . '});';
+    my $mplcode = log_code "eval(normal($expr), {" . join(',', @raws) . '});';
     log_ans $maple->eval_cmd($mplcode);
 }
 
@@ -117,7 +118,8 @@ sub translate {
     #warn $src;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
     my $parse_tree = $parser->program( $src ) or return undef;
-    my $logic_ast = Kid::Logic::transform( $parse_tree );
+    my $ast = Kid::Proc::transform($parse_tree);
+    my $logic_ast = Kid::Logic::transform( $ast );
     my $disjoint_ast = Kid::Logic::Disjoint::transform( $logic_ast );
     my $mm_ast  = Kid::MathModel::transform( $disjoint_ast );
     my $mms_ast = eval_mm( $mm_ast );

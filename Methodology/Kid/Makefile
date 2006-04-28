@@ -2,13 +2,16 @@ MV_F = perl -MFile::Copy -e "File::Copy::mv(@ARGV)"
 RM_F = perl -MExtUtils::Command -e rm_f
 
 GRAMMAR = grammar/kid.grammar
-PM_FILES = lib/Kid/AST/Statements.pm lib/Kid/AST/Expression.pm lib/Kid/AST/Term.pm \
-           lib/Kid/Parser.pm \
+PM_FILES = lib/Kid/AST/Statements.pm lib/Kid/AST/Expressions.pm \
+           lib/Kid/AST/Expression.pm lib/Kid/AST/Term.pm \
+	   lib/Kid/AST/Identifiers.pm \
+           lib/Kid/Parser.pm
 
 LEFTOP_TT = template/leftop.pm.tt
 T_MODULES = t/Kid_Maple.pm t/Kid_XML.pm t/Kid_Perl.pm \
             t/Kid_Logic.pm t/Kid_Logic_Disjoint.pm \
-			t/Kid_MathModel.pm t/Kid_MathModel_Eval.pm
+            t/Kid_MathModel.pm t/Kid_MathModel_Eval.pm \
+	    t/Kid_Proc.pm t/Kid_Kid.pm
 
 SCRIPT_TT = template/kid2xxx.pl.tt
 SCRIPTS = script/kid2xml.pl script/kid2mpl.pl script/kid2pl.pl script/kid2mm.pl \
@@ -24,6 +27,14 @@ all: $(PM_FILES) $(SCRIPTS)
 lib/Kid/AST/Statements.pm: $(LEFTOP_TT)
 	tpage --define parent=statement_list --define child=statement \
 		--define op=no --define key=statement(s) $< > $@
+
+lib/Kid/AST/Expressions.pm: $(LEFTOP_TT)
+	tpage --define parent=expression_list --define child=expression \
+		--define op=no --define key=expression(s) $< > $@
+
+lib/Kid/AST/Identifiers.pm: $(LEFTOP_TT)
+	tpage --define parent=identifier_list --define child=identifier \
+		--define op=no --define key=identifier(s) $< > $@
 
 lib/Kid/AST/Expression.pm: $(LEFTOP_TT)
 	tpage --define parent=expression --define child=term $< > $@

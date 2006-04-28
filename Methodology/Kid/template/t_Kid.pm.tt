@@ -6,6 +6,10 @@
    module = name.replace('_', '::');
    module = 'Kid::' _ module;
 -%]
+[% IF method == 'kid';
+       method = 'kid_' _ method;
+   END;
+-%]
 #: t/Kid_[% name %].pm
 #: This file was generated from [% template.name %]
 
@@ -19,12 +23,21 @@ our @EXPORT = qw(run_tests);
 
 sub run_tests {
     for my $block (blocks()) {
-        if ($block->[% method %]) {
+        if (defined $block->[% method %]) {
             is translate($block->kid), $block->[% method %], $block->name;
         } elsif ($block->error) {
             ok !defined translate($block->kid), $block->name;
         }
     }
+}
+
+package t::Kid_[% name %]::Filter;
+use base 'Test::Base::Filter';
+
+sub unindent {
+    my $s = shift;
+    $s =~ s/^\s+//mgs;
+    $s;
 }
 
 1;

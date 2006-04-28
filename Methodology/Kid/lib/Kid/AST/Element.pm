@@ -7,7 +7,9 @@ package Kid::AST::Element;
 
 use strict;
 use warnings;
+use Kid::Kid;
 use Carp qw( croak );
+use Clone;
 use vars qw( $AUTOLOAD );
 
 sub new {
@@ -23,6 +25,7 @@ sub new {
             }
         } else {
             $self->{$key} = $_;
+            $_->{__PARENT__} = $self;
         }
     }
     return $self;
@@ -37,6 +40,10 @@ sub child {
     }
 }
 
+sub kid {
+    Kid::Kid::emit(Clone::clone( $_[0] ));
+}
+
 sub AUTOLOAD {
 	croak "Could not find method: $AUTOLOAD\n" unless ref $_[0];
     my $self = shift;
@@ -44,7 +51,9 @@ sub AUTOLOAD {
 	(my $property = $AUTOLOAD) =~ s/${class}:://;
     return if $property eq 'DESTROY';
     $property = '__VALUE__' if $property eq 'value';
+    $property = '__PARENT__' if $property eq 'parent';
     if (@_) {
+        #warn "Setting property $property from ", $self->{$property}->kid, " to ", $_[0]->kid;
         if (exists $self->{$property}) {
             $self->{$property} = shift;
         } else {

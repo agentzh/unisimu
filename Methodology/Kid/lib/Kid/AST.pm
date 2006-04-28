@@ -10,6 +10,8 @@ use warnings;
 
 use Kid::AST::Element;
 use Kid::AST::Statements;
+use Kid::AST::Expressions;
+use Kid::AST::Identifiers;
 use Kid::AST::Expression;
 use Kid::AST::Term;
 
@@ -18,9 +20,11 @@ my @rules = qw(
     factor term expression rhs_expression
     condition rel_op
     neg nil
+    proc_call proc_decl declaration
+    expression_list identifier_list
     if_statement assignment
-    block else_block
-    statement statements
+    block else_statement
+    statement statement_list program
 );
 
 for my $rule (@rules) {
@@ -30,13 +34,15 @@ for my $rule (@rules) {
 
 package if_statement;
 
-sub else_block {
+sub else_statement {
     my $self = shift;
-    my $else_block =
+    my $else = $self->{else_statement};
+    return $else if $else;
+    $else =
         $self->{'_alternation_1_of_production_1_of_rule_if_statement(?)'}
-        [0]{'else_block'};
-    if ($else_block) {
-        return $else_block;
+        [0]{'else_statement'};
+    if ($else) {
+        return $else;
     } else {
         return nil->new;
     }

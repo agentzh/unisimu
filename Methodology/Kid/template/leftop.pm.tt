@@ -44,7 +44,21 @@ sub [% child %] {
     if (!exists $self->{[% child %]}) {
         $self->[% parent %];
     }
-    return $self->{[% child %]};
+    if (@_) {
+        $self->{[% child %]} = shift;
+    } else {
+        $self->{[% child %]};
+    }
+}
+
+sub get_all {
+    my $list = shift;
+    my @elems;
+    while (ref $list eq '[% parent %]') {
+        unshift @elems, $list->[% child %];
+        $list = $list->[% parent %];
+    }
+    @elems;
 }
 
 [%- IF op == 'yes' %]
@@ -53,7 +67,11 @@ sub op {
     if (!exists $self->{op}) {
         $self->[% parent %];
     }
-    return $self->{op};
+    if (@_) {
+        $self->{op} = shift;
+    } else {
+        $self->{op};
+    }
 }
 [%- END %]
 

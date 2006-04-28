@@ -8,7 +8,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => [% ext == 'mms' ? 15 : 9 %];
+use Test::More tests => 3 * 2;
 use File::Compare 'compare_text';
 
 my $script = 'script/kid2[% ext %].pl';
@@ -28,31 +28,3 @@ unlink $outfile if -f $outfile;
 is system("$^X -Ilib $script -o $outfile $infile"), 0;
 ok -f $outfile;
 is compare_text($outfile, $stdfile), 0;
-
-$infile  = "t/03test.kid";
-$outfile = "t/script/03test.[% ext %]";
-$stdfile = "t/script/~03test.[% ext %]";
-unlink $outfile if -f $outfile;
-is system("$^X -Ilib $script -o $outfile $infile"), 0;
-ok -f $outfile;
-is compare_text($outfile, $stdfile), 0;
-
-[% IF ext == 'mms' -%]
-$infile  = "t/04test.kid";
-$outfile = "t/script/04test.[% ext %]";
-$stdfile = "t/script/~04test.[% ext %]";
-unlink $outfile if -f $outfile;
-is system("$^X -Ilib $script -o $outfile $infile"), 0;
-ok -f $outfile;
-is compare_text($outfile, $stdfile), 0;
-[% END -%]
-
-[% IF ext == 'mms' -%]
-$infile  = "t/05test.kid";
-$outfile = "t/script/05test.[% ext %]";
-$stdfile = "t/script/~05test.[% ext %]";
-unlink $outfile if -f $outfile;
-is system("$^X -Ilib $script -o $outfile $infile"), 0;
-ok -f $outfile;
-is compare_text($outfile, $stdfile), 0;
-[% END -%]

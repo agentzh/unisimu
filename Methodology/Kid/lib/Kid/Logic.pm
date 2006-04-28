@@ -1,6 +1,6 @@
 #: Kid/Logic.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-24 2006-04-26
+#: 2006-04-24 2006-04-27
 
 package Kid::Logic;
 
@@ -26,12 +26,13 @@ sub emit_logic {
 
 assignment: $/.logic = { Atom->new( $/ ); }
 
-nil:         $/.logic = { '' }
+nil:         $/.logic = { ''; }
 block:       $/.logic = { $<statement_list>.logic }
-else_block:  $/.logic = { $<block>.logic }
+
+else_statement:  $/.logic = { $<statement>.logic }
 
 condition:    $/.logic = { Atom->new( $/ ); }
-if_statement: $/.logic = { Kid::Logic::emit_if( $<condition>.logic, $<block>.logic, $<else_block>.logic ); }
+if_statement: $/.logic = { Kid::Logic::emit_if( $<condition>.logic, $<statement>.logic, $<else_statement>.logic ); }
 
 statement:      $/.logic = { $<child>.logic }
 statement_list: $/.logic = { Kid::Logic::emit_stmt_list( $<statement_list>.logic, $<statement>.logic ); }

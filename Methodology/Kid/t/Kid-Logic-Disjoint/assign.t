@@ -28,7 +28,7 @@ a:=3+2; b:=5*6  ;c:=1*2
 
 
 
-=== TEST 11
+=== TEST 3
 --- kid
 x:=-y*z-6; y:=53+(-x/z+5);
 --- logic_disjoint

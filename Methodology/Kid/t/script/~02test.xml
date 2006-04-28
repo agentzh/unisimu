@@ -22,6 +22,7 @@
 </term>
 </expression>
 </condition>
+<statement>
 <block>
 <statement_list>
 <statement>
@@ -69,6 +70,7 @@
 </term>
 </expression>
 </condition>
+<statement>
 <block>
 <statement_list>
 <statement>
@@ -89,10 +91,12 @@
 </statement>
 </statement_list>
 </block>
+</statement>
 </if_statement>
 </statement>
 </statement_list>
 </block>
+</statement>
 </if_statement>
 </statement>
 </statement_list>

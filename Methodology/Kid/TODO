@@ -1,9 +1,6 @@
 TODO
 ======
 
-* Maple Evaluator for Kid's MathModel backend
-** Kid::MathModel::Eval
-
 * Pod generator for Kid::MathModel::Eval
 
 * New language structs
@@ -23,3 +20,5 @@ TODO
 
 * C/C++/Java/MASM backends for Kid
 ** variable type inferencing
+
+* Extract some stuff from if.t to arithmetic.t

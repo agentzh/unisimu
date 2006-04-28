@@ -39,12 +39,12 @@ var:        $/.maple = { $<identifier>.maple }
 assignment: $/.maple = { $<var>.maple . ':=' . $<expression>.maple . ";\n" }
 
 block:           $/.maple = { $<statement_list>.maple }
-else_block:      $/.maple = { $<block>.maple }
+else_statement:  $/.maple = { $<statement>.maple }
 rhs_expression:  $/.maple = { $<expression>.maple }
 
 rel_op:       $/.maple = { $<__VALUE__> }
 condition:    $/.maple = { $<expression>.maple . $<rel_op>.maple . $<rhs_expression>.maple }
-if_statement: $/.maple = { Kid::Maple::emit_if( $<condition>.maple, $<block>.maple, $<else_block>.maple ); }
+if_statement: $/.maple = { Kid::Maple::emit_if( $<condition>.maple, $<statement>.maple, $<else_statement>.maple ); }
 
 statement:      $/.maple = { $<child>.maple }
 statement_list: $/.maple = { $<statement_list>.maple . $<statement>.maple }

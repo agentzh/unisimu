@@ -4,6 +4,10 @@ use t::Kid_XML;
 
 plan tests => 1 * blocks();
 
+filters {
+    xml => 'unindent',
+};
+
 run_tests;
 
 __DATA__
@@ -14,224 +18,198 @@ if (x > 5) { x:=x+1 }
 --- xml
 <?xml version="1.0"?>
 <program>
-<statement_list>
-<statement>
-<if_statement>
-<condition>
-<expression>
-<term>
-<factor>
-<var>
-<identifier>x</identifier>
-</var>
-</factor>
-</term>
-</expression>
-<rel_op>&gt;</rel_op>
-<expression>
-<term>
-<factor>
-<number>5</number>
-</factor>
-</term>
-</expression>
-</condition>
-<block>
-<statement_list>
-<statement>
-<assignment>
-<var>
-<identifier>x</identifier>
-</var>
-<expression>
-<term>
-<factor>
-<var>
-<identifier>x</identifier>
-</var>
-</factor>
-</term>
-<op>+</op>
-<term>
-<factor>
-<number>1</number>
-</factor>
-</term>
-</expression>
-</assignment>
-</statement>
-</statement_list>
-</block>
-</if_statement>
-</statement>
-</statement_list>
+  <statement_list>
+    <statement>
+      <if_statement>
+        <condition>
+          <expression>
+            <term>
+              <factor>
+                <var>
+                  <identifier>x</identifier>
+                </var>
+              </factor>
+            </term>
+          </expression>
+          <rel_op>&gt;</rel_op>
+          <expression>
+            <term>
+              <factor>
+                <number>5</number>
+              </factor>
+            </term>
+          </expression>
+        </condition>
+        <statement>
+          <block>
+            <statement_list>
+              <statement>
+                <assignment>
+                  <var>
+                    <identifier>x</identifier>
+                  </var>
+                  <expression>
+                    <term>
+                      <factor>
+                        <var>
+                          <identifier>x</identifier>
+                        </var>
+                      </factor>
+                    </term>
+                    <op>+</op>
+                    <term>
+                      <factor>
+                        <number>1</number>
+                      </factor>
+                    </term>
+                  </expression>
+                </assignment>
+              </statement>
+            </statement_list>
+          </block>
+        </statement>
+      </if_statement>
+    </statement>
+  </statement_list>
 </program>
 
 
 
 === TEST 2
 --- kid
-if (6.3<= 0.232) {
-    x:=2;
-}
-if (5 = x_) { yylex:=1 }
+if (5 <> x) { x:= 3; } else {
+    y:=-1 }
 --- xml
 <?xml version="1.0"?>
 <program>
-<statement_list>
-<statement>
-<if_statement>
-<condition>
-<expression>
-<term>
-<factor>
-<number>6.3</number>
-</factor>
-</term>
-</expression>
-<rel_op>&lt;=</rel_op>
-<expression>
-<term>
-<factor>
-<number>0.232</number>
-</factor>
-</term>
-</expression>
-</condition>
-<block>
-<statement_list>
-<statement>
-<assignment>
-<var>
-<identifier>x</identifier>
-</var>
-<expression>
-<term>
-<factor>
-<number>2</number>
-</factor>
-</term>
-</expression>
-</assignment>
-</statement>
-</statement_list>
-</block>
-</if_statement>
-</statement>
-<statement>
-<if_statement>
-<condition>
-<expression>
-<term>
-<factor>
-<number>5</number>
-</factor>
-</term>
-</expression>
-<rel_op>=</rel_op>
-<expression>
-<term>
-<factor>
-<var>
-<identifier>x_</identifier>
-</var>
-</factor>
-</term>
-</expression>
-</condition>
-<block>
-<statement_list>
-<statement>
-<assignment>
-<var>
-<identifier>yylex</identifier>
-</var>
-<expression>
-<term>
-<factor>
-<number>1</number>
-</factor>
-</term>
-</expression>
-</assignment>
-</statement>
-</statement_list>
-</block>
-</if_statement>
-</statement>
-</statement_list>
+  <statement_list>
+    <statement>
+      <if_statement>
+        <condition>
+          <expression>
+            <term>
+              <factor>
+                <number>5</number>
+              </factor>
+            </term>
+          </expression>
+          <rel_op>&lt;&gt;</rel_op>
+          <expression>
+            <term>
+              <factor>
+                <var>
+                  <identifier>x</identifier>
+                </var>
+              </factor>
+            </term>
+          </expression>
+        </condition>
+        <statement>
+          <block>
+            <statement_list>
+              <statement>
+                <assignment>
+                  <var>
+                    <identifier>x</identifier>
+                  </var>
+                  <expression>
+                    <term>
+                      <factor>
+                        <number>3</number>
+                      </factor>
+                    </term>
+                  </expression>
+                </assignment>
+              </statement>
+            </statement_list>
+          </block>
+        </statement>
+        <statement>
+          <block>
+            <statement_list>
+              <statement>
+                <assignment>
+                  <var>
+                    <identifier>y</identifier>
+                  </var>
+                  <expression>
+                    <term>
+                      <factor>
+                        <number>-1</number>
+                      </factor>
+                    </term>
+                  </expression>
+                </assignment>
+              </statement>
+            </statement_list>
+          </block>
+        </statement>
+      </if_statement>
+    </statement>
+  </statement_list>
 </program>
 
 
 
 === TEST 3
 --- kid
-if (5 <> x) { x:= 3; } else {
-    y:=-1 }
+if (5 <> x) x:= 3; else y:=-1;
 --- xml
 <?xml version="1.0"?>
 <program>
-<statement_list>
-<statement>
-<if_statement>
-<condition>
-<expression>
-<term>
-<factor>
-<number>5</number>
-</factor>
-</term>
-</expression>
-<rel_op>&lt;&gt;</rel_op>
-<expression>
-<term>
-<factor>
-<var>
-<identifier>x</identifier>
-</var>
-</factor>
-</term>
-</expression>
-</condition>
-<block>
-<statement_list>
-<statement>
-<assignment>
-<var>
-<identifier>x</identifier>
-</var>
-<expression>
-<term>
-<factor>
-<number>3</number>
-</factor>
-</term>
-</expression>
-</assignment>
-</statement>
-</statement_list>
-</block>
-<block>
-<statement_list>
-<statement>
-<assignment>
-<var>
-<identifier>y</identifier>
-</var>
-<expression>
-<term>
-<factor>
-<number>-1</number>
-</factor>
-</term>
-</expression>
-</assignment>
-</statement>
-</statement_list>
-</block>
-</if_statement>
-</statement>
-</statement_list>
+  <statement_list>
+    <statement>
+      <if_statement>
+        <condition>
+          <expression>
+            <term>
+              <factor>
+                <number>5</number>
+              </factor>
+            </term>
+          </expression>
+          <rel_op>&lt;&gt;</rel_op>
+          <expression>
+            <term>
+              <factor>
+                <var>
+                  <identifier>x</identifier>
+                </var>
+              </factor>
+            </term>
+          </expression>
+        </condition>
+        <statement>
+          <assignment>
+            <var>
+              <identifier>x</identifier>
+            </var>
+            <expression>
+              <term>
+                <factor>
+                  <number>3</number>
+                </factor>
+              </term>
+            </expression>
+          </assignment>
+        </statement>
+        <statement>
+          <assignment>
+            <var>
+              <identifier>y</identifier>
+            </var>
+            <expression>
+              <term>
+                <factor>
+                  <number>-1</number>
+                </factor>
+              </term>
+            </expression>
+          </assignment>
+        </statement>
+      </if_statement>
+    </statement>
+  </statement_list>
 </program>
 --- LAST
 

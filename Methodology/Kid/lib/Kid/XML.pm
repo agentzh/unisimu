@@ -38,12 +38,12 @@ var:        $/.xml = { "<var>\n" . $<identifier>.xml . "</var>\n" }
 assignment: $/.xml = { Kid::XML::emit_assign( $<var>.xml, $<expression>.xml ) }
 
 block:           $/.xml = { Kid::XML::emit_block( $<statement_list>.xml ); }
-else_block:      $/.xml = { $<block>.xml }
+else_statement:  $/.xml = { $<statement>.xml }
 rhs_expression:  $/.xml = { $<expression>.xml }
 
 rel_op:       $/.xml = { "<rel_op>" . Kid::XML::escape( $<__VALUE__> ) . "</rel_op>\n" }
 condition:    $/.xml = { Kid::XML::emit_cond( $<expression>.xml, $<rel_op>.xml, $<rhs_expression>.xml ) }
-if_statement: $/.xml = { Kid::XML::emit_if( $<condition>.xml, $<block>.xml, $<else_block>.xml ) }
+if_statement: $/.xml = { Kid::XML::emit_if( $<condition>.xml, $<statement>.xml, $<else_statement>.xml ) }
 
 statement:      $/.xml = { "<statement>\n" .$<child>.xml . "</statement>\n" }
 statement_list: $/.xml = { $<statement_list>.xml . $<statement>.xml }
