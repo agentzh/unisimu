@@ -38,7 +38,7 @@ assignment: var ':=' <commit> expression
 
 var: identifier
 
-identifier: /[A-Za-z]\w*/
+identifier: /\w+/
 
 expression: <leftop: term /([-+])/ term>
 

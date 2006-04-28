@@ -7,6 +7,8 @@ use t::Kid_MathModel_Eval;
 
 plan tests => 1 * blocks();
 
+#no_diff;
+
 run_tests;
 
 __DATA__
@@ -236,3 +238,126 @@ proc min(x, y) {
 --
  - 0<y, x-y<=0, x<0
  - z := x
+
+
+
+=== TEST 9: Page 183, Example 6.1
+
+  f=(x:=x)
+  P:  if x>0 then x:=x-2*x else x:=x+2*abs(x) fi
+
+--- kid
+
+proc abs (x) {
+    if (x>=0) abs:=x;
+    else      abs:=-x;
+}
+
+if (x>0) x:=x-2*x else x:=x+2*abs(x)
+
+--- mathmodel_eval
+--
+ - 0<x
+ - x := -x
+--
+ - x=0
+ - x := 3*x
+--
+ - x<0
+ - x := -x
+
+
+
+=== TEST 10: Page 184, Example 6.3
+
+  (x>y -> x,y:=x+abs(y),x-abs(y) |
+   x<y -> x,y:=y+abs(x),y-abs(x))
+ =>
+   x,y:=max(x,y)min(x,y)
+   x,y:=max(x-y,x+y),min(x-y,x+y)
+   x,y:=max(x,y),min(x,y)
+
+--- kid
+
+if (x>y) {
+    _a:=x+abs(y); _b:=x-abs(y);
+    x:=_a; y:=_b;
+} else if (x<y) {
+    _a:=y+abs(x); _b:=y-abs(x);
+    x:=_a; y:=_b;
+}
+
+proc abs (x) {
+    if (x>=0) abs:=x;
+    else      abs:=-x;
+}
+--- mathmodel_eval
+--
+ - 0<x, 0<y, y-x<0
+ - x, y := x+y, x-y
+--
+ - y-x<0, y<0
+ - x, y := x-y, x+y
+--
+ - 0<x, 0<y, x-y<0
+ - x, y := x+y, y-x
+--
+ - x-y<0, x<0
+ - x, y := y-x, x+y
+
+
+
+=== TEST 11: Page 184, Example 6.3 (ditto)
+
+  (x>y -> x,y:=x+abs(y),x-abs(y) |
+   x<y -> x,y:=y+abs(x),y-abs(x))
+ =>
+   x,y:=max(x,y),min(x,y)
+   x,y:=max(x-y,x+y),min(x-y,x+y)
+   x,y:=max(x,y),min(x,y)
+
+(this test runs too slowly, so I skip it for now)
+
+--- kid
+
+_temp:=max(x,y); y:=min(x,y);
+x:=_temp;
+
+_temp:=max(x-y,x+y); y:=min(x-y,x+y);
+x:=_temp;
+
+_temp:=max(x,y); y:=min(x,y);
+x:=_temp;
+
+proc max(x, y) {
+    if (x >= y) max := x;
+    else        max := y;
+}
+
+proc min(x, y) {
+    if (x <= y) min := x;
+    else        min := y;
+}
+--- mathmodel_eval
+--
+ - x=0, y=0
+ - x, y := 0, 0
+--
+ - x=y, y<0
+ - x, y := 0, 2*x
+--
+ - 0<y, x=y
+ - x, y := 2*x, 0
+--
+ - y-x<0, y<0
+ - x, y := x-y, x+y
+--
+ - 0<x, 0<y, y-x<0
+ - x, y := x+y, x-y
+--
+ - x-y<0, x<0
+ - x, y := y-x, x+y
+--
+ - 0<x, 0<y, x-y<0
+ - x, y := x+y, y-x
+--- SKIP
