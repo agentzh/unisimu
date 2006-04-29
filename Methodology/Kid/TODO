@@ -11,7 +11,6 @@
 == Language
 
 * proc improvements
-** remove the performance bottleneck related to proc
 ** add proc codegen to the Kid::XML backend
 ** resolve proc calls within proc body
 ** detect proc recursion calling and report error
@@ -31,8 +30,6 @@
 
 * use Perl::Tidy (XML::Tidy?) to "tidy up" the outputs
   of the backends
-* Kid::Kid backend improvement
-** add kid2kid.pl to script/
 * Pod generator for Kid::MathModel::Eval
 * C/C++/Java/MASM backends for Kid
 ** variable type inferencing
@@ -46,3 +43,4 @@
 * add doc/zh-cn/Language.pod
 * add doc/zh-cn/Utilities.pod
 * add POD for every .pm files in lib/
+* add sample/*

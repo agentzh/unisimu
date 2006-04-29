@@ -1,7 +1,7 @@
 #: Kid/AST/Element.pm
 #: Common base class for other Kid/AST/*.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-26 2006-04-26
+#: 2006-04-26 2006-04-29
 
 package Kid::AST::Element;
 

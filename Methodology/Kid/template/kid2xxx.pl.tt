@@ -7,6 +7,7 @@
         xml = 'XML',
         mpl = 'Maple',
         pl  = 'Perl',
+        kid = 'Kid',
     };
    SET
     lang = table.$ext;

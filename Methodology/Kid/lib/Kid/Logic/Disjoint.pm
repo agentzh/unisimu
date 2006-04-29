@@ -1,6 +1,6 @@
 #: Kid/Logic/Disjoint.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-24 2006-04-26
+#: 2006-04-24 2006-04-29
 
 package Kid::Logic::Disjoint;
 
