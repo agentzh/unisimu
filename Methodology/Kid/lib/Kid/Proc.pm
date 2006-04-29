@@ -42,6 +42,8 @@ program:    $/.ast = { program->new( $<statement_list>.ast ) }
 statement_list: $/.ast = { statement_list->new( $<statement_list>.ast, $<statement>.ast ); }
 statement:      $/.ast = { statement->new( $<child>.ast ); }
 
+comment:  $/.ast = { nil->new; }
+
 declaration:     $/.ast = { declaration->new( $<child>.ast ); }
 proc_decl:       $/.ast = { Kid::Proc::emit_proc_decl( $<identifier>.ast, $<identifier_list>.ast, $<block>.ast ); }
 identifier_list: $/.ast = { identifier_list->new( $<identifier_list>.ast, $<identifier>.ast ) }

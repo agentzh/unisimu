@@ -28,6 +28,8 @@ program:    $/.kid = { $<statement_list>.kid }
 statement_list: $/.kid = { $<statement_list>.kid . $<statement>.kid }
 statement:      $/.kid = { $<child>.kid }
 
+comment:  $/.kid = { $<__VALUE__> . "\n" }
+
 declaration:     $/.kid = { $<child>.kid }
 proc_decl:       $/.kid = { 'proc ' . $<identifier>.kid . '(' . $<identifier_list>.kid . ') ' . $<block>.kid }
 identifier_list: $/.kid = { Kid::Kid::emit_list( $<identifier_list>.kid, $<identifier>.kid ) }

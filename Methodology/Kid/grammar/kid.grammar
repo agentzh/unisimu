@@ -9,6 +9,7 @@ statement: if_statement
          | block /;?/
          | declaration
          | assignment /;?/
+		 | comment
          | <error>
 
 if_statement: 'if' <commit> '(' condition ')' statement <uncommit>
@@ -57,5 +58,7 @@ proc_call: identifier '(' expression_list ')'
 expression_list: expression(s /,/)
 
 number: /-?\d+(?:\.\d+)?/
+
+comment: /#.*/
 
 eofile: /^\Z/

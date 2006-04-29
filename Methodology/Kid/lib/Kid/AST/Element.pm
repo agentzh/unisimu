@@ -46,7 +46,7 @@ sub child {
         #warn "Child of $self set to $key: $val";
         return $val;
     }
-    undef;
+    $self->{nil};
 }
 
 sub kid {

@@ -15,6 +15,8 @@ __DATA__
 
 === TEST 1: Page 180, tracing table
 --- kid
+# very simple one
+
 x:=x+y; y:=x-y; x:=x-y
 --- mathmodel_eval
 --
