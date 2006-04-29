@@ -52,6 +52,8 @@ rel_op:       $/.maple = { $<__VALUE__> }
 condition:    $/.maple = { $<expression>.maple . $<rel_op>.maple . $<rhs_expression>.maple }
 if_statement: $/.maple = { Kid::Maple::emit_if( $<condition>.maple, $<statement>.maple, $<else_statement>.maple ); }
 
+comment: $/.maple = { $<__VALUE__> . "\n" }
+
 statement:      $/.maple = { $<child>.maple }
 statement_list: $/.maple = { $<statement_list>.maple . $<statement>.maple }
 

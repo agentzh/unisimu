@@ -29,6 +29,9 @@ program:    $/.perl = { $<statement_list>.perl }
 
 statement_list: $/.perl = { $<statement_list>.perl . $<statement>.perl }
 statement:      $/.perl = { $<child>.perl }
+
+comment: $/.perl = { $<__VALUE__> . "\n" }
+
 declaration:    $/.perl = { $<child>.perl }
 
 if_statement: $/.perl = { Kid::Perl::emit_if( $<condition>.perl, $<statement>.perl, $<else_statement>.perl ); }
