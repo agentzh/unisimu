@@ -1,7 +1,7 @@
 #: Kid/Kid.pm
 #: A Kid to Kid emitter
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-28 2006-04-28
+#: 2006-04-28 2006-04-29
 
 package Kid::Kid;
 

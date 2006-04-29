@@ -32,10 +32,16 @@ die "Usage: kid2[% ext %] [-o <outfile>] <infile>\n" if !$infile;
 
 my $outfile = $opts{o};
 if (!defined $outfile) {
+  [%- IF ext == 'kid' %]
+    $outfile = $infile . '[% ext %]';
+  [%- ELSE %]
     if (($outfile = $infile) !~ s/\.kid$/.[% ext %]/i) {
         $outfile .= '.[% ext %]';
     }
+  [%- END %]
 }
+
+$outfile .= '
 
 open my $in, $infile or
     die "error: Can't open $infile for reading: $!\n";

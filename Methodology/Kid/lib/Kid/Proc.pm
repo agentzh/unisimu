@@ -1,6 +1,6 @@
 #: Kid::Proc
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-27 2006-04-27
+#: 2006-04-27 2006-04-29
 
 package Kid::Proc;
 
