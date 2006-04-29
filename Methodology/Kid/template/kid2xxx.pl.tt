@@ -32,27 +32,20 @@ my @infiles = map glob, @ARGV;
 die "Usage: kid2[% ext %] [-o <outfile>] <infile-list>\n" if ! @infiles;
 
 my $outfile = $opts{o};
-if ($outfile and @infiles > 1) {
-    warn "`-o $outfile' ignored due to multiple input files\n";
-    undef $outfile;
-}
 
-for my $infile (@infiles) {
-    process_file($infile);
+if (@infiles > 1) {
+    if ($outfile) {
+        warn "`-o $outfile' ignored due to multiple input files\n";
+    }
+    for my $infile (@infiles) {
+        process_file($infile);
+    }
+} else {
+    process_file($infiles[0], $outfile);
 }
 
 sub process_file {
-    my $infile = shift;
-    if (!defined $outfile) {
-      [%- IF ext == 'kid' %]
-        $outfile = $infile . '.[% ext %]';
-      [%- ELSE %]
-        if (($outfile = $infile) !~ s/\.kid$/.[% ext %]/i) {
-            $outfile .= '.[% ext %]';
-        }
-      [%- END %]
-    }
-
+    my ($infile, $outfile) = @_;
     open my $in, $infile or
         die "error: Can't open $infile for reading: $!\n";
     my $src;
@@ -66,9 +59,25 @@ sub process_file {
     defined $perl or
         die "Can't generate [% lang %] code due to compilation errors.\n";
 
+    if (!defined $outfile) {
+        $outfile = gen_name($infile);
+    }
     open my $out, "> $outfile" or
         die "error: Can't open $outfile for writing: $!\n";
     print $out $perl;
     close $out;
     print "$outfile generated.\n";
+}
+
+sub gen_name {
+    my $infile = shift;
+    my $outfile;
+  [%- IF ext == 'kid' %]
+    $outfile = $infile . '.[% ext %]';
+  [%- ELSE %]
+    if (($outfile = $infile) !~ s/\.kid$/.[% ext %]/i) {
+        $outfile .= '.[% ext %]';
+    }
+  [%- END %]
+    $outfile;
 }
