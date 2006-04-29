@@ -10,11 +10,6 @@
 
 == Language
 
-* proc improvements
-** add proc codegen to the Kid::XML backend
-** resolve proc calls within proc body
-** detect proc recursion calling and report error
-** reduce the temp vars used when inlining procs
 * I/O mechanisms
 ** add read/write directives for var I/O
 * lecical vars declarations
@@ -28,6 +23,12 @@
 
 == Backends
 
+* Kid::Proc backend:
+** proc improvements
+*** add proc codegen to the Kid::XML backend
+*** resolve proc calls within proc body
+*** detect proc recursion calling and report error
+*** reduce the temp vars used when inlining procs
 * use Perl::Tidy (XML::Tidy?) to "tidy up" the outputs
   of the backends
 * Pod generator for Kid::MathModel::Eval
