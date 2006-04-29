@@ -12,6 +12,7 @@ use Kid::XML;
 use Carp qw( croak );
 use Clone;
 use Data::Dumper;
+use Scalar::Util qw( weaken isweak );
 
 use vars qw( $AUTOLOAD );
 
@@ -30,6 +31,7 @@ sub new {
         } else {
             $self->{$key} = $_;
             $_->{__PARENT__} = $self;
+            weaken( $self ) if not isweak( $self );
         }
     }
     return $self;

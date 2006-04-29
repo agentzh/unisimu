@@ -13,7 +13,7 @@ use Kid;
 use Kid::Proc;
 use Kid::Logic::Disjoint;
 use Language::AttributeGrammar;
-use Clone;
+#use Clone;
 
 our $Grammar;
 our %Context;
@@ -29,15 +29,15 @@ sub transform {
 
 sub process_route {
     my $route = shift;
-    $route = Clone::clone($route);
+    #$route = Clone::clone($route);
     %Context = ();
     my (@rels, @assigns);
     for my $expr (@$route) {
         next if ! $expr;
 
         #warn $expr->dump;
-        delete $expr->{parent};
-        $expr = rename_vars( Clone::clone($expr) );
+        delete $expr->{__PARENT__};
+        $expr = rename_vars( $expr );
         #$expr = Kid::Proc::transform($expr);
         #warn $expr->dump;
         if ($expr->isa('condition')) {

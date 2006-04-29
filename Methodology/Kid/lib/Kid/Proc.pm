@@ -75,7 +75,7 @@ END_GRAMMAR
 
     @Kid::Proc::calls = ();
     %Kid::Proc::decls = ();
-    $ast = $Kid::Proc::read_proc::G->apply(Clone::clone($ast), 'ast');
+    $ast = $Kid::Proc::read_proc::G->apply($ast, 'ast');
     #warn "!!!!\n\n", $ast->kid, "\n\n!!!!\n\n";
     #warn "@Kid::Proc::calls";
     #warn join ', ', keys %Kid::Proc::decls;
@@ -149,9 +149,13 @@ sub expand_proc {
 sub emit_args_pass {
     my ($prefix, $proc_name, $expr_list) = @_;
     my @exprs = $expr_list->get_all;
-    my $proc_decl = Clone::clone( $Kid::Proc::decls{$proc_name} );
+    my $proc_decl = $Kid::Proc::decls{$proc_name};
     my @ids = $proc_decl->identifier_list->get_all;
-    map { $_->value($prefix . $_->value) } @ids;
+    map {
+        undef $_->{__PARANT__};
+        $_ = Clone::clone($_);
+        $_->value($prefix . $_->value)
+    } @ids;
     #warn "@exprs";
     #warn "@ids";
     my @vars = map { var->new($_) } @ids;
@@ -179,7 +183,7 @@ sub emit_proc_body {
 
 sub rename_vars {
     my ($prefix, $tree) = @_;
-    $tree = Clone::clone($tree);
+    #$tree = Clone::clone($tree);
     $Kid::Proc::rename_vars::p = $prefix;
     $RenameGrammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 

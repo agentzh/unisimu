@@ -12,7 +12,7 @@ use Kid;
 use Kid::Proc;
 use Language::AttributeGrammar;
 use Kid::Maple;
-use Clone;
+#use Clone;
 
 our ($TransGrammar, $TextGrammar);
 
@@ -82,8 +82,8 @@ Or:   $/.text = { Kid::Logic::emit_group( 'or',  $<first>.text, $<second>.text )
 Not:  $/.text = { "(not " . $<operand>.text . ")" }
 Atom: $/.text = { Kid::Logic::emit_atom( $<__VALUE__>.text ); }
 nil:  $/.text = { '' }
-assignment: $/.text = { Clone::clone($/); }
-condition:  $/.text = { Clone::clone($/); }
+assignment: $/.text = { $/ }
+condition:  $/.text = { $/ }
 
 END_GRAMMAR
     $TextGrammar->apply($logic_ast, 'text') . "\n";
@@ -111,7 +111,7 @@ use base 'Kid::AST::Element';
 
 sub new {
     my ($class, $child) = @_;
-    bless { __VALUE__ => Clone::clone( $child ) }, $class;
+    bless { __VALUE__ => $child }, $class;
 }
 
 package Binary;

@@ -37,7 +37,7 @@ sub emit_disjoint {
 And:  $/.space = { Kid::Logic::Disjoint::inner_join( $<first>.space, $<second>.space ) }
 Or:   $/.space = { Kid::Logic::Disjoint::outer_join( $<first>.space, $<second>.space ) }
 Not:  $/.space = { Kid::Logic::Disjoint::emit_not( $<operand> ) }
-Atom: $/.space = { [[ Clone::clone( $<__VALUE__> ) ]] }
+Atom: $/.space = { Kid::Logic::Disjoint::emit_atom( $<__VALUE__> ); }
 nil:  $/.space = { [[]] }
 
 END_GRAMMAR
@@ -49,7 +49,7 @@ sub inner_join {
     my @res;
     for my $x (@$first) {
         for my $y (@$second) {
-            push @res, [ @{ Clone::clone( $x ) }, @{ Clone::clone( $y ) }];
+            push @res, [ @{ Clone::clone($x) }, @{ Clone::clone($y) } ];
         }
     }
     return \@res;
@@ -66,7 +66,14 @@ sub emit_not {
     die ref $cond if !ref $cond or ref $cond ne 'condition';
     my $rel_op = $cond->rel_op;
     $rel_op->value( $ReverseOp{ $rel_op->value } );
+    undef $cond->{__PARANT__};
     [[ Clone::clone($cond) ]];
+}
+
+sub emit_atom {
+    my $value = shift;
+    undef $value->{__PARENT__};
+    [[ Clone::clone( $value ) ]]
 }
 
 sub translate {
