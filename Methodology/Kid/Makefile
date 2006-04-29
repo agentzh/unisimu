@@ -26,15 +26,15 @@ all: $(PM_FILES) $(SCRIPTS)
 
 lib/Kid/AST/Statements.pm: $(LEFTOP_TT)
 	tpage --define parent=statement_list --define child=statement \
-		--define op=no --define key=statement(s) $< > $@
+		--define op=no --define "key=statement(s)" $< > $@
 
 lib/Kid/AST/Expressions.pm: $(LEFTOP_TT)
 	tpage --define parent=expression_list --define child=expression \
-		--define op=no --define key=expression(s) $< > $@
+		--define op=no --define "key=expression(s)" $< > $@
 
 lib/Kid/AST/Identifiers.pm: $(LEFTOP_TT)
 	tpage --define parent=identifier_list --define child=identifier \
-		--define op=no --define key=identifier(s) $< > $@
+		--define op=no --define "key=identifier(s)" $< > $@
 
 lib/Kid/AST/Expression.pm: $(LEFTOP_TT)
 	tpage --define parent=expression --define child=term $< > $@
