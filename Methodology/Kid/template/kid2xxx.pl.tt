@@ -27,37 +27,48 @@ use Kid::[% lang %];
 
 my %opts;
 getopts('o:', \%opts);
-my $infile = shift;
-die "Usage: kid2[% ext %] [-o <outfile>] <infile>\n" if !$infile;
+
+my @infiles = map glob, @ARGV;
+die "Usage: kid2[% ext %] [-o <outfile>] <infile-list>\n" if ! @infiles;
 
 my $outfile = $opts{o};
-if (!defined $outfile) {
-  [%- IF ext == 'kid' %]
-    $outfile = $infile . '[% ext %]';
-  [%- ELSE %]
-    if (($outfile = $infile) !~ s/\.kid$/.[% ext %]/i) {
-        $outfile .= '.[% ext %]';
+if ($outfile and @infiles > 1) {
+    warn "`-o $outfile' ignored due to multiple input files\n";
+    undef $outfile;
+}
+
+for my $infile (@infiles) {
+    process_file($infile);
+}
+
+sub process_file {
+    my $infile = shift;
+    if (!defined $outfile) {
+      [%- IF ext == 'kid' %]
+        $outfile = $infile . '.[% ext %]';
+      [%- ELSE %]
+        if (($outfile = $infile) !~ s/\.kid$/.[% ext %]/i) {
+            $outfile .= '.[% ext %]';
+        }
+      [%- END %]
     }
-  [%- END %]
+
+    open my $in, $infile or
+        die "error: Can't open $infile for reading: $!\n";
+    my $src;
+    {
+        local $/;
+        $src = <$in>;
+    }
+    close $in;
+
+    my $perl = Kid::[% lang %]::translate($src);
+    defined $perl or
+        die "Can't generate [% lang %] code due to compilation errors.\n";
+
+    open my $out, "> $outfile" or
+        die "error: Can't open $outfile for writing: $!\n";
+    print $out $perl;
+    close $out;
+    print "$outfile generated.\n";
 }
-
-$outfile .= '
-
-open my $in, $infile or
-    die "error: Can't open $infile for reading: $!\n";
-my $src;
-{
-    local $/;
-    $src = <$in>;
-}
-close $in;
-
-my $perl = Kid::[% lang %]::translate($src);
-defined $perl or
-    die "Can't generate [% lang %] code due to compilation errors.\n";
-
-open my $out, "> $outfile" or
-    die "error: Can't open $outfile for writing: $!\n";
-print $out $perl;
-close $out;
-print "$outfile generated.\n";
