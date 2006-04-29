@@ -1,24 +1,48 @@
-TODO
-======
+= TODO for Kid
 
-* Pod generator for Kid::MathModel::Eval
+== Build System
 
-* New language structs
-** proc calls and definitions
-** return statement
-** vars declarations
-** I/O mechanisms
+* add Makefile.PL and MANIFEST to provide
+  CPAN-compactible build mechanism
+* rename the current Makefile to Makefile.meta or
+   such
+* use InnoSetup and PAR to build Win32 installer
 
+== Language
+
+* proc improvements
+** remove the performance bottleneck related to proc
+** add proc codegen to the Kid::XML backend
+** resolve proc calls within proc body
+** detect proc recursion calling and report error
+** reduce the temp vars used when inlining procs
+* I/O mechanisms
+** add read/write directives for var I/O
+* lecical vars declarations
 * Relational operators
 ** and
 ** or
 ** not
-
 * New arithmetic operators
 ** exponential operator (^)
 ** mod operator (%)
 
+== Backends
+
+* use Perl::Tidy (XML::Tidy?) to "tidy up" the outputs
+  of the backends
+* Kid::Kid backend improvement
+** add kid2kid.pl to script/
+* Pod generator for Kid::MathModel::Eval
 * C/C++/Java/MASM backends for Kid
 ** variable type inferencing
 
-* Extract some stuff from if.t to arithmetic.t
+== Test Suit
+
+* extract related stuff from if.t to arithmetic.t
+
+== Documentation
+
+* add doc/zh-cn/Language.pod
+* add doc/zh-cn/Utilities.pod
+* add POD for every .pm files in lib/

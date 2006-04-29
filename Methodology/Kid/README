@@ -10,9 +10,10 @@ STATUS
 The parser for Kid (Kid::Parser) is mostly done, and the
 Perl backend (Kid::Perl), XML backend (Kid::XML),
 Maple backend (Kid::Maple), Logical expression backend
-(Kid::Logic and Kid::Logic::Disjoint), and mathematical
-model backend (Kid::MathModel) are both implemented and
-tested.
+(Kid::Logic and Kid::Logic::Disjoint), mathematical
+model backend (Kid::MathModel), and mathematical
+model solver (Kid::MathModel::Eval) are both implemented
+and tested.
 
 COPYRIGHT
 
