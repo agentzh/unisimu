@@ -36,7 +36,7 @@ enter the previous four commands:
 	make -f Makefile.meta
 
 Note that GNU-compatible make is required to process
-Makefile.meta. It is known that nmake can't grok my
+Makefile.meta. It is known that nmake dislikes my
 Makefile.meta. Sigh.
 
 Since Kid depends on some other CPAN modules like
