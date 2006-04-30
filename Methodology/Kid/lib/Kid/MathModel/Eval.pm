@@ -1,6 +1,6 @@
 #: Kid/MathModel/Eval.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-26 2006-04-26
+#: 2006-04-26 2006-04-30
 
 package Kid::MathModel::Eval;
 

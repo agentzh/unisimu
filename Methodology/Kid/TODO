@@ -6,7 +6,6 @@
 
 == Language
 
-* fix a bug in the Kid grammar: identifier: /[A-Za-z_]\w*/
 * I/O mechanisms
 ** add read/write directives for var I/O
 * lecical vars declarations

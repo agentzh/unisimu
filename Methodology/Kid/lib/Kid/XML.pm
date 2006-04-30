@@ -1,6 +1,6 @@
 #: Kid/XML.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-23 2006-04-27
+#: 2006-04-23 2006-04-30
 
 package Kid::XML;
 
@@ -10,6 +10,8 @@ use warnings;
 #use Data::Dumper;
 use Kid;
 use Language::AttributeGrammar;
+
+our $VERSION = '0.01';
 
 our $Grammar;
 
