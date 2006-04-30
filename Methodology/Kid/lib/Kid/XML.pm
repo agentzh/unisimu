@@ -45,6 +45,8 @@ rel_op:       $/.xml = { "<rel_op>" . Kid::XML::escape( $<__VALUE__> ) . "</rel_
 condition:    $/.xml = { Kid::XML::emit_cond( $<expression>.xml, $<rel_op>.xml, $<rhs_expression>.xml ) }
 if_statement: $/.xml = { Kid::XML::emit_if( $<condition>.xml, $<statement>.xml, $<else_statement>.xml ) }
 
+comment: $/.xml = { "<comment>" . $<__VALUE__> . "</comment>\n"; }
+
 statement:      $/.xml = { "<statement>\n" .$<child>.xml . "</statement>\n" }
 statement_list: $/.xml = { $<statement_list>.xml . $<statement>.xml }
 

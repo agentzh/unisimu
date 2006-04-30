@@ -14,11 +14,15 @@ __DATA__
 
 === TEST 1
 --- kid
+# very simple one
 a := 3 + 5*2
 --- xml
 <?xml version="1.0"?>
 <program>
   <statement_list>
+    <statement>
+    <comment># very simple one</comment>
+    </statement>
     <statement>
       <assignment>
         <var>
