@@ -19,13 +19,13 @@
 
 == Backends
 
+* Kid::XML backend:
+** provide a DTD specification for the XML outputs
 * Kid::Proc backend:
 ** proc improvements
 *** resolve proc calls within proc body
 *** detect proc recursion calling and report error
 *** reduce the temp vars used when inlining procs
-* Kid::XML backend:
-** provide a DTD specification for the XML outputs
 * use Perl::Tidy (XML::Tidy?) to "tidy up" the outputs
   of the backends
 * Pod generator for Kid::MathModel::Eval
@@ -45,6 +45,4 @@
 
 * add doc/zh-cn/Language.pod
 * add doc/zh-cn/Utilities.pod
-* add INSTALL section to README
 * add POD for every .pm files in lib/
-* add sample/*
