@@ -15,6 +15,35 @@ model backend (Kid::MathModel), and mathematical
 model solver (Kid::MathModel::Eval) are both implemented
 and tested.
 
+INSTALLATION
+
+If what you have is a Kid release tarball, simply enter
+the following commands to build/test/install Kid like
+most CPAN modules:
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+Win32 users should use "nmake" instead of "make" in the
+commands given above.
+
+If you're working with a SVN copy of the Kid source,
+you need to run the following command *before* you
+enter the previous four commands:
+
+	make -f Makefile.meta
+
+Note that GNU-compatible make is required to process
+Makefile.meta. It is known that nmake can't grok my
+Makefile.meta. Sigh.
+
+Since Kid depends on some other CPAN modules like
+PerlMaple, Parse::RecDescent, and Language::AttributeGrammar.
+So you should have these modules installed before
+trying to install Kid.
+
 COPYRIGHT
 
 Copyright (c) 2006 Agent Zhang. All rights reserved.
