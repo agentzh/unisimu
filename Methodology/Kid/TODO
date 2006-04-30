@@ -35,6 +35,7 @@
 
 == Test Suit
 
+* add t/Kid-XML/escape.t to test XML escaping behavior
 * add more test cases to kid2xxx.pl.tt:
      kid2xxx.pl 02test.kid
 	 kid2xxx.pl -o 02test.tmp 02test.kid
@@ -45,4 +46,4 @@
 
 * add doc/zh-cn/Language.pod
 * add doc/zh-cn/Utilities.pod
-* add POD for every .pm files in lib/
+* add POD to every .pm files in lib/

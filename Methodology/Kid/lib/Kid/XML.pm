@@ -19,7 +19,13 @@ sub translate {
     my $src = shift;
     my $parser = Kid::Parser->new() or die "Can't construct the parser!\n";
     my $ast = $parser->program($src) or return undef;
-    return "<?xml version=\"1.0\"?>\n" . emit_xml($ast);
+    my $xml = emit_xml($ast);
+    chop $xml;
+    return <<_EOC_;
+<?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
+$xml
+_EOC_
 }
 
 sub emit_xml {
@@ -50,7 +56,7 @@ rel_op:       $/.xml = { "<rel_op>" . Kid::XML::escape( $<__VALUE__> ) . "</rel_
 condition:    $/.xml = { Kid::XML::emit_cond( $<expression>.xml, $<rel_op>.xml, $<rhs_expression>.xml ) }
 if_statement: $/.xml = { Kid::XML::emit_if( $<condition>.xml, $<statement>.xml, $<else_statement>.xml ) }
 
-comment: $/.xml = { "<comment>" . $<__VALUE__> . "</comment>\n"; }
+comment: $/.xml = { "<comment>" . Kid::XML::escape( $<__VALUE__> ) . "</comment>\n"; }
 
 identifier_list: $/.xml = { $<identifier_list>.xml . $<identifier>.xml }
 proc_decl:   $/.xml = { Kid::XML::emit_proc_decl( $<identifier>.xml, $<identifier_list>.xml, $<block>.xml ) }
@@ -166,6 +172,8 @@ sub escape {
     $s =~ s/\&/\&amp;/g;
     $s =~ s/</\&lt;/g;
     $s =~ s/>/\&gt;/g;
+    $s =~ s/"/&quot;/g;
+    $s =~ s/'/&apos;/g;
     #warn "-- ESCAPE: $s";
     return $s;
 }

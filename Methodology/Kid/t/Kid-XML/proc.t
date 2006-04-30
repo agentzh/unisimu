@@ -19,6 +19,7 @@ b:=foo(x);
 proc foo(a) { foo:=a+1; }
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>

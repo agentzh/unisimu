@@ -14,14 +14,15 @@ __DATA__
 
 === TEST 1
 --- kid
-# very simple one
+# very simple one <>
 a := 3 + 5*2
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
-    <comment># very simple one</comment>
+    <comment># very simple one &lt;&gt;</comment>
     </statement>
     <statement>
       <assignment>
@@ -57,6 +58,7 @@ a := 3 + 5*2
 a:=1+3-     2 + 5- 6- 8
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -113,6 +115,7 @@ a:=1+3-     2 + 5- 6- 8
 d := 5
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -139,6 +142,7 @@ d := 5
 ebc := (25)
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -171,6 +175,7 @@ ebc := (25)
 a_b := ((25+5123))
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -215,6 +220,7 @@ a_b := ((25+5123))
 e := 3/5
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -245,6 +251,7 @@ e := 3/5
 e := 3/(a+5)
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
 <statement_list>
 <statement>
@@ -289,6 +296,7 @@ e := 3/(a+5)
 e := 5+(3*6+3/5 ) * bb-3*c
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
 <statement_list>
 <statement>
@@ -359,6 +367,7 @@ e := 5+(3*6+3/5 ) * bb-3*c
 e := 5*(3-5-(7+3))
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
 <statement_list>
 <statement>
@@ -419,6 +428,7 @@ e := 5*(3-5-(7+3))
 a:=3+2; b:=5*6  ;c:=1*2
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -487,6 +497,7 @@ a:=3+2; b:=5*6  ;c:=1*2
 x:=-y;
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>

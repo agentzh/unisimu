@@ -44,6 +44,42 @@ if (@infiles > 1) {
     process_file($infiles[0], $outfile);
 }
 
+[%- IF lang == 'XML' %]
+my $dtd_file = "Kid.dtd";
+open my $dtd, "> $dtd_file" or
+    die "Can't open DTD file $dtd_file for writing: $!\n";
+
+print $dtd (<<END_DTD);
+<?xml version="1.0"?>
+
+<!ELEMENT program          (statement_list)>
+<!ELEMENT statement_list   (statement+)>
+<!ELEMENT statement        (assignment | if_statement | block | declaration | comment)>
+<!ELEMENT assignment       (var | expression)>
+<!ELEMENT var              (identifier)>
+<!ELEMENT identifier       (#PCDATA)>
+<!ELEMENT expression       (neg?, (term, op)*, term)>
+<!ELEMENT neg              (#PCDATA)>
+<!ELEMENT term             ((factor, op)*, factor)>
+<!ELEMENT factor           (number | expression | proc_call | var)>
+<!ELEMENT number           (#PCDATA)>
+<!ELEMENT proc_call        (identifier, expression_list)>
+<!ELEMENT expression_list  (expression+)>
+<!ELEMENT op               (#PCDATA)>
+<!ELEMENT if_statement     (condition, statement, statement?)>
+<!ELEMENT condition        (expression, rel_op, expression)>
+<!ELEMENT rel_op           (#PCDATA)>
+<!ELEMENT block            (statement_list)>
+<!ELEMENT declaration      (proc_decl)>
+<!ELEMENT proc_decl        (identifier, identifier_list, block)>
+<!ELEMENT identifier_list  (identifier+)>
+<!ELEMENT comment          (#PCDATA)>
+END_DTD
+
+close $dtd;
+warn "DTD file $dtd_file generated.\n";
+[%- END %]
+
 sub process_file {
     my ($infile, $outfile) = @_;
     open my $in, $infile or

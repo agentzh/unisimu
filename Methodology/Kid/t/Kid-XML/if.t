@@ -17,6 +17,7 @@ __DATA__
 if (x > 5) { x:=x+1 }
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -81,6 +82,7 @@ if (5 <> x) { x:= 3; } else {
     y:=-1 }
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
@@ -156,6 +158,7 @@ if (5 <> x) { x:= 3; } else {
 if (5 <> x) x:= 3; else y:=-1;
 --- xml
 <?xml version="1.0"?>
+<!DOCTYPE program SYSTEM "Kid.dtd">
 <program>
   <statement_list>
     <statement>
