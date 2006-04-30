@@ -10,6 +10,7 @@
 
 == Language
 
+* fix a bug in the Kid grammar: identifier: /[A-Za-z_]\w*/
 * I/O mechanisms
 ** add read/write directives for var I/O
 * lecical vars declarations
@@ -25,23 +26,29 @@
 
 * Kid::Proc backend:
 ** proc improvements
-*** add proc codegen to the Kid::XML backend
+*** add proc/comment codegen to the Kid::XML backend
 *** resolve proc calls within proc body
 *** detect proc recursion calling and report error
 *** reduce the temp vars used when inlining procs
 * use Perl::Tidy (XML::Tidy?) to "tidy up" the outputs
   of the backends
 * Pod generator for Kid::MathModel::Eval
+* New backend: GraphViz (this can simplify AST debugging process)
 * C/C++/Java/MASM backends for Kid
 ** variable type inferencing
 
 == Test Suit
 
+* add more test cases to kid2xxx.pl.tt:
+     kid2xxx.pl 02test.kid
+	 kid2xxx.pl -o 02test.tmp 02test.kid
+* extract related stuff from assign.t to proc.t
 * extract related stuff from if.t to arithmetic.t
 
 == Documentation
 
 * add doc/zh-cn/Language.pod
 * add doc/zh-cn/Utilities.pod
+* add INSTALL section to README
 * add POD for every .pm files in lib/
 * add sample/*
