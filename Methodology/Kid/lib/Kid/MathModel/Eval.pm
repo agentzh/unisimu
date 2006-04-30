@@ -11,6 +11,8 @@ use Kid::MathModel;
 use Kid::Proc;
 use PerlMaple;
 
+our $VERSION = '0.01';
+
 our @Logs;
 
 sub log_code {
@@ -135,7 +137,7 @@ sub translate {
  - $assign
 _EOC_
     }
-    open my $out, ">> maple.log" or
+    open my $out, ">> Maple.log" or
         die "Can't open tmp.log for writing: $!";
     print $out "----" x 5, " ", scalar(localtime),
         " ", "----" x 5, "\n\n";
