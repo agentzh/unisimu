@@ -103,3 +103,4 @@ template/kid2xxx.t.tt
 template/leftop.pm.tt
 template/t_Kid.pm.tt
 TODO
+Kid.dtd

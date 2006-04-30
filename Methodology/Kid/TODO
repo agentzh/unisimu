@@ -19,8 +19,6 @@
 
 == Backends
 
-* Kid::XML backend:
-** provide a DTD specification for the XML outputs
 * Kid::Proc backend:
 ** proc improvements
 *** resolve proc calls within proc body
