@@ -24,6 +24,9 @@ sub emit_xml {
     my $ast = shift;
     $Grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 
+expression_list: $/.xml = { Kid::XML::emit_expr_list( $<expression_list>.xml, $<expression>.xml ); }
+proc_call:  $/.xml = { Kid::XML::emit_proc_call( $<identifier>.xml, $<expression_list>.xml ); }
+
 number:     $/.xml = { "<number>" . $<__VALUE__> . "</number>\n" }
 factor:     $/.xml = { Kid::XML::emit_factor( $<child>.xml ); }
 
@@ -46,6 +49,11 @@ condition:    $/.xml = { Kid::XML::emit_cond( $<expression>.xml, $<rel_op>.xml, 
 if_statement: $/.xml = { Kid::XML::emit_if( $<condition>.xml, $<statement>.xml, $<else_statement>.xml ) }
 
 comment: $/.xml = { "<comment>" . $<__VALUE__> . "</comment>\n"; }
+
+identifier_list: $/.xml = { $<identifier_list>.xml . $<identifier>.xml }
+proc_decl:   $/.xml = { Kid::XML::emit_proc_decl( $<identifier>.xml, $<identifier_list>.xml, $<block>.xml ) }
+
+declaration: $/.xml = { "<declaration>\n" . $<child>.xml . "</declaration>\n"; }
 
 statement:      $/.xml = { "<statement>\n" .$<child>.xml . "</statement>\n" }
 statement_list: $/.xml = { $<statement_list>.xml . $<statement>.xml }
@@ -133,6 +141,21 @@ $child</expression>
 EOC
     }
     "<factor>\n$child</factor>\n";
+}
+
+sub emit_proc_decl {
+    my ($proc_name, $param_list, $block) = @_;
+    "<proc_decl>\n$proc_name<identifier_list>\n$param_list</identifier_list>\n$block</proc_decl>\n";
+}
+
+sub emit_proc_call {
+    my ($proc_name, $arg_list) = @_;
+    "<proc_call>\n$proc_name<expression_list>\n$arg_list</expression_list>\n</proc_call>\n";
+}
+
+sub emit_expr_list {
+    my ($expr_list, $expr) = @_;
+    "$expr_list<expression>\n$expr</expression>\n"
 }
 
 sub escape {
