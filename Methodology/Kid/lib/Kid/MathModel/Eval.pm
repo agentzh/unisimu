@@ -35,8 +35,8 @@ sub log_comment {
 sub eval_mm {
     my $mm_ast = shift;
 
-    my $maple = PerlMaple->new;
-    $maple->eval_cmd('infolevel[solve]:=1;');
+    my $maple = PerlMaple->new(RaiseError => 0, PrintError => 0);
+    $maple->eval_cmd('infolevel[solve]:=1: with(RealDomain):');
 
     my @mms;
     for my $set (@$mm_ast) {

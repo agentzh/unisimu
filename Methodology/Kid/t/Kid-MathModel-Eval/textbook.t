@@ -136,16 +136,16 @@ if (y > 0) {
 
 --- mathmodel_eval
 --
- - 0<x, 0<y, y-x<0
+ - 0<x, 0<y, y<x
  - z := y
 --
- - 0<x, y-x<0, y<0
+ - 0<x, y<0, y<x
  - z := x
 --
- - 0<x, 0<y, x-y<0
+ - 0<x, 0<y, x<y
  - z := x
 --
- - 0<y, x-y<0, x<0
+ - 0<y, x<0, x<y
  - z := x
 
 
@@ -172,13 +172,13 @@ if (x>0) {
 
 --- mathmodel_eval
 --
- - 0<x, y-x<0
+ - 0<x, y<x
  - z := x
 --
- - 0<x, 0<y, x-y<0
+ - 0<x, 0<y, x<y
  - z := y
 --
- - 0<y, x-y<0, x<0
+ - 0<y, x<0, x<y
  - z := x
 
 
@@ -198,13 +198,13 @@ if (x > 0) {
 }
 --- mathmodel_eval
 --
- - 0<x, y-x<=0
+ - 0<x, y<=x
  - z := x
 --
- - 0<x, 0<y, x-y<0
+ - 0<x, 0<y, x<y
  - z := y
 --
- - 0<y, x-y<=0, x<0
+ - 0<y, x<0, x<=y
  - z := x
 
 
@@ -232,13 +232,13 @@ proc min(x, y) {
 }
 --- mathmodel_eval
 --
- - 0<x, y-x<=0
+ - 0<x, y<=x
  - z := x
 --
- - 0<x, 0<y, x-y<0
+ - 0<x, 0<y, x<y
  - z := y
 --
- - 0<y, x-y<=0, x<0
+ - 0<y, x<0, x<=y
  - z := x
 
 
@@ -295,16 +295,16 @@ proc abs (x) {
 }
 --- mathmodel_eval
 --
- - 0<x, 0<y, y-x<0
+ - 0<x, 0<y, y<x
  - x, y := x+y, x-y
 --
- - y-x<0, y<0
+ - y<0, y<x
  - x, y := x-y, x+y
 --
- - 0<x, 0<y, x-y<0
+ - 0<x, 0<y, x<y
  - x, y := x+y, y-x
 --
- - x-y<0, x<0
+ - x<0, x<y
  - x, y := y-x, x+y
 
 
@@ -342,10 +342,10 @@ proc min(x, y) {
 }
 --- mathmodel_eval
 --
- - x=0, y=0
+ - x=y, y=0
  - x, y := 0, 0
 --
- - x=y, y<0
+ - x<0, y=x
  - x, y := 0, 2*x
 --
  - 0<y, x=y
@@ -360,6 +360,6 @@ proc min(x, y) {
  - x-y<0, x<0
  - x, y := y-x, x+y
 --
- - 0<x, 0<y, x-y<0
+ - 0<x, 0<y, x<y
  - x, y := x+y, y-x
 --- SKIP
