@@ -9,7 +9,7 @@ statement: if_statement
          | block /;?/
          | declaration
          | assignment /;?/
-		 | comment
+         | comment
          | <error>
 
 if_statement: 'if' <commit> '(' condition ')' statement <uncommit>
