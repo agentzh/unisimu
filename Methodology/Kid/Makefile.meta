@@ -20,9 +20,9 @@ SCRIPTS = script/kid2xml.pl script/kid2mpl.pl script/kid2pl.pl script/kid2mm.pl 
 T_SCRIPT_TT = template/kid2xxx.t.tt
 T_SCRIPTS = $(patsubst %.pl,t/%.t,$(SCRIPTS))
 
-.PHONY: all test clean
+.PHONY: all test clean build
 
-all: $(PM_FILES) $(SCRIPTS)
+all: $(PM_FILES) $(SCRIPTS) $(T_MODULES) $(T_SCRIPTS)
 
 lib/Kid/AST/Statements.pm: $(LEFTOP_TT)
 	tpage --define parent=statement_list --define child=statement \
@@ -52,7 +52,7 @@ $(SCRIPTS): $(SCRIPT_TT)
 $(T_SCRIPTS): $(T_SCRIPT_TT)
 	tpage --define ext=$(patsubst t/script/kid2%.t,%,$@) $< > $@
 
-test: all $(T_MODULES) $(T_SCRIPTS)
+test: all
 	prove -Ilib t/*/*.t t/*.t
 
 $(T_MODULES): template/t_Kid.pm.tt
@@ -62,3 +62,6 @@ clean:
 	$(RM_F) $(PM_FILES) t/script/0*test.pl t/script/0*test.xml t/script/0*test.mpl \
 	        t/script/0*test.mm* t/script/0*test.kid $(T_MODULES) $(SCRIPTS) \
 			$(T_SCRIPTS) Maple.log
+
+win32-build.bat: template/win32-build.tt
+	tpage $< > $@

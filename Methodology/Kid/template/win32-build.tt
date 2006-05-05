@@ -1,0 +1,43 @@
+[% names = ['kid2pl', 'kid2xml', 'kid2mpl', 'kid2mm', 'kid2mms', 'kid2kid'];
+   scripts = '';
+   FOREACH name = names;
+      scripts = scripts _ " script/" _ name _ ".pl";
+   END
+-%]
+@echo off
+
+perl Makefile.PL
+nmake /nologo
+nmake /nologo install
+
+nmake /nologo dist
+cp -v Kid*.tar.gz win32/src
+
+rm -rf tmp
+mkdir tmp
+
+call pp -B -c -p -o kid.par [% scripts %]
+unzip -o -d tmp kid.par
+cp -vr tmp/lib win32
+
+rm kid.par
+rm -rf tmp
+
+
+[% FOREACH name = names -%]
+
+type blib\script\[% name %].bat | perl -n -e "s/^perl -x -S/kidperl -x -S/;print" > win32\bin\[% name %].bat
+
+[% END -%]
+
+rem cd sample
+rem make
+rem cd ..
+
+cp -v sample win32 -r
+
+rem cd sample
+rem make clean
+rem cd ..
+
+nmake /nologo veryclean
