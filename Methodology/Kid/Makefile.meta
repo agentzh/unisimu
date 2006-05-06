@@ -20,7 +20,7 @@ SCRIPTS = script/kid2xml.pl script/kid2mpl.pl script/kid2pl.pl script/kid2mm.pl 
 T_SCRIPT_TT = template/kid2xxx.t.tt
 T_SCRIPTS = $(patsubst %.pl,t/%.t,$(SCRIPTS))
 
-.PHONY: all test clean build
+.PHONY: all test clean build doc
 
 all: $(PM_FILES) $(SCRIPTS) $(T_MODULES) $(T_SCRIPTS)
 
@@ -65,3 +65,9 @@ clean:
 
 win32-build.bat: template/win32-build.tt
 	tpage $< > $@
+
+doc: doc/Language.html
+
+%.html: %.pod
+	podhtm -s Active.css -o $@ $<
+	$(RM_F) doc/*.tmp
