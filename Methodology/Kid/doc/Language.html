@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>Language - Language Specification for Kid</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Language - Language Specification for Kid</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+	<li><a href="#General20Layout20of20Kid20Programs">General Layout of Kid Programs</a></li>
+	<li><a href="#Statements">Statements</a></li>
+	<li><a href="#Variables">Variables</a></li>
+	<li><a href="#Assignment">Assignment</a></li>
+	<li><a href="#If20Statement">If Statement</a></li>
+	<li><a href="#Block">Block</a></li>
+	<li><a href="#Procedures">Procedures</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>Language - Language Specification for Kid</p>
+<p>
+</p>
+<hr />
+<h1><a name="DESCRIPTION">DESCRIPTION</a></h1>
+<p>This document describes the Kid programming language.</p>
+<p>
+</p>
+<hr />
+<h1><a name="General20Layout20of20Kid20Programs">General Layout of Kid Programs</a></h1>
+<p>Every Kid program consists of serveral statements:</p>
+<pre>
+    program: statement_list</pre>
+<pre>
+    statement_list: statement(s)</pre>
+<p>The Kid language is free format, just like C/C++. So
+whitespace can be used arbitrarily as long as the tokens
+are separated. For example, one can say</p>
+<pre>
+    a:=3+2;</pre>
+<p>or</p>
+<pre>
+    a := 3 + 2;</pre>
+<p>or even</p>
+<pre>
+    a
+    := 3
+    +  2  ;</pre>
+<p>But one can not say</p>
+<pre>
+    a : = 3+2;</pre>
+<p>because the assignment operator ``:='' is one token, not two.</p>
+<p>It should be mentioned that Kid is case-sensitive, like most
+other programming languages, such as C++ and Java. For this
+reason, variable a and A are actually two variables, not one.</p>
+<p>
+</p>
+<hr />
+<h1><a name="Statements">Statements</a></h1>
+<p>A statement can be one of the following: an if statement,
+a code block, a proc definition or an assignment.</p>
+<p>The BNF definition for a Kid statement is as follows:</p>
+<pre>
+    statement: if_statement
+             | block
+             | proc_decl
+             | assignment</pre>
+<p>An example of if statement is</p>
+<pre>
+    if (x&gt;0) { x:=5; y:=4 } else x:=x+1;</pre>
+<p>An example of a block is</p>
+<pre>
+    { x:=5; y:=x+1; }</pre>
+<p>An example of proc declaration is</p>
+<pre>
+    proc min (x, y) {
+        if (x&lt;=y) min:=x;
+        else      min:=y;
+    }</pre>
+<p>an example of assignment is</p>
+<pre>
+    x:=1;</pre>
+<p>
+</p>
+<hr />
+<h1><a name="Variables">Variables</a></h1>
+<p>Currently, the Kid variables can hold numeric data only. One
+can assign an integer value to a Kid variable or assign a
+floating point number to it.</p>
+<p>There is no need (and also no way) to declare the variables
+before using them. Every varible outside a proc definition
+is considered global. And every variable in a proc definition
+is local. One can not reference a global variable within
+a proc body.</p>
+<p>
+</p>
+<hr />
+<h1><a name="Assignment">Assignment</a></h1>
+<p>The Assignment statement has the following syntax:</p>
+<pre>
+    assignment: variable ':=' expression
+              | variable ':=' expression ';'</pre>
+<p>The syntax of the assignment operator ':=' is exactly the same 
+some other languages such as Maple and Pascal.</p>
+<p>The trailing semicolon (;) is optional. So you can say</p>
+<pre>
+    x:=3; y:=5;</pre>
+<p>or</p>
+<pre>
+    x:=3 y:=5</pre>
+<p>Either is okay.</p>
+<p>
+</p>
+<hr />
+<h1><a name="If20Statement">If Statement</a></h1>
+<p>The BNF syntax for the if statements is as follows:</p>
+<pre>
+    if_statement: 'if' '(' condition ')' statement 'else' statement
+                | 'if' '(' condition ')'</pre>
+<p>
+</p>
+<hr />
+<h1><a name="Block">Block</a></h1>
+<p>A block is a Kid statement list wrapped by a pair of curly brackets:</p>
+<pre>
+    block: '{' statement_list '}'</pre>
+<p>For example,</p>
+<pre>
+    { x:=3+2; }</pre>
+<p>and</p>
+<pre>
+    {
+        y:=y+1;
+        if(x&gt;0)
+            x:=5
+        else
+            x&gt;0;
+    }</pre>
+<p>
+</p>
+<hr />
+<h1><a name="Procedures">Procedures</a></h1>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Agent Zhang <em><a href="mailto:mailto:agentzh@gmail.com">mailto:agentzh@gmail.com</a></em></p>
+<p>
+</p>
+<hr />
+<h1><a name="COPYRIGHT">COPYRIGHT</a></h1>
+<p>Copyright (c) 2006 Agent Zhang. All rights reserved.</p>
+<p>The Kid compiler is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Language - Language Specification for Kid</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

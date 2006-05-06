@@ -1,0 +1,147 @@
+=head1 NAME
+
+Language - Language Specification for Kid
+
+=head1 DESCRIPTION
+
+This document describes the Kid programming language.
+
+=head1 General Layout of Kid Programs
+
+Every Kid program consists of serveral statements:
+
+    program: statement_list
+
+    statement_list: statement(s)
+
+The Kid language is free format, just like C/C++. So
+whitespace can be used arbitrarily as long as the tokens
+are separated. For example, one can say
+
+    a:=3+2;
+
+or
+
+    a := 3 + 2;
+
+or even
+
+    a
+    := 3
+    +  2  ;
+
+But one can not say
+
+    a : = 3+2;
+
+because the assignment operator ":=" is one token, not two.
+
+It should be mentioned that Kid is case-sensitive, like most
+other programming languages, such as C++ and Java. For this
+reason, variable a and A are actually two variables, not one.
+
+=head1 Statements
+
+A statement can be one of the following: an if statement,
+a code block, a proc definition or an assignment.
+
+The BNF definition for a Kid statement is as follows:
+
+    statement: if_statement
+             | block
+             | proc_decl
+             | assignment
+
+An example of if statement is
+
+    if (x>0) { x:=5; y:=4 } else x:=x+1;
+
+An example of a block is
+
+    { x:=5; y:=x+1; }
+
+An example of proc declaration is
+
+    proc min (x, y) {
+        if (x<=y) min:=x;
+        else      min:=y;
+    }
+
+an example of assignment is
+
+    x:=1;
+
+=head1 Variables
+
+Currently, the Kid variables can hold numeric data only. One
+can assign an integer value to a Kid variable or assign a
+floating point number to it.
+
+There is no need (and also no way) to declare the variables
+before using them. Every varible outside a proc definition
+is considered global. And every variable in a proc definition
+is local. One can not reference a global variable within
+a proc body.
+
+=head1 Assignment
+
+The Assignment statement has the following syntax:
+
+    assignment: variable ':=' expression
+              | variable ':=' expression ';'
+
+The syntax of the assignment operator ':=' is exactly the same 
+some other languages such as Maple and Pascal.
+
+The trailing semicolon (;) is optional. So you can say
+
+    x:=3; y:=5;
+
+or
+
+    x:=3 y:=5
+
+Either is okay.
+
+=head1 If Statement
+
+The BNF syntax for the if statements is as follows:
+
+    if_statement: 'if' '(' condition ')' statement 'else' statement
+                | 'if' '(' condition ')'
+
+
+=head1 Block
+
+A block is a Kid statement list wrapped by a pair of curly brackets:
+
+    block: '{' statement_list '}'
+
+For example,
+
+    { x:=3+2; }
+
+and
+
+    {
+        y:=y+1;
+        if(x>0)
+            x:=5
+        else
+            x>0;
+    }
+
+=head1 Procedures
+
+
+
+=head1 AUTHOR
+
+Agent Zhang L<mailto:agentzh@gmail.com>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 Agent Zhang. All rights reserved.
+
+The Kid compiler is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.
