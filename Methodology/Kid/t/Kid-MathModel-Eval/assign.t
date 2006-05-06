@@ -52,3 +52,23 @@ y:=3*foo(x+1)-1;
 --
  -
  - y := 3*x+5
+
+
+
+=== TEST 5
+--- kid
+_temp:=x; x:=y; y:=_temp
+--- mathmodel_eval
+--
+ -
+ - x, y := y, x
+
+
+
+=== TEST 6
+--- kid
+temp:=x; x:=y; y:=temp
+--- mathmodel_eval
+--
+ -
+ - temp, x, y := x, y, x

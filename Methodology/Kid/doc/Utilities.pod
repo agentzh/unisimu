@@ -1,0 +1,195 @@
+=head1 NAME
+
+Utilities - Command-line Utilities for Kid
+
+=head1 SYNOPSIS
+
+    # compile foo.kid to foo.mms (maths model solutions)
+    kid2mms foo.kid
+
+    # compile to bar.mms instead
+    kid2mms -o bar.mms foo.kid  
+
+    # compile multiple input files
+    kid2mms foo.kid bar.kid baz/*.kid
+
+    # compile foo.kid to perl script foo.pl
+    kid2pl foo.kid
+
+    # compile foo.kid to Maple source foo.mpl
+    kid2mpl foo.kid  
+
+    # compile foo.kid to XML which describes the Kid AST
+    kid2xml foo.kid
+
+    # compile foo.kid back to Kid source foo.kid.kid (via AST)
+    kid2kid foo.kid
+
+=head1 kid2mms
+
+This is the most importanat tool in the Kid package. kid2mms
+compiles Kid programs to mathematical models and solve the
+models via Maple. The output files contain unified abstract
+"programs" (in an academic sense) which are logically
+equivalent to the original Kid programs but have been
+distilled. Such "unified programs" are called MMS (Maths
+Model Solutions) throughout the Kid documentation. 
+
+Consider the following Kid program
+
+    x:=x+y; y:=x-y; x:=x-y
+
+and, say, we have saved it into file simple.kid. With the command
+
+    kid2mms simple.kid
+
+we will get an output file named simple.mms, which looks like
+
+     --
+      -
+      - x, y := y, x
+
+From the output, we see the "effection" of the original Kid
+program is actually exchanging the values of variables C<x> and
+C<y>. So MMS can uncover I<semantics> of Kid programs.
+
+We will get exactly the same MMS output if we compile the following
+Kid program using kid2mms:
+
+    _temp:=x; x:=y; y:=_temp
+
+Note that there's a leading underscore (_) in the temporary variable's
+name. It's okay if we write C<temp> instead of C<_temp>, but we will
+get something different:
+
+    --
+     -
+     - temp, x, y := x, y, x
+
+kid2mms reports the value of the C<temp> variable because it thinks that
+C<temp> is as C<significant> as C<x> and C<y>. A leading underscore
+in a variable's name can signal kid2mms to ignore it because this
+variable is a temporary variable -- hey, no problem.
+
+From the samples given up, we see Kid programs of very different appearances
+can result in identical MMS output (or at least very similar). kid2mms
+always tries to figure out the I<meaning> of a Kid program.
+
+kid2mms requires Maple 9 or better since it makes use of Maple to
+simpilify the Maths Model induced from the Kid AST. On the other
+hand, the other Kid utilities don't depend on Maple.
+
+=head1 kid2pl
+
+kid2pl converts Kid source code to functionally equivalent Perl script.
+For example, the following Kid program
+
+    if (x > 5) { x:=x+1 }
+
+will produce a Perl program like this:
+
+    if($x>5){
+    $x=$x+1;
+    }
+
+Because (currently) there's no I/O primitives in Kid, the output
+Perl script can actually do any thing "interesting". But it may change
+in the future.
+
+=head1 kid2mpl
+
+kid2mpl compiles a Kid program to a Maple source file.
+
+=head1 kid2xml
+
+This tool can dump out the whole Kid AST of the input .kid file
+into an XML file and generate a corresponding DTD file in the 
+current directory. This is particularly useful for new Kid backends
+written in other programming languages which has good XML support
+and for ordinary users who want to investigate the Kid AST.
+
+Note that a simple Kid statement can produce huge AST. For example,
+the assignment C<a:=3+5*2> will generate the following XML listing
+which depicts the resulting AST:
+
+    <?xml version="1.0"?>
+    <!DOCTYPE program SYSTEM "Kid.dtd">
+    <program>
+      <statement_list>
+        <statement>
+        <comment># very simple one &lt;&gt;</comment>
+        </statement>
+        <statement>
+          <assignment>
+            <var>
+              <identifier>a</identifier>
+            </var>
+            <expression>
+              <term>
+                <factor>
+                  <number>3</number>
+                </factor>
+              </term>
+                <op>+</op>
+              <term>
+                <factor>
+                  <number>5</number>
+                </factor>
+                <op>*</op>
+                <factor>
+                  <number>2</number>
+                </factor>
+              </term>
+            </expression>
+          </assignment>
+        </statement>
+      </statement_list>
+    </program>
+
+and a DTD file for it:
+
+    <?xml version="1.0"?>
+
+    <!ELEMENT program          (statement_list)>
+    <!ELEMENT statement_list   (statement+)>
+    <!ELEMENT statement        (assignment | if_statement | block | declaration | comment)>
+    <!ELEMENT assignment       (var | expression)>
+    <!ELEMENT var              (identifier)>
+    <!ELEMENT identifier       (#PCDATA)>
+    <!ELEMENT expression       (neg?, (term, op)*, term)>
+    <!ELEMENT neg              (#PCDATA)>
+    <!ELEMENT term             ((factor, op)*, factor)>
+    <!ELEMENT factor           (number | expression | proc_call | var)>
+    <!ELEMENT number           (#PCDATA)>
+    <!ELEMENT proc_call        (identifier, expression_list)>
+    <!ELEMENT expression_list  (expression+)>
+    <!ELEMENT op               (#PCDATA)>
+    <!ELEMENT if_statement     (condition, statement, statement?)>
+    <!ELEMENT condition        (expression, rel_op, expression)>
+    <!ELEMENT rel_op           (#PCDATA)>
+    <!ELEMENT block            (statement_list)>
+    <!ELEMENT declaration      (proc_decl)>
+    <!ELEMENT proc_decl        (identifier, identifier_list, block)>
+    <!ELEMENT identifier_list  (identifier+)>
+    <!ELEMENT comment          (#PCDATA)>
+
+It should be mentioned that there's no indentation in the actual
+XML output. I did the indentation above C<manually> to make it
+looks better. Automatic indentation support will be added
+to kid2xml in the future version.
+
+=head1 kid2kid
+
+The kid2kid utility compiles the input .kid file to an AST and then
+generate Kid code from the AST.
+
+=head1 AUTHOR
+
+Agent Zhang L<mailto:agentzh@gmail.com>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 Agent Zhang. All rights reserved.
+
+The Kid compiler is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.

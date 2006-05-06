@@ -66,7 +66,7 @@ clean:
 win32-build.bat: template/win32-build.tt
 	tpage $< > $@
 
-doc: doc/Language.html
+doc: doc/Language.html doc/Utilities.html
 
 %.html: %.pod
 	podhtm -s Active.css -o $@ $<

@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>Utilities - Command-line Utilities for Kid</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Utilities - Command-line Utilities for Kid</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+	<li><a href="#kid2mms">kid2mms</a></li>
+	<li><a href="#kid2pl">kid2pl</a></li>
+	<li><a href="#kid2mpl">kid2mpl</a></li>
+	<li><a href="#kid2xml">kid2xml</a></li>
+	<li><a href="#kid2kid">kid2kid</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>Utilities - Command-line Utilities for Kid</p>
+<p>
+</p>
+<hr />
+<h1><a name="SYNOPSIS">SYNOPSIS</a></h1>
+<pre>
+    # compile foo.kid to foo.mms (maths model solutions)
+    kid2mms foo.kid</pre>
+<pre>
+    # compile to bar.mms instead
+    kid2mms -o bar.mms foo.kid</pre>
+<pre>
+    # compile multiple input files
+    kid2mms foo.kid bar.kid baz/*.kid</pre>
+<pre>
+    # compile foo.kid to perl script foo.pl
+    kid2pl foo.kid</pre>
+<pre>
+    # compile foo.kid to Maple source foo.mpl
+    kid2mpl foo.kid</pre>
+<pre>
+    # compile foo.kid to XML which describes the Kid AST
+    kid2xml foo.kid</pre>
+<pre>
+    # compile foo.kid back to Kid source foo.kid.kid (via AST)
+    kid2kid foo.kid</pre>
+<p>
+</p>
+<hr />
+<h1><a name="kid2mms">kid2mms</a></h1>
+<p>This is the most importanat tool in the Kid package. kid2mms
+compiles Kid programs to mathematical models and solve the
+models via Maple. The output files contain unified abstract
+``programs'' (in an academic sense) which are logically
+equivalent to the original Kid programs but have been
+distilled. Such ``unified programs'' are called MMS (Maths
+Model Solutions) throughout the Kid documentation.</p>
+<p>Consider the following Kid program</p>
+<pre>
+    x:=x+y; y:=x-y; x:=x-y</pre>
+<p>and, say, we have saved it into file simple.kid. With the command</p>
+<pre>
+    kid2mms simple.kid</pre>
+<p>we will get an output file named simple.mms, which looks like</p>
+<pre>
+     --
+      -
+      - x, y := y, x</pre>
+<p>From the output, we see the ``effection'' of the original Kid
+program is actually exchanging the values of variables <code>x</code> and
+<code>y</code>. So MMS can uncover <em>semantics</em> of Kid programs.</p>
+<p>We will get exactly the same MMS output if we compile the following
+Kid program using kid2mms:</p>
+<pre>
+    _temp:=x; x:=y; y:=_temp</pre>
+<p>Note that there's a leading underscore (_) in the temporary variable's
+name. It's okay if we write <code>temp</code> instead of <code>_temp</code>, but we will
+get something different:</p>
+<pre>
+    --
+     -
+     - temp, x, y := x, y, x</pre>
+<p>kid2mms reports the value of the <code>temp</code> variable because it thinks that
+<code>temp</code> is as <code>significant</code> as <code>x</code> and <code>y</code>. A leading underscore
+in a variable's name can signal kid2mms to ignore it because this
+variable is a temporary variable -- hey, no problem.</p>
+<p>From the samples given up, we see Kid programs of very different appearances
+can result in identical MMS output (or at least very similar). kid2mms
+always tries to figure out the <em>meaning</em> of a Kid program.</p>
+<p>kid2mms requires Maple 9 or better since it makes use of Maple to
+simpilify the Maths Model induced from the Kid AST. On the other
+hand, the other Kid utilities don't depend on Maple.</p>
+<p>
+</p>
+<hr />
+<h1><a name="kid2pl">kid2pl</a></h1>
+<p>kid2pl converts Kid source code to functionally equivalent Perl script.
+For example, the following Kid program</p>
+<pre>
+    if (x &gt; 5) { x:=x+1 }</pre>
+<p>will produce a Perl program like this:</p>
+<pre>
+    if($x&gt;5){
+    $x=$x+1;
+    }</pre>
+<p>Because (currently) there's no I/O primitives in Kid, the output
+Perl script can actually do any thing ``interesting''. But it may change
+in the future.</p>
+<p>
+</p>
+<hr />
+<h1><a name="kid2mpl">kid2mpl</a></h1>
+<p>kid2mpl compiles a Kid program to a Maple source file.</p>
+<p>
+</p>
+<hr />
+<h1><a name="kid2xml">kid2xml</a></h1>
+<p>This tool can dump out the whole Kid AST of the input .kid file
+into an XML file and generate a corresponding DTD file in the 
+current directory. This is particularly useful for new Kid backends
+written in other programming languages which has good XML support
+and for ordinary users who want to investigate the Kid AST.</p>
+<p>Note that a simple Kid statement can produce huge AST. For example,
+the assignment <code>a:=3+5*2</code> will generate the following XML listing
+which depicts the resulting AST:</p>
+<pre>
+    &lt;?xml version=&quot;1.0&quot;?&gt;
+    &lt;!DOCTYPE program SYSTEM &quot;Kid.dtd&quot;&gt;
+    &lt;program&gt;
+      &lt;statement_list&gt;
+        &lt;statement&gt;
+        &lt;comment&gt;# very simple one &amp;lt;&amp;gt;&lt;/comment&gt;
+        &lt;/statement&gt;
+        &lt;statement&gt;
+          &lt;assignment&gt;
+            &lt;var&gt;
+              &lt;identifier&gt;a&lt;/identifier&gt;
+            &lt;/var&gt;
+            &lt;expression&gt;
+              &lt;term&gt;
+                &lt;factor&gt;
+                  &lt;number&gt;3&lt;/number&gt;
+                &lt;/factor&gt;
+              &lt;/term&gt;
+                &lt;op&gt;+&lt;/op&gt;
+              &lt;term&gt;
+                &lt;factor&gt;
+                  &lt;number&gt;5&lt;/number&gt;
+                &lt;/factor&gt;
+                &lt;op&gt;*&lt;/op&gt;
+                &lt;factor&gt;
+                  &lt;number&gt;2&lt;/number&gt;
+                &lt;/factor&gt;
+              &lt;/term&gt;
+            &lt;/expression&gt;
+          &lt;/assignment&gt;
+        &lt;/statement&gt;
+      &lt;/statement_list&gt;
+    &lt;/program&gt;</pre>
+<p>and a DTD file for it:</p>
+<pre>
+    &lt;?xml version=&quot;1.0&quot;?&gt;</pre>
+<pre>
+    &lt;!ELEMENT program          (statement_list)&gt;
+    &lt;!ELEMENT statement_list   (statement+)&gt;
+    &lt;!ELEMENT statement        (assignment | if_statement | block | declaration | comment)&gt;
+    &lt;!ELEMENT assignment       (var | expression)&gt;
+    &lt;!ELEMENT var              (identifier)&gt;
+    &lt;!ELEMENT identifier       (#PCDATA)&gt;
+    &lt;!ELEMENT expression       (neg?, (term, op)*, term)&gt;
+    &lt;!ELEMENT neg              (#PCDATA)&gt;
+    &lt;!ELEMENT term             ((factor, op)*, factor)&gt;
+    &lt;!ELEMENT factor           (number | expression | proc_call | var)&gt;
+    &lt;!ELEMENT number           (#PCDATA)&gt;
+    &lt;!ELEMENT proc_call        (identifier, expression_list)&gt;
+    &lt;!ELEMENT expression_list  (expression+)&gt;
+    &lt;!ELEMENT op               (#PCDATA)&gt;
+    &lt;!ELEMENT if_statement     (condition, statement, statement?)&gt;
+    &lt;!ELEMENT condition        (expression, rel_op, expression)&gt;
+    &lt;!ELEMENT rel_op           (#PCDATA)&gt;
+    &lt;!ELEMENT block            (statement_list)&gt;
+    &lt;!ELEMENT declaration      (proc_decl)&gt;
+    &lt;!ELEMENT proc_decl        (identifier, identifier_list, block)&gt;
+    &lt;!ELEMENT identifier_list  (identifier+)&gt;
+    &lt;!ELEMENT comment          (#PCDATA)&gt;</pre>
+<p>It should be mentioned that there's no indentation in the actual
+XML output. I did the indentation above <code>manually</code> to make it
+looks better. Automatic indentation support will be added
+to kid2xml in the future version.</p>
+<p>
+</p>
+<hr />
+<h1><a name="kid2kid">kid2kid</a></h1>
+<p>The kid2kid utility compiles the input .kid file to an AST and then
+generate Kid code from the AST.</p>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Agent Zhang <em><a href="mailto:mailto:agentzh@gmail.com">mailto:agentzh@gmail.com</a></em></p>
+<p>
+</p>
+<hr />
+<h1><a name="COPYRIGHT">COPYRIGHT</a></h1>
+<p>Copyright (c) 2006 Agent Zhang. All rights reserved.</p>
+<p>The Kid compiler is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Utilities - Command-line Utilities for Kid</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
