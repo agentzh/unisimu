@@ -1,3 +1,3 @@
 @echo off
 
-del *.mms Maple.log
+del *.mms *.xml *.kid.kid *.mpl *.mm *.pl Maple.log Kid.dtd

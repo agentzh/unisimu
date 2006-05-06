@@ -42,6 +42,7 @@ rem make
 rem cd ..
 
 cp -v sample win32 -r
+cp -v doc win32 -r
 
 rem cd sample
 rem make clean
