@@ -101,7 +101,7 @@ c:=a/b;
 
 
 
-=== TEST 5
+=== TEST 4
 --- kid
 a := min(x+6, x+y);
 
@@ -129,7 +129,7 @@ proc abs(x) {
 
 
 
-=== TEST 6: List assignment
+=== TEST 5: List assignment
 --- kid
 a, b := x, y;
 --- proc
@@ -141,7 +141,7 @@ a, b := x, y;
 
 
 
-=== TEST 7: List assignment
+=== TEST 6: List assignment
 --- kid
 x,y,z:=x-y,x+y,x-z;
 --- proc

@@ -106,7 +106,7 @@ else {
     }
 }
 
-=== TEST 3
+=== TEST 4
 --- kid
 if (5 <> x) { x:= 3; } else y := dec(x);
 

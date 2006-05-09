@@ -25,7 +25,17 @@ x:=x+y; y:=x-y; x:=x-y
 
 
 
-=== TEST 2: Page 181, polynomial evaluation
+=== TEST 2: Page 180, ditto
+--- kid
+x, y := y, x
+--- mathmodel_eval
+--
+ -
+ - x, y := y, x
+
+
+
+=== TEST 3: Page 181, polynomial evaluation
 --- kid
 y:=a
 y:=x*y+b
@@ -38,7 +48,7 @@ y:=x*y+d
 
 
 
-=== TEST 3: Page 182, disjoint rules
+=== TEST 4: Page 182, disjoint rules
 
 (x>0 -> (y>0 -> z:=x*y | y<0 -> z:=-x*y) |
  x<0 -> (y>0 -> z:=-x*y | y<0 -> z:=x*y))
@@ -77,7 +87,7 @@ if (x<0) {
 
 
 
-=== TEST 4: Page 182, disjoint rules
+=== TEST 5: Page 182, disjoint rules
 
     (x>0 -> (y>0 -> z:=x*y | y<0 -> z:=-x*y) |
      x<0 -> (y>0 -> z:=-x*y | y<0 -> z:=x*y))
@@ -118,7 +128,7 @@ if (x>0) {
 
 
 
-=== TEST 5: Page 182, non-disjoint rules
+=== TEST 6: Page 182, non-disjoint rules
 
     (x>0 -> (x>y -> z:=x | x<y -> z:=y) |
      y>0 -> (x<y -> z:=x | x>y -> z:=y))
@@ -150,7 +160,7 @@ if (y > 0) {
 
 
 
-=== TEST 6: Page 182, non-disjoint rules
+=== TEST 7: Page 182, non-disjoint rules
 
     (x>0 -> (x>y -> z:=x | x<y -> z:=y) |
      y>0 -> (x<y -> z:=x | x>y -> z:=y))
@@ -183,7 +193,7 @@ if (x>0) {
 
 
 
-=== TEST 7: Page 182, non-disjoint rules
+=== TEST 8: Page 182, non-disjoint rules
 
   (x>0 -> z:=max(x,y) | y>0 -> z:=min(x,y))
 
@@ -209,7 +219,7 @@ if (x > 0) {
 
 
 
-=== TEST 8: Page 182, non-disjoint rules
+=== TEST 9: Page 182, non-disjoint rules
 
   (x>0 -> z:=max(x,y) | y>0 -> z:=min(x,y))
 
@@ -243,7 +253,7 @@ proc min(x, y) {
 
 
 
-=== TEST 9: Page 183, Example 6.1
+=== TEST 10: Page 183, Example 6.1
 
   f=(x:=x)
   P:  if x>0 then x:=x-2*x else x:=x+2*abs(x) fi
@@ -270,7 +280,7 @@ if (x>0) x:=x-2*x else x:=x+2*abs(x)
 
 
 
-=== TEST 10: Page 184, Example 6.3
+=== TEST 11: Page 184, Example 6.3
 
   (x>y -> x,y:=x+abs(y),x-abs(y) |
    x<y -> x,y:=y+abs(x),y-abs(x))
@@ -309,7 +319,44 @@ proc abs (x) {
 
 
 
-=== TEST 11: Page 184, Example 6.3 (ditto)
+=== TEST 12: Page 184, Example 6.3
+
+  (x>y -> x,y:=x+abs(y),x-abs(y) |
+   x<y -> x,y:=y+abs(x),y-abs(x))
+ =>
+   x,y:=max(x,y)min(x,y)
+   x,y:=max(x-y,x+y),min(x-y,x+y)
+   x,y:=max(x,y),min(x,y)
+
+--- kid
+
+if (x>y) {
+    x,y:=x+abs(y),x-abs(y);
+} else if (x<y) {
+    x,y:=y+abs(x),y-abs(x);
+}
+
+proc abs (x) {
+    if (x>=0) abs:=x;
+    else      abs:=-x;
+}
+--- mathmodel_eval
+--
+ - 0<x, 0<y, y<x
+ - x, y := x+y, x-y
+--
+ - y<0, y<x
+ - x, y := x-y, x+y
+--
+ - 0<x, 0<y, x<y
+ - x, y := x+y, y-x
+--
+ - x<0, x<y
+ - x, y := y-x, x+y
+
+
+
+=== TEST 13: Page 184, Example 6.3 (ditto)
 
   (x>y -> x,y:=x+abs(y),x-abs(y) |
    x<y -> x,y:=y+abs(x),y-abs(x))
@@ -366,7 +413,86 @@ proc min(x, y) {
 
 
 
-=== TEST 12: Page 190, Problem 3 (3)
+=== TEST 14: Page 184, Example 6.3 (ditto)
+
+  (x>y -> x,y:=x+abs(y),x-abs(y) |
+   x<y -> x,y:=y+abs(x),y-abs(x))
+ =>
+   x,y:=max(x,y),min(x,y)
+   x,y:=max(x-y,x+y),min(x-y,x+y)
+   x,y:=max(x,y),min(x,y)
+
+(this test runs too slowly, so I skip it for now)
+
+--- kid
+
+x,y:=max(x,y),min(x,y)
+x,y:=max(x-y,x+y),min(x-y,x+y)
+x,y:=max(x,y),min(x,y)
+
+proc max(x, y) {
+    if (x >= y) max := x;
+    else        max := y;
+}
+
+proc min(x, y) {
+    if (x <= y) min := x;
+    else        min := y;
+}
+--- mathmodel_eval
+--
+ - x=y, y=0
+ - x, y := 0, 0
+--
+ - 0<y, x=y
+ - x, y := 2*x, 0
+--
+ - x<0, y=x
+ - x, y := 0, 2*x
+--
+ - 0<x, 0<y, x<y
+ - x, y := y+x, y-x
+--
+ - x<y, y+x<y-x
+ - x, y := y-x, y+x
+--
+ - 0<x, 0<y, y<x
+ - x, y := y+x, x-y
+--
+ - y<0, y<x
+ - x, y := x-y, y+x
+--- SKIP
+
+
+
+=== TEST 15: Page 190, Problem 3 (2)
+
+    x,y,z:=z,x,y
+    x,y,z:=y,z,x
+    x,y,z:=z,y,x
+    x,y,z:=y,x,z
+    x,y,z:=x,z,y
+
+  =>
+
+    x,y,z := y,x,z
+
+--- kid
+
+x,y,z:=z,x,y
+x,y,z:=y,z,x
+x,y,z:=z,y,x
+x,y,z:=y,x,z
+x,y,z:=x,z,y
+
+--- mathmodel_eval
+--
+ -
+ - x, y := y, x
+
+
+
+=== TEST 16: Page 190, Problem 3 (3)
 
     if x<0 then y:=x+y else x:=x-y fi
     if y<0 then x:=y+x else y:=y-x fi
@@ -377,6 +503,37 @@ proc min(x, y) {
 if (x<0) y:=x+y else x:=x-y
 if (y<0) x:=y+x else y:=y-x
 if (x+y>0) { _t:=y-x; x:=x-y; y:=_t }
+
+--- mathmodel_eval
+--
+ - 3*x+2*y<=0, x+y<0, x<0
+ - x, y := 2*x+y, x+y
+--
+ - 0<x+y, 0<y, x<0
+ - x, y := x-y, y-x
+--
+ - 0<x, 0<x+y, y<0
+ - x, y := x-y, y-x
+--
+ - 0<x, 0<y
+ - x, y := 2*x-3*y, 3*y-2*x
+--
+ - 0<=x, y=0
+ - x, y := x, -x
+
+
+
+=== TEST 17: Page 190, Problem 3 (3)
+
+    if x<0 then y:=x+y else x:=x-y fi
+    if y<0 then x:=y+x else y:=y-x fi
+    if x+y>0 then x,y:=x-y,y-x fi
+
+--- kid
+
+if (x<0) y:=x+y else x:=x-y
+if (y<0) x:=y+x else y:=y-x
+if (x+y>0) x,y:=x-y,y-x
 
 --- mathmodel_eval
 --
