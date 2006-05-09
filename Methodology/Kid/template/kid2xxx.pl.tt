@@ -77,7 +77,7 @@ print $dtd (<<END_DTD);
 END_DTD
 
 close $dtd;
-warn "DTD file $dtd_file generated.\n";
+print "DTD file $dtd_file generated.\n";
 [%- END %]
 
 sub process_file {

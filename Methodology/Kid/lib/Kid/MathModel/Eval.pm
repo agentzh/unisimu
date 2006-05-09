@@ -103,7 +103,10 @@ sub eval_mm {
             push @rhs, $value;
             push @lhs, $var;
         }
-        next if !@lhs;
+        if (!@lhs) {
+            log_comment "eval_mm: omit no-op route { @sols }";
+            next;
+        }
         push @mms, { conditions => \@sols, lhs => \@lhs, rhs => \@rhs };
     }
     \@mms;

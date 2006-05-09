@@ -70,4 +70,4 @@ doc: doc/Language.html doc/Utilities.html
 
 %.html: %.pod
 	podhtm -s Active.css -o $@ $<
-	$(RM_F) doc/*.tmp
+	$(RM_F) *.tmp
