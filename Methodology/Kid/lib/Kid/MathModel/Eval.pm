@@ -54,18 +54,6 @@ sub eval_mm {
         my $mplcode = log_code join(';', @assigns).';';
         log_ans $maple->eval_cmd($mplcode);
 
-        my (@lhs, @rhs);
-        for my $final (@finals) {
-            next if !$final or $final =~ /^_|_0$/;
-            my $value = log_ans $maple->eval_cmd( log_code "$final;" );
-            if ($value =~ /[A-Za-z_]/) {
-                $value = denumber($maple, $value, @inits);
-            }
-            push @rhs, $value;
-            (my $var = $final) =~ s/_\d+$//;
-            push @lhs, $var;
-        }
-
         my @sols;
         $maple->ReturnAST(1);
         if (@rels) {
@@ -101,6 +89,21 @@ sub eval_mm {
             push @sols, map { s/\s+//g; $_ } @neqs;
         }
         @sols = sort @sols;
+        $maple->ReturnAST(0);
+
+        my (@lhs, @rhs);
+        for my $final (@finals) {
+            next if !$final or $final =~ /^_|_0$/;
+            my $value = log_ans $maple->eval_cmd( log_code "$final;" );
+            if ($value =~ /[A-Za-z_]/) {
+                $value = denumber($maple, $value, @inits);
+            }
+            (my $var = $final) =~ s/_\d+$//;
+            next if $value eq $var;
+            push @rhs, $value;
+            push @lhs, $var;
+        }
+        next if !@lhs;
         push @mms, { conditions => \@sols, lhs => \@lhs, rhs => \@rhs };
     }
     \@mms;
@@ -127,9 +130,22 @@ sub translate {
     my $mms_ast = eval_mm( $mm_ast );
     my $s = '';
     for (@$mms_ast) {
-        my $conds = join(', ', @{ $_->{conditions} });
+        my @conds = @{ $_->{conditions} };
+        my @rhs = @{ $_->{rhs} };
+        my @eqns = grep { /^[a-z_]\w*=[\d\.]+$/ } @conds;
+        if (@eqns) {
+            #warn "!!! @eqns";
+            my $maple = PerlMaple->new(RaiseError => 0, PrintError => 0);
+            my $eqns = join(',', @eqns);
+            for my $exp (@rhs) {
+                my $cmd = log_code "eval($exp, {$eqns});";
+                $exp = log_ans $maple->eval_cmd($cmd);
+                $exp =~ s/\s+//g;
+            }
+        }
+        my $conds = join(', ', @conds);
         my $lhs = join(', ', @{ $_->{lhs} });
-        my $rhs = join(', ', @{ $_->{rhs} });
+        my $rhs = join(', ', @rhs);
         my $assign = "$lhs := $rhs";
         $s .= <<_EOC_;
 --

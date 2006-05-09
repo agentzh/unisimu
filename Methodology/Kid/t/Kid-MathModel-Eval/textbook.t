@@ -263,7 +263,7 @@ if (x>0) x:=x-2*x else x:=x+2*abs(x)
  - x := -x
 --
  - x=0
- - x := 3*x
+ - x := 0
 --
  - x<0
  - x := -x
@@ -363,3 +363,34 @@ proc min(x, y) {
  - 0<x, 0<y, x<y
  - x, y := x+y, y-x
 --- SKIP
+
+
+
+=== TEST 12: Page 190, Problem 3 (3)
+
+    if x<0 then y:=x+y else x:=x-y fi
+    if y<0 then x:=y+x else y:=y-x fi
+    if x+y>0 then x,y:=x-y,y-x fi
+
+--- kid
+
+if (x<0) y:=x+y else x:=x-y
+if (y<0) x:=y+x else y:=y-x
+if (x+y>0) { _t:=y-x; x:=x-y; y:=_t }
+
+--- mathmodel_eval
+--
+ - 3*x+2*y<=0, x+y<0, x<0
+ - x, y := 2*x+y, x+y
+--
+ - 0<x+y, 0<y, x<0
+ - x, y := x-y, y-x
+--
+ - 0<x, 0<x+y, y<0
+ - x, y := x-y, y-x
+--
+ - 0<x, 0<y
+ - x, y := 2*x-3*y, 3*y-2*x
+--
+ - 0<=x, y=0
+ - x, y := x, -x
