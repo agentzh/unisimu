@@ -1,6 +1,6 @@
-#: Kid::Proc
+#: Kid/Proc.pm
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-27 2006-04-29
+#: 2006-04-27 2006-05-09
 
 package Kid::Proc;
 
@@ -29,6 +29,7 @@ sub translate {
 sub transform {
     my $ptree = shift;
     my $ast = read_proc($ptree);
+    $ast = expand_list_assign($ast);
     $ast = expand_proc($ast);
     rm_proc_decls($ast);
 }
@@ -58,6 +59,7 @@ block:           $/.ast = { block->new( $<statement_list>.ast ); }
 else_statement:  $/.ast = { else_statement->new( $<statement>.ast ); }
 
 assignment: $/.ast = { assignment->new( $<var>.ast, $<expression>.ast ); }
+list_assignment: $/.ast = { Kid::Proc::emit_list_assign( $<identifier_list>.ast, $<expression_list>.ast ); }
 
 var:        $/.ast = { var->new( $<identifier>.ast ); }
 identifier: $/.ast = { identifier->new( $<__VALUE__> ); }
@@ -83,6 +85,64 @@ END_GRAMMAR
     #warn join ', ', keys %Kid::Proc::decls;
     #warn join ', ', values %Kid::Proc::decls;
     $ast;
+}
+
+sub emit_list_assign {
+    my ($vars, $exprs) = @_;
+    my $list_assign = list_assignment->new($vars, $exprs);
+    push @Kid::Proc::list_assigns, $list_assign;
+    $list_assign;
+}
+
+sub expand_list_assign {
+    my $ast = shift;
+    for my $lst_asn (@Kid::Proc::list_assigns) {
+        my $stmt = $lst_asn->parent;
+        delete $stmt->{list_assignment};
+        $stmt->{assignment} = lst_asn2block($lst_asn); 
+    }
+    $ast;
+}
+
+# list assignment to block
+sub lst_asn2block {
+    my $lst_asn = shift;
+    my $lhs = $lst_asn->identifier_list;
+    my $rhs = $lst_asn->expression_list;
+    #warn $lhs->kid;
+    #warn $rhs->kid;
+    my @lhs = $lhs->get_all;
+    my @rhs = $rhs->get_all;
+    my $lhs0 = shift @lhs;
+    my $rhs0 = shift @rhs;
+
+    #warn "@exprs";
+    #warn "@ids";
+    #my @vars = map { var->new($_) } @ids;
+    my @temp;
+    my $stmt_list = nil->new;
+    for my $i (0..$#rhs) {
+        my $temp = var->new( identifier->new("_kid_la_" . ($i+1)) );
+        push @temp, $temp;
+        my $assign = assignment->new( $temp, $rhs[$i] );
+        my $stmt = statement->new($assign);
+        $stmt_list = statement_list->new($stmt_list, $stmt);
+    }
+    my $assign = assignment->new( var->new($lhs0), $rhs0 );
+    my $stmt = statement->new($assign);
+    $stmt_list = statement_list->new($stmt_list, $stmt);
+
+    for my $i (0..$#lhs) {
+        my $term = term->new( nil->new, factor->new( $temp[$i] ) );
+        my $expr = expression->new( nil->new, $term );
+        my $assign = assignment->new( var->new($lhs[$i]), $expr );
+        my $stmt = statement->new($assign);
+        $stmt_list = statement_list->new($stmt_list, $stmt);
+    }
+
+    my $block = block->new( $stmt_list );
+    #warn "emit_args_pass: ", $block->kid;
+    $block;
 }
 
 sub emit_proc_call {

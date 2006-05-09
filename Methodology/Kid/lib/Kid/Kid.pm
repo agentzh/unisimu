@@ -44,6 +44,7 @@ block:           $/.kid = { "{\n" . $<statement_list>.kid . "}\n" }
 else_statement:  $/.kid = { $<statement>.kid }
 
 assignment: $/.kid = { $<var>.kid . ':=' . $<expression>.kid . ";\n" }
+list_assignment: $/.kid = { $<identifier_list>.kid . ':=' . $<expression_list>.kid . ";\n" }
 
 var:        $/.kid = { $<identifier>.kid }
 identifier: $/.kid = { $<__VALUE__> }

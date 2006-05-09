@@ -24,6 +24,8 @@
 *** resolve proc calls within proc body
 *** detect proc recursion calling and report error
 *** reduce the temp vars used when inlining procs
+* add proc support to the Perl backend
+* add list assignment support to Maple and XML backends
 * use Perl::Tidy (XML::Tidy?) to "tidy up" the outputs
   of the backends
 * Pod generator for Kid::MathModel::Eval

@@ -9,6 +9,7 @@ statement: if_statement
          | block /;?/
          | declaration
          | assignment /;?/
+         | list_assignment /;?/
          | comment
          | <error>
 
@@ -36,6 +37,9 @@ identifier_list: identifier(s /,/)
 
 assignment: var ':=' <commit> expression
           | <error?> <reject>
+
+list_assignment: identifier_list ':=' <commit> expression_list
+               | <error?> <reject>
 
 var: identifier
 

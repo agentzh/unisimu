@@ -22,7 +22,7 @@ my @rules = qw(
     neg nil
     proc_call proc_decl declaration
     expression_list identifier_list
-    if_statement assignment
+    if_statement assignment list_assignment
     block else_statement
     statement statement_list program
 );

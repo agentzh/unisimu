@@ -126,3 +126,53 @@ proc abs(x) {
     }
     a:=_min_1_min;
 }
+
+
+
+=== TEST 6: List assignment
+--- kid
+a, b := x, y;
+--- proc
+{
+    _kid_la_1:=y;
+    a:=x;
+    b:=_kid_la_1;
+}
+
+
+
+=== TEST 7: List assignment
+--- kid
+x,y,z:=x-y,x+y,x-z;
+--- proc
+{
+    _kid_la_1:=x+y;
+    _kid_la_2:=x-z;
+    x:=x-y;
+    y:=_kid_la_1;
+    z:=_kid_la_2;
+}
+
+
+
+==== TEST 8: List assignments
+--- kid
+if (x>0) {
+    a, b := x, y;
+    x,y,z:=x-y,x+y,x-z;
+}
+--- proc
+if (x>0) {
+    {
+        _kid_la_1:=y;
+        a:=x;
+        b:=_kid_la_1;
+    }
+    {
+        _kid_la_1:=x+y;
+        _kid_la_2:=x-z;
+        x:=x-y;
+        y:=_kid_la_1;
+        z:=_kid_la_2;
+    }
+}

@@ -98,3 +98,19 @@ proc abs(x) {
     else
         abs:=-x;
 }
+
+
+
+=== TEST 5: List assignment
+--- kid
+a, b := x, y;
+--- kid_kid
+a,b:=x,y;
+
+
+
+=== TEST 6: List assignment
+--- kid
+x, y, z := x-y, x+y, x-z;
+--- kid_kid
+x,y,z:=x-y,x+y,x-z;

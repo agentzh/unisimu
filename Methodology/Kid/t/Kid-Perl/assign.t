@@ -96,3 +96,20 @@ x:=-y*z-6; y:=53+(-x/z+5);
 --- perl
 $x=-$y*$z-6;
 $y=53+(-$x/$z+5);
+
+
+
+
+=== TEST 12: List assignment
+--- kid
+a, b := x, y;
+--- perl
+($a,$b)=($x,$y);
+
+
+
+=== TEST 13: List assignment
+--- kid
+x,y,z:=x-y,x+y,x-z;
+--- perl
+($x,$y,$z)=($x-$y,$x+$y,$x-$z);

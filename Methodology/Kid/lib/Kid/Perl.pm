@@ -44,12 +44,15 @@ block:           $/.perl = { "{\n" . $<statement_list>.perl . "}\n" }
 else_statement:  $/.perl = { Kid::Perl::emit_else( $<statement>.perl ) }
 
 assignment: $/.perl = { $<var>.perl . '=' . $<expression>.perl . ";\n" }
+list_assignment: $/.perl = { '(' . $<identifier_list>.perl . ')=(' . $<expression_list>.perl . ");\n"; }
 
 var:        $/.perl = { '$'.$<identifier>.perl }
 identifier: $/.perl = { $<__VALUE__> }
-identifier_list: $/.perl = { Kid::Perl::emit_ids( $<identifier_list>.perl, $<identifier>.perl ) }
+identifier_list: $/.perl = { Kid::Perl::emit_vars( $<identifier_list>.perl, $<identifier>.perl ); }
 
 expression: $/.perl = { $<expression>.perl . $<op> . $<term>.perl }
+expression_list: $/.perl = { Kid::Perl::emit_list( $<expression_list>.perl, $<expression>.perl ); }
+
 term:       $/.perl = { $<neg>.perl . $<term>.perl . $<op> . $<factor>.perl }
 neg:        $/.perl = { '-' }
 factor:     $/.perl = { Kid::Perl::emit_factor($<child>.perl) }
@@ -61,7 +64,16 @@ END_GRAMMAR
     return $Grammar->apply($ast, 'perl');
 }
 
-sub emit_ids {
+sub emit_vars {
+    my ($a, $b) = @_;
+    if ($a) {
+        "$a,\$$b";
+    } else {
+        "\$$b";
+    }
+}
+
+sub emit_list {
     my ($a, $b) = @_;
     if ($a) {
         "$a,$b";
