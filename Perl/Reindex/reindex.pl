@@ -1,7 +1,7 @@
 #: reindex.pl
 #: reindex .t files for Test::Base based test files
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-04-27 2006-04-27
+#: 2006-04-27 2006-05-09
 
 use strict;
 use warnings;
@@ -30,16 +30,28 @@ sub reindex {
         die "Can't open $file for reading: $!";
     my @lines;
     my $counter = $init;
+    my $changed;
     while (<$in>) {
-        s/^=== \s+ TEST \s+ \d+/"=== TEST " . $counter++/xe;
+        my $num;
+        s/^=== \s+ TEST \s+ (\d+)/$num=$1; "=== TEST " . $counter++/xe;
+        next if !defined $num;
+        if ($num != $counter-1) {
+            $changed++;
+        }
+    } continue {
         push @lines, $_;
     }
     close $in;
+    if (! $changed) {
+        warn "reindex: $file:\tskipped.\n";
+        return;
+    }
     #File::Copy::copy( $file, "$file.bak" );
     open my $out, "> $file" or
         die "Can't open $file for writing: $!";
     binmode $out;
     print $out @lines;
     close $out;
-    warn "reindex: $file: done.\n";
+    
+    warn "reindex: $file:\tdone.\n";
 }
