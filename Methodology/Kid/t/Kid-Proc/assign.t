@@ -155,7 +155,7 @@ x,y,z:=x-y,x+y,x-z;
 
 
 
-==== TEST 8: List assignments
+=== TEST 7: List assignments
 --- kid
 if (x>0) {
     a, b := x, y;
