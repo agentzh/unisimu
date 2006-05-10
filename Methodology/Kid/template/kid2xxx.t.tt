@@ -6,9 +6,13 @@
 #: Copyright (c) 2006 Agent Zhang
 #: This file was generated from [% template.name %]
 
+[% IF ext == 'pl' OR ext == 'kid' OR ext == 'mms';
+     SET extra = 1;
+   END -%]
+
 use strict;
 use warnings;
-use Test::More tests => 3 * 2;
+use Test::More tests => 3 * [% extra ? 3 : 2 %];
 use File::Compare 'compare_text';
 
 my $script = 'script/kid2[% ext %].pl';
@@ -28,3 +32,13 @@ unlink $outfile if -f $outfile;
 is system("$^X -Ilib $script -o $outfile $infile"), 0;
 ok -f $outfile;
 is compare_text($outfile, $stdfile), 0;
+
+[% IF extra -%]
+$infile  = "t/03test.kid";
+$outfile = "t/script/03test.[% ext %]";
+$stdfile = "t/script/~03test.[% ext %]";
+unlink $outfile if -f $outfile;
+is system("$^X -Ilib $script -o $outfile $infile"), 0;
+ok -f $outfile;
+is compare_text($outfile, $stdfile), 0;
+[% END -%]
