@@ -82,6 +82,16 @@ sub eval_mm {
             } elsif ($set =~ /no solutions found/) {
                 log_comment("Inconsistent model: $rels");
                 next;
+            } elsif ($set->type('exprseq')) {
+                $set = denumber($maple, $rels, @inits);
+                foreach ($set->ops) {
+                    if ($maple->evalb($_) ne 'true') {
+                        my $sol = "$_";
+                        $sol =~ s/\s+//g;
+                        push @sols, $sol;
+                    }
+                }
+                @neqs = ();
             } else {
                 warn log_comment("eval_mm: unexpected result: $set"), "\n";
                 next;

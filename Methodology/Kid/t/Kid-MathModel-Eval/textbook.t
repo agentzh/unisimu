@@ -588,3 +588,62 @@ if (x>0) x:=x-2*x
 --
  - 0<x
  - x := -x
+
+
+
+=== TEST 20:
+--- kid
+if (x<>0) {
+    x,y:=x-1,y+a;
+    if (x>0) x,y,a:=0,a*x+y,a;
+}
+--- mathmodel_eval
+--
+ - 1<x, x<>0
+ - x, y := 0, a*x+y
+--
+ - x<=1
+ - x, y := x-1, y+a
+
+
+
+=== TEST 20: Page 183: Example 6.1
+
+Expected function:
+    (x>0 -> x,y,a:=0,a*x+y,a)
+
+Program P:
+    while x<>0 do x,y=x-1,y+a od
+
+--- kid
+
+if (x>0) {
+    if (x<>0) {
+        x,y:=x-1,y+a;
+        x,y,a:=0,a*x+y,a;
+    }
+}
+
+--- mathmodel_eval
+--
+ - 0<x, x<>0
+ - x, y := 0, a*x+y
+
+
+
+=== TEST 21: Page 183: Exaple 6.1
+
+Expected function:
+    (x>0 -> x,y,a:=0,a*x+y,a)
+
+Program P:
+    while x<>0 do x,y=x-1,y+a od
+
+--- kid
+
+if (x>0) x,y,a:=0,a*x+y,a;
+
+--- mathmodel_eval
+--
+ - 0<x
+ - x, y := 0, a*x+y

@@ -11,7 +11,7 @@ DefaultGroupName=Kid
 AllowNoIcons=yes
 LicenseFile=Artistic.txt
 OutputDir=..\release
-OutputBaseFilename=Kid-0.01-r482
+OutputBaseFilename=Kid-0.01-r484
 Compression=lzma
 SolidCompression=yes
 
