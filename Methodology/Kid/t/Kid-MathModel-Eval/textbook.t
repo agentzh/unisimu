@@ -607,7 +607,7 @@ if (x<>0) {
 
 
 
-=== TEST 20: Page 183: Example 6.1
+=== TEST 21: Page 183: Example 6.1
 
 Expected function:
     (x>0 -> x,y,a:=0,a*x+y,a)
@@ -631,7 +631,7 @@ if (x>0) {
 
 
 
-=== TEST 21: Page 183: Exaple 6.1
+=== TEST 22: Page 183: Exaple 6.1
 
 Expected function:
     (x>0 -> x,y,a:=0,a*x+y,a)
