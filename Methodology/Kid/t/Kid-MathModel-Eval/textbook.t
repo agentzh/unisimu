@@ -447,19 +447,19 @@ proc min(x, y) {
  - 0<y, x=y
  - x, y := 2*x, 0
 --
- - x<0, y=x
+ - x=y, y<0
  - x, y := 0, 2*x
 --
  - 0<x, 0<y, x<y
  - x, y := y+x, y-x
 --
- - x<y, y+x<y-x
+ - x<0, x<y
  - x, y := y-x, y+x
 --
- - 0<x, 0<y, y<x
+ - 0<x, x-y<y+x, y<x
  - x, y := y+x, x-y
 --
- - y<0, y<x
+ - y+x<x-y, y<x
  - x, y := x-y, y+x
 --- SKIP
 
@@ -551,3 +551,40 @@ if (x+y>0) x,y:=x-y,y-x
 --
  - 0<=x, y=0
  - x, y := x, -x
+
+
+
+=== TEST 18: Page 190, Problem 4
+
+    f=(x:=-abs(x))
+
+    P:
+        if x>0 then x:=x-2*x fi
+
+--- kid
+x:=-abs(x)
+
+proc abs (x) {
+    if (x>=0) abs:=x;
+    else      abs:=-x;
+}
+--- mathmodel_eval
+--
+ - 0<=x
+ - x := -x
+
+
+
+=== TEST 19: Page 190, Problem 4
+
+    f=(x:=-abs(x))
+
+    P:
+        if x>0 then x:=x-2*x fi
+
+--- kid
+if (x>0) x:=x-2*x
+--- mathmodel_eval
+--
+ - 0<x
+ - x := -x
