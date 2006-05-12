@@ -19,7 +19,7 @@ SolidCompression=yes
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\*"; Excludes: "unins000*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs
+Source: ".\*"; Excludes: "*.svn*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs
 
 [Icons]
 ; Name: "{group}\Kid Doucments"; Filename: "{app}\samples\samples.html"
