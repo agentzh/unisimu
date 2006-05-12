@@ -68,6 +68,10 @@ win32-build.bat: template/win32-build.tt
 
 doc: doc/Language.html doc/Utilities.html doc/cn-zh/Journals.html
 
+doc/cn-zh/%.html: doc/cn-zh/%.pod
+	podhtm -s ../Active.css -o $@ $<
+	$(RM_F) *.tmp
+
 %.html: %.pod
 	podhtm -s Active.css -o $@ $<
 	$(RM_F) *.tmp
