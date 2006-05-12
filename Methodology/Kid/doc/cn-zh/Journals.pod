@@ -1,0 +1,657 @@
+=head1 NAME
+
+Journals - Kid 项目开发日志
+
+=head1 DESCRIPTION
+
+这篇文档搜集了我在 Kid 项目的开发过程中写给我的老师和同学的电子邮件。在这些信中，
+我以编程日志的形式详细地介绍了 Kid 编译器的主要方面，因此可以算作该项目的很好的
+一个文档了。
+
+=head1 JOURNALS
+
+=head2 Apr 22, 2006
+
+我现在正在尝试编写一个编译器，希望能自动化《程序设计方法学》教材中的结构化程序的
+形式化证明过程。比如这个编译器将自动进行"跟踪表"计算、分离规则的执行、循环的展开，
+等等。
+
+我将使用 CPAN 模块 Parse::RecDescent 编写语法解析器，由语法分析从我自己定义的编程
+语言生成抽象语法树（AST），然后遍历该树生成对应的等式与不等式组，最后提交给数学软件
+（比如 Maple）进行求解和归约。相信这一定会非常有趣的！顺利的话，今晚就可以得到一个原
+型系统了。
+
+为便于测试，我打算让这个编译器不仅生成数学模型，而且还生成 ANSI C 代码、Java 代码
+、Perl 代码等等其他语言的代码。这一定会非常非常刺激的！
+
+Stay tuned!
+
+=head2 Apr 23, 2006
+
+经过两天的努力，我已仿照我们《程序设计方法学》教材中的伪代码的记法，设计出了一种微
+型的编程语言，取名为 Kid （在汉语中，即"小孩儿"的意思），并得到了一个比较完整的编译器
+实现。Kid 项目的 SVN 仓库位于下面的 URL：
+
+  http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/
+
+Kid 语言的语法非常简单，它只支持顺序和分支选择 (if/else) 两种语言结构，加 (+) 减 
+(-) 乘 (*) 除 (/) 和赋值 (:=) 这五种运算符，正负整数和正负浮点数这两种数据类型，和
+无需声明的简单数值型变量（标量）。由于有 Damian 的 Parse::Recdescentt 模块的强力支
+持，整个 Kid 解析器（语法分析器及词法分析器）都是从下面这个 43 行的Kid 语法规则说明
+书自动生成的：
+
+  http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/grammar/kid.grammar
+
+下面是一个典型的 Kid 程序：
+
+    x:=x+y; y:=x-y; x:=x-y
+    if (x > 0) {
+        x := x + 2;
+        if (x <= y) { y := x }
+    } else {
+        if (x + 3*(y - 6.7)<= 4*x/(52.1 - 3) ) {
+            y := x-5 + y;
+            x := x - y;
+        }
+    }
+
+所有的语言结构，包括运算符的结合律和优先级，都是在上面给出的那个 BNF 风格的语法规
+格说明书中定义的。
+
+昨天，我的 Kid 编译器就已经能够利用 Luke 的 Language::AttributeGrammar 模块提供的 
+"属性文法" 功能，从 Kid 解析器构造出的解析树 (parse tree)，自动生成与 Kid 源程序等
+效的 Perl 代码。这意味着我们现在可以利用 Perl 解释器作为 Kid 程序的运行时环境。
+Kid 程序现在就可以 "跑" 起来了，Yay!
+
+例如，下面这个 Kid 源文件
+
+    http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/t/02test.kid
+
+经过 Kid 编译器的 kid2pl 脚本处理后，生成了下面这个功能等价的 Perl 源文件：
+
+    http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/t/script/~02test.pl
+
+这样的一个从 Kid parse tree 到 perl 代码的发射器（emitter）只花费我了 68 行代码：
+
+    http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/lib/Kid/Perl.pm
+
+为了方便沈容舟在 Java 中操纵 Kid 的 parse tree，我今天又模仿 Kid 的 perl 代码发射
+器，实现了 Kid 的 XML 发射器。下面是刚才那个 Kid 程序 02test.kid 的 XML 描述：
+
+    http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/t/script/~02test.xml
+
+事实上，XML 在 IE 这样的浏览器中可以显示为很漂亮的树形图案，因此对于测试 Kid 解析
+器自身也是很有裨益的。这个 XML 发射器的实现耗费的代码则要多一些，达到了 147 行，其
+主要原因不在 "属性文法"，而在于 XML 记法本身比较冗长。
+
+在 Kid 项目基于 Ingy 的 Test::Base 模块的测试集中，可以找到更多的 Kid => Perl/XML 
+的测试用例。
+
+正如本邮件的标题所暗示的，Kid 编译器的最终目标并不是得到另一种通用的程序语言，它的
+使命是为结构化程序的自动化证明提供一个足够健全、同时也足够简单的试验平台。根据 
+Kid 项目的 TODO 文件，下一步我准备为 Kid 实现一个 Maple 代码发射器，或者是某种等价
+的 "逻辑表达式/数学表达式" 发射器。
+
+通过将 Kid 源码基于动作与判断的执行序列，转换为逻辑上等价的数学模型或者逻辑列表，
+我们将有机会借助于 Maple/Mathematica 这样的数学软件包，通过自动化的数学变换和逻辑
+推导来完成程序的正确性证明。
+
+Kid 系统证明程序正确性的基本流程如下：用户先将待证明的程序和对应的预期函数都表达
+成 Kid 代码，然后由 Kid 编译器及其 Maple 后端，将这两份 Kid 源码，转换成与之等价的
+数学等式与不等式的集合（按分离规则的形式），最后，通过  Maple 将这两个数学模型转换成
+一种"归一化"的形式。如果二者一致，则完成证明过程。
+
+Kid 语言目前尚未引入循环结构是为了尽可能地简单。毕竟循环的正确性证明总是受到 "循
+环不变式" 的困挠。未来如果加入了循环结构，将不可避免地要求用户为他们的 Kid 程序中
+的每一个循环，提供一个对应的不变式断言。自动寻找不变式的工作似乎大大超出了 Kid 项
+目的近期目标，呵呵。
+
+Stay tuned!
+
+=head2 May 2, 2006
+
+过去的一周是属于 Kid 的一周。我把几乎全部的时间和精力都投入到了Kid 的开发工作中
+了。很高兴看到 Kid
+目前已经比较圆满地实现了最初的设计目标，即对不带循环的结构化程序（即顺序与分支选择
+程序）的自动化形式化证明。
+
+我已用 Kid 对我们程序设计方法学教材"结构化程序的形式化证明"一章中所有的例题（除那
+个有循环的以外）进行了测试，结果都相当令人满意。我已经将这几道例题作为测试用例收入
+到
+Kid 的测试台中，您可以在下面的测试文件中找到每一题的 Kid 输入和期望的"归一化程序"
+输出：
+
+ 
+  http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/t/Kid-MathModel-Eval/textbook.t
+
+比如这个测试文件的第一个例子（即 TEST 1）描述了我们《程序设计方法学》教材第 180 页
+的那道例题：
+
+    x:=x+y; y:=x-y; x:=x-y
+
+很高兴看到原例题使用的这行代码不用修改一个字符，就是完全合法的 Kid 代码。将它保存
+成磁盘文件，比如 ex1.kid，然后使用 Kid
+编译器的 kid2mms 工具就可以将之编译生成"归一化的数学描述"了：
+
+   --
+   -
+   - x, y := y, x
+
+这三行便是输出文件 ex1.mms 的内容。我们看到，它与教材给出的结果具有类似的形式。我
+们再挑着看一下这个测试文件 textbook.t
+中收录的 TEST 8，它测试的是第 182 页的这道例题：
+
+   (x>0 -> z:=max(x,y) | y>0 -> z:=min(x,y))
+
+用 Kid 代码描述就是下面这个样子：
+
+   if (x > 0) {
+       z := max(x, y);
+   } else if (y > 0) {
+       z := min(x, y);
+   }
+
+   proc max(x, y) {
+       if (x >= y) max := x;
+       else        max := y;
+   }
+
+   proc min(x, y) {
+       if (x <= y) min := x;
+       else        min := y;
+   }
+
+请注意，Kid 语言支持用户自定义函数，这无疑大大简化了我们的编码工作。想想如果没有 
+Kid
+编译器的函数内联展开功能，我们将不得不自己手工来做。同样我们使用 kid2mms 工具可以
+得到内容如下的输出文件 ex2.mms：
+
+   --
+    - 0<x, y<=x
+    - z := x
+   --
+    - 0<x, 0<y, x<y
+    - z := y
+   --
+    - 0<y, x<0, x<=y
+    - z := x
+
+显然这里分出了 3 种基本情况，这与教材中给出的结果是吻合的（事实上教材中的结果中有
+几处小错误）
+
+通过上面两个例子我们看到 Kid 语言编译器具有自动对 Kid
+程序进行分支展开，然后将整个程序结构转化为"分离规则"的形式，并分别对条件进行化简，
+对赋值操作进行"跟踪表"计算，这正是完全自动化了我们教材讨论的这些基本的证明方法。
+
+不过正如前一封信所指出的，Kid
+编译器被设计成支持多个后端，形式化证明系统只是它众多后端中的一个（当然也是最重要的
+一个了）。在过去的几天当中，原先的 Perl
+代码生成器后端和 XML 代码生成器后端都得到了增强，同时又新添加了 Maple, Kid 这两个
+代码生成器后端。为 Kid 编译器提供
+Kid 代码生成器后端，听起来似乎有些古怪，但这很有趣！想想将用户提供的格式凌乱的 Kid 
+代码可以格式化为统一样式的 Kid
+代码还是很有用的，呵呵。当然了，一个将 Kid AST 还原为 Kid 源代码的东东，对于编译器
+自身的调试而言也是很方便的。
+
+Kid 语言的语法逐渐趋于完善。像前面提到的用户定义函数，还有 Perl/Maple/Tcl 风格的
+行注释：
+
+  # this is a comment
+  if (x>0)  # this is also a comment
+      x := x + 1;
+
+另外，每个赋值语句的末尾的分号也可以完全省略，例如下面这个 Kid 程序就是完全合法的：
+
+   y:=a
+   y:=x*y+b
+   y:=x*y+c
+   y:=x*y+d
+
+我们看到这其实也是书上的例题照搬过来的。
+
+从下面的目录，您可以得到更多的 Kid 的示例源文件：
+
+   http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/sample/
+
+如果你想现在就运行这些 Kid 程序（利用 kid2mms, kid2pl, kid2mpl, kid2xml, kid2kid 
+这些
+Kid 工具），您或许还得再等一段时间，我需要将 Kid 系统打包成 Win32 安装程序，并将重要
+的依赖项 Maple 10
+也一齐打包进去，另外我还需要制作一些 HTML 格式的文档，以便对 Kid 语言的具体语法规
+则、各个编译器工具的使用方法、和 Kid
+项目的概要进行详细的介绍。
+
+=head2 May 6, 2006
+
+由于微软公司方面的事情，这一周我耽误了 Kid 项目 0.01 版的发布工作。现在 Win32 安
+装程序终于做好了。您可以从我的个人主页上得到 Kid 和 Maple 10 的安装程序：
+
+    http://yxy.ujs.edu.cn/images/index.html
+
+Kid 安装程序的文件名为 Kid-0.01-r474.exe，而 Maple 10 的安装程序名为 Maple-10.zip
+
+我今天写了一篇文档专门对 Kid 语言进行介绍，虽然只是一个半成品，但也已经覆盖了大部
+分的内容：
+
+    http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/doc/
+
+如果您在安装和使用 Kid 的过程中遇到任何问题，请来信告诉我。谢谢！
+
+=head2 May 7, 2006
+
+由于何杉指出我的 Language 文档没有给出 Kid 程序编译和运行的具体步骤，但我觉得这部
+分内容又不方便放在 Kid 语言的说明书中，于是我又编写了一个 Utilities 文档，专门介绍 
+Kid 编译器提供了众多命令行工具，比如 kid2mms, kid2pl, kid2xml 之类。这两份文档都
+放在 Kid 的 doc 子目录中：
+
+    http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/doc/
+
+格式都为 HTML。在最新版本的 Kid Windows 安装程序 (r475) 中也捆绑了这些文档。
+
+原本这些文档我是打算用中文来写的，但这次与微软的接触让我感觉到使用英语书写文档可
+以让世界上更多的人了解，呵呵。
+
+目前 Kid 的 Perl 后端，即 kid2pl 工具尚不支持函数 proc，但其他后端应该都对目前 BNF 
+语法文件中定义的 Kid 语言提供了比较完整的支持。
+
+=head2 May 10, 2006
+
+今晚经过一个半小时的 hacking，我终于将极为有用的"列表赋值"添加进 Kid 语言了。所谓
+"列表赋值"就是类似下面这条语句的多变量同时赋值的记法：
+
+   x, y := y, x
+
+我们的《程序设计方法学》教材中的许多例题和课后习题都广泛使用了这种表示方法。上面这条
+"列表赋值语句"的效果就相当于
+
+   {
+        _temp:=x;
+       x:=y;
+       y:=_temp;
+   }
+
+而我的 Kid 编译器的 MathModel 后端正是这样来实现"列表赋值"的，即通过引入若干个中间变量，
+将之"脱糖"(desugar)为若干条普通的赋值语句。
+
+现在我终于可以圆满地求解《程序设计方法学》中第 6 章"结构化程序的正确性证明"中的所有不带
+循环的例题和老师当初为我们布置的那 2
+道课后习题（Page 190, Problem 3(2) (3)). 我想在此给出那 2 道课后作业题的 Kid 求解结果。
+
+首先是第 3 题的第 (2) 小题，其 Kid 描述为
+
+       x,y,z:=z,x,y
+       x,y,z:=y,z,x
+       x,y,z:=z,y,x
+       x,y,z:=y,x,z
+       x,y,z:=x,z,y
+
+假设我们将这些 Kid 代码保存到 foo.kid，则通过下面这条命令
+
+   kid2mms foo.kid
+
+我们就可以得到一个名为 foo.mms 的文件，其内容如下：
+
+ --
+  -
+  - x, y := y, x
+
+这里，MMS 输出未提及变量 z，即该变量 z 的值未发生变。从此 MMS 输出，我们立刻可以手工
+书写出原序列程序的"程序函数"：
+
+   x, y, z := y, x, z
+
+最后我们再来讨论一下第 3 题的第（3）小题：
+
+   if (x<0) y:=x+y else x:=x-y
+   if (y<0) x:=y+x else y:=y-x
+   if (x+y>0) x,y:=x-y,y-x
+
+利用 kid2mms 编译器，我们可以得到下面的 MMS 输出：
+
+   --
+    - 3*x+2*y<=0, x+y<0, x<0
+    - x, y := 2*x+y, x+y
+   --
+    - 0<x+y, 0<y, x<0
+    - x, y := x-y, y-x
+   --
+    - 0<x, 0<x+y, y<0
+    - x, y := x-y, y-x
+   --
+    - 0<x, 0<y
+    - x, y := 2*x-3*y, 3*y-2*x
+   --
+    - 0<=x, y=0
+    - x, y := x, -x
+
+这里，MMS 输出列出了 5 条分离规则。3 个 if 语句共有 8 条通路，其中一条通路永不可能达到，
+另有 2 条通路是"空操作"，即所有非中间变量都未发生变化，所以 5 条通路是正确的。与毛老师
+留给我们的"标准答案"相比，个别通路的条件有少许冗余（受 Maple 求解器的限制），另外就是
+"空操作"通路未列出，再有就是发现了"标准答案"中的一处明显错误。我想"标准答案"毕竟是手工
+求解的，存在错误也是可以理解的，呵呵。kid2mms 也算是一个强有力的验算工具了。
+
+现在 Kid 项目的自动化测试台已收录了 199 个测试，下面是我写这封信时得到的测试台输出：
+
+   t/Kid-Kid/assign.................ok
+   t/Kid-Kid/comment................ok
+   t/Kid-Kid/if.....................ok
+   t/Kid-Logic-Disjoint/assign......ok
+   t/Kid-Logic-Disjoint/if..........ok
+   t/Kid-Logic/assign...............ok
+   t/Kid-Logic/if...................ok
+   t/Kid-Maple/assign...............ok
+   t/Kid-Maple/comment..............ok
+   t/Kid-Maple/if...................ok
+   t/Kid-MathModel-Eval/assign......ok
+   t/Kid-MathModel-Eval/if..........ok
+   t/Kid-MathModel-Eval/textbook....ok
+   t/Kid-MathModel/assign...........ok
+   t/Kid-MathModel/if...............ok
+   t/Kid-Perl/assign................ok
+   t/Kid-Perl/comment...............ok
+   t/Kid-Perl/if....................ok
+   t/Kid-Proc/assign................ok
+   t/Kid-Proc/comment...............ok
+   t/Kid-Proc/if....................ok
+   t/Kid-XML/assign.................ok
+   t/Kid-XML/if.....................ok
+   t/Kid-XML/proc...................ok
+   t/script/kid2kid.................ok
+   t/script/kid2mm..................ok
+   t/script/kid2mms.................ok
+   t/script/kid2mpl.................ok
+   t/script/kid2pl..................ok
+   t/script/kid2xml.................ok
+   All tests successful.
+   Files=30, Tests=199, 49 wallclock secs ( 0.00 cusr +  0.00 csys =  0.00 CPU)
+
+应该说，Kid 系统已经相当完善，相当稳定了，欢迎您提供更多的综合测试，或者发送 wishlist
+和瑕疵报告。
+
+我有意将 Kid 系统作为我的"编译原理课程设计"的一个题目。嗯，另一个题目不妨定为一个能输
+出 C 代码的正则表达式编译器？呵呵。
+
+=head2 May 10, 2006
+
+在这封邮件中我想再举一道例题来演示 Kid 编译器的威力。下面这一题是毛老师曾布置过的一道
+作业题：
+
+    已知预期函数是 f=(x:=-abs(x))，程序 P 为
+        if x>0 then x:=x-2*x fi
+    证明程序 P 是正确的。
+
+解这一题的基本布骤是，分别用 Kid 语言描述预期函数 f 和程序 P，然后分别得到两个 MMS "归
+一化程序函数"的输出，并进行比较，如果逻辑上完全等价，则完成证明。
+
+我们首先给出预期函数 f 的 Kid 描述：
+
+    x:=-abs(x)；
+
+    proc abs (x) {
+        if (x>=0) abs:=x;
+        else      abs:=-x;
+    }
+
+我们看到，Kid 语言支持用户定义函数(proc)，这大大简化了我们的编码工作，呵呵。利用 kid2mms
+工具，我们可以得到下面的 MMS 输出：
+
+    --
+     - 0<=x
+     - x := -x
+
+类似地，我们将程序 P 转码为 Kid 语言：
+
+    if (x>0) x:=x-2*x;
+
+kid2mms 工具将之转换为下面的 MMS 输出：
+
+    --
+     - 0<x
+     - x := -x
+
+通过比较上面的两个 MMS 输出，不难得到二者逻辑上完全等价的结论，因为当 x=0 时，有 C<x=-x=x>.
+
+目前，Kid 编译器尚未提供智能化的 MMS 比较工具，但对于小程序而言，手工比较 MMS 的结果也是
+极为容易的。如果您对 MMS 的自动化比较问题有任何好的想法和建议，请告诉我，谢谢！
+
+在写这封邮件的时候，Kid 的最新版本为 1.00 r484，请从我的个人主页下载其 Win32 安装程序
+(1 MB) 和其依赖项 Maple 10 （100+ MB）。我在江大医学院的个人主页的 URL 为
+
+
+    http://yxy.ujs.edu.cn/images/index.html
+
+后面有机会的话，我还会详细地介绍一下 Kid 编译器的内部实现。虽然 Kid 系统比较复杂，但其精
+巧的内部结构和使用的众多高级的代码生成技术，还是很值得讨论与交流的。
+
+=head2 May 10, 2006
+
+我已经想到如何将循环添加到我的 Kid 语言中了。含有循环的 Kid 程序的形式化证明需要 Kid 程序员
+为每一个循环都提供一个等价的程序函数（放在循环语句开头的方括号中）。例如我们的《程序设计方法
+学》教材中，例 6.2 可以描述如下：
+
+[ x>0 | x,y,a:=0,a*x+y,a ]
+while (x<>0) {
+    x,y:=x-1,y+a
+}
+
+注意"中括号"是 Kid 的特殊标记，且为循环的必要组成部分。
+
+Kid 编译器将首先把上面的 Kid 代码"脱糖"为下面的形式：
+
+if (x>0) {
+    if (x<>0) {
+        x,y:=x-1,y+a
+        x,y,a:=0,a*x+y,a
+    }
+}
+
+此时的 Kid AST就不再包含 while 循环和 [...] 标记了。用户在 [...] 中给出的循环的程序函数必须
+符合 MMS 格式的要求，即必须是
+
+    [ condition | var1, var2, ..., varM := exp1, exp2, ..., expM ]
+
+的形式。condition 可以是 and, or, not 连接的任意的不等式和等式的逻辑表达式。然后，脱糖的模
+板如下：
+
+if (condition) {
+    if (...) {
+        ...
+        var1, var2, ..., varM := exp1, exp2, ..., expM
+    }
+}
+
+书上只有一道例题（即例 6.2）是含循环的，因此我可以参考的实例非常有限，而我又没有心思仔细地去
+进行理论分析……唔，不知道这种处理循环的方式是否妥当？请告诉我你的想法，谢谢！
+
+自动化这一类含有循环的程序的证明将是 Kid 项目的下一个里程碑。
+
+=head2 May 11, 2006
+
+在这封信中，我将利用一个很小的 Kid 程序作为例子，手工演示一下 Kid 编译器工具 kid2mms 所使用
+的形式化变换算法。
+
+考虑下面这个 Kid 程序，它来自我们的那道作业题：
+
+
+    x:=-abs(x)；
+
+    proc abs (x) {
+        if (x>=0) abs:=x;
+        else      abs:=-x;
+    }
+
+Kid 解析器模块 Kid::Parser 读取该 Kid 源文件后，在内部生成一棵解析树 (parse tree)，其形态
+大致如下：
+
+program
+  statement_list
+    statement
+      assignment
+        var
+          identifier
+            'x'
+        expression
+          neg
+            '-'
+          term
+            factor
+              proc_call
+                identifier
+                  'abs'
+                expression_list
+                  expression
+                    term
+                      factor
+                        var
+                          identifier
+                            'x'
+    statement
+      proc_decl
+        identifier
+          'abs'
+        identifier_list
+          identifier
+            'x'
+        block
+          statement_list
+            statement
+              if_statement
+                ...
+
+请注意，我在这里只画出了一半，另一半限于篇幅被省略了。kid2mms 后面的变换操作都是根据这棵
+树来完成的。值得一提的是，Kid::Parser 这个模块本身，是 Damian Conway 的 
+Parse::RecDescent 模块，根据我的 Kid 语法说明书自动生成的。生成的 Kid 语言解析器是一个
+支持回溯的"递归下降"分析器，因此支持比常见的 shift/reduce 分析器更为灵活的语法，同时拥
+有更好的编译报错消息。
+
+Kid::Parser 生成的 parse tree 再传递给 Kid::Proc 模块，由它来对用户定义的函数 (proc ) 
+和"列表赋值"语句（比如 x,y:=y,x）进行"脱糖" (desugar) 变换。换句话说，就是对所有的函数
+调用进行"内联展开"，并将所有的"列表赋值"语句展开为若干条功能等价的简单赋值语句。
+
+在这个例子中，经过 Kid::Proc "脱糖"之后的 parse tree 所对应的 Kid 源代码类似下面这个样子：
+
+    {
+        _abs_x:=x;
+        if (_abs_x>=0) _abs:=_abs_x;
+        else           _abs:=-_abs_x;
+        x:=-_abs;
+    }
+
+我们看到，程序中已经不存在 proc 相关的结构；原先对 abs 函数的调用已经展开为 abs 的函数体
+了。注意，Kid::Proc 实际生成的 parse tree 比上面给出的要复杂。比如变量 _abs_x 的名字其
+实应该为  _abs_1_x，而变量 _abs 的名字其实为 _abs_1_abs。但在这里，为了方便起见，我将使
+用经过简化的变量名 _abs_x 和 _abs.
+
+下一步，"脱糖"后的 parse tree 将传递给 Kid::Logic 模块，将整个 Kid 程序转换成"逻辑表达式"
+的形式。这种由 AND, OR, 和 NOT 连接成的"逻辑表达式"的数据结构，在 Kid 编译器内部，被
+称作 Logic AST. 比如，这个例子将生成下面的 Logic AST（这里给出的其实是该 AST 的文本描述）:
+
+    (AND
+        _abs_x:=x
+        (OR
+            (AND _abs_x>=0       _abs:=_abs_x)
+            (AND (NOT _abs_x>=0) _abs:=-_abs_x)
+        )
+        x:=-_abs
+    )
+
+这里我使用的是前缀表达式的形式，比如 (AND a b) 就相当于中缀形式 (a AND b)。
+
+进一步，kid2mms 将 Logic AST 传递给 Kid::Logic::Disjoint 模块，将该逻辑表达式展开为
+"与或式"，即 (OR (AND ...) (AND ...) ... (AND ...)) 的形式。Kid 称这种经过逻辑展开
+的"逻辑表达式"的数据结构为 Disjoint Logic AST. 本例的 Disjoint Logic AST 的文本描述
+如下所示：
+
+    (OR
+        (AND _abs_x:=x _abs_x>=0 _abs:= _abs_x x:=-_abs)
+        (AND _abs_x:=x _abs_x<0  _abs:=-_abs_x x:=-_abs)
+    )
+
+此时，我们其实已经将原 Kid 程序所有"可能"的执行通路全都枚举出来了。换言之，就是已经把
+原 Kid 程序表示成了"分离规则"的形式。在 Kid::Logic::Disjoint 模块内部，
+Disjoint Logic AST 已经不再是用 AND/OR 连接的树了，而是一个简单的二维数组：
+
+  [
+    [ _abs_x:=x _abs_x>=0 _abs:= _abs_x x:=-_abs ]
+    [ _abs_x:=x _abs_x<0  _abs:=-_abs_x x:=-_abs ]
+  ]
+
+接下来，再由 Kid::MathModel 模块负责将这个二维数组转换为"数学模型"（Math Model）。
+Kid::MathModel 先对每一条语句和每一个条件中出现的所有变量，按照"跟踪表法"的要求进行编
+号，这样一来，在每一条执行通路内部，赋值和条件表达式之间的先后顺序便不再重要了：
+
+  [
+    [ _abs_x_1:=x_0 _abs_x_1>=0 _abs_1:= _abs_x_1 x_1:=-_abs_1 ]
+    [ _abs_x_1:=x_0 _abs_x_1<0  _abs_1:=-_abs_x_1 x_1:=-_abs_1 ]
+  ]
+
+然后，Kid::MathModel 模块将每一条执行通路中编过号的赋值与条件分离成两小组。对我们这
+里的例子而言，最后得到的 Math Model 类似下面这个样子：
+
+ --
+  - _abs_x_1>=0
+  - _abs_x_1:=x_0, _abs_1:=_abs_x_1, x_1:=-_abs_1
+ --
+  - _abs_x_1<0
+  - _abs_x_1:=x_0, _abs_1:=-_abs_x_1, x_1:=-_abs_1
+
+生成的 Math Model 的数据结构将被进一步转交给 Kid::MathModel::Eval 模块进行求解。
+Kid::MathModel::Eval 模块利用 PerlMaple 模块，直接调用 Maple 数学软件的计算引擎，
+完成"跟踪表法"所要求的代入计算，以及等式与不等式组的化简操作。此时，我们便得到了下面
+这种经过 Maple 处理的 Math Model：
+
+  --
+   - x_0>=0
+   - _abs_x_1:=x_0, _abs_1:=x_0, x_1:=-x_0
+  --
+   - x_0<0
+   - _abs_x_1:=x_0, _abs_1:=-x_0, x_1:=x_0
+
+去除"编号"后，我们得到
+
+  --
+   - x>=0
+   - _abs_x:=x, _abs:=x, x:=-x
+  --
+   - x<0
+   - _abs_x:=x, _abs:=-x, x:=x
+
+接下去，Kid::MathModel::Eval 模块舍去其中所有以下划线开头的"中间变量"，并整理
+为"列表赋值"的形式：
+
+  --
+   - x>=0
+   - x := -x
+  --
+   - x<0
+   - x := x
+
+进一步，Kid 编译器检测出第二条通路是一个什么也不做的"空操作"（ x:=x），故将该
+路径省略：
+
+  --
+   - x>=0
+   - x := -x
+
+这便是 kid2mms 最终输出的形式。Kid 编译器称这种形式的输出为 Math Model Solutions，
+或简称 MMS.
+
+至此，我完成了对 kid2mms 内部工作流程的简单描述。我们看到，这一系列过程中到处都是
+数据结构、特别是抽象语法树（AST）的变换操作；属性文法 (Attribute Grammar) 在其中
+扮演了举足轻重的角色。如果没有 Luke Palmer 的 Language::AttributeGrammar 模块，
+如此之多的复杂的 AST 变换，手工实现起来，是不可想象的。
+
+事实上，除了 kid2mms 工具以外，Kid 编译器还提供了其他的后端，比如 Perl 后端 kid2pl，
+Maple 后端 kid2mpl, XML 后端 kid2xml 以及 Kid 后端 kid2kid. 这里的 Kid 后端似乎比
+较古怪，看起来将一个 Kid 程序再转换回 Kid 没有太大的意义，而事实上，该工具是从 AST 出
+发来发射格式统一的 Kid 代码的，因此这对于 Kid 编译器本身的调试和测试工作而言，简直就
+是无价之宝。
+
+必须指出，Kid 编译器几乎所有的代码发射器都使用了前面提到的 
+Language::AttributeGrammar 模块。
+
+如果您对 Kid 的源代码感兴趣，就查看 Kid 项目的 SVN 仓库：
+
+    http://svn.berlios.de/svnroot/repos/unisimu/Methodology/Kid/
+
+如果您对 Kid 的设计与实现有任何意见或者疑问，请来信告诉我。谢谢！
