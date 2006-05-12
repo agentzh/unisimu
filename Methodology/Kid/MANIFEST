@@ -48,6 +48,7 @@ script/kid2pl.pl
 script/kid2xml.pl
 t/01test.kid
 t/02test.kid
+t/03test.kid
 t/Kid-Kid/assign.t
 t/Kid-Kid/comment.t
 t/Kid-Kid/if.t
@@ -98,6 +99,9 @@ t/script/~02test.mms
 t/script/~02test.mpl
 t/script/~02test.pl
 t/script/~02test.xml
+t/script/~03test.kid
+t/script/~03test.mms
+t/script/~03test.pl
 template/kid2xxx.pl.tt
 template/kid2xxx.t.tt
 template/leftop.pm.tt
