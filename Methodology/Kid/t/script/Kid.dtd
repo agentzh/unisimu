@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!ELEMENT program          (statement_list)>
+<!ELEMENT statement_list   (statement+)>
+<!ELEMENT statement        (assignment | if_statement | block | declaration | comment)>
+<!ELEMENT assignment       (var | expression)>
+<!ELEMENT var              (identifier)>
+<!ELEMENT identifier       (#PCDATA)>
+<!ELEMENT expression       (neg?, (term, op)*, term)>
+<!ELEMENT neg              (#PCDATA)>
+<!ELEMENT term             ((factor, op)*, factor)>
+<!ELEMENT factor           (number | expression | proc_call | var)>
+<!ELEMENT number           (#PCDATA)>
+<!ELEMENT proc_call        (identifier, expression_list)>
+<!ELEMENT expression_list  (expression+)>
+<!ELEMENT op               (#PCDATA)>
+<!ELEMENT if_statement     (condition, statement, statement?)>
+<!ELEMENT condition        (expression, rel_op, expression)>
+<!ELEMENT rel_op           (#PCDATA)>
+<!ELEMENT block            (statement_list)>
+<!ELEMENT declaration      (proc_decl)>
+<!ELEMENT proc_decl        (identifier, identifier_list, block)>
+<!ELEMENT identifier_list  (identifier+)>
+<!ELEMENT comment          (#PCDATA)>
