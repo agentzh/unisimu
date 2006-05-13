@@ -1,0 +1,78 @@
+[% DEFAULT
+    parent = "expression"
+    child  = "term"
+    op = 'yes'
+    key = "__DIRECTIVE1__"
+-%]
+#: Kid/AST/[% parent %].pm - generated from [% template.name %]
+
+package [% parent %];
+
+use strict;
+use warnings;
+#use Data::Dumper::Simple;
+
+sub [% parent %] {
+    my $self = shift;
+    if (!exists $self->{[% parent %]}) {
+        my $rlist = $self->{'[% key %]'};
+        return nil->new if not $rlist;
+        my @[% child %]s = @$rlist;
+        my $[% child %] = pop @[% child %]s;
+    [%- IF op == 'yes' %]
+        my $op = pop @[% child %]s;
+    [%- END %]
+        my $[% parent %];
+        if (@[% child %]s) {
+            $[% parent %] = bless {'[% key %]' => \@[% child %]s}, ref $self;
+        } else {
+            $[% parent %] = nil->new;
+        }
+        $self->{[% parent %]} = $[% parent %];
+        $self->{[% child %]} = $[% child %];
+    [%- IF op == 'yes' %]
+        $self->{op} = $op;
+    [%- END %]
+        #delete $self->{'[% key %]'};
+        #warn Dumper($self);
+    }
+    return $self->{[% parent %]};
+}
+
+sub [% child %] {
+    my $self = shift;
+    if (!exists $self->{[% child %]}) {
+        $self->[% parent %];
+    }
+    if (@_) {
+        $self->{[% child %]} = shift;
+    } else {
+        $self->{[% child %]};
+    }
+}
+
+sub get_all {
+    my $list = shift;
+    my @elems;
+    while (ref $list eq '[% parent %]') {
+        unshift @elems, $list->[% child %];
+        $list = $list->[% parent %];
+    }
+    @elems;
+}
+
+[%- IF op == 'yes' %]
+sub op {
+    my $self = shift;
+    if (!exists $self->{op}) {
+        $self->[% parent %];
+    }
+    if (@_) {
+        $self->{op} = shift;
+    } else {
+        $self->{op};
+    }
+}
+[%- END %]
+
+1;

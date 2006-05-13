@@ -1,0 +1,22 @@
+<autotree>
+
+program: expression eofile
+
+expression: <skip:''> branch
+          | <error>
+
+eofile: /^\Z/
+
+branch: concat(s /\|/)
+
+concat: modified_atom(s)
+
+modified_atom: atom modifier(?)
+
+modifier: /[*]/
+
+atom: char
+    | '(' <commit> expression ')'
+    | <error?> <reject>
+
+char: /\\.|[^*|()]/
