@@ -34,8 +34,8 @@ sub emit {
 
 program:    $/.NFA = { $<expression>.NFA }
 
-expression: $/.NFA = { $<branch>.NFA }
-branch:     $/.NFA = { re::NFA::emit_branch( $<branch>.NFA, $<concat>.NFA ); }
+expression: $/.NFA = { $<alternation>.NFA }
+alternation:     $/.NFA = { re::NFA::emit_alternation( $<alternation>.NFA, $<concat>.NFA ); }
 concat:     $/.NFA = { re::NFA::emit_concat( $<concat>.NFA, $<modified_atom>.NFA ); }
 
 modified_atom:  $/.NFA = { re::NFA::emit_modified_atom( $<atom>.NFA, $<modifier>.NFA ); }
@@ -50,7 +50,7 @@ END_GRAMMAR
     $re::NFA::emit::grammar->apply($ptree, 'NFA');
 }
 
-sub emit_branch {
+sub emit_alternation {
     my ($a, $b) = @_;
     if (!$a) { return $b };
     my $c = $a->merge($b);

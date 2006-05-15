@@ -1,7 +1,7 @@
 #: re/AST.pm
 #: Abastract Syntax Tree (also parse tree) for re-DFA
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-13 2006-05-13
+#: 2006-05-13 2006-05-15
 
 package re::AST;
 
@@ -9,11 +9,11 @@ use strict;
 use warnings;
 
 use re::AST::Element;
-use re::AST::Branch;
+use re::AST::Alternation;
 use re::AST::Concat;
 
 my @rules = qw(
-    expression brach eof
+    expression alternation eof
     concat modified_atom atom atom_star
     char nil
 );

@@ -1,7 +1,7 @@
 #: re/re.pm
 #: Regexp emitter for re
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-13 2006-05-13
+#: 2006-05-13 2006-05-15
 
 package re::re;
 
@@ -29,8 +29,8 @@ sub emit {
 
 program:    $/.re = { $<expression>.re }
 
-expression: $/.re = { $<branch>.re }
-branch:     $/.re = { re::re::emit_branch( $<branch>.re, $<concat>.re ) }
+expression: $/.re = { $<alternation>.re }
+alternation:     $/.re = { re::re::emit_alternation( $<alternation>.re, $<concat>.re ) }
 concat:     $/.re = { $<concat>.re . $<modified_atom>.re }
 
 modified_atom:  $/.re = { $<atom>.re . $<modifier>.re; }
@@ -45,7 +45,7 @@ END_GRAMMAR
     $re::re::emit::grammar->apply($ptree, 're');
 }
 
-sub emit_branch {
+sub emit_alternation {
     my ($a, $b) = @_;
     if ($a) {
         "$a|$b";

@@ -33,7 +33,7 @@ __DATA__
 abc
 --- out
 <expression>
-  <branch>
+  <alternation>
     <concat>
       <modified_atom>
         <atom>
@@ -51,7 +51,7 @@ abc
         </atom>
       </modified_atom>
     </concat>
-  </branch>
+  </alternation>
 </expression>
 
 
@@ -61,7 +61,7 @@ abc
 a|b|c
 --- out
 <expression>
-  <branch>
+  <alternation>
     <concat>
       <modified_atom>
         <atom>
@@ -83,7 +83,7 @@ a|b|c
         </atom>
       </modified_atom>
     </concat>
-  </branch>
+  </alternation>
 </expression>
 
 
@@ -93,17 +93,17 @@ a|b|c
 ((aa))*
 --- out
 <expression>
-  <branch>
+  <alternation>
     <concat>
       <modified_atom>
         <atom>
           <expression>
-            <branch>
+            <alternation>
               <concat>
                 <modified_atom>
                   <atom>
                     <expression>
-                      <branch>
+                      <alternation>
                         <concat>
                           <modified_atom>
                             <atom>
@@ -116,18 +116,18 @@ a|b|c
                             </atom>
                           </modified_atom>
                         </concat>
-                      </branch>
+                      </alternation>
                     </expression>
                   </atom>
                 </modified_atom>
               </concat>
-            </branch>
+            </alternation>
           </expression>
         </atom>
         <modifier>*</modifier>
       </modified_atom>
     </concat>
-  </branch>
+  </alternation>
 </expression>
 --- LAST
 

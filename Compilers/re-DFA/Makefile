@@ -2,7 +2,7 @@ MV_F = perl -MFile::Copy -e "File::Copy::mv(@ARGV)"
 RM_F = perl -MExtUtils::Command -e rm_f
 
 GRAMMAR = grammar/re.grammar
-PM_FILES = lib/re/AST/Branch.pm lib/re/AST/Concat.pm \
+PM_FILES = lib/re/AST/Alternation.pm lib/re/AST/Concat.pm \
            lib/re/Parser.pm
 
 LEFTOP_TT = template/leftop.pm.tt
@@ -22,8 +22,8 @@ LEFTOP_TT = template/leftop.pm.tt
 
 all: $(PM_FILES) #$(SCRIPTS) $(T_MODULES) $(T_SCRIPTS)
 
-lib/re/AST/Branch.pm: $(LEFTOP_TT)
-	tpage --define parent=branch --define child=concat \
+lib/re/AST/Alternation.pm: $(LEFTOP_TT)
+	tpage --define parent=alternation --define child=concat \
 		--define op=no --define "key=concat(s)" $< > $@
 
 lib/re/AST/Concat.pm: $(LEFTOP_TT)

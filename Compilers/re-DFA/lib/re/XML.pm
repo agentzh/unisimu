@@ -1,7 +1,7 @@
 #: xml/XML.pm
 #: Regexp emitter for xml
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-13 2006-05-13
+#: 2006-05-13 2006-05-15
 
 package re::XML;
 
@@ -28,8 +28,8 @@ sub emit {
 
 program:    $/.xml = { "<expression>\n" . $<expression>.xml . "</expression>\n" }
 
-expression: $/.xml = { "<branch>\n" . $<branch>.xml . "</branch>\n"; }
-branch:     $/.xml = { $<branch>.xml . "<concat>\n" . $<concat>.xml . "</concat>\n"; }
+expression: $/.xml = { "<alternation>\n" . $<alternation>.xml . "</alternation>\n"; }
+alternation:     $/.xml = { $<alternation>.xml . "<concat>\n" . $<concat>.xml . "</concat>\n"; }
 concat:     $/.xml = { $<concat>.xml . $<modified_atom>.xml; }
 
 modified_atom:  $/.xml = { "<modified_atom>\n" . $<atom>.xml . $<modifier>.xml . "</modified_atom>\n"; }
