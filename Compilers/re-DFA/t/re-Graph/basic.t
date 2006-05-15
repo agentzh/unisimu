@@ -5,7 +5,7 @@ use warnings;
 #use Data::Dumper::Simple;
 use File::Compare;
 
-use Test::More 'no_plan';
+use Test::More tests => 49;
 BEGIN { use_ok('re::Graph'); }
 
 my $a = re::Graph->new(3, 'a', 9);
