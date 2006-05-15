@@ -57,7 +57,7 @@ test: all
 #	tpage --define name=$(patsubst t/re_%.pm,%,$@) $< > $@
 
 clean:
-	$(RM_F) $(PM_FILES) #t/script/0*test.pl t/script/0*test.xml t/script/0*test.mpl \
+	$(RM_F) $(PM_FILES) t/re-Graph/g28.png #t/script/0*test.pl t/script/0*test.xml t/script/0*test.mpl \
 #	        t/script/0*test.mm* t/script/0*test.kid $(T_MODULES) $(SCRIPTS) \
 #			$(T_SCRIPTS) Maple.log *.tmp
 
