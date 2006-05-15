@@ -5,7 +5,7 @@ use warnings;
 #use Data::Dumper::Simple;
 use File::Compare;
 
-use Test::More tests => 49;
+use Test::More tests => 50;
 BEGIN { use_ok('re::Graph'); }
 
 my $a = re::Graph->new(3, 'a', 9);
@@ -50,8 +50,13 @@ isa_ok $g47, 're::Graph';
 #warn $g47->entry(), " ", $g47->exit();
 ok !defined $g47->entry(), "$name, undef entry";
 ok !defined $g47->exit(),  "$name, undef exit";
-is_deeply [$g47->node2edges(4)], [['b',5]], "$name, 4";
+
 is_deeply [$g47->node2edges(5)], [], "$name, 5";
+$g47->add_edge(5, re::eps, 6);
+is_deeply [$g47->node2edges(5)], [[re::eps, 6]], "$name, 5";
+
+is_deeply [$g47->node2edges(4)], [['b',5]], "$name, 4";
+
 is_deeply [$g47->node2edges(3)], [], "$name, 3";
 is_deeply [$g47->node2edges(6)], [['a',7]], "$name, 6";
 is_deeply [$g47->node2edges(7)], [], "$name, 7";
@@ -61,6 +66,19 @@ is $g47->entry, 4, "$name, entry -> 4";
 $g47->exit(7);
 is $g47->exit, 7, "$name, exit -> 7";
 
+my $g47_new = re::Graph->build( <<_EOC_ );
+
+entry: 4
+exit:  7
+4,5: b
+5,6: eps
+6,7: a
+
+_EOC_
+
+#warn Dumper($g47);
+is_deeply( $g47_new, $g47, "test Graph->build using $g47" );
+
 my $g28 = $g47->merge($a);
 $name = '2->...->8';
 ok $g28;
@@ -69,9 +87,6 @@ isa_ok $g28, 're::Graph';
 is_deeply [$g28->node2edges(2)], [], "$name, 2";
 $g28->add_edge(2, re::eps, 4);
 is_deeply [$g28->node2edges(2)], [[re::eps, 4]], "$name, 2";
-
-$g28->add_edge(5, re::eps, 6);
-is_deeply [$g28->node2edges(5)], [[re::eps, 6]], "$name, 5";
 
 $g28->add_edge(7, re::eps, 8);
 is_deeply [$g28->node2edges(7)], [[re::eps, 8]], "$name, 7";

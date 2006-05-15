@@ -7,7 +7,7 @@ package re::NFA;
 
 use strict;
 use warnings;
-use Data::Dumper::Simple;
+#use Data::Dumper::Simple;
 
 use re;
 use re::Graph;

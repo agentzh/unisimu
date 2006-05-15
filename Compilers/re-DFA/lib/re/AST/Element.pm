@@ -11,7 +11,7 @@ use re::re;
 #use re::XML;
 use Carp qw( croak );
 use Clone;
-use Data::Dumper;
+#use Data::Dumper;
 use Scalar::Util qw( weaken isweak );
 
 use vars qw( $AUTOLOAD );

@@ -7,7 +7,7 @@ package re::XML;
 
 use strict;
 use warnings;
-use Data::Dumper::Simple;
+#use Data::Dumper::Simple;
 
 use re;
 use Language::AttributeGrammar;

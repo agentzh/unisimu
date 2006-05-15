@@ -3,24 +3,39 @@
 #: Copyright (c) 2006 Agent Zhang
 #: 2006-05-15 2006-05-15
 
+package re;
+
+our $eps;
+
+sub eps {
+    \$eps;
+}
+
 package re::Graph;
 
 use strict;
 use warnings;
+
+use Carp 'croak';
 use GraphViz;
 use Encode 'decode';
 #use Data::Dumper::Simple;
 use Perl6::Attributes;
 
 sub new {
-    my ($proto, $node1, $weight, $node2) = @_;
+    my $proto = shift;
     my $class = ref $proto || $proto;
-    my $edge = [ $weight, $node2 ];
     my $self = bless {
-        node_to => { $node1 => [$edge], $node2 => [] },
-        entry   => $node1,
-        exit    => $node2,
+        node_to => {},
+        entry   => undef,
+        exit    => undef
     }, $class;
+    if (@_) {
+        #warn "@_";
+        ./add_edge(@_);
+        ./entry( $_[0] );
+        ./exit( $_[2] );
+    }
     $self;
 }
 
@@ -74,7 +89,7 @@ sub node2edges {
 sub add_edge {
     my ($self, $node1, $weight, $node2) = @_;
     my $edge = [ $weight, $node2 ];
-    push @.edges, $edge;
+    #push @.edges, $edge;
     $.node_to{$node1} ||= [];
     $.node_to{$node2} ||= [];
     push @{ $.node_to{$node1} }, $edge;
@@ -116,12 +131,28 @@ sub as_png {
     $gv->as_png(@_);
 }
 
-package re;
-
-our $eps;
-
-sub eps {
-    \$eps;
+sub build {
+    my $self = shift;
+    my $src = shift;
+    open my $in, '<', \$src;
+    local $/ = "\n";
+    my $g = $self->new;
+    while (<$in>) {
+        next if /^\s*$/;
+        if (/^\s* entry \s* : \s* (\S+)/x) {
+            $g->entry($1);
+        } elsif (/^\s* exit \s* : \s* (\S+)/x) {
+            $g->exit($1);
+        } elsif (/^\s* (\S+) \s* , \s* (\S+) \s* : \s* (\S+)/x) {
+            my ($a, $b, $w) = ($1, $2, $3);
+            $w = re::eps if $w eq 'eps';
+            $g->add_edge($a, $w, $b);
+        } else {
+            chomp;
+            croak "build: Syntax error: $_";
+        }
+    }
+    $g;
 }
 
 1;
