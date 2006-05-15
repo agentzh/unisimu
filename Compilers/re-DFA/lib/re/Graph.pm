@@ -88,7 +88,7 @@ sub visualize {
         for my $edge (@edges) {
             my $weight = $edge->[0];
             $weight = '¦Å' if $weight eq re::eps();
-            $gv->add_edge($node => $edge->[1], label => decode('GBK', $weight));
+            $gv->add_edge($node => $edge->[1], label => decode('GBK', " $weight "));
         }
     }
     $gv;
