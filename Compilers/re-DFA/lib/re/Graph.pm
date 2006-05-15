@@ -1,4 +1,7 @@
-# re/Graph.pm
+#: re/Graph.pm
+#: Graph data structures used by re::NFA and such
+#: Copyright (c) 2006 Agent Zhang
+#: 2006-05-15 2006-05-15
 
 package re::Graph;
 
