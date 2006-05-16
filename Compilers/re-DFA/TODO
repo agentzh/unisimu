@@ -1,0 +1,21 @@
+= TODO for re-DFA
+
+== Language
+* add ., \s, \w, \d, \S, \W, and \D
+* add [abc], [a-z0-9], and [^abc]
+* add new modifier +, ?, {m}, and {m,n}
+
+== Scripts
+* add command line utilities re2xml, re2re, re2nfa, re2dfa, and such
+
+== Backends
+=== DFA
+* add re::NFA::Eval to serve as a NFA evaluator (or interpreter)
+* add re::DFA::Eval to serve as a DFA evaluator (or interpreter)
+* add re::DFA::Perl to emit plain Perl code for a given DFA
+* add re::DFA::C to emit plain C code for a given DFA
+=== XML
+* apply DTD to the XML outputs
+
+== Documentation
+* add POD for every .pm file
