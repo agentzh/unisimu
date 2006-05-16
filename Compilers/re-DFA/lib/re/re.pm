@@ -23,7 +23,7 @@ sub translate {
 
 sub emit {
     my $ptree = shift;
-    $Data::Dumper::Indent = 1;
+    #$Data::Dumper::Indent = 1;
     #warn Dumper($ptree);
     $re::re::emit::grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 

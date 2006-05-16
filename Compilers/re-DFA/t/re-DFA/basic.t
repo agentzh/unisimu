@@ -4,10 +4,10 @@ use strict;
 use warnings;
 use File::Compare 'compare';
 
-use Test::More tests => 6 * 2 + 1;
-BEGIN { use_ok('re::NFA'); }
+use Test::More tests => 7 * 2 + 1;
+BEGIN { use_ok('re::DFA'); }
 
-*gen = \&re::NFA::translate;
+*gen = \&re::DFA::translate;
 
 my $i = 0;
 
@@ -15,14 +15,15 @@ test('a');
 test('ab');
 test('a*');
 test('a|b');
+test('(a|ba)*');
 test('(a|b)*(aa|bb)(a|b)*');
 test('(a|)b*');
 
 sub test {
     my $src = shift;
 
-    my $imfile  = 't/re-NFA/nfa'.++$i.'.png';
-    my $stdfile = 't/re-NFA/~nfa'.$i.'.png';
+    my $imfile  = 't/re-DFA/dfa'.++$i.'.png';
+    my $stdfile = 't/re-DFA/~dfa'.$i.'.png';
     unlink $imfile if -f $imfile;
     gen($src, $imfile);
     ok -f $imfile, "'$src' - comp $imfile $stdfile";

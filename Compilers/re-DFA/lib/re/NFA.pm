@@ -52,7 +52,12 @@ END_GRAMMAR
 
 sub emit_alternation {
     my ($a, $b) = @_;
-    if (!$a) { return $b };
+    if (!$a) { return $b; };
+    if (!$b) {
+        my $left = ++$Counter;
+        my $right = ++$Counter;
+        $b = re::Graph->new($left, re::eps, $right);
+    }
     my $c = $a->merge($b);
     my $left  = ++$Counter;
     my $right = ++$Counter;

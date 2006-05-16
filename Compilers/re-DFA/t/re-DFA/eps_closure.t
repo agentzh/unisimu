@@ -8,13 +8,13 @@ use re::Graph;
 #use Data::Dumper::Simple;
 use Test::More 'no_plan';
 
-BEGIN { use_ok('re::DFA::Util'); }
+BEGIN { use_ok('re::DFA'); }
 
 sub ordered {
     sort { $a <=> $b } @_;
 }
 
-*gen = \&re::DFA::Util::eps_closure;
+*gen = \&re::DFA::eps_closure;
 
 my $g = re::Graph->build( <<'_EOC_' );
 

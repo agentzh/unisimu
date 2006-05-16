@@ -47,7 +47,7 @@ sub [% child %] {
     if (@_) {
         $self->{[% child %]} = shift;
     } else {
-        $self->{[% child %]};
+        $self->{[% child %]} || nil->new;
     }
 }
 

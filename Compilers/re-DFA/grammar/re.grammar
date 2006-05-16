@@ -9,7 +9,7 @@ eofile: /^\Z/
 
 alternation: concat(s /\|/)
 
-concat: modified_atom(s)
+concat: modified_atom(s?)
 
 modified_atom: atom modifier(?)
 
@@ -20,3 +20,5 @@ atom: char
     | <error?> <reject>
 
 char: /\\.|[^*|()]/
+
+nil: ''

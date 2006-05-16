@@ -5,7 +5,7 @@ use warnings;
 #use Data::Dumper::Simple;
 use File::Compare;
 
-use Test::More tests => 50;
+use Test::More tests => 54;
 BEGIN { use_ok('re::Graph'); }
 
 my $a = re::Graph->new(3, 'a', 9);
@@ -107,3 +107,10 @@ unlink $file if -f $file;
 $g28->as_png($file);
 ok -f $file;
 is File::Compare::compare($file, 't/re-Graph/~g28.png'), 0, "$file ok";
+
+$g28->add_exit(9);
+is join(' ', $g28->exit), '8 9', "multiple accepting nodes";
+
+ok $g28->is_exit(9);
+ok $g28->is_exit(8);
+ok ! $g28->is_exit(2);

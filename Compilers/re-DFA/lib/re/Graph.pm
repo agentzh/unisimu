@@ -16,7 +16,7 @@ package re::Graph;
 use strict;
 use warnings;
 
-use Carp 'croak';
+use Carp qw( croak carp );
 use GraphViz;
 use Encode 'decode';
 #use Data::Dumper::Simple;
@@ -28,7 +28,7 @@ sub new {
     my $self = bless {
         node_to => {},
         entry   => undef,
-        exit    => undef
+        exit    => [],
     }, $class;
     if (@_) {
         #warn "@_";
@@ -41,6 +41,7 @@ sub new {
 
 sub merge {
     my ($self, $other) = @_;
+    carp('Oh, dear!') if ! $other;
     my $new = bless {
         node_to => { %.node_to, %{$other->{node_to}} },
         entry   => undef,
@@ -63,10 +64,23 @@ sub exit {
     my $self = shift;
     if (@_) { 
         my $node = shift;
-        $.exit = $node;
+        @.exit = $node;
         $.node_to{$node} ||= [];
     }
-    else    { $.exit; }
+    else    { wantarray ? @.exit : $.exit[0]; }
+}
+
+sub add_exit {
+    my ($self, $node) = @_;
+    push @.exit, $node;
+}
+
+sub is_exit {
+    my ($self, $node) = @_;
+    for my $exit (@.exit) {
+        return 1 if $exit eq $node;
+    }
+    return undef;
 }
 
 sub nodes {
@@ -126,8 +140,9 @@ sub as_png {
     $self->visualize($gv);
     $gv->add_node('-1', label => ' ', shape => 'plaintext', fillcolor => 'white');
     $gv->add_edge('-1' => $self->entry);
-    $gv->add_node($self->exit, shape => 'doublecircle');
-
+    for my $exit ($self->exit) {
+        $gv->add_node($exit, shape => 'doublecircle');
+    }
     $gv->as_png(@_);
 }
 

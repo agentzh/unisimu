@@ -28,7 +28,7 @@ lib/re/AST/Alternation.pm: $(LEFTOP_TT)
 
 lib/re/AST/Concat.pm: $(LEFTOP_TT)
 	tpage --define parent=concat --define child=modified_atom \
-		--define op=no --define "key=modified_atom(s)" $< > $@
+		--define op=no --define "key=modified_atom(s?)" $< > $@
 
 #lib/re/AST/Identifiers.pm: $(LEFTOP_TT)
 #	tpage --define parent=identifier_list --define child=identifier \
@@ -57,7 +57,7 @@ test: all
 #	tpage --define name=$(patsubst t/re_%.pm,%,$@) $< > $@
 
 clean:
-	$(RM_F) $(PM_FILES) t/re-Graph/g28.png t/re-NFA/nfa*.png 
+	$(RM_F) $(PM_FILES) t/re-Graph/g28.png t/re-NFA/nfa*.png t/re-DFA/dfa*.png
 #t/script/0*test.pl t/script/0*test.xml t/script/0*test.mpl \
 #	        t/script/0*test.mm* t/script/0*test.kid $(T_MODULES) $(SCRIPTS) \
 #			$(T_SCRIPTS) Maple.log *.tmp
