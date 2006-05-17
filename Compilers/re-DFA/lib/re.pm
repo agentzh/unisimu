@@ -10,6 +10,8 @@ use warnings;
 use re::Parser;
 use re::AST;
 
+our $VERSION = '0.01';
+
 1;
 __END__
 
