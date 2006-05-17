@@ -108,7 +108,8 @@ sub weight_list {
             push @w, $edge->[0];
         }
     }
-    uniq @w;
+    @w = uniq @w;
+    wantarray ? @w : \@w;
 }
 
 sub add_edge {
