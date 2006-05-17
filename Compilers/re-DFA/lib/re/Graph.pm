@@ -21,6 +21,7 @@ use GraphViz;
 use Encode 'decode';
 #use Data::Dumper::Simple;
 use Perl6::Attributes;
+use List::MoreUtils 'uniq';
 
 sub new {
     my $proto = shift;
@@ -95,6 +96,19 @@ sub node2edges {
     } else {
         return ();
     }
+}
+
+# returns all the weight of edges:
+sub weight_list {
+    my $self = shift;
+    my @w;
+    for my $node (./nodes) {
+        my @edges = ./node2edges($node);
+        for my $edge (@edges) {
+            push @w, $edge->[0];
+        }
+    }
+    uniq @w;
 }
 
 sub add_edge {
