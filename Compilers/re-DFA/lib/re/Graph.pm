@@ -112,6 +112,17 @@ sub weight_list {
     wantarray ? @w : \@w;
 }
 
+# return the next node of the given node with the weight
+sub next_node {
+    my ($self, $node, $w) = @_;
+    for my $e (./node2edges($node)) {
+        if ($e->[0] eq $w) {
+            return $e->[1];
+        }
+    }
+    undef;
+}
+
 sub add_edge {
     my ($self, $node1, $weight, $node2) = @_;
     my $edge = [ $weight, $node2 ];

@@ -5,7 +5,7 @@ use warnings;
 #use Data::Dumper::Simple;
 use File::Compare;
 
-use Test::More tests => 57;
+use Test::More tests => 61;
 BEGIN { use_ok('re::Graph'); }
 
 my $a = re::Graph->new(3, 'a', 9);
@@ -79,7 +79,15 @@ _EOC_
 #warn Dumper($g47);
 is_deeply( $g47_new, $g47, "test Graph->build using $g47" );
 
-# test the weight_list method
+# Test the next_node method:
+
+is $g47_new->next_node(4, 'b'), 5, '4,5: b';
+ok !defined $g47_new->next_node(4, 'a'), '4,err: a';
+is $g47_new->next_node(6, 'a'), 7, '6,7: a';
+ok !defined $g47_new->next_node(6, 'b'), '6,err: b';
+
+# Test the weight_list method:
+
 my @weights = $g47_new->weight_list;
 my $rw = $g47_new->weight_list;
 is_deeply [sort @weights], [re::eps, 'a', 'b'], 'weight_list ok';
