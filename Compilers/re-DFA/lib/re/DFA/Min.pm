@@ -31,6 +31,7 @@ sub translate {
     my $dfa = re::DFA::emit($nfa);
     my $min_dfa = re::DFA::Min::emit($dfa);
     $min_dfa->as_png($imfile);
+    1;
 }
 
 sub emit {

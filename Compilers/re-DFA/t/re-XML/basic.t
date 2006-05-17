@@ -129,19 +129,95 @@ a|b|c
     </concat>
   </alternation>
 </expression>
---- LAST
 
 
-=== TEST 5;
+
+=== TEST 5:
+--- re:
+--- out
+<expression>
+<alternation>
+<concat>
+</concat>
+</alternation>
+</expression>
+
+
+
+=== TEST 6;
 --- re
 ab*c
 --- out
-ab*c
+<expression>
+<alternation>
+<concat>
+<modified_atom>
+<atom>
+<char>a</char>
+</atom>
+</modified_atom>
+<modified_atom>
+<atom>
+<char>b</char>
+</atom>
+<modifier>*</modifier>
+</modified_atom>
+<modified_atom>
+<atom>
+<char>c</char>
+</atom>
+</modified_atom>
+</concat>
+</alternation>
+</expression>
 
 
 
-=== TEST 6:
+=== TEST 7:
 --- re
 a  (b| )*
 --- out
-a  (b| )*
+<expression>
+<alternation>
+<concat>
+<modified_atom>
+<atom>
+<char>a</char>
+</atom>
+</modified_atom>
+<modified_atom>
+<atom>
+<char> </char>
+</atom>
+</modified_atom>
+<modified_atom>
+<atom>
+<char> </char>
+</atom>
+</modified_atom>
+<modified_atom>
+<atom>
+<expression>
+<alternation>
+<concat>
+<modified_atom>
+<atom>
+<char>b</char>
+</atom>
+</modified_atom>
+</concat>
+<concat>
+<modified_atom>
+<atom>
+<char> </char>
+</atom>
+</modified_atom>
+</concat>
+</alternation>
+</expression>
+</atom>
+<modifier>*</modifier>
+</modified_atom>
+</concat>
+</alternation>
+</expression>

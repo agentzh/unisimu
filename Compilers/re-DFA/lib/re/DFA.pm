@@ -20,6 +20,7 @@ sub translate {
     my $nfa =re::NFA::emit($ptree);
     my $dfa = emit($nfa);
     $dfa->as_png($imfile);
+    1;
 }
 
 sub emit {

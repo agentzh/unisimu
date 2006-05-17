@@ -1,7 +1,7 @@
 #: xml/XML.pm
 #: Regexp emitter for xml
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-13 2006-05-15
+#: 2006-05-13 2006-05-17
 
 package re::XML;
 
@@ -65,6 +65,7 @@ sub escape {
     $s =~ s/>/\&gt;/g;
     $s =~ s/"/&quot;/g;
     $s =~ s/'/&apos;/g;
+    #$s =~ s/ /&nbsp;/g;
     #warn "-- ESCAPE: $s";
     return $s;
 }

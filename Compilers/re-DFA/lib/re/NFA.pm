@@ -23,6 +23,7 @@ sub translate {
     my $ptree = $parser->program($src) or return undef;
     my $g = emit($ptree);
     $g->as_png($imfile);
+    1;
 }
 
 sub emit {

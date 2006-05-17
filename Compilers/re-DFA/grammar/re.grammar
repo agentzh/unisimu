@@ -1,6 +1,7 @@
 <autotree>
 
 program: expression eofile
+       | <error>
 
 expression: <skip:''> alternation
           | <error>
