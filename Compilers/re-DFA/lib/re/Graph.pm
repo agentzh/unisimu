@@ -1,7 +1,7 @@
 #: re/Graph.pm
 #: Graph data structures used by re::NFA and such
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-15 2006-05-15
+#: 2006-05-15 2006-05-16
 
 package re;
 
@@ -55,7 +55,6 @@ sub entry {
     if (@_) {
         my $node = shift;
         $.entry = $node;
-        $.node_to{$node} ||= [];
     }
     else    { $.entry; }
 }
@@ -63,9 +62,7 @@ sub entry {
 sub exit {
     my $self = shift;
     if (@_) { 
-        my $node = shift;
-        @.exit = $node;
-        $.node_to{$node} ||= [];
+        @.exit = @_;
     }
     else    { wantarray ? @.exit : $.exit[0]; }
 }
@@ -157,7 +154,9 @@ sub build {
         if (/^\s* entry \s* : \s* (\S+)/x) {
             $g->entry($1);
         } elsif (/^\s* exit \s* : \s* (\S+)/x) {
-            $g->exit($1);
+            my $s = $1;
+            my @exits = split /\s*,\s*/, $s;
+            $g->exit(@exits);
         } elsif (/^\s* (\S+) \s* , \s* (\S+) \s* : \s* (\S+)/x) {
             my ($a, $b, $w) = ($1, $2, $3);
             $w = re::eps if $w eq 'eps';
