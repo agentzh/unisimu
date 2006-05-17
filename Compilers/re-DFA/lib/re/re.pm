@@ -9,7 +9,8 @@ use strict;
 use warnings;
 #use Data::Dumper::Simple;
 
-use re;
+use re::AST;
+use re::Parser;
 use Language::AttributeGrammar;
 #use Scalar::Util qw( looks_like_number );
 

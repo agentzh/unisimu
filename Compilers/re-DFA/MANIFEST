@@ -46,7 +46,6 @@ lib/re/DFA.pm
 lib/re/XML.pm
 lib/re/Graph.pm
 lib/re/Parser.pm
-lib/re.pm
 template/leftop.pm.tt
 grammar/re.grammar
 TODO

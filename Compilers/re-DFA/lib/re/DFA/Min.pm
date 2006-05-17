@@ -16,7 +16,6 @@ package re::DFA::Min;
 use strict;
 use warnings;
 
-use re;
 use re::DFA;
 use List::Util 'first';
 use List::MoreUtils 'any';

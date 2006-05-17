@@ -8,9 +8,10 @@ package re::DFA;
 use strict;
 use warnings;
 
-use re;
 use re::NFA;
 use Set::Scalar;
+
+our $VERSION = '0.01';
 
 sub translate {
     my ($src, $imfile) = @_;
@@ -112,3 +113,18 @@ sub eps_closure {
 
 1;
 __END__
+
+=head1 NAME
+
+re::DFA - simple regex -> DFA compiler
+
+=head1 AUTHOR
+
+Agent Zhang L<mailto:agentzh@gmail.com>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 Agent Zhang. All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.

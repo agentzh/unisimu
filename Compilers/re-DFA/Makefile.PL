@@ -4,7 +4,7 @@ use inc::Module::Install;
 perl_version    ('5.006001');
 name            ('re-DFA');
 license         ('perl');
-all_from        ('lib/re.pm');
+all_from        ('lib/re/DFA.pm');
 
 for my $ext (qw[ nfa dfa xml re ]) {
     install_script  ("script/re2$ext.pl");
