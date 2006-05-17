@@ -18,8 +18,8 @@ use warnings;
 
 use re;
 use re::DFA;
-use Set::Scalar;
 use List::Util 'first';
+use List::MoreUtils 'any';
 
 sub translate {
     my ($src, $imfile) = @_;
@@ -34,13 +34,13 @@ sub translate {
 
 sub emit {
     my $dfa = shift;
-    my $accept   = Set::Scalar->new;
-    my $unaccept = Set::Scalar->new;
+    my $accept   = [];
+    my $unaccept = [];
     for my $state ($dfa->nodes) {
         if ($dfa->is_exit($state)) {
-            $accept->insert($state);
+            push @$accept, $state;
         } else {
-            $unaccept->insert($state);
+            push @$unaccept, $state;
         }
     }
     my @level = ($accept, $unaccept);
@@ -57,7 +57,7 @@ sub process_level {
     my $modified;
     my $alphabet = $dfa->weight_list;
     for my $set (@$level) {
-        if ($modified or $set->size <= 1) {
+        if ($modified or @$set <= 1) {
             push @new_level, $set;
             next;
         }
@@ -73,22 +73,30 @@ sub split_set {
     my ($set, $level, $graph, $alphabet) = @_;
     for my $char (@$alphabet) {
         my %equiv;
-        while (defined(my $state = $set->each)) {
+        for my $state (@$set) {
             my $next_state = $graph->next_node($state, $char);
             my $image_set;
             if (!defined $next_state) {
                 $next_state = re::err;
                 $image_set = re::err;
             }
-            $image_set ||= first { $_->has($next_state) } @$level;
+            $image_set ||= first { contains($next_state, @$_) } @$level;
             $equiv{$image_set} ||= [];
             push @{ $equiv{$image_set} }, $state;
         }
         if (keys %equiv > 1) {
-            return map { Set::Scalar->new(@$_) } values %equiv;
+            return values %equiv;
         }
     }
     return ($set);
+}
+
+sub contains {
+    my $elem = shift;
+    for my $e (@_) {
+        return 1 if $e eq $elem;
+    }
+    undef;
 }
 
 sub build_min_dfa {
@@ -98,7 +106,7 @@ sub build_min_dfa {
     my $c = 0;
     for my $set (@$level) {
         $c++;
-        while (defined(my $state = $set->each)) {
+        for my $state (@$set) {
             #warn "build_min_dfa: $state";
             $nodes{$state} = $c;
             if ($dfa->is_exit($state)) {

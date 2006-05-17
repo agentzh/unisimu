@@ -12,14 +12,14 @@ BEGIN { use_ok('re::DFA::Min'); }
 
 *split_set = \&re::DFA::Min::split_set;
 
-sub use_fmt {
-    Set::Scalar->as_string_callback(
-        sub { '(' . join(' ',sort $_[0]->elements) . ')' }
-    );
-}
-
-sub no_fmt {
-    Set::Scalar->as_string_callback(undef);
+sub fmt {
+    my @s;
+    for my $set (@_) {
+        push @s, '(' . join(' ',sort @$set) . ')';
+    }
+    @s = sort @s;
+    local $" = " ";
+    "@s";
 }
 
 ###################
@@ -40,15 +40,13 @@ exit:  4
 _EOC_
 
 my $alph = $g->weight_list;
-my $set1 = Set::Scalar->new(1,2,3);
-my $set2 = Set::Scalar->new(5,6);
-my $set3 = Set::Scalar->new(4);
+my $set1 = [1,2,3];
+my $set2 = [5,6];
+my $set3 = [4];
 my $level = [$set1, $set2, $set3];
 my @sets = split_set($set1, $level, $g, $alph);
 
-use_fmt;
-is( "@sets", '(1 2 3)', 'no split happened' );
-no_fmt;
+is( fmt(@sets), '(1 2 3)', 'no split happened' );
 
 ###################
 
@@ -68,10 +66,8 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-use_fmt;
 @sets = sort { "$a" cmp "$b" } @sets;
-is "@sets", "(1 2) (3)", '(1 2 3) splits to (1 2) and (3)';
-no_fmt;
+is fmt(@sets), "(1 2) (3)", '(1 2 3) splits to (1 2) and (3)';
 
 ###################
 
@@ -87,10 +83,8 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-use_fmt;
 @sets = sort { "$a" cmp "$b" } @sets;
-is "@sets", "(1 2 3)", 'no splits happen';
-no_fmt;
+is fmt(@sets), "(1 2 3)", 'no splits happen';
 
 ###################
 
@@ -110,10 +104,8 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-use_fmt;
 @sets = sort { "$a" cmp "$b" } @sets;
-is "@sets", "(1) (2) (3)", '(1 2 3) splits to (1), (2) and (3)';
-no_fmt;
+is fmt(@sets), "(1) (2) (3)", '(1 2 3) splits to (1), (2) and (3)';
 
 ###################
 
@@ -131,10 +123,8 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-use_fmt;
 @sets = sort { "$a" cmp "$b" } @sets;
-is "@sets", "(1 2 3)", 'no splits happen';
-no_fmt;
+is fmt(@sets), "(1 2 3)", 'no splits happen';
 
 ###################
 
@@ -153,7 +143,5 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-use_fmt;
 @sets = sort { "$a" cmp "$b" } @sets;
-is "@sets", "(1 3) (2)", '(1 2 3) splits to (1 3) and (2) (error state distinguishes';
-no_fmt;
+is fmt(@sets), "(1 3) (2)", '(1 2 3) splits to (1 3) and (2) (error state distinguishes';
