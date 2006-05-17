@@ -70,6 +70,7 @@ sub exit {
 
 sub add_exit {
     my ($self, $node) = @_;
+    $.exit ||= [];
     push @.exit, $node;
 }
 
