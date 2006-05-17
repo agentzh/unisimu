@@ -1,7 +1,7 @@
 #: re/DFA/Min.pm
 #: emit minimized DFA from raw DFA
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-15 2006-05-15
+#: 2006-05-15 2006-05-17
 
 package re;
 
