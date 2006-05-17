@@ -6,7 +6,7 @@ use warnings;
 
 use Set::Scalar;
 use re::Graph;
-use Test::More 'no_plan';
+use Test::More tests => 7;
 
 BEGIN { use_ok('re::DFA::Min'); }
 
