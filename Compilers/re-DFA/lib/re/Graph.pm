@@ -55,6 +55,7 @@ sub entry {
     my $self = shift;
     if (@_) {
         my $node = shift;
+        $.node_to{$node} ||= [];
         $.entry = $node;
     }
     else    { $.entry; }
@@ -62,7 +63,10 @@ sub entry {
 
 sub exit {
     my $self = shift;
-    if (@_) { 
+    if (@_) {
+        for my $node (@_) {
+            $.node_to{$node} ||= [];
+        }
         @.exit = @_;
     }
     else    { wantarray ? @.exit : $.exit[0]; }
@@ -71,6 +75,7 @@ sub exit {
 sub add_exit {
     my ($self, $node) = @_;
     $.exit ||= [];
+    $.node_to{$node} ||= [];
     push @.exit, $node;
 }
 

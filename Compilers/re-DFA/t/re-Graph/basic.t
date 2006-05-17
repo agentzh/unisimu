@@ -5,7 +5,7 @@ use warnings;
 #use Data::Dumper::Simple;
 use File::Compare;
 
-use Test::More tests => 62;
+use Test::More tests => 63;
 BEGIN { use_ok('re::Graph'); }
 
 my $a = re::Graph->new(3, 'a', 9);
@@ -138,3 +138,4 @@ my $gg = re::Graph->new;
 $gg->add_exit(5);
 $gg->add_exit(2);
 is join(' ', $gg->exit), '5 2', 'add_exit works';
+is join(' ', sort $gg->nodes), '2 5', 'nodes ok';

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use File::Compare 'compare';
 
-use Test::More tests => 8 * 2 + 1;
+use Test::More tests => 9 * 2 + 1;
 BEGIN { use_ok('re::DFA::Min'); }
 
 *gen = \&re::DFA::Min::translate;
@@ -19,6 +19,7 @@ test('(a|ba)*');
 test('(a|b)*(aa|bb)(a|b)*');
 test('(a|)b*');
 test('a|b|c|d');
+test('');
 
 sub test {
     my $src = shift;

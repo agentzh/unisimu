@@ -20,6 +20,7 @@ use re;
 use re::DFA;
 use List::Util 'first';
 use List::MoreUtils 'any';
+#use Data::Dumper::Simple;
 
 sub translate {
     my ($src, $imfile) = @_;
@@ -45,8 +46,9 @@ sub emit {
     }
     my @level = ($accept, $unaccept);
     while ( process_level(\@level, $dfa) ) {
-        # do nothing here
+        #warn "process once more";
     }
+    #warn Dumper(@level);
     build_min_dfa($dfa, \@level);
 }
 
@@ -62,10 +64,13 @@ sub process_level {
             next;
         }
         my @sets = split_set($set, $level, $dfa, $alphabet);
+        #warn Dumper(@sets);
         $modified = 1 if @sets > 1;
         push @new_level, @sets;
     }
     @$level = @new_level if $modified;
+    #warn "modified: $modified";
+    #warn "@$level";
     $modified;
 }
 
@@ -104,7 +109,9 @@ sub build_min_dfa {
     my $new_dfa = re::Graph->new;
     my %nodes;
     my $c = 0;
+    #warn "@$level";
     for my $set (@$level) {
+        #warn @$set;
         $c++;
         for my $state (@$set) {
             #warn "build_min_dfa: $state";

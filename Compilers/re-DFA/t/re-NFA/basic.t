@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use File::Compare 'compare';
 
-use Test::More tests => 6 * 2 + 1;
+use Test::More tests => 7 * 2 + 1;
 BEGIN { use_ok('re::NFA'); }
 
 *gen = \&re::NFA::translate;
@@ -17,6 +17,7 @@ test('a*');
 test('a|b');
 test('(a|b)*(aa|bb)(a|b)*');
 test('(a|)b*');
+test('');
 
 sub test {
     my $src = shift;

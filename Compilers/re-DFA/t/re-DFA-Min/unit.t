@@ -6,7 +6,7 @@ use warnings;
 
 use Set::Scalar;
 use re::Graph;
-use Test::More tests => 7;
+use Test::More tests => 8;
 
 BEGIN { use_ok('re::DFA::Min'); }
 
@@ -44,8 +44,8 @@ my $set1 = [1,2,3];
 my $set2 = [5,6];
 my $set3 = [4];
 my $level = [$set1, $set2, $set3];
-my @sets = split_set($set1, $level, $g, $alph);
 
+my @sets = split_set($set1, $level, $g, $alph);
 is( fmt(@sets), '(1 2 3)', 'no split happened' );
 
 ###################
@@ -66,7 +66,6 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-@sets = sort { "$a" cmp "$b" } @sets;
 is fmt(@sets), "(1 2) (3)", '(1 2 3) splits to (1 2) and (3)';
 
 ###################
@@ -83,7 +82,6 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-@sets = sort { "$a" cmp "$b" } @sets;
 is fmt(@sets), "(1 2 3)", 'no splits happen';
 
 ###################
@@ -104,7 +102,6 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-@sets = sort { "$a" cmp "$b" } @sets;
 is fmt(@sets), "(1) (2) (3)", '(1 2 3) splits to (1), (2) and (3)';
 
 ###################
@@ -123,7 +120,6 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-@sets = sort { "$a" cmp "$b" } @sets;
 is fmt(@sets), "(1 2 3)", 'no splits happen';
 
 ###################
@@ -143,5 +139,14 @@ exit:  4
 _EOC_
 
 @sets = split_set($set1, $level, $g, $alph);
-@sets = sort { "$a" cmp "$b" } @sets;
 is fmt(@sets), "(1 3) (2)", '(1 2 3) splits to (1 3) and (2) (error state distinguishes';
+
+$g = re::Graph->build( <<_EOC_ );
+
+entry: 1
+exit:  1
+
+_EOC_
+
+@sets = split_set([1], [[],[1]], $g, []);
+is fmt(@sets), "(1)", '(1) remains';
