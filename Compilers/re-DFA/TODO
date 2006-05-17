@@ -6,7 +6,7 @@
 * add new modifier +, ?, {m}, and {m,n}
 
 == Scripts
-* add command line utilities re2xml, re2re, re2nfa, re2dfa, and such
+* add command line utilities re2pl and re2c
 
 == Backends
 === DFA
@@ -19,3 +19,6 @@
 
 == Documentation
 * add POD for every .pm file
+
+== Test Suit
+* port perl's regex test suit to re-DFA
