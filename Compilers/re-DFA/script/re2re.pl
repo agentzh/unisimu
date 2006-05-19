@@ -34,7 +34,7 @@ sub Usage {
 }
 
 my $regex = shift;
-my $res = re::re::translate($regex);
+my $res = re::re->translate($regex);
 if (defined $res) {
     print "$res";
 } else {

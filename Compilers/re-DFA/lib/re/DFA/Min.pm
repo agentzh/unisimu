@@ -22,20 +22,21 @@ use List::MoreUtils 'any';
 #use Data::Dumper::Simple;
 
 sub translate {
-    my ($src, $imfile) = @_;
-    my $min_dfa = transform($src);
+    my ($self, $src, $imfile) = @_;
+    my $min_dfa = $self->transform($src);
     return undef if ! $min_dfa;
     $min_dfa->normalize->as_png($imfile);
     1;
 }
 
 sub transform {
-    my $dfa = re::DFA::transform(@_);
-    emit($dfa);
+    my $self = shift;
+    my $dfa = re::DFA->transform(@_);
+    $self->emit($dfa);
 }
 
 sub emit {
-    my $dfa = shift;
+    my ($self, $dfa) = @_;
     my $accept   = [];
     my $unaccept = [];
     for my $state ($dfa->nodes) {

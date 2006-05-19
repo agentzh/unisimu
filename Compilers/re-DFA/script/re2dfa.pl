@@ -37,7 +37,7 @@ sub Usage {
 
 my $regex = shift;
 
-my $dfa = re::DFA::transform($regex);
+my $dfa = re::DFA->transform($regex);
 if ($dfa) {
     my $outfile = 'DFA.png';
     $dfa->normalize->as_png($outfile);
@@ -46,7 +46,7 @@ if ($dfa) {
     exit(1);
 }
 
-my $min_dfa = re::DFA::Min::transform($regex);
+my $min_dfa = re::DFA::Min->transform($regex);
 if ($min_dfa) {
     my $outfile = 'DFA.min.png';
     $min_dfa->normalize->as_png($outfile);

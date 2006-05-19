@@ -20,9 +20,7 @@ run {
     if (defined $block->out) {
         my $re = $block->re;
         chomp $re;
-        is re::XML::translate($re), $block->out, $block->name;
-    } elsif ($block->error) {
-        ok !defined translate($block->re), $block->name;
+        is( re::XML->translate($re), $block->out, $block->name );
     }
 };
 

@@ -36,7 +36,7 @@ sub Usage {
 my $regex = shift;
 
 
-my $nfa = re::NFA::transform($regex);
+my $nfa = re::NFA->transform($regex);
 if ($nfa) {
     my $outfile = 'NFA.png';
     $nfa->as_png($outfile);

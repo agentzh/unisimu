@@ -17,14 +17,18 @@ sub [% subname %] {
     return undef if !defined $s;
     my $pos = 0;
     my $state = [% dfa.entry %];
-    while ($state != 0) {
+    my $done;
+    while (1) {
         my $char = substr($s, $pos, 1);
       [%- FOREACH node = dfa.nodes %]
         if ($state == [% node %]) {
-            if (!defined $char) {
-                [% dfa.is_exit(node) ? "last;" : "\$state = 0;\n                next;" %]
-            }
+          [%- IF dfa.is_exit(node) %]
+            $done = $pos;
+          [%- END %]
           [%- edges = dfa.node2edges(node); %]
+          [%- IF edges AND edges.size > 0 %]
+            last if !defined $char;
+          [%- END %]
           [%- IF edges.size == 2 AND edges.0.size < 2 %]
             if ($char eq '[% edges.0 %]') {
                 $state = [% edges.1 %];
@@ -38,25 +42,25 @@ sub [% subname %] {
             }
             [%- END %]
           [%- END %]
-            [% dfa.is_exit(node) ? "last;" : "\$state = 0;\n            next;" %]
+            last;
         }
       [%- END %]
         die "error: Unknown state: $state";
     } continue {
         $pos++;
     }
-    if ($state == 0) { return undef; }
-    substr($s, 0, $pos);
+    if (!defined $done) { return undef; }
+    substr($s, 0, $done);
 }
 _EOC_
 
 sub as_code {
-    my ($input, $subname) = @_;
+    my ($self, $input, $subname) = @_;
     #warn "input: $input";
     #warn "subname: $subname";
     my $dfa;
     if (!ref $input) {
-        $dfa = re::DFA::Min::transform($input)->normalize;
+        $dfa = re::DFA::Min->transform($input)->normalize;
     } else {
         $dfa = $input;
     }
@@ -69,6 +73,14 @@ sub as_code {
         \$code,
     ) || die $tt->error();
     $code;
+}
+
+sub as_method {
+    my ($self, $input) = @_;
+    my $code = $self->as_code($input);
+    my $coderef = eval($code);
+    if ($@) { die $@; }
+    $coderef;
 }
 
 1;

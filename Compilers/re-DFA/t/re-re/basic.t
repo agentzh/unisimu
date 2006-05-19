@@ -8,9 +8,7 @@ plan tests => 1 * blocks();
 run {
     my $block = shift;
     if (defined $block->re) {
-        is re::re::translate($block->re), $block->out, $block->name;
-    } elsif ($block->error) {
-        ok !defined translate($block->re), $block->name;
+        is( re::re->translate($block->re), $block->out, $block->name );
     }
 }
 

@@ -18,8 +18,9 @@ use Language::AttributeGrammar;
 our $Counter = 0;
 
 sub translate {
+    my $self = shift;
     my ($src, $imfile) = @_;
-    my $g = transform($src);
+    my $g = $self->transform($src);
     return undef if ! $g;
     $g->as_png($imfile);
     1;
@@ -27,14 +28,14 @@ sub translate {
 
 sub transform {
     #warn $src;
-    my $src = shift;
+    my ($self, $src) = @_;
     my $parser = re::Parser->new() or die "Can't construct the parser!\n";
     my $ptree = $parser->program($src) or return undef;
-    emit($ptree);
+    $self->emit($ptree);
 }
 
 sub emit {
-    my $ptree = shift;
+    my ($self, $ptree) = @_;
     $Data::Dumper::Indent = 1;
     #warn Dumper($ptree);
     $Counter = 0;

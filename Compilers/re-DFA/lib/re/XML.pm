@@ -15,15 +15,15 @@ use Language::AttributeGrammar;
 #use Scalar::Util qw( looks_like_number );
 
 sub translate {
-    my $src = shift;
+    my ($self, $src) = @_;
     #warn $src;
     my $parser = re::Parser->new() or die "Can't construct the parser!\n";
     my $ptree = $parser->program($src) or return undef;
-    return emit($ptree);
+    return $self->emit($ptree);
 }
 
 sub emit {
-    my $ptree = shift;
+    my ($self, $ptree) = @_;
     #warn Dumper($ptree);
     $xml::xml::emit::grammar ||= new Language::AttributeGrammar <<'END_GRAMMAR';
 

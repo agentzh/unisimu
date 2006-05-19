@@ -14,20 +14,21 @@ use Set::Scalar;
 our $VERSION = '0.01';
 
 sub translate {
-    my ($src, $imfile) = @_;
-    my $dfa = transform($src);
+    my ($self, $src, $imfile) = @_;
+    my $dfa = $self->transform($src);
     return undef if ! $dfa;
     $dfa->normalize->as_png($imfile);
     1;
 }
 
 sub transform {
-    my $nfa = re::NFA::transform(@_);
-    emit($nfa);
+    my $self = shift;
+    my $nfa = re::NFA->transform(@_);
+    $self->emit($nfa);
 }
 
 sub emit {
-    my $nfa = shift;
+    my ($self, $nfa) = @_;
     my $c = 1;
     my $dfa = re::Graph->new;
     $dfa->entry($c);

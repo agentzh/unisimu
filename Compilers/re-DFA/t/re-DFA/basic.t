@@ -7,7 +7,7 @@ use File::Compare 'compare';
 use Test::More tests => 8 * 2 + 1;
 BEGIN { use_ok('re::DFA'); }
 
-*gen = \&re::DFA::translate;
+*gen = sub { re::DFA->translate(@_) };
 
 my $i = 0;
 

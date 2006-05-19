@@ -7,7 +7,7 @@ use File::Compare 'compare';
 use Test::More tests => 7 * 2 + 1;
 BEGIN { use_ok('re::NFA'); }
 
-*gen = \&re::NFA::translate;
+*gen = sub { re::NFA->translate(@_) };
 
 my $i = 0;
 
