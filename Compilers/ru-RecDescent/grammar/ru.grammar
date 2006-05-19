@@ -1,0 +1,50 @@
+<autotree>
+
+grammar    : component(s) eofile
+           | <error>
+
+eofile     : /^\Z/
+
+component  : rule
+           | comment
+           | directive
+           | <error>
+
+rule       : identifier ":" <commit> production_list
+           | <error>
+
+production_list: production(s /\|/)
+
+production : item(s)
+
+item       : simpleitem
+           | directive
+           | comment
+           | <error>
+
+simpleitem : repetition               # match repeated subrules
+           | subrule                  # match another rule
+           | terminal                 # match the next input
+           | <error>
+
+subrule    : /[A-Za-z]\w*(?!\s*:)/    # the name of the rule
+
+repetition : subrule howoften
+           | <error>
+
+howoften   : '(?)'                                     # 0 or 1 times
+           | '(s' <commit> terminal(?) ')'             # 1 or more times
+           | '(s?' <commit> terminal(?) ')'            # 0 or more times
+
+terminal   : /\/(\\\/|[^\/])*\//               # interpolated pattern
+           | /"([\\]"|[^"])*"/                 # interpolated literal
+           | /'([\\]'|[^'])*'/                 # uninterpolated literal
+
+directive  : '<commit>'                       # commit to production
+           | '<uncommit>'                     # cancel commitment
+           | '<error>'                        # report an error
+           | '<autotree>'
+
+comment    : /#[^\n]*/                        # same as Perl
+
+identifier : /[A-Za-z]\w*/
