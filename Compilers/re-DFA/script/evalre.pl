@@ -16,7 +16,7 @@ if ($opts{h}) {
     Usage(0);
 }
 
-if (! @ARGV) {
+if (@ARGV != 2) {
     Usage(1);
 }
 
