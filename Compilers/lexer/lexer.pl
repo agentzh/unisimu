@@ -1,4 +1,5 @@
 # lexer.pl
+# 2006-05-19 2006-05-19
 
 use strict;
 use warnings;
@@ -54,7 +55,8 @@ while (1) {
     }
     elsif (/\G\s*(\S+)/gc) {
         print "ERROR: $1\n";
-    } else {
+    }
+    else {
         last;
     }
 }
