@@ -141,9 +141,11 @@ sub read_proxy {
     local $/ = "\n";
     while (<$in>) {
         next if m/^\s*$/o;
-        if (m/(?:\w+:\w+\@)?\d+\.\d+\.\d+.\d+:\d{2,4}\b/o) {
-            warn "Loading $&...\n";
-            push @retvals, $&;
+        if (m/(?:\w+:\w+\@)?\d+\.\d+\.\d+.\d+\s*:?\s*\d{2,4}\b/o) {
+            my $site = $&;
+            $site =~ s/(\d+\.\d+\.\d+.\d+)\s*:?\s*(\d{2,4})\b/$1:$2/;
+            warn "Loading $site...\n";
+            push @retvals, $site;
         }
     }
     return @retvals;
