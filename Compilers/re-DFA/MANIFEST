@@ -42,6 +42,7 @@ script/re2re.pl
 script/re2xml.pl
 script/re2pl.pl
 script/re2c.pl
+script/evalre.pl
 lib/re/AST/Element.pm
 lib/re/AST/Alternation.pm
 lib/re/AST/Concat.pm
