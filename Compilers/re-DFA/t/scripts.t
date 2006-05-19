@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 18;
 use IPC::Run3;
 use Data::Dumper::Simple;
 
@@ -44,3 +44,4 @@ test( 're2xml', qr/<expression>/ );
 test( 're2nfa', "NFA.png generated.", 'NFA.png' );
 test( 're2dfa', "DFA.png generated.\nDFA.min.png generated.", 'DFA.png', 'DFA.min.png' );
 test( 're2pl', qr/sub  {.*\$state/s );
+test( 're2c', qr/int match \(char\* s\) {.*state/s );

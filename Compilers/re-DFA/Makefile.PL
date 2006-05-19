@@ -20,6 +20,7 @@ requires  ('GraphViz');
 requires  ('Carp');
 requires  ('Clone');
 requires  ('Template');
+requires  ('Inline::C');
 
 build_requires  ('IPC::Run3');
 build_requires  ('Test::More');

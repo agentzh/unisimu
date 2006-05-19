@@ -12,9 +12,11 @@ use Inline;
 use Template;
 use re::DFA::Min;
 
+our $Counter = 0;
+
 our $Template = <<'_EOC_';
 [% DEFAULT subname = 'match' -%]
-int [% subname %](char* s) {
+int [% subname %] (char* s) {
     int pos = -1;
     int state = [% dfa.entry %];
     int done = -1;
@@ -77,12 +79,15 @@ sub as_code {
 
 sub as_method {
     my ($self, $input) = @_;
-    my $c_code = $self->as_code($input, 're_DFA_C_as_method_match');
+    #no warnings;
+    my $subname = 're_DFA_C_' . $Counter++;
+    my $c_code = $self->as_code($input, $subname);
     Inline->bind(C => $c_code);
     sub {
+        no strict 'refs';
         my $s = shift;
         return undef if !defined $s;
-        my $pos = re_DFA_C_as_method_match($s);
+        my $pos = &{"$subname"}($s);
         if ($pos == -1) {
             undef;
         } else {

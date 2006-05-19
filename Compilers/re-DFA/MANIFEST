@@ -13,6 +13,8 @@ t/re-DFA-Min/~dfa7.min.png
 t/re-DFA-Min/~dfa6.min.png
 t/re-DFA-Perl/code.t
 t/re-DFA-Perl/eval.t
+t/re-DFA-C/code.t
+t/re-DFA-C/eval.t
 t/re-Graph/~g28.png
 t/re-Graph/basic.t
 t/re-NFA/basic.t
@@ -39,11 +41,13 @@ script/re2dfa.pl
 script/re2re.pl
 script/re2xml.pl
 script/re2pl.pl
+script/re2c.pl
 lib/re/AST/Element.pm
 lib/re/AST/Alternation.pm
 lib/re/AST/Concat.pm
 lib/re/DFA/Min.pm
 lib/re/DFA/Perl.pm
+lib/re/DFA/C.pm
 lib/re/NFA.pm
 lib/re/re.pm
 lib/re/AST.pm

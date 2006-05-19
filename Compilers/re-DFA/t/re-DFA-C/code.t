@@ -10,7 +10,7 @@ BEGIN { use_ok('re::DFA::C'); }
 
 my $code = re::DFA::C->as_code('', 'match_empty');
 eq_or_diff $code, <<'_EOC_';
-int match_empty(char* s) {
+int match_empty (char* s) {
     int pos = -1;
     int state = 1;
     int done = -1;
@@ -31,7 +31,7 @@ _EOC_
 
 $code = re::DFA::C->as_code('a', '');
 eq_or_diff $code, <<'_EOC_';
-int match(char* s) {
+int match (char* s) {
     int pos = -1;
     int state = 1;
     int done = -1;
@@ -60,7 +60,7 @@ _EOC_
 
 $code = re::DFA::C->as_code('a|b', 'match');
 eq_or_diff $code, <<'_EOC_';
-int match(char* s) {
+int match (char* s) {
     int pos = -1;
     int state = 1;
     int done = -1;
@@ -93,7 +93,7 @@ _EOC_
 
 $code = re::DFA::C->as_code('(a|)b*', 'match');
 eq_or_diff $code, <<'_EOC_';
-int match(char* s) {
+int match (char* s) {
     int pos = -1;
     int state = 1;
     int done = -1;
@@ -132,7 +132,7 @@ _EOC_
 
 $code = re::DFA::C->as_code('(a|ba)*', 'match');
 eq_or_diff $code, <<'_EOC_';
-int match(char* s) {
+int match (char* s) {
     int pos = -1;
     int state = 1;
     int done = -1;
