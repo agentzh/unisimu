@@ -6,7 +6,7 @@ name            ('re-DFA');
 license         ('perl');
 all_from        ('lib/re/DFA.pm');
 
-for my $ext (qw[ nfa dfa xml re ]) {
+for my $ext (qw[ nfa dfa xml re pl ]) {
     install_script  ("script/re2$ext.pl");
 }
 

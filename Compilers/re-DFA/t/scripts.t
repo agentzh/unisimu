@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 14;
+use Test::More tests => 16;
 use IPC::Run3;
 use Data::Dumper::Simple;
 
@@ -43,3 +43,4 @@ test( 're2re', $Regex );
 test( 're2xml', qr/<expression>/ );
 test( 're2nfa', "NFA.png generated.", 'NFA.png' );
 test( 're2dfa', "DFA.png generated.\nDFA.min.png generated.", 'DFA.png', 'DFA.min.png' );
+test( 're2pl', qr/sub  {.*\$state/s );
