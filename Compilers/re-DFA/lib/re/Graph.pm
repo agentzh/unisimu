@@ -201,4 +201,33 @@ sub build {
     $g;
 }
 
+sub normalize {
+    my $self = shift;
+    my $new_g = $self->new;
+    my $c = 0;
+    my $entry = $self->entry;
+    $new_g->entry(1);
+    my @queue = $entry;
+    my %visited = ($entry => ++$c);;
+    while (@queue) {
+        my $node = shift @queue;
+        my $node_id = $visited{$node};
+        if ($self->is_exit($node)) {
+            $new_g->add_exit($node_id);
+        }
+        my @edges = $self->node2edges($node);
+        @edges = sort { $a->[0] cmp $b->[0] } @edges;
+        for my $edge (@edges) {
+            my $child = $edge->[1];
+            if (! $visited{$child}) {
+                $visited{$child} = ++$c;
+                push @queue, $child;
+            }
+            my $child_id = $visited{$child};
+            $new_g->add_edge($node_id, $edge->[0], $child_id);
+        }
+    }
+    $new_g;
+}
+
 1;

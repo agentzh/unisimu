@@ -2,7 +2,7 @@
 #: re2nfa.pl
 #: regex -> NFA converter
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-17 2006-05-17
+#: 2006-05-17 2006-05-18
 
 use strict;
 use warnings;
@@ -35,8 +35,11 @@ sub Usage {
 
 my $regex = shift;
 
-my $outfile = 'NFA.png';
-if (re::NFA::translate($regex, $outfile)) {
+
+my $nfa = re::NFA::transform($regex);
+if ($nfa) {
+    my $outfile = 'NFA.png';
+    $nfa->as_png($outfile);
     print "$outfile generated.\n";
 } else {
     exit(1);

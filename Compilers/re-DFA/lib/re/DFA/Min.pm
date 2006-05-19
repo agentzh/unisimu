@@ -1,7 +1,7 @@
 #: re/DFA/Min.pm
 #: emit minimized DFA from raw DFA
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-15 2006-05-17
+#: 2006-05-15 2006-05-18
 
 package re;
 
@@ -23,14 +23,15 @@ use List::MoreUtils 'any';
 
 sub translate {
     my ($src, $imfile) = @_;
-    #warn $src;
-    my $parser = re::Parser->new() or die "Can't construct the parser!\n";
-    my $ptree = $parser->program($src) or return undef;
-    my $nfa =re::NFA::emit($ptree);
-    my $dfa = re::DFA::emit($nfa);
-    my $min_dfa = re::DFA::Min::emit($dfa);
-    $min_dfa->as_png($imfile);
+    my $min_dfa = transform($src);
+    return undef if ! $min_dfa;
+    $min_dfa->normalize->as_png($imfile);
     1;
+}
+
+sub transform {
+    my $dfa = re::DFA::transform(@_);
+    emit($dfa);
 }
 
 sub emit {

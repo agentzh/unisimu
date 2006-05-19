@@ -31,6 +31,7 @@ t/re-DFA/~dfa1.png
 t/re-DFA/~dfa2.png
 t/re-DFA/~dfa3.png
 t/re-DFA/~dfa8.png
+t/scripts.t
 script/re2nfa.pl
 script/re2dfa.pl
 script/re2re.pl

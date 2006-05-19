@@ -1,7 +1,7 @@
 #: re/NFA.pm
 #: NFA emitter for re
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-15 2006-05-15
+#: 2006-05-15 2006-05-18
 
 package re::NFA;
 
@@ -19,12 +19,18 @@ our $Counter = 0;
 
 sub translate {
     my ($src, $imfile) = @_;
-    #warn $src;
-    my $parser = re::Parser->new() or die "Can't construct the parser!\n";
-    my $ptree = $parser->program($src) or return undef;
-    my $g = emit($ptree);
+    my $g = transform($src);
+    return undef if ! $g;
     $g->as_png($imfile);
     1;
+}
+
+sub transform {
+    #warn $src;
+    my $src = shift;
+    my $parser = re::Parser->new() or die "Can't construct the parser!\n";
+    my $ptree = $parser->program($src) or return undef;
+    emit($ptree);
 }
 
 sub emit {

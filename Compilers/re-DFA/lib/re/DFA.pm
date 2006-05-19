@@ -1,7 +1,7 @@
 #: re/DFA.pm
 #: DFA emitter for NFA
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-15 2006-05-15
+#: 2006-05-15 2006-05-18
 
 package re::DFA;
 
@@ -15,13 +15,15 @@ our $VERSION = '0.01';
 
 sub translate {
     my ($src, $imfile) = @_;
-    #warn $src;
-    my $parser = re::Parser->new() or die "Can't construct the parser!\n";
-    my $ptree = $parser->program($src) or return undef;
-    my $nfa =re::NFA::emit($ptree);
-    my $dfa = emit($nfa);
-    $dfa->as_png($imfile);
+    my $dfa = transform($src);
+    return undef if ! $dfa;
+    $dfa->normalize->as_png($imfile);
     1;
+}
+
+sub transform {
+    my $nfa = re::NFA::transform(@_);
+    emit($nfa);
 }
 
 sub emit {

@@ -5,7 +5,7 @@ use warnings;
 #use Data::Dumper::Simple;
 use File::Compare;
 
-use Test::More tests => 63;
+use Test::More tests => 64;
 BEGIN { use_ok('re::Graph'); }
 
 my $a = re::Graph->new(3, 'a', 9);
@@ -139,3 +139,32 @@ $gg->add_exit(5);
 $gg->add_exit(2);
 is join(' ', $gg->exit), '5 2', 'add_exit works';
 is join(' ', sort $gg->nodes), '2 5', 'nodes ok';
+
+# Test ->normalize
+my $old = re::Graph->build( <<_EOC_ );
+
+entry: 4
+exit:  7
+4,5: b
+4,3: c
+3,7: d
+5,6: eps
+6,7: a
+
+_EOC_
+
+my $expected_new = re::Graph->build( <<_EOC_ );
+
+entry: 1
+exit:  5
+
+1,2: b
+1,3: c
+2,4: eps
+3,5: d
+4,5: a
+
+_EOC_
+
+my $new = $old->normalize;
+is_deeply $new, $expected_new, 'normailize ok';
