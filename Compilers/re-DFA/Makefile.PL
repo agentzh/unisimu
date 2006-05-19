@@ -19,10 +19,12 @@ requires  ('List::MoreUtils');
 requires  ('GraphViz');
 requires  ('Carp');
 requires  ('Clone');
+requires  ('Template');
 
 build_requires  ('IPC::Run3');
 build_requires  ('Test::More');
 build_requires  ('Test::Base');
+build_requires  ('Test::Differences');
 build_requires  ('File::Compare');
 
 makemaker_args  (
