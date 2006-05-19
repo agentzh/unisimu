@@ -12,6 +12,7 @@ t/re-DFA-Min/~dfa1.min.png
 t/re-DFA-Min/~dfa7.min.png
 t/re-DFA-Min/~dfa6.min.png
 t/re-DFA-Perl/code.t
+t/re-DFA-Perl/eval.t
 t/re-Graph/~g28.png
 t/re-Graph/basic.t
 t/re-NFA/basic.t
