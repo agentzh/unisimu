@@ -38,21 +38,19 @@ if ($opts{p} and $opts{c}) {
 
 my ($regex, $text) = @ARGV;
 
+my $match;
 if ($opts{c}) {
     *match = re::DFA::C->as_method($regex);
-    my $match = match($text);
-    if (defined $match) {
-        print $match;
-        exit(0);
-    } else {
-        exit(1);
-    }
+    $match = match($text);
+} else {
+    *match = re::DFA::Perl->as_method($regex);
+    $match = match($text);
 }
 
-*match = re::DFA::Perl->as_method($regex);
-my $match = match($text);
 if (defined $match) {
-    print $match;
+    $match =~ s/'/\\'/g;
+    print "match: '$match'\n";
 } else {
+    print "fail to match";
     exit(1);
 }

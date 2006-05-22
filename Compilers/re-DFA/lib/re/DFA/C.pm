@@ -34,13 +34,13 @@ int [% subname %] (char* s) {
             if (c == '\0') break;
           [%- END %]
           [%- IF edges.size == 2 AND edges.0.size < 2 %]
-            if (c == '[% edges.0 %]') {
+            if (c == '[% edges.0.replace("'", "\\'") %]') {
                 state = [% edges.1 %];
                 continue;
             }
           [%- ELSE %]
             [%- FOR edge = edges %]
-            if (c == '[% edge.0 %]') {
+            if (c == '[% edge.0.replace("'", "\\'") %]') {
                 state = [% edge.1 %];
                 continue;
             }

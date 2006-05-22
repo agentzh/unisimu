@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 24;
+use Test::More tests => 36;
 use IPC::Run3;
 use Data::Dumper::Simple;
 
@@ -54,7 +54,7 @@ test( 're2c', qr/int match \(char\* s\) {.*state/s );
     ok defined $stdout, "evalre - start ok";
     #warn "$buffer";
     $stdout =~ s/[\s\n]+$//gs;
-    is ($stdout, 'bbb', 'evalre - stdout ok');
+    is ($stdout, "match: 'bbb'", 'evalre - stdout ok');
 }
 
 {
@@ -65,7 +65,7 @@ test( 're2c', qr/int match \(char\* s\) {.*state/s );
     ok defined $stdout, "evalre - start ok";
     #warn "$buffer";
     $stdout =~ s/[\s\n]+$//gs;
-    is ($stdout, 'bbb', 'evalre - stdout ok');
+    is ($stdout, "match: 'bbb'", 'evalre - stdout ok');
 }
 
 {
@@ -76,5 +76,71 @@ test( 're2c', qr/int match \(char\* s\) {.*state/s );
     ok defined $stdout, "evalre - start ok";
     #warn "$buffer";
     $stdout =~ s/[\s\n]+$//gs;
-    is ($stdout, 'bbb', 'evalre - stdout ok');
+    is ($stdout, "match: 'bbb'", 'evalre - stdout ok');
+}
+
+{
+    my $cmd = [$^X, "-Ilib", "script/evalre.pl", '', 'bbba'];
+    #warn Dumper($cmd);
+    my $stdout;
+    run3 $cmd, \undef, \$stdout;
+    ok defined $stdout, "evalre - start ok";
+    #warn "$buffer";
+    $stdout =~ s/[\s\n]+$//gs;
+    is ($stdout, "match: ''", 'evalre - stdout ok');
+}
+
+{
+    my $cmd = [$^X, "-Ilib", "script/evalre.pl", 'c', 'bbba'];
+    #warn Dumper($cmd);
+    my $stdout;
+    run3 $cmd, \undef, \$stdout;
+    ok defined $stdout, "evalre - start ok";
+    #warn "$buffer";
+    $stdout =~ s/[\s\n]+$//gs;
+    is ($stdout, "fail to match", 'evalre - stdout ok');
+}
+
+{
+    my $cmd = [$^X, "-Ilib", "script/evalre.pl", '-c', 'c', 'bbba'];
+    #warn Dumper($cmd);
+    my $stdout;
+    run3 $cmd, \undef, \$stdout;
+    ok defined $stdout, "evalre - start ok";
+    #warn "$buffer";
+    $stdout =~ s/[\s\n]+$//gs;
+    is ($stdout, "fail to match", 'evalre - stdout ok');
+}
+
+{
+    my $cmd = [$^X, "-Ilib", "script/evalre.pl", "c'*b", "c''''b"];
+    #warn Dumper($cmd);
+    my $stdout;
+    run3 $cmd, \undef, \$stdout;
+    ok defined $stdout, "evalre - start ok";
+    #warn "$buffer";
+    $stdout =~ s/[\s\n]+$//gs;
+    is ($stdout, "match: 'c\\'\\'\\'\\'b'", 'evalre - stdout ok');
+}
+
+{
+    my $cmd = [$^X, "-Ilib", "script/evalre.pl", '-c', "c'*b", "c''''b"];
+    #warn Dumper($cmd);
+    my $stdout;
+    run3 $cmd, \undef, \$stdout;
+    ok defined $stdout, "evalre - start ok";
+    #warn "$buffer";
+    $stdout =~ s/[\s\n]+$//gs;
+    is ($stdout, "match: 'c\\'\\'\\'\\'b'", 'evalre - stdout ok');
+}
+
+{
+    my $cmd = [$^X, "-Ilib", "script/evalre.pl", '-c', "'", "'"];
+    #warn Dumper($cmd);
+    my $stdout;
+    run3 $cmd, \undef, \$stdout;
+    ok defined $stdout, "evalre - start ok";
+    #warn "$buffer";
+    $stdout =~ s/[\s\n]+$//gs;
+    is ($stdout, "match: '\\''", 'evalre - stdout ok');
 }

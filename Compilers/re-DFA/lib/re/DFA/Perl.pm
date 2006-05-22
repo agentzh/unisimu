@@ -30,13 +30,13 @@ sub [% subname %] {
             last if !defined $char;
           [%- END %]
           [%- IF edges.size == 2 AND edges.0.size < 2 %]
-            if ($char eq '[% edges.0 %]') {
+            if ($char eq '[% edges.0.replace("'", "\\'") %]') {
                 $state = [% edges.1 %];
                 next;
             }
           [%- ELSE %]
             [%- FOR edge = edges %]
-            if ($char eq '[% edge.0 %]') {
+            if ($char eq '[% edge.0.replace("'", "\\'") %]') {
                 $state = [% edge.1 %];
                 next;
             }
