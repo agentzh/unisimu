@@ -2,7 +2,7 @@ MV_F = perl -MFile::Copy -e "File::Copy::mv(@ARGV)"
 RM_F = perl -MExtUtils::Command -e rm_f
 
 GRAMMAR = grammar/ru.grammar
-PM_FILES = lib/ru/AST/Grammar.pm lib/ru/AST/Productions.pm \
+PM_FILES = lib/ru/AST/Components.pm lib/ru/AST/Productions.pm \
            lib/ru/AST/Production.pm lib/ru/Parser.pm
 
 LEFTOP_TT = template/leftop.pm.tt
@@ -11,8 +11,8 @@ LEFTOP_TT = template/leftop.pm.tt
 
 all: $(PM_FILES) #$(SCRIPTS) $(T_MODULES) $(T_SCRIPTS)
 
-lib/ru/AST/Grammar.pm: $(LEFTOP_TT)
-	tpage --define parent=grammar --define child=component \
+lib/ru/AST/Components.pm: $(LEFTOP_TT)
+	tpage --define parent=component_list --define child=component \
 		--define op=no --define "key=component(s)" $< > $@
 
 lib/ru/AST/Productions.pm: $(LEFTOP_TT)

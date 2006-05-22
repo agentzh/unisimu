@@ -1,7 +1,9 @@
 <autotree>
 
-grammar    : component(s) eofile
+grammar    : component_list eofile
            | <error>
+
+component_list: component(s)
 
 eofile     : /^\Z/
 
