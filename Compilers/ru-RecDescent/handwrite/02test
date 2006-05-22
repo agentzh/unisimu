@@ -1,0 +1,6 @@
+if cond {
+    print "a"
+} 
+else { 
+    say "b"
+}
