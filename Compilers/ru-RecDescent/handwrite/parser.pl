@@ -23,7 +23,7 @@ sub rulename {
 sub try {
     my $rule;
     if (@_) {
-        $rule = "'$_[0]'";
+        $rule = shift;
     } else {
         $rule = rulename;
     }
@@ -35,7 +35,7 @@ sub try {
 sub fail {
     my $rule;
     if (@_) {
-        $rule = "'$_[0]'";
+        $rule = shift;
     } else {
         $rule = rulename;
     }
@@ -47,7 +47,7 @@ sub fail {
 sub success {
     my $rule;
     if (@_) {
-        $rule = "'$_[0]'";
+        $rule = shift;
     } else {
         $rule = rulename;
     }
@@ -161,7 +161,7 @@ sub if_stmt_production_2 {
 
 sub match_str {
     my $target = shift;
-    try($target);
+    try("'$target'");
     my $s = $X::str;
     pos($s) = $X::pos;
     if ($s =~ m/\G\s+/g) {
@@ -171,17 +171,17 @@ sub match_str {
     my $len = length($target);
     my $match = (substr($s, $X::pos, $len) eq $target);
     if (!$match) {
-        fail($target);
+        fail("'$target'");
         return undef;
     }
     $X::pos += $len;
-    success($target);
+    success("'$target'");
     return 1;
 }
 
 sub match_re {
     my $re = shift;
-    try($re);
+    try("/$re/");
     my $s = $X::str;
     pos($s) = $X::pos;
     if ($s =~ m/\G\s+/g) {
@@ -190,11 +190,11 @@ sub match_re {
     my $qr = qr/\G(?:$re)/;
     my $match = ($s =~ $qr);
     if (!$match) {
-        fail($re);
+        fail("/$re/");
         return undef;
     }
     $X::pos += length($&);
-    success($re);
+    success("/$re/");
     return 1;
 }
 
