@@ -1,0 +1,190 @@
+[% DEFAULT
+     startrule = "if_stmt";
+     alternation = {
+        if_stmt = [ 'if_stmt_production_1', 'if_stmt_production_2' ],
+     };
+     concat = {
+        if_stmt_production_1 = [
+            "match_str('if')", "<commit>", "cond()", "block()", "<uncommit>",
+            "match_str('else')", "block()"
+        ]
+        if_stmt_production_2 = [
+            "match_str('if')", "cond()", "block()"
+        ]
+     };
+     atoms = {
+        cond = "match_str('cond')",
+        block = "match_re('{[^}]*}')",
+     };
+     grammar = "if_stmt: 'if' <commit> cond block <uncomit> 'else' block\n       | 'if' cond block\n\ncond: 'cond'\n\nblock: /{[^}]*}/\n"
+-%]
+#: parser.pl
+
+use strict;
+use warnings;
+
+package X;
+
+our ($str, $pos, $level);
+
+package Parser;
+
+local $/;
+my $src = <>;
+die "No input source code.\n" if !defined $src;
+print "\n", parse($src) ? 'success' : 'fail', "\n";
+
+sub rulename {
+    my $sub = (caller 2)[3];
+    $sub =~ s/^\w+:://g;
+    $sub;
+}
+
+sub try {
+    my $rule;
+    if (@_) {
+        $rule = shift;
+    } else {
+        $rule = rulename;
+    }
+    $X::level++;
+    my $indent = '  ' x $X::level;
+    print "${indent}trying $rule...\n";
+}
+
+sub fail {
+    my $rule;
+    if (@_) {
+        $rule = shift;
+    } else {
+        $rule = rulename;
+    }
+    my $indent = '  ' x $X::level;
+    print "${indent}FAIL to match $rule...\n";
+    $X::level--;
+}
+
+sub success {
+    my $rule;
+    if (@_) {
+        $rule = shift;
+    } else {
+        $rule = rulename;
+    }
+    my $indent = '  ' x $X::level;
+    print "${indent}>>MATCH<< $rule...\n";
+    $X::level--;
+}
+
+sub parse {
+    my ($s) = @_;
+    $X::str = $s;
+    $X::pos = 0;
+    $X::level = 0;
+    return [% startrule %]();
+}
+
+[% FOREACH rule = alternation.keys -%]
+sub [% rule %] {
+    try;
+    my $commit;
+    [%- productions = alternation.$rule %]
+    [%- FOREACH production = productions %]
+    if ([% production %](\$commit)) {
+        success;
+        return 1;
+    }
+      [%- IF production != productions.last %]
+    return undef if $commit;
+      [%- END %]
+    [%- END %]
+    undef;
+}
+
+[% END -%]
+
+[%- FOREACH rule = concat.keys -%]
+sub [% rule %] {
+    my $rcommit = shift;
+    try;
+    my $saved_pos = $X::pos;
+  [%- first = 1 %]
+  [%- FOREACH atom = concat.$rule %]
+    [%- IF atom == '<commit>' %]
+    $$rcommit = 1;
+    [%- ELSIF atom == '<uncommit>' %]
+    $$rcommit = undef;
+    [%- ELSE %]
+    if (![% atom %]) {
+      [%- IF first %]
+          [%- first = 0 %]
+      [%- ELSE %]
+        $X::pos = $saved_pos;
+      [%- END %]
+        fail;
+        return undef;
+    }
+    [%- END %]
+  [%- END %]
+    success;
+    return 1;
+}
+
+[% END -%]
+
+[%- FOREACH rule = atoms.keys -%]
+sub [% rule %] {
+    try;
+    my $match = [% atoms.$rule %];
+    if ($match) {
+        success;
+        return 1;
+    } else {
+        fail;
+        return undef;
+    }
+}
+
+[% END -%]
+sub match_str {
+    my $target = shift;
+    try("'$target'");
+    my $s = $X::str;
+    pos($s) = $X::pos;
+    if ($s =~ m/\G\s+/g) {
+        $X::pos += length($&);
+    }
+    #warn substr($s, $X::pos), "\n";
+    my $len = length($target);
+    my $match = (substr($s, $X::pos, $len) eq $target);
+    if (!$match) {
+        fail("'$target'");
+        return undef;
+    }
+    $X::pos += $len;
+    success("'$target'");
+    return 1;
+}
+
+sub match_re {
+    my $re = shift;
+    try("/$re/");
+    my $s = $X::str;
+    pos($s) = $X::pos;
+    if ($s =~ m/\G\s+/g) {
+        $X::pos += length($&);
+    }
+    my $qr = qr/\G(?:$re)/;
+    my $match = ($s =~ $qr);
+    if (!$match) {
+        fail("/$re/");
+        return undef;
+    }
+    $X::pos += length($&);
+    success("/$re/");
+    return 1;
+}
+
+__END__
+
+[% grammar -%]

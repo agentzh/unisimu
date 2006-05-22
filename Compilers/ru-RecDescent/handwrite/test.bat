@@ -1,5 +1,9 @@
 @echo off
 
+call tpage ../template/parser.pl.tt > parser.pl
+echo parser.pl
+diff parser.pl ~parser.pl
+
 echo 01test
 perl parser.pl 01test > 01out
 diff 01out ~01out
