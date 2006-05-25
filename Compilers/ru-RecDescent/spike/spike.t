@@ -918,10 +918,10 @@ success
 
 
 
-=== TEST 18: test the <leftop ...> directive
+=== TEST 18: test the <leftop: ...> directive
 --- grammar
 
-expr: <leftop term /[-+]/ term>
+expr: <leftop: term /[-+]/ term>
 
 term: /\d+/
 
@@ -953,12 +953,12 @@ success
 
 
 
-=== TEST 19: test <leftop ...> using +,-,*,/
+=== TEST 19: test <leftop: ...> using +,-,*,/
 --- grammar
 
-expr: <leftop term /[-+]/ term>
+expr: <leftop: term /[-+]/ term>
 
-term: <leftop factor /[*\/]/ factor>
+term: <leftop: factor /[*\/]/ factor>
 
 factor: /\d+/
       | '(' expr ')'

@@ -55,7 +55,7 @@ directive: '<error?>'
          | '<reject>'
          | '<commit>'
          | '<uncommit>'
-         | '<leftop' subrule regex subrule '>'
+         | '<leftop:' subrule regex subrule '>'
                                 { [ @item[2..4] ] }
 
 repetition: subrule howoften    { [ $item[1], @{$item[2]} ]; }

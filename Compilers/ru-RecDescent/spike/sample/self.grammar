@@ -31,7 +31,7 @@ directive: '<error?>'
          | '<reject>'
          | '<commit>'
          | '<uncommit>'
-         | '<leftop' subrule regex subrule '>'
+         | '<leftop:' subrule regex subrule '>'
 
 repetition: subrule howoften
 
