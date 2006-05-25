@@ -35,8 +35,8 @@ repetition : subrule howoften
            | <error>
 
 howoften   : '(?)'                                     # 0 or 1 times
-           | '(s' <commit> terminal(?) ')'             # 1 or more times
-           | '(s?' <commit> terminal(?) ')'            # 0 or more times
+           | '(s' <commit> regex(?) ')'             # 1 or more times
+           | '(s?' <commit> regex(?) ')'            # 0 or more times
 
 terminal   : /\/(\\\/|[^\/])*\//               # interpolated pattern
            | /"([\\]"|[^"])*"/                 # interpolated literal
