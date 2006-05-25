@@ -29,7 +29,7 @@ simpleitem : repetition               # match repeated subrules
            | terminal                 # match the next input
            | <error>
 
-subrule    : /[A-Za-z]\w*(?!\s*:)/    # the name of the rule
+subrule    : /[A-Za-z]\w*\b(?!\s*:)/    # the name of the rule
 
 repetition : subrule howoften
            | <error>
