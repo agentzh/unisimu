@@ -88,6 +88,9 @@ sub emit_prod {
             elsif ($item->[1] eq '?') {
                 $item = "repeat_0_1( sub { \&$item->[0] } )";
             }
+            elsif (@$item == 3 and $item->[1] =~ /^\//) {
+                $item = "match_leftop( \\\&$item->[0], q$item->[1], \\\&$item->[2] )"
+            }
             else {
                 die "Unknown modifier $item->[1]\n";
             }
@@ -349,4 +352,20 @@ sub repeat_0_1 {
     my $coderef = $_[0];
     $coderef->();
     1;
+}
+
+sub match_leftop {
+    my ($sub1, $sep, $sub2) = @_;
+    return undef if !$sub1->();
+    while (1) {
+        my $saved_pos = $X::pos;
+        return 1 if !match_re($sep);
+        if (!$sub2->()) {
+            $X::pos = $saved_pos;
+            return 1;
+        }
+        elsif ($X::pos == $saved_pos) {
+            return 1;
+        }
+    }
 }
