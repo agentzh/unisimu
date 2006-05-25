@@ -63,6 +63,9 @@ sub adjust_ast {
 sub emit_prod {
     my $prod = shift;
     my @items = @$prod;
+    if ($items[0] =~ /^<error/) {
+        return ("error()");
+    }
     for my $item (@items) {
         if (ref $item) {
             if ($item->[1] eq 's') {
@@ -124,20 +127,20 @@ use warnings;
 local $/;
 my $src = <>;
 die "No input source code.\n" if !defined $src;
-print "\n", parse($src) ? 'success' : 'fail', "\n";
+print "\n", _parse($src) ? 'success' : 'fail', "\n";
 
-sub rulename {
+sub _rulename {
     my $sub = (caller 2)[3];
     $sub =~ s/^\w+:://g;
     $sub;
 }
 
-sub try {
+sub _try {
     my $rule;
     if (@_) {
         $rule = shift;
     } else {
-        $rule = rulename;
+        $rule = _rulename;
     }
     $X::level++;
     my $indent = '  ' x $X::level;
@@ -155,31 +158,31 @@ sub try {
     }
 }
 
-sub fail {
+sub _fail {
     my $rule;
     if (@_) {
         $rule = shift;
     } else {
-        $rule = rulename;
+        $rule = _rulename;
     }
     my $indent = '  ' x $X::level;
     print "${indent}FAIL to match $rule...\n";
     $X::level--;
 }
 
-sub success {
+sub _success {
     my $rule;
     if (@_) {
         $rule = shift;
     } else {
-        $rule = rulename;
+        $rule = _rulename;
     }
     my $indent = '  ' x $X::level;
     print "${indent}>>MATCH<< $rule...\n";
     $X::level--;
 }
 
-sub parse {
+sub _parse {
     my ($s) = @_;
     $X::str = $s;
     $X::pos = 0;
@@ -189,12 +192,12 @@ sub parse {
 
 [% FOREACH rule = alternation.keys -%]
 sub [% rule %] {
-    try;
+    _try;
     my $commit;
     [%- productions = alternation.$rule %]
     [%- FOREACH production = productions %]
     if (&[% production %](\$commit)) {
-        success;
+        _success;
         return 1;
     }
       [%- IF production != productions.last %]
@@ -209,7 +212,7 @@ sub [% rule %] {
 [%- FOREACH rule = concat.keys -%]
 sub [% rule %] {
     my $rcommit = shift;
-    try;
+    _try;
     my $saved_pos = $X::pos;
   [%- first = 1 %]
   [%- FOREACH atom = concat.$rule %]
@@ -224,12 +227,12 @@ sub [% rule %] {
       [%- ELSE %]
         $X::pos = $saved_pos;
       [%- END %]
-        fail;
+        _fail;
         return undef;
     }
     [%- END %]
   [%- END %]
-    success;
+    _success;
     return 1;
 }
 
@@ -237,13 +240,13 @@ sub [% rule %] {
 
 [%- FOREACH rule = atoms.keys -%]
 sub [% rule %] {
-    try;
+    _try;
     my $match = [% atoms.$rule %];
     if ($match) {
-        success;
+        _success;
         return 1;
     } else {
-        fail;
+        _fail;
         return undef;
     }
 }
@@ -251,7 +254,7 @@ sub [% rule %] {
 [% END -%]
 sub match_str {
     my $target = shift;
-    try("'$target'");
+    _try("'$target'");
     my $s = $X::str;
     pos($s) = $X::pos;
     if ($s =~ m/\G\s+/gc) {
@@ -261,29 +264,37 @@ sub match_str {
     my $len = length($target);
     my $match = (substr($s, $X::pos, $len) eq $target);
     if (!$match) {
-        fail("'$target'");
+        _fail("'$target'");
         return undef;
     }
     $X::pos += $len;
-    success("'$target'");
+    _success("'$target'");
     return 1;
 }
 
 sub match_re {
     my $re = shift;
-    try("/$re/");
+    _try("/$re/");
     my $s = $X::str;
     pos($s) = $X::pos;
     if ($s =~ m/\G\s+/gc) {
         $X::pos += length($&);
     }
-    (my $regex = $re) =~ s/^\^//;
-    if ($s !~ /\G(?:$regex)/) {
-        fail("/$re/");
+    if ($re eq "^\\Z") {
+        #warn "Matching end of file";
+        if ($X::pos == length($X::str)) {
+            _success("/$re/");
+            return 1;
+        }
+        _fail("/$re/");
+        return undef;
+    }
+    if ($s !~ /\G(?:$re)/) {
+        _fail("/$re/");
         return undef;
     }
     $X::pos += length($&);
-    success("/$re/");
+    _success("/$re/");
     return 1;
 }
 
@@ -368,4 +379,8 @@ sub match_leftop {
             return 1;
         }
     }
+}
+
+sub error {
+    undef;
 }

@@ -45,12 +45,15 @@ subrule: /[A-Za-z]\w*\b(?!\s*:)/
 terminal: string
         | regex
 
-string: /"([\\]"|[^"])*"/
-      | /'([\\]'|[^'])*'/
+string: /"(\\.|[^"])*"/
+      | /'(\\.|[^'])*'/
 
 regex: /\/(\\\/|[^\/])*\//
 
-directive: '<commit>'
+directive: '<error?>'
+         | '<error>'
+         | '<reject>'
+         | '<commit>'
          | '<uncommit>'
          | '<leftop' subrule regex subrule '>'
                                 { [ @item[2..4] ] }
