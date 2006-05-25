@@ -75,6 +75,16 @@ sub emit_prod {
                     $item = "repeat_1_n( sub { \&$item->[0] } )";
                 }
             }
+            elsif ($item->[1] eq 's?') {
+                if ($item->[2]) {
+                    if ($item->[2] =~ /^\//) {
+                        $item->[2] = "q" . $item->[2];
+                    }
+                    $item = "repeat_0_n_sep( sub { \&$item->[0] }, $item->[2] )";
+                } else {
+                    $item = "repeat_0_n( sub { \&$item->[0] } )";
+                }
+            }
             elsif ($item->[1] eq '?') {
                 $item = "repeat_0_1( sub { \&$item->[0] } )";
             }
@@ -286,6 +296,9 @@ sub repeat_1_n_sep {
             $X::pos = $saved_pos;
             return 1;
         }
+        elsif ($X::pos == $saved_pos) {
+            return 1;
+        }
     }
     1;
 }
@@ -297,9 +310,28 @@ sub repeat_1_n {
         return undef;
     }
     while (1) {
-        return 1 if !$coderef->();
+        my $saved_pos = $X::pos;
+        return 1 if !$coderef->() or $X::pos == $saved_pos;
     }
     1;
+}
+
+sub repeat_0_n_sep {
+    my ($coderef, $sep) = @_;
+    if (! $coderef->()) {
+        return 1;
+    }
+    while (1) {
+        my $saved_pos = $X::pos;
+        return 1 if !match_re($sep);
+        if (!$coderef->()) {
+            $X::pos = $saved_pos;
+            return 1;
+        }
+        elsif ($X::pos == $saved_pos) {
+            return 1;
+        }
+    }
 }
 
 sub repeat_0_n {
@@ -308,7 +340,8 @@ sub repeat_0_n {
         return 1;
     }
     while (1) {
-        return 1 if !$coderef->();
+        my $saved_pos = $X::pos;
+        return 1 if !$coderef->() or $X::pos == $saved_pos;
     }
 }
 

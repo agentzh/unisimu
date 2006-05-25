@@ -56,6 +56,7 @@ repetition: subrule howoften    { [ $item[1], @{$item[2]} ]; }
 
 howoften: '(?)'                 { [ '?' ]; }
         | '(s' terminal(?) ')'  { [ 's', @{$item[2]} ]; }
+        | '(s?' terminal(?) ')' { [ 's?', @{$item[2]} ]; }
 
 nil: ''  { ["''"] }
 
