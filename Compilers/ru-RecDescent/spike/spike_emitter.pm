@@ -230,8 +230,10 @@ sub [% rule %] {
   [%- FOREACH atom = concat.$rule %]
     [%- IF atom == '<commit>' %]
     $$rcommit = 1;
+    push @item, '<commit>';
     [%- ELSIF atom == '<uncommit>' %]
     $$rcommit = undef;
+    push @item, '<uncommit>';
     [%- ELSE %]
     $match = &[% atom %];
     if (!defined $match) {
@@ -262,6 +264,7 @@ sub [% rule %] {
     my $match = [% atoms.$rule %];
     if (defined $match) {
         _success;
+        my @item = $match;
         return $match;
     } else {
         _fail;

@@ -13,7 +13,7 @@ my $Grammar = <<'END_GRAMMAR';
 grammar: rule(s) eofile
 
                   { 
-                     my @rules = @{ $item{'rule(s)'} };
+                     my @rules = @{ $item[1] };
                      {
                          startrule => $rules[0]->[0],
                          rules => { map {@$_} @rules },
@@ -26,7 +26,7 @@ eofile: /^\Z/
 rule: rulename ':' <commit> production(s /\|/)
 
                    { 
-                     [ $item{rulename}, $item{'production(s)'} ];
+                     [ $item{rulename}, $item[4] ];
                     }
     | <error?> <reject>
 
