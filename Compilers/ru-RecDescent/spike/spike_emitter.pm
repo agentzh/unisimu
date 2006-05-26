@@ -371,6 +371,7 @@ sub repeat_0_n_sep {
     if (!defined $match) {
         return [];
     }
+    push @retval, $match;
     while (1) {
         my $saved_pos = $X::pos;
         my $match = match_re($sep);
@@ -467,5 +468,5 @@ die "No input source code.\n" if !defined $src;
 
 $::RD_TRACE = 1;
 my $parser = Parser->new;
-print "\n", $parser->parse($src) ? 'success' : 'fail', "\n";
+print "\n", defined($parser->parse($src)) ? 'success' : 'fail', "\n";
 [%- END %]

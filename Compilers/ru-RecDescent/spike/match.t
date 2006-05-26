@@ -6,7 +6,7 @@ use warnings;
 use File::Temp qw/ tempfile /;
 use Test::Base;
 
-plan tests => 1 * blocks() + 3 * 5;
+plan tests => 1 * blocks() + 3 * 6;
 
 my $pmfile;
 my @pmfiles;
@@ -106,7 +106,7 @@ procedure
 
 
 
-=== TEST 5: match_str, fail to match
+=== TEST 6: match_str, fail to match
 --- input
 for
 --- ast
@@ -114,7 +114,7 @@ undef
 
 
 
-=== TEST 6: concat returns last item by default
+=== TEST 7: concat returns last item by default
 --- grammar
 
 if_stmt: 'if' '(' /[01]/ ')' block
@@ -132,7 +132,7 @@ q[{
 
 
 
-=== TEST 7: chained rules, if_statement
+=== TEST 8: chained rules, if_statement
 --- grammar
 program: statement
 
@@ -157,7 +157,7 @@ if (32) { print 'yay!' }
 
 
 
-=== TEST 8: chained rules, assignment
+=== TEST 9: chained rules, assignment
 --- input
 foo := 25
 --- ast
@@ -165,7 +165,7 @@ foo := 25
 
 
 
-=== TEST 9: modifier '(s)', 3 elems
+=== TEST 10: modifier '(s)', 3 elems
 --- grammar
 program: number(s)
        | ':' var(s?)
@@ -184,7 +184,7 @@ operator: /[-+]/
 
 
 
-=== TEST 10: modifier '(s)', 1 elem
+=== TEST 11: modifier '(s)', 1 elem
 --- input
 15
 --- ast
@@ -192,7 +192,7 @@ operator: /[-+]/
 
 
 
-=== TEST 11: modifier '(s?)', 3 elems
+=== TEST 12: modifier '(s?)', 3 elems
 --- input
 :foo bar baz
 --- ast
@@ -200,7 +200,7 @@ operator: /[-+]/
 
 
 
-=== TEST 12: modifier '(s?)', 1 elem
+=== TEST 13: modifier '(s?)', 1 elem
 --- input
 :yay5
 --- ast
@@ -208,7 +208,7 @@ operator: /[-+]/
 
 
 
-=== TEST 13: modifier '(s?)', 0 elem
+=== TEST 14: modifier '(s?)', 0 elem
 --- input
 :
 --- ast
@@ -216,7 +216,7 @@ operator: /[-+]/
 
 
 
-=== TEST 14: modifier '(?)', 1 elem
+=== TEST 15: modifier '(?)', 1 elem
 --- input
 => +
 --- ast
@@ -224,8 +224,47 @@ operator: /[-+]/
 
 
 
-=== TEST 14: modifier '(?)', 0 elem
+=== TEST 16: modifier '(?)', 0 elem
 --- input
 =>
 --- ast
 []
+
+
+
+=== TEST 17: modifier '(s /../)', 3 elems
+--- grammar
+program: number(s /;/)
+       | ':' var(s? /,/)
+
+number: /[1-9]\d*/
+
+var: /[A-Za-z]\w*/
+
+--- input
+13; 25 ; 37
+--- ast
+[13,25,37]
+
+
+
+=== TEST 18: modifier '(s /../)', 1 elem
+--- input
+13
+--- ast
+[13]
+
+
+
+=== TEST 19: modifier '(s /../)', 0 elem
+--- input
+--- ast
+undef
+
+
+
+=== TEST 20: modifier '(s? /../)', 5 elems
+--- input
+:cat, bird , dog,pig, man
+--- ast
+[qw( cat bird dog pig man )]
