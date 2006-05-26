@@ -110,7 +110,7 @@ sub emit_prod {
             $item = "\&$item()";
         }
         elsif ($item =~ /^{/) {
-            $item = "eval {$item}";
+            $item = "CORE::eval {$item}";
         }
     }
     @items;
@@ -262,10 +262,13 @@ sub [% rule %] {
 [%- FOREACH rule = atoms.keys -%]
 sub [% rule %] {
     _try;
+    my @item = '[% rule %]';
+    my $text = $X::str;
+    pos($text) = $X::pos;
     my $match = [% atoms.$rule %];
     if (defined $match) {
         _success;
-        my @item = $match;
+        push @item, $match;
         return $match;
     } else {
         _fail;
