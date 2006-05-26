@@ -1,0 +1,28 @@
+Obtain the bootstrapped version
+===============================
+
+    make
+    make SPIKE=spike.pl -B
+
+The bootrapping can be performed infinitely many times:
+
+    make SPIKE=spike.pl -B
+    make SPIKE=spike.pl -B
+    make SPIKE=spike.pl -B
+    ...
+
+
+Test the bootstrapped version
+=============================
+
+    make test
+
+Or directly
+
+    prove -I. ../*.t
+
+
+Clean up the directory
+======================
+
+    make clean
