@@ -1,15 +1,20 @@
 #: spike.pl
+#: This is a bootstrapped version of ../spike.pl
 #: 2006-05-25 2006-05-26
 
 use strict;
 use warnings;
 
 use Getopt::Std;
-use FindBin;
-use lib $FindBin::Bin;
 
-use spike_parser;
+use Text::Balanced;
+use spike_parser2;
 use spike_emitter;
+
+{
+    package Spike::Parser;
+    use Text::Balanced qw/ extract_delimited extract_codeblock /;
+}
 
 my %opts;
 getopts('mn:', \%opts);

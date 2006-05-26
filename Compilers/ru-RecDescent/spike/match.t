@@ -1,8 +1,6 @@
 # match.t
 # Test the auto-matching behavior of the parser
 
-use FindBin;
-use lib "$FindBin::Bin/../lib";
 use test_spike;
 
 #use Data::Dumper::Simple;
