@@ -1,14 +1,26 @@
-#: spike_parser.pm
-#: simple parser for BNF
-#: 2006-05-25 2006-05-25
-
-package Spike::Parser;
+# bootstrap.t
+# Test the bootstrap capability of spike.pl
 
 use strict;
 use warnings;
-use Parse::RecDescent;
 
-my $Grammar = <<'END_GRAMMAR';
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use test_spike;
+
+{
+    package Parser1;
+    use Text::Balanced qw/ extract_delimited extract_codeblock /;
+}
+
+plan tests => 1 * blocks() + 3 * 1;
+
+run_tests;
+
+__DATA__
+
+=== TEST 1: regex terminal
+--- grammar
 
 grammar: rule(s) eofile
 
@@ -69,21 +81,80 @@ howoften: '(?)'                         { [ '?' ]; }
 
 nil: ''  { ["''"] }
 
-END_GRAMMAR
+--- input
 
-my $Parser;
+identifier: /[A-Za-z]\w*/
 
-sub new {
-    my $class = shift;
-    $Parser ||= new Parse::RecDescent ($Grammar) or die "Bad grammar!\n";
-    $class;
-}
+--- ast
+{
+  'rules' => {
+    'identifier' => [
+      [
+        '/[A-Za-z]\\w*/',
+      ]
+    ]
+  },
+  'startrule' => 'identifier'
+};
 
-sub parse {
-    shift;
-    my $src = shift;
-    #$::RD_TRACE = 1;
-    $Parser->grammar($src);
-}
 
-1;
+
+=== TEST 2: string terminal
+--- input
+
+keyword: 'if'
+       | 'else'
+
+--- ast
+{
+  'rules' => {
+    'keyword' => [
+      [
+        '\'if\''
+      ],
+      [
+        '\'else\''
+      ]
+    ]
+  },
+  'startrule' => 'keyword'
+};
+
+
+
+=== TEST 3: concat rule
+--- input
+
+if_stmt: 'if' '(' cond ')' block
+
+cond: /\d+/
+
+block: '{' /[^}]*/ "}"
+
+--- ast
+{
+  'rules' => {
+    'cond' => [
+      [
+        '/\\d+/'
+      ]
+    ],
+    'if_stmt' => [
+      [
+        '\'if\'',
+        '\'(\'',
+        'cond',
+        '\')\'',
+        'block'
+      ]
+    ],
+    'block' => [
+      [
+        '\'{\'',
+        '/[^}]*/',
+        '"}"'
+      ]
+    ]
+  },
+  'startrule' => 'if_stmt'
+};

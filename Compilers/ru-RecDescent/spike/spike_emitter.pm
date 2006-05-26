@@ -112,7 +112,7 @@ sub emit_prod {
             $item = "\&$item()";
         }
         elsif ($item =~ /^{/) {
-            $item = "do $item";
+            $item = "do $item; if (defined \$match and pos(\$text)>\$X::pos) { \$X::pos=pos(\$text); }";
         }
     }
     @items;
@@ -211,7 +211,7 @@ sub [% rule %] {
     my ($match, $commit);
     [%- productions = alternation.$rule %]
     [%- FOREACH production = productions %]
-    $match = &[% production %](\$commit);
+    ($match) = &[% production %](\$commit);
     if (defined $match) {
         _success;
         return $match;
@@ -247,7 +247,7 @@ sub [% rule %] {
     $$rcommit = undef;
     push @item, '<uncommit>';
     [%- ELSE %]
-    $match = [% atom %];
+    ($match) = [% atom %];
     if (!defined $match) {
       [%- IF first %]
           [%- first = 0 %]
@@ -272,7 +272,7 @@ sub [% rule %] {
     my @item = '[% rule %]';
     my $text = $X::str;
     pos($text) = $X::pos;
-    my $match = [% atoms.$rule %];
+    my ($match) = [% atoms.$rule %];
     if (defined $match) {
         _success;
         push @item, $match;
@@ -353,9 +353,9 @@ sub repeat_1_n_sep {
             $X::pos = $saved_pos;
             last;
         }
+        last if $X::pos == $saved_pos;
         push @retval, $sep_match if defined $sep_match;
         push @retval, $match;
-        last if $X::pos == $saved_pos;
     }
     \@retval;
 }
@@ -372,8 +372,8 @@ sub repeat_1_n {
         my $saved_pos = $X::pos;
         my $match = $coderef->();
         last if !defined $match;
-        push @retval, $match;
         last if $X::pos == $saved_pos;
+        push @retval, $match;
     }
     \@retval;
 }
@@ -399,9 +399,9 @@ sub repeat_0_n_sep {
             $X::pos = $saved_pos;
             last;
         }
+        last if $X::pos == $saved_pos;
         push @retval, $sep_match if defined $sep_match;
         push @retval, $match;
-        last if $X::pos == $saved_pos;
     }
     \@retval;
 }
@@ -417,12 +417,12 @@ sub repeat_0_n {
     while (1) {
         my $saved_pos = $X::pos;
         my $match = $coderef->();
+        last if $X::pos == $saved_pos;
         if (defined $match) {
             push @retval, $match;
         } else {
             last;
         }
-        last if $X::pos == $saved_pos;
     }
     \@retval;
 }
@@ -456,9 +456,9 @@ sub match_leftop {
             $X::pos = $saved_pos;
             last;
         }
+        last if $X::pos == $saved_pos;
         push @retval, $sep_match if defined $sep_match;
         push @retval, $match;
-        last if $X::pos == $saved_pos;
     }
     \@retval;
 }

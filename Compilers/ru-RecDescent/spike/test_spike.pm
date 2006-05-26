@@ -5,7 +5,6 @@ package test_spike;
 
 use Test::Base -Base;
 use File::Temp qw/ tempfile /;
-#use Data::Dumper::Simple;
 
 our @EXPORT = qw(run_tests);
 
@@ -48,10 +47,13 @@ sub run_test($) {
         $parser = $class->new;
     }
 
-    $::RD_TRACE = 1;
-    $::RD_VERBOSE = 1;
+    #$::RD_TRACE = 1;
+    #$::RD_VERBOSE = 1;
     my $ast = $parser->parse($input);
+    #use Data::Dumper::Simple;
+    #$::Data::Dumper::Indent = 1;
     #warn Dumper($ast);
+
     is_deeply $ast, $expected_ast, "$name - parse tree ok";
     push @pmfiles, $pmfile;
 }
