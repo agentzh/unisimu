@@ -466,7 +466,7 @@ sub match_leftop {
 sub error {
     my $verbose = shift;
     if ($verbose) {
-        warn "Syntax error.\n";
+        #warn "Syntax error.\n";
     }
     undef;
 }
