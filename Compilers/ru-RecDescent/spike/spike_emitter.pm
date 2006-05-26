@@ -107,7 +107,10 @@ sub emit_prod {
             $item = "match_re(q$item)";
         }
         elsif ($item =~ /^\w+$/) {
-            $item = "$item()";
+            $item = "\&$item()";
+        }
+        elsif ($item =~ /^{/) {
+            $item = "eval {$item}";
         }
     }
     @items;
@@ -192,8 +195,8 @@ sub new {
 }
 
 sub parse {
-    my ($self, $s) = @_;
-    $X::str = $s;
+    my ($self, $text) = @_;
+    $X::str = $text;
     $X::pos = 0;
     $X::level = 0;
     return [% startrule %]();
@@ -224,6 +227,8 @@ sub [% rule %] {
     my $rcommit = shift;
     _try;
     my @item = '[% rule %]';
+    my $text = $X::str;
+    pos($text) = $X::pos;
     my $match;
     my $saved_pos = $X::pos;
   [%- first = 1 %]
@@ -235,7 +240,7 @@ sub [% rule %] {
     $$rcommit = undef;
     push @item, '<uncommit>';
     [%- ELSE %]
-    $match = &[% atom %];
+    $match = [% atom %];
     if (!defined $match) {
       [%- IF first %]
           [%- first = 0 %]
@@ -249,11 +254,7 @@ sub [% rule %] {
     [%- END %]
   [%- END %]
     _success;
-  [%- IF concat.__ACTION__ %]
-    do [% concat.__ACTION__ %];
-  [%- ELSE %]
     $item[-1];
-  [%- END %]
 }
 
 [% END -%]
@@ -276,14 +277,14 @@ sub [% rule %] {
 sub match_str {
     my $target = shift;
     _try("'$target'");
-    my $s = $X::str;
-    pos($s) = $X::pos;
-    if ($s =~ m/\G\s+/gc) {
+    my $text = $X::str;
+    pos($text) = $X::pos;
+    if ($text =~ m/\G\s+/gc) {
         $X::pos += length($&);
     }
-    #warn substr($s, $X::pos), "\n";
+    #warn substr($text, $X::pos), "\n";
     my $len = length($target);
-    my $equal = (substr($s, $X::pos, $len) eq $target);
+    my $equal = (substr($text, $X::pos, $len) eq $target);
     if (!$equal) {
         _fail("'$target'");
         return undef;
@@ -296,9 +297,9 @@ sub match_str {
 sub match_re {
     my $re = shift;
     _try("/$re/");
-    my $s = $X::str;
-    pos($s) = $X::pos;
-    if ($s =~ m/\G\s+/gc) {
+    my $text = $X::str;
+    pos($text) = $X::pos;
+    if ($text =~ m/\G\s+/gc) {
         $X::pos += length($&);
     }
     if ($re eq "^\\Z") {
@@ -310,7 +311,7 @@ sub match_re {
         _fail("/$re/");
         return undef;
     }
-    if ($s !~ /\G(?:$re)/) {
+    if ($text !~ /\G(?:$re)/) {
         _fail("/$re/");
         return undef;
     }

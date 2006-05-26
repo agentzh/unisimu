@@ -1,4 +1,5 @@
 # match.t
+# Test the auto-matching behavior of the parser
 
 use strict;
 use warnings;
@@ -7,7 +8,7 @@ use File::Temp qw/ tempfile /;
 use Test::Base;
 #use Data::Dumper::Simple;
 
-plan tests => 1 * blocks() + 3 * 9;
+plan tests => 1 * blocks() + 3 * 10;
 
 my $pmfile;
 my @pmfiles;
@@ -15,7 +16,7 @@ my @pmfiles;
 mkdir 'tmp' if !-d 'tmp';
 
 my $counter = 0;
-my $Parser;
+my $parser;
 
 filters {
     ast => 'eval',
@@ -39,11 +40,11 @@ run {
         ($pmfile = $gmfile) =~ s/\.grammar$/.pm/;
         ok -f $pmfile, "$name - $pmfile ok";
         ok require $pmfile, "$name - load module $pmfile ok";
-        $Parser = $class->new;
+        $parser = $class->new;
     }
 
     #$::RD_TRACE = 1;
-    my $ast = $Parser->parse($input);
+    my $ast = $parser->parse($input);
     #warn Dumper($ast);
     is_deeply $ast, $expected_ast, "$name - parse tree ok";
     push @pmfiles, $pmfile;
@@ -382,3 +383,17 @@ factor: /[1-9]\d*/
 31/32 + 2*25*123 - 3*5 - 6*5/4/2
 --- ast
 [[ [31,'/',32], '+', [2,'*',25,'*',123], '-', [3,'*',5], '-', [6,'*',5,'/',4,'/',2] ]]
+
+
+
+=== TEST 31: regex
+--- grammar
+
+regex: /\/(\\\/|[^\/])*\//
+
+--- input
+/\/(\\\/|[^\/])*\//
+--- ast chop
+<<'EOC';
+/\/(\\\/|[^\/])*\//
+EOC

@@ -18,7 +18,7 @@ grammar: rule(s) eofile
                          startrule => $rules[0]->[0],
                          rules => { map {@$_} @rules },
                      };
-                   }
+                  }
        | <error>
 
 eofile: /^\Z/
@@ -27,7 +27,7 @@ rule: rulename ':' <commit> production(s /\|/)
 
                    { 
                      [ $item{rulename}, $item[4] ];
-                    }
+                   }
     | <error?> <reject>
 
 rulename: /[A-Za-z]\w*/
@@ -38,6 +38,7 @@ production: item(s)
 item: repetition
     | subrule
     | terminal
+    | action
     | directive
 
 subrule: /[A-Za-z]\w*\b(?!\s*:)/
@@ -48,7 +49,9 @@ terminal: string
 string: /"(\\.|[^"])*"/
       | /'(\\.|[^'])*'/
 
-regex: /\/(\\\/|[^\/])*\//
+regex: {extract_delimited($text,'/')}
+
+action: {extract_codeblock($text)}
 
 directive: '<error?>'
          | '<error>'
