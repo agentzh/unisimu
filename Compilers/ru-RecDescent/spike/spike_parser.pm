@@ -26,7 +26,7 @@ eofile: /^\Z/
 rule: rulename ':' <commit> production(s /\|/)
 
                    { 
-                     [ $item{rulename}, $item[4] ];
+                     [ $item[1], $item[4] ];
                    }
     | <error?> <reject>
 

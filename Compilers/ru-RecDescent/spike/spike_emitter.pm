@@ -65,8 +65,10 @@ sub adjust_ast {
 sub emit_prod {
     my $prod = shift;
     my @items = @$prod;
-    if ($items[0] =~ /^<error/) {
-        return ("error()");
+    if ($items[0] =~ /^<error\?/) {
+        return ("error(0)");
+    } elsif ($items[0] =~ /^<error/) {
+        return ("error(1)");
     }
     for my $item (@items) {
         if (ref $item) {
@@ -110,7 +112,7 @@ sub emit_prod {
             $item = "\&$item()";
         }
         elsif ($item =~ /^{/) {
-            $item = "CORE::eval $item";
+            $item = "do $item";
         }
     }
     @items;
@@ -214,9 +216,13 @@ sub [% rule %] {
         return $match;
     }
       [%- IF production != productions.last %]
-    return undef if $commit;
+    if ($commit) {
+        _fail;
+        return undef;
+    }
       [%- END %]
     [%- END %]
+    _fail;
     undef;
 }
 
@@ -457,7 +463,10 @@ sub match_leftop {
 }
 
 sub error {
-    warn "Syntax error.\n";
+    my $verbose = shift;
+    if ($verbose) {
+        warn "Syntax error.\n";
+    }
     undef;
 }
 

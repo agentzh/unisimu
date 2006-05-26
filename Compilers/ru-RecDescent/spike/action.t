@@ -4,7 +4,10 @@
 use strict;
 use warnings;
 
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use test_spike;
+
 use Text::Balanced;
 
 plan tests => 1 * blocks() + 3 * 8;
