@@ -1,0 +1,21 @@
+input: expr eof { $item[1] }
+
+eof: /^\Z/
+
+expr: <leftop: term /([-+])/ term>
+
+        { eval join(' ', @{$item[1]}); }
+
+term: <leftop: factor /([*\/])/ factor>
+
+        { eval join(' ', @{$item[1]}); }
+
+factor: neg(?) number
+
+            { my $neg = $item[1]->[0] || ''; $neg . $item[2] }
+
+      | '(' expr ')'  { $item[2] }
+
+neg: '-'
+
+number: /[1-9]\d*/

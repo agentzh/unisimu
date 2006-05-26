@@ -1,0 +1,23 @@
+root: expression eof { $item[1] ? 'T' : 'F' }
+
+eof: /^\Z/
+
+expression: and_expr 'OR' expression
+                { $item[1] || $item[3] }
+          | and_expr
+
+and_expr:   not_expr 'AND' and_expr
+                { $item[1] && $item[3] }
+        |   not_expr
+
+not_expr:   'NOT' brack_expr
+                { ! $item[2] }
+        |   brack_expr
+
+brack_expr: '(' expression ')'
+                { $item[2] }
+          | atom
+
+atom: 'T' { 1 }
+    | 'F' { 0 }
+
