@@ -5,8 +5,9 @@ use warnings;
 
 use File::Temp qw/ tempfile /;
 use Test::Base;
+#use Data::Dumper::Simple;
 
-plan tests => 1 * blocks() + 3 * 6;
+plan tests => 1 * blocks() + 3 * 9;
 
 my $pmfile;
 my @pmfiles;
@@ -41,7 +42,9 @@ run {
         $Parser = $class->new;
     }
 
+    #$::RD_TRACE = 1;
     my $ast = $Parser->parse($input);
+    #warn Dumper($ast);
     is_deeply $ast, $expected_ast, "$name - parse tree ok";
     push @pmfiles, $pmfile;
 };
@@ -268,3 +271,114 @@ undef
 :cat, bird , dog,pig, man
 --- ast
 [qw( cat bird dog pig man )]
+
+
+
+=== TEST 21: modifier '(s? /../)', 1 elem
+--- input
+ : clover
+--- ast
+['clover']
+
+
+
+=== TEST 22: modifier '(s? /../)', 0 elem
+--- input
+:
+--- ast
+[]
+
+
+
+=== TEST 23: modifier '(s /(..)/)', 3 elems
+--- grammar
+program: number(s /(=>|,)/)
+       | ':' var(s? /([-+])/)
+
+number: /[1-9]\d*/
+
+var: /[A-Za-z]\w*/
+
+--- input
+13, 25 => 37
+--- ast
+[13, ',', 25, '=>', 37]
+
+
+
+=== TEST 24: modifier '(s /(..)/)', 1 elem
+--- input
+13
+--- ast
+[13]
+
+
+
+=== TEST 25: modifier '(s /(..)/)', 0 elem
+--- input
+--- ast
+undef
+
+
+
+=== TEST 26: modifier '(s? /(..)/)', 5 elems
+--- input
+:cat+ bird - dog + pig + man
+--- ast
+[qw( cat + bird - dog + pig + man )]
+
+
+
+=== TEST 27: modifier '(s? /(..)/)', 1 elem
+--- input
+ : clover
+--- ast
+['clover']
+
+
+
+=== TEST 28: modifier '(s? /(..)/)', 0 elem
+--- input
+:
+--- ast
+[]
+
+
+
+=== TEST 29: modifier '<leftop: a /../ b>'
+--- grammar
+
+program: expr(s)
+
+expr: <leftop: term /[-+]/ term>
+
+term: <leftop: factor /[*\/]/ factor>
+
+factor: /[1-9]\d*/
+
+--- input
+31/32 + 2*25*123 - 3*5
+6*5/4/2
+--- ast
+[
+    [[31,32], [2,25,123], [3,5]],
+    [[6,5,4,2]],
+]
+
+
+
+=== TEST 30: modifier '<leftop: a /(..)/ b>'
+--- grammar
+
+program: expr(s)
+
+expr: <leftop: term /([-+])/ term>
+
+term: <leftop: factor /([*\/])/ factor>
+
+factor: /[1-9]\d*/
+
+--- input
+31/32 + 2*25*123 - 3*5 - 6*5/4/2
+--- ast
+[[ [31,'/',32], '+', [2,'*',25,'*',123], '-', [3,'*',5], '-', [6,'*',5,'/',4,'/',2] ]]
