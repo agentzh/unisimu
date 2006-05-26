@@ -124,7 +124,8 @@ __DATA__
 
 package main;
 
-our $RD_TRACE = undef; # default off
+our $RD_TRACE = undef;   # default off
+our $RD_VERBOSE = undef; # default off
 
 package X;
 
@@ -151,7 +152,7 @@ sub _try {
     }
     $X::level++;
     my $indent = '  ' x $X::level;
-    if (!defined $X::saved_pos or $X::saved_pos != $X::pos) {
+    if ($::RD_VERBOSE or !defined $X::saved_pos or $X::saved_pos != $X::pos) {
         my $next = substr($X::str, $X::pos, 15);
         $next =~ s/\n/\\n/g;
         $next =~ s/\t/\\t/g;
@@ -477,12 +478,29 @@ package main;
 
 use strict;
 use warnings;
+use Data::Dumper;
+use Getopt::Std;
+
+my %opts;
+getopts('d', \%opts);
 
 local $/;
 my $src = <>;
 die "No input source code.\n" if !defined $src;
 
-$::RD_TRACE = 1;
 my $parser = Parser->new;
-print "\n", defined($parser->parse($src)) ? 'success' : 'fail', "\n";
+my $ast;
+if ($opts{d}) {
+    $::RD_TRACE = 1;
+    $ast = $parser->parse($src);
+    print "\n", defined($ast) ? 'success' : 'fail', "\n";
+} else {
+    $::Data::Dumper::Indent = 1;
+    $ast = $parser->parse($src);
+    if (ref $ast) {
+        print Data::Dumper->Dump([$ast], ['AST']);
+    } else {
+        print $ast, "\n";
+    }
+}
 [%- END %]

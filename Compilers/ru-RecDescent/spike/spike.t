@@ -36,7 +36,7 @@ run {
     print $fh $input;
     close $fh;
     ok -f $infile, "$name - $infile ok";
-    my $output = `$^X $plfile $infile`;
+    my $output = `$^X $plfile -d $infile`;
     is $output, $trace, "$name - tracing output ok";
     push @plfiles, $plfile;
 };

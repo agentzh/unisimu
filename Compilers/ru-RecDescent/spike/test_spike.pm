@@ -49,6 +49,7 @@ sub run_test($) {
     }
 
     $::RD_TRACE = 1;
+    $::RD_VERBOSE = 1;
     my $ast = $parser->parse($input);
     #warn Dumper($ast);
     is_deeply $ast, $expected_ast, "$name - parse tree ok";
@@ -57,7 +58,7 @@ sub run_test($) {
 
 END {
     for my $file (@pmfiles) {
-        unlink $file;
+        #unlink $file;
     }
 }
 
