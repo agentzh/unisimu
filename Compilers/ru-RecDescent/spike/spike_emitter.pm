@@ -110,7 +110,7 @@ sub emit_prod {
             $item = "\&$item()";
         }
         elsif ($item =~ /^{/) {
-            $item = "CORE::eval {$item}";
+            $item = "CORE::eval $item";
         }
     }
     @items;
