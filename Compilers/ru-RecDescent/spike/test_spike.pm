@@ -60,7 +60,7 @@ sub run_test($) {
 
 END {
     for my $file (@pmfiles) {
-        #unlink $file;
+        unlink $file;
     }
 }
 

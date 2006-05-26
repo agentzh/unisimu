@@ -1,5 +1,5 @@
 CP_F = perl -MFile::Copy -e "File::Copy::cp(@ARGV)"
-RM_F = perl -MExtUtil::Command -e rm_f
+RM_F = perl -MExtUtils::Command -e rm_f
 SPIKE = ../spike.pl
 FILES = spike_parser2.pm spike_emitter.pm test_spike.pm
 
