@@ -12,9 +12,11 @@ use Data::Dumper::Simple;
 my $TT = Template->new;
 
 sub emit {
-    my ($self, $ast) = @_;
+    my ($self, $ast, $filetype, $package) = @_;
     #warn Dumper($ast);
     $ast = adjust_ast($ast);
+    $ast->{filetype} = $filetype || 'pl';
+    $ast->{package} = $package || 'Parser';
     #warn Dumper($ast);
     my $buffer;
     $TT->process(\*DATA, $ast, \$buffer)
@@ -115,19 +117,18 @@ sub emit_prod {
 __DATA__
 #: parser.pl
 
+package main;
+
+our $RD_TRACE = undef; # default off
+
 package X;
 
 our ($str, $pos, $level);
 
-package Parser;
+package [% package %];
 
 use strict;
 use warnings;
-
-local $/;
-my $src = <>;
-die "No input source code.\n" if !defined $src;
-print "\n", _parse($src) ? 'success' : 'fail', "\n";
 
 sub _rulename {
     my $sub = (caller 2)[3];
@@ -136,6 +137,7 @@ sub _rulename {
 }
 
 sub _try {
+    return if !$::RD_TRACE;
     my $rule;
     if (@_) {
         $rule = shift;
@@ -159,6 +161,7 @@ sub _try {
 }
 
 sub _fail {
+    return if !$::RD_TRACE;
     my $rule;
     if (@_) {
         $rule = shift;
@@ -171,6 +174,7 @@ sub _fail {
 }
 
 sub _success {
+    return if !$::RD_TRACE;
     my $rule;
     if (@_) {
         $rule = shift;
@@ -182,8 +186,13 @@ sub _success {
     $X::level--;
 }
 
-sub _parse {
-    my ($s) = @_;
+sub new {
+    my $class = shift;
+    $class;
+}
+
+sub parse {
+    my ($self, $s) = @_;
     $X::str = $s;
     $X::pos = 0;
     $X::level = 0;
@@ -193,12 +202,13 @@ sub _parse {
 [% FOREACH rule = alternation.keys -%]
 sub [% rule %] {
     _try;
-    my $commit;
+    my ($match, $commit);
     [%- productions = alternation.$rule %]
     [%- FOREACH production = productions %]
-    if (&[% production %](\$commit)) {
+    $match = &[% production %](\$commit);
+    if (defined $match) {
         _success;
-        return 1;
+        return $match;
     }
       [%- IF production != productions.last %]
     return undef if $commit;
@@ -213,6 +223,8 @@ sub [% rule %] {
 sub [% rule %] {
     my $rcommit = shift;
     _try;
+    my @item = '[% rule %]';
+    my $match;
     my $saved_pos = $X::pos;
   [%- first = 1 %]
   [%- FOREACH atom = concat.$rule %]
@@ -221,7 +233,8 @@ sub [% rule %] {
     [%- ELSIF atom == '<uncommit>' %]
     $$rcommit = undef;
     [%- ELSE %]
-    if (!&[% atom %]) {
+    $match = &[% atom %];
+    if (!defined $match) {
       [%- IF first %]
           [%- first = 0 %]
       [%- ELSE %]
@@ -230,10 +243,15 @@ sub [% rule %] {
         _fail;
         return undef;
     }
+    push @item, $match;
     [%- END %]
   [%- END %]
     _success;
-    return 1;
+  [%- IF concat.__ACTION__ %]
+    do [% concat.__ACTION__ %];
+  [%- ELSE %]
+    $item[-1];
+  [%- END %]
 }
 
 [% END -%]
@@ -242,9 +260,9 @@ sub [% rule %] {
 sub [% rule %] {
     _try;
     my $match = [% atoms.$rule %];
-    if ($match) {
+    if (defined $match) {
         _success;
-        return 1;
+        return $match;
     } else {
         _fail;
         return undef;
@@ -262,14 +280,14 @@ sub match_str {
     }
     #warn substr($s, $X::pos), "\n";
     my $len = length($target);
-    my $match = (substr($s, $X::pos, $len) eq $target);
-    if (!$match) {
+    my $equal = (substr($s, $X::pos, $len) eq $target);
+    if (!$equal) {
         _fail("'$target'");
         return undef;
     }
     $X::pos += $len;
     _success("'$target'");
-    return 1;
+    return $target;
 }
 
 sub match_re {
@@ -293,94 +311,161 @@ sub match_re {
         _fail("/$re/");
         return undef;
     }
+    my $match = $&;
+    $X::grouping = $1;
     $X::pos += length($&);
     _success("/$re/");
-    return 1;
+    return $match;
 }
 
 sub repeat_1_n_sep {
     my ($coderef, $sep) = @_;
-    if (!$coderef->()) {
+    my @retval;
+    my $match = $coderef->();
+    if (!defined $match) {
         return undef;
     }
+    push @retval, $match;
     while (1) {
         my $saved_pos = $X::pos;
-        return 1 if !match_re($sep);
-        if (!$coderef->()) {
+        my $match = match_re($sep);
+        last if !defined $match;
+        my $sep_match;
+        if (defined $X::grouping) {
+            $sep_match = $match;
+        }
+        $match = $coderef->();
+        if (!defined $match) {
             $X::pos = $saved_pos;
-            return 1;
+            last;
         }
-        elsif ($X::pos == $saved_pos) {
-            return 1;
-        }
+        push @retval, $sep_match if defined $sep_match;
+        push @retval, $match;
+        last if $X::pos == $saved_pos;
     }
-    1;
+    \@retval;
 }
 
 sub repeat_1_n {
     my ($coderef) = @_;
     my $match = $coderef->();
-    if (!$match) {
+    if (!defined $match) {
         return undef;
     }
+    my @retval;
+    push @retval, $match;
     while (1) {
         my $saved_pos = $X::pos;
-        return 1 if !$coderef->() or $X::pos == $saved_pos;
+        my $match = $coderef->();
+        last if !defined $match;
+        push @retval, $match;
+        last if $X::pos == $saved_pos;
     }
-    1;
+    \@retval;
 }
 
 sub repeat_0_n_sep {
     my ($coderef, $sep) = @_;
-    if (! $coderef->()) {
-        return 1;
+    my @retval;
+    my $match = $coderef->();
+    if (!defined $match) {
+        return [];
     }
     while (1) {
         my $saved_pos = $X::pos;
-        return 1 if !match_re($sep);
-        if (!$coderef->()) {
+        my $match = match_re($sep);
+        last if !defined $match;
+        my $sep_match;
+        if (defined $X::grouping) {
+            $sep_match = $match;
+        }
+        $match = $coderef->();
+        if (!defined $match) {
             $X::pos = $saved_pos;
-            return 1;
+            last;
         }
-        elsif ($X::pos == $saved_pos) {
-            return 1;
-        }
+        push @retval, $sep_match if defined $sep_match;
+        push @retval, $match;
+        last if $X::pos == $saved_pos;
     }
+    \@retval;
 }
 
 sub repeat_0_n {
     my $coderef = $_[0];
-    if (! $coderef->()) {
-        return 1;
+    my @retval;
+    my $match = $coderef->();
+    if (!defined $match) {
+        return [];
     }
+    push @retval, $match;
     while (1) {
         my $saved_pos = $X::pos;
-        return 1 if !$coderef->() or $X::pos == $saved_pos;
+        my $match = $coderef->();
+        if (defined $match) {
+            push @retval, $match;
+        } else {
+            last;
+        }
+        last if $X::pos == $saved_pos;
     }
+    \@retval;
 }
 
 sub repeat_0_1 {
     my $coderef = $_[0];
-    $coderef->();
-    1;
+    my $match = $coderef->();
+    if (!defined $match) {
+        [];
+    } else {
+        [$match];
+    }
 }
 
 sub match_leftop {
     my ($sub1, $sep, $sub2) = @_;
-    return undef if !$sub1->();
+    my @retval;
+    my $match = $sub1->();
+    return undef if !defined $match;
+    push @retval, $match;
     while (1) {
         my $saved_pos = $X::pos;
-        return 1 if !match_re($sep);
-        if (!$sub2->()) {
+        my $match = match_re($sep);
+        last if !defined $match;
+        my $sep_match;
+        if (defined $X::grouping) {
+            $sep_match = $match;
+        }
+        $match = $sub2->();
+        if (!defined $match) {
             $X::pos = $saved_pos;
-            return 1;
+            last;
         }
-        elsif ($X::pos == $saved_pos) {
-            return 1;
-        }
+        push @retval, $sep_match if defined $sep_match;
+        push @retval, $match;
+        last if $X::pos == $saved_pos;
     }
+    \@retval;
 }
 
 sub error {
+    warn "Syntax error.\n";
     undef;
 }
+
+[%- IF filetype == 'pm' %]
+1;
+[%- ELSE %]
+package main;
+
+use strict;
+use warnings;
+
+local $/;
+my $src = <>;
+die "No input source code.\n" if !defined $src;
+
+$::RD_TRACE = 1;
+my $parser = Parser->new;
+print "\n", $parser->parse($src) ? 'success' : 'fail', "\n";
+[%- END %]

@@ -70,11 +70,16 @@ END_GRAMMAR
 
 my $Parser;
 
+sub new {
+    my $class = shift;
+    $Parser ||= new Parse::RecDescent ($Grammar) or die "Bad grammar!\n";
+    $class;
+}
+
 sub parse {
     shift;
     my $src = shift;
     #$::RD_TRACE = 1;
-    $Parser ||= new Parse::RecDescent ($Grammar) or die "Bad grammar!\n";
     $Parser->grammar($src);
 }
 
