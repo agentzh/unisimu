@@ -1,6 +1,6 @@
 #: spike_parser.pm
 #: simple parser for BNF
-#: 2006-05-25 2006-05-25
+#: 2006-05-25 2006-05-28
 
 package Spike::Parser;
 
@@ -19,6 +19,7 @@ grammar: rule(s) eofile
                          rules => { map {@$_} @rules },
                      };
                   }
+
        | <error>
 
 eofile: /^\Z/
@@ -28,6 +29,7 @@ rule: rulename ':' <commit> production(s /\|/)
                    { 
                      [ $item[1], $item[4] ];
                    }
+
     | <error?> <reject>
 
 rulename: /[A-Za-z]\w*/
