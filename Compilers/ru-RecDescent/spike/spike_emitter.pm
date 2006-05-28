@@ -497,7 +497,10 @@ if ($opts{d}) {
 } else {
     $::Data::Dumper::Indent = 1;
     $ast = $parser->parse($src);
-    if (ref $ast) {
+    if (!defined $ast) {
+        warn "Syntax error.\n";
+        exit(1);
+    } elsif (ref $ast) {
         print Data::Dumper->Dump([$ast], ['AST']);
     } else {
         print $ast, "\n";
