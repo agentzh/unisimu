@@ -3,16 +3,11 @@
 #: Copyright (c) 2006 Agent Zhang
 #: 2006-06-05 2006-06-05
 
-package LL1;
-
-sub err { '/\S+/' }
-
-sub eof { '/\Z/' }
-
 package LL1::Runtime;
 
 use strict;
 use warnings;
+use LL1;
 
 our ($Trace, $Error);
 

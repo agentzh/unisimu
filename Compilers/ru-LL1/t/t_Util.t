@@ -4,9 +4,9 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Set::Scalar;
-use t::Util qw( parse_grammar dump_fsets );
+use t::Util qw( parse_grammar dump_fsets dump_LL1_table );
 
 ##
 #  Test parse_grammar
@@ -98,7 +98,35 @@ EOC
 
 $got = dump_fsets(
     { 
-        B => set(qw[ /\Z/ '2' '3' ])
+        B => set(LL1::eof, qw[ '2' '3' ])
     }
 );
 is $got, $expect, 'Dump $ ok';
+
+#
+# Test sub dump_LL1_table
+#
+
+my $table = {
+    'S' => {
+        q/'('/ => [ qw/'(' S ')' S/ ],
+        q/')'/ => [],
+        LL1::eof => [ qw/''/ ],
+    },
+    'exp' => {
+        q/'a'/ => [ 'E' ],
+    },
+};
+
+$got = dump_LL1_table($table);
+
+$expect = <<'_EOC_';
+S
+  $: S -> ''
+  '(': S -> '(' S ')' S
+  ')': S ->
+exp
+  'a': exp -> E
+_EOC_
+
+is $got, $expect, 'dump_LL1_table ok';

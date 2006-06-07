@@ -3,18 +3,13 @@
 #: Copyright (c) 2006 Agent Zhang
 #: 2006-06-06 2006-06-07
 
-package LL1;
-
-sub eof { '/\Z/' }
-
-sub eps { "''" }
-
 package LL1::Table;
 
 use strict;
 use warnings;
 #use Data::Dumper::Simple;
 
+use LL1;
 use Set::Scalar;
 use Carp 'croak';
 
