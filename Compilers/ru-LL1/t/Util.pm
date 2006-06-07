@@ -46,8 +46,9 @@ sub dump_fsets {
     my $out = '';
     for my $symbol (sort keys %$fsets) {
         my $set = $fsets->{$symbol};
-        my @elems = sort $set->elements;
+        my @elems = $set->elements;
         map { if ($_ eq '/\Z/') { $_ = '$'; } } @elems;
+        @elems = sort @elems;
         $out .= "$symbol: @elems\n";
     }
     $out;

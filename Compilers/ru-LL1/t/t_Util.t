@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 use Set::Scalar;
 use t::Util qw( parse_grammar dump_fsets );
 
@@ -89,3 +89,16 @@ my $got = dump_fsets(
 );
 
 is($got, $expect, 'Dump string ok');
+
+##
+
+$expect = <<'EOC';
+B: $ '2' '3'
+EOC
+
+$got = dump_fsets(
+    { 
+        B => set(qw[ /\Z/ '2' '3' ])
+    }
+);
+is $got, $expect, 'Dump $ ok';

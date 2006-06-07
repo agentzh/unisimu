@@ -5,7 +5,7 @@ use Test::Base;
 use t::Util qw/ parse_grammar dump_fsets /;
 use LL1_table;
 
-plan tests => 1 * blocks();
+plan tests => 2 * blocks();
 
 #$LL1::Table::Trace = 1;
 
@@ -15,8 +15,8 @@ run {
     my $ast = parse_grammar($block->grammar);
     my $fi_sets = LL1::Table::first_sets($ast);
     is dump_fsets($fi_sets), $block->first_sets, "$name - First sets";
-    #my $fo_sets = LL1::Table::follow_sets($ast);
-    #is dump_fsets($fo_sets, $block->follow_sets, "$name - Follow sets";
+    my $fo_sets = LL1::Table::follow_sets($ast, $fi_sets);
+    is dump_fsets($fo_sets), $block->follow_sets, "$name - Follow sets";
 };
 
 __DATA__
@@ -35,6 +35,12 @@ B: '' '1'
 C: '' '2'
 D: '' '3'
 
+--- follow_sets
+A: $
+B: $ '2' '3'
+C: $ '3'
+D: $
+
 
 
 === TEST 2: Only the first 2 items nullable
@@ -50,6 +56,12 @@ A: '1' '2' '3'
 B: '' '1'
 C: '' '2'
 D: '3'
+
+--- follow_sets
+A: $
+B: '2' '3'
+C: '3'
+D: $
 
 
 
@@ -67,6 +79,12 @@ B: '' '1'
 C: '' '2'
 D: '3'
 
+--- follow_sets
+A: $
+B: '2' '3'
+C: '3'
+D: $
+
 
 
 === TEST 4: Only the first item nullable
@@ -83,9 +101,15 @@ B: '' '1'
 C: '2'
 D: '3'
 
+--- follow_sets
+A: $
+B: '2'
+C: '3'
+D: $
 
 
-=== TEST 5: on item is nullable
+
+=== TEST 5: no item is nullable
 --- grammar
 
 A: B C D
@@ -99,6 +123,12 @@ B: '1'
 C: '2'
 D: '3'
 
+--- follow_sets
+A: $
+B: '2'
+C: '3'
+D: $
+
 
 
 === TEST 6: simple integer expression grammar
@@ -108,14 +138,21 @@ exp   : exp addop term | term
 addop : '+' | '-'
 term  : term mulop factor | factor
 mulop : '*'
-factor: '(' exp ')' | 'number'
+factor: '(' exp ')' | /\d+/
 
 --- first_sets
 addop: '+' '-'
-exp: '(' 'number'
-factor: '(' 'number'
+exp: '(' /\d+/
+factor: '(' /\d+/
 mulop: '*'
-term: '(' 'number'
+term: '(' /\d+/
+
+--- follow_sets
+addop: '(' /\d+/
+exp: $ ')' '+' '-'
+factor: $ ')' '*' '+' '-'
+mulop: '(' /\d+/
+term: $ ')' '*' '+' '-'
 
 
 
@@ -133,6 +170,12 @@ exp: '0' '1'
 if_stmt: 'if'
 statement: 'if' 'other'
 
+--- follow_sets
+else_part: $ 'else'
+exp: ')'
+if_stmt: $ 'else'
+statement: $ 'else'
+
 
 
 === TEST 8: grammar for statement sequences
@@ -146,3 +189,39 @@ stmt          : 's'
 stmt: 's'
 stmt_seq: '' ';'
 stmt_sequence: 's'
+
+--- follow_sets
+stmt: $ ';'
+stmt_seq: $
+stmt_sequence: $
+
+
+
+=== TEST 9: simple integer expression grammar w/o left recursion
+--- grammar
+
+exp: term exp_
+exp_: addop term exp_ | ''
+addop: '+' | '-'
+term: factor term_
+term_: mulop factor term_ | ''
+mulop: '*'
+factor: '(' exp ')' | /\d+/
+
+--- first_sets
+addop: '+' '-'
+exp: '(' /\d+/
+exp_: '' '+' '-'
+factor: '(' /\d+/
+mulop: '*'
+term: '(' /\d+/
+term_: '' '*'
+
+--- follow_sets
+addop: '(' /\d+/
+exp: $ ')'
+exp_: $ ')'
+factor: $ ')' '*' '+' '-'
+mulop: '(' /\d+/
+term: $ ')' '+' '-'
+term_: $ ')' '+' '-'

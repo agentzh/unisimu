@@ -125,4 +125,63 @@ sub string_first_set ($@) {
     $fset;
 }
 
+# compute the Follow sets for all the nonterminals
+#   in the grammar AST
+sub follow_sets ($$) {
+    my ($ast, $Firsts) = @_;
+    my %Follows;
+    my $startrule = $ast->{startrule};
+    my $rules = $ast->{rules};
+    for my $rulename (keys %$rules) {
+        $Follows{$rulename} = Set::Scalar->new;
+    }
+    $Follows{$startrule}->insert(LL1::eof);
+    my $eps = LL1::eps;
+    my @addto;
+    while (my ($rulename, $choices) = each %$rules) {
+        for my $production (@$choices) {
+            my @items = @$production;
+            for my $i (0..$#items) {
+                my $item = $items[$i];
+                if ($item =~ /^\W/o) {
+                    # it is a terminal
+                    next;
+                }
+                my $tail_first_set =
+                    string_first_set($Firsts, @items[$i+1..$#items]);
+                if ($tail_first_set->contains($eps)) {
+                    $tail_first_set->delete($eps);
+                    if ($rulename ne $item) {
+                        if ($Trace) {
+                            warn "  Add Follow($rulename) to Follow($item)\n";
+                        }
+                        push @addto, [ $rulename, $item ];
+                    }
+                }
+                $Follows{$item}->insert($tail_first_set->elements);
+            }
+        }
+    }
+    if ($Trace) {
+        for my $rulename (sort keys %Follows) {
+            warn "  $rulename: $Follows{$rulename}\n";
+        }
+        warn "Pass 1 completed for computing Follow sets.\n";
+    }
+    my $i = 1;
+    my $changes = 1;
+    while ($changes) {
+        $changes = 0;
+        for my $pair (@addto) {
+            my ($src, $dest) = @$pair;
+            $changes += set_add($Follows{$dest}, $Follows{$src});
+        }
+        if ($Trace) {
+            $i++;
+            warn "Pass $i: $changes elems added to the Follow sets.\n";
+        }
+    }
+    \%Follows;
+}
+
 1;
