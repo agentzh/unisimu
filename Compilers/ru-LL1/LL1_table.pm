@@ -179,4 +179,61 @@ sub follow_sets ($$) {
     \%Follows;
 }
 
+# construct an LL(1) parsing table from the grammar AST,
+#   First sets, and Follow sets
+sub LL1_table ($$$) {
+    my ($ast, $Firsts, $Follows) = @_;
+    my $Table = {};
+    my ($eof, $eps) = (LL1::eof, LL1::eps);
+    my $rules = $ast->{rules};
+    while (my ($rulename, $choices) = each %$rules) {
+        for my $production (@$choices) {
+            my @items = @$production;
+            if (@items == 1 and $items[0] eq $eps) {
+                @items = ();
+            }
+            my $temp = string_first_set($Firsts, @items);
+            my $continue = 0;
+            for my $token ($temp->elements) {
+                if ($token eq $eps) {
+                    $continue = 1;
+                    next;
+                }
+                add_production(
+                    $Table,
+                    $rulename, $token, \@items,
+                    1  # replace existing entry if there's any
+                );
+            }
+            next if !$continue;
+            for my $elem ($Follows->{$rulename}->elements) {
+                add_production(
+                    $Table,
+                    $rulename, $elem, \@items,
+                    undef  # don't replace exising entry if there's any
+                );
+            }
+        }
+    }
+    $Table;
+}
+
+# add the given production choice to the LL(1) parsing table
+sub add_production ($$$$$) {
+    my ($Table, $N, $T, $production, $replace) = @_;
+    $Table->{$N} ||= {};
+    my $entry = $Table->{$N}->{$T};
+    if ($entry) {
+        warn "warning: Duplicate entries found in LL(1) parsing table,\n";
+        if ($replace) {
+            warn "  replacing [ $N -> @$entry ] with [ $N -> @$production ]\n";
+            $Table->{$N}->{$T} = $production;
+        } else {
+            warn "  discarding [ $N -> @$production ]\n";
+        }
+    } else {
+        $Table->{$N}->{$T} = $production;
+    }
+}
+
 1;
