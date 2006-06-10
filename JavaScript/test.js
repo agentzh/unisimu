@@ -1,5 +1,4 @@
-use('Test.More');
 print('hello, world!\n');
-say(args[0], ", ", args[1]);
-a = dump(args);
+say(ARGV[0], ", ", ARGV[1]);
+a = dump(ARGV);
 say("a=", a);
