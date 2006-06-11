@@ -49,6 +49,18 @@ $js->function_set("print", sub { print @_; });
 $js->function_set("say", sub { print @_, "\n"; });
 $js->function_set("alert", sub { warn @_; });
 $js->function_set("die", sub { die @_, "\n"; });
+$js->function_set("readFile", \&readFile);
+
+sub readFile {
+    my ($file) = @_;
+    open my $in, $file or
+        die "Can't open $file for reading: $!\n";
+    local $/;
+    my $content = <$in>;
+    close $in;
+    #warn $content;
+    $content;
+}
 
 my $s = JSON::Syck::Dump(\@ARGV);
 #warn $s;
