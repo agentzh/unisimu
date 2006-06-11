@@ -1,8 +1,9 @@
-if (ARGV[0] == undefined || !ARGV[0].match(/^\d+$/)) {
+var num = arguments[0];
+if (num == undefined || !num.match(/^\d+$/)) {
     die( "usage: factorial.js N" )
 }
 
-say( factorial(ARGV[0]) );
+say( factorial(num) );
 
 function factorial (n) {
     if (n == undefined || n <= 0) { return 1 }

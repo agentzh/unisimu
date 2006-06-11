@@ -47,23 +47,12 @@ $js->function_set(
 );
 $js->function_set("print", sub { print @_; });
 $js->function_set("say", sub { print @_, "\n"; });
-$js->function_set("alert", sub { warn @_, "\n"; });
+$js->function_set("alert", sub { warn @_; });
 $js->function_set("die", sub { die @_, "\n"; });
-$js->function_set(
-    "dump", 
-    sub { 
-        if (@_ > 1) {
-            print JSON::Syck::Dump(\@_);
-        } else {
-            print JSON::Syck::Dump($_[0]);
-        }
-        return "'abc'";
-    }
-);
 
 my $s = JSON::Syck::Dump(\@ARGV);
 #warn $s;
-$js->eval("ARGV = $s;\n") or die $@;
+$js->eval("arguments = $s;\n") or die $@;
 $s = JSON::Syck::Dump(\@JS_INC);
 $js->eval("JS_INC = $s;\n") or die $@;
 

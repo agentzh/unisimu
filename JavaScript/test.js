@@ -1,4 +1,6 @@
 print('hello, world!\n');
-say(ARGV[0], ", ", ARGV[1]);
-a = dump(ARGV);
-say("a=", a);
+say(arguments[0], ", ", arguments[1]);
+a = [[1,2],[3,4]];
+alert( "Yay!\n" );
+print('a', 'b', 'c');
+say('d');
