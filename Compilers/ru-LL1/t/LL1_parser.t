@@ -1,11 +1,12 @@
 # LL1_parser.t
+# Test LL1::Parser
 
 use Test::Base;
 
 use LL1_Parser;
 use t::Util qw/ parse_grammar /;
 
-plan tests => 1 * blocks();
+plan tests => 3 * blocks();
 
 run {
     my $block = shift;
@@ -14,7 +15,10 @@ run {
     my $s_grammar = $block->s_grammar;
     my $expect_ast = parse_grammar($s_grammar);
     my $parser = LL1::Parser->new;
+    undef $X::tokens;
     my $ast = $parser->parse($grammar);
+    ok $X::tokens;
+    ok $X::rules;
     is_deeply($ast, $expect_ast, "$name - AST comparison");
 };
 
@@ -25,9 +29,15 @@ __DATA__
 
 foo: bar baz
 
+bar: 'a'
+
+baz: 'b'
+
 --- s_grammar
 
 foo: bar baz
+bar: 'a'
+baz: 'b'
 
 
 
@@ -37,9 +47,14 @@ foo: bar baz
 foo: bar
    | baz
 
+bar: 'a'
+baz: 'b'
+
 --- s_grammar
 
 foo: bar | baz
+bar: 'a'
+baz: 'b'
 
 
 
@@ -49,10 +64,14 @@ foo: bar | baz
 foo: /.../ bar
    | baz 'foo'
 
+bar: 'a'
+baz: 'b'
+
 --- s_grammar
 
 foo: /.../ bar | baz 'foo'
-
+bar: 'a'
+baz: 'b'
 
 
 === TEST 4: empty production

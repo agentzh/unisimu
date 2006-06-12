@@ -63,7 +63,7 @@ sub first_sets ($) {
                     my $temp = $Firsts{$item};
                     #warn "!!! $temp";
                     #warn "!!! ", $temp->contains($eps);
-                    die "Nonterminal $item not defined in grammar\n"
+                    croak "Nonterminal $item not defined in grammar\n"
                         if !defined $temp;
                     if ($temp->contains($eps)) {
                         $temp = $temp->clone;
@@ -153,7 +153,11 @@ sub follow_sets ($$) {
                         push @addto, [ $rulename, $item ];
                     }
                 }
-                $Follows{$item}->insert($tail_first_set->elements);
+                my $item_follow_set = $Follows{$item};
+                if (!defined $item_follow_set) {
+                    die "error: Nonderminal $item not defined in the grammar.\n";
+                }
+                $item_follow_set->insert($tail_first_set->elements);
             }
         }
     }

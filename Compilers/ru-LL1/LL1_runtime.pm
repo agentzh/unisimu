@@ -34,6 +34,8 @@ sub match_token ($) {
         }
     }
     else {
+        #warn caller(1);
+        #warn @$_;
         die "match_token: invalid token pattern: $_";
     }
     undef;
@@ -46,6 +48,7 @@ sub get_token () {
         return LL1::eof();
     }
     for my $token (@$X::tokens) {
+        #warn "$token";
         my $raw = match_token($token);
         if (defined $raw) {
             $X::raw = $raw;
@@ -93,7 +96,7 @@ sub eval_table ($$) {
     my $eof = LL1::eof();
     my $saved_pos = $X::pos;
     my $input = get_token();
-    print "  read token $input\n";
+    if ($Trace) { print "  read token $input\n"; }
     my @parse_stack = ($eof, $start_rule);
     while ($parse_stack[-1] ne $eof or $input ne $eof) {
         my $expect = $parse_stack[-1];
@@ -106,7 +109,7 @@ sub eval_table ($$) {
                 pop @parse_stack;
                 $saved_pos = $X::pos;
                 $input = get_token();
-                print "  read token $input\n";
+                if ($Trace) { print "  read token $input\n"; }
             } else {
                 my $got = $input eq $eof ? 'EOF' : "'$X::raw'";
                 $expect = 'EOF' if $expect eq $eof;

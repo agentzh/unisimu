@@ -6,6 +6,11 @@ package LL1::Parser;
 
 use strict;
 use warnings;
+
+use List::Util 'first';
+use Carp 'croak';
+
+use Data::Dumper::Simple;
 use Parse::RecDescent;
 
 my $Grammar = <<'END_GRAMMAR';
@@ -26,7 +31,8 @@ eofile: /^\Z/
 
 rule: rulename ':' <commit> production(s /\|/)
 
-                   { 
+                   {
+                     push @$X::rules, $item[1];
                      [ $item[1], $item[4] ];
                    }
 
@@ -71,7 +77,45 @@ sub parse {
     shift;
     my $src = shift;
     #$::RD_TRACE = 1;
-    $Parser->grammar($src);
+    $X::rules = [];
+    my $ast = $Parser->grammar($src);
+    my $context = {};
+    my @tokens =
+        collect_tokens($ast->{rules}, $ast->{startrule}, $context);
+    $X::tokens = \@tokens;
+    $ast;
+}
+
+sub collect_tokens {
+    my ($rules, $rulename, $context) = @_;
+    if ($context->{$rulename} and
+            $context->{'@'} == $context->{$rulename}) {
+        return;
+    }
+    my @tokens;
+    #$Data::Dumper::Indent = 1;
+    #warn Dumper($rules);
+    my $prods = $rules->{$rulename};
+    if (!defined $prods) {
+        croak "error: nonderminal $rulename not defined in the grammar.\n";
+    }
+    for my $prod (@$prods) {
+        return if $context->{$prod};
+        $context->{$prod} = 1;
+        for my $item (@$prod) {
+            if ($item =~ /^\W/) {
+                #warn "XXX $item";
+                if (!defined first { $_ eq $item } @tokens) {
+                    push @tokens, $item;
+                    $context->{'@'}++;
+                    $context->{$rulename}++;
+                }
+            } else {
+                push @tokens, collect_tokens($rules, $item, $context);
+            }
+        }
+    }
+    @tokens;
 }
 
 1;

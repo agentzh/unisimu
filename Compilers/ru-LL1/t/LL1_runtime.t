@@ -172,6 +172,7 @@ is $X::pos, 8;
 #  if_stmt: 'if' '(' exp ')' statement else_part
 #  else_part: 'else' statement
 #           | # emtpy
+#  exp      : '0' | '1'
 ##
 
 $X::tokens = [qw/ 'other' 'if' 'else' '0' '1' '(' ')' /];
