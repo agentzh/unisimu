@@ -1,0 +1,21 @@
+root: expr
+
+expr: and_expr expr_
+
+expr_: 'OR' expr
+     |
+
+and_expr:   not_expr and_expr_
+
+and_expr_: 'AND' and_expr
+         |
+
+not_expr: 'NOT' brack_expr
+        | brack_expr
+
+brack_expr: '(' expr ')'
+          | atom
+
+atom: 'T'
+    | 'F'
+
