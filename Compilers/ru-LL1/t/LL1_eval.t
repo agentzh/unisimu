@@ -6,7 +6,7 @@ use Test::Base;
 use LL1_parser;
 use LL1_eval;
 
-plan tests => 2 * blocks() + 5;
+plan tests => 2 * blocks() + 8;
 
 my $Ast;
 
@@ -124,3 +124,64 @@ exp      : '0' | '1'
 
 --- input
 if (0) other
+
+
+
+=== TEST 10: Logical expressions
+--- grammar
+
+root: expr
+
+expr: and_expr expr_
+
+expr_: 'OR' expr
+     |
+
+and_expr:   not_expr and_expr_
+
+and_expr_: 'AND' and_expr
+         |
+
+not_expr: 'NOT' brack_expr
+        | brack_expr
+
+brack_expr: '(' expr ')'
+          | atom
+
+atom: 'T'
+    | 'F'
+
+--- input
+F OR (T AND (F OR F)) OR F
+
+
+
+=== TEST 11:
+--- input
+T
+
+
+
+=== TEST 12:
+--- input
+F AND (T OR F
+--- error
+Was expecting ')', but found EOF instead
+--- offset
+13
+
+
+
+=== TEST 13:
+--- input
+NOT 32
+--- error
+Was expecting brack_expr, but found '32' instead
+--- offset
+3
+
+
+
+=== TEST 14:
+--- input
+NOT F

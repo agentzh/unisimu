@@ -63,7 +63,7 @@ sub first_sets ($) {
                     my $temp = $Firsts{$item};
                     #warn "!!! $temp";
                     #warn "!!! ", $temp->contains($eps);
-                    croak "Nonterminal $item not defined in grammar\n"
+                    croak "Nonterminal '$item' not defined in grammar\n"
                         if !defined $temp;
                     if ($temp->contains($eps)) {
                         $temp = $temp->clone;

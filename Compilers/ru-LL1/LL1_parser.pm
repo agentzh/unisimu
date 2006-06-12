@@ -97,7 +97,7 @@ sub collect_tokens {
     #warn Dumper($rules);
     my $prods = $rules->{$rulename};
     if (!defined $prods) {
-        croak "error: nonderminal $rulename not defined in the grammar.\n";
+        croak "error: nonderminal '$rulename' not defined in the grammar.\n";
     }
     for my $prod (@$prods) {
         return if $context->{$prod};
