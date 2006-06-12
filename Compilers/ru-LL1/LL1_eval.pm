@@ -18,7 +18,6 @@ sub eval {
     $X::str = $input;
     $X::pos = 0;
     LL1::Runtime::eval_table($table, $ast->{startrule});
-
 }
 
 sub error { $LL1::Runtime::Error }

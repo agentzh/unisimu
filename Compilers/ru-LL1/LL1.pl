@@ -12,6 +12,7 @@ use lib $FindBin::Bin;
 use Data::Dumper::Simple;
 
 use LL1_parser;
+use LL1_emitter;
 
 my %opts;
 getopts('mn:', \%opts);
@@ -38,10 +39,7 @@ my $parser = LL1::Parser->new;
 my $ast = $parser->parse($src);
 defined $ast or die "Bad grammar!\n";
 
-print Dumper($ast);
-
-__END__
-my $code = Spike::Emitter->emit($ast, $filetype, $package);
+my $code = LL1::Emitter->emit($ast, $filetype, $package);
 defined $code or die "Can't emit parser!\n";
 
 my $outfile = $infile;

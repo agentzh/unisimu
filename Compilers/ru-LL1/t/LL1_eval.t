@@ -1,4 +1,4 @@
-# LL1_eval
+# LL1_eval.t
 # Test LL1::Eval
 
 use Test::Base;
@@ -10,7 +10,7 @@ plan tests => 2 * blocks() + 8;
 
 my $Ast;
 
-$LL1::Runtime::Trace = 1;
+#$::LL1_TRACE = 1;
 
 filters {
     offset => ['chomp'],

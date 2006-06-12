@@ -9,7 +9,7 @@ use strict;
 use warnings;
 use LL1;
 
-our ($Trace, $Error);
+our ($Error);
 
 # test whether the given token can be matched
 sub match_token ($) {
@@ -64,7 +64,7 @@ sub get_token () {
 #
 
 sub try ($$) {
-    return if !$Trace;
+    return if !$::LL1_TRACE;
     my ($expect, $pos) = @_;
     my $next = substr($X::str, $pos, 15);
     $next =~ s/\n/\\n/g;
@@ -76,13 +76,13 @@ sub try ($$) {
 }
 
 sub success ($) {
-    return if !$Trace;
+    return if !$::LL1_TRACE;
     my $expect = $_[0];
     print "  >>MATCH<< $expect with '$X::raw'\n";
 }
 
 sub generate ($$) {
-    return if !$Trace;
+    return if !$::LL1_TRACE;
     my ($expect, $production) = @_;
     print "  generate { $expect -> @$production }\n";
 }
@@ -96,7 +96,7 @@ sub eval_table ($$) {
     my $eof = LL1::eof();
     my $saved_pos = $X::pos;
     my $input = get_token();
-    if ($Trace) { print "  read token $input\n"; }
+    if ($::LL1_TRACE) { print "  read token $input\n"; }
     my @parse_stack = ($eof, $start_rule);
     while ($parse_stack[-1] ne $eof or $input ne $eof) {
         my $expect = $parse_stack[-1];
@@ -109,7 +109,7 @@ sub eval_table ($$) {
                 pop @parse_stack;
                 $saved_pos = $X::pos;
                 $input = get_token();
-                if ($Trace) { print "  read token $input\n"; }
+                if ($::LL1_TRACE) { print "  read token $input\n"; }
             } else {
                 my $got = $input eq $eof ? 'EOF' : "'$X::raw'";
                 $expect = 'EOF' if $expect eq $eof;
@@ -134,7 +134,7 @@ sub eval_table ($$) {
             }
         }
     } # while
-    if ($Trace) { print "  >>ACCEPT<<\n"; }
+    if ($::LL1_TRACE) { print "  >>ACCEPT<<\n"; }
     return 1;
 }
 
