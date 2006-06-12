@@ -488,7 +488,7 @@ local $/;
 my $src = <>;
 die "No input source code.\n" if !defined $src;
 
-my $parser = Parser->new;
+my $parser = [% package %]->new;
 my $ast;
 if ($opts{d}) {
     $::RD_TRACE = 1;
