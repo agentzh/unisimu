@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Set::Scalar;
-use Test::More 'no_plan';
+use Test::More tests => 42;
 
 BEGIN { use_ok('LL1_table'); }
 

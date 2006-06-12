@@ -1,6 +1,6 @@
 #: LL1_parser.pm
 #: simple parser for BNF
-#: 2006-06-04 2006-06-04
+#: 2006-06-04 2006-06-12
 
 package LL1::Parser;
 
@@ -49,13 +49,13 @@ terminal: string
 
 string: /'(\\.|[^'])*'/
 
-regex: {extract_delimited($text,'/')}    { $item[1] || undef }
+regex:  {extract_delimited($text,'/')}   { $item[1] || undef }
 
 action: {extract_codeblock($text)}       { $item[1] || undef }
 
 directive: '<error>'
 
-nil: ''  { ["''"] }
+nil: ''  { [] }
 
 END_GRAMMAR
 
