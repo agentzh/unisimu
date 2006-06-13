@@ -47,13 +47,24 @@ sub get_token () {
         $X::raw = '';
         return LL1::eof();
     }
+    my $saved_pos = $X::pos;
+    my ($best_pos, $best_raw, $best_token);
     for my $token (@$X::tokens) {
         #warn "$token";
         my $raw = match_token($token);
         if (defined $raw) {
-            $X::raw = $raw;
-            return $token;
+            if (!defined $best_pos or $X::pos > $best_pos) {
+                $best_raw   = $raw;
+                $best_pos   = $X::pos;
+                $best_token = $token;
+            }
+            $X::pos = $saved_pos;
         }
+    }
+    if ($best_token) {
+        $X::raw = $best_raw;
+        $X::pos = $best_pos;
+        return $best_token;
     }
     $X::raw = match_token(LL1::err());
     LL1::err();

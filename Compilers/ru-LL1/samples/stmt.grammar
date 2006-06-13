@@ -1,0 +1,9 @@
+statement: if_stmt
+         | /\w+/
+
+if_stmt  : 'if' '(' exp ')' statement else_part
+
+else_part: 'else' statement
+         |
+
+exp      : '0' | '1'

@@ -12,6 +12,7 @@ use Carp 'croak';
 
 use Data::Dumper::Simple;
 use Parse::RecDescent;
+use Regexp::Compare qw(is_less_or_equal);
 
 my $Grammar = <<'END_GRAMMAR';
 
@@ -88,34 +89,58 @@ sub parse {
 
 sub collect_tokens {
     my ($rules, $rulename, $context) = @_;
-    if ($context->{$rulename} and
-            $context->{'@'} == $context->{$rulename}) {
-        return;
-    }
-    my @tokens;
     #$Data::Dumper::Indent = 1;
     #warn Dumper($rules);
+    return if $context->{":$rulename"};
+    $context->{":$rulename"} = 1;
+    $context->{tokens} ||= [];
     my $prods = $rules->{$rulename};
     if (!defined $prods) {
         croak "error: nonderminal '$rulename' not defined in the grammar.\n";
     }
     for my $prod (@$prods) {
-        return if $context->{$prod};
         $context->{$prod} = 1;
         for my $item (@$prod) {
             if ($item =~ /^\W/) {
                 #warn "XXX $item";
-                if (!defined first { $_ eq $item } @tokens) {
-                    push @tokens, $item;
-                    $context->{'@'}++;
-                    $context->{$rulename}++;
+                #warn "XXX @{ $context->{tokens} }";
+                my $twin = first { token_eq($item, $_) } @{ $context->{tokens} };
+                if (!defined $twin) {
+                    push @{ $context->{tokens} }, $item;
+                } else { #if ($item ne $twin) {
+                    warn "warning: Duplicate token $item ignored (see $twin).\n";
+                    $item = $twin;
                 }
             } else {
-                push @tokens, collect_tokens($rules, $item, $context);
+                collect_tokens($rules, $item, $context);
             }
         }
     }
-    @tokens;
+    @{ $context->{tokens} };
+}
+
+sub token_eq {
+    my ($a, $b) = @_;
+    #warn "AAA Comparing $a $b...";
+    if ($a =~ /^["']/) {
+        $a = quotemeta(eval $a);
+    } else {
+        $a =~ s,^\/|\/$,,g;
+    }
+    if ($b =~ /^["']/) {
+        $b = quotemeta(eval $b);
+    } else {
+        $b =~ s,^/|/$,,g;
+    }
+    my $res = 0;
+    eval {
+        $res += (is_less_or_equal($a, $b) ? 1 : 0);
+    };
+    eval {
+        $res += (is_less_or_equal($b, $a) ? 1 : 0);
+    };
+    #warn "AAA $a == $b ? ", ($res == 2 ? 'true!' : 'false!'), " ($res)";
+    return $res == 2;
 }
 
 1;

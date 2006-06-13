@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 100;
+use Test::More tests => 104;
 use LL1_runtime;
 
 # Test match_token:
@@ -108,6 +108,18 @@ is get_token(), LL1::eof();
 is $X::raw, '';
 is $X::pos, 23;
 
+# Test the longest matching algorithm:
+
+$X::str = 'if_stmt';
+$X::pos = 0;
+is get_token(), $ID, "$X::str matches ID in favor of IF";
+is $X::pos, 7;
+
+$X::str = 'if';
+$X::pos = 0;
+is get_token(), $IF, "$X::str matches IF in favor of ID";
+is $X::pos, 2;
+
 # Test eval_table:
 
 *eval_tb = \&LL1::Runtime::eval_table;
@@ -127,7 +139,7 @@ my $table = {
     },
 };
 
-$LL1::Runtime::Trace = 1;
+#$::LL1_TRACE = 1;
 
 $X::str = '()';
 $X::pos = 0;

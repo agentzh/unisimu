@@ -6,11 +6,12 @@ use Test::Base;
 use LL1_parser;
 use LL1_eval;
 
-plan tests => 2 * blocks() + 8;
+plan tests => 2 * blocks() + 11;
 
 my $Ast;
 
 #$::LL1_TRACE = 1;
+#$::LL1::Table::Trace = 1;
 
 filters {
     offset => ['chomp'],
@@ -26,6 +27,7 @@ run {
         ok defined $Ast, "$name - grammar parsing okay";
     }
     my $input = $block->input;
+    #warn "BBB @$X::tokens";
     my $match = LL1::Eval->eval($Ast, $input);
     #warn "!!! @$X::tokens";
     if (defined $block->error) {
@@ -35,7 +37,11 @@ run {
         is( LL1::Eval->offset(), $block->offset,
             "$name - input parsing offset" );
     } else {
-        ok $match, "$name - input parsing okay";
+        ok defined $match, "$name - input parsing okay";
+        if (!defined $match and !defined $block->error) {
+            warn "$name - input parsing error:\n  ",
+                LL1::Eval->error, "\n";
+        }
         is $X::pos, length($input), "$name - input buffer consumed";
         if (defined $block->match) {
             is $match, $block->match, "$name - match object okay";
@@ -113,7 +119,7 @@ Was expecting ')', but found EOF instead
 --- grammar
 
 statement: if_stmt
-         | /\S+/
+         | /\w+/
 
 if_stmt  : 'if' '(' exp ')' statement else_part
 
@@ -127,7 +133,13 @@ if (0) other
 
 
 
-=== TEST 10: Logical expressions
+=== TEST 10:
+--- input
+if (0) if (1) cry else laugh
+
+
+
+=== TEST 11: Logical expressions
 --- grammar
 
 root: expr
@@ -156,13 +168,13 @@ F OR (T AND (F OR F)) OR F
 
 
 
-=== TEST 11:
+=== TEST 12:
 --- input
 T
 
 
 
-=== TEST 12:
+=== TEST 13:
 --- input
 F AND (T OR F
 --- error
@@ -172,7 +184,7 @@ Was expecting ')', but found EOF instead
 
 
 
-=== TEST 13:
+=== TEST 14:
 --- input
 NOT 32
 --- error
@@ -182,6 +194,44 @@ Was expecting brack_expr, but found '32' instead
 
 
 
-=== TEST 14:
+=== TEST 15:
 --- input
 NOT F
+
+
+
+=== TEST 16: equivalent regex conflicts
+--- grammar
+
+float: /\d+/ '.' /[0-9]+/
+
+--- input
+3.14
+
+
+
+=== TEST 17: equivalent regex conflicts (II)
+--- grammar
+
+assignment: var ':=' exp
+
+var: /[A-Za-z]\w*/
+
+exp: /\d+/
+   | /[a-zA-Z]\w*/
+
+--- input
+a := b
+
+
+
+=== TEST 18: strings of common prefix
+--- grammar
+
+stmt: 'if'
+    | var
+
+var: /[A-Za-z]\w*/
+
+--- input
+if_stmt
