@@ -104,7 +104,7 @@ sub collect_tokens {
             if ($item =~ /^\W/) {
                 #warn "XXX $item";
                 #warn "XXX @{ $context->{tokens} }";
-                my $twin = first { token_eq($item, $_) } @{ $context->{tokens} };
+                my $twin = first { token_eq($_, $item) } @{ $context->{tokens} };
                 if (!defined $twin) {
                     push @{ $context->{tokens} }, $item;
                 } else { #if ($item ne $twin) {
@@ -122,25 +122,29 @@ sub collect_tokens {
 sub token_eq {
     my ($a, $b) = @_;
     #warn "AAA Comparing $a $b...";
+    my ($re1, $re2);
     if ($a =~ /^["']/) {
-        $a = quotemeta(eval $a);
+        $re1 = quotemeta(eval $a);
     } else {
-        $a =~ s,^\/|\/$,,g;
+        ($re1 = $a) =~ s,^\/|\/$,,g;
     }
     if ($b =~ /^["']/) {
-        $b = quotemeta(eval $b);
+        $re2 = quotemeta(eval $b);
     } else {
-        $b =~ s,^/|/$,,g;
+        ($re2 = $b) =~ s,^/|/$,,g;
     }
-    my $res = 0;
+    my ($le, $ge);
     eval {
-        $res += (is_less_or_equal($a, $b) ? 1 : 0);
+        $le = is_less_or_equal($re1, $re2);
     };
     eval {
-        $res += (is_less_or_equal($b, $a) ? 1 : 0);
+        $ge = is_less_or_equal($re2, $re1);
     };
-    #warn "AAA $a == $b ? ", ($res == 2 ? 'true!' : 'false!'), " ($res)";
-    return $res == 2;
+    return 1 if $le && $ge;
+    if ($ge) {
+        warn "warning: Token $b may never match due to token $a.\n";
+    }
+    undef;
 }
 
 1;

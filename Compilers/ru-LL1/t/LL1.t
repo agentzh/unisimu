@@ -8,7 +8,7 @@ use File::Temp qw/ tempfile /;
 use Test::Base;
 use IPC::Run3;
 
-plan tests => 3 * blocks() + 4;
+plan tests => 3 * blocks() + 7;
 
 my $plfile;
 my @plfiles;
@@ -39,7 +39,14 @@ run {
             push @cmd, (split /\s+/, $meta_opts);
         }
         push @cmd, $gmfile;
-        is system(@cmd), 0, "$name - LL1.pl";
+        my ($meta_out, $meta_err);
+        run3(\@cmd, \undef, \$meta_out, \$meta_err);
+        ok defined $meta_out, "$name - LL1.pl stdout ok";
+        if (defined $block->meta_err) {
+            is $meta_err, $block->meta_err, "$name - LL1.pl stderr ok";
+        } elsif ($meta_err) {
+            warn $meta_err;
+        }
         if ($meta_opts =~ /-m/) {
             ($plfile = $gmfile) =~ s/\.grammar$/.pm/;
         } else {
@@ -137,3 +144,33 @@ number: /\d+/
 if_stmt: 'if' '(' exp ')' statement
 exp: /\d+/
 statement: /\S+/
+
+
+
+=== TEST 5: token overriding problem
+--- grammar
+
+    statement: /\w+/
+             | if_stmt
+
+    if_stmt  : 'if' '(' exp ')' statement else_part
+
+    else_part: 'else' statement
+             |
+
+    exp      : '0' | '1'
+
+--- meta_err
+warning: Token 'if' may never match due to token /\w+/.
+warning: Token '0' may never match due to token /\w+/.
+warning: Token '1' may never match due to token /\w+/.
+warning: Token 'else' may never match due to token /\w+/.
+warning: Duplicate entries found in LL(1) parsing table,
+  discarding [ else_part ->  ]
+
+--- input
+if (0) cry
+
+--- stdout
+--- stderr
+Was expecting EOF, but found '(' instead at offset 2.
