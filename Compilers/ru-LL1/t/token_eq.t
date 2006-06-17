@@ -33,10 +33,7 @@ ok token_eq(qw[ "\"\"" '""' ]), q/"\"\"" '""'/;
 # regex == string
 ok token_eq(qw[ 'a' /a/ ]), "'a' == /a/";
 ok token_eq(qw[ /a/ "a" ]), '/a/ == "a"';
-TODO: {
-    local $TODO = "Hit Regexp::Compare's bug";
-    ok token_eq('/a{2,2}/', '"aa"'), '/a{2}/ == "aa"';
-}
+ok token_eq('/a{2,2}/', '"aa"'), '/a{2}/ == "aa"';
 
 # regex == regex
 ok token_eq(qw[ /[0-9]+/ /\d+/ ]), "/[0-9]+/ == /\\d+/";
