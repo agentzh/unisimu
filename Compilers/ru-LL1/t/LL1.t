@@ -8,7 +8,7 @@ use File::Temp qw/ tempfile /;
 use Test::Base;
 use IPC::Run3;
 
-plan tests => 3 * blocks() + 10;
+plan tests => 3 * blocks() + 13;
 
 my $plfile;
 my @plfiles;
@@ -46,6 +46,9 @@ run {
             is $meta_err, $block->meta_err, "$name - LL1.pl stderr ok";
         } elsif ($meta_err) {
             warn $meta_err;
+        }
+        if (defined $block->meta_fail) {
+            return;
         }
         if ($meta_opts =~ /-m/) {
             ($plfile = $gmfile) =~ s/\.grammar$/.pm/;
@@ -176,6 +179,100 @@ warning: Duplicate entries found in LL(1) parsing table,
 --- input
 if (0) cry
 
+--- stdout
+1
+--- stderr
+
+
+
+=== TEST 6: tokens used in grammar missing in <token:...>
+--- grammar
+
+    <token: 'if' '(' '0' 'else' /\w+/>
+
+    statement: /\w+/
+             | if_stmt
+
+    if_stmt  : 'if' '(' exp ')' statement else_part
+
+    else_part: 'else' statement
+             |
+
+    exp      : '0' | '1'
+
+--- meta_err
+error: Tokens { ')' '1' } used in grammar not appear in <token:...>.
+--- meta_fail
+
+
+
+=== TEST 7: tokens in <token:...> never used in grammar
+--- grammar
+
+    <token: 'if' '(' '0' 'else' /\d+/ /\w+/ '1' ')'>
+
+    statement: /\w+/
+             | if_stmt
+
+    if_stmt  : 'if' '(' exp ')' statement else_part
+
+    else_part: 'else' statement
+             |
+
+    exp      : '0' | '1'
+
+--- meta_err
+error: Tokens { /\d+/ } in <token:...> never used in grammar.
+--- meta_fail
+
+
+
+=== TEST 8: tokens overriden problem in <token:...>
+--- grammar
+
+<token: /\w+/ ':=' /[A-Za-z]\w*/>
+
+assign: var ':=' expr
+var: /\w+/
+expr: /[A-Za-z]\w*/
+
+--- meta_err
+error: token /\w+/ overrides /[A-Za-z]\w*/ completely in <token:...>.
+--- meta_fail
+
+
+
+=== TEST 8: identical tokens in <token:...>
+--- grammar
+
+<token: ':=' /[A-Za-z]\w*/ ':=' /\w+/ >
+
+assign: var ':=' expr
+var: /[A-Za-z]\w*/
+expr: /\w+/
+
+--- meta_err
+--- input
+foo := 32aa
+--- stdout
+1
+--- stderr
+
+
+
+=== TEST 9: equivalent (but not identical) tokens in <token:...>
+--- grammar
+
+<token: ':=' /\w\w*/ ':=' /\w+/ >
+
+assign: var ':=' expr
+var: /\w\w*/
+expr: /\w+/
+
+--- meta_err
+warning: Duplicate token /\w+/ ignored (see /\w\w*/).
+--- input
+foo := 32aa
 --- stdout
 1
 --- stderr

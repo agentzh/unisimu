@@ -14,6 +14,9 @@ use Carp 'croak';
 use Data::Dumper::Simple;
 use Parse::RecDescent;
 use Regexp::Compare qw(is_less_or_equal);
+use Set::Scalar;
+
+our %Ignored;
 
 my $Grammar = <<'END_GRAMMAR';
 
@@ -53,7 +56,7 @@ production: item(s)
 item: subrule
     | terminal
     | action
-    | directive
+    | directive  { "''" }
     | comment    { "''" }
 
 subrule: /[A-Za-z]\w*\b(?!\s*:)/
@@ -69,7 +72,7 @@ regex:  {extract_delimited($text,'/')}   { $item[1] || undef }
 action: {extract_codeblock($text)}       { $item[1] || undef }
 
 directive: '<error>'
-         | '<token:' terminal(s) '>'  { $X::tokens = $item[2] }
+         | '<token:' terminal(s) '>'  { $X::tokens = $item[2]; }
 
 comment: /#[^\n]*/
 
@@ -101,7 +104,8 @@ sub parse {
         }
         $X::tokens = \@tokens;
     } else {
-        validate_tokens(@$X::tokens);
+        @$X::tokens = grep { !$Ignored{$_} } @$X::tokens;
+        validate_tokens(\@tokens, $X::tokens);
     }
     $ast;
 }
@@ -115,6 +119,7 @@ sub collect_tokens {
     $context->{tokens} ||= [];
     my $prods = $rules->{$rulename};
     if (!defined $prods) {
+        #warn "@$rulename";
         croak "error: nonderminal '$rulename' not defined in the grammar.\n";
     }
     for my $prod (@$prods) {
@@ -131,6 +136,7 @@ sub collect_tokens {
                     if (!$::LL1_QUIET) {
                         warn "warning: Duplicate token $item ignored (see $twin).\n";
                     }
+                    $Ignored{$item} = 1;
                     $item = $twin;
                 }
             } else {
@@ -150,7 +156,7 @@ sub sort_tokens {
         for my $i (0..$#sorted) {
             #warn "  $token <=> $sorted[$i]\n";
             my $res = token_cmp($sorted[$i], $token);
-            if ($res > 0) {
+            if ($res and $res > 0) {
                 if ($i == 0) {
                     unshift @sorted, $token;
                 } else {
@@ -169,31 +175,8 @@ sub sort_tokens {
 }
 
 sub token_eq {
-    my ($a, $b) = @_;
-    #warn "AAA Comparing $a $b...";
-    my ($re1, $re2);
-    if ($a =~ /^["']/) {
-        $re1 = quotemeta(eval $a);
-    } else {
-        ($re1 = $a) =~ s,^\/|\/$,,g;
-    }
-    if ($b =~ /^["']/) {
-        $re2 = quotemeta(eval $b);
-    } else {
-        ($re2 = $b) =~ s,^/|/$,,g;
-    }
-    my ($le, $ge);
-    eval {
-        $le = is_less_or_equal($re1, $re2);
-    };
-    eval {
-        $ge = is_less_or_equal($re2, $re1);
-    };
-    return 1 if $le && $ge;
-    #if ($ge) {
-    #    warn "warning: Token $b may never match due to token $a.\n";
-    #}
-    undef;
+    my $res = token_cmp(@_);
+    defined $res && $res == 0;
 }
 
 sub token_cmp {
@@ -217,9 +200,37 @@ sub token_cmp {
     eval {
         $ge = is_less_or_equal($re2, $re1);
     };
+    return 0 if $le && $ge;
     return 1 if $ge;
     return -1 if $le;
-    return 0
+    undef;
+}
+
+sub validate_tokens {
+    my ($tokens_used, $tokens) = @_;
+    my @tokens = @$tokens;
+    my $set1 = Set::Scalar->new(@$tokens_used);
+    my $set2 = Set::Scalar->new(@tokens);
+    my $delta = $set1 - $set2;
+    my @elems = sort $delta->elements;
+    if (@elems) {
+        die "error: Tokens { @elems } used in grammar not appear in <token:...>.\n";
+    }
+    $delta = $set2 - $set1;
+    @elems = sort $delta->elements;
+    if (@elems) {
+        die "error: Tokens { @elems } in <token:...> never used in grammar.\n";
+    }
+    while (@tokens) {
+        my $token = shift @tokens;
+        my $twin = first {
+            my $res = token_cmp($_, $token);
+            defined $res && $res < 0
+        } @tokens;
+        if (defined $twin) {
+            die "error: token $token overrides $twin completely in <token:...>.\n"
+        }
+    }
 }
 
 1;

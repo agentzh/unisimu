@@ -1,6 +1,6 @@
 # LL1_eval.pm
 # Evaluator for LL(1) grammar
-# 2006-06-12 2006-06-12
+# 2006-06-12 2006-06-17
 
 package LL1::Eval;
 
@@ -17,6 +17,7 @@ sub eval {
     my $table = LL1::Table::LL1_table($ast, $Firsts, $Follows);
     $X::str = $input;
     $X::pos = 0;
+    undef $LL1::Runtime::Error;
     LL1::Runtime::eval_table($table, $ast->{startrule});
 }
 

@@ -6,11 +6,11 @@ use Test::Base;
 use LL1_parser;
 use LL1_eval;
 
-plan tests => 2 * blocks() + 13;
+plan tests => 2 * blocks() + 14;
 
 my $Ast;
 
-$::LL1_TRACE = 1;
+#$::LL1_TRACE = 1;
 #$::LL1::Table::Trace = 1;
 $::LL1_QUIET = 1;
 
@@ -167,7 +167,27 @@ if (0) other
 
 
 
-=== TEST 12: Logical expressions
+=== TEST 12: if statement grammar with bogus production order
+--- grammar
+
+statement: /\w+/
+         | if_stmt
+
+if_stmt  : 'if' '(' exp ')' statement else_part
+
+else_part: "else" statement
+         |
+
+exp      : '0' | '1'
+
+<token: 'if' '(' ')' "else" '0' '1' /\w+/>
+
+--- input
+if (0) other
+
+
+
+=== TEST 13: Logical expressions
 --- grammar
 
 root: expr
@@ -196,13 +216,13 @@ F OR (T AND (F OR F)) OR F
 
 
 
-=== TEST 13:
+=== TEST 14:
 --- input
 T
 
 
 
-=== TEST 14:
+=== TEST 15:
 --- input
 F AND (T OR F
 --- error
@@ -212,7 +232,7 @@ Was expecting ')', but found EOF instead
 
 
 
-=== TEST 15:
+=== TEST 16:
 --- input
 NOT 32
 --- error
@@ -222,13 +242,13 @@ Was expecting brack_expr, but found '32' instead
 
 
 
-=== TEST 16:
+=== TEST 17:
 --- input
 NOT F
 
 
 
-=== TEST 17: equivalent regex conflicts
+=== TEST 18: equivalent regex conflicts
 --- grammar
 
 float: /\d+/ '.' /[0-9]+/
@@ -238,7 +258,7 @@ float: /\d+/ '.' /[0-9]+/
 
 
 
-=== TEST 18: equivalent regex conflicts (II)
+=== TEST 19: equivalent regex conflicts (II)
 --- grammar
 
 assignment: var ':=' exp
@@ -253,7 +273,7 @@ a := b
 
 
 
-=== TEST 19: strings of common prefix
+=== TEST 20: strings of common prefix
 --- grammar
 
 stmt: 'if'
@@ -266,7 +286,7 @@ if_stmt
 
 
 
-=== TEST 20: lexer bug
+=== TEST 21: lexer bug
 --- grammar
 
 if_stmt: var ':=' expr 'if' expr ';'
