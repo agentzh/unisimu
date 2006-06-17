@@ -10,8 +10,9 @@ plan tests => 2 * blocks() + 13;
 
 my $Ast;
 
-#$::LL1_TRACE = 1;
+$::LL1_TRACE = 1;
 #$::LL1::Table::Trace = 1;
+$::LL1_QUIET = 1;
 
 filters {
     offset => ['chomp'],
@@ -163,10 +164,6 @@ exp      : '0' | '1'
 
 --- input
 if (0) other
---- offset
-2
---- error
-Was expecting EOF, but found '(' instead
 
 
 
@@ -266,3 +263,15 @@ var: /[A-Za-z]\w*/
 
 --- input
 if_stmt
+
+
+
+=== TEST 20: lexer bug
+--- grammar
+
+if_stmt: var ':=' expr 'if' expr ';'
+var: /[A-Za-z]\w*/
+expr: /\d+/
+
+--- input
+foo := 32 if 1;

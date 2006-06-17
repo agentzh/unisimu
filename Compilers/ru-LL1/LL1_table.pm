@@ -228,12 +228,18 @@ sub add_production ($$$$$) {
     $Table->{$N} ||= {};
     my $entry = $Table->{$N}->{$T};
     if ($entry) {
-        warn "warning: Duplicate entries found in LL(1) parsing table,\n";
+        if (!$::LL1_QUIET) {
+            warn "warning: Duplicate entries found in LL(1) parsing table,\n";
+        }
         if ($replace) {
-            warn "  replacing [ $N -> @$entry ] with [ $N -> @$production ]\n";
+            if (!$::LL1_QUIET) {
+                warn "  replacing [ $N -> @$entry ] with [ $N -> @$production ]\n";
+            }
             $Table->{$N}->{$T} = $production;
         } else {
-            warn "  discarding [ $N -> @$production ]\n";
+            if (!$::LL1_QUIET) {
+                warn "  discarding [ $N -> @$production ]\n";
+            }
         }
     } else {
         $Table->{$N}->{$T} = $production;

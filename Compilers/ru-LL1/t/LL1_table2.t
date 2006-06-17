@@ -8,6 +8,8 @@ use t::Util qw/ parse_grammar dump_LL1_table /;
 
 plan tests => 1 * blocks();
 
+$::LL1_QUIET = 1;
+
 run {
     my $block = shift;
     my $name = $block->name;

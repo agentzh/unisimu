@@ -7,7 +7,8 @@ package LL1::Parser;
 use strict;
 use warnings;
 
-use List::Util 'first';
+use List::Util qw/ first /;
+use List::MoreUtils qw/ first_index /;
 use Carp 'croak';
 
 use Data::Dumper::Simple;
@@ -89,11 +90,19 @@ sub parse {
     my $src = shift;
     #$::RD_TRACE = 1;
     $X::rules = [];
+    undef $X::tokens;
     my $ast = $Parser->grammar($src);
-    my $context = {};
-    my @tokens =
-        collect_tokens($ast->{rules}, $ast->{startrule}, $context);
-    $X::tokens = \@tokens;
+    my @tokens = collect_tokens($ast->{rules}, $ast->{startrule}, {});
+    #warn "!!! XXX @tokens";
+    if (!$X::tokens) {
+        @tokens = sort_tokens(@tokens);
+        if (!$::LL1_QUIET) {
+            warn "warning: Directive <token: @tokens> added automatically.\n";
+        }
+        $X::tokens = \@tokens;
+    } else {
+        validate_tokens(@$X::tokens);
+    }
     $ast;
 }
 
@@ -119,7 +128,9 @@ sub collect_tokens {
                 if (!defined $twin) {
                     push @{ $context->{tokens} }, $item;
                 } else { #if ($item ne $twin) {
-                    warn "warning: Duplicate token $item ignored (see $twin).\n";
+                    if (!$::LL1_QUIET) {
+                        warn "warning: Duplicate token $item ignored (see $twin).\n";
+                    }
                     $item = $twin;
                 }
             } else {
@@ -128,6 +139,33 @@ sub collect_tokens {
         }
     }
     @{ $context->{tokens} };
+}
+
+sub sort_tokens {
+    my @tokens = @_;
+    my @sorted;
+    for my $token (@tokens) {
+        #warn "check $token\n";
+        my $done;
+        for my $i (0..$#sorted) {
+            #warn "  $token <=> $sorted[$i]\n";
+            my $res = token_cmp($sorted[$i], $token);
+            if ($res > 0) {
+                if ($i == 0) {
+                    unshift @sorted, $token;
+                } else {
+                    splice(@sorted, $i, 0, $token);
+                }
+                $done = 1;
+                last;
+            }
+        }
+        if (!$done) {
+            push @sorted, $token;
+        }
+        #warn "[ @sorted ]\n\n";
+    }
+    @sorted;
 }
 
 sub token_eq {
@@ -152,10 +190,36 @@ sub token_eq {
         $ge = is_less_or_equal($re2, $re1);
     };
     return 1 if $le && $ge;
-    if ($ge) {
-        warn "warning: Token $b may never match due to token $a.\n";
-    }
+    #if ($ge) {
+    #    warn "warning: Token $b may never match due to token $a.\n";
+    #}
     undef;
+}
+
+sub token_cmp {
+    my ($a, $b) = @_;
+    #warn "AAA Comparing $a $b...";
+    my ($re1, $re2);
+    if ($a =~ /^["']/) {
+        $re1 = quotemeta(eval $a);
+    } else {
+        ($re1 = $a) =~ s,^\/|\/$,,g;
+    }
+    if ($b =~ /^["']/) {
+        $re2 = quotemeta(eval $b);
+    } else {
+        ($re2 = $b) =~ s,^/|/$,,g;
+    }
+    my ($le, $ge);
+    eval {
+        $le = is_less_or_equal($re1, $re2);
+    };
+    eval {
+        $ge = is_less_or_equal($re2, $re1);
+    };
+    return 1 if $ge;
+    return -1 if $le;
+    return 0
 }
 
 1;
