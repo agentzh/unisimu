@@ -54,6 +54,7 @@ __DATA__
 === TEST 1: basic
 --- grammar
 
+# This is an identifier
 identifier: /[A-Za-z]\w*/
 
 --- input
@@ -74,7 +75,7 @@ Was expecting identifier, but found '12' instead
 === TEST 3:
 --- grammar
 
-S: '(' S ')' S | ''
+S: '(' S ')' S | '' # empty token
 
 --- input
 ()
@@ -118,15 +119,23 @@ Was expecting ')', but found EOF instead
 === TEST 9: if statement
 --- grammar
 
+  # rule for statement:
+
 statement: if_stmt
-         | /\w+/
+         | /\w+/  # other
+
+ # rule for if_stmt:
 
 if_stmt  : 'if' '(' exp ')' statement else_part
+
+ # rule for else_part:
 
 else_part: 'else' statement
          |
 
-exp      : '0' | '1'
+ # rule for exp:
+
+exp      : '0' | "1"
 
 --- input
 if (0) other
@@ -147,7 +156,7 @@ statement: /\w+/
 
 if_stmt  : 'if' '(' exp ')' statement else_part
 
-else_part: 'else' statement
+else_part: "else" statement
          |
 
 exp      : '0' | '1'

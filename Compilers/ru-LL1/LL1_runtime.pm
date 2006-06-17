@@ -1,7 +1,7 @@
 #: LL1_runtime.pm
 #: Common runtime for LL(1) parsers generated
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-06-05 2006-06-05
+#: 2006-06-05 2006-06-17
 
 package LL1::Runtime;
 
@@ -26,7 +26,7 @@ sub match_token ($) {
             return $&;
         }
     }
-    elsif (/^'(.*)'$/o) {
+    elsif (/^['"](.*)['"]$/o) {
         my $des = eval $_;
         if (substr($s, pos($s), length($des)) eq $des) {
             $X::pos += length($des);

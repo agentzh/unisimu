@@ -105,7 +105,7 @@ S : '(' S ')' S | ''
 
 --- s_grammar
 
-S: '(' S ')' S | ''
+S: '(' S ')' S |
 
 
 
@@ -152,10 +152,10 @@ factor: '(' exp ')' | /\d+/
 --- s_grammar
 
 exp: term exp_
-exp_: addop term exp_ | ''
+exp_: addop term exp_ |
 addop: '+' | '-'
 term: factor term_
-term_: mulop factor term_ | ''
+term_: mulop factor term_ |
 mulop: '*'
 factor: '(' exp ')' | /\d+/
 
@@ -172,3 +172,15 @@ stmt_sequence: stmt stmt_seq
 stmt_seq: ';' stmt_sequence |
 stmt: 's'
 
+
+
+=== TEST 10: abuse of ''
+--- grammar
+
+if_stmt: '' 'if' '' "(" exp ')' ""
+exp: '' /\d+/ ''
+
+--- s_grammar
+
+if_stmt: 'if' "(" exp ')'
+exp: /\d+/

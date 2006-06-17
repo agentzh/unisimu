@@ -1,6 +1,6 @@
 #: LL1_parser.pm
-#: simple parser for BNF
-#: 2006-06-04 2006-06-12
+#: simple parser for BNF listing
+#: 2006-06-04 2006-06-17
 
 package LL1::Parser;
 
@@ -16,10 +16,10 @@ use Regexp::Compare qw(is_less_or_equal);
 
 my $Grammar = <<'END_GRAMMAR';
 
-grammar: rule(s) eofile
+grammar: component(s) eofile
 
                   { 
-                     my @rules = @{ $item[1] };
+                     my @rules = grep { $_ } @{ $item[1] };
                      {
                          startrule => $rules[0]->[0],
                          rules => { map {@$_} @rules },
@@ -27,6 +27,11 @@ grammar: rule(s) eofile
                   }
 
        | <error>
+
+component: rule
+         | comment      { '' }
+         | directive    { '' }
+         | <error>
 
 eofile: /^\Z/
 
@@ -48,6 +53,7 @@ item: subrule
     | terminal
     | action
     | directive
+    | comment    { "''" }
 
 subrule: /[A-Za-z]\w*\b(?!\s*:)/
 
@@ -55,12 +61,16 @@ terminal: string
         | regex
 
 string: /'(\\.|[^'])*'/
+      | /"(\\.|[^"])*"/
 
 regex:  {extract_delimited($text,'/')}   { $item[1] || undef }
 
 action: {extract_codeblock($text)}       { $item[1] || undef }
 
 directive: '<error>'
+         | '<token:' terminal(s) '>'  { $X::tokens = $item[2] }
+
+comment: /#[^\n]*/
 
 nil: ''  { [] }
 
@@ -100,6 +110,7 @@ sub collect_tokens {
     }
     for my $prod (@$prods) {
         $context->{$prod} = 1;
+        @$prod = grep { $_ ne "''" and $_ ne '""' } @$prod;
         for my $item (@$prod) {
             if ($item =~ /^\W/) {
                 #warn "XXX $item";
