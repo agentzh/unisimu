@@ -242,7 +242,7 @@ error: token /\w+/ overrides /[A-Za-z]\w*/ completely in <token:...>.
 
 
 
-=== TEST 8: identical tokens in <token:...>
+=== TEST 9: identical tokens in <token:...>
 --- grammar
 
 <token: ':=' /[A-Za-z]\w*/ ':=' /\w+/ >
@@ -260,7 +260,7 @@ foo := 32aa
 
 
 
-=== TEST 9: equivalent (but not identical) tokens in <token:...>
+=== TEST 10: equivalent (but not identical) tokens in <token:...>
 --- grammar
 
 <token: ':=' /\w\w*/ ':=' /\w+/ >
