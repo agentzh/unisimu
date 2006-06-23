@@ -1,10 +1,9 @@
 #: LL1.pl
 #: script for generating LL1 parsers
-#: 2006-06-04 2006-06-04
+#: 2006-06-04 2006-06-23
 
 use strict;
 use warnings;
-
 
 use Getopt::Std;
 use FindBin;
