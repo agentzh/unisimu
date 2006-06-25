@@ -1,9 +1,0 @@
-{ process(0); }
-
-var a;
-
-a: { $a < 5 } { $a++; warn "    a = $a\n"; }
-
-a*;
-
-{ print "a = $a"; }

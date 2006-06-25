@@ -111,7 +111,7 @@ __DATA__
 
 package main;
 
-our $PLAN_TRACE;
+our $PLAN_VERBOSE;
 
 [%- IF filetype == 'pl' %]
 use strict;
@@ -119,28 +119,22 @@ use warnings;
 use Getopt::Std;
 
 my %opts;
-getopts('hq', \%opts);
+getopts('hv:', \%opts);
 
 if ($opts{h}) {
-    print "Usage: $0 [-hq]\n";
+    print "Usage: $0 [-h] [-v <level>]\n";
     exit(0);
 }
 
-if (!$opts{q}) {
-    $PLAN_TRACE = 1;
-}
+$PLAN_VERBOSE = $opts{v} || 0;
 
 [% END -%]
 
+###
+
 package X;
 
-use strict;
-use warnings;
-use Clone 'clone';
-use Data::Compare;
-
-our $env;
-our $noop;
+our ($env, $noop);
 
 $noop = sub {
     my $c = $_[0];
@@ -148,6 +142,44 @@ $noop = sub {
     @_ = $noop;
     goto &$c;
 };
+
+###
+
+package [% package %];
+
+use strict;
+use warnings;
+
+[% IF ast.begin_block -%]
+# Begin block:
+[% ast.begin_block %]
+[%- END %]
+
+[% IF ast.wrapper -%]
+{
+    # Auto wrapper:
+    my @history;
+    my $res = process(\@history, @ARGV);
+    if ($res) {
+        if (@history) {
+            print "@history\n";
+        } else {
+            warn "warning: no action performed.\n"
+        }
+    } else {
+        warn "error: no solution found.\n";
+    }
+}
+[% END -%]
+
+our ($[% ast.vars.join(', $'); %]);
+
+package X;
+
+use strict;
+use warnings;
+use Clone 'clone';
+use Data::Compare;
 
 sub eq_env {
     my ($env1, $env2) = @_;
@@ -161,10 +193,9 @@ sub altern_[% i %] {
     my $res;
     my $old_env;
 
-    if ($::PLAN_TRACE) {
-        warn "  trying altern_[% i %]";
+    if ($::PLAN_VERBOSE >= 3) {
+        warn "  trying altern_[% i %]...\n";
     }
-
 
   [%- j = 1 %]
   [%- FOREACH elem = altern %]
@@ -190,8 +221,8 @@ sub altern_[% i %] {
 sub concat_[% i %] {
     my $c = $_[0];
 
-    if ($::PLAN_TRACE) {
-        warn "  trying concat_[% i %]";
+    if ($::PLAN_VERBOSE >= 3) {
+        warn "  trying concat_[% i %]...\n";
     }
 
 
@@ -228,8 +259,8 @@ sub repet_[% i %] {
     my $old_env;
     my $i = 0;
 
-    if ($::PLAN_TRACE) {
-        warn "  trying repet_[% i %]";
+    if ($::PLAN_VERBOSE >= 2) {
+        warn "  trying repet_[% i %]...\n";
     }
 
     my ($fmin, $fagain, $frest);
@@ -275,8 +306,8 @@ sub repet_[% i %] {
 sub atom_[% atom %] {
     my $c = $_[0];
 
-    if ($::PLAN_TRACE) {
-        warn "  trying atom_[% atom %]";
+    if ($::PLAN_VERBOSE >= 4) {
+        warn "  trying atom_[% atom %]...\n";
     }
 
     {
@@ -296,7 +327,7 @@ sub atom_[% atom %] {
         $X::env->{'[% var %]'} = $[% var %];
       [%- END %]
         push @{ $X::env->{__HISTORY__} }, '[% atom %]';
-        if ($::PLAN_TRACE) {
+        if ($PLAN_VERBOSE >= 1) {
             warn "@{ $X::env->{__HISTORY__} }\n";
         }
     }
@@ -311,11 +342,13 @@ package [% package %];
 use strict;
 use warnings;
 
-[% ast.begin_block %]
-
-our ($[% ast.vars.join(', $'); %]);
-
 sub process {
+    my ($hist) = @_;
+    if (ref $hist and ref $hist eq 'ARRAY') {
+        shift;
+    } else {
+        $hist = [];
+    }
     $X::env = {};
   [%- FOREACH var IN ast.vars %]
     $X::env->{'[% var %]'} = shift;
@@ -323,12 +356,17 @@ sub process {
     $X::env->{__HISTORY__} = [];
     my $res = X::[% ast.regex %]($X::noop);
     if (defined $res) {
-        if ($::PLAN_TRACE) {
-            warn "<<MATCH>>\n";
+        if ($::PLAN_VERBOSE >= 1) {
+            warn "\n<<MATCH>>\n";
         }
-        return @{ $X::env->{__HISTORY__} };
+        @$hist = @{ $X::env->{__HISTORY__} };
+        return 1;
+    } else {
+        if ($::PLAN_VERBOSE >= 1) {
+            warn "\n<<FAIL>>\n";
+        }
+        return undef;
     }
-    return ();
 }
 
 [%- IF ast.end_block %]
@@ -340,6 +378,6 @@ sub process {
 }
 [%- END %]
 
-[% IF filetype == 'pm' -%]
+[%- IF filetype == 'pm' -%]
 1;
 [% END -%]
