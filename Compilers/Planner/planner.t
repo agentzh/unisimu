@@ -8,7 +8,7 @@ use File::Temp qw/ tempfile /;
 use Test::Base;
 use IPC::Run3;
 
-plan tests => 2 * blocks() + 2 * 8;
+plan tests => 2 * blocks() + 1 * 10;
 
 my $plfile;
 my @plfiles;
@@ -26,7 +26,13 @@ run {
         #warn "Grammar File: $gmfile";
         print $fh $pln;
         close $fh;
-        is system($^X, 'planner.pl', $plnfile), 0, "$name - spawn planner.pl ok";
+        my ($out);
+        run3 [$^X, 'planner.pl', $plnfile], \undef, \undef, \$out;
+        $out =~ s/^\n+//gs;
+        if (defined $block->meta_err) {
+            is $out, $block->meta_err, "$name - meta err";
+            return;
+        }
         ($plfile = $plnfile) =~ s/\.pln$/.pl/;
         ok -f $plfile, "$name - $plfile ok";
     }
@@ -238,7 +244,215 @@ error: no solution found.
 
 
 
-=== TEST 10: Linear State Machine
+=== TEST 10: Regex (syntax error)
+--- pln
+
+var str, pos;
+
+a: { substr($str, $pos, 1) eq 'a' } { $pos++ }
+
+a{3,5}
+
+--- meta_err
+
+       ERROR (line 5):  no semicolon specified after the regex.
+
+       ERROR (line 5): Invalid program: Was expecting regex but found "a{3,5}"
+                       instead
+Bad grammar!
+
+
+
+=== TEST 11: Regex (test a{m,n})
+--- pln
+<wrapper>
+
+var str, pos;
+
+a: { substr($str, $pos, 1) eq 'a' } { $pos++ }
+
+a{3,5};
+
+--- args
+-v 1 aaa 0
+--- stdout
+a a a
+--- stderr
+a
+a a
+a a a
+
+<<MATCH>>
+
+
+
+=== TEST 12: Regex (test a{m,n})
+--- args
+-v 1 aaaa 0
+--- stdout
+a a a a
+--- stderr
+a
+a a
+a a a
+a a a a
+
+<<MATCH>>
+
+
+
+=== TEST 13: Regex (test a{m,n})
+--- args
+-v 1 aaaaa 0
+--- stdout
+a a a a a
+--- stderr
+a
+a a
+a a a
+a a a a
+a a a a a
+
+<<MATCH>>
+
+
+
+=== TEST 14: Regex (test a{m,n})
+--- args
+-v 1 aaaaaa 0
+--- stdout
+a a a a a
+--- stderr
+a
+a a
+a a a
+a a a a
+a a a a a
+
+<<MATCH>>
+
+
+
+=== TEST 15: Regex (test a{m,n})
+--- args
+-v 1 aa 0
+--- stdout
+--- stderr
+a
+a a
+
+<<FAIL>>
+error: no solution found.
+
+
+
+=== TEST 16: Regex (test a{m,n})
+--- args
+-v 1 a 0
+--- stdout
+--- stderr
+a
+
+<<FAIL>>
+error: no solution found.
+
+
+
+=== TEST 17: Regex (test a{m,n})
+--- pln
+<wrapper>
+
+var str, pos;
+
+a: { substr($str, $pos, 1) eq 'a' } { $pos++ }
+
+a{3,5}a a;
+
+--- args
+-v 1 aaaaa 0
+--- stdout
+a a a a a
+--- stderr
+a
+a a
+a a a
+a a a a
+a a a a a
+a a a a a
+a a a a
+a a a a a
+
+<<MATCH>>
+
+
+
+=== TEST 18: Regex (test a{m,})
+--- pln
+
+<wrapper>
+
+var str, pos;
+
+a: { substr($str, $pos, 1) eq 'a' } { $pos++ }
+
+a{2,};
+
+--- args
+-v 1 aa 0
+--- stdout
+a a
+--- stderr
+a
+a a
+
+<<MATCH>>
+
+
+
+=== TEST 19: Regex (test a{m,})
+--- args
+-v 1 aaa 0
+--- stdout
+a a a
+--- stderr
+a
+a a
+a a a
+
+<<MATCH>>
+
+
+
+=== TEST 20: Regex (test a{m,})
+--- args
+-v 1 aaaaaa 0
+--- stdout
+a a a a a a
+--- stderr
+a
+a a
+a a a
+a a a a
+a a a a a
+a a a a a a
+
+<<MATCH>>
+
+
+
+=== TEST 21: Regex (test a{m,})
+--- args
+-v 1 a 0
+--- stdout
+--- stderr
+a
+
+<<FAIL>>
+error: no solution found.
+
+
+
+=== TEST 22: Linear State Machine
 --- pln
 
 <wrapper>
@@ -276,7 +490,7 @@ start next then end
 
 
 
-=== TEST 11: Linear State Machine
+=== TEST 23: Linear State Machine
 --- args: b
 --- stdout
 next, i should...
@@ -288,7 +502,7 @@ next then end start
 
 
 
-=== TEST 12: Linear State Machine
+=== TEST 24: Linear State Machine
 --- pln
 
 <wrapper>
@@ -310,7 +524,7 @@ start next then end start next
 
 
 
-=== TEST 13: Linear State Machine
+=== TEST 25: Linear State Machine
 --- pln
 
 <wrapper>
@@ -332,7 +546,7 @@ start next then
 
 
 
-=== TEST 14: Linear State Machine
+=== TEST 26: Linear State Machine
 --- pln
 
 <wrapper>
@@ -354,7 +568,7 @@ start next then end
 
 
 
-=== TEST 15: Linear State Machine
+=== TEST 27: Linear State Machine
 --- args
 4
 --- stdout
@@ -363,7 +577,7 @@ error: no solution found.
 
 
 
-=== TEST 16: Linear State Machine
+=== TEST 28: Linear State Machine
 --- pln
 
 <wrapper>
@@ -391,7 +605,7 @@ warning: no action performed.
 
 
 
-=== TEST 17: Linear State Machine
+=== TEST 29: Linear State Machine
 --- args
 -v 3 0
 --- stdout
@@ -412,7 +626,7 @@ warning: no action performed.
 
 
 
-=== TEST 18: Linear State Machine
+=== TEST 30: Linear State Machine
 --- args
 -v 4 0
 --- stdout
@@ -442,7 +656,7 @@ warning: no action performed.
 
 
 
-=== TEST 19: Linear State Machine
+=== TEST 31: Linear State Machine
 --- args
 -v 1 3
 --- stdout

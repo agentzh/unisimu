@@ -52,6 +52,7 @@ condition: block
 action: block
 
 regex: alternation ';'  { $item[1] }
+     | alternation <error: no semicolon specified after the regex.>
 
 alternation: concat(s /\|/)
                 {
@@ -75,14 +76,14 @@ concat: qualified_atom(s)
                 }
       | <error>
 
-qualified_atom: atom '*'  { bless [ 0, 'inf', $item[1] ], 'repet'; }
-              | atom '+'  { bless [ 1, 'inf', $item[1] ], 'repet'; }
-              | atom '{' <commit> number <uncommit> '}'
-                      { bless [ $item[4], $item[4], $item[1] ], 'repet'; }
-              | atom '{' <commit> number ',' <uncommit> number '}'
-                      { bless [ $item[4], $item[6], $item[1] ], 'repet'; }
-              | atom '{' <commit> number ',' '}'
-                      { bless [ $item[4], 'inf', $item[1] ], 'repet'; }
+qualified_atom: atom '*'  { bless [ 0, 'inf', $item{atom} ], 'repet'; }
+              | atom '+'  { bless [ 1, 'inf', $item{atom} ], 'repet'; }
+              | atom '{' number '}'
+                      { bless [ $item{number}, $item{number}, $item{atom} ], 'repet'; }
+              | atom '{' number ',' number <commit> '}'
+                      { bless [ $item[3], $item[5], $item[1] ], 'repet'; }
+              | atom '{' number ',' '}'
+                      { bless [ $item[3], 'inf', $item[1] ], 'repet'; }
               | atom
               | <error?> <reject>
 
