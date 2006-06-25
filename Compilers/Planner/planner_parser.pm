@@ -11,12 +11,12 @@ use Parse::RecDescent;
 
 my $Grammar = <<'END_GRAMMAR';
 
-program: directive(?) begin_block(?) var_definition rules regex end_block(?) eofile
+program: directive(?) begin_block(?) var_definition(?) rules regex end_block(?) eofile
              {
                  {
                      wrapper     => $item[1]->[0],
                      begin_block => $item[2]->[0],
-                     vars        => $item[3],
+                     vars        => $item[3]->[0],
                      rules       => $item[4],
                      regex       => $item[5],
                      end_block   => $item[6]->[0],

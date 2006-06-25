@@ -172,7 +172,9 @@ use warnings;
 }
 [% END -%]
 
+[%- IF ast.vars %]
 our ($[% ast.vars.join(', $'); %]);
+[%- END %]
 
 package X;
 

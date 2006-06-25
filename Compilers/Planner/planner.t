@@ -8,7 +8,7 @@ use File::Temp qw/ tempfile /;
 use Test::Base;
 use IPC::Run3;
 
-plan tests => 2 * blocks() + 1 * 10;
+plan tests => 2 * blocks() + 1 * 14;
 
 my $plfile;
 my @plfiles;
@@ -32,7 +32,10 @@ run {
         if (defined $block->meta_err) {
             is $out, $block->meta_err, "$name - meta err";
             return;
+        } elsif ($out) {
+            warn $out;
         }
+
         ($plfile = $plnfile) =~ s/\.pln$/.pl/;
         ok -f $plfile, "$name - $plfile ok";
     }
@@ -665,3 +668,162 @@ end
 end
 
 <<MATCH>>
+
+
+
+=== TEST 32: First 2 lines of this file
+--- pln
+<wrapper>
+
+copy: { $_ = <> } { print }
+
+copy{2};
+
+--- args
+planner.t
+--- stdout
+# planner.t
+# Test planner.pl
+copy copy
+--- stderr
+
+
+
+=== TEST 33: First 2 lines of this file
+--- pln
+<wrapper>
+
+var line;
+
+init:  {1} { $line = undef }
+
+read : { !defined $line } { $line = <>;  }
+write: { defined $line  } { print $line; undef $line } 
+
+init (write|read){4};
+
+--- args
+planner.t
+--- stdout
+# planner.t
+# Test planner.pl
+init read write read write
+--- stderr
+
+
+
+=== TEST 34: 4-Queens Problem (Find 1 solution only)
+--- pln
+<wrapper>
+
+{
+    sub can_put {
+        my ($chessboard, $x, $y) = @_;
+        my @queens = @$chessboard;
+        for my $j (0..$#queens) {
+            my $i = $queens[$j];
+            if ($i == $x or $i + $j == $x + $y or $i - $j == $x - $y) {
+                return undef;
+            }
+        }
+        1;
+    }
+}
+
+var x, y, chessboard;
+
+init:
+    { 1 }
+    { $chessboard = []; $y = 0; }
+
+put_ln0:
+    { can_put($chessboard, 0, $y) }
+    { $x = 0 }
+
+put_ln1:
+    { can_put($chessboard, 1, $y) }
+    { $x = 1 }
+
+put_ln2:
+    { can_put($chessboard, 2, $y) }
+    { $x = 2 }
+
+put_ln3:
+    { can_put($chessboard, 3, $y) }
+    { $x = 3 }
+
+next_col:
+    { defined $x }
+    { push @$chessboard, $x; undef $x; $y++; }
+
+found:
+    { @$chessboard == 4 } { warn "@$chessboard\n" }
+
+init ((put_ln0 | put_ln1 | put_ln2 | put_ln3) next_col)* found;
+
+--- args
+--- stdout
+init put_ln1 next_col put_ln3 next_col put_ln0 next_col put_ln2 next_col found
+--- stderr
+1 3 0 2
+
+
+
+=== TEST 35: 4-Queens Problem (Find ALL solutions)
+--- pln
+<wrapper>
+
+{
+    sub can_put {
+        my ($chessboard, $x, $y) = @_;
+        my @queens = @$chessboard;
+        for my $j (0..$#queens) {
+            my $i = $queens[$j];
+            if ($i == $x or $i + $j == $x + $y or $i - $j == $x - $y) {
+                return undef;
+            }
+        }
+        1;
+    }
+}
+
+var x, y, chessboard;
+
+init:
+    { 1 }
+    { $chessboard = []; $y = 0; }
+
+put_ln0:
+    { can_put($chessboard, 0, $y) }
+    { $x = 0 }
+
+put_ln1:
+    { can_put($chessboard, 1, $y) }
+    { $x = 1 }
+
+put_ln2:
+    { can_put($chessboard, 2, $y) }
+    { $x = 2 }
+
+put_ln3:
+    { can_put($chessboard, 3, $y) }
+    { $x = 3 }
+
+next_col:
+    { defined $x }
+    { push @$chessboard, $x; undef $x; $y++; }
+
+found:
+    { @$chessboard == 4 } { warn "@$chessboard\n" }
+
+next:
+    { 0 } {}
+
+init (((put_ln0 | put_ln1 | put_ln2 | put_ln3) next_col)* found next)+;
+
+--- args
+--- stdout
+--- stderr
+1 3 0 2
+2 0 3 1
+error: no solution found.
