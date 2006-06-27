@@ -1,0 +1,488 @@
+
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<STYLE>
+<!--
+a,a:link  { font-family: 'Tahoma', 'Verdana', 'Arial'; color: gray; text-decoration: none; }
+a:visited { font-family: 'Tahoma', 'Verdana', 'Arial'; color: gray; text-decoration: none; }
+a:active  { font-family: 'Tahoma', 'Verdana', 'Arial'; color: black; text-decoration: none; }
+a:hover   { font-family: 'Tahoma', 'Verdana', 'Arial'; color: black; text-decoration: none; }
+-->
+A:link  {font-family: 'Tahoma', 'Verdana', 'Arial'; color:blue; text-decoration: none; cursor: hand; }
+A:visited  {font-family: 'Tahoma', 'Verdana', 'Arial'; color: Navy; text-decoration: none}
+A:active  {font-family: 'Tahoma', 'Verdana', 'Arial'; color: mediumvioletred; text-decoration: none}
+A:hover {font-family: 'Tahoma', 'Verdana', 'Arial'; color: red;  text-decoration: none}
+
+body,td,select,input,div,form,textarea,center,option,pre,br {
+            font-family: 'Tahoma', 'Verdana', 'Arial'; font-size: 9pt; color: black; }
+
+body      { margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px;
+            scrollbar-face-color: white;
+            scrollbar-shadow-color: gainsboro;
+            scrollbar-darkshadow-color: whitesmoke;
+            scrollbar-highlight-color: gainsboro;
+            scrollbar-3dlight-color: whitesmoke;
+            scrollbar-track-color: white;
+            scrollbar-arrow-color: gainsboro;
+            overflow: auto; }
+th {
+	font-family: 'Tahoma', 'Verdana', 'Arial'; font-size: 10pt; color: black; }
+.button   { font-family: 'Tahoma', 'Verdana', 'Arial'; background-color: white; height: 20px;
+                border-width: 1px; border-style: solid; border-color: black; }
+.input    { font-family: 'Tahoma', 'Verdana', 'Arial'; background-color: white; height: 20px;
+                border-width: 1px; border-style: solid; border-color: black; }
+.td_sr {
+  background: #ffffff;
+}
+.tb_sr { background: #eeeeee; }
+.th_sr { background: #eeeeee; }
+</STYLE>
+<TABLE cellSpacing=0 cellPadding=0 border=0 width="800">
+  <TR vAlign=top>
+    <TD align=center><font size="5" face="方正姚体, 华文新魏, 华文彩云">LL(1) Parsing Table</font></TD>
+  </TR>
+</TABLE>
+<hr>
+<table width = 1800 height = 200 border = 1 align = center>
+	<tr>
+		<td> M[N, T]</td>
+		<td align=center ><font size = 2>(</font></td>
+		<td align=center ><font size = 2>number</font></td>
+		<td align=center ><font size = 2>)</font></td>
+		<td align=center ><font size = 2>+</font></td>
+		<td align=center ><font size = 2>-</font></td>
+		<td align=center ><font size = 2>*</font></td>
+		<td align=center ><font size = 2><</font></td>
+		<td align=center ><font size = 2>if</font></td>
+		<td align=center ><font size = 2>read</font></td>
+		<td align=center ><font size = 2>write</font></td>
+		<td align=center ><font size = 2>identifier</font></td>
+		<td align=center ><font size = 2>repeat</font></td>
+		<td align=center ><font size = 2>until</font></td>
+		<td align=center ><font size = 2>end</font></td>
+		<td align=center ><font size = 2>then</font></td>
+		<td align=center ><font size = 2>else</font></td>
+		<td align=center ><font size = 2>;</font></td>
+		<td align=center ><font size = 2>#</font></td>
+	</tr>	<tr>
+		<td>comparison-op</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>comparison-op -> <</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>read-stmt</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>read-stmt -> read identifier</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>stmt-sequence</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>stmt-sequence -> statement stmt-sequence@</font></td>
+		<td align=center ><font size = 1>stmt-sequence -> statement stmt-sequence@</font></td>
+		<td align=center ><font size = 1>stmt-sequence -> statement stmt-sequence@</font></td>
+		<td align=center ><font size = 1>stmt-sequence -> statement stmt-sequence@</font></td>
+		<td align=center ><font size = 1>stmt-sequence -> statement stmt-sequence@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>assign-stmt</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>assign-stmt -> identifier := exp</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>program</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>program -> stmt-sequence</font></td>
+		<td align=center ><font size = 1>program -> stmt-sequence</font></td>
+		<td align=center ><font size = 1>program -> stmt-sequence</font></td>
+		<td align=center ><font size = 1>program -> stmt-sequence</font></td>
+		<td align=center ><font size = 1>program -> stmt-sequence</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>term</td>
+		<td align=center ><font size = 1>term -> factor term@</font></td>
+		<td align=center ><font size = 1>term -> factor term@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>term -> factor term@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>mulop</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>mulop -> *</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>factor</td>
+		<td align=center ><font size = 1>factor -> ( exp )</font></td>
+		<td align=center ><font size = 1>factor -> number</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>factor -> identifier</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>simple-exp</td>
+		<td align=center ><font size = 1>simple-exp -> term simple-exp@</font></td>
+		<td align=center ><font size = 1>simple-exp -> term simple-exp@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>simple-exp -> term simple-exp@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>statement</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>statement -> if-stmt</font></td>
+		<td align=center ><font size = 1>statement -> read-stmt</font></td>
+		<td align=center ><font size = 1>statement -> write-stmt</font></td>
+		<td align=center ><font size = 1>statement -> assign-stmt</font></td>
+		<td align=center ><font size = 1>statement -> repeat-stmt</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>term@</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> mulop factor term@</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+		<td align=center ><font size = 1>term@ -> @</font></td>
+	</tr>
+	<tr>
+		<td>simple-exp@</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+		<td align=center ><font size = 1>simple-exp@ -> addop term simple-exp@</font></td>
+		<td align=center ><font size = 1>simple-exp@ -> addop term simple-exp@</font></td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+		<td align=center ><font size = 1>simple-exp@ -> @</font></td>
+	</tr>
+	<tr>
+		<td>exp</td>
+		<td align=center ><font size = 1>exp -> simple-exp exp@</font></td>
+		<td align=center ><font size = 1>exp -> simple-exp exp@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>exp -> simple-exp exp@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>addop</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>addop -> +</font></td>
+		<td align=center ><font size = 1>addop -> -</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>write-stmt</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>write-stmt -> write exp</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>exp@</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>exp@ -> @</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>exp@ -> comparison-op simple-exp exp@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>exp@ -> @</font></td>
+		<td align=center ><font size = 1>exp@ -> @</font></td>
+		<td align=center ><font size = 1>exp@ -> @</font></td>
+		<td align=center ><font size = 1>exp@ -> @</font></td>
+		<td align=center ><font size = 1>exp@ -> @</font></td>
+		<td align=center ><font size = 1>exp@ -> @</font></td>
+	</tr>
+	<tr>
+		<td>if-stmt</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>if-stmt -> if exp then stmt-sequence if-stmt@</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>repeat-stmt</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>repeat-stmt -> repeat stmt-sequence until exp</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>if-stmt@</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>if-stmt@ -> end</font></td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>if-stmt@ -> else stmt-sequence end</font></td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+	</tr>
+	<tr>
+		<td>stmt-sequence@</td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>stmt-sequence@ -> @</font></td>
+		<td align=center ><font size = 1>stmt-sequence@ -> @</font></td>
+		<td>&nbsp </td>
+		<td align=center ><font size = 1>stmt-sequence@ -> @</font></td>
+		<td align=center ><font size = 1>stmt-sequence@ -> ; statement stmt-sequence@</font></td>
+		<td align=center ><font size = 1>stmt-sequence@ -> @</font></td>
+	</tr>
+</table>

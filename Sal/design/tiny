@@ -1,0 +1,11 @@
+read x;
+write y;
+if 0 < (x*(5+3)-6) then
+	fact := 1;
+	repeat
+		fact := fact * x;
+		x := x -1;
+		x := (y + 5) * 3
+	until x = 0;
+	write fact
+end

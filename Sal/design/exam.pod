@@ -1,0 +1,273 @@
+
+=head1 求解题之解答
+
+=over 
+
+=item * 
+
+=begin html
+
+<img src = "image/STREE.png" width = 600 height = 300> 搜索树图示 </img>
+
+=end html
+
+求解过程如下：
+	
+	[A]B,C,D	=> B(3), C(6), D(4)
+
+	[B,C,D]E,F	=> E(8), F(4)
+
+	[D,F,C,E]I,J	=> I(5), J(6)
+
+	[F,C,I,J,E]L	=> L(6)[1,2,3,4]
+
+	[C,I,J,E]	C限界掉因为C(6) >= L(6)
+
+	[I,J,E)O	=> O(10)
+
+	[J,E,O]		J,E,O限界掉因为L(6) <= J(6) < E(8) < O(10)
+
+
+所以，可求得最终结果为[1，2，3，4]，距离为：6
+
+=item * 0-1背包问题
+
+=begin html
+<table  width=800  height = 200 border = 1 font-size: 70%>
+	<tr >
+		<td> 0 </td><td> 1 </td><td> 2 </td><td> 3 </td><td> 4 </td><td> 5 </td>
+		<td> 6 </td><td> 7 </td><td> 8 </td><td> 9 </td>
+	</tr>
+	<tr>
+		<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+		<td>0</td><td>0</td><td>0</td>
+	</tr>
+
+	<tr>
+		<td>0</td><td>11</td><td>11</td><td>11</td><td>11</td><td>11</td><td>11</td>
+		<td>11</td><td>11</td><td>11</td>
+	</tr>
+
+	<tr>
+		<td>0</td><td>11</td><td>11</td><td>11</td><td>14</td><td>14</td><td>14</td>
+		<td>14</td><td>14</td><td>14</td>
+	</tr>
+
+	<tr>
+		<td>0</td><td>11</td><td>15</td><td>26</td><td>26</td><td>26</td><td>29</td>
+		<td>29</td><td>29</td><td>29</td>
+	</tr>
+
+	<tr>
+		<td>0</td><td>11</td><td>15</td><td>26</td><td>26</td><td>26</td><td>29</td>
+		<td>29</td><td>29</td><td>29</td>
+	</tr>
+
+	<tr>
+		<td>0</td><td>11</td><td>15</td><td>26</td><td>26</td><td>26</td><td>29</td>
+		<td>38</td><td>38</td><td>38</td>
+	</tr>
+</table>
+
+<table  width=800 height = 200 border = 1>
+	<tr>
+		<td> 10 </td><td> 11 </td><td> 12 </td><td> 12 </td><td> 14 </td><td> 15 </td>
+		<td> 16</td><td> 17 </td><td> 18 </td><td> 19 </td><td> 20 </td>
+	</tr>
+	<tr>
+		<td>0</td><td>0</td><td>0</td>
+		<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+		<td>0</td><td>0</td>
+	</tr>
+
+	<tr>
+		<td>11</td><td>11</td><td>11</td>
+		<td>11</td><td>11</td><td>11</td><td>11</td><td>11</td><td>11</td>
+		<td>11</td><td>11</td>
+	</tr>
+
+	<tr>
+		<<td>14</td><td>14</td><td>14</td>
+		<td>14</td><td>14</td><td>14</td><td>14</td><td>14</td><td>14</td>
+		<td>14</td><td>14</td>
+	</tr>
+
+	<tr>
+		<<td>29</td><td>29</td><td>29</td>
+		<td>29</td><td>29</td><td>29</td><td>29</td><td>29</td><td>29</td>
+		<td>29</td><td>29</td>
+	</tr>
+
+	<tr>
+		<td>29</td><td>29</td><td>33</td>
+		<td>44</td><td>44</td><td>44</td><td>47</td><td>47</td><td>47</td>
+		<td>47</td><td>47</td>
+	</tr>
+
+	<tr>
+		<td>41</td><td>41</td><td>41</td>
+		<td>44</td><td>44</td><td>44</td><td>47</td><td>56</td><td>56</td>
+		<td>56</td><td>59</td>
+	</tr>
+</table>
+
+=end html
+
+=item * N后问题
+
+=begin html
+
+<img src = "image/nqueen.png" width = 600 height = 300>解空间结构是图N叉树 </img>
+
+
+=end html
+
+
+剪枝函数可定义如下：
+
+	bool place(int k)
+	{
+	  for (int j=1;j<k;j++)
+		if ((abs(k-j)==abs(x[j]-x[k]))||(x[j]==x[k])) 
+			return false;
+	  return true;
+	} 
+
+
+其中x[i]序号表示所在行，x[i]值表示所在列。
+
+=item * 连通图G用m种不同颜色着色问题
+
+
+=begin html
+
+<img src = "image/mgtree.png" width = 600 height = 300>解空间结构图的m叉树</img>
+
+=end html
+
+
+
+剪枝函数可定义如下：
+
+	bool Color::Ok(int k)
+	{
+	  for (int j=1;j<=n;j++)
+	    if ((a[k][j]==1)&&(x[j]==x[k]))
+		return false;
+	  return true;
+	}
+其中数组a存放G的连接矩阵，x[j]表示顶点j所作的颜色
+
+
+=back
+
+=head1 设计题之解答
+
+=over
+
+=item *
+	
+	递归方程：
+				  | 1			  if exp <= 0	
+	nnpower(int n, int exp) = |
+				  | n * nnpower(n, --exp) if exp > 0
+	
+	程序代码(C版）：
+
+	#include <stdio.h>
+
+	int nnpower(int n, int exp)
+	{
+		if (exp <= 0){
+			return 1;
+		} else{
+			return n * nnpower(n, --exp);
+		}
+	}
+
+	void main() {
+		int n = 8;
+		printf("%d's %d power is: %d\n", n, n, nnpower(n, n));
+	}
+
+=item * 暂无
+
+=item * 算法步骤
+
+	1、定义变量：int head = 0, tail = N-1, m, min, max;
+
+	2、判断head <= tail, 若成立则继续下一步，返之转9
+
+	3、判断(head+tail)%2是否为0，若是则m = (head+tail)/2, 反之m = (head+tail)/2+1
+
+	4、判断第m个数组的升降次序，若为升序则将（min = a[m][0];max = a[m][4];）
+				    若为降序则将（max = a[m][4];min = a[m][0];)
+
+	5、若k < min 转至7,右k > max 转至6, 否则转8
+
+	6、head = m + 1, 转2
+
+	7、tail = m - 1, 转2
+
+	8、将m值返回，结束
+
+	9、结束
+
+程序代码：
+
+	#include<stdio.h>
+	#include<stdlib.h>
+	#define N 5
+
+	int a[][5] = {{-5, -4, -3, -2, -1}, {1, 2, 3, 4, 5}, {11, 10, 9, 8, 7}, {20, 21, 24, 25, 27}, {100, 99, 98, 94, 92}};
+
+	int search(int e)
+	{
+		int head = 0, tail = N-1, m, min, max;
+		
+		while(1)	{
+			if(head <= tail) {
+				m = (head+tail)%2 ? (head+tail)/2+1 : (head+tail)/2;
+
+				if(a[m][0]<=a[m][4]) {
+					min = a[m][0];
+					max = a[m][4];
+				} else {
+					min = a[m][4];
+					max = a[m][0];
+				};
+				
+				if(e > max ) {
+					head = m + 1;
+				} else if(e < min) {
+					tail = m - 1;
+				} else {
+					return m;
+				}
+			} else {
+				return -1;
+			}
+		}
+	}
+
+	void main(int argc, char * argv[]) 
+	{
+		int e = atoi(argv[1]);
+		int t;
+		if((t = search(e)) != -1) {
+			printf("i can find %d in the %dth array\n", e, t);
+		} else {
+			printf("failed to find proper location!\n");
+		}
+
+	}
+	
+	
+
+=begin html
+
+<img src = "image/flow.png" height = 90%>程序流程图</img>
+
+=end html
+
+=back

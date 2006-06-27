@@ -1,0 +1,2631 @@
+enter!
+
+-------------------------------------------------------------------
+
+0
+
+Parsing Stack: # program 
+
+Input:         x := ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        program -> stmt-sequence
+
+-------------------------------------------------------------------
+
+1
+
+Parsing Stack: # stmt-sequence 
+
+Input:         x := ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        stmt-sequence -> statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+2
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         x := ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+3
+
+Parsing Stack: # stmt-sequence@ assign-stmt 
+
+Input:         x := ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+4
+
+Parsing Stack: # stmt-sequence@ exp := identifier 
+
+Input:         x := ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+5
+
+Parsing Stack: # stmt-sequence@ exp := 
+
+Input:         := ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+6
+
+Parsing Stack: # stmt-sequence@ exp 
+
+Input:         ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+7
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp 
+
+Input:         ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+8
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+9
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+10
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+11
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp 
+
+Input:         ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+12
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+13
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+14
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+15
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( 2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+16
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+17
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+18
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+19
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+20
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         2 + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+21
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+22
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+23
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+24
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term + 
+
+Input:         + x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+25
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+26
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+27
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         x ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+28
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+29
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+30
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+31
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+32
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+33
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop 
+
+Input:         * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+34
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor * 
+
+Input:         * 3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+35
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+36
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         3 ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+37
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+38
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+39
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+40
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) 
+
+Input:         ) / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+41
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+42
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor mulop 
+
+Input:         / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> /
+
+-------------------------------------------------------------------
+
+43
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor / 
+
+Input:         / 5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+44
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+45
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         5 + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+46
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+47
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+48
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term addop 
+
+Input:         + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+49
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term + 
+
+Input:         + y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+50
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+51
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+52
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ identifier 
+
+Input:         y ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+53
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+54
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+55
+
+Parsing Stack: # stmt-sequence@ exp@ 
+
+Input:         ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+56
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+57
+
+Parsing Stack: # stmt-sequence@ statement ; 
+
+Input:         ; y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+58
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+59
+
+Parsing Stack: # stmt-sequence@ assign-stmt 
+
+Input:         y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+60
+
+Parsing Stack: # stmt-sequence@ exp := identifier 
+
+Input:         y := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+61
+
+Parsing Stack: # stmt-sequence@ exp := 
+
+Input:         := 6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+62
+
+Parsing Stack: # stmt-sequence@ exp 
+
+Input:         6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+63
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp 
+
+Input:         6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+64
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+65
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+66
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         6 * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+67
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+68
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor mulop 
+
+Input:         * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+69
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor * 
+
+Input:         * 6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+70
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+71
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         6 * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+72
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+73
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor mulop 
+
+Input:         * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+74
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor * 
+
+Input:         * ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+75
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+76
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+77
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp 
+
+Input:         x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+78
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+79
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+80
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+81
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         x + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+82
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+83
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+84
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+85
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term + 
+
+Input:         + 5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+86
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+87
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+88
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         5 / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+89
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+90
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop 
+
+Input:         / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> /
+
+-------------------------------------------------------------------
+
+91
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor / 
+
+Input:         / 9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+92
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+93
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         9 ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+94
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+95
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+96
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+97
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) 
+
+Input:         ) ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+98
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+99
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+100
+
+Parsing Stack: # stmt-sequence@ exp@ 
+
+Input:         ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+101
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+102
+
+Parsing Stack: # stmt-sequence@ statement ; 
+
+Input:         ; z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+103
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+104
+
+Parsing Stack: # stmt-sequence@ assign-stmt 
+
+Input:         z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+105
+
+Parsing Stack: # stmt-sequence@ exp := identifier 
+
+Input:         z := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+106
+
+Parsing Stack: # stmt-sequence@ exp := 
+
+Input:         := 10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+107
+
+Parsing Stack: # stmt-sequence@ exp 
+
+Input:         10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+108
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp 
+
+Input:         10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+109
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+110
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+111
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         10 + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+112
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+113
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+114
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term addop 
+
+Input:         + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+115
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term + 
+
+Input:         + ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+116
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+117
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+118
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+119
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp 
+
+Input:         x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+120
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+121
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+122
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+123
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         x - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+124
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+125
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+126
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        addop -> -
+
+-------------------------------------------------------------------
+
+127
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term - 
+
+Input:         - 5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+128
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+129
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+130
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         5 * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+131
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+132
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop 
+
+Input:         * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+133
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor * 
+
+Input:         * 6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+134
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+135
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         6 ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+136
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+137
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+138
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+139
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) 
+
+Input:         ) / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+140
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+141
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor mulop 
+
+Input:         / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> /
+
+-------------------------------------------------------------------
+
+142
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor / 
+
+Input:         / 9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+143
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+144
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         9 ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+145
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+146
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+147
+
+Parsing Stack: # stmt-sequence@ exp@ 
+
+Input:         ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+148
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+149
+
+Parsing Stack: # stmt-sequence@ statement ; 
+
+Input:         ; t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+150
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+151
+
+Parsing Stack: # stmt-sequence@ assign-stmt 
+
+Input:         t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+152
+
+Parsing Stack: # stmt-sequence@ exp := identifier 
+
+Input:         t := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+153
+
+Parsing Stack: # stmt-sequence@ exp := 
+
+Input:         := ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+154
+
+Parsing Stack: # stmt-sequence@ exp 
+
+Input:         ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+155
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp 
+
+Input:         ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+156
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+157
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+158
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+159
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp 
+
+Input:         ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+160
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+161
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+162
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+163
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+164
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+165
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+166
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+167
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+168
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+169
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+170
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+171
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+172
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+173
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+174
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+175
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+176
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+177
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+178
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+179
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+180
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+181
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+182
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+183
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+184
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+185
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+186
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+187
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+188
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         i + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+189
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+190
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+191
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+192
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term + 
+
+Input:         + i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+193
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+194
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+195
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         i * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+196
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+197
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop 
+
+Input:         * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+198
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor * 
+
+Input:         * ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+199
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+200
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+201
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+202
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+203
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+204
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+205
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         i + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+206
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+207
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+208
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+209
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term + 
+
+Input:         + i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+210
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+211
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+212
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         i / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+213
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+214
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop 
+
+Input:         / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> /
+
+-------------------------------------------------------------------
+
+215
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor / 
+
+Input:         / i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+216
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         i ) * i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+217
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         i ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+218
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+219
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) * i ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+220
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) * i ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+221
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+222
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         * i ) + i ) ) ) ) ) # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+223
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop 
+
+Input:         * i ) + i ) ) ) ) ) # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+224
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor * 
+
+Input:         * i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+225
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         i ) + i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+226
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         i ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+227
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+228
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+229
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) + i ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+230
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+231
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         + i ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+232
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         + i ) ) ) ) ) # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+233
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         + i ) ) ) ) ) # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+234
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term + 
+
+Input:         + i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+235
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         i ) ) ) ) ) # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+236
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         i ) ) ) ) ) # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+237
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         i ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+238
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+239
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+240
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+241
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+242
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+243
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+244
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+245
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+246
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+247
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+248
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+249
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+250
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+251
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+252
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+253
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+254
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+255
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+256
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+257
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ ) 
+
+Input:         ) # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+258
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+259
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+260
+
+Parsing Stack: # stmt-sequence@ exp@ 
+
+Input:         # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+261
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         # 
+
+Action:        stmt-sequence@ -> @
+
+-------------------------------------------------------------------
+
+262
+
+Parsing Stack: # 
+
+Input:         # 
+
+Action:        Syntax Ok!!!

@@ -1,0 +1,2085 @@
+<html><title> Parsing Actions</title>
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+
+<body>
+-------------------------------------------------------------------
+
+0
+
+Parsing Stack: # program 
+
+Input:         read x ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        program -> stmt-sequence
+
+-------------------------------------------------------------------
+
+1
+
+Parsing Stack: # stmt-sequence 
+
+Input:         read x ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence -> statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+2
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         read x ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> read-stmt
+
+-------------------------------------------------------------------
+
+3
+
+Parsing Stack: # stmt-sequence@ read-stmt 
+
+Input:         read x ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        read-stmt -> read identifier
+
+-------------------------------------------------------------------
+
+4
+
+Parsing Stack: # stmt-sequence@ identifier read 
+
+Input:         read x ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+5
+
+Parsing Stack: # stmt-sequence@ identifier 
+
+Input:         x ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+6
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+7
+
+Parsing Stack: # stmt-sequence@ statement ; 
+
+Input:         ; write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+8
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> write-stmt
+
+-------------------------------------------------------------------
+
+9
+
+Parsing Stack: # stmt-sequence@ write-stmt 
+
+Input:         write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        write-stmt -> write exp
+
+-------------------------------------------------------------------
+
+10
+
+Parsing Stack: # stmt-sequence@ exp write 
+
+Input:         write y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+11
+
+Parsing Stack: # stmt-sequence@ exp 
+
+Input:         y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+12
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp 
+
+Input:         y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+13
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+14
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+15
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ identifier 
+
+Input:         y ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+16
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+17
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+18
+
+Parsing Stack: # stmt-sequence@ exp@ 
+
+Input:         ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+19
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+20
+
+Parsing Stack: # stmt-sequence@ statement ; 
+
+Input:         ; if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+21
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> if-stmt
+
+-------------------------------------------------------------------
+
+22
+
+Parsing Stack: # stmt-sequence@ if-stmt 
+
+Input:         if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        if-stmt -> if exp then stmt-sequence if-stmt@
+
+-------------------------------------------------------------------
+
+23
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp if 
+
+Input:         if 0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+24
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp 
+
+Input:         0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+25
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp 
+
+Input:         0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+26
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term 
+
+Input:         0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+27
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ factor 
+
+Input:         0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+28
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ number 
+
+Input:         0 < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+29
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ 
+
+Input:         < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+30
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ 
+
+Input:         < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+31
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ 
+
+Input:         < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> comparison-op simple-exp exp@
+
+-------------------------------------------------------------------
+
+32
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp comparison-op 
+
+Input:         < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        comparison-op -> <
+
+-------------------------------------------------------------------
+
+33
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp < 
+
+Input:         < ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+34
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp 
+
+Input:         ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+35
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term 
+
+Input:         ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+36
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ factor 
+
+Input:         ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+37
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+38
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp 
+
+Input:         x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+39
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+40
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+41
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+42
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         x * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+43
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+44
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop 
+
+Input:         * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+45
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor * 
+
+Input:         * ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+46
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+47
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( 5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+48
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp 
+
+Input:         5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+49
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+50
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+51
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+52
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         5 + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+53
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+54
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+55
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+56
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term + 
+
+Input:         + 3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+57
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+58
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+59
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         3 ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+60
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+61
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+62
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+63
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) 
+
+Input:         ) - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+64
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+65
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+66
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        addop -> -
+
+-------------------------------------------------------------------
+
+67
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term - 
+
+Input:         - 6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+68
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+69
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+70
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         6 ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+71
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+72
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+73
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+74
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) 
+
+Input:         ) then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+75
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ 
+
+Input:         then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+76
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ 
+
+Input:         then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+77
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ 
+
+Input:         then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+78
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence then 
+
+Input:         then fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+79
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence 
+
+Input:         fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence -> statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+80
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ statement 
+
+Input:         fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+81
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ assign-stmt 
+
+Input:         fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+82
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp := identifier 
+
+Input:         fact := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+83
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp := 
+
+Input:         := 1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+84
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp 
+
+Input:         1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+85
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp 
+
+Input:         1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+86
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+87
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+88
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         1 ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+89
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+90
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+91
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ 
+
+Input:         ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+92
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ 
+
+Input:         ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+93
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ statement ; 
+
+Input:         ; repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+94
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ statement 
+
+Input:         repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> repeat-stmt
+
+-------------------------------------------------------------------
+
+95
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ repeat-stmt 
+
+Input:         repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        repeat-stmt -> repeat stmt-sequence until exp
+
+-------------------------------------------------------------------
+
+96
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence repeat 
+
+Input:         repeat fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+97
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence 
+
+Input:         fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence -> statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+98
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement 
+
+Input:         fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+99
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ assign-stmt 
+
+Input:         fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+100
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := identifier 
+
+Input:         fact := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+101
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := 
+
+Input:         := fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+102
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp 
+
+Input:         fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+103
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp 
+
+Input:         fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+104
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+105
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+106
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ identifier 
+
+Input:         fact * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+107
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+108
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor mulop 
+
+Input:         * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+109
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor * 
+
+Input:         * x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+110
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+111
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ identifier 
+
+Input:         x ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+112
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+113
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+114
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ 
+
+Input:         ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+115
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ 
+
+Input:         ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+116
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement ; 
+
+Input:         ; x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+117
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement 
+
+Input:         x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+118
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ assign-stmt 
+
+Input:         x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+119
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := identifier 
+
+Input:         x := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+120
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := 
+
+Input:         := x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+121
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp 
+
+Input:         x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+122
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp 
+
+Input:         x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+123
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+124
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+125
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ identifier 
+
+Input:         x - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+126
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+127
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ 
+
+Input:         - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+128
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term addop 
+
+Input:         - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        addop -> -
+
+-------------------------------------------------------------------
+
+129
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term - 
+
+Input:         - 1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+130
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+131
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+132
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         1 ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+133
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+134
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+135
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ 
+
+Input:         ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+136
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ 
+
+Input:         ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+137
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement ; 
+
+Input:         ; x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+138
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement 
+
+Input:         x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+139
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ assign-stmt 
+
+Input:         x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+140
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := identifier 
+
+Input:         x := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+141
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := 
+
+Input:         := ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+142
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp 
+
+Input:         ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+143
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp 
+
+Input:         ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+144
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+145
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> ( exp )
+
+-------------------------------------------------------------------
+
+146
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp ( 
+
+Input:         ( y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+147
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp 
+
+Input:         y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+148
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp 
+
+Input:         y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+149
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+150
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+151
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier 
+
+Input:         y + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+152
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+153
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+154
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop 
+
+Input:         + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+155
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term + 
+
+Input:         + 5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+156
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term 
+
+Input:         5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+157
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor 
+
+Input:         5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+158
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number 
+
+Input:         5 ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+159
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ 
+
+Input:         ) * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+160
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ 
+
+Input:         ) * 3 until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+161
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ 
+
+Input:         ) * 3 until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+162
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) 
+
+Input:         ) * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+163
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         * 3 until x = 0 ; write fact end # 
+
+Action:        term@ -> mulop factor term@
+
+-------------------------------------------------------------------
+
+164
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor mulop 
+
+Input:         * 3 until x = 0 ; write fact end # 
+
+Action:        mulop -> *
+
+-------------------------------------------------------------------
+
+165
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor * 
+
+Input:         * 3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+166
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         3 until x = 0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+167
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         3 until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+168
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         until x = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+169
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ 
+
+Input:         until x = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+170
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ 
+
+Input:         until x = 0 ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+171
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ 
+
+Input:         until x = 0 ; write fact end # 
+
+Action:        stmt-sequence@ -> @
+
+-------------------------------------------------------------------
+
+172
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until 
+
+Input:         until x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+173
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp 
+
+Input:         x = 0 ; write fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+174
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp 
+
+Input:         x = 0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+175
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         x = 0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+176
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         x = 0 ; write fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+177
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ identifier 
+
+Input:         x = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+178
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         = 0 ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+179
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ 
+
+Input:         = 0 ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+180
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ 
+
+Input:         = 0 ; write fact end # 
+
+Action:        exp@ -> comparison-op simple-exp exp@
+
+-------------------------------------------------------------------
+
+181
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp comparison-op 
+
+Input:         = 0 ; write fact end # 
+
+Action:        comparison-op -> =
+
+-------------------------------------------------------------------
+
+182
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp = 
+
+Input:         = 0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+183
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp 
+
+Input:         0 ; write fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+184
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         0 ; write fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+185
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         0 ; write fact end # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+186
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         0 ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+187
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         ; write fact end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+188
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ 
+
+Input:         ; write fact end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+189
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ 
+
+Input:         ; write fact end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+190
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ 
+
+Input:         ; write fact end # 
+
+Action:        stmt-sequence@ -> ; statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+191
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ statement ; 
+
+Input:         ; write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+192
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ statement 
+
+Input:         write fact end # 
+
+Action:        statement -> write-stmt
+
+-------------------------------------------------------------------
+
+193
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ write-stmt 
+
+Input:         write fact end # 
+
+Action:        write-stmt -> write exp
+
+-------------------------------------------------------------------
+
+194
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp write 
+
+Input:         write fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+195
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp 
+
+Input:         fact end # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+196
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp 
+
+Input:         fact end # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+197
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         fact end # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+198
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         fact end # 
+
+Action:        factor -> identifier
+
+-------------------------------------------------------------------
+
+199
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ identifier 
+
+Input:         fact end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+200
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         end # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+201
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ 
+
+Input:         end # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+202
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ 
+
+Input:         end # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+203
+
+Parsing Stack: # stmt-sequence@ if-stmt@ stmt-sequence@ 
+
+Input:         end # 
+
+Action:        stmt-sequence@ -> @
+
+-------------------------------------------------------------------
+
+204
+
+Parsing Stack: # stmt-sequence@ if-stmt@ 
+
+Input:         end # 
+
+Action:        if-stmt@ -> end
+
+-------------------------------------------------------------------
+
+205
+
+Parsing Stack: # stmt-sequence@ end 
+
+Input:         end # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+206
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         # 
+
+Action:        stmt-sequence@ -> @
+
+-------------------------------------------------------------------
+
+207
+
+Parsing Stack: # 
+
+Input:         # 
+
+Action:        Syntax Ok!!!
+</body>
+</html>

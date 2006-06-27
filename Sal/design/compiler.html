@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=gb2312">
+<head>
+<title>Showtime of my simple compiler</title>
+<link rel="stylesheet" href="active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#Showtime20of20my20simple20compiler">Showtime of my simple compiler</a></li>
+	<ul>
+
+		<li><a href="#tiny20source20code20for20example">tiny source code for example</a></li>
+		<li><a href="#Tokens20of20tiny20language">Tokens of tiny language</a></li>
+		<li><a href="#symbol20table202d20tokens20obtained20after20scanning20under20its20lexer20grammar">symbol table - tokens obtained after scanning under its lexer grammar</a></li>
+		<li><a href="#LL120parsing20algorithm">LL1 parsing algorithm</a></li>
+	</ul>
+
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="Showtime20of20my20simple20compiler">Showtime of my simple compiler</a></h1>
+<p>
+</p>
+<h2><a name="tiny20source20code20for20example">tiny source code for example</a></h2>
+<pre>
+        read x;
+        write y;
+        if 0 &lt; (x*(5+3)-6) then
+                fact = 1;
+                repeat
+                        fact := fact * x;
+                        x := x -1;
+                        x := (y + 5) * 3
+                until x = 0;
+                write fact
+        end</pre>
+<p>
+</p>
+<h2><a name="Tokens20of20tiny20language">Tokens of tiny language</a></h2>
+<pre>
+        Key Words: if then else end repeat until read write</pre>
+<pre>
+        operator:   + - * / = &lt; ( ) :=</pre>
+<pre>
+        delimiter:  ;</pre>
+<pre>
+        number:     /\d+/ (1 or more digits)</pre>
+<pre>
+        identifier: /[A-Za-z]\w*/ (1 or more letters)</pre>
+<p>
+</p>
+<h2><a name="symbol20table202d20tokens20obtained20after20scanning20under20its20lexer20grammar">symbol table - tokens obtained after scanning under its lexer grammar</a></h2>
+<pre>
+        value   type            line</pre>
+<pre>
+        read    read            1       
+        x       identifier      1       
+        ;       ;               1       
+        write   write           2       
+        y       identifier      2       
+        ;       ;               2       
+        if      if              3       
+        0       number          3       
+        &lt;       &lt;               3       
+        (       (               3       
+        x       identifier      3       
+        *       *               3       
+        (       (               3       
+        5       number          3       
+        +       +               3       
+        3       number          3       
+        )       )               3       
+        -       -               3       
+        6       number          3       
+        )       )               3       
+        then    then            3       
+        fact    identifier      4       
+        :=      :=              4       
+        1       number          4       
+        ;       ;               4       
+        repeat  repeat          5       
+        fact    identifier      6       
+        :=      :=              6       
+        fact    identifier      6       
+        *       *               6       
+        x       identifier      6       
+        ;       ;               6       
+        x       identifier      7       
+        :=      :=              7       
+        x       identifier      7       
+        -       -               7       
+        1       number          7       
+        ;       ;               7       
+        x       identifier      8       
+        :=      :=              8       
+        (       (               8       
+        y       identifier      8       
+        +       +               8       
+        5       number          8       
+        )       )               8       
+        *       *               8       
+        3       number          8       
+        until   until           9       
+        x       identifier      9       
+        =       =               9       
+        0       number          9       
+        ;       ;               9       
+        write   write           10      
+        fact    identifier      10      
+        end     end             11</pre>
+<p>
+</p>
+<h2><a name="LL120parsing20algorithm">LL1 parsing algorithm</a></h2>
+<ol>
+<li><strong><a name="item_contex_free_and_umbiguious_contex_free_grammar_of_">contex free and umbiguious contex free grammar of my tiny language</a></strong><br />
+</li>
+<pre>
+        'program                 -&gt; stmt-sequence',
+        'stmt-sequence           -&gt; statement stmt-sequence@',
+        'stmt-sequence@          -&gt; ; statement stmt-sequence@',
+        'stmt-sequence@          -&gt; @',
+        'statement               -&gt; if-stmt',
+        'statement              -&gt; repeat-stmt',
+        'statement              -&gt; assign-stmt',
+        'statement              -&gt; read-stmt',
+        'statement              -&gt; write-stmt', 
+        'if-stmt                -&gt; if exp then stmt-sequence if-stmt@',
+        'if-stmt@               -&gt; end',
+        'if-stmt@               -&gt; else stmt-sequence end',     
+        'repeat-stmt               -&gt; repeat stmt-sequence until exp',
+        'assign-stmt            -&gt; identifier := exp',
+        'read-stmt              -&gt; read identifier',
+        'write-stmt             -&gt; write exp',
+        'exp                    -&gt; simple-exp exp@',
+        'exp@                   -&gt; comparison-op simple-exp exp@',
+        'exp@                   -&gt; @',
+        'comparison-op          -&gt; &lt;',
+        'comparison-op          -&gt; =',
+        'simple-exp             -&gt; term simple-exp@',
+        'simple-exp@            -&gt; addop term simple-exp@',
+        'simple-exp@            -&gt; @',  
+        'addop                  -&gt; +',
+        'addop                  -&gt; -',
+        'term                   -&gt; factor term@',
+        'term@                  -&gt; mulop factor term@',
+        'term@                  -&gt; @',
+        'mulop                  -&gt; *',
+        'mulop                  -&gt; /',
+        'factor                 -&gt; ( exp )',
+        'factor                 -&gt; number',
+        'factor                 -&gt; identifier',</pre>
+<li><strong><a name="item_LL"><code>LL(1)</code> Parsing Table</a></strong><br />
+</li>
+
+<a href = "LL1table.html">LL(1) Table</a><li><strong><code>LL(1)</code> parsing actions for the above tiny source code</strong><br />
+</li>
+<a href = "parsing.html">Parsing Actions </a><li><strong><a name="item_syntax_tree">syntax tree</a></strong><br />
+</li>
+<a href = "syntree.png"><img src = "syntree.png" width = 70% height = 70% alt="click to browse origin picture"> syntax tree </img></a><li><strong><a name="item_generates_four252Daddress_code">generates four-address code</a></strong><br />
+</li>
+source code:
+<pre>
+        x:=((2+x)*3)/5+y;</pre>
+<pre>
+        y:=6*6*(x+5/9);</pre>
+<pre>
+        z:=10+(x-5*6)/9;</pre>
+<pre>
+        t :=( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) )</pre>
+<p>four-address codes:</p>
+<pre>
+        ( +, x, 2, T1),</pre>
+<pre>
+        ( *, 3, T1, T2),</pre>
+<pre>
+        ( /, 5, T2, T3),</pre>
+<pre>
+        ( +, y, T3, T4),</pre>
+<pre>
+        ( :=, T4, __ , x),</pre>
+<pre>
+        ( /, 9, 5, T5),</pre>
+<pre>
+        ( +, T5, x, T6),</pre>
+<pre>
+        ( *, T6, 6, T7),</pre>
+<pre>
+        ( *, T7, 6, T8),</pre>
+<pre>
+        ( :=, T8, __ , y),</pre>
+<pre>
+        ( *, 6, 5, T9),</pre>
+<pre>
+        ( -, T9, x, T10),</pre>
+<pre>
+        ( /, 9, T10, T11),</pre>
+<pre>
+        ( +, T11, 10, T12),</pre>
+<pre>
+        ( :=, T12, __ , z),</pre>
+<pre>
+        ( /, i, i, T13),</pre>
+<pre>
+        ( +, T13, i, T14),</pre>
+<pre>
+        ( *, i, T14, T15),</pre>
+<pre>
+        ( *, T15, i, T16),</pre>
+<pre>
+        ( +, T16, i, T17),</pre>
+<pre>
+        ( +, i, T17, T18),</pre>
+<pre>
+        ( :=, T18, __ , t),</pre>
+<p></p></ol>
+
+</body>
+
+</html>

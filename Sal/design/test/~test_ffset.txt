@@ -1,0 +1,195 @@
+follow set: then
+#
+end
+else
+until
+;
+if
+identifier
+read
+write
+)
+
+program follow set: #
+
+stmt-sequence follow set: #
+end
+else
+until
+
+stmt-sequence@ follow set: #
+end
+else
+until
+
+statement follow set: #
+end
+else
+until
+;
+if
+repeat
+identifier
+read
+write
+
+statement follow set: #
+end
+else
+until
+;
+if
+repeat
+identifier
+read
+write
+
+if-stmt follow set: #
+end
+else
+until
+;
+repeat
+identifier
+read
+write
+
+if-stmt@ follow set: #
+end
+until
+;
+repeat
+identifier
+read
+write
+
+repeat-stmt follow set: #
+end
+else
+until
+;
+if
+identifier
+read
+write
+
+assign-stmt follow set: #
+end
+else
+until
+;
+if
+repeat
+read
+write
+
+read-stmt follow set: #
+end
+else
+until
+;
+if
+repeat
+identifier
+write
+
+write-stmt follow set: #
+end
+else
+until
+;
+if
+repeat
+identifier
+read
+
+exp follow set: then
+#
+end
+else
+until
+;
+if
+identifier
+read
+write
+)
+
+comparison-op follow set: (
+number
+identifier
+
+simple-exp follow set: then
+#
+end
+else
+until
+;
+if
+identifier
+read
+write
+)
+<
+=
+
+simple-exp@ follow set: then
+#
+end
+else
+until
+;
+if
+identifier
+read
+write
+)
+<
+=
+
+addop follow set: (
+number
+identifier
+
+term follow set: then
+#
+end
+else
+until
+;
+if
+identifier
+read
+write
+)
+<
+=
++
+-
+
+mulop follow set: (
+number
+identifier
+
+mulop follow set: (
+number
+identifier
+
+factor follow set: then
+#
+end
+else
+until
+;
+if
+identifier
+read
+write
+)
+<
+=
++
+-
+*
+/
+

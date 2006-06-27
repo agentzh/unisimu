@@ -1,0 +1,217 @@
+=head1 Showtime of my simple compiler
+
+=head2 tiny source code for example
+
+	read x;
+	write y;
+	if 0 < (x*(5+3)-6) then
+		fact = 1;
+		repeat
+			fact := fact * x;
+			x := x -1;
+			x := (y + 5) * 3
+		until x = 0;
+		write fact
+	end
+
+=head2 Tokens of tiny language
+
+	Key Words: if then else end repeat until read write
+
+	operator:   + - * / = < ( ) :=
+
+	delimiter:  ;
+
+	number:     /\d+/ (1 or more digits)
+
+	identifier: /[A-Za-z]\w*/ (1 or more letters)
+
+=head2 symbol table - tokens obtained after scanning under its lexer grammar
+
+	value   type		line
+
+	read	read		1	
+	x	identifier	1	
+	;	;		1	
+	write	write		2	
+	y	identifier	2	
+	;	;		2	
+	if	if		3	
+	0	number		3	
+	<	<		3	
+	(	(		3	
+	x	identifier	3	
+	*	*		3	
+	(	(		3	
+	5	number		3	
+	+	+		3	
+	3	number		3	
+	)	)		3	
+	-	-		3	
+	6	number		3	
+	)	)		3	
+	then	then		3	
+	fact	identifier	4	
+	:=	:=		4	
+	1	number		4	
+	;	;		4	
+	repeat	repeat		5	
+	fact	identifier	6	
+	:=	:=		6	
+	fact	identifier	6	
+	*	*		6	
+	x	identifier	6	
+	;	;		6	
+	x	identifier	7	
+	:=	:=		7	
+	x	identifier	7	
+	-	-		7	
+	1	number		7	
+	;	;		7	
+	x	identifier	8	
+	:=	:=		8	
+	(	(		8	
+	y	identifier	8	
+	+	+		8	
+	5	number		8	
+	)	)		8	
+	*	*		8	
+	3	number		8	
+	until	until		9	
+	x	identifier	9	
+	=	=		9	
+	0	number		9	
+	;	;		9	
+	write	write		10	
+	fact	identifier	10	
+	end	end		11	
+
+
+=head2 LL1 parsing algorithm
+
+=over
+
+=item 1 contex free and umbiguious contex free grammar of my tiny language
+
+	'program		 -> stmt-sequence',
+	'stmt-sequence		 -> statement stmt-sequence@',
+	'stmt-sequence@		 -> ; statement stmt-sequence@',
+	'stmt-sequence@		 -> @',
+	'statement		 -> if-stmt',
+	'statement		-> repeat-stmt',
+	'statement		-> assign-stmt',
+	'statement		-> read-stmt',
+	'statement		-> write-stmt',	
+	'if-stmt		-> if exp then stmt-sequence if-stmt@',
+	'if-stmt@		-> end',
+	'if-stmt@		-> else stmt-sequence end',	
+	'repeat-stmt		   -> repeat stmt-sequence until exp',
+	'assign-stmt		-> identifier := exp',
+	'read-stmt		-> read identifier',
+	'write-stmt		-> write exp',
+	'exp			-> simple-exp exp@',
+	'exp@			-> comparison-op simple-exp exp@',
+	'exp@			-> @',
+	'comparison-op		-> <',
+	'comparison-op		-> =',
+	'simple-exp		-> term simple-exp@',
+	'simple-exp@		-> addop term simple-exp@',
+	'simple-exp@		-> @',	
+	'addop			-> +',
+	'addop			-> -',
+	'term			-> factor term@',
+	'term@			-> mulop factor term@',
+	'term@			-> @',
+	'mulop			-> *',
+	'mulop			-> /',
+	'factor			-> ( exp )',
+	'factor			-> number',
+	'factor			-> identifier',
+
+
+=item 2 LL(1) Parsing Table
+
+=begin html
+	
+<a href = "LL1table.html">LL(1) Table</a>
+
+=end html
+
+=item 3 LL(1) parsing actions for the above tiny source code
+
+=begin html
+
+<a href = "parsing.html">Parsing Actions </a>
+
+=end html
+
+=item 4 syntax tree
+
+=begin html
+
+<a href = "syntree.png"><img src = "syntree.png" width = 70% height = 70% alt="click to browse origin picture"> syntax tree </img></a>
+
+=end html
+
+=item 5 generates four-address code
+
+
+source code:		
+
+	x:=((2+x)*3)/5+y;
+
+	y:=6*6*(x+5/9);
+
+	z:=10+(x-5*6)/9;
+
+	t :=( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) )
+
+
+four-address codes:
+
+	( +, x, 2, T1),
+
+	( *, 3, T1, T2),
+
+	( /, 5, T2, T3),
+
+	( +, y, T3, T4),
+
+	( :=, T4, __ , x), 
+
+	( /, 9, 5, T5),
+
+	( +, T5, x, T6),
+
+	( *, T6, 6, T7),
+
+	( *, T7, 6, T8),
+
+	( :=, T8, __ , y), 
+
+	( *, 6, 5, T9),
+
+	( -, T9, x, T10),
+
+	( /, 9, T10, T11),
+
+	( +, T11, 10, T12),
+
+	( :=, T12, __ , z), 
+
+	( /, i, i, T13),
+
+	( +, T13, i, T14),
+
+	( *, i, T14, T15),
+
+	( *, T15, i, T16),
+
+	( +, T16, i, T17),
+
+	( +, i, T17, T18),
+
+	( :=, T18, __ , t), 
+
+=back
+

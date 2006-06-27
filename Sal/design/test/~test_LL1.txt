@@ -1,0 +1,20 @@
+1..6
+ok 1 - ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) ) )
+ok 2 - i + i * i / i - i
+ok 3 - i / i - i * i + i ^ i
+not ok 4 - ( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) )
+#   Failed test '( ( ( ( ( ( i + i * ( i + i / i ) * i ) + i ) ) ) )'
+#   in test_LL1.t at line 54.
+#          got: undef
+#     expected: '1'
+not ok 5 - i + i * i / i - 
+#   Failed test 'i + i * i / i - '
+#   in test_LL1.t at line 54.
+#          got: undef
+#     expected: '1'
+not ok 6 - i + i * * i
+#   Failed test 'i + i * * i'
+#   in test_LL1.t at line 54.
+#          got: undef
+#     expected: '1'
+# Looks like you failed 3 tests of 6.

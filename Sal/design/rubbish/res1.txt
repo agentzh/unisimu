@@ -1,0 +1,472 @@
+1..6
+end
+fact
+write
+;
+0
+=
+x
+until
+3
+*
+)
+5
++
+y
+(
+:=
+x
+;
+1
+-
+x
+:=
+x
+;
+x
+*
+fact
+:=
+fact
+repeat
+;
+1
+:=
+fact
+then
+)
+6
+-
+)
+3
++
+5
+(
+*
+x
+(
+<
+0
+if
+;
+y
+write
+;
+x
+read
+enter!
+program	read
+0: # stmt-sequence	
+stmt-sequence	read
+1: # stmt-sequence@ statement	
+statement	read
+2: # stmt-sequence@ read-stmt	
+read-stmt	read
+3: # stmt-sequence@ identifier read	
+read	read
+4: # stmt-sequence@ identifier	
+identifier	x
+5: # stmt-sequence@	
+stmt-sequence@	;
+6: # stmt-sequence@ statement ;	
+;	;
+7: # stmt-sequence@ statement	
+statement	write
+8: # stmt-sequence@ write-stmt	
+write-stmt	write
+9: # stmt-sequence@ exp write	
+write	write
+10: # stmt-sequence@ exp	
+exp	y
+11: # stmt-sequence@ exp@ simple-exp	
+simple-exp	y
+12: # stmt-sequence@ exp@ simple-exp@ term	
+term	y
+13: # stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	y
+14: # stmt-sequence@ exp@ simple-exp@ term@ identifier	
+identifier	y
+15: # stmt-sequence@ exp@ simple-exp@ term@	
+term@	;
+16: # stmt-sequence@ exp@ simple-exp@	
+simple-exp@	;
+17: # stmt-sequence@ exp@	
+exp@	;
+18: # stmt-sequence@	
+stmt-sequence@	;
+19: # stmt-sequence@ statement ;	
+;	;
+20: # stmt-sequence@ statement	
+statement	if
+21: # stmt-sequence@ if-stmt	
+if-stmt	if
+22: # stmt-sequence@ if-stmt@ stmt-sequence then exp if	
+if	if
+23: # stmt-sequence@ if-stmt@ stmt-sequence then exp	
+exp	0
+24: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp	
+simple-exp	0
+25: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term	
+term	0
+26: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ factor	
+factor	0
+27: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ number	
+number	0
+28: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@	
+term@	<
+29: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@	
+simple-exp@	<
+30: # stmt-sequence@ if-stmt@ stmt-sequence then exp@	
+exp@	<
+31: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp comparison-op	
+comparison-op	<
+32: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp <	
+<	<
+33: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp	
+simple-exp	(
+34: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term	
+term	(
+35: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ factor	
+factor	(
+36: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp (	
+(	(
+37: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp	
+exp	x
+38: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp	
+simple-exp	x
+39: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term	
+term	x
+40: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor	
+factor	x
+41: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier	
+identifier	x
+42: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@	
+term@	*
+43: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor mulop	
+mulop	*
+44: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor *	
+*	*
+45: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor	
+factor	(
+46: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp (	
+(	(
+47: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp	
+exp	5
+48: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp	
+simple-exp	5
+49: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term	
+term	5
+50: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor	
+factor	5
+51: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number	
+number	5
+52: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@	
+term@	+
+53: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@	
+simple-exp@	+
+54: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop	
+addop	+
+55: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term +	
++	+
+56: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term	
+term	3
+57: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor	
+factor	3
+58: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number	
+number	3
+59: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@ term@	
+term@	)
+60: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@ simple-exp@	
+simple-exp@	)
+61: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ ) exp@	
+exp@	)
+62: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ )	
+)	)
+63: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@	
+term@	-
+64: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@	
+simple-exp@	-
+65: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop	
+addop	-
+66: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term -	
+-	-
+67: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term	
+term	6
+68: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor	
+factor	6
+69: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number	
+number	6
+70: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@ term@	
+term@	)
+71: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@ simple-exp@	
+simple-exp@	)
+72: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ ) exp@	
+exp@	)
+73: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@ )	
+)	)
+74: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@ term@	
+term@	then
+75: # stmt-sequence@ if-stmt@ stmt-sequence then exp@ simple-exp@	
+simple-exp@	then
+76: # stmt-sequence@ if-stmt@ stmt-sequence then exp@	
+exp@	then
+77: # stmt-sequence@ if-stmt@ stmt-sequence then	
+then	then
+78: # stmt-sequence@ if-stmt@ stmt-sequence	
+stmt-sequence	fact
+79: # stmt-sequence@ if-stmt@ stmt-sequence@ statement	
+statement	fact
+80: # stmt-sequence@ if-stmt@ stmt-sequence@ assign-stmt	
+assign-stmt	fact
+81: # stmt-sequence@ if-stmt@ stmt-sequence@ exp := identifier	
+identifier	fact
+82: # stmt-sequence@ if-stmt@ stmt-sequence@ exp :=	
+:=	:=
+83: # stmt-sequence@ if-stmt@ stmt-sequence@ exp	
+exp	1
+84: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp	
+simple-exp	1
+85: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term	
+term	1
+86: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	1
+87: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ number	
+number	1
+88: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@	
+term@	;
+89: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@	
+simple-exp@	;
+90: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@	
+exp@	;
+91: # stmt-sequence@ if-stmt@ stmt-sequence@	
+stmt-sequence@	;
+92: # stmt-sequence@ if-stmt@ stmt-sequence@ statement ;	
+;	;
+93: # stmt-sequence@ if-stmt@ stmt-sequence@ statement	
+statement	repeat
+94: # stmt-sequence@ if-stmt@ stmt-sequence@ repeat-stmt	
+repeat-stmt	repeat
+95: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence repeat	
+repeat	repeat
+96: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence	
+stmt-sequence	fact
+97: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement	
+statement	fact
+98: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ assign-stmt	
+assign-stmt	fact
+99: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := identifier	
+identifier	fact
+100: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp :=	
+:=	:=
+101: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp	
+exp	fact
+102: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp	
+simple-exp	fact
+103: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term	
+term	fact
+104: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	fact
+105: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ identifier	
+identifier	fact
+106: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@	
+term@	*
+107: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor mulop	
+mulop	*
+108: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor *	
+*	*
+109: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	x
+110: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ identifier	
+identifier	x
+111: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@	
+term@	;
+112: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@	
+simple-exp@	;
+113: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@	
+exp@	;
+114: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@	
+stmt-sequence@	;
+115: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement ;	
+;	;
+116: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement	
+statement	x
+117: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ assign-stmt	
+assign-stmt	x
+118: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := identifier	
+identifier	x
+119: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp :=	
+:=	:=
+120: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp	
+exp	x
+121: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp	
+simple-exp	x
+122: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term	
+term	x
+123: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	x
+124: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ identifier	
+identifier	x
+125: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@	
+term@	-
+126: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@	
+simple-exp@	-
+127: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term addop	
+addop	-
+128: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term -	
+-	-
+129: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term	
+term	1
+130: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	1
+131: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ number	
+number	1
+132: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@	
+term@	;
+133: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@	
+simple-exp@	;
+134: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@	
+exp@	;
+135: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@	
+stmt-sequence@	;
+136: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement ;	
+;	;
+137: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ statement	
+statement	x
+138: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ assign-stmt	
+assign-stmt	x
+139: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp := identifier	
+identifier	x
+140: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp :=	
+:=	:=
+141: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp	
+exp	(
+142: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp	
+simple-exp	(
+143: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term	
+term	(
+144: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	(
+145: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp (	
+(	(
+146: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp	
+exp	y
+147: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp	
+simple-exp	y
+148: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term	
+term	y
+149: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor	
+factor	y
+150: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ identifier	
+identifier	y
+151: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@	
+term@	+
+152: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@	
+simple-exp@	+
+153: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term addop	
+addop	+
+154: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term +	
++	+
+155: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term	
+term	5
+156: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ factor	
+factor	5
+157: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@ number	
+number	5
+158: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@ term@	
+term@	)
+159: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@ simple-exp@	
+simple-exp@	)
+160: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ ) exp@	
+exp@	)
+161: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ )	
+)	)
+162: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@	
+term@	*
+163: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor mulop	
+mulop	*
+164: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor *	
+*	*
+165: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	3
+166: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@ number	
+number	3
+167: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@ term@	
+term@	until
+168: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@ simple-exp@	
+simple-exp@	until
+169: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@ exp@	
+exp@	until
+170: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until stmt-sequence@	
+stmt-sequence@	until
+171: # stmt-sequence@ if-stmt@ stmt-sequence@ exp until	
+until	until
+172: # stmt-sequence@ if-stmt@ stmt-sequence@ exp	
+exp	x
+173: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp	
+simple-exp	x
+174: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term	
+term	x
+175: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	x
+176: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ identifier	
+identifier	x
+177: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@	
+term@	=
+178: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@	
+simple-exp@	=
+179: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@	
+exp@	=
+180: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp comparison-op	
+comparison-op	=
+181: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp =	
+=	=
+182: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp	
+simple-exp	0
+183: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term	
+term	0
+184: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	0
+185: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ number	
+number	0
+186: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@	
+term@	;
+187: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@	
+simple-exp@	;
+188: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@	
+exp@	;
+189: # stmt-sequence@ if-stmt@ stmt-sequence@	
+stmt-sequence@	;
+190: # stmt-sequence@ if-stmt@ stmt-sequence@ statement ;	
+;	;
+191: # stmt-sequence@ if-stmt@ stmt-sequence@ statement	
+statement	write
+192: # stmt-sequence@ if-stmt@ stmt-sequence@ write-stmt	
+write-stmt	write
+193: # stmt-sequence@ if-stmt@ stmt-sequence@ exp write	
+write	write
+194: # stmt-sequence@ if-stmt@ stmt-sequence@ exp	
+exp	fact
+195: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp	
+simple-exp	fact
+196: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term	
+term	fact
+197: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ factor	
+factor	fact
+198: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@ identifier	
+identifier	fact
+199: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@ term@	
+term@	end
+200: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@ simple-exp@	
+simple-exp@	end
+201: # stmt-sequence@ if-stmt@ stmt-sequence@ exp@	
+exp@	end
+202: # stmt-sequence@ if-stmt@ stmt-sequence@	
+stmt-sequence@	end
+203: # stmt-sequence@ if-stmt@	
+if-stmt@	end
+204: # stmt-sequence@ end	
+end	end
+205: # stmt-sequence@	
+stmt-sequence@	#
+206: #	
+#	#

@@ -1,0 +1,231 @@
+step 2 - syntax parsing for tmp
+
+-------------------------------------------------------------------
+
+0
+
+Parsing Stack: # program 
+
+Input:         x := 1 + 1 # 
+
+Action:        program -> stmt-sequence
+
+-------------------------------------------------------------------
+
+1
+
+Parsing Stack: # stmt-sequence 
+
+Input:         x := 1 + 1 # 
+
+Action:        stmt-sequence -> statement stmt-sequence@
+
+-------------------------------------------------------------------
+
+2
+
+Parsing Stack: # stmt-sequence@ statement 
+
+Input:         x := 1 + 1 # 
+
+Action:        statement -> assign-stmt
+
+-------------------------------------------------------------------
+
+3
+
+Parsing Stack: # stmt-sequence@ assign-stmt 
+
+Input:         x := 1 + 1 # 
+
+Action:        assign-stmt -> identifier := exp
+
+-------------------------------------------------------------------
+
+4
+
+Parsing Stack: # stmt-sequence@ exp := identifier 
+
+Input:         x := 1 + 1 # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+5
+
+Parsing Stack: # stmt-sequence@ exp := 
+
+Input:         := 1 + 1 # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+6
+
+Parsing Stack: # stmt-sequence@ exp 
+
+Input:         1 + 1 # 
+
+Action:        exp -> simple-exp exp@
+
+-------------------------------------------------------------------
+
+7
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp 
+
+Input:         1 + 1 # 
+
+Action:        simple-exp -> term simple-exp@
+
+-------------------------------------------------------------------
+
+8
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         1 + 1 # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+9
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         1 + 1 # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+10
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         1 + 1 # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+11
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         + 1 # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+12
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         + 1 # 
+
+Action:        simple-exp@ -> addop term simple-exp@
+
+-------------------------------------------------------------------
+
+13
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term addop 
+
+Input:         + 1 # 
+
+Action:        addop -> +
+
+-------------------------------------------------------------------
+
+14
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term + 
+
+Input:         + 1 # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+15
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term 
+
+Input:         1 # 
+
+Action:        term -> factor term@
+
+-------------------------------------------------------------------
+
+16
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ factor 
+
+Input:         1 # 
+
+Action:        factor -> number
+
+-------------------------------------------------------------------
+
+17
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ number 
+
+Input:         1 # 
+
+Action:        match
+
+-------------------------------------------------------------------
+
+18
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ term@ 
+
+Input:         # 
+
+Action:        term@ -> @
+
+-------------------------------------------------------------------
+
+19
+
+Parsing Stack: # stmt-sequence@ exp@ simple-exp@ 
+
+Input:         # 
+
+Action:        simple-exp@ -> @
+
+-------------------------------------------------------------------
+
+20
+
+Parsing Stack: # stmt-sequence@ exp@ 
+
+Input:         # 
+
+Action:        exp@ -> @
+
+-------------------------------------------------------------------
+
+21
+
+Parsing Stack: # stmt-sequence@ 
+
+Input:         # 
+
+Action:        stmt-sequence@ -> @
+
+-------------------------------------------------------------------
+
+22
+
+Parsing Stack: # 
+
+Input:         # 
+
+Action:        Syntax Ok!!!
