@@ -1,7 +1,7 @@
 #: re/Graph.pm
 #: Graph data structures used by re::NFA and such
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-15 2006-05-17
+#: 2006-05-15 2006-06-29
 
 package re;
 
@@ -22,6 +22,7 @@ use Encode 'decode';
 #use Data::Dumper::Simple;
 use Perl6::Attributes;
 use List::MoreUtils 'uniq';
+use Text::Table;
 
 sub new {
     my $proto = shift;
@@ -228,6 +229,27 @@ sub normalize {
         }
     }
     $new_g;
+}
+
+sub as_table {
+    my $self = shift;
+    my @chars = ./weight_list;
+    #warn '[', join('*', @chars), "]\n";
+    my @states = ./nodes;
+    my $tb = Text::Table->new(
+        'State', @chars,
+    );
+    for my $state (sort @states) {
+        #warn "state: $state\n";
+        my @trans;
+        for my $char (@chars) {
+            my $trans = ./next_node($state, $char);
+            if (!defined $trans) { $trans = '' }
+            push @trans, $trans;
+        }
+        $tb->add($state, @trans);
+    }
+    $tb;
 }
 
 1;

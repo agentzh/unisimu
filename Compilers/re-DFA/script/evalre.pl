@@ -22,7 +22,7 @@ if (@ARGV != 2) {
 
 sub Usage {
     my $code = shift;
-    my $msg = "Usage: re2c [-p] [-c] <regex> <text>\n";
+    my $msg = "Usage: evalre [-p] [-c] <regex> <text>\n";
     if ($code == 0) {
         print $msg;
         exit(0);

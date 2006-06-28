@@ -1,7 +1,7 @@
 #: re/DFA/Perl.pm
 #: Perl code emitter for re::DFA
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-19 2006-05-19
+#: 2006-05-19 2006-06-29
 
 package re::DFA::Perl;
 
@@ -30,13 +30,13 @@ sub [% subname %] {
             last if !defined $char;
           [%- END %]
           [%- IF edges.size == 2 AND edges.0.size < 2 %]
-            if ($char eq '[% edges.0.replace("'", "\\'") %]') {
+            if ($char eq "[% edges.0.replace('"', '\\"') %]") {
                 $state = [% edges.1 %];
                 next;
             }
           [%- ELSE %]
             [%- FOR edge = edges %]
-            if ($char eq '[% edge.0.replace("'", "\\'") %]') {
+            if ($char eq "[% edge.0.replace('"', '\\"') %]") {
                 $state = [% edge.1 %];
                 next;
             }

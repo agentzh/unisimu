@@ -31,7 +31,7 @@ sub match_empty {
 }
 _EOC_
 
-$code = re::DFA::Perl->as_code('a', 'match');
+$code = re::DFA::Perl->as_code("a", 'match');
 eq_or_diff $code, <<'_EOC_';
 sub match {
     my $s = shift;
@@ -43,7 +43,7 @@ sub match {
         my $char = substr($s, $pos, 1);
         if ($state == 1) {
             last if !defined $char;
-            if ($char eq 'a') {
+            if ($char eq "a") {
                 $state = 2;
                 next;
             }
@@ -74,11 +74,11 @@ sub match {
         my $char = substr($s, $pos, 1);
         if ($state == 1) {
             last if !defined $char;
-            if ($char eq 'a') {
+            if ($char eq "a") {
                 $state = 2;
                 next;
             }
-            if ($char eq 'b') {
+            if ($char eq "b") {
                 $state = 2;
                 next;
             }
@@ -110,11 +110,11 @@ sub match {
         if ($state == 1) {
             $done = $pos;
             last if !defined $char;
-            if ($char eq 'a') {
+            if ($char eq "a") {
                 $state = 2;
                 next;
             }
-            if ($char eq 'b') {
+            if ($char eq "b") {
                 $state = 2;
                 next;
             }
@@ -123,7 +123,7 @@ sub match {
         if ($state == 2) {
             $done = $pos;
             last if !defined $char;
-            if ($char eq 'b') {
+            if ($char eq "b") {
                 $state = 2;
                 next;
             }
@@ -151,11 +151,11 @@ sub match {
         if ($state == 1) {
             $done = $pos;
             last if !defined $char;
-            if ($char eq 'a') {
+            if ($char eq "a") {
                 $state = 1;
                 next;
             }
-            if ($char eq 'b') {
+            if ($char eq "b") {
                 $state = 2;
                 next;
             }
@@ -163,7 +163,7 @@ sub match {
         }
         if ($state == 2) {
             last if !defined $char;
-            if ($char eq 'a') {
+            if ($char eq "a") {
                 $state = 1;
                 next;
             }
