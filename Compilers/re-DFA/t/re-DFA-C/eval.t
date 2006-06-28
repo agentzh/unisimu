@@ -4,7 +4,7 @@
 use strict;
 no warnings;
 
-use Test::More tests => 48;
+use Test::More tests => 55;
 BEGIN { use_ok('re::DFA::C'); }
 
 *match = re::DFA::C->as_method('(a|ba)*');
@@ -81,3 +81,20 @@ is match('cde'), 'c';
 ok !defined match('');
 ok !defined match('d');
 ok !defined match(' a');
+
+##
+
+*match = re::DFA::C->as_method('(())*');
+
+is match('a'), '';
+is match(''), '';
+
+##
+
+*match = re::DFA::C->as_method('\(|\)|\*|\|');
+
+is match('(b'), '(';
+is match(')'), ')';
+is match('*'), '*';
+is match('|'), '|';
+ok !defined match('a');
