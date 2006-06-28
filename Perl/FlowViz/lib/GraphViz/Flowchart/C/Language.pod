@@ -1,0 +1,32 @@
+=head1 NAME
+
+GraphViz::Flowchart::C::Language - Language Reference for GraphViz::Flowchart::C
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=head2 Commands
+
+All the commands used by L<GraphViz::Flowchart::Asm> are accepted by this language,
+for example, C<start>, C<do>, C<io>, and etc. See L<GraphViz::Flowchart::Asm::Language>
+for more information.
+
+=head2 If Statements
+
+=head2 While Statements
+
+=head1 Grammar Definition
+
+=head1 AUTHOR
+
+Agent Zhang (ียาเดบ)
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 Agent Zhang. All rights reserved.
+
+=head1 SEE ALSO
+
+L<L<GraphViz::Flowchart>, L<GraphViz::Flowchart::Asm::Language>,
+L<GraphViz::Flowchart::C>,
