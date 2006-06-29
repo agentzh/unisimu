@@ -24,29 +24,18 @@ my %hooks = (
     perl => sub {
         my $code = shift;
 
-        package Pod::Extend::Temp;
+		package Pod::Extend::Temp;
         no strict;
         $Pod::Extend::Temp::maple = $Pod::Extend::maple;
 
-        $Pod::Extend::Temp::code = $code;
+		$Pod::Extend::Temp::code = $code;
+		my @res = eval $code;
+		$code = $Pod::Extend::Temp::code;
 
-        $res = '';
-        tie_output(*STDOUT, $buffer);
-        eval $code;
-        untie *STDOUT;
-
-        $code = $Pod::Extend::Temp::code;
-
-        $res = $my_stdout;
+		@res = map { defined $_ ? $_ : '' } @res;
         package Pod::Extend;
         local $" = ',';
-        if ($@) {
-            if ($res) {
-                $res = $@ . $res;
-            } else {
-                $res = $@;
-            }
-        }
+        my $res = $@ || "@res";
         return fmt_code_res($code, $res, 'Perl');
     },
     maple => sub {
@@ -152,9 +141,9 @@ sub connect_db {
 
 sub fmt_code_res {
     my ($code, $res, $lang) = @_;
-    #warn "\n-------\n";
-    #warn "$code\n";
-    #warn "-------\n\n";
+	#warn "\n-------\n";
+	#warn "$code\n";
+	#warn "-------\n\n";
     $code =~ s/^/    /smg;
     $res = '' if not defined $res;
     $res =~ s/^/    /smg;
@@ -230,23 +219,6 @@ sub textblock {
 
 # Output text to the output device.
 sub output { print { $_[0]->output_handle } $_[1] }
-
-sub tie_output {
-    my $handle = shift;
-    die "No buffer to tie" unless @_;
-    tie $handle, 'Pod::Extend::Handle', $_[0];
-}
-
-package Pod::Extend::Handle;
-
-sub TIEHANDLE() {
-    my $class = shift;
-    bless \ $_[0], $class;
-}
-
-sub PRINT {
-    $$self .= $_ for @_;
-}
 
 1;
 __END__
