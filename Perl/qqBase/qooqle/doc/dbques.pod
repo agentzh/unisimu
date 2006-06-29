@@ -274,6 +274,6 @@ L<http://www.graphviz.org/Gallery.php>
 
 =head1 AUTHOR
 
-Agent Zhang (ียาเดบ), E<lt>agent2002@126.comE<gt>
+Agent Zhang (ียาเดบ), E<lt>agentzh@gmail.comE<gt>
 
 Copyright (c) 2005 Agent Zhang
