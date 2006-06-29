@@ -7,7 +7,7 @@ use strict;
 use warnings;
 
 use Getopt::Std;
-use Data::Dumper::Simple;
+#use Data::Dumper::Simple;
 use WWW::Mechanize;
 
 my %opts;
