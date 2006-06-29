@@ -21,5 +21,3 @@ atom: char
     | <error?> <reject>
 
 char: /\\.|[^*|()]/
-
-nil: ''
