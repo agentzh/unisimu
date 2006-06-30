@@ -162,6 +162,11 @@ sub process_log {
                 check_user($guest, $guest_name, $real_name);
                 #warn "$msg_from => $msg_to\n";
                 $state = 'S_START';
+            } elsif (/^ 消息对象 (?: :|：) \s* (.+) \( (\d+) \) /x) {
+                ($guest, $guest_name) = ($2, $1);
+                #warn "$guest, $guest_name";
+                check_user($guest, $guest_name, $real_name);
+                $state = 'S_START';
             }
         }
         elsif ($state eq 'S_START' and $ready and
