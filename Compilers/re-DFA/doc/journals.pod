@@ -1,0 +1,724 @@
+=head1 NAME
+
+journals - re-DFA 项目开发日志
+
+=head1 CONTENTS
+
+=head2 May 15, 2006
+
+从上周六开始，我启动了 re-DFA 项目的开发工作。该项目的目标是实现一个简单的正则
+表达式编译器，能够将常用的 Perl 正则表达式的一个子集通过 NFA  和 DFA 生成功能
+等价的目标代码（比如 C/C++/Java/Perl 之类）。该编译器本身是用纯 Perl 编写的，
+大部分骨架代码来自于我前不久开发的 Kid 语言编译器项目。re-DFA 的 SVN 仓库的
+URL 如下：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/>
+
+有趣的是，正则表达式虽然表达能力极其强大，但是正则表达式本身作为一种语言，却无法
+用自身来描述。在 re-DFA 项目中，我使用了 Parse::RecDescent 模块提供的 BNF
+记法对正则表达式的语法进行了定义，该语法说明书在下面这个位置：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/grammar/re.grammar>
+
+如果用比较"正统"的 BNF 来表达，大约是下面这个样子：
+
+    expression: alternation
+              ;
+
+    alternation: alternation '|' concat
+               | concat
+               ;
+
+    concat: concat modified_atom
+          |
+          ;
+
+    modified_atom: atom modifier
+                 | atom
+                 ;
+
+    modifier: '*'
+
+    atom: char
+        | '(' expression ')'
+        ;
+
+未来还会增加更多的语法结构，比如修饰符 C<+>, C<?>，以及通配符 C<.>, C<\w>,
+C<\d>, C<\s> 等等。值得注意的是，实际使用的语法文件中并没有出现"左递归"，因
+为 L<Parse::RecDescent> 生成的解析器是递归下降的。
+
+目前已经 re-DFA 已经实现了该类型的正则表达式的解析器，能够从任意合法的正
+则表达式生成对应的语法树 (parse tree)。Parse tree 的结构与前面的"左递归"
+版本的语法定义是一一对应的。比如正则表达式 "C<(a|b)*>" 将生成类似下面的语法树：
+
+  program
+    expression
+      alternation
+        concat
+          modified_atom
+            atom
+              expression
+                alternation
+                  concat
+                    modified_atom
+                      atom
+                        char
+                          'a'
+                  concat
+                    modified_atom
+                      atom
+                        char
+                          'b'
+            modifier
+              '*'
+
+从语法树出发我已经完成了 3 个后端 (backend)。
+
+其中一个后端是正则表达式的反生成器 C<re::re>，它能从语法树"还原"出原始的正则表达
+式。该后端可以用于测试解析器生成的语法树是否完整，同时这个 re => re 的编译器
+还可以去除正则表达式中多余的括号，比如 C<((aa))*> 经过 C<re::re> 处理后得到的
+是 C<(aa)*>. 有关 C<re::re> 后端的更多示例，可以从 C<re::re> 的测试脚本中得到：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-re/basic.t>
+
+第二个后端是 XML 发射器，它能从语法树生成对应的 XML 描述，比如正则表达式 abc
+将生成如下所示的 XML 描述：
+
+    <expression>
+      <alternation>
+        <concat>
+          <modified_atom>
+            <atom>
+              <char>a</char>
+            </atom>
+          </modified_atom>
+          <modified_atom>
+            <atom>
+              <char>b</char>
+            </atom>
+          </modified_atom>
+          <modified_atom>
+            <atom>
+              <char>c</char>
+            </atom>
+          </modified_atom>
+        </concat>
+      </alternation>
+    </expression>
+
+我猜，XML 应该会让 Java 程序员心动的，呵呵。
+
+最重要的后端当属 NFA 发射器了。从正则表达式生成 NFA 是生成 DFA 的一个中间步骤。
+NFA 在 re-DFA 项目内部是用有向图来表示的，对应于类 C<re::Graph>，具体使用的
+数据结构是哈希+数组。C<re::Graph> 类可以B<自动>生成 PNG 格式的图片，从而形象
+地刻画出构造出的 NFA 的结构。在 C<re::NFA> 的测试集中有下面这几个例子：
+
+对于正则表达式 C<a>，生成如下所示的 NFA：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-NFA/~nfa1.png>
+
+对于正则表达式 C<ab>，则构造出下面的 NFA 图：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-NFA/~nfa2.png>
+
+正则表达式 C<a*> 是这个样子：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-NFA/~nfa3.png>
+
+"重复"的 NFA 转换与老师介绍的略有不同，但从功能上讲还是完全等价的。
+
+下一个例子是带有"替换" (alternation) 的：C<a|b>:
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-NFA/~nfa4.png>
+
+我们不得不承认，AT&T 的 Graphviz 库画出来的有向图真的很漂亮。
+
+上面给出的示例都是最基本的，这儿有一个比较复杂的正则表达式，就是老师上课时用作示
+例的，C<(a|b)*(aa|bb)(a|b)*>，所对应的 NFA：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-NFA/~nfa5.png>
+
+这么大的图可能在您的 IE 浏览器中看不清楚，您可以将之下载到本地磁盘，然后用您最
+喜欢的图片浏览器中查看。
+
+考虑到 SVN 服务器有时候连接速度比较慢，我已经将上面
+的 F<~nfa1.png> 至 F<~nfa5.png> 这 5 张图片放到了这封邮件的附件当中。
+
+很自然地，从语法树得到 NFA 之后，下一步就是从 NFA 构造出 DFA 了。在发送出
+这封邮件之前我就将着手这项工作，这一过程的核心是"空闭包" (eps-closure)
+的构造算法，我已经想到了一种高效的实现手段了，呵呵。幸运的话，今晚就可以完成
+C<re::DFA> 的实现与测试工作了。Yay!
+
+Stay tuned!
+
+=head2 May 16, 2006
+
+昨晚我按计划完成了从 NFA 到 DFA 的转换模块 C<re::DFA> 的实现与测试工作。万岁！
+
+在 re-DFA 系统中，DFA 和 NFA 使用同一种数据结构，即 C<re::Graph>
+提供的基于哈希和匿名数组的有向图存储方式。由于 C<re::Graph> 类自身提供了绘制函数
+C<as_png> 和 C<visualize>，因此我的 C<re::DFA> 模块发射的 DFA 便自动地拥有
+了画图功能，附件中有几个例子，F<~dfa1.png> 对应于正则表达式 "C<a>"，也
+对应于前一封邮件中的 F<~nfa1.png>. 其他的图片依此类推。
+
+C<re::Graph> 类还提供了一种微型语言解释器，可以从简洁的文本描述
+快速构建出有向图结构。比如附件中的 F<~dfa1.png> 可以用下面的文本来描述：
+
+    entry:  1
+    exit:   2
+    1,2:    a
+
+假设这个字符串保存在了变量 C<$s> 中，则我们可以利用下面这行代码快速地构造出
+这个 DFA 所对应的 C<re::Graph> 对象：
+
+    $graph = re::Graph->build( $s );
+
+这种技术对于测试台而言非常重要。我正是使用这种方法来对"空闭包"的计算函
+数 C<eps_closure> 进行单元测试的。为测试方便专门定义一种内部语言的解
+释器，听起来似乎有些得不偿失，
+但别忘了我们使用的是 Perl 语言，C<re::Graph> 类的整个 C<build> 方法，连解
+析器、执行器和出错处理在内，总共也不过 22 行代码。
+
+我注意到一个有趣的现象，我们得到的 NFA 一般只有一个初态和一个终态，而且不
+存在一个状态既是初态又是终态；但是从 NFA 转换得到的 DFA 常常会出现多个终
+态，而且有的终态同时也是初态。
+
+从 NFA 到 DFA 的转换所需的 Perl 代码比我想象的要少得多，C<re::DFA>
+模块连注释和空行在内，也不过 113 行代码。而其中计算"空闭包"的函
+数 C<eps_closure> 由于采用了递归实现，总共只有 20 几行代码，但它能自动
+缓存已计算过的结果，从而获得很高的执行效率。
+
+目前，C<re::DFA> 生成的 DFA 并不是最简形式，因此需要再编写一
+个 C<re::DFA::Min> 模块将 C<re::DFA> 发射的 DFA 最小
+化 (minimize). 昨天晚上 C<re::DFA::Min> 模块的测试集就已经准备
+好了，实现文件的头注释也早在那里了，下面就是着手编码工作了！
+
+=head2 May 16, 2006
+
+在开始 C<re::DFA::Min> 的 DFA 最小化之旅以前，我想先讨论一下正则表达式中的
+"空字"问题。
+
+通过昨晚的
+hacking，我向我的正则表达式语法添加了对"空字"的支持。比如整个正则表达式现在允许
+为空，即 ""，它可以匹配任何空串。同样的，正则表达式
+
+    (a|)b*
+
+现在也是完全合法的。附件中附上了 re-DFA 系统从该正则表达式生成
+的 NFA 和 DFA 示意图。
+
+在正则表达式级别上对"空字" (eps) 进行支持，有着特殊的重要意义。因为许多实用
+的正则表达式中的修饰符 (C<?>) 正需要"空字"来进行"脱糖"。举例来说，正则表达
+式 C<a?b*> 的脱糖形式正是前面的 C<(a|)b*>，这里 C<a?> 被转换
+成了 C<(a|)> 的形式。
+
+目前，空字的语义在 re-DFA 的各个后端中支持很不均衡；只有 NFA/DFA 后端进行
+了测试。日后显然需要添加更多这方面的测试，呵呵。
+
+最后需要特别指出的是，附件中的那个 DFA (如 ~dfa7.png 所示）会让老师给出
+的 DFA 化简算法得出错误的化简结果。（您不妨一试。）其原因在于，老师没有
+对 DFA 中隐含的"出错状态"进行讨论。毕竟，在 DFA 中，许多到"出错态"的转移
+都被省略掉了，但这并不是说它们总是可退到后台。
+
+当一个状态没有画出在字符 C<a> 上的转换时，其实就是说，该状态在遇到字
+符 C<a> 时应该跳转到"出错态"。而当一个集合中的状态 m 在字符 C<a> 上存在
+到"出错态"的转换，而另一个状态 n 在字符 C<a> 上却跳转到一个普通的状态，
+这时便意味着字符 C<a>  区分出了状态 m 和状态 n，也就是说，这两个状态所在
+的集合需要进行分割。
+
+这意味着，在我的 C<re::DFA::Min> 模块中需要显式地引入"出错态"以避免得到
+"过简"的 DFA。
+
+如果您对此有任何意见或者建议，欢迎与我进行交流与讨论。:=)
+
+=head2 May 16, 2006
+
+我刚刚在网上找到了一个由美国 Duke 大学开发、受美国国家科学基金资助的一
+个 Java 项目，名为 JFLAP。它从教学的角度，对有穷自动机理论、文法构造等
+编译原理进行了可视化。它的主页是
+
+L<http://www.cs.duke.edu/csed/jflap/>
+
+L<http://www.cs.duke.edu/csed/jflap/new/DOCS/gui.minimize.MinimizePane.html>
+
+该软件可以免费下载，只要我们提供一些用户信息。我试用了一下，感觉还行，它可以从正
+则表达式生成最小化的 DFA，可以从 DFA 反生成上下文无关文法和正则表达式。这些功能
+都是我的 re-DFA 原先想要实现的。同时，JFLAP 还支持许多 re-DFA 范畴以外的与语法
+分析原理有关的特性。
+
+JFLAP 使用的正则表达式的语法有些古怪，比如我们上课时的那个例子
+
+    (a|b)*(aa|bb)(a|b)*
+
+在它那里必须得写成
+
+
+    (a+b)*(aa+bb)(a+b)*
+
+即"或"是用加号（+）而不是竖线（|）来表示的：这的确很奇怪。
+
+根据该软件的文档，它目前支持的正则语法极其有限，只有重复（*），选择（|）和括号（
+当然还有连接了）。经过测试，JFLAP不支持空字，比如下面这个正则表达式就被认为是非
+法的：
+
+    (a+)b*
+
+而在我的 re-DFA 中可以写成
+
+    (a|)b*
+
+这是完全可以识别的。未来，re-DFA 将会通过"脱糖" (desugar) 的方式，支持许
+多 Perl 正则表达式中的高级结构，比如 C<?>, C<+>, C<{m}>, C<{m,n}>,
+C<[a-z0-9]>, C<\w>, C<\s>, C<.>, C<\d>, C<\D> 之类。
+
+JFLAP 为 DFA 和 NFA 生成的有向图，说实话，真不如 Graphviz 生成的图片漂亮。
+另外，它的 GUI 界面使用起来有些不方便。把一个正则表达式转换为最小化的 DFA 这
+么基本的一个操作，居然需要用鼠标在那么多的窗口中，一步一步地点击那么多次；而
+在 re-DFA 中将只需要一个命令。再有就是，在 JFLAP 中，最后生成的有向图如果很
+大的话，就会很不清楚，似乎没有提供放大工具。
+
+基于上述理由，我认为 re-DFA 比 JFLAP 更有理由获得美国国家科学基金的赞助，呵呵。
+
+现在我已经想好如何实现 DFA
+最小化算法了，尽管可能不会很高效。唉……可惜今天晚上还有课，要不然……唔，无论如
+何，C<re::DFA::Min> 的开发得推迟到明天再继续了。:-/
+
+=head2 May 17, 2006
+
+Woot!
+re::DFA::Min has finally landed upon us!
+Hooray!
+
+经过今天上午的工作，DFA 的"最小化变换"模块 C<re::DFA::Min> 终于通过了我
+准备的所有的综合测试和单元测试。我看了一下，该模块的规模也不过 100 多行代码
+而已，但其中却浓缩了相当复杂的集合分割算法，花费了我不少心思，呵呵。
+
+附件中附上了综合测试中生成的最简 DFA 的示意图。这些图片与原正则表达式的对应关
+系如下所示：
+
+    ~dfa1.min.png      'a'
+    ~dfa2.min.png      'ab'
+    ~dfa3.min.png      'a*'
+    ~dfa4.min.png      'a|b'
+    ~dfa5.min.png      '(a|ba)*'
+    ~dfa6.min.png      '(a|b)*(aa|bb)(a|b)*'
+    ~dfa7.min.png      '(a|)b*'
+
+这其中有老师上课时使用的那个示例，有我们做的家庭作业，也有最基本的正则式，还有英
+文版《编译原理及实践》中的一个与"出错态分割"有关的示例。
+
+至此，从任意的正则表达式到最简 DFA 的完整通路便构建起来了：
+
+    regex => [ re::Parser ] => regex parse tree => [ re::NFA ] => NFA
+          => [ re::DFA ] => DFA => [ re::DFA::Min ] => Minimized DFA
+
+这意味着 re-DFA 项目最初的设计目标已基本实现。下面要做的，就是完善它，扩展它，丰富它。
+下面是几条主要的 TODO：
+
+=over
+
+=item *
+
+编写 DFA 解释器，C<re::DFA::Eval>，使 re-DFA 可以将得到的 DFA 像程序那样运行起来
+
+=item *
+
+向 re-DFA 支持的正则表达式添加更多的修饰符和元标记，如 C<?>, C<+>, C<[a-z]> 之类
+
+=item *
+
+利用 C<re::DFA::Eval> 运行 Perl 正则表达式测试集中的用例
+
+=item *
+
+为 DFA 编写 Perl 和 C 的代码生成器，并着手代码优化。
+
+=item *
+
+为各个后端编写命令行驱动工具，如 re2xml, re2nfa, re2dfa, re2c, re2pl 等等。
+
+=item *
+
+为 re-DFA 编写详尽的 API 文档和用户手册
+
+=item *
+
+利用 InnoSetup 将 re-DFA 及其依赖项 (Graphviz) 打包成独立的 Win32 安装程序。
+
+=item *
+
+对 re-DFA 的瓶颈部件进行性能优化。
+
+=back
+
+对于这些 TODO，我非常希望能从老师和同学那里得到帮助，毕竟我一个人的时间和精力还是很
+有限的，呵呵。
+
+=head2 May 17, 2006
+
+re-DFA 本身是一个类库，为了向用户、尤其是非 Perl 程序员提供更加友好的接口，我在今天
+晚上为 re-DFA 所有的编译器后端都编写了一个命令行工具。
+
+=head3 re2re
+
+首先是 re2re 程序，它解析用户提供的正则表达式，然后在内部生成一棵 Parse Tree，
+最后再反生成正则表达式。下面是我机器上的屏幕快照：
+
+    C:\>re2re "(a|b)*(aa|bb)(a|b)*"
+
+    (a|b)*(aa|bb)(a|b)*
+
+    C:\>re2re "((a))*"
+    a*
+
+我们看到，re2re 可以去除正则表达式中多余的括号，这也算是它的一点儿"实用价值"了。
+如果用户提供的正则表达式是非法的，则 re2re 工具会报错（其他的 re2* 工具也一样，
+因为它们都共享同一个正则解析器）：
+
+    C:\>re2re "(a*"
+
+           ERROR (line 1): Invalid program: Was expecting eofile but
+                           found "(a*" instead
+
+=head3 re2xml
+
+然后是 re2xml 工具，它可以从用户给定的正则表达式生成其对应的语法树的 XML 描述：
+
+    C:\>re2xml "a*"
+    <expression>
+    <alternation>
+    <concat>
+    <modified_atom>
+    <atom>
+    <char>a</char>
+    </atom>
+    <modifier>*</modifier>
+    </modified_atom>
+    </concat>
+    </alternation>
+    </expression>
+
+    C:\>re2xml "aa"
+    <expression>
+    <alternation>
+    <concat>
+    <modified_atom>
+    <atom>
+    <char>a</char>
+    </atom>
+    </modified_atom>
+    <modified_atom>
+    <atom>
+    <char>a</char>
+    </atom>
+    </modified_atom>
+    </concat>
+    </alternation>
+    </expression>
+
+这里我没使用很复杂的正则表达式作为示例是因为 XML 输出会变得太 FUD，呵呵。re2xml
+也具有完善的出错处理。
+
+=head3 re2nfa
+
+re-DFA 提供的最有意思的命令行工具莫过于 re2nfa 和 re2dfa 了。我们首先来看
+re2nfa。
+
+re2nfa
+根据用户提供的正则表达式生成对应的"非确定性有穷自动机"（NFA）的图形化描述：
+
+    C:\>re2nfa "(a|b|c|d)(a(b|c)*)*"
+    NFA.png generated.
+
+    C:\>re2nfa ""
+    NFA.png generated.
+
+我们看到，re2nfa 工具会在当前工作目录生成一个名为 NFA.png
+的图片文件，我们可以在自己喜爱的图片浏览器中查看。另外，我们从上面的第二个例子可
+以看到，空的正则表达式也是合法的表达式，而且从它生成的 NFA
+具有两个状态和一条弧（见附件中的 NFA.png）。
+
+=head3 re2dfa
+
+re2dfa 应该算是 re-DFA
+中最重要的工具了。它从用户给定的一个正则表达式生成两张图片，分别名为 DFA.png 和
+DFA.min.png。前者是未化简的 DFA 示意图，而后者是经过最小化的
+DFA。典型的屏幕快照如下所示：
+
+    C:\>re2dfa "(())*"
+    DFA.png generated.
+    DFA.min.png generated.
+
+    C:\>re2dfa ""
+    DFA.png generated.
+    DFA.min.png generated.
+
+最后那次调用生成的 F<DFA.png> 和 F<DFA.min.png> 已被我放到了这封邮件的附件中。我们
+看到，空正则表达式的 NFA 和 DFA 其实都不为"空"，因为对于自动机而言，无论如何
+都得有"初态"和"终态"。
+
+上面介绍的 re2re, re2xml, re2nfa, 和 re2dfa 这五个命令行工具都将安装在下一个
+版本的 AgentPerl 当中。请在未来几天当中关注我的个人主页
+
+L<http://yxy.ujs.edu.cn/images/index.html>
+
+当然了，不久的未来我还会利用 pp 和 InnoSetup 把整个 re-DFA 连同 Perl 解释器
+及其依赖项一齐打包成 Win32 安装程序，这样用户就不必下载几十兆的 AgentPerl 了。
+
+目前，re-DFA 的自动化测试台收录了 149 个测试，其中大部分是单元测试，其余为综合
+测试。测试台的一次典型运行的输出如下：
+
+    prove -Ilib t/*/*.t t/*.t
+    t/re-DFA-Min/basic......ok
+    t/re-DFA-Min/unit.......ok
+    t/re-DFA/basic..........ok
+    t/re-DFA/eps_closure....ok
+    t/re-Graph/basic........ok
+    t/re-NFA/basic..........ok
+    t/re-re/basic...........ok
+    t/re-XML/basic..........ok
+    All tests successful.
+    Files=8, Tests=149,  5 wallclock secs ( 0.00 cusr +  0.00 csys =  0.00 CPU)
+
+从该报表可以看到，在我的 Pentium 4 的机器上，运行全部的测试集需要 5 秒钟的时间。
+这个测试集对于我的开发工作而言至关重要，因为我是 TDD (Test-Driven Development) 的
+忠实追随者、极限编程（XP）的狂热信徒，呵呵。
+
+我现在已经开始考虑编写一个基于递归下降的语法分析器的生成器了。嗯……就类似 Damian 的
+Parse::RecDescent 模块。我如果能把它的全部功能都复制出来当然就更好了。LL(k)
+的分析器生成器也很有吸引力……唔，又是一个项目！
+
+=head2 May 18, 2006
+
+今天中午，我为 re-DFA 的 C<re::Graph> 类添加了一个叫做 normalize 的方法，
+它通过对节点进行重新编号来对有向图进行"规格化" (normalization)变幻。具体的
+编号方法是：从入口节点出发，利用广度优先搜索算法，逐一地对遇到的节点进行累加性
+编号；而对于兄弟节点，则按其边上的权值的字母顺序，对它们进行编号。
+
+这样，DFA 和 NFA 的"初态"便总为 1，而"终态"总是比较大的编号（但不一定是最大的），
+而其他节点，距离"初态"近一些的
+则编号小一些，距离"初态"远一些的，则编号大一些。这样一来，DFA 只要拓扑结构一致，
+经过 normalize 规格化之后的形式也就会完全一致了。这无疑大大方便了自动化测试，
+因为原先， NFA 到 DFA 的转换算法中的随机性会使每次得到的 DFA 的节点编号都会有
+所不同，从而给基于图片或数据结构精确比较的回归测试带来了不小的麻烦。
+
+同时，normalize 对节点的编号方法也符合我们人类的习惯，从而也提高了 re-DFA 生成的
+.png 图片的质量。不过，我注意到 NFA 进行"规格化"之后，会破坏一些暗示性的结构化布
+局，所以 re2nfa 工具并未启用 normalize 功能。而 DFA 则不存在这样的问题，
+因此 re2dfa 在生成图片之前，总是先执行"规格化"操作。
+
+附件中放置了经过"规格化"处理的两张 DFA 示意图，敬请欣赏。:=)
+
+=head2 May 20, 2006
+
+昨天，我又对 re-DFA 系统进行了功能扩展。现在 re-DFA 已能从 DFA 生成执行匹配的
+Perl 代码和 C 代码了。
+
+我们知道，从 DFA 到词法分析代码只有一步之遥，但是做法却可以分为两种。一种是将状
+态机用 while 循环和 if/else 语句进行"硬连接" (hard-wired) 编码。另一种是方
+法是将 DFA 对应的数据表格输出为目标语言中的某种数据结构，然后利用一小段通用的代
+码在执行词法分析的过程中，对该数据结构进行存取。
+
+硬连接方法，生成器的代码比较难写一些，而且生成的目标代码会随正则表达式的复杂度而
+膨胀得比较厉害，但是目标代码的执行效率一般很高。这很像 CPU 控制器的"硬连接"逻辑。
+
+数据表驱动方法，生成器的代码相对要简单的多，而且目标代码是固定的，唯一变化的是使
+用的 DFA 所对应的数据结构。这种方法的缺点是，目标代码存取数据表增加了时间上的开
+销，而且从 DFA 得到的数据表倾向于变得很大。
+
+re-DFA 目前的 C 和 Perl 两个代码生成器采用的都是第一种方法，即"硬连接"的方法，
+因为我希望生成的目标代码可读性更好，执行效率更高。
+
+re-DFA 中的新增模块 C<re::DFA::Perl> 用于从 DFA （不一定是经过最小化的 DFA）
+生成完全独立的 Perl 词法分析代码。利用我的 re2pl 工具可以在命令行上访问到该模块
+的这个功能：
+
+    D:\>re2pl -n match "a|b"
+    sub match {
+        my $s = shift;
+        return undef if !defined $s;
+        my $pos = 0;
+        my $state = 1;
+        my $done;
+        while (1) {
+            my $char = substr($s, $pos, 1);
+            if ($state == 1) {
+                last if !defined $char;
+                if ($char eq 'a') {
+                    $state = 2;
+                    next;
+                }
+                if ($char eq 'b') {
+                    $state = 2;
+                    next;
+                }
+                last;
+            }
+            if ($state == 2) {
+                $done = $pos;
+                last;
+            }
+            die "error: Unknown state: $state";
+        } continue {
+            $pos++;
+        }
+        if (!defined $done) { return undef; }
+        substr($s, 0, $done);
+    }
+
+我们看到，re2pl 工具从正则表达式 C<a|b> 生成了一个名为 match 的 Perl
+例程，用于完成与原正则表达式完全相同的文本匹配功能。该例程的名字 match
+我们是在命令行上用 -n 选项指定的。在没有指定 -n 选项的情况下，默认生成的是匿名的
+Perl 例程。
+
+这里有几组测试演示了 re2pl 生成的 Perl 例程的用法：
+
+    is match('a'), 'a';
+    is match('b'), 'b';
+    ok !defined match('c');
+
+    is match('ac'), 'a';
+    is match('bb'), 'b';
+    ok !defined match('ca');
+
+这里的 match 函数执行正则表达式 C<a|b> 的匹配功能。它总是从输入串的开头开始匹配，
+然后按照最长子串原则进行匹配。能匹配多少字符就匹配多少字符，即 match 不要求整个输
+入串都匹配对应的正则表达式。当匹配成功时，match 函数返回匹配部分的子串（可以为
+空）；当匹配失败时，返回未定义值 undef.
+
+注意上面这个 match 函数本身未使用任何 Perl 正则表达式，因此我们可以很容易地用类似
+的代码模板生成其他任何语言，比如 C/C++, Java, C#, Python, Ruby, Tcl, VB...
+事实上，我正是通过对 C<re::DFA::Perl> 中使用的 Perl 目标代码的 TT 模板进行少许
+修改，得到了从 DFA 生成等效的 C 词法分析代码的 C<re::DFA::C> 模块。
+
+通过我的 re2c 脚本可以访问 C<re::DFA::C> 提供的这个功能。下面是一个示例：
+
+    D:\>re2c -n match "a|b"
+    int match (char* s) {
+        int pos = -1;
+        int state = 1;
+        int done = -1;
+
+        while (1) {
+            char c;
+            c = s[++pos];
+            if (state == 1) {
+                if (c == '\0') break;
+                if (c == 'a') {
+                    state = 2;
+                    continue;
+                }
+                if (c == 'b') {
+                    state = 2;
+                    continue;
+                }
+                break;
+            }
+            if (state == 2) {
+                done = pos;
+                break;
+            }
+            fprintf( stderr, "error: Unknown state: %d", state );
+            exit(2);
+        }
+        return done;
+    }
+
+这里生成的 C 版本的 match 函数与前面的 Perl 版本相比，接口上略微有了上些变化。
+下面这组测试演示了这个 C match 函数的用法：
+
+    is( match("a"), 1 );
+    is( match("b"), 1 );
+    is( match("c"), -1 );
+
+    is( match("ac"), 1 );
+    is( match("bb"), 1 );
+    is( match('ca'), -1 );
+
+请注意，这里当匹配成功时，match 函数不再返回匹配部分的整个子串了，而是返回匹配
+部分的末尾在原串中的偏移量，数值上也等于匹配部分子串的长度。因此正则表达式 C<a*>
+生成的 C 函数在匹配输入串 C<aaaabc> 的时候返回数值 4，因为匹配部分是 C<aaaa>.
+当匹配失败时，C 函数返回 -1. 因为返回 0 时表示成功匹配了一个空串。匹配空串与匹
+配失败具有本质的区别。
+
+我对 C<re::DFA::Perl> 和 C<re::DFA::C> 这两个 DFA 代码生成后端进行了广泛的
+测试。编写这些测试的时候，我感觉自己真的是在做一个正则表达式的计算引擎了。
+C<re::DFA::Perl> 的测试集在这个位置：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-DFA-Perl/>
+
+而 C<re::DFA::C> 的测试集则在这个位置：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Compilers/re-DFA/t/re-DFA-C/>
+
+这些 .t 测试脚本中使用了一些非常有趣的高级技术。比如这两个目录中的 eval.t 文件都
+使用了 typeglob 技术在运行时动态地修改 Perl 的符号表，从而创建新的 Perl 例程。
+另外，更有趣的是，re-DFA-C 中的 eval.t 在运行的时候可以动态地从正则表达式
+生成 C 代码，然后自动调用外部的 C 编译器进行编译，接着自动将编译链接得到
+的 DLL 文件加载到 Perl 运行时环境，最后调用 DLL 里执行匹配的 C 函数。
+事实上，该"解释"C 代码的特性是 C<re::DFA::C> 模块通过 Ingy 的 L<Inline::C>
+模块实现的。
+
+我编写了一个名为 evalre 的命令行工具，可以"解释" DFA 的代码生成器生成的 C 代码和
+Perl 代码。这样我的 re-DFA 就可以像正则表达式的计算引擎那样使用了！下面是几个示例：
+
+    D:\Vc7>evalre "(a|b)*" "baabac"
+    baaba
+    D:\Vc7>evalre -c "(a|b)*" "baabac"
+    baaba
+
+注意，使用 -c 选项时，evalre 会从正则表达式生成 C 代码，然后自动进行编译、
+链接和执行，所以此时运行速度会比较缓慢。我们平常说 C 程序一般很快，显然没
+有算上编译和链接的时间。由此可见，编译器与解释器在构造的时候，采取的策略还
+是有很大区别的。
+
+=head2 May 21, 2006
+
+今晚我对 evalre 工具的输出格式进行了少许修改，现在匹配成功时的输出类似下面
+这个样子：
+
+    D:\>evalre "a*" "aabbcc"
+    match: 'aa'
+
+    D:\>evalre "a*" "bbcc"
+    match: ''
+
+匹配失败时的输出如下所示：
+
+    D:\>evalre "a" "bbcc"
+    fail to match
+
+同时，我通过 evalre 比较了一下我们的基于 DFA 的正则表达式引擎与 Perl 自身的基于
+NFA 的正则引擎在二义性处理上的区别。老师在课堂上没有提及正则表达式的"二义性"问题，比
+如正则表达式 C<a|ab> 在匹配字符串 "C<ab>" 时匹配部分究竟是单个字符 "C<a>" 呢，
+还是整个 "C<ab>"？
+
+DFA 引擎一般遵循最长子串原则，因此匹配结果是 "C<ab>" 而不是 "C<a>"，我们的 evalre
+的行为证明了这一点：
+
+    D:\>evalre "a|ab" "ab"
+    match: 'ab'
+
+而对基于 NFA 的实现而言，出于效率方面的考虑，往往只尝试"选择"(alternation)
+中第一个成功的匹配，因此正则表达式中的选择 a 比选择 ab 具有更高的"优先级"。
+因此一旦 C<a> 匹配成功，NFA 匹配引擎将不再去考虑下一个选择 C<ab> 了。Perl
+正则引擎的行为应证了这个推断：
+
+    D:\>perl -e "print 'ab' =~ /(a|ab)/"
+    a
+
+哈哈，我终于盼到这一天了，我对我自己的正则引擎与 Perl 的正则引擎进行行为上的比
+较——哇，这真是太棒了！
+
+我已经将最新的 re-DFA 安装到了 AgentPerl 当中，您可以从我的主页下载最新
+的 AgentPerl:
+
+L<http://yxy.ujs.edu.cn/images/AgentPerl-5.8.7.exe>
+
+运行其安装程序之后，就可以在命令行上执行 re2re, re2xml, re2nfa, re2dfa, re2c,
+re2pl, 和 evalre 这些 re-DFA 的实用程序了！
+
+发布 re-DFA 的更优雅的方式应当是利用 C<pp> 和 InnoSetup 的组合专门为其制做一个
+小巧的 Win32 安装程序，但我目前没有足够多的时间（尽管并不是很难）。
+
+Enjoy!
