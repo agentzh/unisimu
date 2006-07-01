@@ -12,7 +12,7 @@ use re::DFA;
 use re::DFA::Min;
 
 my %opts;
-getopts('h', \%opts);
+getopts('s:hr', \%opts);
 
 if ($opts{h}) {
     Usage(0);
@@ -22,6 +22,9 @@ if (! @ARGV) {
     warn "No regex specified.\n\n";
     Usage(1);
 }
+
+my $raw = $opts{r};
+my ($width, $height) = split 'x', $opts{s} if $opts{s};
 
 sub Usage {
     my $code = shift;
@@ -38,18 +41,29 @@ sub Usage {
 my $regex = shift;
 
 my $dfa = re::DFA->transform($regex);
+
+if (!$raw) { $dfa = $dfa->normalize; }
 if ($dfa) {
     my $outfile = 'DFA.png';
-    $dfa->normalize->as_png($outfile);
+    my $gv = $dfa->as_graphviz(
+        width  => $width,
+        height => $height,
+    );
+    $gv->as_png($outfile);
     print "$outfile generated.\n";
 } else {
     exit(1);
 }
 
 my $min_dfa = re::DFA::Min->transform($regex);
+if (!$raw) { $min_dfa = $min_dfa->normalize; }
 if ($min_dfa) {
     my $outfile = 'DFA.min.png';
-    $min_dfa->normalize->as_png($outfile);
+    my $gv = $min_dfa->as_graphviz(
+        width  => $width,
+        height => $height,
+    );
+    $gv->as_png($outfile);
     print "$outfile generated.\n";
 } else {
     exit(1);
