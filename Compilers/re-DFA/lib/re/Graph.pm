@@ -1,7 +1,7 @@
 #: re/Graph.pm
 #: Graph data structures used by re::NFA and such
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-05-15 2006-06-29
+#: 2006-05-15 2006-06-30
 
 package re;
 
@@ -18,7 +18,7 @@ use warnings;
 
 use Carp qw( croak carp );
 use GraphViz;
-use Encode 'decode';
+#use Encode 'decode';
 #use Data::Dumper::Simple;
 use Perl6::Attributes;
 use List::MoreUtils 'uniq';
@@ -146,33 +146,50 @@ sub visualize {
         my @edges = ./node2edges($node);
         for my $edge (@edges) {
             my $weight = $edge->[0];
-            $weight = '¦Å' if $weight eq re::eps();
-            $gv->add_edge($node => $edge->[1], label => decode('GBK', " $weight "));
+            $weight = "\x{3b5}" if $weight eq re::eps();
+            $gv->add_edge($node => $edge->[1], label => " $weight ");
         }
     }
     $gv;
 }
 
-sub as_png {
+sub as_graphviz {
     my $self = shift;
-    my $gv = GraphViz->new(
-        font => 'simsun.ttc',
-        layout => 'dot',
-        node => {
+    my %opts = @_;
+    my $gv;
+    if (!%opts) {
+        $gv = $self->{graphviz};
+        return $gv if $gv;
+    }
+    $opts{font} ||= 'simsun.ttc';
+    $opts{layout} ||= 'dot';
+    $opts{node} ||= {
             shape => 'circle',
             style => 'filled',
             fillcolor => 'yellow',
-        },
-        edge => {
-            color => 'red',
-        },
-    );
+    };
+    $opts{edge} ||= { color => 'red' },
+    $gv = GraphViz->new(%opts);
     $self->visualize($gv);
-    $gv->add_node('-1', label => ' ', shape => 'plaintext', fillcolor => 'white');
+    $gv->add_node(
+        '-1',
+        label     => ' ',
+        shape     => 'plaintext',
+        fillcolor => 'white',
+        height    => 0,
+        width     => 0,
+    );
     $gv->add_edge('-1' => $self->entry);
     for my $exit ($self->exit) {
         $gv->add_node($exit, shape => 'doublecircle');
     }
+    $self->{graphviz} = $gv;
+    $gv;
+}
+
+sub as_png {
+    my $self = shift;
+    my $gv = $self->as_graphviz;
     $gv->as_png(@_);
 }
 
