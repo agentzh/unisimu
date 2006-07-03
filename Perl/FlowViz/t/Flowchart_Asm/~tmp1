@@ -1,0 +1,17 @@
+digraph test {
+	ratio="fill";
+	node [color="#918194", fillcolor="#f1e1f4", fontsize="10", style="filled"];
+	edge [color="red", fontsize="10"];
+	node1 [fontname="simsun.ttc", label="开始", shape="ellipse"];
+	node2 [fontname="simsun.ttc", label="来到十字路口", shape="box"];
+	node3 [fontname="simsun.ttc", label="绿灯是否亮着？", shape="diamond"];
+	L1 [fontname="simsun.ttc", label="穿过十字路口", shape="box"];
+	node4 [fontname="simsun.ttc", label="等绿灯亮起", shape="box"];
+	node5 [fontname="simsun.ttc", label="结束", shape="ellipse"];
+	L1 -> node5 [fontname="simsun.ttc", label=""];
+	node1 -> node2 [fontname="simsun.ttc", label=""];
+	node2 -> node3 [fontname="simsun.ttc", label=""];
+	node3 -> L1 [fontname="simsun.ttc", label=" Yes "];
+	node3 -> node4 [fontname="simsun.ttc", label=" No "];
+	node4 -> L1 [fontname="simsun.ttc", label=""];
+}
