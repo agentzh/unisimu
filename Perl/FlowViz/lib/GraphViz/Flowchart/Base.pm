@@ -7,6 +7,9 @@ use strict;
 use warnings;
 
 sub new {
+	my $class = shift;
+	$class = ref $class || $class;
+	return bless {}, $class;
 }
 
 sub compile_file {
