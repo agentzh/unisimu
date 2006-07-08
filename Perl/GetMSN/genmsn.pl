@@ -6,11 +6,9 @@ use Template;
 use Getopt::Std;
 use YAML::Syck;
 
-my %opts;
-getopts('c', \%opts);
-
-my $name = shift or die "Usage: genmsn [-c] <username>";
-$name =~ s/\.yml$//;
+my $name = shift or die "Usage: genmsn <username>";
+$name =~ s/\.yml$//i;
+(my $user = $name) =~ s/\+\+$//;
 my $journals = LoadFile("$name.yml");
 if (!$journals) {
     die "error: no data loaded from $name.yml.\n";
@@ -26,9 +24,7 @@ my $s = '空间网络日志汇总';
 from_to($s, "gb2312", "utf8");
 my $data = {
     journals => $journals,
-    user     => $name,
-    title    => "$name - MSN $s",
-    cmt_on   => $opts{c},
+    title    => "$user - MSN $s",
 };
 my $tt = Template->new;
 $tt->process(\*DATA, $data, "$name.html")
@@ -74,23 +70,33 @@ __DATA__
 <!-- INDEX END -->
 
 [%- i = 1 %]
-[%- FOREACH journals %]
+[%- FOREACH journal = journals %]
 <p />
 <hr>
 <p />
-<h1><a name="title_[% i %]">[% title %]</a></h1>
-  <h2>[% date %] [% time %]</h2>
+<h1><a name="title_[% i %]">[% journal.title %]</a></h1>
+  <h2>[% journal.date %] [% journal.time %]</h2>
 <div>
-  [%- body %]
+  [%- journal.body %]
 <p />
-&nbsp;&nbsp;<small>Link: <a href="[% link %]">[% link %]</a></small>
+&nbsp;&nbsp;<small>Link: <a href="[% journal.link %]">[% journal.link %]</a></small>
 <p />
 </div>
-  [%- IF cmt_on %]
-    [%- FOREACH comment = comments %]
+  [%- comments = journal.comments %]
+  [%- IF comments %]
+<h3> Comments </h3>
+    [%- FOREACH comment = comments.reverse %]
     <ul>
-    <li>[% comment.author %]</li>
-    [% comment.body %]
+    <li></li>
+    <b>[% comment.author %]</b>
+    [%- IF comment.author_url %]&nbsp;
+    <a href="[%- comment.author_url %]">([% comment.author_url %])</a>
+    [%- END %]
+    &nbsp; - &nbsp;[%- comment.time %]
+    <p />
+    [%- comment.body %]
+    <br />
+    <br />
     </ul>
     [%- END %]
   [%- END %]
