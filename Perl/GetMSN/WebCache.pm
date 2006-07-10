@@ -48,9 +48,9 @@ sub get {
     my $key = shift;
     #warn $key;
     return undef if $RefreshCache;
-    if ($self->{$key}) {
-        warn "  info: using cached response...\n";
-    }
+    #if ($self->{$key}) {
+    #    warn "  info: using cached response...\n";
+    #}
     return $self->{$key};
 }
 

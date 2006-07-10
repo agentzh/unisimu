@@ -67,7 +67,7 @@ for my $journal (@$journals) {
         if ($page =~ /Published By/) {
             warn "Template failed to match ($link).\n";
         } else {
-            warn "  info: no comments for this entry.\n";
+            #warn "  info: no comments for this entry.\n";
         }
     }
 }
