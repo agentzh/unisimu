@@ -1,5 +1,6 @@
 YML_OPT = -d
 GET_QZONE = perl getqzone.pl
+PLOT_QZONE = perl plotqzone.pl
 
 Agent = 279005114
 Cherry = 11854905
@@ -20,3 +21,8 @@ yml:
 	$(GET_QZONE) $(YML_OPT) $(QianWei)
 
 html:
+	$(PLOT_QZONE) $(Agent)
+	$(PLOT_QZONE) $(Cherry)
+	$(PLOT_QZONE) $(Clover)
+	$(PLOT_QZONE) $(Yabi)
+	$(PLOT_QZONE) $(QianWei)

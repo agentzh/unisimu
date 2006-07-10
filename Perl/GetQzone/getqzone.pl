@@ -1,13 +1,14 @@
 #: getqzone.pl
 #: Access Qzone sites to collect data
 #: Copyright (c) 2006 Agent Zhang
-#: 2006-07-10 2006-07-10
+#: 2006-07-10 2006-07-11
 
 use strict;
 use warnings;
 
 use getqzone;
 
+use Encode 'from_to';
 use WWW::Mechanize::Cached;
 use WebCache;
 use YAML::Syck;
@@ -40,7 +41,7 @@ $WebCache::RefreshCache = !$opts{d};
 
 my $qq_number = shift;
 if (!$qq_number || $qq_number !~ /^\d+$/) {
-    die "Usage: getqzone [-d] <qq-number>";
+    die "Usage: $0 [-d] <qq-number>";
 }
 
 $main_url  =~ s/uin=##/uin=$qq_number/;
@@ -58,9 +59,11 @@ process_main($agent, $main_url, $main_url2, $out_ast);
 warn "  info: ", scalar @{ $out_ast->{msg_board} }, " message(s) found in message board.\n";
 
 process_articles($agent, $title_url, $body_url, $out_ast);
-warn "  info: ", scalar @{ $out_ast->{blogs} }, " article(s) found in blogs.\n";
+warn "  info: ", scalar $out_ast->{nblogs}, " article(s) found in blogs.\n";
 
-$out_ast->{link} = $home_url;
+$out_ast->{personal_info}->{qzone_home} = $home_url;
+$out_ast->{personal_info}->{qq_number} = $qq_number;
+
 my $outfile = "$qq_number.yml";
 DumpFile($outfile, $out_ast);
 warn "$outfile generated.\n";

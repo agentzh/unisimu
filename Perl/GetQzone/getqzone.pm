@@ -10,6 +10,12 @@ use Data::Dumper;
 
 our ($TitleUrl, $BodyUrl, $LastBlog);
 
+sub gb2utf {
+    my $s = shift;
+    from_to($s, "gb2312", "utf8");
+    $s;
+}
+
 sub process_main {
     my ($agent, $main_url, $main_url2, $out_ast) = @_;
     my $xml = get_url($agent, $main_url);
@@ -21,6 +27,7 @@ sub process_main {
     my @msgs;
     for my $msg (@$msg_board) {
         $msg->{author} =~ s/ >\Z|^\s+//g;
+        $msg->{title}  =~ s/ >\Z|^\s+//g;
         my $new_msg = {
             body => $msg->{title},
             name   => $msg->{author},
@@ -31,6 +38,7 @@ sub process_main {
     }
 
     my $data = $in_ast->{_x_3}->{data};
+    $data->{spacename} =~ s/\s*>\Z|^\s+//g;
     #print Dumper($data);
     my $personal_info = {
         age       => $data->{age},
@@ -80,15 +88,20 @@ sub process_articles {
     my ($agent, $title_url, $body_url, $out_ast) = @_;
     $TitleUrl = $title_url;
     $BodyUrl  = $body_url;
-    my @blogs;
+    my %blogs;
+    my $count = 0;
     my $i = 0;
     while ($i <= $LastBlog) {
         my $data = get_article($agent, $i++);
         next if !$data;
-        push @blogs, $data;
+        my $category = $data->{category};
+        $blogs{$category} ||= [];
+        push @{ $blogs{$category} }, $data;
+        $count++;
     }
-    $out_ast->{blogs} = \@blogs;
-    print Dumper($out_ast);
+    $out_ast->{blogs} = \%blogs;
+    $out_ast->{nblogs} = $count;
+    #print Dumper($out_ast);
     $out_ast;
 }
 
@@ -101,6 +114,7 @@ sub get_article {
     my $retval = { title_link => $url };
     if ($content =~ /<error\b/) {
         $retval->{title} = "Blog $i",
+        $retval->{category} = gb2utf("个人日记");
     } else {
         process_title($content, $retval);
     }
