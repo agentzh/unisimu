@@ -1,3 +1,6 @@
+#: genmsn.pl
+#: 2006-07-08 2006-07-10
+
 use strict;
 use warnings;
 
