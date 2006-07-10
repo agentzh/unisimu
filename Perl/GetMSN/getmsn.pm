@@ -5,10 +5,8 @@ use strict;
 use warnings;
 
 use WWW::Mechanize::Cached;
-use Encode qw/ encode decode /;
-#use WWW::Mechanize::FormFiller;
 use Template::Extract;
-use Data::Dumper;
+#use Data::Dumper;
 
 my $obj = Template::Extract->new;
 
