@@ -4,78 +4,53 @@ use strict;
 use warnings;
 
 use HTTP::Proxy ':log';
-use HTTP::Response;
+use LWP::UserAgent;
 use FindBin;
 
-my $env = 'MY_PROXY_HOME';
-my $home = $ENV{MY_PROXY_HOME};
-die "env $env not set" if not $home;
+my $logfile = "myproxy.log";
 
-$| = 1;
-my $logfile = ">>$home/myproxy.log";
-open my $log, $logfile or
-    die "Can't open $logfile for reading: $!";
+my $exclude_pat = shift || '\.gif$ |\.jpeg$ |\.css$ |\.js$';
 
-my $proxy = HTTP::Proxy->new(
+package My::HTTP::Proxy;
+
+use strict;
+use warnings;
+use base 'HTTP::Proxy';
+
+sub log {
+    my $self  = shift;
+    my $msg = $_[2];
+    return if $msg and $msg =~ /$exclude_pat/x;
+    my $retval = $self->SUPER::log(@_);
+    close $self->logfh;
+    open my $fh, ">> $logfile" or
+        die "Can't reopen $logfile for appending: $!";
+    $self->logfh($fh);
+    $retval;
+}
+
+package main;
+
+open my $log, "> $logfile" or
+    die "Can't open $logfile for writing: $!";
+
+$log->autoflush(1);
+
+my $proxy = My::HTTP::Proxy->new(
     logmask => STATUS,
     logfh => $log,
 );
 
 $proxy->max_clients(100);
 
-my $agent = MyUA->new(
-    env_proxy  => 1,
-    timeout => 100,
-);
+#my $agent = LWP::UserAgent->new(
+#    env_proxy  => 1,
+#    timeout => 200,
+#);
 
-$proxy->agent( $agent );
-
-# you may need to set the host
+#$proxy->agent($agent);
 $proxy->host(undef);
 $proxy->port(3128);
 
-while (1) {
-    print "Starting the proxy...\n";
-    eval {
-        $proxy->start();
-    };
-    warn $@ if $@;
-}
-
-package MyUA;
-
-use strict;
-use warnings;
-use HTTP::Proxy ':log';
-
-use base 'LWP::UserAgent';
-
-sub send_request {
-    my $self = shift;
-    my $request = shift;
-
-    my $response;
-    eval {
-        $response = $self->SUPER::send_request( $request );
-    };
-    if ($@ and not $response) {
-        $response = HTTP::Response->new(500, $@);
-        warn $@;
-    }
-    if ($response->is_success) {
-        my $type = $response->header('content-type');
-        #warn $type;
-        if ($type and $type =~ m[text/html]i) {
-            if ($response->content =~ m[<title>\s*(.*\S)\s*</title>]si) {
-                my $title = $1;
-                $title =~ s/\n/ /gs;
-                $proxy->log( STATUS, 'TITLE', $title);
-            }
-        }
-    }
-    return $response;
-}
-
-END {
-    close $log;
-}
+print "Starting the proxy...\n";
+$proxy->start();
