@@ -1,4 +1,4 @@
-#: genmsn.pl
+#: plotmsn.pl
 #: 2006-07-08 2006-07-10
 
 use strict;
@@ -9,7 +9,7 @@ use Template;
 use Getopt::Std;
 use YAML::Syck;
 
-my $name = shift or die "Usage: genmsn <username>";
+my $name = shift or die "Usage: $0 <username>";
 $name =~ s/\.yml$//i;
 (my $user = $name) =~ s/\+\+$//;
 my $journals = LoadFile("$name.yml");

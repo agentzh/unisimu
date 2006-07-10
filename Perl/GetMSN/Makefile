@@ -17,13 +17,13 @@ ppyml:
 
 
 html:
-	perl genmsn.pl agentzh
-	perl genmsn.pl cherrychuxinyun
-	perl genmsn.pl lvbuzhang2000
-	perl genmsn.pl layesuen
+	perl plotmsn.pl agentzh
+	perl plotmsn.pl cherrychuxinyun
+	perl plotmsn.pl lvbuzhang2000
+	perl plotmsn.pl layesuen
 
 pphtml:
-	perl genmsn.pl agentzh++
-	perl genmsn.pl cherrychuxinyun++
-	perl genmsn.pl lvbuzhang2000++
-	perl genmsn.pl layesuen++
+	perl plotmsn.pl agentzh++
+	perl plotmsn.pl cherrychuxinyun++
+	perl plotmsn.pl lvbuzhang2000++
+	perl plotmsn.pl layesuen++
