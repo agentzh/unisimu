@@ -7,7 +7,6 @@ use warnings;
 use WWW::Mechanize::Cached;
 use Encode qw/ encode decode /;
 #use WWW::Mechanize::FormFiller;
-use URI::URL;
 use Template::Extract;
 use Data::Dumper;
 
