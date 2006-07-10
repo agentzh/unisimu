@@ -28,8 +28,10 @@ Options:
 
     exit(0);
 }
+
 my $logfile = shift;
 $logfile ||= "sniffer.log";
+unlink $logfile;
 
 my $port = $opts{p} || 3128;
 
