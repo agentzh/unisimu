@@ -82,7 +82,7 @@ __DATA__
 <div>
   [%- journal.body %]
 <p />
-&nbsp;&nbsp;<small>Link: <a href="[% journal.link %]">[% journal.link %]</a></small>
+&nbsp;&nbsp;<small>Link: <a target="_blank" href="[% journal.link %]">[% journal.link %]</a></small>
 <p />
 </div>
   [%- comments = journal.comments %]
@@ -93,7 +93,7 @@ __DATA__
     <li></li>
     <b>[% comment.author %]</b>
     [%- IF comment.author_url %]&nbsp;
-    <a href="[%- comment.author_url %]">([% comment.author_url %])</a>
+    <a target="_blank" href="[%- comment.author_url %]">([% comment.author_url %])</a>
     [%- END %]
     &nbsp; - &nbsp;[%- comment.time %]
     <p />

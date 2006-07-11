@@ -9,15 +9,20 @@ use Getopt::Std;
 use Data::Dumper;
 
 my %opts;
-getopts('d', \%opts);
+getopts('t:da', \%opts);
 
 $WebCache::RefreshCache = !$opts{d};
 
-my $name = shift or die "Usage: getmsn++ [-d] <username>";
+my $name = shift or die "Usage: getmsn++ [-d] [-t <number>] [-a] <username>";
 $name =~ s/\.yml$//;
 my $journals = LoadFile("$name.yml");
 if (!$journals) {
     die "error: no data loaded from $name.yml.\n";
+}
+
+my $top = $opts{t} || 5;
+if ($opts{a}) {
+    $top = 1000 * 1000; # maybe we need a better way to do this. :P
 }
 
 my $cache = WebCache->new;
@@ -43,7 +48,11 @@ my $regex_comment = $obj->compile($tt_comment);
 my $tt_author = '[% author %] <a href="[% link %]" target="_blank" rel="nofollow">';
 my $regex_author = $obj->compile($tt_author);
 
+my $i = 0;
 for my $journal (@$journals) {
+    if (++$i > $top) {
+        undef $WebCache::RefreshCache;
+    }
     my $link = $journal->{link};
     my $res = $agent->get($link);
     my $page = $agent->content;
