@@ -23,7 +23,7 @@ my $main_url2 =
     "blog=b1.qzone.qq.com&msgboard=m1.qzone.qq.com&".
     "music=qzone-music.qq.com&photo=d2.photo.qq.com";
 
-#$main_url = $main_url2;
+$main_url = $main_url2;
 
 my $title_url =
     "http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=##&blogid=##&flag=0";

@@ -8,20 +8,39 @@ use YAML::Syck;
 
 $Template::Stash::SCALAR_OPS->{ resolve_meta } = sub {
     my $s = shift;
+
+    # process image meta tags:
     $s =~ s,\[img\] ([^\[]*) \[/img\],
         <a href="$1"><img src="$1" alt="$1" width=50 /></a>,xsg;
     $s =~ s,\[em\] ([^\[]*) \[/em\],<img src="http://imgcache.qq.com/qzone/em/$1.gif" />,xsg;
 
-    $s =~ s,\[ ft[a-z] \&\#61; [^\]]* \],,gxs;
-    $s =~ s,\[ /ft \],,gxs;
+    # process font color meta tags:
+    $s =~ s,\[ ftc \&\#61; ([^\]]*) \] ([^\[]*) \[/ft\],
+        <font color="$1">$2</font>,gxsi;
 
-    $s =~ s,\[B\],<B>,gxs;
-    $s =~ s,\[/B\],</B>,gxs;
+    # process font name meta tags:
+    $s =~ s,\[ ftf \&\#61; ([^\]]*) \] ([^\[]*) \[/ft\],
+        <font face="$1">$2</font>,gxsi;
 
-    $s =~ s,\[I\],<I>,gxs;
-    $s =~ s,\[/I\],</I>,gxs;
+    # process font size meta tags:
+    my $size;
+    $s =~ s,\[ fts \&\#61; ([^\]]*) \] ([^\[]*) \[/ft\],
+        $size=$1;$size=6 if $size > 6;"<font size=\"$size\">$2</font>",gxsie;
 
-    # XXX support for [u][/u]
+    # process center alignment meta tags:
+    $s =~ s,\[M\] ([^\[]*) \[/M\],<center>$1</center>,gxsi;
+
+    $s =~ s,\[ ff[a-z] \&\#61; [^\]]* \],,gxsi;
+
+    # support for [B][/B]
+    $s =~ s,\[B\] ([^\[]*) \[/B\],<B>$1</B>,gxsi;
+
+    # support for [I][/I]
+    $s =~ s,\[I\] ([^\[]*) \[/I\],<I>$1</I>,gxsi;
+
+    # support for [U][/U]
+    $s =~ s,\[U\] ([^\[]*) \[/U\],<U>$1</U>,gxsi;
+
     # XXX support for [flash][/flash]
 
     $s =~ s,\&\#13;\&\#10;,<p />,gxs;
@@ -38,6 +57,12 @@ $Template::Stash::SCALAR_OPS->{ strtime } = sub {
     $s;
 };
 
+$Template::Stash::SCALAR_OPS->{ gb2utf } = sub {
+    my $s = shift;
+    from_to($s, "gb2312", "utf8");
+    $s;
+};
+
 my $qq_number = shift;
 if (!$qq_number || $qq_number !~ /^\d+$/) {
     die "Usage: $0 [-d] <qq-number>";
@@ -51,28 +76,9 @@ if (!$ast) {
     die "error: no data loaded from $infile.\n";
 }
 
-my $s1 = '空间文章汇总';
-from_to($s1, "gb2312", "utf8");
-
-my $h1 = '个人信息';
-from_to($h1, 'gb2312', 'utf8');
-
-my $h2 = '留言板';
-from_to($h2, 'gb2312', 'utf8');
-
-my $h3 = '所有文章';
-from_to($h3, 'gb2312', 'utf8');
-
-my $data = {
-    ast   => $ast,
-    title => $ast->{personal_info}->{nickname} . " - " . " QZone $s1",
-    h1    => $h1,
-    h2    => $h2,
-    h3    => $h3,
-};
 my $tt = Template->new;
 
-$tt->process(\*DATA, $data, $outfile)
+$tt->process(\*DATA, $ast, $outfile)
     or die $tt->error(), "\n";
 warn "$outfile generated.\n";
 
@@ -83,6 +89,10 @@ __DATA__
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+[%- s = '空间文章汇总' %]
+[%- title = personal_info.nickname _ " - QZone " _ s.gb2utf -%]
+
 <title>[% title %]</title>
 <link rel="stylesheet" href="Active.css" type="text/css" />
 </head>
@@ -100,17 +110,24 @@ __DATA__
 <!-- INDEX BEGIN -->
 
 <ul>
+[%- s = '个人信息';
+    h1 = s.gb2utf;
+    s = '留言板';
+    h2 = s.gb2utf;
+    s = '所有文章';
+    h3 = s.gb2utf
+%]
     <li><a href="#h1">[% h1 %]</a></li>
     <li><a href="#h2">[% h2 %]</a></li>
     <li><a href="#h3">[% h3 %]</a></li>
 [%- i = 1 %]
-[%- FOREACH category = ast.blogs.keys.sort %]
-  [%- blogs = ast.blogs.$category %]
+[%- FOREACH category = blogs.keys.sort %]
+  [%- group = blogs.$category.reverse %]
     <ul>
       <li><a href="#cat_[% i %]">[% category %]</a></li>
       <ul>
       [%- j = 1 %]
-      [%- FOREACH blog = blogs %]
+      [%- FOREACH blog = group %]
           <li><a href="#blog_[% i %]_[% j %]">[% blog.title %]</a></li>
         [%- j = j + 1 %]
       [%- END %]
@@ -128,45 +145,52 @@ __DATA__
 <p />
 <h1><a name="h1">[% h1 %]</a></h1>
 
-[%- data = ast.personal_info %]
 <ul>
-<table border=0 cellspacing=2 cellpadding=6>
+<table border=0 cellspacing=2 cellpadding=7>
 <tr>
-    <td><B>Nick Name</B></td>
-    <td>[% data.nickname %]</td>
+    [%- s = '昵称' %]
+    <td width=120><B>QQ [% s.gb2utf %]</B></td>
+    <td>[% personal_info.nickname %]</td>
 </tr>
 <tr>
-    <td><B>QQ Number</B></td>
-    <td>[% data.qq_number %]</td>
+    [%- s = '号码' %]
+    <td><B>QQ [% s.gb2utf %]</B></td>
+    <td>[% personal_info.qq_number %]</td>
 </tr>
 <tr>
-    <td><B>Sex</B></td>
-    <td>[%- IF data.sex == 'F' -%]
-            Female
-        [%- ELSIF data.sex == 'M' -%]
-            Male
-        [%- ELSE -%]
-            <I>Unknow</I>
-        [%- END %]</td>
+    [%- s = '性别' %]
+    <td><B>[% s.gb2utf %]</B></td>
+    <td>[%- IF personal_info.sex == 'F';
+              s = '女';
+              GET s.gb2utf;
+            ELSIF personal_info.sex == 'M';
+              s = '男';
+              GET s.gb2utf;
+            END %]</td>
 </tr>
 <tr>
-    <td><B>Age</B></td>
-    <td>[% data.age %]</td>
+    [%- s = '年龄' %]
+    <td><B>[% s.gb2utf %]</B></td>
+    <td>[% personal_info.age %]</td>
 </tr>
-[%- IF data.birthday %]
+[%- IF personal_info.birthday %]
 <tr>
-    <td><B>Birthday</B></td>
-    <td>[% data.birthday %]</td>
+    [%- s = '出生日期' %]
+    <td><B>[%- s.gb2utf %]</B></td>
+    <td>[% personal_info.birthday %]</td>
 </tr>
 [%- END %]
 <tr>
-    <td><B>QZone Home</B></td>
-    <td><a target="blank" href="[% data.qzone_home %]">[% data.qzone_home %]</a></td>
+    [%- s = '首页' %]
+    <td><B>QZone [% s.gb2utf %]</B></td>
+    <td><a target="_blank" href="[% personal_info.qzone_home %]">
+    [%- personal_info.qzone_home %]</a></td>
 </tr>
-[%- IF data.spacename %]
+[%- IF personal_info.spacename %]
 <tr>
-    <td><B>Qzone Space Name</B></td>
-    <td>[% data.spacename %]</td>
+    [%- s = '空间名称' %]
+    <td><B>Qzone [% s.gb2utf %]</B></td>
+    <td>[% personal_info.spacename %]</td>
 </tr>
 [%- END %]
 
@@ -178,12 +202,13 @@ __DATA__
 <p />
 <h1><a name="h2">[% h2 %]</a></h1>
 
-[%- FOREACH msg = ast.msg_board %]
+[%- FOREACH msg = msg_board %]
 <ul>
     <li></li>
     <b>[% msg.name %]</b>
     [%- s = 'uin=' _ msg.id %]
-    <a target="blank" href="[%- data.qzone_home.replace('uin=\d+', s) %]">([% msg.id %])</a>
+    <a target="_blank"
+       href="[% personal_info.qzone_home.replace('uin=\d+', s) %]">([% msg.id %])</a>
     &nbsp; - &nbsp;[%- msg.date %]
     <p />
     [%- msg.body.resolve_meta %]
@@ -198,11 +223,11 @@ __DATA__
 <h1><a name="h3">[% h3 %]</a></h1>
 
 [%- i = 1 %]
-[%- FOREACH category = ast.blogs.keys.sort %]
-  [%- blogs = ast.blogs.$category %]
+[%- FOREACH category = blogs.keys.sort %]
+  [%- group = blogs.$category.reverse %]
     <h2><a name="#cat_[% i %]">[% category %]</a></h2>
       [%- j = 1 %]
-      [%- FOREACH blog = blogs %]
+      [%- FOREACH blog = group %]
           <h3><a name="#blog_[% i %]_[% j %]">[% blog.title %]</a></h3>
 
             <p><I>[% blog.date.strtime %]</I></p>
@@ -217,7 +242,8 @@ __DATA__
               <li></li>
               <b>[% comment.name %]</b>
                  [%- s = 'uin=' _ comment.id %]
-                 <a target="blank" href="[%- data.qzone_home.replace('uin=\d+', s) %]">
+                 <a target="_blank"
+                 href="[%- personal_info.qzone_home.replace('uin=\d+', s) %]">
                    ([% comment.id %])
                  </a>
               &nbsp; - &nbsp;[%- comment.date %]
