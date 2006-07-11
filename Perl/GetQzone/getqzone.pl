@@ -35,13 +35,13 @@ my $home_url =
     "http://u13.qzone.qq.com/cgi-bin/cgi_client_entry.cgi?uin=##";
 
 my %opts;
-getopts('d', \%opts);
+getopts('t:da', \%opts);
 
 $WebCache::RefreshCache = !$opts{d};
 
 my $qq_number = shift;
 if (!$qq_number || $qq_number !~ /^\d+$/) {
-    die "Usage: $0 [-d] <qq-number>";
+    die "Usage: $0 [-d] [-t <number>] [-a] <qq-number>";
 }
 
 $main_url  =~ s/uin=##/uin=$qq_number/;
@@ -49,6 +49,19 @@ $main_url2 =~ s/uin=##/uin=$qq_number/;
 $title_url =~ s/uin=##/uin=$qq_number/;
 $body_url  =~ s/uin=##/uin=$qq_number/;
 $home_url  =~ s/uin=##/uin=$qq_number/;
+
+our $Top;
+if ($opts{t}) {
+    $Top = $opts{t};
+    $WebCache::RefreshCache = 1;
+} else {
+    $Top = 5;
+}
+
+if ($opts{a}) {
+    $WebCache::RefreshCache = 1;
+    $Top = 1000 * 1000; # maybe we need a better way to do this. :P
+}
 
 my $cache = WebCache->new;
 my $agent = WWW::Mechanize::Cached->new( cache => $cache, autocheck => 1 );

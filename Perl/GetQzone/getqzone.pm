@@ -92,12 +92,14 @@ sub process_articles {
     my $count = 0;
     my $i = 0;
     while ($i <= $LastBlog) {
+        if (++$count >= $::Top) {
+            undef $WebCache::RefreshCache;
+        }
         my $data = get_article($agent, $i++);
         next if !$data;
         my $category = $data->{category};
         $blogs{$category} ||= [];
         push @{ $blogs{$category} }, $data;
-        $count++;
     }
     $out_ast->{blogs} = \%blogs;
     $out_ast->{nblogs} = $count;
