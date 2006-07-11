@@ -8,7 +8,7 @@ use File::Copy 'cp';
 use File::Spec;
 use Date::Simple 'today';
 
-my @patterns = ('*.html', '*.dat', '*.yml');
+my @patterns = ('*.html', '*.dat', '*.yml', '*.css');
 
 my $dir = 'Archives';
 if (!-d $dir) { mkdir($dir); }
