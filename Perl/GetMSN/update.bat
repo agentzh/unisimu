@@ -1,11 +1,9 @@
 @echo off
 
-set MSN_USER=cherrychuxinyun
-
-perl getmsn.pl %MSN_USER%
-perl getmsn++.pl %MSN_USER%
-perl plotmsn.pl %MSN_USER%
-perl plotmsn.pl %MSN_USER%++
+perl getmsn.pl %1
+perl getmsn++.pl %1
+perl plotmsn.pl %1
+perl plotmsn.pl %1++
 perl archive.pl
 
 pause
