@@ -1,9 +1,5 @@
 @echo off
 
-set QQ_NUMBER=11854905
-
-perl getqzone.pl %QQ_NUMBER%
-perl plotqzone.pl %QQ_NUMBER%
-perl archive.pl
+perl getqzone.pl %1 && perl plotqzone.pl %1 && perl archive.pl
 
 pause
