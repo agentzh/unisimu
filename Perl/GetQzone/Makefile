@@ -35,3 +35,10 @@ html:
 	$(PLOT_QZONE) $(Clover)
 	$(PLOT_QZONE) $(Yabi)
 	$(PLOT_QZONE) $(QianWei)
+
+update:
+	update $(Agent)
+	update $(Cherry)
+	update $(Clover)
+	update $(Yabi)
+	update $(QianWei)

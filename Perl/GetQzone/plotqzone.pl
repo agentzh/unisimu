@@ -125,7 +125,7 @@ __DATA__
     <li><a href="#h3">[% h3 %]</a></li>
 [%- i = 1 %]
 [%- FOREACH category = blogs.keys.sort %]
-  [%- group = blogs.$category.reverse %]
+  [%- group = blogs.$category %]
     <ul>
       <li><a href="#cat_[% i %]">[% category %]</a></li>
       <ul>
@@ -227,7 +227,7 @@ __DATA__
 
 [%- i = 1 %]
 [%- FOREACH category = blogs.keys.sort %]
-  [%- group = blogs.$category.reverse %]
+  [%- group = blogs.$category %]
     <h2><a name="#cat_[% i %]">[% category %]</a></h2>
       [%- j = 1 %]
       [%- FOREACH blog = group %]

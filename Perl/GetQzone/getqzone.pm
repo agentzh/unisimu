@@ -90,12 +90,12 @@ sub process_articles {
     $BodyUrl  = $body_url;
     my %blogs;
     my $count = 0;
-    my $i = 0;
-    while ($i <= $LastBlog) {
+    my $i = $LastBlog;
+    while ($i >= 0) {
         if (++$count >= $::Top) {
             undef $WebCache::RefreshCache;
         }
-        my $data = get_article($agent, $i++);
+        my $data = get_article($agent, $i--);
         next if !$data;
         my $category = $data->{category};
         $blogs{$category} ||= [];
@@ -122,9 +122,12 @@ sub get_article {
     }
 
     ($url = $BodyUrl) =~ s/blogid=##/blogid=$i/;
+    #warn $url;
     $content = get_url($agent, $url);
+    #warn $content if $i == 4;
     return undef if !$content;
     process_body($content, $retval);
+    #warn Dumper($retval) if $i == 4;
     return undef if !$retval->{body};
     $retval->{body_link} = $url;
 
