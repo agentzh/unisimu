@@ -44,6 +44,8 @@ if (!$qq_number || $qq_number !~ /^\d+$/) {
     die "Usage: $0 [-d] [-t <number>] [-a] <qq-number>";
 }
 
+#binmode STDERR, ':encoding(UTF-8)';
+
 $main_url  =~ s/uin=##/uin=$qq_number/;
 $main_url2 =~ s/uin=##/uin=$qq_number/;
 $title_url =~ s/uin=##/uin=$qq_number/;

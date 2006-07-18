@@ -1,5 +1,5 @@
 #: getqzone.pm
-#: 2006-07-10 2006-07-10
+#: 2006-07-10 2006-07-18
 
 use strict;
 use warnings;
@@ -175,9 +175,12 @@ sub process_body {
 sub get_url {
     my ($agent, $url) = @_;
     for (1..3) {
+        warn "  info: retrying $url...\n" if $_ > 1;
         $agent->get($url);
         if (!$agent->success) {
             warn "warning: $url: ", $agent->status, "\n";
+        } elsif ($agent->content =~ m[<error>.*·şÎñÆ÷\S+Ã¦.*</error>]) {
+            warn "warning: server too busy.\n";
         } else { last; }
     }
     #warn $agent->content;

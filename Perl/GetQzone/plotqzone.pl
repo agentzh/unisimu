@@ -32,6 +32,9 @@ $Template::Stash::SCALAR_OPS->{ resolve_meta } = sub {
 
     $s =~ s,\[ ff[a-z] \&\#61; [^\]]* \],,gxsi;
 
+    # support for [url][/url]
+    $s =~ s,\[url \&\#61; ([^\]]*)\] ([^\[]*) \[/url\],<a href="$1">$2</a>,gxsi;
+
     # support for [B][/B]
     $s =~ s,\[B\] ([^\[]*) \[/B\],<B>$1</B>,gxsi;
 
