@@ -27,3 +27,9 @@ pphtml:
 	perl plotmsn.pl cherrychuxinyun++
 	perl plotmsn.pl lvbuzhang2000++
 	perl plotmsn.pl layesuen++
+
+update:
+	update agentzh
+	update cherrychuxinyun
+	update lvbuzhang2000
+	update layesuen
