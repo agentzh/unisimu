@@ -92,6 +92,7 @@ sub remind {
         if ($sp->voice->GetDescription =~ /Chinese/i) {
             if (@voices == 1) {
                 msgbox($msg);
+                return;
             }
             for my $voice (@voices) {
                 my $name = $voice->GetDescription;
@@ -103,9 +104,8 @@ sub remind {
             }
         }
         #warn "HERE!";
-        if (! $sp->Speak($msg)) {
-            msgbox($msg);
-        }
+        $sp->Speak($msg);
+        msgbox($msg);
         #$sp->WaitUntilDone(2000);
     } else {
         msgbox($msg);
