@@ -33,3 +33,4 @@ update:
 	update cherrychuxinyun
 	update lvbuzhang2000
 	update layesuen
+	update rebeccanewworld
