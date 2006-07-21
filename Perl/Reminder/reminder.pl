@@ -59,7 +59,7 @@ sub run {
 sub check_rest_time {
     my $now = shift;
     if ($now->hour - $start->hour >= 1) {
-        remind("I think you need a break. :=)");
+        remind("Hey, $username, I think you need a break!");
         $start = $now;
     }
 }
