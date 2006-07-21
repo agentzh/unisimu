@@ -1,5 +1,5 @@
 #: reminder.pl
-#: 2006-07-12 2006-07-20
+#: 2006-07-12 2006-07-21
 
 use strict;
 use warnings;
@@ -17,24 +17,25 @@ my $time_out = 30;               # in seconds
 my $force_close = 1;
 my $reboot = 0;
 my $me = $ENV{COMPUTERNAME};
-my $log_file = "$FindBin::Bin/agent.log";
+my $log_file = "$FindBin::Bin/reminder.log";
 my $log = File::Log->new(
     logFileName => $log_file,
     dateTimeStamp => 0,
     stderrRedirect => 0,
 );
 
+my $username = Win32::LoginName;
 my $start = now();
 my $now = $start;
 
 my @off_plan = (
-    ['11:30' => '12:30' => 'Good morning, Agent, it is lunch time already!'],
+    ['11:30' => '12:30' => "Good morning, $username, it is lunch time already!"],
     ['17:00' => '18:30' =>
-        "Good afternoon, Agent! I think it is time for supper. See you later!"],
-    ['20:00' => '23:59' =>
-        "Good evening, Agent! I think it is time to sleep. ".
+        "Good afternoon, $username! I think it is time for supper. See you later!"],
+    ['21:00' => '23:59' =>
+        "Good evening, $username! I think it is time to sleep. ".
         "I'll go off in $time_out seconds."],
-    ['00:00' => '05:00' =>  "Oh, I am still sleepy. Don't bother me, Agent!"],
+    ['00:00' => '05:00' =>  "Oh, I am still sleepy. Don't bother me, $username!"],
 );
 
 run() if ! caller;
@@ -132,7 +133,7 @@ sub msgbox {
     if ($exitcode != STILL_ACTIVE) {
         if ($exitcode == 1) {
             warn $msg;
-            Win32::MsgBox($msg, MB_ICONINFORMATION, Win32::LoginName . "'s reminder");
+            Win32::MsgBox($msg, MB_ICONINFORMATION, "${username}'s reminder");
         }
     } else {
         $process->Wait($time_out * 1000);
