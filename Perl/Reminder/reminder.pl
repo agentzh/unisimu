@@ -144,7 +144,7 @@ sub msgbox {
 
 sub shut_down {
     my $message = shift;
-    remind($message);
+    #remind($message);
     Win32::InitiateSystemShutdown(
         $me, $message, $time_out,
         $force_close, $reboot
