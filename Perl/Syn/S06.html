@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
-<title>TITLE</title>
+<title>S06</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 <link rev="made" href="mailto:" />
 <script language="javascript1.2"><!--
@@ -193,222 +193,223 @@ new type system.</p>
 <div ID=header_hidden_3 style="display: block;">- Show t/subroutines/sub_return_values.t (215 lines) -</div>
 </a>
 </p>
-<div ID=hide_3 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Subroutines and other code objects&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 63;
-    :
-    :# These test the returning of values from a subroutine.
-    :# We test each data-type with 4 different styles of return.
-    :#
-    :# The datatypes are:
-    :#     Scalar
-    :#     Array
-    :#     Array-ref (aka List)
-    :#     Hash
-    :#     Hash-ref
-    :#
-    :# The 4 return styles are:
-    :#     create a variable, and return it with the return statement
-    :#     create a variable, and make it the last value in the sub (implied return)
-    :#     create the value inline and return it with the return statement
-    :#     create the value inline and make it the last value in the sub (implied return)
-    :#
-    :# NOTE:
-    :# we do not really check return context here. That should be
-    :# in it's own test file
-    :
-    :# TODO-NOTE:
-    :# Currently the Hash and Hash-ref tests are not complete, becuase hashes seem to be
-    :# broken in a number of ways. I will get back to those later.
-    :
-    :## void
-    :# eval_ok('sub ret { return }; 1', &quot;return without value parses ok&quot;);
-    :
-    :sub bare_return { return };
-    :
-    :ok(! bare_return(), &quot;A bare return is a false value&quot;);
-    :
-    :my @l = &lt;some values&gt;;
-    :@l = bare_return();
-    :is( @l, [], &quot;A bare return is an empty list in array/list context&quot;);
-    :
-    :my $s = &quot;hello&quot;;
-    :$s = bare_return();
-    :is($s, undef, &quot;A bare return is undef in scalar context&quot;);
-    :
-    :## scalars
-    :
-    :sub foo_scalar {
-    :    my $foo = 'foo';
-    :    return $foo;
-    :}
-    :is(foo_scalar(), 'foo', 'got the right return value');
-    :
-    :# ... w/out return statement
-    :
-    :sub foo_scalar2 {
-    :    my $foo = 'foo';
-    :    $foo;
-    :}
-    :is(foo_scalar2(), 'foo', 'got the right return value');
-    :
-    :# ... returning constant
-    :
-    :sub foo_scalar3 {
-    :    return 'foo';
-    :}
-    :is(foo_scalar3(), 'foo', 'got the right return value');
-    :
-    :# ... returning constant w/out return statement
-    :
-    :sub foo_scalar4 {
-    :    'foo';
-    :}
-    :is(foo_scalar4(), 'foo', 'got the right return value');
-    :
-    :## arrays
-    :
-    :sub foo_array {
-    :    my @foo = ('foo', 'bar', 'baz');
-    :    return @foo;
-    :}
-    :my @foo_array_return = foo_array();
-    :isa_ok(@foo_array_return, 'Array');
-    :is(+@foo_array_return, 3, 'got the right number of return value');
-    :is(@foo_array_return[0], 'foo', 'got the right return value');
-    :is(@foo_array_return[1], 'bar', 'got the right return value');
-    :is(@foo_array_return[2], 'baz', 'got the right return value');
-    :
-    :# ... without the last return statement
-    :
-    :sub foo_array2 {
-    :    my @foo = ('foo', 'bar', 'baz');
-    :    @foo;
-    :}
-    :my @foo_array_return2 = foo_array2();
-    :isa_ok(@foo_array_return2, 'Array');
-    :is(+@foo_array_return2, 3, 'got the right number of return value');
-    :is(@foo_array_return2[0], 'foo', 'got the right return value');
-    :is(@foo_array_return2[1], 'bar', 'got the right return value');
-    :is(@foo_array_return2[2], 'baz', 'got the right return value');
-    :
-    :# ... returning an Array constructed &quot;on the fly&quot;
-    :
-    :sub foo_array3 {
-    :    return ('foo', 'bar', 'baz');
-    :}
-    :my @foo_array_return3 = foo_array3();
-    :isa_ok(@foo_array_return3, 'Array');
-    :is(+@foo_array_return3, 3, 'got the right number of return value');
-    :is(@foo_array_return3[0], 'foo', 'got the right return value');
-    :is(@foo_array_return3[1], 'bar', 'got the right return value');
-    :is(@foo_array_return3[2], 'baz', 'got the right return value');
-    :
-    :# ... returning an Array constructed &quot;on the fly&quot; w/out return statement
-    :
-    :sub foo_array4 {
-    :    ('foo', 'bar', 'baz');
-    :}
-    :my @foo_array_return4 = foo_array4();
-    :isa_ok(@foo_array_return4, 'Array');
-    :is(+@foo_array_return4, 3, 'got the right number of return value');
-    :is(@foo_array_return4[0], 'foo', 'got the right return value');
-    :is(@foo_array_return4[1], 'bar', 'got the right return value');
-    :is(@foo_array_return4[2], 'baz', 'got the right return value');
-    :
-    :## Array Refs aka - Lists
-    :
-    :sub foo_array_ref {
-    :   my $foo = ['foo', 'bar', 'baz'];
-    :   return $foo;
-    :}
-    :my $foo_array_ref_return = foo_array_ref();
-    :isa_ok($foo_array_ref_return, 'List');
-    :is(+$foo_array_ref_return, 3, 'got the right number of return value');
-    :is($foo_array_ref_return[0], 'foo', 'got the right return value');
-    :is($foo_array_ref_return[1], 'bar', 'got the right return value');
-    :is($foo_array_ref_return[2], 'baz', 'got the right return value');
-    :
-    :# ... w/out the return statement
-    :
-    :sub foo_array_ref2 {
-    :   my $foo = ['foo', 'bar', 'baz'];
-    :   $foo;
-    :}
-    :my $foo_array_ref_return2 = foo_array_ref2();
-    :isa_ok($foo_array_ref_return2, 'List');
-    :is(+$foo_array_ref_return2, 3, 'got the right number of return value');
-    :is($foo_array_ref_return2[0], 'foo', 'got the right return value');
-    :is($foo_array_ref_return2[1], 'bar', 'got the right return value');
-    :is($foo_array_ref_return2[2], 'baz', 'got the right return value');
-    :
-    :# ... returning list constructed &quot;on the fly&quot;
-    :
-    :sub foo_array_ref3 {
-    :   return ['foo', 'bar', 'baz'];
-    :}
-    :my $foo_array_ref_return3 = foo_array_ref3();
-    :isa_ok($foo_array_ref_return3, 'List');
-    :is(+$foo_array_ref_return3, 3, 'got the right number of return value');
-    :is($foo_array_ref_return3[0], 'foo', 'got the right return value');
-    :is($foo_array_ref_return3[1], 'bar', 'got the right return value');
-    :is($foo_array_ref_return3[2], 'baz', 'got the right return value');
-    :
-    :# ... returning list constructed &quot;on the fly&quot; w/out return statement
-    :
-    :sub foo_array_ref4 {
-    :   ['foo', 'bar', 'baz'];
-    :}
-    :my $foo_array_ref_return4 = foo_array_ref4();
-    :isa_ok($foo_array_ref_return4, 'List');
-    :is(+$foo_array_ref_return4, 3, 'got the right number of return value');
-    :is($foo_array_ref_return4[0], 'foo', 'got the right return value');
-    :is($foo_array_ref_return4[1], 'bar', 'got the right return value');
-    :is($foo_array_ref_return4[2], 'baz', 'got the right return value');
-    :
-    :## hashes
-    :
-    :sub foo_hash {
-    :    my %foo = ('foo', 1, 'bar', 2, 'baz', 3);
-    :    return %foo;
-    :}
-    :
-    :my %foo_hash_return = foo_hash();
-    :isa_ok(%foo_hash_return, 'Hash');
-    :is(+%foo_hash_return.keys, 3, 'got the right number of return value');
-    :is(%foo_hash_return&lt;foo&gt;, 1, 'got the right return value');
-    :is(%foo_hash_return&lt;bar&gt;, 2, 'got the right return value');
-    :is(%foo_hash_return&lt;baz&gt;, 3, 'got the right return value');
-    :
-    :my $keys;
-    :lives_ok({ $keys = +(foo_hash().keys) },
-    :    &quot;can call method on return value (hashref)&quot;);
-    :is($keys, 3, &quot;got right result&quot;);
-    :lives_ok({ foo_hash()&lt;foo&gt; },
-    :    &quot;can hash de-ref return value (hashref)&quot;);
-    :
-    :# now hash refs
-    :
-    :sub foo_hash_ref {
-    :    my %foo = ( 'foo', 1, 'bar', 2, 'baz', 3 );
-    :    return \%foo;
-    :}
-    :
-    :my $foo_hash_ref_return = foo_hash_ref();
-    :isa_ok($foo_hash_ref_return, 'Hash');
-    :is(+$foo_hash_ref_return.keys, 3, 'got the right number of return value');
-    :is($foo_hash_ref_return&lt;foo&gt;, 1, 'got the right return value');
-    :is($foo_hash_ref_return&lt;bar&gt;, 2, 'got the right return value');
-    :is($foo_hash_ref_return&lt;baz&gt;, 3, 'got the right return value');
-    :
-    :lives_ok({ $keys = +(foo_hash_ref().keys) },
-    :    &quot;can call method on return value (hashref)&quot;);
-    :is($keys, 3, &quot;got right result&quot;);
-    :lives_ok({ foo_hash_ref()&lt;foo&gt; },
-    :    &quot;can hash de-ref return value (hashref)&quot;);</pre>
+<div ID=hide_3 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Subroutines and other code objects"&gt;
+
+=cut
+
+plan 63;
+
+# These test the returning of values from a subroutine.
+# We test each data-type with 4 different styles of return.
+#
+# The datatypes are:
+#     Scalar
+#     Array
+#     Array-ref (aka List)
+#     Hash
+#     Hash-ref
+#
+# The 4 return styles are:
+#     create a variable, and return it with the return statement
+#     create a variable, and make it the last value in the sub (implied return)
+#     create the value inline and return it with the return statement
+#     create the value inline and make it the last value in the sub (implied return)
+#
+# NOTE:
+# we do not really check return context here. That should be
+# in it's own test file
+
+# TODO-NOTE:
+# Currently the Hash and Hash-ref tests are not complete, becuase hashes seem to be
+# broken in a number of ways. I will get back to those later.
+
+## void
+# eval_ok('sub ret { return }; 1', "return without value parses ok");
+
+sub bare_return { return };
+
+ok(! bare_return(), "A bare return is a false value");
+
+my @l = &lt;some values&gt;;
+@l = bare_return();
+is( @l, [], "A bare return is an empty list in array/list context");
+
+my $s = "hello";
+$s = bare_return();
+is($s, undef, "A bare return is undef in scalar context");
+
+## scalars
+
+sub foo_scalar {
+    my $foo = 'foo';
+    return $foo;
+}
+is(foo_scalar(), 'foo', 'got the right return value');
+
+# ... w/out return statement
+
+sub foo_scalar2 {
+    my $foo = 'foo';
+    $foo;
+}
+is(foo_scalar2(), 'foo', 'got the right return value');
+
+# ... returning constant
+
+sub foo_scalar3 {
+    return 'foo';
+}
+is(foo_scalar3(), 'foo', 'got the right return value');
+
+# ... returning constant w/out return statement
+
+sub foo_scalar4 {
+    'foo';
+}
+is(foo_scalar4(), 'foo', 'got the right return value');
+
+## arrays
+
+sub foo_array {
+    my @foo = ('foo', 'bar', 'baz');
+    return @foo;
+}
+my @foo_array_return = foo_array();
+isa_ok(@foo_array_return, 'Array');
+is(+@foo_array_return, 3, 'got the right number of return value');
+is(@foo_array_return[0], 'foo', 'got the right return value');
+is(@foo_array_return[1], 'bar', 'got the right return value');
+is(@foo_array_return[2], 'baz', 'got the right return value');
+
+# ... without the last return statement
+
+sub foo_array2 {
+    my @foo = ('foo', 'bar', 'baz');
+    @foo;
+}
+my @foo_array_return2 = foo_array2();
+isa_ok(@foo_array_return2, 'Array');
+is(+@foo_array_return2, 3, 'got the right number of return value');
+is(@foo_array_return2[0], 'foo', 'got the right return value');
+is(@foo_array_return2[1], 'bar', 'got the right return value');
+is(@foo_array_return2[2], 'baz', 'got the right return value');
+
+# ... returning an Array constructed "on the fly"
+
+sub foo_array3 {
+    return ('foo', 'bar', 'baz');
+}
+my @foo_array_return3 = foo_array3();
+isa_ok(@foo_array_return3, 'Array');
+is(+@foo_array_return3, 3, 'got the right number of return value');
+is(@foo_array_return3[0], 'foo', 'got the right return value');
+is(@foo_array_return3[1], 'bar', 'got the right return value');
+is(@foo_array_return3[2], 'baz', 'got the right return value');
+
+# ... returning an Array constructed "on the fly" w/out return statement
+
+sub foo_array4 {
+    ('foo', 'bar', 'baz');
+}
+my @foo_array_return4 = foo_array4();
+isa_ok(@foo_array_return4, 'Array');
+is(+@foo_array_return4, 3, 'got the right number of return value');
+is(@foo_array_return4[0], 'foo', 'got the right return value');
+is(@foo_array_return4[1], 'bar', 'got the right return value');
+is(@foo_array_return4[2], 'baz', 'got the right return value');
+
+## Array Refs aka - Lists
+
+sub foo_array_ref {
+   my $foo = ['foo', 'bar', 'baz'];
+   return $foo;
+}
+my $foo_array_ref_return = foo_array_ref();
+isa_ok($foo_array_ref_return, 'List');
+is(+$foo_array_ref_return, 3, 'got the right number of return value');
+is($foo_array_ref_return[0], 'foo', 'got the right return value');
+is($foo_array_ref_return[1], 'bar', 'got the right return value');
+is($foo_array_ref_return[2], 'baz', 'got the right return value');
+
+# ... w/out the return statement
+
+sub foo_array_ref2 {
+   my $foo = ['foo', 'bar', 'baz'];
+   $foo;
+}
+my $foo_array_ref_return2 = foo_array_ref2();
+isa_ok($foo_array_ref_return2, 'List');
+is(+$foo_array_ref_return2, 3, 'got the right number of return value');
+is($foo_array_ref_return2[0], 'foo', 'got the right return value');
+is($foo_array_ref_return2[1], 'bar', 'got the right return value');
+is($foo_array_ref_return2[2], 'baz', 'got the right return value');
+
+# ... returning list constructed "on the fly"
+
+sub foo_array_ref3 {
+   return ['foo', 'bar', 'baz'];
+}
+my $foo_array_ref_return3 = foo_array_ref3();
+isa_ok($foo_array_ref_return3, 'List');
+is(+$foo_array_ref_return3, 3, 'got the right number of return value');
+is($foo_array_ref_return3[0], 'foo', 'got the right return value');
+is($foo_array_ref_return3[1], 'bar', 'got the right return value');
+is($foo_array_ref_return3[2], 'baz', 'got the right return value');
+
+# ... returning list constructed "on the fly" w/out return statement
+
+sub foo_array_ref4 {
+   ['foo', 'bar', 'baz'];
+}
+my $foo_array_ref_return4 = foo_array_ref4();
+isa_ok($foo_array_ref_return4, 'List');
+is(+$foo_array_ref_return4, 3, 'got the right number of return value');
+is($foo_array_ref_return4[0], 'foo', 'got the right return value');
+is($foo_array_ref_return4[1], 'bar', 'got the right return value');
+is($foo_array_ref_return4[2], 'baz', 'got the right return value');
+
+## hashes
+
+sub foo_hash {
+    my %foo = ('foo', 1, 'bar', 2, 'baz', 3);
+    return %foo;
+}
+
+my %foo_hash_return = foo_hash();
+isa_ok(%foo_hash_return, 'Hash');
+is(+%foo_hash_return.keys, 3, 'got the right number of return value');
+is(%foo_hash_return&lt;foo&gt;, 1, 'got the right return value');
+is(%foo_hash_return&lt;bar&gt;, 2, 'got the right return value');
+is(%foo_hash_return&lt;baz&gt;, 3, 'got the right return value');
+
+my $keys;
+lives_ok({ $keys = +(foo_hash().keys) },
+    "can call method on return value (hashref)");
+is($keys, 3, "got right result");
+lives_ok({ foo_hash()&lt;foo&gt; },
+    "can hash de-ref return value (hashref)");
+
+# now hash refs
+
+sub foo_hash_ref {
+    my %foo = ( 'foo', 1, 'bar', 2, 'baz', 3 );
+    return \%foo;
+}
+
+my $foo_hash_ref_return = foo_hash_ref();
+isa_ok($foo_hash_ref_return, 'Hash');
+is(+$foo_hash_ref_return.keys, 3, 'got the right number of return value');
+is($foo_hash_ref_return&lt;foo&gt;, 1, 'got the right return value');
+is($foo_hash_ref_return&lt;bar&gt;, 2, 'got the right return value');
+is($foo_hash_ref_return&lt;baz&gt;, 3, 'got the right return value');
+
+lives_ok({ $keys = +(foo_hash_ref().keys) },
+    "can call method on return value (hashref)");
+is($keys, 3, "got right result");
+lives_ok({ foo_hash_ref()&lt;foo&gt; },
+    "can hash de-ref return value (hashref)");</pre>
 </div><p><strong>Subroutines</strong> (keyword: <code>sub</code>) are non-inheritable routines with
 parameter lists.</p>
 <p><strong>Methods</strong> (keyword: <code>method</code>) are inheritable routines which always
@@ -441,26 +442,27 @@ source code string or a parse-tree.</p>
 <div ID=header_hidden_15 style="display: block;">- Show t/subroutines/multi_sub.t (19 lines) -</div>
 </a>
 </p>
-<div ID=hide_15 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Routine modifiers&quot;&gt;
-    :
-    :multi declared_wo_sub (Int $x) { 1 }
-    :multi declared_wo_sub (Str $x) { 2 }
-    :is declared_wo_sub(42),   1, &quot;omitting 'sub' when declaring 'multi sub's works (1)&quot;;
-    :is declared_wo_sub(&quot;42&quot;), 2, &quot;omitting 'sub' when declaring 'multi sub's works (2)&quot;;
-    :
-    :# Test for slurpy MMDs
-    :
-    :proto mmd () {...}  # L&lt;S06/&quot;Routine modifiers&quot;&gt;
-    :multi mmd () { 1 }
-    :multi mmd (*$x, *@xs) { 2 }
-    :
-    :is(mmd(), 1, 'Slurpy MMD to nullary');
-    :is(mmd(1,2,3), 2, 'Slurpy MMD to listop via args');
-    :is(mmd(1..3), 2, 'Slurpy MMD to listop via list');
-    :
-    :# Test for proto definitions
-    :</pre>
+<div ID=hide_15 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Routine modifiers"&gt;
+
+multi declared_wo_sub (Int $x) { 1 }
+multi declared_wo_sub (Str $x) { 2 }
+is declared_wo_sub(42),   1, "omitting 'sub' when declaring 'multi sub's works (1)";
+is declared_wo_sub("42"), 2, "omitting 'sub' when declaring 'multi sub's works (2)";
+
+# Test for slurpy MMDs
+
+proto mmd () {...}  # L&lt;S06/"Routine modifiers"&gt;
+multi mmd () { 1 }
+multi mmd (*$x, *@xs) { 2 }
+
+is(mmd(), 1, 'Slurpy MMD to nullary');
+is(mmd(1,2,3), 2, 'Slurpy MMD to listop via args');
+is(mmd(1..3), 2, 'Slurpy MMD to listop via list');
+
+# Test for proto definitions
+</pre>
 </div><p><strong>Multimethods</strong> (keyword: <code>multi</code>) are routines that can have multiple
 variants that share the same name, selected by arity, types, or some
 other constraints.</p>
@@ -527,8 +529,9 @@ with the <a href="#item_is_rw"><code>is rw</code></a> trait:</p>
 <div ID=header_hidden_29 style="display: block;">- Show t/data_types/anon_block.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_29 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Blocks&quot;&gt;</pre>
+<div ID=hide_29 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Blocks"&gt;</pre>
 </div><p>Raw blocks are also executable code structures in Perl 6.</p>
 <p>Every block defines an object of type <code>Code</code>, which may either be
 executed immediately or passed on as a <code>Code</code> object.  A
@@ -547,11 +550,12 @@ by a comma or comma surrogate.</p>
 <div ID=header_hidden_20 style="display: block;">- Show t/subroutines/pointy.t (4 lines) -</div>
 </a>
 </p>
-<div ID=hide_20 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;&quot;Pointy blocks&quot;&quot;&gt;
-    :
-    :=cut
-    :</pre>
+<div ID=hide_20 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/""Pointy blocks""&gt;
+
+=cut
+</pre>
 </div><p>Semantically the arrow operator <code>-&gt;</code> is almost a synonym for
 the anonymous <code>sub</code> keyword, except that the parameter list of a
 pointy block does not require parentheses, and a pointy block may not be
@@ -576,28 +580,29 @@ by <code>&amp;?BLOCK</code>, not <code>&amp;?ROUTINE</code>.</p>
 <div ID=header_hidden_22 style="display: block;">- Show t/subroutines/pointy.t (21 lines) -</div>
 </a>
 </p>
-<div ID=hide_22 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;&quot;Pointy blocks&quot;&quot; /will return from the innermost enclosing sub or method&gt;
-    :my $str = '';
-    :
-    :sub outer {  
-    :    my $s = -&gt; { 
-    :        is(&amp;?ROUTINE.name, '&amp;main::outer', 'pointy still sees outer\'s &amp;?ROUTINE'); 
-    :
-    :        $str ~= 'inner'; 
-    :        return 'inner ret'; 
-    :    };
-    :    $s.(); 
-    :    $str ~= 'outer';
-    :    return 'outer ret';
-    :}
-    :
-    :is outer(), 'inner ret', 'return in pointy returns from enclosing sub';
-    :is $str, 'inner', 'return in pointy returns from enclosing sub';
-    :
-    :# What about nested pointies -&gt; { ... -&gt; {} }?
-    :
-    :</pre>
+<div ID=hide_22 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/""Pointy blocks"" /will return from the innermost enclosing sub or method&gt;
+my $str = '';
+
+sub outer {  
+    my $s = -&gt; { 
+        is(&amp;?ROUTINE.name, '&amp;main::outer', 'pointy still sees outer\'s &amp;?ROUTINE'); 
+
+        $str ~= 'inner'; 
+        return 'inner ret'; 
+    };
+    $s.(); 
+    $str ~= 'outer';
+    return 'outer ret';
+}
+
+is outer(), 'inner ret', 'return in pointy returns from enclosing sub';
+is $str, 'inner', 'return in pointy returns from enclosing sub';
+
+# What about nested pointies -&gt; { ... -&gt; {} }?
+
+</pre>
 </div><a name="msg_21"></a>
 <a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
 <div ID=header_shown_21 style="display: none;">- Hide t/subroutines/pointy.t (line 50 ~ line 60) -
@@ -605,18 +610,19 @@ by <code>&amp;?BLOCK</code>, not <code>&amp;?ROUTINE</code>.</p>
 <div ID=header_hidden_21 style="display: block;">- Show t/subroutines/pointy.t (11 lines) -</div>
 </a>
 </p>
-<div ID=hide_21 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;&quot;Pointy blocks&quot;&quot; /behaves like a block with respect to control exceptions/&gt;
-    :my $n = 1;
-    :my $s = -&gt; { 
-    :    last if $n == 10;
-    :    $n++;
-    :    redo if $n &lt; 10;
-    :};
-    :try { $s.() };
-    :is($!, undef, 'pointy with block control exceptions', :todo&lt;feature&gt;);
-    :is $n, 10, &quot;pointy control exceptions ran&quot;, :todo&lt;feature&gt;;
-    :</pre>
+<div ID=hide_21 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/""Pointy blocks"" /behaves like a block with respect to control exceptions/&gt;
+my $n = 1;
+my $s = -&gt; { 
+    last if $n == 10;
+    $n++;
+    redo if $n &lt; 10;
+};
+try { $s.() };
+is($!, undef, 'pointy with block control exceptions', :todo&lt;feature&gt;);
+is $n, 10, "pointy control exceptions ran", :todo&lt;feature&gt;;
+</pre>
 </div><p>
 </p>
 <h2><a name="Stub20declarations">Stub declarations</a></h2>
@@ -672,109 +678,110 @@ use ``<code>package GLOBAL {...}</code>'' around the declaration.</p>
 <div ID=header_hidden_12 style="display: block;">- Show t/subroutines/lvalue_subroutines.t (102 lines) -</div>
 </a>
 </p>
-<div ID=hide_12 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Lvalue subroutines&quot;&gt;
-    :
-    :=cut
-    :
-    :# Lvalue subrefs
-    :{
-    :  my $var1 = 1;
-    :  my $var2 = 2;
-    :
-    :  my $lastvar = sub () is rw { return $var2      };
-    :  my $prevvar = sub () is rw { return $lastvar() };
-    :
-    :  $lastvar() = 3;
-    :  is $var2, 3, &quot;lvalue subroutine references work (simple)&quot;;
-    :
-    :  $prevvar() = 4;
-    :  is $var2, 4, &quot;lvalue subroutine references work (nested)&quot;;
-    :}
-    :
-    :{
-    :  my $var = 42;
-    :  my $notlvalue = sub () { return $var };
-    :
-    :  dies_ok { $notlvalue() = 23 },
-    :    &quot;assigning to non-rw subrefs should die&quot;, :todo&lt;bug&gt;;
-    :  is $var, 42,
-    :    &quot;assigning to non-rw subrefs shouldn't modify the original variable&quot;, :todo&lt;bug&gt;;
-    :}
-    :
-    :{
-    :  my $var1 = 1;
-    :  my $var2 = 2;
-    :
-    :  sub lastvar is rw { return $var2; }
-    :  sub prevvar is rw { return lastvar(); }
-    :
-    :  lastvar() = 3;
-    :  is($var2, 3, &quot;lvalue subroutines work (simple)&quot;);
-    :
-    :  prevvar() = 4;
-    :  is($var2, 4, &quot;lvalue subroutines work (nested)&quot;);
-    :}
-    :
-    :{
-    :  my $var = 42;
-    :
-    :  # S6 says that lvalue subroutines are marked out by 'is rw'
-    :  sub notlvalue { return $val1; } # without rw
-    :
-    :  dies_ok { notlvalue() = 5 },
-    :    &quot;assigning to non-rw subs should die&quot;;
-    :  is $var, 42,
-    :    &quot;assigning to non-rw subs shouldn't modify the original variable&quot;;
-    :}
-    :
-    :sub check ($passwd) { return $password eq &quot;fish&quot;; };
-    :
-    :eval 'sub checklastval ($passwd) is rw {
-    :    my $proxy is Proxy(
-    :    FETCH =&gt; sub ($self) {
-    :            return lastval();
-    :         },
-    :    STORE =&gt; sub ($self, $val) {
-    :            die &quot;wrong password&quot; unless check($passwd);
-    :            lastval() = $val;
-    :         }
-    :    );
-    :    return $proxy;
-    :};';
-    :
-    :my $errors;
-    :eval 'try { checklastval(&quot;octopus&quot;) = 10 }; $errors=$!;';
-    :is($errors, &quot;wrong password&quot;, 'checklastval STORE can die', :todo&lt;feature&gt;);
-    :
-    :# Above test may well die for the wrong reason, if the Proxy stuff didn't
-    :# parse OK, it will complain that it couldn't find the desired subroutine
-    :eval_is('checklastval(&quot;fish&quot;) = 12; $val2', 12, 'proxy lvalue subroutine STORE works', :todo&lt;feature&gt;);
-    :my $resultval;
-    :eval '$resultval = checklastval(&quot;fish&quot;);';
-    :is($resultval, 12, 'proxy lvalue subroutine FETCH works', :todo&lt;feature&gt;);
-    :
-    :my $realvar = &quot;foo&quot;;
-    :sub proxyvar ($prefix) is rw {
-    :    return Proxy.new(
-    :        FETCH =&gt; { $prefix ~ lc($realvar) },
-    :        STORE =&gt; { lc($realvar = $^val) },
-    :    );
-    :}
-    :is try { proxyvar(&quot;PRE&quot;) }, 'PREfoo', 'proxy lvalue subroutine FETCH works', :todo&lt;feature&gt;;
-    :# Return value of assignments of Proxy objects is decided now.
-    :# See thread &quot;Assigning Proxy objects&quot; on p6l,
-    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/21838">http://www.nntp.perl.org/group/perl.perl6.language/21838</a>&quot;&gt;.
-    :# Quoting Larry:
-    :#   The intention is that lvalue subs behave in all respects as if they
-    :#   were variables.  So consider what
-    :#   
-    :#       say $nonproxy = 40;
-    :#   
-    :#   should do.
-    :is try { proxyvar(&quot;PRE&quot;) = &quot;BAR&quot; }, 'BAR',
-    :    'proxy lvalue subroutine STORE works and returns the correct value', :todo&lt;feature&gt;;
-    :is $realvar, 'BAR', 'variable was modified', :todo&lt;feature&gt;;</pre>
+<div ID=hide_12 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Lvalue subroutines"&gt;
+
+=cut
+
+# Lvalue subrefs
+{
+  my $var1 = 1;
+  my $var2 = 2;
+
+  my $lastvar = sub () is rw { return $var2      };
+  my $prevvar = sub () is rw { return $lastvar() };
+
+  $lastvar() = 3;
+  is $var2, 3, "lvalue subroutine references work (simple)";
+
+  $prevvar() = 4;
+  is $var2, 4, "lvalue subroutine references work (nested)";
+}
+
+{
+  my $var = 42;
+  my $notlvalue = sub () { return $var };
+
+  dies_ok { $notlvalue() = 23 },
+    "assigning to non-rw subrefs should die", :todo&lt;bug&gt;;
+  is $var, 42,
+    "assigning to non-rw subrefs shouldn't modify the original variable", :todo&lt;bug&gt;;
+}
+
+{
+  my $var1 = 1;
+  my $var2 = 2;
+
+  sub lastvar is rw { return $var2; }
+  sub prevvar is rw { return lastvar(); }
+
+  lastvar() = 3;
+  is($var2, 3, "lvalue subroutines work (simple)");
+
+  prevvar() = 4;
+  is($var2, 4, "lvalue subroutines work (nested)");
+}
+
+{
+  my $var = 42;
+
+  # S6 says that lvalue subroutines are marked out by 'is rw'
+  sub notlvalue { return $val1; } # without rw
+
+  dies_ok { notlvalue() = 5 },
+    "assigning to non-rw subs should die";
+  is $var, 42,
+    "assigning to non-rw subs shouldn't modify the original variable";
+}
+
+sub check ($passwd) { return $password eq "fish"; };
+
+eval 'sub checklastval ($passwd) is rw {
+    my $proxy is Proxy(
+    FETCH =&gt; sub ($self) {
+            return lastval();
+         },
+    STORE =&gt; sub ($self, $val) {
+            die "wrong password" unless check($passwd);
+            lastval() = $val;
+         }
+    );
+    return $proxy;
+};';
+
+my $errors;
+eval 'try { checklastval("octopus") = 10 }; $errors=$!;';
+is($errors, "wrong password", 'checklastval STORE can die', :todo&lt;feature&gt;);
+
+# Above test may well die for the wrong reason, if the Proxy stuff didn't
+# parse OK, it will complain that it couldn't find the desired subroutine
+eval_is('checklastval("fish") = 12; $val2', 12, 'proxy lvalue subroutine STORE works', :todo&lt;feature&gt;);
+my $resultval;
+eval '$resultval = checklastval("fish");';
+is($resultval, 12, 'proxy lvalue subroutine FETCH works', :todo&lt;feature&gt;);
+
+my $realvar = "foo";
+sub proxyvar ($prefix) is rw {
+    return Proxy.new(
+        FETCH =&gt; { $prefix ~ lc($realvar) },
+        STORE =&gt; { lc($realvar = $^val) },
+    );
+}
+is try { proxyvar("PRE") }, 'PREfoo', 'proxy lvalue subroutine FETCH works', :todo&lt;feature&gt;;
+# Return value of assignments of Proxy objects is decided now.
+# See thread "Assigning Proxy objects" on p6l,
+# L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/21838"&gt;.
+# Quoting Larry:
+#   The intention is that lvalue subs behave in all respects as if they
+#   were variables.  So consider what
+#   
+#       say $nonproxy = 40;
+#   
+#   should do.
+is try { proxyvar("PRE") = "BAR" }, 'BAR',
+    'proxy lvalue subroutine STORE works and returns the correct value', :todo&lt;feature&gt;;
+is $realvar, 'BAR', 'variable was modified', :todo&lt;feature&gt;;</pre>
 </div><p>Lvalue subroutines return a ``proxy'' object that can be assigned to.
 It's known as a proxy because the object usually represents the
 purpose or outcome of the subroutine call.</p>
@@ -811,77 +818,78 @@ the value of the proxy.</p>
 <div ID=header_hidden_14 style="display: block;">- Show t/oo/methods/overload.t (70 lines) -</div>
 </a>
 </p>
-<div ID=hide_14 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Operator overloading&quot;&gt;
-    :# Later, we want to run the same tests with two classes, Foo and Bar.
-    :# Foo overloads the operators by using multi methods, Bar by using multi subs.
-    :# But as currently both Foo and Bar do not compile, we have to create a
-    :# stubclass, which is then given to &amp;run_tests_with.
-    :# But if the class does compile, $foo_class and $bar_class will be set to the
-    :# correct classes (Foo and Bar), and the tests have a chance to succeed.
-    :class StubClass {}
-    :my ($foo_class, $bar_class) = (StubClass, StubClass);
-    :
-    :eval '
-    :    class Foo {
-    :    has $.bar is rw;
-    :    multi method prefix:&lt;~&gt; ($self)  { return $.bar }
-    :    mutli method infix:&lt;+&gt;  ($a, $b) { return &quot;$a $b&quot; }
-    :    }
-    :
-    :    $foo_class = Foo;
-    :';
-    :
-    :eval '
-    :    class Bar {
-    :    has $.bar is rw;
-    :    }
-    :
-    :    multi sub prefix:&lt;~&gt; (Bar $self)      { return $self.bar }
-    :    mutli sub infix:&lt;+&gt;  (Bar $a, Bar $b) { return &quot;$a $b&quot; }
-    :
-    :    $bar_class = Bar;
-    :';
-    :
-    :run_tests_with($foo_class);
-    :run_tests_with($bar_class);
-    :
-    :sub run_tests_with($class) {
-    :    {
-    :    my $val;
-    :    lives_ok {
-    :        my $foo = $class.new();
-    :        $foo.bar = 'software';
-    :        $val = &quot;$foo&quot;
-    :    }, '... class methods work for class', :todo&lt;feature&gt;;
-    :    is($val, 'software', '... basic prefix operator overloading worked', :todo&lt;feature&gt;);
-    :
-    :    lives_ok {
-    :        my $foo = $class.new();
-    :        $foo.bar = 'software';
-    :        $val = $foo + $foo;
-    :    }, '... class methods work for class', :todo&lt;feature&gt;;
-    :    is($val, 'software software', '... basic infix operator overloading worked', :todo&lt;feature&gt;);
-    :    }
-    :
-    :    # Test that the object is correctly stringified when it is in an array.
-    :    # And test that »...« automagically work, too.
-    :    {
-    :      my $obj;
-    :      lives_ok {
-    :      $obj     = $class.new;
-    :      $obj.bar = &quot;pugs&quot;;
-    :      }, &quot;instantiating a class which defines operators worked&quot;, :todo&lt;feature&gt;;
-    :
-    :      my @foo = ($obj, $obj, $obj);
-    :      my $res;
-    :      lives_ok { $res = ~@foo }, &quot;stringification didn't die&quot;, :todo&lt;feature&gt;;
-    :      is $res, &quot;pugs pugs pugs&quot;, &quot;stringification overloading worked in array stringification&quot;, :todo&lt;feature&gt;;
-    :
-    :      lives_ok { $res = ~[@foo »~« &quot;!&quot;] }, &quot;stringification with hyperization didn't die&quot;, :todo&lt;feature&gt;;
-    :      is $res, &quot;pugs! pugs! pugs!&quot;, &quot;stringification overloading was hyperized correctly&quot;, :todo&lt;feature&gt;;
-    :    }
-    :}</pre>
+<div ID=hide_14 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Operator overloading"&gt;
+# Later, we want to run the same tests with two classes, Foo and Bar.
+# Foo overloads the operators by using multi methods, Bar by using multi subs.
+# But as currently both Foo and Bar do not compile, we have to create a
+# stubclass, which is then given to &amp;run_tests_with.
+# But if the class does compile, $foo_class and $bar_class will be set to the
+# correct classes (Foo and Bar), and the tests have a chance to succeed.
+class StubClass {}
+my ($foo_class, $bar_class) = (StubClass, StubClass);
+
+eval '
+    class Foo {
+    has $.bar is rw;
+    multi method prefix:&lt;~&gt; ($self)  { return $.bar }
+    mutli method infix:&lt;+&gt;  ($a, $b) { return "$a $b" }
+    }
+
+    $foo_class = Foo;
+';
+
+eval '
+    class Bar {
+    has $.bar is rw;
+    }
+
+    multi sub prefix:&lt;~&gt; (Bar $self)      { return $self.bar }
+    mutli sub infix:&lt;+&gt;  (Bar $a, Bar $b) { return "$a $b" }
+
+    $bar_class = Bar;
+';
+
+run_tests_with($foo_class);
+run_tests_with($bar_class);
+
+sub run_tests_with($class) {
+    {
+    my $val;
+    lives_ok {
+        my $foo = $class.new();
+        $foo.bar = 'software';
+        $val = "$foo"
+    }, '... class methods work for class', :todo&lt;feature&gt;;
+    is($val, 'software', '... basic prefix operator overloading worked', :todo&lt;feature&gt;);
+
+    lives_ok {
+        my $foo = $class.new();
+        $foo.bar = 'software';
+        $val = $foo + $foo;
+    }, '... class methods work for class', :todo&lt;feature&gt;;
+    is($val, 'software software', '... basic infix operator overloading worked', :todo&lt;feature&gt;);
+    }
+
+    # Test that the object is correctly stringified when it is in an array.
+    # And test that »...« automagically work, too.
+    {
+      my $obj;
+      lives_ok {
+      $obj     = $class.new;
+      $obj.bar = "pugs";
+      }, "instantiating a class which defines operators worked", :todo&lt;feature&gt;;
+
+      my @foo = ($obj, $obj, $obj);
+      my $res;
+      lives_ok { $res = ~@foo }, "stringification didn't die", :todo&lt;feature&gt;;
+      is $res, "pugs pugs pugs", "stringification overloading worked in array stringification", :todo&lt;feature&gt;;
+
+      lives_ok { $res = ~[@foo »~« "!"] }, "stringification with hyperization didn't die", :todo&lt;feature&gt;;
+      is $res, "pugs! pugs! pugs!", "stringification overloading was hyperized correctly", :todo&lt;feature&gt;;
+    }
+}</pre>
 </div><a name="msg_13"></a>
 <a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
 <div ID=header_shown_13 style="display: none;">- Hide t/operators/operator_overloading.t (line 11 ~ line 118) -
@@ -889,115 +897,116 @@ the value of the proxy.</p>
 <div ID=header_hidden_13 style="display: block;">- Show t/operators/operator_overloading.t (108 lines) -</div>
 </a>
 </p>
-<div ID=hide_13 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Operator overloading&quot;&gt;
-    :
-    :=cut
-    :
-    :# This set of tests is very basic for now.
-    :
-    :sub prefix:&lt;X&gt; ($thing) { return &quot;ROUGHLY$thing&quot;; };
-    :
-    :is(X &quot;fish&quot;, &quot;ROUGHLYfish&quot;,
-    :   'prefix operator overloading for new operator');
-    :
-    :sub prefix:&lt;±&gt; ($thing) { return &quot;AROUND$thing&quot;; };
-    :is ± &quot;fish&quot;, &quot;AROUNDfish&quot;, 'prefix operator overloading for new operator (unicode)';
-    :sub prefix:&lt;(+-)&gt; ($thing) { return &quot;ABOUT$thing&quot;; };
-    :is (+-) &quot;fish&quot;, &quot;ABOUTfish&quot;, 'prefix operator overloading for new operator (nasty)';
-    :
-    :{
-    :  my sub prefix:&lt;-&gt;($thing) { return &quot;CROSS$thing&quot;; };
-    :  is(-&quot;fish&quot;, &quot;CROSSfish&quot;,
-    :     'prefix operator overloading for existing operator (but only lexically so we don\'t mess up runtime internals (needed at least for PIL2JS, probably for PIL-Run, too)');
-    :}
-    :
-    :sub infix:&lt;×&gt; ($a, $b) { $a * $b }
-    :is(5 × 3, 15, &quot;infix Unicode operator&quot;);
-    :
-    :sub infix:&lt;C&gt; ($text, $owner) { return &quot;$text copyright $owner&quot;; };
-    :is &quot;romeo &amp; juliet&quot; C &quot;Shakespeare&quot;, &quot;romeo &amp; juliet copyright Shakespeare&quot;,
-    :    'infix operator overloading for new operator';
-    :
-    :sub infix:&lt;©&gt; ($text, $owner) { return &quot;$text Copyright $owner&quot;; };
-    :is &quot;romeo &amp; juliet&quot; © &quot;Shakespeare&quot;, &quot;romeo &amp; juliet Copyright Shakespeare&quot;,
-    :    'infix operator overloading for new operator (unicode)';
-    :
-    :sub infix:&lt;(C)&gt; ($text, $owner) { return &quot;$text CopyRight $owner&quot;; };
-    :is &quot;romeo &amp; juliet&quot; (C) &quot;Shakespeare&quot;, &quot;romeo &amp; juliet CopyRight Shakespeare&quot;,
-    :    'infix operator overloading for new operator (nasty)';
-    :
-    :sub infix:«_&lt;_»($one, $two) { return 42 }
-    :is 3 _&lt;_ 5, 42, &quot;frenchquoted infix sub&quot;;
-    :
-    :sub postfix:&lt;W&gt; ($wobble) { return &quot;ANDANDAND$wobble&quot;; };
-    :
-    :is(&quot;boop&quot; W, &quot;ANDANDANDboop&quot;, 
-    :   'postfix operator overloading for new operator');
-    :
-    :sub postfix:&lt;&amp;&amp;&amp;&amp;&amp;&gt; ($wobble) { return &quot;ANDANDANDANDAND$wobble&quot;; };
-    :is(&quot;boop&quot;&amp;&amp;&amp;&amp;&amp;, &quot;ANDANDANDANDANDboop&quot;,
-    :   &quot;postfix operator overloading for new operator (weird)&quot;);
-    :
-    :my $var = 0;
-    :eval_ok('macro circumfix:&lt;!--...--&gt;   ($text) { &quot;&quot; }; &lt;!-- $var = 1; --&gt;; $var == 0;', 'circumfix macro', :todo&lt;feature&gt;);
-    :
-    :# demonstrate sum prefix
-    :
-    :sub prefix:&lt;Σ&gt; ($x) { [+] *$x }
-    :is(Σ [1..10], 55, &quot;sum prefix operator&quot;);
-    :
-    :# check that the correct overloaded method is called
-    :multi postfix:&lt;!&gt; ($x) { [*] 1..$x }
-    :multi postfix:&lt;!&gt; (Str $x) { return($x.uc ~ &quot;!!!&quot;) }
-    :
-    :is(10!, 3628800, &quot;factorial postfix operator&quot;);
-    :is(&quot;boobies&quot;!, &quot;BOOBIES!!!&quot;, &quot;correct overloaded method called&quot;);
-    :
-    :# Overloading by setting the appropriate code variable
-    :{
-    :  my &amp;infix:&lt;plus&gt;;
-    :  BEGIN {
-    :    &amp;infix:&lt;plus&gt; := { $^a + $^b };
-    :  }
-    :
-    :  is 3 plus 5, 8, 'overloading an operator using &quot;my &amp;infix:&lt;...&gt;&quot; worked';
-    :}
-    :
-    :# Overloading by setting the appropriate code variable using symbolic
-    :# dereferentiation
-    :{
-    :  my &amp;infix:&lt;times&gt;;
-    :  BEGIN {
-    :    &amp;::(&quot;infix:&lt;times&gt;&quot;) := { $^a * $^b };
-    :  }
-    :
-    :  is 3 times 5, 15, 'operator overloading using symbolic dereferentiation';
-    :}
-    :
-    :# Accessing an operator using its subroutine name
-    :{
-    :  is &amp;infix:&lt;+&gt;(2, 3), 5, &quot;accessing a builtin operator using its subroutine name&quot;;
-    :
-    :  my &amp;infix:&lt;z&gt; := { $^a + $^b };
-    :  is &amp;infix:&lt;z&gt;(2, 3), 5, &quot;accessing a userdefined operator using its subroutine name&quot;;
-    :
-    :  is ~(&amp;infix:&lt;»+«&gt;([1,2,3],[4,5,6])), &quot;5 7 9&quot;, &quot;accessing a hyperoperator using its subroutine name&quot;;
-    :}
-    :
-    :# Overriding infix:&lt;;&gt;
-    :{
-    :    my proto infix:&lt;;&gt; ($a, $b) { $a + $b }
-    :    is (3 ; 2), 5  # XXX correct?
-    :}
-    :
-    :# [NOTE]
-    :# pmichaud ruled that prefix:&lt;;&gt; and postfix:&lt;;&gt; shouldn't be defined by
-    :# the synopses:
-    :#   <a href="http://colabti.de/irclogger/irclogger_log/perl6?date=2006-07-29">http://colabti.de/irclogger/irclogger_log/perl6?date=2006-07-29</a>,Sat&amp;sel=189#l299
-    :# so we won't test them here.
-    :
-    :# Overriding prefix:&lt;if&gt;</pre>
+<div ID=hide_13 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Operator overloading"&gt;
+
+=cut
+
+# This set of tests is very basic for now.
+
+sub prefix:&lt;X&gt; ($thing) { return "ROUGHLY$thing"; };
+
+is(X "fish", "ROUGHLYfish",
+   'prefix operator overloading for new operator');
+
+sub prefix:&lt;±&gt; ($thing) { return "AROUND$thing"; };
+is ± "fish", "AROUNDfish", 'prefix operator overloading for new operator (unicode)';
+sub prefix:&lt;(+-)&gt; ($thing) { return "ABOUT$thing"; };
+is (+-) "fish", "ABOUTfish", 'prefix operator overloading for new operator (nasty)';
+
+{
+  my sub prefix:&lt;-&gt;($thing) { return "CROSS$thing"; };
+  is(-"fish", "CROSSfish",
+     'prefix operator overloading for existing operator (but only lexically so we don\'t mess up runtime internals (needed at least for PIL2JS, probably for PIL-Run, too)');
+}
+
+sub infix:&lt;×&gt; ($a, $b) { $a * $b }
+is(5 × 3, 15, "infix Unicode operator");
+
+sub infix:&lt;C&gt; ($text, $owner) { return "$text copyright $owner"; };
+is "romeo &amp; juliet" C "Shakespeare", "romeo &amp; juliet copyright Shakespeare",
+    'infix operator overloading for new operator';
+
+sub infix:&lt;©&gt; ($text, $owner) { return "$text Copyright $owner"; };
+is "romeo &amp; juliet" © "Shakespeare", "romeo &amp; juliet Copyright Shakespeare",
+    'infix operator overloading for new operator (unicode)';
+
+sub infix:&lt;(C)&gt; ($text, $owner) { return "$text CopyRight $owner"; };
+is "romeo &amp; juliet" (C) "Shakespeare", "romeo &amp; juliet CopyRight Shakespeare",
+    'infix operator overloading for new operator (nasty)';
+
+sub infix:«_&lt;_»($one, $two) { return 42 }
+is 3 _&lt;_ 5, 42, "frenchquoted infix sub";
+
+sub postfix:&lt;W&gt; ($wobble) { return "ANDANDAND$wobble"; };
+
+is("boop" W, "ANDANDANDboop", 
+   'postfix operator overloading for new operator');
+
+sub postfix:&lt;&amp;&amp;&amp;&amp;&amp;&gt; ($wobble) { return "ANDANDANDANDAND$wobble"; };
+is("boop"&amp;&amp;&amp;&amp;&amp;, "ANDANDANDANDANDboop",
+   "postfix operator overloading for new operator (weird)");
+
+my $var = 0;
+eval_ok('macro circumfix:&lt;!--...--&gt;   ($text) { "" }; &lt;!-- $var = 1; --&gt;; $var == 0;', 'circumfix macro', :todo&lt;feature&gt;);
+
+# demonstrate sum prefix
+
+sub prefix:&lt;Σ&gt; ($x) { [+] *$x }
+is(Σ [1..10], 55, "sum prefix operator");
+
+# check that the correct overloaded method is called
+multi postfix:&lt;!&gt; ($x) { [*] 1..$x }
+multi postfix:&lt;!&gt; (Str $x) { return($x.uc ~ "!!!") }
+
+is(10!, 3628800, "factorial postfix operator");
+is("boobies"!, "BOOBIES!!!", "correct overloaded method called");
+
+# Overloading by setting the appropriate code variable
+{
+  my &amp;infix:&lt;plus&gt;;
+  BEGIN {
+    &amp;infix:&lt;plus&gt; := { $^a + $^b };
+  }
+
+  is 3 plus 5, 8, 'overloading an operator using "my &amp;infix:&lt;...&gt;" worked';
+}
+
+# Overloading by setting the appropriate code variable using symbolic
+# dereferentiation
+{
+  my &amp;infix:&lt;times&gt;;
+  BEGIN {
+    &amp;::("infix:&lt;times&gt;") := { $^a * $^b };
+  }
+
+  is 3 times 5, 15, 'operator overloading using symbolic dereferentiation';
+}
+
+# Accessing an operator using its subroutine name
+{
+  is &amp;infix:&lt;+&gt;(2, 3), 5, "accessing a builtin operator using its subroutine name";
+
+  my &amp;infix:&lt;z&gt; := { $^a + $^b };
+  is &amp;infix:&lt;z&gt;(2, 3), 5, "accessing a userdefined operator using its subroutine name";
+
+  is ~(&amp;infix:&lt;»+«&gt;([1,2,3],[4,5,6])), "5 7 9", "accessing a hyperoperator using its subroutine name";
+}
+
+# Overriding infix:&lt;;&gt;
+{
+    my proto infix:&lt;;&gt; ($a, $b) { $a + $b }
+    is (3 ; 2), 5  # XXX correct?
+}
+
+# [NOTE]
+# pmichaud ruled that prefix:&lt;;&gt; and postfix:&lt;;&gt; shouldn't be defined by
+# the synopses:
+#   http://colabti.de/irclogger/irclogger_log/perl6?date=2006-07-29,Sat&amp;sel=189#l299
+# so we won't test them here.
+
+# Overriding prefix:&lt;if&gt;</pre>
 </div><p>Operators are just subroutines with special names and scoping.
 An operator name consists of a grammatical category name followed by
 a single colon followed by an operator name specified as if it were
@@ -1261,101 +1270,102 @@ though that's already the default for positional parameters:</p>
 <div ID=header_hidden_17 style="display: block;">- Show t/subroutines/sub_named_params.t (94 lines) -</div>
 </a>
 </p>
-<div ID=hide_17 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Required parameters&quot; /declared with a trailing/&gt;
-    :sub mandatory (:$param!) {
-    :    return $param;
-    :}
-    :
-    :is(mandatory(param =&gt; 5) , 5, &quot;named mandatory parameter is returned&quot;);
-    :is(try { mandatory() }, undef, &quot;not specifying a mandatory parameter fails&quot;);
-    :
-    :sub mandatory_by_trait (:$param is required) {
-    :    return $param;
-    :}
-    :
-    :is(mandatory_by_trait(param =&gt; 5) , 5, &quot;named mandatory parameter is returned&quot;);
-    :is(try { mandatory_by_trait() }, undef, &quot;not specifying a mandatory parameter fails&quot;);
-    :
-    :
-    :# From L&lt;S06/&quot;Named parameters&quot; /sub formalize/&gt;
-    :sub formalize($text, :$case, :$justify)  returns List {
-    :   return($text,$case,$justify); 
-    :}
-    :
-    :{
-    :my ($text,$case,$justify)  = formalize('title', case=&gt;'upper');
-    :is($text,'title', &quot;text param was positional&quot;);
-    :is($justify, undef, &quot;justification param was not given&quot;);
-    :is($case, 'upper', &quot;case param was named, and in justification param's position&quot;);
-    :}
-    :
-    :
-    :{
-    :my ($text,$case,$justify)   = formalize('title', justify=&gt;'left');
-    :is($text,'title', &quot;text param was positional&quot;);
-    :is($justify, 'left', &quot;justify param was named&quot;);
-    :is($case, undef, &quot;case was not given at all&quot;);
-    :}
-    :
-    :{
-    :my  ($text,$case,$justify) = formalize(&quot;title&quot;, :justify&lt;right&gt;, :case&lt;title&gt;);
-    :
-    :is($text,'title', &quot;title param was positional&quot;);
-    :is($justify, 'right', &quot;justify param was named with funny syntax&quot;);
-    :is($case, 'title', &quot;case param was named with funny syntax&quot;);
-    :}
-    :
-    :{
-    :sub h($a,$b,$d) { $d ?? h($b,$a,$d-1) !! $a~$b }
-    :
-    :is(h('a','b',1),'ba',&quot;parameters don\'t bind incorrectly&quot;);
-    :}
-    :
-    :# Slurpy Hash Params
-    :{
-    :sub slurpee(*%args) { return %args }
-    :my %fellowship = slurpee(hobbit =&gt; 'Frodo', wizard =&gt; 'Gandalf');
-    :is(%fellowship&lt;hobbit&gt;, 'Frodo', &quot;hobbit arg was slurped&quot;);
-    :is(%fellowship&lt;wizard&gt;, 'Gandalf', &quot;wizard arg was slurped&quot;);
-    :is(+%fellowship, 2, &quot;exactly 2 arguments were slurped&quot;);
-    :is(%fellowship&lt;dwarf&gt;, undef, &quot;dwarf arg was not given&quot;);
-    :}
-    :
-    :{
-    :  if $*OS eq &quot;browser&quot; {
-    :    skip 5, &quot;skipping tests which infloop under PIL2JS&quot;;
-    :  } else {
-    :    sub named_and_slurp(:$grass, *%rest) { return($grass, %rest) }
-    :    my ($grass, %rest) = named_and_slurp(sky =&gt; 'blue', grass =&gt; 'green', fire =&gt; 'red');
-    :    is($grass, 'green', &quot;explicit named arg received despite slurpy hash&quot;);
-    :    is(+%rest, 2, &quot;exactly 2 arguments were slurped&quot;);
-    :    is(%rest&lt;sky&gt;, 'blue', &quot;sky argument was slurped&quot;);
-    :    is(%rest&lt;fire&gt;, 'red', &quot;fire argument was slurped&quot;);
-    :    is(%rest&lt;grass&gt;, undef, &quot;grass argument was NOT slurped&quot;);
-    :  }
-    :}
-    :
-    :{
-    :my $ref;
-    :sub setref($refin) {
-    :    $ref = $refin;
-    :}
-    :my $aref = [0];
-    :setref(refin =&gt; $aref);
-    :$aref[0]++;
-    :is($aref[0], 1, &quot;aref actually implemented&quot;);
-    :is($ref[0], 1, &quot;ref is the same as aref&quot;);
-    :}
-    :
-    :=kwid
-    :
-    := AUTHOR
-    :
-    :Jesse Vincent &lt;jesse@bestpractical.com&gt;
-    :Carl Masak &lt;cmasak@gmail.com&gt;
-    :
-    :=cut</pre>
+<div ID=hide_17 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Required parameters" /declared with a trailing/&gt;
+sub mandatory (:$param!) {
+    return $param;
+}
+
+is(mandatory(param =&gt; 5) , 5, "named mandatory parameter is returned");
+is(try { mandatory() }, undef, "not specifying a mandatory parameter fails");
+
+sub mandatory_by_trait (:$param is required) {
+    return $param;
+}
+
+is(mandatory_by_trait(param =&gt; 5) , 5, "named mandatory parameter is returned");
+is(try { mandatory_by_trait() }, undef, "not specifying a mandatory parameter fails");
+
+
+# From L&lt;S06/"Named parameters" /sub formalize/&gt;
+sub formalize($text, :$case, :$justify)  returns List {
+   return($text,$case,$justify); 
+}
+
+{
+my ($text,$case,$justify)  = formalize('title', case=&gt;'upper');
+is($text,'title', "text param was positional");
+is($justify, undef, "justification param was not given");
+is($case, 'upper', "case param was named, and in justification param's position");
+}
+
+
+{
+my ($text,$case,$justify)   = formalize('title', justify=&gt;'left');
+is($text,'title', "text param was positional");
+is($justify, 'left', "justify param was named");
+is($case, undef, "case was not given at all");
+}
+
+{
+my  ($text,$case,$justify) = formalize("title", :justify&lt;right&gt;, :case&lt;title&gt;);
+
+is($text,'title', "title param was positional");
+is($justify, 'right', "justify param was named with funny syntax");
+is($case, 'title', "case param was named with funny syntax");
+}
+
+{
+sub h($a,$b,$d) { $d ?? h($b,$a,$d-1) !! $a~$b }
+
+is(h('a','b',1),'ba',"parameters don\'t bind incorrectly");
+}
+
+# Slurpy Hash Params
+{
+sub slurpee(*%args) { return %args }
+my %fellowship = slurpee(hobbit =&gt; 'Frodo', wizard =&gt; 'Gandalf');
+is(%fellowship&lt;hobbit&gt;, 'Frodo', "hobbit arg was slurped");
+is(%fellowship&lt;wizard&gt;, 'Gandalf', "wizard arg was slurped");
+is(+%fellowship, 2, "exactly 2 arguments were slurped");
+is(%fellowship&lt;dwarf&gt;, undef, "dwarf arg was not given");
+}
+
+{
+  if $*OS eq "browser" {
+    skip 5, "skipping tests which infloop under PIL2JS";
+  } else {
+    sub named_and_slurp(:$grass, *%rest) { return($grass, %rest) }
+    my ($grass, %rest) = named_and_slurp(sky =&gt; 'blue', grass =&gt; 'green', fire =&gt; 'red');
+    is($grass, 'green', "explicit named arg received despite slurpy hash");
+    is(+%rest, 2, "exactly 2 arguments were slurped");
+    is(%rest&lt;sky&gt;, 'blue', "sky argument was slurped");
+    is(%rest&lt;fire&gt;, 'red', "fire argument was slurped");
+    is(%rest&lt;grass&gt;, undef, "grass argument was NOT slurped");
+  }
+}
+
+{
+my $ref;
+sub setref($refin) {
+    $ref = $refin;
+}
+my $aref = [0];
+setref(refin =&gt; $aref);
+$aref[0]++;
+is($aref[0], 1, "aref actually implemented");
+is($ref[0], 1, "ref is the same as aref");
+}
+
+=kwid
+
+= AUTHOR
+
+Jesse Vincent &lt;jesse@bestpractical.com&gt;
+Carl Masak &lt;cmasak@gmail.com&gt;
+
+=cut</pre>
 </div><pre>
     sub numcmp ($x!, $y!) { return $x &lt;=&gt; $y }</pre>
 <p>The corresponding arguments are evaluated in scalar context and may be
@@ -1381,38 +1391,39 @@ calling its <code>.arity</code> method:</p>
 <div ID=header_hidden_16 style="display: block;">- Show t/builtins/arity.t (31 lines) -</div>
 </a>
 </p>
-<div ID=hide_16 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Required parameters&quot; /method:/&gt;
-    :{
-    :    my sub foo () {}
-    :    is &amp;foo.arity, 0;
-    :}
-    :
-    :{
-    :    my sub foo ($a) {}
-    :    is &amp;foo.arity, 1;
-    :}
-    :
-    :{
-    :    my sub foo ($a, $b) {}
-    :    is &amp;foo.arity, 2;
-    :}
-    :
-    :{
-    :    my sub foo ($a, $b, @c) {}
-    :    is &amp;foo.arity, 3;
-    :}
-    :
-    :{
-    :    my sub foo ($a, $b, @c, %d) {}
-    :    is &amp;foo.arity, 4;
-    :}
-    :
-    :# It's not really specced in what way (*@slurpy_params) should influence
-    :# .arity. Also it's unclear what the result of &amp;multisub.arity is.
-    :# See the thread &quot;&amp;multisub.arity?&quot; on p6l started by Ingo Blechschmidt for
-    :# details:
-    :# L&lt;&quot;<a href="http://thread.gmane.org/gmane.comp.lang.perl.perl6.language/4915">http://thread.gmane.org/gmane.comp.lang.perl.perl6.language/4915</a>&quot;&gt;</pre>
+<div ID=hide_16 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Required parameters" /method:/&gt;
+{
+    my sub foo () {}
+    is &amp;foo.arity, 0;
+}
+
+{
+    my sub foo ($a) {}
+    is &amp;foo.arity, 1;
+}
+
+{
+    my sub foo ($a, $b) {}
+    is &amp;foo.arity, 2;
+}
+
+{
+    my sub foo ($a, $b, @c) {}
+    is &amp;foo.arity, 3;
+}
+
+{
+    my sub foo ($a, $b, @c, %d) {}
+    is &amp;foo.arity, 4;
+}
+
+# It's not really specced in what way (*@slurpy_params) should influence
+# .arity. Also it's unclear what the result of &amp;multisub.arity is.
+# See the thread "&amp;multisub.arity?" on p6l started by Ingo Blechschmidt for
+# details:
+# L&lt;"http://thread.gmane.org/gmane.comp.lang.perl.perl6.language/4915"&gt;</pre>
 </div><pre>
     $args_required = &amp;foo.arity;</pre>
 <p>
@@ -1435,33 +1446,34 @@ preceding parameters:</p>
 <div ID=header_hidden_31 style="display: block;">- Show t/subroutines/defaults.t (26 lines) -</div>
 </a>
 </p>
-<div ID=hide_31 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Optional parameters&quot; /Default values can be calculated at run-time/&gt;
-    :=cut
-    :
-    :plan 2;
-    :
-    :sub doubler($x) { return 2 * $x }
-    :
-    :sub value_v(Code :$func = &amp;doubler) {
-    :    return $func(5);
-    :}
-    :
-    :is(value_v, 10, &quot;default sub called&quot;);
-    :
-    :package MyPack {
-    :
-    :sub double($x) { return 2 * $x }
-    :
-    :sub val_v(Code :$func = &amp;double) is export {
-    :    return $func(5);
-    :}
-    :
-    :}
-    :
-    :use Test;
-    :
-    :ok((MyPack::val_v), &quot;default sub called in package namespace&quot;);</pre>
+<div ID=hide_31 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Optional parameters" /Default values can be calculated at run-time/&gt;
+=cut
+
+plan 2;
+
+sub doubler($x) { return 2 * $x }
+
+sub value_v(Code :$func = &amp;doubler) {
+    return $func(5);
+}
+
+is(value_v, 10, "default sub called");
+
+package MyPack {
+
+sub double($x) { return 2 * $x }
+
+sub val_v(Code :$func = &amp;double) is export {
+    return $func(5);
+}
+
+}
+
+use Test;
+
+ok((MyPack::val_v), "default sub called in package namespace");</pre>
 </div><pre>
     sub xml_tag ($tag, $endtag = matching_tag($tag) ) {...}</pre>
 <p>Arguments that correspond to optional parameters are evaluated in
@@ -1583,61 +1595,62 @@ parameter marked with a <code>\</code>.</p>
 <div ID=header_hidden_2 style="display: block;">- Show t/data_types/arglist.t (54 lines) -</div>
 </a>
 </p>
-<div ID=hide_2 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Argument list binding&quot; /single scalar parameter marked/&gt;
-    :{
-    :    my sub bar ($a, $b, $c) { &quot;$a!$b!$c&quot; }
-    :    my sub foo (\$arglist)  { bar *$arglist }
-    :
-    :    is try { foo(1,2,3) }, &quot;1!2!3&quot;,
-    :        &quot;arglist creation with \\$ works (1)&quot;, :todo&lt;feature&gt;;
-    :    dies_ok { foo(1,2,3,4) },  # too many args
-    :        &quot;arglist creation with \\$ works (2)&quot;;
-    :    dies_ok { foo(1,2) },      # too few args
-    :        &quot;arglist creation with \\$ works (3)&quot;;
-    :    is try { foo(a =&gt; 1, b =&gt; 2, c =&gt; 3) }, &quot;1!2!3&quot;,
-    :        &quot;arglist creation with \\$ works (4)&quot;, :todo&lt;feature&gt;;
-    :    is try { foo(1, b =&gt; 2, c =&gt; 3) }, &quot;1!2!3&quot;,
-    :        &quot;arglist creation with \\$ works (5)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# Arglists are first-class objects
-    :{
-    :    my $arglist;
-    :    my sub foo (\$args) { $arglist = $args }
-    :
-    :    lives_ok { foo(1,2,3,4) }, &quot;arglists are first-class objects (1)&quot;, :todo&lt;feature&gt;;
-    :    ok $arglist,               &quot;arglists are first-class objects (2)&quot;, :todo&lt;feature&gt;;
-    :
-    :    my $old_arglist = $arglist;
-    :    lives_ok { foo(5,6,7,8) }, &quot;arglists are first-class objects (3)&quot;, :todo&lt;feature&gt;;
-    :    ok $arglist,               &quot;arglists are first-class objects (4)&quot;, :todo&lt;feature&gt;;
-    :    ok !($arglist === $old_arglist), &quot;arglists are first-class objects (5)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :{
-    :    my $arglist1;
-    :    my sub foo ($args) { $arglist1 = $args }
-    :
-    :    my $arglist2 = \(1,2,3);
-    :    try { foo $arglist2 };  # note: no *$args here
-    :
-    :    cmp_ok $arglist1, &amp;infix:&lt;===&gt;, $arglist2,
-    :        &quot;unflattened arglists can be passed to subs&quot;;
-    :}
-    :
-    :# Mixing ordinary args with arglists
-    :{
-    :    my $arglist = \(:foo&lt;bar&gt;, :baz&lt;grtz&gt;);
-    :    my sub foo ($a,$b, :$foo, :$baz) { &quot;$a!$b!$foo!$baz&quot; }
-    :
-    :    dies_ok { foo *$arglist },  # too few args
-    :        &quot;mixing ordinary args with arglists (1)&quot;;
-    :    is try { foo 1,2, *$arglist }, &quot;1!2!bar!grtz&quot;,
-    :        &quot;mixing ordinary args with arglists (2)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# XXX sub foo (\@arglist)</pre>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Argument list binding" /single scalar parameter marked/&gt;
+{
+    my sub bar ($a, $b, $c) { "$a!$b!$c" }
+    my sub foo (\$arglist)  { bar *$arglist }
+
+    is try { foo(1,2,3) }, "1!2!3",
+        "arglist creation with \\$ works (1)", :todo&lt;feature&gt;;
+    dies_ok { foo(1,2,3,4) },  # too many args
+        "arglist creation with \\$ works (2)";
+    dies_ok { foo(1,2) },      # too few args
+        "arglist creation with \\$ works (3)";
+    is try { foo(a =&gt; 1, b =&gt; 2, c =&gt; 3) }, "1!2!3",
+        "arglist creation with \\$ works (4)", :todo&lt;feature&gt;;
+    is try { foo(1, b =&gt; 2, c =&gt; 3) }, "1!2!3",
+        "arglist creation with \\$ works (5)", :todo&lt;feature&gt;;
+}
+
+# Arglists are first-class objects
+{
+    my $arglist;
+    my sub foo (\$args) { $arglist = $args }
+
+    lives_ok { foo(1,2,3,4) }, "arglists are first-class objects (1)", :todo&lt;feature&gt;;
+    ok $arglist,               "arglists are first-class objects (2)", :todo&lt;feature&gt;;
+
+    my $old_arglist = $arglist;
+    lives_ok { foo(5,6,7,8) }, "arglists are first-class objects (3)", :todo&lt;feature&gt;;
+    ok $arglist,               "arglists are first-class objects (4)", :todo&lt;feature&gt;;
+    ok !($arglist === $old_arglist), "arglists are first-class objects (5)", :todo&lt;feature&gt;;
+}
+
+{
+    my $arglist1;
+    my sub foo ($args) { $arglist1 = $args }
+
+    my $arglist2 = \(1,2,3);
+    try { foo $arglist2 };  # note: no *$args here
+
+    cmp_ok $arglist1, &amp;infix:&lt;===&gt;, $arglist2,
+        "unflattened arglists can be passed to subs";
+}
+
+# Mixing ordinary args with arglists
+{
+    my $arglist = \(:foo&lt;bar&gt;, :baz&lt;grtz&gt;);
+    my sub foo ($a,$b, :$foo, :$baz) { "$a!$b!$foo!$baz" }
+
+    dies_ok { foo *$arglist },  # too few args
+        "mixing ordinary args with arglists (1)";
+    is try { foo 1,2, *$arglist }, "1!2!bar!grtz",
+        "mixing ordinary args with arglists (2)", :todo&lt;feature&gt;;
+}
+
+# XXX sub foo (\@arglist)</pre>
 </div><pre>
     sub bar ($a,$b,$c,:$mice) { say $mice }
     sub foo (\$args) { say $args.perl; &amp;bar.call($args); }</pre>
@@ -1698,42 +1711,43 @@ operator:</p>
 <div ID=header_hidden_11 style="display: block;">- Show t/subroutines/multidimensional_arglists.t (35 lines) -</div>
 </a>
 </p>
-<div ID=hide_11 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Multidimensional argument list binding&quot;&gt;
-    :
-    :sub get_multidim_arglist (*@;AoA) { @;AoA }
-    :
-    :{
-    :    my @array1 = &lt;a b c&gt;;
-    :    my @array2 = &lt;d e f&gt;;
-    :
-    :    my @AoA = try { get_multidim_arglist(@array1, @array2) };
-    :    is +@AoA,          2, &quot;basic multidim arglist binding (1)&quot;, :todo&lt;feature&gt;;
-    :    is ~@AoA[0], &quot;a b c&quot;, &quot;basic multidim arglist binding (2)&quot;, :todo&lt;feature&gt;;
-    :    is ~@AoA[1], &quot;d e f&quot;, &quot;basic multidim arglist binding (3)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :{
-    :    my @array1 = &lt;a b c&gt;;
-    :
-    :    my @AoA = try { get_multidim_arglist(@array1) };
-    :    is +@AoA,          1, &quot;multidim arglist binding with only one array (1)&quot;, :todo&lt;feature&gt;;
-    :    is ~@AoA[0], &quot;a b c&quot;, &quot;multidim arglist binding with only one array (2)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :{
-    :    dies_ok { get_multidim_arglist(1,2,3) },
-    :        &quot;three scalars are not compatible with a sub expecting a multidim arglist&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# Unspecced
-    :{
-    :    my $array1 = &lt;a b c&gt;;
-    :    my $array2 = &lt;d e f&gt;;
-    :
-    :    dies_ok { get_multidim_arglist($array1, $array2) },
-    :        &quot;two arrayrefs are not compatible with a sub expecting a multidim arglist&quot;, :todo&lt;feature&gt;;
-    :}</pre>
+<div ID=hide_11 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Multidimensional argument list binding"&gt;
+
+sub get_multidim_arglist (*@;AoA) { @;AoA }
+
+{
+    my @array1 = &lt;a b c&gt;;
+    my @array2 = &lt;d e f&gt;;
+
+    my @AoA = try { get_multidim_arglist(@array1, @array2) };
+    is +@AoA,          2, "basic multidim arglist binding (1)", :todo&lt;feature&gt;;
+    is ~@AoA[0], "a b c", "basic multidim arglist binding (2)", :todo&lt;feature&gt;;
+    is ~@AoA[1], "d e f", "basic multidim arglist binding (3)", :todo&lt;feature&gt;;
+}
+
+{
+    my @array1 = &lt;a b c&gt;;
+
+    my @AoA = try { get_multidim_arglist(@array1) };
+    is +@AoA,          1, "multidim arglist binding with only one array (1)", :todo&lt;feature&gt;;
+    is ~@AoA[0], "a b c", "multidim arglist binding with only one array (2)", :todo&lt;feature&gt;;
+}
+
+{
+    dies_ok { get_multidim_arglist(1,2,3) },
+        "three scalars are not compatible with a sub expecting a multidim arglist", :todo&lt;feature&gt;;
+}
+
+# Unspecced
+{
+    my $array1 = &lt;a b c&gt;;
+    my $array2 = &lt;d e f&gt;;
+
+    dies_ok { get_multidim_arglist($array1, $array2) },
+        "two arrayrefs are not compatible with a sub expecting a multidim arglist", :todo&lt;feature&gt;;
+}</pre>
 </div><p>Some functions take more than one list of positional and/or named arguments,
 that they wish not to be flattened into one list.  For instance, <code>zip()</code> wants
 to iterate several lists in parallel, while array and hash subscripts want to
@@ -1785,8 +1799,9 @@ argument list becomes a zero-dimensional slice.  It differs from
 <div ID=header_hidden_8 style="display: block;">- Show t/operators/pipe.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_8 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Feed operators&quot;&gt;</pre>
+<div ID=hide_8 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Feed operators"&gt;</pre>
 </div><p>The variadic list of a subroutine call can be passed in separately
 from the normal argument list, by using either of the <em>feed</em> operators:
 <code>&lt;==</code> or <code>==&gt;</code>.</p>
@@ -2068,26 +2083,27 @@ class unless you want it.  The sub above could be written as</p>
 <div ID=header_hidden_10 style="display: block;">- Show t/subroutines/subroutine.t (19 lines) -</div>
 </a>
 </p>
-<div ID=hide_10 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Unpacking array parameters&quot;&gt;
-    :
-    :=cut
-    :
-    :sub argShifter (@a is rw) {
-    :    my $first := shift @a;
-    :    return $first;
-    :}
-    :
-    :is argShifter([1]), 1,    &quot;use shift on an array argument&quot;;
-    :is argShifter([3..5]), 3, &quot;use shift on multiple array arguments&quot;;
-    :
-    :eval 'sub unpack_array ([$first, *@rest]) { return $first; }';
-    :
-    :my @array = 3..7;
-    :is(try { unpack_array(@array) }, 3, 'unpacking an array parameter', :todo&lt;feature&gt;);
-    :
-    :=pod
-    :</pre>
+<div ID=hide_10 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Unpacking array parameters"&gt;
+
+=cut
+
+sub argShifter (@a is rw) {
+    my $first := shift @a;
+    return $first;
+}
+
+is argShifter([1]), 1,    "use shift on an array argument";
+is argShifter([3..5]), 3, "use shift on multiple array arguments";
+
+eval 'sub unpack_array ([$first, *@rest]) { return $first; }';
+
+my @array = 3..7;
+is(try { unpack_array(@array) }, 3, 'unpacking an array parameter', :todo&lt;feature&gt;);
+
+=pod
+</pre>
 </div><p>Instead of specifying an array parameter as an array:</p>
 <pre>
     sub quicksort (@data, $reverse?, $inplace?) {
@@ -2119,15 +2135,16 @@ the first version.</p>
 <div ID=header_hidden_30 style="display: block;">- Show t/subroutines/subroutine.t (8 lines) -</div>
 </a>
 </p>
-<div ID=hide_30 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Unpacking hash parameters&quot;&gt;
-    :
-    :=cut
-    :
-    :eval 'sub unpack_hash({:$yo, *%other}){ return $yo; }';
-    :
-    :my %params = yo =&gt; 3, nope =&gt; 4;
-    :is(try { unpack_hash(%params) }, 3, 'unpacking a hash parameter', :todo);</pre>
+<div ID=hide_30 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Unpacking hash parameters"&gt;
+
+=cut
+
+eval 'sub unpack_hash({:$yo, *%other}){ return $yo; }';
+
+my %params = yo =&gt; 3, nope =&gt; 4;
+is(try { unpack_hash(%params) }, 3, 'unpacking a hash parameter', :todo);</pre>
 </div><p>Likewise, a hash argument can be mapped to a hash of parameters, specified
 as named parameters within curlies.  Instead of saying:</p>
 <pre>
@@ -2265,37 +2282,38 @@ can be referred to as either <code>$age</code> or <code>$!age</code>.</p>
 <div ID=header_hidden_4 style="display: block;">- Show t/builtins/ref.t (30 lines) -</div>
 </a>
 </p>
-<div ID=hide_4 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Placeholder variables&quot;&gt;
-    :my $s2a = { $^a };
-    :isa_ok($s2a, 'Block', 'it is a Parametric type (bare block with placeholder parameters)');
-    :
-    :my $s3 = -&gt; {};
-    :isa_ok($s3, 'Block', 'it is a Block type (pointy block)');
-    :
-    :# ref() on different types of scalars
-    :
-    :my $int = 0;
-    :isa_ok($int, 'Int', 'it is an Int type');
-    :
-    :# the only way I can seem to get Num is to force numeric context
-    :my $num = '';
-    :isa_ok(+$num, 'Num', 'it is an Num type');
-    :
-    :my $float = 0.5;
-    :isa_ok($float, 'Rat', 'it is an Rat type');
-    :
-    :my $string = &quot;Hello World&quot;;
-    :isa_ok($string, 'Str', 'it is a Str type');
-    :
-    :my $bool = (0 == 0);
-    :isa_ok($bool, 'Bool', 'it is a Bool type');
-    :
-    :my $pair = (&quot;foo&quot; =&gt; &quot;bar&quot;);
-    :isa_ok($pair, 'Pair', 'it is a Pair type');
-    :
-    :my $rule = rx:perl5{^hello\sworld$};
-    :isa_ok($rule, 'Pugs::Internals::VRule', 'it is a Rule type');</pre>
+<div ID=hide_4 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Placeholder variables"&gt;
+my $s2a = { $^a };
+isa_ok($s2a, 'Block', 'it is a Parametric type (bare block with placeholder parameters)');
+
+my $s3 = -&gt; {};
+isa_ok($s3, 'Block', 'it is a Block type (pointy block)');
+
+# ref() on different types of scalars
+
+my $int = 0;
+isa_ok($int, 'Int', 'it is an Int type');
+
+# the only way I can seem to get Num is to force numeric context
+my $num = '';
+isa_ok(+$num, 'Num', 'it is an Num type');
+
+my $float = 0.5;
+isa_ok($float, 'Rat', 'it is an Rat type');
+
+my $string = "Hello World";
+isa_ok($string, 'Str', 'it is a Str type');
+
+my $bool = (0 == 0);
+isa_ok($bool, 'Bool', 'it is a Bool type');
+
+my $pair = ("foo" =&gt; "bar");
+isa_ok($pair, 'Pair', 'it is a Pair type');
+
+my $rule = rx:perl5{^hello\sworld$};
+isa_ok($rule, 'Pugs::Internals::VRule', 'it is a Rule type');</pre>
 </div><p>Even though every bare block is a closure, bare blocks can't have
 explicit parameter lists. Instead, they use ``placeholder'' variables,
 marked by a caret (<code>^</code>) after their sigils.</p>
@@ -2369,224 +2387,225 @@ if and only if their types and contents are identical (that is, if
 <div ID=header_hidden_5 style="display: block;">- Show t/data_types/pair.t (217 lines) -</div>
 </a>
 </p>
-<div ID=hide_5 style="display:none; border:1px solid"><pre>
-    :    # L&lt;S06/Immutable types/Pair &quot;one-element Mapping&quot;&gt;
-    :    my $pair = :when&lt;now&gt;;
-    :    is ~(%$pair), &quot;when\tnow&quot;;
-    :    # hold back this one according to audreyt
-    :    #ok $pair.does(Hash), 'Pair does Hash';
-    :    ok (%$pair).does(Hash), '%() makes Pair to does Hash';
-    :}
-    :
-    :# lvalue Pair assignments from S06 and thread starting with
-    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/19425">http://www.nntp.perl.org/group/perl.perl6.language/19425</a>&quot;&gt;
-    :
-    :my $val;
-    :(&quot;foo&quot; =&gt; $val) = &quot;baz&quot;;
-    :is($val, &quot;baz&quot;, &quot;lvalue pairs&quot;);
-    :
-    :# illustrate a bug
-    :
-    :my $var   = 'foo' =&gt; 'bar';
-    :sub test1 (Any|Pair $pair) {
-    :    isa_ok($pair,'Pair');
-    :    my $testpair = $pair;
-    :    isa_ok($testpair,'Pair'); # new lvalue variable is also a Pair
-    :    my $boundpair := $pair;
-    :    isa_ok($boundpair,'Pair'); # bound variable is also a Pair
-    :    is($pair.key, 'foo', 'in sub test1 got the right $pair.key');
-    :    is($pair.value, 'bar', 'in sub test1 got the right $pair.value');
-    :
-    :}
-    :test1 $var;
-    :
-    :my %hash  = ('foo' =&gt; 'bar');
-    :for  %hash.pairs -&gt; $pair {
-    :    isa_ok($pair,'Pair') ; 
-    :    my $testpair = $pair;
-    :    isa_ok($testpair, 'Pair', :todo&lt;bug&gt;); # new lvalue variable is also a Pair
-    :    my $boundpair := $pair;
-    :    isa_ok($boundpair,'Pair'); # bound variable is also a Pair
-    :    is($pair.key, 'foo', 'in for loop got the right $pair.key');
-    :    is($pair.value, 'bar', 'in for loop got the right $pair.value');
-    :}
-    :
-    :sub test2 (Hash %h){
-    :    for %h.pairs -&gt; $pair {
-    :        isa_ok($pair,'Pair') ; 
-    :        is($pair.key, 'foo', 'in sub test2 got the right $pair.key');
-    :        is($pair.value, 'bar', 'in sub test2 got the right $pair.value');
-    :    }
-    :}
-    :test2 %hash;
-    :
-    :# See thread &quot;$pair[0]&quot; on p6l started by Ingo Blechschmidt:
-    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/22593">http://www.nntp.perl.org/group/perl.perl6.language/22593</a>&quot;&gt;
-    :
-    :sub test3 (Hash %h){
-    :    for %h.pairs -&gt; $pair {
-    :        isa_ok($pair,'Pair');
-    :        dies_ok({$pair[0]}, 'sub test3: access by $pair[0] should not work', :todo&lt;bug&gt;);
-    :        dies_ok({$pair[1]}, 'sub test3: access by $pair[1] should not work', :todo&lt;bug&gt;);
-    :    }
-    :}
-    :test3 %hash;
-    :
-    :=begin p6l
-    :
-    :Hm, Hash::pair? Never heard of that.  --iblech
-    :
-    :sub test4 (Hash %h){
-    :    for %h.pair -&gt; $pair {
-    :        isa_ok($pair,'Pair',:todo&lt;bug&gt;) ; 
-    :        is($pair.key, 'foo', 'sub test4: access by unspecced &quot;pair&quot; got the right $pair.key');
-    :        is($pair.value, 'bar', 'sub test4: access by unspecced &quot;pair&quot; got the right $pair.value');
-    :
-    :    }
-    :}
-    :test4 %hash;
-    :
-    :=end p6l
-    :
-    :=cut
-    :
-    :my $should_be_a_pair = (a =&gt; 25/1);
-    :isa_ok $should_be_a_pair, &quot;Pair&quot;, &quot;=&gt; has correct precedence&quot;;
-    :
-    :=pod
-    :
-    :Stated by Larry on p6l in:
-    :L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/20122">http://www.nntp.perl.org/group/perl.perl6.language/20122</a>&quot;&gt;
-    :
-    : &quot;Oh, and we recently moved =&gt; to assignment precedence so it would
-    : more naturally be right associative, and to keep the non-chaining
-    : binaries consistently non-associative.  Also lets you say:
-    :
-    :   key =&gt; $x ?? $y !! $z;
-    :
-    : plus it moves it closer to the comma that it used to be in Perl 5.&quot;
-    :
-    :(iblech) XXX: this contradicts current S03 so I could be wrong.
-    :
-    :=cut
-    :
-    :{
-    :  # This should always work.
-    :  my %x = ( &quot;Zaphod&quot; =&gt; (0 ?? 1 !! 2), &quot;Ford&quot; =&gt; 42 );
-    :  is %x{&quot;Zaphod&quot;}, 2, &quot;Zaphod is 2&quot;;
-    :  is %x{&quot;Ford&quot;},  42, &quot;Ford is 42&quot;;
-    :
-    :  # This should work only if =&gt; is lower precedence than ?? !!
-    :  my %z = ( &quot;Zaphod&quot; =&gt; 0 ?? 1 !! 2, &quot;Ford&quot; =&gt; 42 );
-    :  is %z{&quot;Zaphod&quot;}, 2, &quot;Zaphod is still 2&quot;;
-    :  is %z{&quot;Ford&quot;},  42, &quot;Ford is still 42&quot;;
-    :}
-    :
-    :# This is per the pairs-behave-like-one-element-hashes-rule.
-    :# (I asked p6l once, but the &quot;thread&quot; got warnocked.  --iblech)
-    :# (I asked p6l again, now the thread did definitely not get warnocked:
-    :# L&lt;&quot;<a href="http://groups.google.de/group/perl.perl6.language/browse_thread/thread/e0e44be94bd31792/6de6667398a4d2c7?q=perl6.language+Stringification+pairs&amp;">http://groups.google.de/group/perl.perl6.language/browse_thread/thread/e0e44be94bd31792/6de6667398a4d2c7?q=perl6.language+Stringification+pairs&amp;</a>&quot;&gt;
-    :# Also see L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/23224">http://www.nntp.perl.org/group/perl.perl6.language/23224</a>&quot;&gt;
-    :{
-    :  my $pair = (a =&gt; 1);
-    :  is try { ~$pair  }, &quot;a\t1&quot;, &quot;pairs stringify correctly (1)&quot;;
-    :  is try { &quot;$pair&quot; }, &quot;a\t1&quot;, &quot;pairs stringify correctly (2)&quot;;
-    :}
-    :
-    :{
-    :  my $pair = (a =&gt; [1,2,3]);
-    :  is try { ~$pair  }, &quot;a\t1 2 3&quot;, &quot;pairs with arrayrefs as values stringify correctly (1)&quot;;
-    :  is try { &quot;$pair&quot; }, &quot;a\t1 2 3&quot;, &quot;pairs with arrayrefs as values stringify correctly (2)&quot;;
-    :}
-    :
-    :# Per Larry L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/23525">http://www.nntp.perl.org/group/perl.perl6.language/23525</a>&quot;&gt;:
-    :#   Actually, it looks like the bug is probably that =&gt; is forcing
-    :#   stringification on its left argument too agressively.  It should only do
-    :#   that for an identifier.
-    :{
-    :  my $arrayref = [&lt; a b c &gt;];
-    :  my $hashref  = { :d(1), :e(2) };
-    :
-    :  my $pair = ($arrayref =&gt; $hashref);
-    :  is ~$pair.key,   ~$arrayref, &quot;=&gt; should not stringify the key (1)&quot;;
-    :  is ~$pair.value, ~$hashref,  &quot;=&gt; should not stringify the key (2)&quot;;
-    :
-    :  push $pair.key, &quot;d&quot;;
-    :  $pair.value&lt;f&gt; = 3;
-    :  is ~$pair.key,   ~$arrayref, &quot;=&gt; should not stringify the key (3)&quot;;
-    :  is ~$pair.value, ~$hashref,  &quot;=&gt; should not stringify the key (4)&quot;;
-    :  is +$pair.key,            4, &quot;=&gt; should not stringify the key (5)&quot;;
-    :  is +$pair.value,          3, &quot;=&gt; should not stringify the key (6)&quot;;
-    :}
-    :
-    :{
-    :  my $arrayref = [&lt; a b c &gt;];
-    :  my $hashref  = { :d(1), :e(2) };
-    :
-    :  my $pair = ($arrayref =&gt; $hashref);
-    :  my sub pair_key (Pair $pair) { $pair.key }
-    :
-    :  is ~pair_key($pair), ~$arrayref,
-    :    &quot;the keys of pairs should not get auto-stringified when passed to a sub (1)&quot;;
-    :
-    :  push $pair.key, &quot;d&quot;;
-    :  is ~pair_key($pair), ~$arrayref,
-    :    &quot;the keys of pairs should not get auto-stringified when passed to a sub (2)&quot;;
-    :  is +pair_key($pair),          4,
-    :    &quot;the keys of pairs should not get auto-stringified when passed to a sub (3)&quot;;
-    :}
-    :
-    :# Per Larry: <a href="http://www.nntp.perl.org/group/perl.perl6.language/23984">http://www.nntp.perl.org/group/perl.perl6.language/23984</a>
-    :{
-    :  my ($key, $val) = &lt;key val&gt;;
-    :  my $pair        = ($key =&gt; $val);
-    :
-    :  lives_ok { $pair.key = &quot;KEY&quot; }, &quot;setting .key does not die&quot;, :todo&lt;bug&gt;;
-    :  is $pair.key,          &quot;KEY&quot;,   &quot;setting .key actually changes the key&quot;, :todo&lt;bug&gt;;
-    :  is $key,               &quot;key&quot;,   &quot;setting .key does not change the original var&quot;;
-    :
-    :  lives_ok { $pair.value = &quot;VAL&quot; }, &quot;setting .value does not die&quot;, :todo&lt;bug&gt;;
-    :  is $pair.value,          &quot;VAL&quot;,   &quot;setting .value actually changes the value&quot;, :todo&lt;bug&gt;;
-    :  is $val,                 &quot;val&quot;,   &quot;setting .value does not change the original var&quot;;
-    :}
-    :
-    :{
-    :  my ($key, $val) = &lt;key val&gt;;
-    :  my $pair        = ($key =&gt; $val);
-    :
-    :  lives_ok { $pair.key := &quot;KEY&quot; }, &quot;binding .key does not die&quot;, :todo&lt;bug&gt;;
-    :  is $pair.key,           &quot;KEY&quot;,   &quot;binding .key actually changes the key&quot;, :todo&lt;bug&gt;;
-    :  is $key,                &quot;key&quot;,   &quot;binding .key does not change the original var&quot;;
-    :  dies_ok { $pair.key = 42 },      &quot;the .key was really bound&quot;;  # (can't modify constant)
-    :
-    :  lives_ok { $pair.value := &quot;VAL&quot; }, &quot;binding .value does not die&quot;, :todo&lt;bug&gt;;
-    :  is $pair.value,           &quot;VAL&quot;,   &quot;binding .value actually changes the value&quot;, :todo&lt;bug&gt;;
-    :  is $val,                  &quot;val&quot;,   &quot;binding .value does not change the original var&quot;;
-    :  dies_ok { $pair.value = 42 },      &quot;the .value was really bound&quot;;  # (can't modify constant)
-    :}
-    :
-    :{
-    :  my ($key, $val) = &lt;key val&gt;;
-    :  my $pair        = (abc =&gt; &quot;def&quot;);
-    :
-    :  lives_ok { $pair.key := $key }, &quot;binding .key does not die&quot;, :todo&lt;bug&gt;;
-    :  is $pair.key,           &quot;key&quot;,  &quot;binding .key actually changes the key&quot;, :todo&lt;bug&gt;;
-    :  $key = &quot;KEY&quot;;
-    :  is $key,                &quot;KEY&quot;,  &quot;binding .key to a var works (1)&quot;;
-    :  is $pair.key,           &quot;KEY&quot;,  &quot;binding .key to a var works (2)&quot;, :todo&lt;bug&gt;;
-    :  try { $pair.key = &quot;new&quot; };
-    :  is $key,                &quot;new&quot;,  &quot;binding .key to a var works (3)&quot;, :todo&lt;bug&gt;;
-    :  is $pair.key,           &quot;new&quot;,  &quot;binding .key to a var works (4)&quot;, :todo&lt;bug&gt;;
-    :
-    :  lives_ok { $pair.value := $val }, &quot;binding .value does not die&quot;, :todo&lt;bug&gt;;
-    :  is $pair.value,           &quot;val&quot;,  &quot;binding .value actually changes the value&quot;, :todo&lt;bug&gt;;
-    :  $val = &quot;VAL&quot;;
-    :  is $val,                  &quot;VAL&quot;,  &quot;binding .value to a var works (1)&quot;;
-    :  is $pair.value,           &quot;VAL&quot;,  &quot;binding .value to a var works (2)&quot;, :todo&lt;bug&gt;;
-    :  try { $pair.value = &quot;new&quot; };
-    :  is $val,                  &quot;new&quot;,  &quot;binding .value to a var works (3)&quot;, :todo&lt;bug&gt;;
-    :  is $pair.value,           &quot;new&quot;,  &quot;binding .value to a var works (4)&quot;, :todo&lt;bug&gt;;
-    :}</pre>
+<div ID=hide_5 style="display:none; border:1px solid">
+<pre>
+    # L&lt;S06/Immutable types/Pair "one-element Mapping"&gt;
+    my $pair = :when&lt;now&gt;;
+    is ~(%$pair), "when\tnow";
+    # hold back this one according to audreyt
+    #ok $pair.does(Hash), 'Pair does Hash';
+    ok (%$pair).does(Hash), '%() makes Pair to does Hash';
+}
+
+# lvalue Pair assignments from S06 and thread starting with
+# L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/19425"&gt;
+
+my $val;
+("foo" =&gt; $val) = "baz";
+is($val, "baz", "lvalue pairs");
+
+# illustrate a bug
+
+my $var   = 'foo' =&gt; 'bar';
+sub test1 (Any|Pair $pair) {
+    isa_ok($pair,'Pair');
+    my $testpair = $pair;
+    isa_ok($testpair,'Pair'); # new lvalue variable is also a Pair
+    my $boundpair := $pair;
+    isa_ok($boundpair,'Pair'); # bound variable is also a Pair
+    is($pair.key, 'foo', 'in sub test1 got the right $pair.key');
+    is($pair.value, 'bar', 'in sub test1 got the right $pair.value');
+
+}
+test1 $var;
+
+my %hash  = ('foo' =&gt; 'bar');
+for  %hash.pairs -&gt; $pair {
+    isa_ok($pair,'Pair') ; 
+    my $testpair = $pair;
+    isa_ok($testpair, 'Pair', :todo&lt;bug&gt;); # new lvalue variable is also a Pair
+    my $boundpair := $pair;
+    isa_ok($boundpair,'Pair'); # bound variable is also a Pair
+    is($pair.key, 'foo', 'in for loop got the right $pair.key');
+    is($pair.value, 'bar', 'in for loop got the right $pair.value');
+}
+
+sub test2 (Hash %h){
+    for %h.pairs -&gt; $pair {
+        isa_ok($pair,'Pair') ; 
+        is($pair.key, 'foo', 'in sub test2 got the right $pair.key');
+        is($pair.value, 'bar', 'in sub test2 got the right $pair.value');
+    }
+}
+test2 %hash;
+
+# See thread "$pair[0]" on p6l started by Ingo Blechschmidt:
+# L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/22593"&gt;
+
+sub test3 (Hash %h){
+    for %h.pairs -&gt; $pair {
+        isa_ok($pair,'Pair');
+        dies_ok({$pair[0]}, 'sub test3: access by $pair[0] should not work', :todo&lt;bug&gt;);
+        dies_ok({$pair[1]}, 'sub test3: access by $pair[1] should not work', :todo&lt;bug&gt;);
+    }
+}
+test3 %hash;
+
+=begin p6l
+
+Hm, Hash::pair? Never heard of that.  --iblech
+
+sub test4 (Hash %h){
+    for %h.pair -&gt; $pair {
+        isa_ok($pair,'Pair',:todo&lt;bug&gt;) ; 
+        is($pair.key, 'foo', 'sub test4: access by unspecced "pair" got the right $pair.key');
+        is($pair.value, 'bar', 'sub test4: access by unspecced "pair" got the right $pair.value');
+
+    }
+}
+test4 %hash;
+
+=end p6l
+
+=cut
+
+my $should_be_a_pair = (a =&gt; 25/1);
+isa_ok $should_be_a_pair, "Pair", "=&gt; has correct precedence";
+
+=pod
+
+Stated by Larry on p6l in:
+L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/20122"&gt;
+
+ "Oh, and we recently moved =&gt; to assignment precedence so it would
+ more naturally be right associative, and to keep the non-chaining
+ binaries consistently non-associative.  Also lets you say:
+
+   key =&gt; $x ?? $y !! $z;
+
+ plus it moves it closer to the comma that it used to be in Perl 5."
+
+(iblech) XXX: this contradicts current S03 so I could be wrong.
+
+=cut
+
+{
+  # This should always work.
+  my %x = ( "Zaphod" =&gt; (0 ?? 1 !! 2), "Ford" =&gt; 42 );
+  is %x{"Zaphod"}, 2, "Zaphod is 2";
+  is %x{"Ford"},  42, "Ford is 42";
+
+  # This should work only if =&gt; is lower precedence than ?? !!
+  my %z = ( "Zaphod" =&gt; 0 ?? 1 !! 2, "Ford" =&gt; 42 );
+  is %z{"Zaphod"}, 2, "Zaphod is still 2";
+  is %z{"Ford"},  42, "Ford is still 42";
+}
+
+# This is per the pairs-behave-like-one-element-hashes-rule.
+# (I asked p6l once, but the "thread" got warnocked.  --iblech)
+# (I asked p6l again, now the thread did definitely not get warnocked:
+# L&lt;"http://groups.google.de/group/perl.perl6.language/browse_thread/thread/e0e44be94bd31792/6de6667398a4d2c7?q=perl6.language+Stringification+pairs&amp;"&gt;
+# Also see L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/23224"&gt;
+{
+  my $pair = (a =&gt; 1);
+  is try { ~$pair  }, "a\t1", "pairs stringify correctly (1)";
+  is try { "$pair" }, "a\t1", "pairs stringify correctly (2)";
+}
+
+{
+  my $pair = (a =&gt; [1,2,3]);
+  is try { ~$pair  }, "a\t1 2 3", "pairs with arrayrefs as values stringify correctly (1)";
+  is try { "$pair" }, "a\t1 2 3", "pairs with arrayrefs as values stringify correctly (2)";
+}
+
+# Per Larry L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/23525"&gt;:
+#   Actually, it looks like the bug is probably that =&gt; is forcing
+#   stringification on its left argument too agressively.  It should only do
+#   that for an identifier.
+{
+  my $arrayref = [&lt; a b c &gt;];
+  my $hashref  = { :d(1), :e(2) };
+
+  my $pair = ($arrayref =&gt; $hashref);
+  is ~$pair.key,   ~$arrayref, "=&gt; should not stringify the key (1)";
+  is ~$pair.value, ~$hashref,  "=&gt; should not stringify the key (2)";
+
+  push $pair.key, "d";
+  $pair.value&lt;f&gt; = 3;
+  is ~$pair.key,   ~$arrayref, "=&gt; should not stringify the key (3)";
+  is ~$pair.value, ~$hashref,  "=&gt; should not stringify the key (4)";
+  is +$pair.key,            4, "=&gt; should not stringify the key (5)";
+  is +$pair.value,          3, "=&gt; should not stringify the key (6)";
+}
+
+{
+  my $arrayref = [&lt; a b c &gt;];
+  my $hashref  = { :d(1), :e(2) };
+
+  my $pair = ($arrayref =&gt; $hashref);
+  my sub pair_key (Pair $pair) { $pair.key }
+
+  is ~pair_key($pair), ~$arrayref,
+    "the keys of pairs should not get auto-stringified when passed to a sub (1)";
+
+  push $pair.key, "d";
+  is ~pair_key($pair), ~$arrayref,
+    "the keys of pairs should not get auto-stringified when passed to a sub (2)";
+  is +pair_key($pair),          4,
+    "the keys of pairs should not get auto-stringified when passed to a sub (3)";
+}
+
+# Per Larry: http://www.nntp.perl.org/group/perl.perl6.language/23984
+{
+  my ($key, $val) = &lt;key val&gt;;
+  my $pair        = ($key =&gt; $val);
+
+  lives_ok { $pair.key = "KEY" }, "setting .key does not die", :todo&lt;bug&gt;;
+  is $pair.key,          "KEY",   "setting .key actually changes the key", :todo&lt;bug&gt;;
+  is $key,               "key",   "setting .key does not change the original var";
+
+  lives_ok { $pair.value = "VAL" }, "setting .value does not die", :todo&lt;bug&gt;;
+  is $pair.value,          "VAL",   "setting .value actually changes the value", :todo&lt;bug&gt;;
+  is $val,                 "val",   "setting .value does not change the original var";
+}
+
+{
+  my ($key, $val) = &lt;key val&gt;;
+  my $pair        = ($key =&gt; $val);
+
+  lives_ok { $pair.key := "KEY" }, "binding .key does not die", :todo&lt;bug&gt;;
+  is $pair.key,           "KEY",   "binding .key actually changes the key", :todo&lt;bug&gt;;
+  is $key,                "key",   "binding .key does not change the original var";
+  dies_ok { $pair.key = 42 },      "the .key was really bound";  # (can't modify constant)
+
+  lives_ok { $pair.value := "VAL" }, "binding .value does not die", :todo&lt;bug&gt;;
+  is $pair.value,           "VAL",   "binding .value actually changes the value", :todo&lt;bug&gt;;
+  is $val,                  "val",   "binding .value does not change the original var";
+  dies_ok { $pair.value = 42 },      "the .value was really bound";  # (can't modify constant)
+}
+
+{
+  my ($key, $val) = &lt;key val&gt;;
+  my $pair        = (abc =&gt; "def");
+
+  lives_ok { $pair.key := $key }, "binding .key does not die", :todo&lt;bug&gt;;
+  is $pair.key,           "key",  "binding .key actually changes the key", :todo&lt;bug&gt;;
+  $key = "KEY";
+  is $key,                "KEY",  "binding .key to a var works (1)";
+  is $pair.key,           "KEY",  "binding .key to a var works (2)", :todo&lt;bug&gt;;
+  try { $pair.key = "new" };
+  is $key,                "new",  "binding .key to a var works (3)", :todo&lt;bug&gt;;
+  is $pair.key,           "new",  "binding .key to a var works (4)", :todo&lt;bug&gt;;
+
+  lives_ok { $pair.value := $val }, "binding .value does not die", :todo&lt;bug&gt;;
+  is $pair.value,           "val",  "binding .value actually changes the value", :todo&lt;bug&gt;;
+  $val = "VAL";
+  is $val,                  "VAL",  "binding .value to a var works (1)";
+  is $pair.value,           "VAL",  "binding .value to a var works (2)", :todo&lt;bug&gt;;
+  try { $pair.value = "new" };
+  is $val,                  "new",  "binding .value to a var works (3)", :todo&lt;bug&gt;;
+  is $pair.value,           "new",  "binding .value to a var works (4)", :todo&lt;bug&gt;;
+}</pre>
 </div><pre>
     Mapping     Pairs with no duplicate keys
     Signature   Function parameters (left-hand side of a binding)
@@ -2976,46 +2995,47 @@ for their side effects, since most return values will be ignored.
 <div ID=header_hidden_7 style="display: block;">- Show t/subroutines/sub_parameter_traits.t (39 lines) -</div>
 </a>
 </p>
-<div ID=hide_7 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;Parameter traits&quot;&gt;
-    :
-    :=cut
-    :
-    :my $foo=1;
-    :sub mods_param ($x) { $x++; }
-    :dies_ok  { mods_param($foo) }, 'can\'t modify parameter, constant by default';
-    :
-    :# is readonly
-    :sub mods_param_constant ($x is readonly) { $x++; }
-    :dies_ok  { mods_param_constant($foo) }, 'can\'t modify constant parameter, constant by default';
-    :
-    :sub mods_param_rw ($x is rw) { $x++; }
-    :dies_ok  { mods_param_rw(1) }, 'can\'t modify constant even if we claim it\'s rw';
-    :sub mods_param_rw_does_nothing ($x is rw) { $x; }
-    :lives_ok { mods_param_rw_does_nothing(1) }, 'is rw with non-lvalue should autovivify';
-    :
-    :lives_ok  { mods_param_rw($foo) }, 'pass by reference doesn\'t die';
-    :is($foo, 2, 'pass by reference works');
-    :
-    :#icopy
-    :$foo=1;
-    :sub mods_param_copy ($x is copy) {$x++;}
-    :lives_ok { mods_param_copy($foo) }, 'is copy';
-    :is($foo, 1, 'pass by value works');
-    :
-    :# is ref
-    :$foo=1;
-    :sub mods_param_ref ($x is ref) { $x++;  }
-    :dies_ok { mods_param_ref(1); }, 'is ref with non-lvalue';
-    :lives_ok { mods_param_ref($foo); }, 'is ref with non-lvalue', :todo;
-    :is($foo, 2, 'is ref works', :todo);
-    :
-    :# is context
-    :# Doesn't even compile, which is lucky, because I don't understand it well
-    :# enough to write an actual test...
-    :eval_ok('sub my_format (*@data is context(Item)) { }; 1', &quot;is context - compile check&quot;);
-    :
-    :# To do - check that is context actually works</pre>
+<div ID=hide_7 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"Parameter traits"&gt;
+
+=cut
+
+my $foo=1;
+sub mods_param ($x) { $x++; }
+dies_ok  { mods_param($foo) }, 'can\'t modify parameter, constant by default';
+
+# is readonly
+sub mods_param_constant ($x is readonly) { $x++; }
+dies_ok  { mods_param_constant($foo) }, 'can\'t modify constant parameter, constant by default';
+
+sub mods_param_rw ($x is rw) { $x++; }
+dies_ok  { mods_param_rw(1) }, 'can\'t modify constant even if we claim it\'s rw';
+sub mods_param_rw_does_nothing ($x is rw) { $x; }
+lives_ok { mods_param_rw_does_nothing(1) }, 'is rw with non-lvalue should autovivify';
+
+lives_ok  { mods_param_rw($foo) }, 'pass by reference doesn\'t die';
+is($foo, 2, 'pass by reference works');
+
+#icopy
+$foo=1;
+sub mods_param_copy ($x is copy) {$x++;}
+lives_ok { mods_param_copy($foo) }, 'is copy';
+is($foo, 1, 'pass by value works');
+
+# is ref
+$foo=1;
+sub mods_param_ref ($x is ref) { $x++;  }
+dies_ok { mods_param_ref(1); }, 'is ref with non-lvalue';
+lives_ok { mods_param_ref($foo); }, 'is ref with non-lvalue', :todo;
+is($foo, 2, 'is ref works', :todo);
+
+# is context
+# Doesn't even compile, which is lucky, because I don't understand it well
+# enough to write an actual test...
+eval_ok('sub my_format (*@data is context(Item)) { }; 1', "is context - compile check");
+
+# To do - check that is context actually works</pre>
 </div><p>The following traits can be applied to many types of parameters.</p>
 <dl>
 <dt><strong><a name="item_is_readonly"><code>is readonly</code></a></strong><br />
@@ -3146,63 +3166,64 @@ new argument list.  The caller may also bind the returned <code>Capture</code> d
 <div ID=header_hidden_32 style="display: block;">- Show t/builtins/caller.t (56 lines) -</div>
 </a>
 </p>
-<div ID=hide_32 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;The C&lt;caller&gt; function&quot;&gt;
-    :
-    :# caller.subname
-    :sub a_sub { b_sub() }
-    :sub b_sub { try { caller.subname } }
-    :is ~a_sub(), &quot;foo&quot;, &quot;caller.sub works&quot;, :todo;
-    :
-    :# caller.file
-    :ok index(~(try { caller.file }), &quot;caller&quot;) &gt;= 0, &quot;caller.file works&quot;, :todo;
-    :
-    :# caller.line (XXX: make sure to edit the expected line number!)
-    :is +(try { caller.line }), 19, &quot;caller.line works&quot;, :todo;
-    :
-    :# caller exposes a bug in the MMD mechanism where directy using autogenerated
-    :# accessors on an object returned by a factory, rather than storing the object
-    :# in an intermediate variable, works only when you chain methods with an
-    :# explicit () between them: caller().subname - ok; caller.subname - error.
-    :
-    :sub try_it {
-    :    my ($code, $expected, $desc) = @_;
-    :    is($code(), $expected, $desc);
-    :}
-    :sub try_it_caller { try_it(*@_) }                                # (line 30.)
-    :class A { method try_it_caller_A { &amp;main::try_it_caller(*@_) } }
-    :sub try_it_caller_caller { A.try_it_caller_A(*@_) }
-    :class B { method try_it_caller_B { &amp;main::try_it_caller_caller(*@_) } }
-    :sub chain { B.try_it_caller_B(*@_) }
-    :
-    :# must use parentheses after caller
-    :
-    :# basic tests of caller object
-    :chain({ ref caller() },     &quot;Control::Caller&quot;, &quot;caller object type&quot;);
-    :chain({ caller().package }, &quot;main&quot;, &quot;caller package&quot;);
-    :chain({ caller().file },    $?FILE, &quot;caller filename&quot;);
-    :chain({ caller().line },    &quot;30&quot;, &quot;caller line&quot;);
-    :chain({ caller().subname }, &quot;&amp;main::try_it_caller&quot;, &quot;caller subname&quot;);
-    :chain({ caller().subtype }, &quot;SubRoutine&quot;, &quot;caller subtype&quot;); # specme
-    :chain({ caller().sub },     &amp;try_it_caller, &quot;caller sub (code)&quot;);
-    :
-    :# select by code type
-    :chain({ caller(Any).subname },    &quot;&amp;main::try_it_caller&quot;, &quot;code type - Any&quot;);
-    :chain({ caller(&quot;Any&quot;).subname },  &quot;&amp;main::try_it_caller&quot;, &quot;code type - Any (string)&quot;);
-    :chain({ caller(Method).subname }, &quot;&amp;A::try_it_caller_A&quot;, &quot;code type - Method&quot;);
-    :chain({ caller(&quot;Moose&quot;) },         undef, &quot;code type - not found&quot;);
-    :
-    :# :skip
-    :chain({ caller(:skip&lt;1&gt;).subname }, &quot;&amp;A::try_it_caller_A&quot;, &quot;:skip&lt;1&gt;&quot;);
-    :chain({ caller(:skip&lt;128&gt;) },       undef, &quot;:skip&lt;128&gt; - not found&quot;);
-    :
-    :# type + :skip
-    :chain({ caller(Sub, :skip&lt;1&gt;).subname }, &quot;&amp;main::try_it_caller_caller&quot;, &quot;Sub, :skip&lt;1&gt;&quot;);
-    :chain({ caller(Sub, :skip&lt;2&gt;).subname }, &quot;&amp;main::chain&quot;, &quot;Sub, :skip&lt;2&gt;&quot;);
-    :chain({ caller(Method, :skip&lt;1&gt;).subname }, &quot;&amp;B::try_it_caller_B&quot;, &quot;Method, :skip&lt;1&gt;&quot;);
-    :
-    :# WRITEME: label tests
-    :</pre>
+<div ID=hide_32 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"The C&lt;caller&gt; function"&gt;
+
+# caller.subname
+sub a_sub { b_sub() }
+sub b_sub { try { caller.subname } }
+is ~a_sub(), "foo", "caller.sub works", :todo;
+
+# caller.file
+ok index(~(try { caller.file }), "caller") &gt;= 0, "caller.file works", :todo;
+
+# caller.line (XXX: make sure to edit the expected line number!)
+is +(try { caller.line }), 19, "caller.line works", :todo;
+
+# caller exposes a bug in the MMD mechanism where directy using autogenerated
+# accessors on an object returned by a factory, rather than storing the object
+# in an intermediate variable, works only when you chain methods with an
+# explicit () between them: caller().subname - ok; caller.subname - error.
+
+sub try_it {
+    my ($code, $expected, $desc) = @_;
+    is($code(), $expected, $desc);
+}
+sub try_it_caller { try_it(*@_) }                                # (line 30.)
+class A { method try_it_caller_A { &amp;main::try_it_caller(*@_) } }
+sub try_it_caller_caller { A.try_it_caller_A(*@_) }
+class B { method try_it_caller_B { &amp;main::try_it_caller_caller(*@_) } }
+sub chain { B.try_it_caller_B(*@_) }
+
+# must use parentheses after caller
+
+# basic tests of caller object
+chain({ ref caller() },     "Control::Caller", "caller object type");
+chain({ caller().package }, "main", "caller package");
+chain({ caller().file },    $?FILE, "caller filename");
+chain({ caller().line },    "30", "caller line");
+chain({ caller().subname }, "&amp;main::try_it_caller", "caller subname");
+chain({ caller().subtype }, "SubRoutine", "caller subtype"); # specme
+chain({ caller().sub },     &amp;try_it_caller, "caller sub (code)");
+
+# select by code type
+chain({ caller(Any).subname },    "&amp;main::try_it_caller", "code type - Any");
+chain({ caller("Any").subname },  "&amp;main::try_it_caller", "code type - Any (string)");
+chain({ caller(Method).subname }, "&amp;A::try_it_caller_A", "code type - Method");
+chain({ caller("Moose") },         undef, "code type - not found");
+
+# :skip
+chain({ caller(:skip&lt;1&gt;).subname }, "&amp;A::try_it_caller_A", ":skip&lt;1&gt;");
+chain({ caller(:skip&lt;128&gt;) },       undef, ":skip&lt;128&gt; - not found");
+
+# type + :skip
+chain({ caller(Sub, :skip&lt;1&gt;).subname }, "&amp;main::try_it_caller_caller", "Sub, :skip&lt;1&gt;");
+chain({ caller(Sub, :skip&lt;2&gt;).subname }, "&amp;main::chain", "Sub, :skip&lt;2&gt;");
+chain({ caller(Method, :skip&lt;1&gt;).subname }, "&amp;B::try_it_caller_B", "Method, :skip&lt;1&gt;");
+
+# WRITEME: label tests
+</pre>
 </div><p>The <code>caller</code> function returns an object that describes a particular 
 ``higher'' dynamic scope, from which the current scope was called.</p>
 <pre>
@@ -3259,86 +3280,87 @@ while <code>.count</code> considers also optional ones, including <code>*$</code
 <div ID=header_hidden_6 style="display: block;">- Show t/builtins/control_flow/leave.t (79 lines) -</div>
 </a>
 </p>
-<div ID=hide_6 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;The C&lt;leave&gt; function&quot;&gt;
-    :
-    :plan 5;
-    :
-    :flunk &quot;leave() not implemented in Pugs's interpreter core yet&quot;, :todo&lt;feature&gt;;
-    :skip_rest; exit;
-    :
-    :{
-    :  my $bare = { leave 42; 23 };
-    :
-    :  is $bare(), 42, &quot;basic leave() works&quot;;
-    :}
-    :
-    :{
-    :  my $sub = sub () {
-    :    my $bare = { leave 42; 23 };
-    :
-    :    my $ret = $bare();
-    :    return 1000 + $ret;
-    :  };
-    :
-    :  is $sub(), 1042, &quot;leave() works and leaves only the innermost block&quot;;
-    :}
-    :
-    :{
-    :  my $sub = sub () {
-    :    leave &amp;?ROUTINE, 42;
-    :    return 23;
-    :  };
-    :
-    :  is $sub(), 42, &quot;leave() works with &amp;?ROUTINE as parameter&quot;;
-    :}
-    :
-    :{
-    :  my $outer = sub () {
-    :    my $inner = sub () {
-    :      my $most_inner = sub () {
-    :        leave $outer, 42;
-    :        return 23;
-    :      };
-    :
-    :      $most_inner();
-    :      return 22;
-    :    };
-    :
-    :    $inner();
-    :    return 21;
-    :  }
-    :
-    :  is $outer(), 42, &quot;nested leave() works with a subref as parameter&quot;;
-    :}
-    :
-    :{
-    :  my $sub = sub () {
-    :    my $bare = sub () {
-    :      leave Block, 42;
-    :      return 23;
-    :    };
-    :
-    :    my $ret = $bare();
-    :    return 1000 + $ret;
-    :  };
-    :
-    :  is $sub(), 1042, &quot;leave() works with a Class (Block) as parameter&quot;;
-    :}
-    :
-    :{
-    :  my $sub = sub () {
-    :    my $bare = sub () {
-    :      leave Sub, 42;
-    :      return 23;
-    :    };
-    :
-    :    my $ret = $bare();
-    :    return 1000 + $ret;
-    :  };
-    :
-    :  is $sub(), 42, &quot;leave() works with a Class (Sub) as parameter&quot;;
-    :}</pre>
+<div ID=hide_6 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"The C&lt;leave&gt; function"&gt;
+
+plan 5;
+
+flunk "leave() not implemented in Pugs's interpreter core yet", :todo&lt;feature&gt;;
+skip_rest; exit;
+
+{
+  my $bare = { leave 42; 23 };
+
+  is $bare(), 42, "basic leave() works";
+}
+
+{
+  my $sub = sub () {
+    my $bare = { leave 42; 23 };
+
+    my $ret = $bare();
+    return 1000 + $ret;
+  };
+
+  is $sub(), 1042, "leave() works and leaves only the innermost block";
+}
+
+{
+  my $sub = sub () {
+    leave &amp;?ROUTINE, 42;
+    return 23;
+  };
+
+  is $sub(), 42, "leave() works with &amp;?ROUTINE as parameter";
+}
+
+{
+  my $outer = sub () {
+    my $inner = sub () {
+      my $most_inner = sub () {
+        leave $outer, 42;
+        return 23;
+      };
+
+      $most_inner();
+      return 22;
+    };
+
+    $inner();
+    return 21;
+  }
+
+  is $outer(), 42, "nested leave() works with a subref as parameter";
+}
+
+{
+  my $sub = sub () {
+    my $bare = sub () {
+      leave Block, 42;
+      return 23;
+    };
+
+    my $ret = $bare();
+    return 1000 + $ret;
+  };
+
+  is $sub(), 1042, "leave() works with a Class (Block) as parameter";
+}
+
+{
+  my $sub = sub () {
+    my $bare = sub () {
+      leave Sub, 42;
+      return 23;
+    };
+
+    my $ret = $bare();
+    return 1000 + $ret;
+  };
+
+  is $sub(), 42, "leave() works with a Class (Sub) as parameter";
+}</pre>
 </div><p>As mentioned above, a <code>return</code> call causes the innermost
 surrounding subroutine, method, rule, token, regex (as a keyword),
 macro, or multimethod to return.  Only declarations with an explicit
@@ -3388,30 +3410,31 @@ executed.</p>
 <div ID=header_hidden_27 style="display: block;">- Show t/var/temp.t (23 lines) -</div>
 </a>
 </p>
-<div ID=hide_27 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Temporization&quot; /temp invokes its argument's .TEMP method./&gt;
-    :{
-    :  my $was_in_own_temp_handler = 0;
-    :
-    :  class WierdTemp is Int {
-    :    method TEMP {
-    :      $was_in_own_temp_handler++;
-    :      return { $was_in_own_temp_handler++ };
-    :    }
-    :  }
-    :
-    :  my $a = WierdTemp.new();
-    :  ok defined($a), &quot;instantiating a WierdTemp worked&quot;;
-    :  is $was_in_own_temp_handler, 0, &quot;.TEMP method wasn't yet executed&quot;;
-    :
-    :  {
-    :    temp $a;
-    :    is $was_in_own_temp_handler, 1, &quot;.TEMP method was executed on temporization&quot;;
-    :  }
-    :  is $was_in_own_temp_handler, 2, &quot;.TEMP method was executed on restoration&quot;;
-    :}
-    :
-    :</pre>
+<div ID=hide_27 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Temporization" /temp invokes its argument's .TEMP method./&gt;
+{
+  my $was_in_own_temp_handler = 0;
+
+  class WierdTemp is Int {
+    method TEMP {
+      $was_in_own_temp_handler++;
+      return { $was_in_own_temp_handler++ };
+    }
+  }
+
+  my $a = WierdTemp.new();
+  ok defined($a), "instantiating a WierdTemp worked";
+  is $was_in_own_temp_handler, 0, ".TEMP method wasn't yet executed";
+
+  {
+    temp $a;
+    is $was_in_own_temp_handler, 1, ".TEMP method was executed on temporization";
+  }
+  is $was_in_own_temp_handler, 2, ".TEMP method was executed on restoration";
+}
+
+</pre>
 </div><p>The default <code>.TEMP</code> method for variables simply creates
 a closure that assigns the variable's pre-<code>temp</code> value 
 back to the variable.</p>
@@ -3439,50 +3462,51 @@ the temporizing scope to restore the subroutine to its pre-<code>temp</code> sta
 <div ID=header_hidden_26 style="display: block;">- Show t/var/temp.t (43 lines) -</div>
 </a>
 </p>
-<div ID=hide_26 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Temporization&quot; /You can also modify the behaviour of temporized code structures/&gt;
-    :# (Test is more or less directly from S06.)
-    :{
-    :  my $next    = 0;
-    :
-    :  # Here is the real implementation of &amp;advance.
-    :  sub advance() {
-    :    my $curr = $next++;
-    :    TEMP {{ $next = $curr }}  # TEMP block returns the closure { $next = $curr }
-    :    return $curr;
-    :  };
-    :
-    :  # and later...
-    :
-    :  is advance(), 0, &quot;TEMP{} block (1)&quot;;
-    :  is advance(), 1, &quot;TEMP{} block (2)&quot;;
-    :  is advance(), 2, &quot;TEMP{} block (3)&quot;;
-    :  is $next,     3, &quot;TEMP{} block (4)&quot;;
-    :
-    :  flunk &quot;TEMP{} block (5)&quot;, :todo&lt;feature&gt;;
-    :  flunk &quot;TEMP{} block (6)&quot;, :todo&lt;feature&gt;;
-    :  flunk &quot;TEMP{} block (7)&quot;, :todo&lt;feature&gt;;
-    :  flunk &quot;TEMP{} block (8)&quot;, :todo&lt;feature&gt;;
-    :
-    :  # Following does parse, but isn't executed (don't know why).
-    :  # If the &quot;{&quot; on the following line is changed to &quot;if 1 {&quot;, it is executed,
-    :  # too, but then it dies complaining about not finding a matching temp()
-    :  # function.  So, for now, we just comment the following block and add
-    :  # unconditional flunk()s.
-    :  #{
-    :  #  is temp(advance()), 3, &quot;TEMP{} block (5)&quot;, :todo&lt;feature&gt;;
-    :  #  is $next,           4, &quot;TEMP{} block (6)&quot;, :todo&lt;feature&gt;;
-    :  #  is temp(advance()), 4, &quot;TEMP{} block (7)&quot;, :todo&lt;feature&gt;;
-    :  #  is temp(advance()), 5, &quot;TEMP{} block (8)&quot;, :todo&lt;feature&gt;;
-    :  #}  # $next = 3
-    :
-    :  is $next,     3, &quot;TEMP{} block (9)&quot;;
-    :  is advance(), 3, &quot;TEMP{} block (10)&quot;;
-    :  is $next,     4, &quot;TEMP{} block (11)&quot;;
-    :}
-    :
-    :# Following are OO tests, but I think they fit better in var/temp.t than in
-    :# oo/.</pre>
+<div ID=hide_26 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Temporization" /You can also modify the behaviour of temporized code structures/&gt;
+# (Test is more or less directly from S06.)
+{
+  my $next    = 0;
+
+  # Here is the real implementation of &amp;advance.
+  sub advance() {
+    my $curr = $next++;
+    TEMP {{ $next = $curr }}  # TEMP block returns the closure { $next = $curr }
+    return $curr;
+  };
+
+  # and later...
+
+  is advance(), 0, "TEMP{} block (1)";
+  is advance(), 1, "TEMP{} block (2)";
+  is advance(), 2, "TEMP{} block (3)";
+  is $next,     3, "TEMP{} block (4)";
+
+  flunk "TEMP{} block (5)", :todo&lt;feature&gt;;
+  flunk "TEMP{} block (6)", :todo&lt;feature&gt;;
+  flunk "TEMP{} block (7)", :todo&lt;feature&gt;;
+  flunk "TEMP{} block (8)", :todo&lt;feature&gt;;
+
+  # Following does parse, but isn't executed (don't know why).
+  # If the "{" on the following line is changed to "if 1 {", it is executed,
+  # too, but then it dies complaining about not finding a matching temp()
+  # function.  So, for now, we just comment the following block and add
+  # unconditional flunk()s.
+  #{
+  #  is temp(advance()), 3, "TEMP{} block (5)", :todo&lt;feature&gt;;
+  #  is $next,           4, "TEMP{} block (6)", :todo&lt;feature&gt;;
+  #  is temp(advance()), 4, "TEMP{} block (7)", :todo&lt;feature&gt;;
+  #  is temp(advance()), 5, "TEMP{} block (8)", :todo&lt;feature&gt;;
+  #}  # $next = 3
+
+  is $next,     3, "TEMP{} block (9)";
+  is advance(), 3, "TEMP{} block (10)";
+  is $next,     4, "TEMP{} block (11)";
+}
+
+# Following are OO tests, but I think they fit better in var/temp.t than in
+# oo/.</pre>
 </div><pre>
     my $next = 0;
     sub next {
@@ -3517,102 +3541,103 @@ globals in the face of multithreading.</p>
 <div ID=header_hidden_28 style="display: block;">- Show t/subroutines/wrap.t (95 lines) -</div>
 </a>
 </p>
-<div ID=hide_28 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/Wrapping&gt;
-    :
-    :# TODO
-    :# named wrapping/unwrapping
-    :# unwrap with no args pops the top most
-    :#
-    :# mutating wraps -- those should be &quot;deep&quot;, as in not touching coderefs
-    :# but actually mutating how the coderef works.
-    :#
-    :# of course, if we allow assigning into coderefs, then the wrap semantic
-    :# could become a simple reassignment; but that is unspecced.
-    :
-    :plan 20;
-    :
-    :my @log;
-    :
-    :sub foo {
-    :    push @log, &quot;foo&quot;;
-    :}
-    :
-    :sub wrapper {
-    :    push @log, &quot;wrapper before&quot;;
-    :    try { call };
-    :    push @log, &quot;wrapper after&quot;;
-    :}
-    :
-    :sub other_wrapper {
-    :    push @log, &quot;wrapper2&quot;;
-    :    try { call };
-    :}
-    :
-    :foo();
-    :is(+@log, 1, &quot;one event logged&quot;);
-    :is(@log[0], &quot;foo&quot;, &quot;it's foo&quot;);
-    :
-    :@log = ();
-    :
-    :wrapper();
-    :is(+@log, 2, &quot;two events logged&quot;);
-    :is(@log[0], &quot;wrapper before&quot;, &quot;wrapper before&quot;);
-    :is(@log[1], &quot;wrapper after&quot;, &quot;wrapper after&quot;);
-    :
-    :@log = ();
-    :
-    :my $wrapped;
-    :try {
-    :    $wrapped = &amp;foo.wrap(&amp;wrapper);
-    :};
-    :
-    :isa_ok($wrapped, &quot;Sub&quot;, :todo);
-    :
-    :$wrapped ||= -&gt; { };
-    :try { $wrapped.() };
-    :
-    :is(+@log, 3, &quot;three events logged&quot;, :todo);
-    :is(@log[0], &quot;wrapper before&quot;, &quot;wrapper before&quot;, :todo);
-    :is(@log[1], &quot;foo&quot;, &quot;the wrapped sub&quot;, :todo);
-    :is(@log[2], &quot;wrapper after&quot;, &quot;wrapper after&quot;, :todo);
-    :
-    :@log = ();
-    :
-    :my $doublywrapped;
-    :try {
-    :    $doublywrapped = $wrapped.wrap(&amp;other_wrapper);
-    :};
-    :
-    :isa_ok($doublywrapped, &quot;Sub&quot;, :todo);
-    :$doublywrapped ||= -&gt; { };
-    :try { $doublywrapped.() };
-    :
-    :is(+@log, 4, &quot;four events&quot;, :todo);
-    :is(@log[0], &quot;wrapper2&quot;, &quot;additional wrapping takes effect&quot;, :todo);
-    :is(@log[1], &quot;wrapper before&quot;, &quot;... on top of initial wrapping&quot;, :todo);
-    :
-    :@log = ();
-    :
-    :try { $wrapped.() };
-    :is(+@log, 3, &quot;old wrapped sub was not destroyed&quot;, :todo);
-    :is(@log[0], &quot;wrapper before&quot;, &quot;the original wrapper is still in effect&quot;, :todo);
-    :
-    :
-    :@log = ();
-    :
-    :my $unwrapped;
-    :try {
-    :    $unwrapped = $wrapped.unwrap(&amp;wrapper);
-    :};
-    :
-    :isa_ok($unwrapped, &quot;Sub&quot;, :todo);
-    :$unwrapped ||= -&gt; {};
-    :try { $unwrapped.() };
-    :
-    :is(+@log, 2, &quot;two events for unwrapped&quot;, :todo);
-    :is(@log[0], &quot;wrapper2&quot;, :todo);
-    :is(@log[1], &quot;foo&quot;, :todo);</pre>
+<div ID=hide_28 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/Wrapping&gt;
+
+# TODO
+# named wrapping/unwrapping
+# unwrap with no args pops the top most
+#
+# mutating wraps -- those should be "deep", as in not touching coderefs
+# but actually mutating how the coderef works.
+#
+# of course, if we allow assigning into coderefs, then the wrap semantic
+# could become a simple reassignment; but that is unspecced.
+
+plan 20;
+
+my @log;
+
+sub foo {
+    push @log, "foo";
+}
+
+sub wrapper {
+    push @log, "wrapper before";
+    try { call };
+    push @log, "wrapper after";
+}
+
+sub other_wrapper {
+    push @log, "wrapper2";
+    try { call };
+}
+
+foo();
+is(+@log, 1, "one event logged");
+is(@log[0], "foo", "it's foo");
+
+@log = ();
+
+wrapper();
+is(+@log, 2, "two events logged");
+is(@log[0], "wrapper before", "wrapper before");
+is(@log[1], "wrapper after", "wrapper after");
+
+@log = ();
+
+my $wrapped;
+try {
+    $wrapped = &amp;foo.wrap(&amp;wrapper);
+};
+
+isa_ok($wrapped, "Sub", :todo);
+
+$wrapped ||= -&gt; { };
+try { $wrapped.() };
+
+is(+@log, 3, "three events logged", :todo);
+is(@log[0], "wrapper before", "wrapper before", :todo);
+is(@log[1], "foo", "the wrapped sub", :todo);
+is(@log[2], "wrapper after", "wrapper after", :todo);
+
+@log = ();
+
+my $doublywrapped;
+try {
+    $doublywrapped = $wrapped.wrap(&amp;other_wrapper);
+};
+
+isa_ok($doublywrapped, "Sub", :todo);
+$doublywrapped ||= -&gt; { };
+try { $doublywrapped.() };
+
+is(+@log, 4, "four events", :todo);
+is(@log[0], "wrapper2", "additional wrapping takes effect", :todo);
+is(@log[1], "wrapper before", "... on top of initial wrapping", :todo);
+
+@log = ();
+
+try { $wrapped.() };
+is(+@log, 3, "old wrapped sub was not destroyed", :todo);
+is(@log[0], "wrapper before", "the original wrapper is still in effect", :todo);
+
+
+@log = ();
+
+my $unwrapped;
+try {
+    $unwrapped = $wrapped.unwrap(&amp;wrapper);
+};
+
+isa_ok($unwrapped, "Sub", :todo);
+$unwrapped ||= -&gt; {};
+try { $unwrapped.() };
+
+is(+@log, 2, "two events for unwrapped", :todo);
+is(@log[0], "wrapper2", :todo);
+is(@log[1], "foo", :todo);</pre>
 </div><p>Every <code>Routine</code> object has a <code>.wrap</code> method. This method expects a single
 <code>Code</code> argument. Within the code, the special <code>call</code> function will invoke
 the original routine, but does not introduce a <code>CALLER</code> frame:</p>
@@ -3669,8 +3694,9 @@ by binding:</p>
 <div ID=header_hidden_24 style="display: block;">- Show t/magicals/sub.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_24 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;The C&lt;&amp;?ROUTINE&gt; object&quot;&gt;</pre>
+<div ID=hide_24 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object"&gt;</pre>
 </div><a name="msg_23"></a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID=header_shown_23 style="display: none;">- Hide t/magicals/sub.t (line 9 ~ line 14) -
@@ -3678,13 +3704,14 @@ by binding:</p>
 <div ID=header_hidden_23 style="display: block;">- Show t/magicals/sub.t (6 lines) -</div>
 </a>
 </p>
-<div ID=hide_23 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;The C&lt;&amp;?ROUTINE&gt; object&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 3;
-    :</pre>
+<div ID=hide_23 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object"&gt;
+
+=cut
+
+plan 3;
+</pre>
 </div><p><code>&amp;?ROUTINE</code> is always an alias for the lexically innermost <code>Routine</code>
 (which may be a <code>Sub</code>, <code>Method</code>, or <code>Submethod</code>), so you can specify
 tail-recursion on an anonymous sub:</p>
@@ -3703,8 +3730,9 @@ named <code>&amp;MAIN</code> in the file's package.)</p>
 <div ID=header_hidden_25 style="display: block;">- Show t/magicals/subname.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_25 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;The C&lt;&amp;?ROUTINE&gt; object&quot; /current routine name/&gt;</pre>
+<div ID=hide_25 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object" /current routine name/&gt;</pre>
 </div><p>Note that <code>&amp;?ROUTINE</code> refers to the current single sub, even if it is
 declared ``multi''.  To redispatch to the entire suite under a given short
 name, just use the named form, since there are no anonymous multis.</p>
@@ -3718,13 +3746,14 @@ name, just use the named form, since there are no anonymous multis.</p>
 <div ID=header_hidden_19 style="display: block;">- Show t/magicals/block.t (6 lines) -</div>
 </a>
 </p>
-<div ID=hide_19 style="display:none; border:1px solid"><pre>
-    :L&lt;S06/&quot;The C&lt;&amp;?BLOCK&gt; object&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 1;
-    :</pre>
+<div ID=hide_19 style="display:none; border:1px solid">
+<pre>
+L&lt;S06/"The C&lt;&amp;?BLOCK&gt; object"&gt;
+
+=cut
+
+plan 1;
+</pre>
 </div><p><code>&amp;?BLOCK</code> is always an alias for the current block, so you can
 specify tail-recursion on an anonymous block:</p>
 <pre>
@@ -3769,35 +3798,36 @@ module's subroutines/methods/etc. simultaneously:</p>
 <div ID=header_hidden_9 style="display: block;">- Show t/subroutines/currying.t (28 lines) -</div>
 </a>
 </p>
-<div ID=hide_9 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Currying&quot; /The result of a use statement/&gt;
-    :try {
-    :(eval('use t::packages::Test') // {}).assuming(arg1 =&gt; &quot;foo&quot;);
-    :}
-    :is try { dummy_sub_with_params(arg2 =&gt; &quot;bar&quot;) }, &quot;[foo] [bar]&quot;,
-    :  &quot;(use ...).assuming works&quot;, :todo&lt;feature&gt;;
-    :
-    :sub __hyper ($op?, Array @a, Array @b) {
-    :  my Array @ret;
-    :  for 0..(@a.end, @b.end).max -&gt; $i {
-    :    if $i &gt; @a.end {
-    :      push @ret, @b[$i];
-    :    }
-    :    elsif $i &gt; @b.end {
-    :      push @ret, @a[$i];
-    :    }
-    :    else {
-    :      push @ret, $op(@a[$i], @b[$i]);
-    :    }
-    :  }
-    :  return @ret;
-    :}
-    :
-    :my @x = (1,2,23);
-    :is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(@x, @x) },
-    :    (2,4,46), 'currying functions with array arguments' );
-    :is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(a =&gt; @x, b =&gt; @x) },
-    :    (2,4,46), 'currying functions with named array arguments' );</pre>
+<div ID=hide_9 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Currying" /The result of a use statement/&gt;
+try {
+(eval('use t::packages::Test') // {}).assuming(arg1 =&gt; "foo");
+}
+is try { dummy_sub_with_params(arg2 =&gt; "bar") }, "[foo] [bar]",
+  "(use ...).assuming works", :todo&lt;feature&gt;;
+
+sub __hyper ($op?, Array @a, Array @b) {
+  my Array @ret;
+  for 0..(@a.end, @b.end).max -&gt; $i {
+    if $i &gt; @a.end {
+      push @ret, @b[$i];
+    }
+    elsif $i &gt; @b.end {
+      push @ret, @a[$i];
+    }
+    else {
+      push @ret, $op(@a[$i], @b[$i]);
+    }
+  }
+  return @ret;
+}
+
+my @x = (1,2,23);
+is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(@x, @x) },
+    (2,4,46), 'currying functions with array arguments' );
+is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(a =&gt; @x, b =&gt; @x) },
+    (2,4,46), 'currying functions with named array arguments' );</pre>
 </div><pre>
     (use IO::Logging).assuming(logfile =&gt; &quot;.log&quot;);</pre>
 <p>This special form should generally be restricted to named parameters.</p>
@@ -3986,26 +4016,27 @@ or a pair, it is executed immediately to compose a Hash object.</p>
 <div ID=header_hidden_18 style="display: block;">- Show t/data_types/hash_ref.t (19 lines) -</div>
 </a>
 </p>
-<div ID=hide_18 style="display:none; border:1px solid"><pre>
-    :# L&lt;S06/&quot;Anonymous hashes vs blocks&quot; /So you may use sub or hash or pair to disambiguate:/&gt;
-    :{
-    :  my $hash_a = { a =&gt; 1, b =&gt; 2 };              isa_ok $hash_a, &quot;Hash&quot;;
-    :  my $hash_b = { a =&gt; 1, &quot;b&quot;, 2 };              isa_ok $hash_b, &quot;Hash&quot;;
-    :  my $hash_c = hash('a', 1, &quot;b&quot;, 2);              isa_ok $hash_c, &quot;Hash&quot;;
-    :  my $hash_d = hash 'a', 1, &quot;b&quot;, 2;               isa_ok $hash_d, &quot;Hash&quot;;
-    :  my $hash_e = { pair &quot;a&quot;, 1, &quot;b&quot;, 2 };         isa_ok $hash_e, &quot;Hash&quot;;
-    :}
-    :
-    :# infinity HoHoHoH...
-    :{
-    :  my %hash = (val =&gt; 42);
-    :  %hash&lt;ref&gt; = \%hash;
-    :  isa_ok %hash,           &quot;Hash&quot;;
-    :  isa_ok %hash&lt;ref&gt;,      &quot;Hash&quot;;
-    :  isa_ok %hash&lt;ref&gt;&lt;ref&gt;, &quot;Hash&quot;;
-    :  is %hash&lt;ref&gt;&lt;val&gt;,      42, &quot;access to infinite HoHoHoH... (1)&quot;;
-    :  is %hash&lt;ref&gt;&lt;ref&gt;&lt;val&gt;, 42, &quot;access to infinite HoHoHoH... (2)&quot;;
-    :}</pre>
+<div ID=hide_18 style="display:none; border:1px solid">
+<pre>
+# L&lt;S06/"Anonymous hashes vs blocks" /So you may use sub or hash or pair to disambiguate:/&gt;
+{
+  my $hash_a = { a =&gt; 1, b =&gt; 2 };              isa_ok $hash_a, "Hash";
+  my $hash_b = { a =&gt; 1, "b", 2 };              isa_ok $hash_b, "Hash";
+  my $hash_c = hash('a', 1, "b", 2);              isa_ok $hash_c, "Hash";
+  my $hash_d = hash 'a', 1, "b", 2;               isa_ok $hash_d, "Hash";
+  my $hash_e = { pair "a", 1, "b", 2 };         isa_ok $hash_e, "Hash";
+}
+
+# infinity HoHoHoH...
+{
+  my %hash = (val =&gt; 42);
+  %hash&lt;ref&gt; = \%hash;
+  isa_ok %hash,           "Hash";
+  isa_ok %hash&lt;ref&gt;,      "Hash";
+  isa_ok %hash&lt;ref&gt;&lt;ref&gt;, "Hash";
+  is %hash&lt;ref&gt;&lt;val&gt;,      42, "access to infinite HoHoHoH... (1)";
+  is %hash&lt;ref&gt;&lt;ref&gt;&lt;val&gt;, 42, "access to infinite HoHoHoH... (2)";
+}</pre>
 </div><pre>
     $ref =  sub { 1, 2, 3, 4, 5, 6 };   # Anonymous sub returning list
     $ref =      { 1, 2, 3, 4, 5, 6 };   # Anonymous sub returning list

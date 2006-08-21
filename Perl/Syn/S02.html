@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
-<title>TITLE</title>
+<title>S02</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 <link rev="made" href="mailto:" />
 <script language="javascript1.2"><!--
@@ -121,81 +121,82 @@ semantics regardless of the underlying text representations.
 <div ID=header_hidden_29 style="display: block;">- Show t/syntax/unicode.t (74 lines) -</div>
 </a>
 </p>
-<div ID=hide_29 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Lexical Conventions&quot;/&quot;Perl is written in Unicode&quot;&gt;
-    :
-    :# Unicode variables
-    :# english ;-)
-    :ok(try {my $foo; sub foo {}; 1}, &quot;ascii declaration&quot;);
-    :is(try {my $bar = 2; sub id ($x) { $x }; id($bar)}, 2, &quot;evaluation&quot;); 
-    :
-    :# umlauts
-    :ok(try {my $übervar; sub fü {}; 1}, &quot;umlauts declaration&quot;);
-    :is(try {my $schloß = 2; sub öok ($x) { $x }; öok($schloß)}, 2, &quot;evaluation&quot;);
-    :
-    :# monty python
-    :ok(try {my $møøse; sub bïte {}; 1}, &quot;a møøse once bit my sister&quot;);
-    :is(try {my $møøse = 2; sub såck ($x) { $x }; såck($møøse)}, 2, &quot;møøse bites kan be preti nasti&quot;);
-    :
-    :# french
-    :ok(try {my $un_variable_français; sub blâ {}; 1}, &quot;french declaration&quot;);
-    :is(try {my $frénch = 2; sub bléch ($x) { $x }; bléch($frénch)}, 2, &quot;evaluation&quot;);
-    :
-    :# Some Chinese Characters
-    :ok(try {my $一; 1}, &quot;chinese declaration&quot;);
-    :is(try {my $二 = 2; sub 恆等($x) {$x}; 恆等($二)}, 2, &quot;evaluation&quot;);
-    :
-    :# Tibetan Characters
-    :ok(try {my $ཀ; 1}, &quot;tibetan declaration&quot;);
-    :is(try {my $ཁ = 2; $ཁ}, 2, &quot;evaluation&quot;);
-    :
-    :# Japanese
-    :ok(try {my $い; 1}, &quot;japanese declaration&quot;);
-    :is(try {my $に = 2; $に}, 2, &quot;evaluation&quot;);
-    :
-    :# arabic
-    :ok(try {my $الصفحة ; 1}, &quot;arabic declaration&quot;);
-    :is(try {my $الصفحة = 2; $الصفحة}, 2, &quot;evaluation&quot;);
-    :
-    :# hebrew
-    :ok(try {my $פוו; sub לה {}; 1}, &quot;hebrew declaration&quot;);
-    :is(try {my $באר = 2; sub זהות ($x) { $x }; זהות($באר)}, 2, &quot;evaluation&quot;);
-    :
-    :# russian
-    :ok(try {my $один; sub раз {}; 1}, &quot;russian declaration&quot;);
-    :is(try {my $два = 2; sub идентичный ($x) { $x }; идентичный($два)}, 2, &quot;evaluation&quot;);
-    :
-    :# Unicode subs
-    :{
-    :    my sub äöü () { 42 }
-    :    is äöü, 42, &quot;Unicode subs with no parameters&quot;;
-    :}
-    :{
-    :    my sub äöü ($x) { 1000 + $x }
-    :    is äöü 17, 1017, &quot;Unicode subs with one parameter (parsed as prefix ops)&quot;;
-    :}
-    :
-    :# Unicode parameters
-    :{
-    :    my sub abc (:$äöü) { 1000 + $äöü }
-    :
-    :    is abc(äöü =&gt; 42), 1042, &quot;Unicode named params (1)&quot;;
-    :    is abc(:äöü(42)),  1042, &quot;Unicode named params (2)&quot;;
-    :}
-    :
-    :# Unicode placeholder variables
-    :{
-    :    is
-    :        ~(&lt; foostraße barstraße fakestraße &gt;.map:{ ucfirst $^straßenname }),
-    :        &quot;Foostraße Barstraße Fakestraße&quot;,
-    :        &quot;Unicode placeholder variables&quot;;
-    :}
-    :
-    :# Unicode methods
-    :{
-    :    my method Str::äöü { ucfirst self }
-    :    is &quot;pugs&quot;.äöü, &quot;Pugs&quot;, &quot;Unicode methods&quot;;
-    :}</pre>
+<div ID=hide_29 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Lexical Conventions"/"Perl is written in Unicode"&gt;
+
+# Unicode variables
+# english ;-)
+ok(try {my $foo; sub foo {}; 1}, "ascii declaration");
+is(try {my $bar = 2; sub id ($x) { $x }; id($bar)}, 2, "evaluation"); 
+
+# umlauts
+ok(try {my $übervar; sub fü {}; 1}, "umlauts declaration");
+is(try {my $schloß = 2; sub öok ($x) { $x }; öok($schloß)}, 2, "evaluation");
+
+# monty python
+ok(try {my $møøse; sub bïte {}; 1}, "a møøse once bit my sister");
+is(try {my $møøse = 2; sub såck ($x) { $x }; såck($møøse)}, 2, "møøse bites kan be preti nasti");
+
+# french
+ok(try {my $un_variable_français; sub blâ {}; 1}, "french declaration");
+is(try {my $frénch = 2; sub bléch ($x) { $x }; bléch($frénch)}, 2, "evaluation");
+
+# Some Chinese Characters
+ok(try {my $一; 1}, "chinese declaration");
+is(try {my $二 = 2; sub 恆等($x) {$x}; 恆等($二)}, 2, "evaluation");
+
+# Tibetan Characters
+ok(try {my $ཀ; 1}, "tibetan declaration");
+is(try {my $ཁ = 2; $ཁ}, 2, "evaluation");
+
+# Japanese
+ok(try {my $い; 1}, "japanese declaration");
+is(try {my $に = 2; $に}, 2, "evaluation");
+
+# arabic
+ok(try {my $الصفحة ; 1}, "arabic declaration");
+is(try {my $الصفحة = 2; $الصفحة}, 2, "evaluation");
+
+# hebrew
+ok(try {my $פוו; sub לה {}; 1}, "hebrew declaration");
+is(try {my $באר = 2; sub זהות ($x) { $x }; זהות($באר)}, 2, "evaluation");
+
+# russian
+ok(try {my $один; sub раз {}; 1}, "russian declaration");
+is(try {my $два = 2; sub идентичный ($x) { $x }; идентичный($два)}, 2, "evaluation");
+
+# Unicode subs
+{
+    my sub äöü () { 42 }
+    is äöü, 42, "Unicode subs with no parameters";
+}
+{
+    my sub äöü ($x) { 1000 + $x }
+    is äöü 17, 1017, "Unicode subs with one parameter (parsed as prefix ops)";
+}
+
+# Unicode parameters
+{
+    my sub abc (:$äöü) { 1000 + $äöü }
+
+    is abc(äöü =&gt; 42), 1042, "Unicode named params (1)";
+    is abc(:äöü(42)),  1042, "Unicode named params (2)";
+}
+
+# Unicode placeholder variables
+{
+    is
+        ~(&lt; foostraße barstraße fakestraße &gt;.map:{ ucfirst $^straßenname }),
+        "Foostraße Barstraße Fakestraße",
+        "Unicode placeholder variables";
+}
+
+# Unicode methods
+{
+    my method Str::äöü { ucfirst self }
+    is "pugs".äöü, "Pugs", "Unicode methods";
+}</pre>
 </div><p></p>
 <li></li>
 Perl can count Unicode line and paragraph separators as line markers,
@@ -253,54 +254,55 @@ comments in them will show up in the formatted output.)
 <div ID=header_hidden_27 style="display: block;">- Show t/syntax/POD.t (47 lines) -</div>
 </a>
 </p>
-<div ID=hide_27 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Whitespace and Comments&quot;/&quot;Multiline comments&quot; extending POD&gt;
-    :# others will be added later, or you can do it.
-    :
-    :eval_ok '
-    :=begin DATA LABEL1
-    :LABEL1.1
-    :LABEL1.2
-    :LABEL1.3
-    :=end DATA
-    :
-    :=begin DATA LABEL2
-    :LABEL2.1
-    :LABEL2.2
-    :=end DATA
-    :', &quot;=begin DATA works&quot;, :todo;
-    :
-    :eval_is('%=DATA&lt;LABEL1&gt;[0]', 'LABEL1.1', '@=DATA&lt;LABEL1&gt;[0] is correct', :todo);
-    :eval_is('%=DATA&lt;LABEL1&gt;[2]', 'LABEL1.3', '@=DATA&lt;LABEL1&gt;[2] is correct', :todo);
-    :eval_is('~ %=DATA&lt;LABEL1&gt;', 'LABEL1.1LABEL1.2LABEL1.3', '~ %=DATA&lt;LABEL1&gt; is correct', :todo);
-    :
-    :eval_is('~ $=LABEL2', 'LABEL2.1LABEL2.2', '~ $=LABEL2 is correct', :todo);
-    :eval_is('$=LABEL2[1]', 'LABEL2.2', '$=LABEL2[1] is correct', :todo);
-    :
-    :# S02 says this &quot;=begin comment&quot; &quot;=end comment&quot; shouldn't need a &quot;=cut&quot;
-    :# to indicate the end of the pod.
-    :
-    :eval_is( '
-    :=begin comment
-    :
-    :This is a comment with a &quot;=cut&quot;.
-    :
-    :=end comment
-    :=cut
-    :
-    :return &quot;foo&quot;;
-    :', 'foo');
-    :
-    :eval_is( '
-    :=begin comment
-    :
-    :This is a comment without a &quot;=cut&quot;.
-    :
-    :=end comment
-    :
-    :return &quot;foo&quot;;
-    :', 'foo');
-    :</pre>
+<div ID=hide_27 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Whitespace and Comments"/"Multiline comments" extending POD&gt;
+# others will be added later, or you can do it.
+
+eval_ok '
+=begin DATA LABEL1
+LABEL1.1
+LABEL1.2
+LABEL1.3
+=end DATA
+
+=begin DATA LABEL2
+LABEL2.1
+LABEL2.2
+=end DATA
+', "=begin DATA works", :todo;
+
+eval_is('%=DATA&lt;LABEL1&gt;[0]', 'LABEL1.1', '@=DATA&lt;LABEL1&gt;[0] is correct', :todo);
+eval_is('%=DATA&lt;LABEL1&gt;[2]', 'LABEL1.3', '@=DATA&lt;LABEL1&gt;[2] is correct', :todo);
+eval_is('~ %=DATA&lt;LABEL1&gt;', 'LABEL1.1LABEL1.2LABEL1.3', '~ %=DATA&lt;LABEL1&gt; is correct', :todo);
+
+eval_is('~ $=LABEL2', 'LABEL2.1LABEL2.2', '~ $=LABEL2 is correct', :todo);
+eval_is('$=LABEL2[1]', 'LABEL2.2', '$=LABEL2[1] is correct', :todo);
+
+# S02 says this "=begin comment" "=end comment" shouldn't need a "=cut"
+# to indicate the end of the pod.
+
+eval_is( '
+=begin comment
+
+This is a comment with a "=cut".
+
+=end comment
+=cut
+
+return "foo";
+', 'foo');
+
+eval_is( '
+=begin comment
+
+This is a comment without a "=cut".
+
+=end comment
+
+return "foo";
+', 'foo');
+</pre>
 </div><p>We have single paragraph comments with <code>=for comment</code> as well.
 That lets <code>=for</code> keep its meaning as the equivalent of a <code>=begin</code>
 and <code>=end</code> combined.  As with <code>=begin</code> and <code>=end</code>, a comment started
@@ -319,46 +321,47 @@ by <code>#</code> plus any user-selected bracket characters (as defined in
 <div ID=header_hidden_21 style="display: block;">- Show t/syntax/comments.t (39 lines) -</div>
 </a>
 </p>
-<div ID=hide_21 style="display:none; border:1px solid"><pre>
-    :    # L&lt;S02/&quot;Whitespace and Comments&quot;/&quot;Embedded comments&quot;
-    :    #  &quot;#&quot; plus any bracket&gt;
-    :
-    :    ok #[
-    :        Multiline
-    :        comments
-    :        is fine
-    :    ] 1, 'multiline embedded comment with #[]';
-    :
-    :    ok #(
-    :        Parens works also
-    :    ) 1, 'multiline embedded comment with #()';
-    :
-    :    my $var = #{ foo bar } 32;
-    :    is $var, 32, 'embedded comment with #{}';
-    :
-    :    $var = 3 + #「 this is a comment 」 56;
-    :    is $var, 59, 'embedded comment with LEFT/RIGHT CORNER BRACKET';
-    :
-    :    $var = 2 #『 blah blah blah 』 * 3;
-    :    is $var, 6, 'embedded comment with LEFT/RIGHT WHITE CORNER BRACKET';
-    :
-    :    my @list = 'a'..'c';
-    :
-    :    # FIXME: $var = @list[ #（注释）2 ];
-    :    is $var, 'c', 'embedded comment with FULLWIDTH LEFT/RIGHT PARENTHESIS';
-    :
-    :    $var = @list[ 0 #《注释》];
-    :    is $var, 'a', 'embedded comment with LEFT/RIGHT DOUBLE ANGLE BRACKET';
-    :
-    :    $var = @list[#〈注释〉1];
-    :    is $var, 'b', 'embedded comment with LEFT/RIGHT ANGLE BRACKET';
-    :
-    :    # Note that 'LEFT/RIGHT SINGLE QUOTATION MARK' (i.e. ‘’) and
-    :    # LEFT/RIGHT DOUBLE QUOTATION MARK (i.e. “”) are not valid delimiter
-    :    # characters.
-    :}
-    :
-    :{</pre>
+<div ID=hide_21 style="display:none; border:1px solid">
+<pre>
+    # L&lt;S02/"Whitespace and Comments"/"Embedded comments"
+    #  "#" plus any bracket&gt;
+
+    ok #[
+        Multiline
+        comments
+        is fine
+    ] 1, 'multiline embedded comment with #[]';
+
+    ok #(
+        Parens works also
+    ) 1, 'multiline embedded comment with #()';
+
+    my $var = #{ foo bar } 32;
+    is $var, 32, 'embedded comment with #{}';
+
+    $var = 3 + #「 this is a comment 」 56;
+    is $var, 59, 'embedded comment with LEFT/RIGHT CORNER BRACKET';
+
+    $var = 2 #『 blah blah blah 』 * 3;
+    is $var, 6, 'embedded comment with LEFT/RIGHT WHITE CORNER BRACKET';
+
+    my @list = 'a'..'c';
+
+    # FIXME: $var = @list[ #（注释）2 ];
+    is $var, 'c', 'embedded comment with FULLWIDTH LEFT/RIGHT PARENTHESIS';
+
+    $var = @list[ 0 #《注释》];
+    is $var, 'a', 'embedded comment with LEFT/RIGHT DOUBLE ANGLE BRACKET';
+
+    $var = @list[#〈注释〉1];
+    is $var, 'b', 'embedded comment with LEFT/RIGHT ANGLE BRACKET';
+
+    # Note that 'LEFT/RIGHT SINGLE QUOTATION MARK' (i.e. ‘’) and
+    # LEFT/RIGHT DOUBLE QUOTATION MARK (i.e. “”) are not valid delimiter
+    # characters.
+}
+
+{</pre>
 </div><pre>
     say #( embedded comment ) &quot;hello, world!&quot;;</pre>
 <pre>
@@ -378,16 +381,17 @@ characters, however, such as the corner quotes above.)</p>
 <div ID=header_hidden_22 style="display: block;">- Show t/syntax/comments.t (9 lines) -</div>
 </a>
 </p>
-<div ID=hide_22 style="display:none; border:1px solid"><pre>
-    :    # L&lt;S02/&quot;Whitespace and Comments&quot;/&quot;no space&quot; between &quot;#&quot; and bracket&gt;
-    :
-    :    ok !eval(&quot;3 * # (invalid comment) 2&quot;), &quot;no space allowed between '#' and '('&quot;;
-    :    ok !eval(&quot;3 * #\t[invalid comment] 2&quot;), &quot;no tab allowed between '#' and '['&quot;;
-    :    ok !eval(&quot;3 * #  \{invalid comment\} 2&quot;), &quot;no spaces allowed between '#' and '\{'&quot;;
-    :    ok !eval(&quot;3 * #\n&lt;invalid comment&gt; 2&quot;), &quot;no spaces allowed between '#' and '&lt;'&quot;;
-    :}
-    :
-    :{</pre>
+<div ID=hide_22 style="display:none; border:1px solid">
+<pre>
+    # L&lt;S02/"Whitespace and Comments"/"no space" between "#" and bracket&gt;
+
+    ok !eval("3 * # (invalid comment) 2"), "no space allowed between '#' and '('";
+    ok !eval("3 * #\t[invalid comment] 2"), "no tab allowed between '#' and '['";
+    ok !eval("3 * #  \{invalid comment\} 2"), "no spaces allowed between '#' and '\{'";
+    ok !eval("3 * #\n&lt;invalid comment&gt; 2"), "no spaces allowed between '#' and '&lt;'";
+}
+
+{</pre>
 </div><p></p>
 <li></li>
 As a special case to facilitate commenting out sections of code with
@@ -401,19 +405,20 @@ character.
 <div ID=header_hidden_25 style="display: block;">- Show t/syntax/comments.t (12 lines) -</div>
 </a>
 </p>
-<div ID=hide_25 style="display:none; border:1px solid"><pre>
-    :    # L&lt;S02/&quot;Whitespace and Comments&quot;/
-    :    #   &quot;#&quot; on &quot;beginning of line&quot; always &quot;line-end comment&quot;&gt;
-    :
-    :    is 31,
-    :#&lt;this is special cased
-    :    31, '#&lt; on the left margin is a line-end comment';
-    :
-    :    ok !eval(&quot; #&lt;this is invalid&quot;),
-    :        'embedded comment not on the left margin';
-    :}
-    :
-    :{</pre>
+<div ID=hide_25 style="display:none; border:1px solid">
+<pre>
+    # L&lt;S02/"Whitespace and Comments"/
+    #   "#" on "beginning of line" always "line-end comment"&gt;
+
+    is 31,
+#&lt;this is special cased
+    31, '#&lt; on the left margin is a line-end comment';
+
+    ok !eval(" #&lt;this is invalid"),
+        'embedded comment not on the left margin';
+}
+
+{</pre>
 </div><p></p>
 <li></li>
 For all quoting constructs that use user-selected brackets, you can open
@@ -427,25 +432,26 @@ to pairs of brackets of the same length as the opening brackets:
 <div ID=header_hidden_24 style="display: block;">- Show t/syntax/comments.t (18 lines) -</div>
 </a>
 </p>
-<div ID=hide_24 style="display:none; border:1px solid"><pre>
-    :    # L&lt;S02/&quot;Whitespace and Comments&quot;/&quot;Counting of nested brackets&quot;
-    :    #   &quot;applies only to&quot; &quot;pairs of brackets of the same length&quot;&gt;
-    :
-    :    is 3, #(
-    :        (Nested parens) works also
-    :    ) 3, 'nested parens #(...(...)...)';
-    :
-    :    is -1 #&lt;&lt;&lt;
-    :        Even &lt;this&gt; &lt;&lt;&lt; also &gt;&gt;&gt; works...
-    :    &gt;&gt;&gt;, -1, 'nested brackets in embedded comment';
-    :
-    :    is 'cat', #{{
-    :        This comment contains unmatched } and { { { {   (ignored)
-    :        Plus a nested {{ ... }} pair                    (counted)
-    :    }} 'cat', 'embedded comments with nested/unmatched bracket chars';
-    :}
-    :
-    :{</pre>
+<div ID=hide_24 style="display:none; border:1px solid">
+<pre>
+    # L&lt;S02/"Whitespace and Comments"/"Counting of nested brackets"
+    #   "applies only to" "pairs of brackets of the same length"&gt;
+
+    is 3, #(
+        (Nested parens) works also
+    ) 3, 'nested parens #(...(...)...)';
+
+    is -1 #&lt;&lt;&lt;
+        Even &lt;this&gt; &lt;&lt;&lt; also &gt;&gt;&gt; works...
+    &gt;&gt;&gt;, -1, 'nested brackets in embedded comment';
+
+    is 'cat', #{{
+        This comment contains unmatched } and { { { {   (ignored)
+        Plus a nested {{ ... }} pair                    (counted)
+    }} 'cat', 'embedded comments with nested/unmatched bracket chars';
+}
+
+{</pre>
 </div><a name="msg_23"></a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID=header_shown_23 style="display: none;">- Hide t/syntax/comments.t (line 58 ~ line 75) -
@@ -453,25 +459,26 @@ to pairs of brackets of the same length as the opening brackets:
 <div ID=header_hidden_23 style="display: block;">- Show t/syntax/comments.t (18 lines) -</div>
 </a>
 </p>
-<div ID=hide_23 style="display:none; border:1px solid"><pre>
-    :    # L&lt;S02/&quot;Whitespace and Comments&quot;/&quot;closed by&quot; &quot;same number of&quot;
-    :    #   &quot;closing brackets&quot;&gt;
-    :
-    :    ok #&lt;&lt;&lt;
-    :        Or this &lt;also&gt; works...
-    :    &gt;&gt;&gt; 1, '#&lt;&lt;&lt;...&gt;&gt;&gt;';
-    :
-    :    my $var = \#((( comment ))) 12;
-    :    is $var, 12, '#(((...)))';
-    :
-    :    $var #&lt;&lt; &lt; &gt;&gt; = 25;
-    :    is $var, 25, '#&lt;&lt; &lt; &gt;&gt;';
-    :
-    :    $var = #&lt;&lt; &gt; &gt;&gt; 36;
-    :    is $var, 36, '#&lt;&lt; &gt; &gt;&gt;';
-    :}
-    :
-    :{</pre>
+<div ID=hide_23 style="display:none; border:1px solid">
+<pre>
+    # L&lt;S02/"Whitespace and Comments"/"closed by" "same number of"
+    #   "closing brackets"&gt;
+
+    ok #&lt;&lt;&lt;
+        Or this &lt;also&gt; works...
+    &gt;&gt;&gt; 1, '#&lt;&lt;&lt;...&gt;&gt;&gt;';
+
+    my $var = \#((( comment ))) 12;
+    is $var, 12, '#(((...)))';
+
+    $var #&lt;&lt; &lt; &gt;&gt; = 25;
+    is $var, 25, '#&lt;&lt; &lt; &gt;&gt;';
+
+    $var = #&lt;&lt; &gt; &gt;&gt; 36;
+    is $var, 36, '#&lt;&lt; &gt; &gt;&gt;';
+}
+
+{</pre>
 </div><pre>
     say #{{
         This comment contains unmatched } and { { { {   (ignored)
@@ -552,12 +559,13 @@ If you say:
 <div ID=header_hidden_26 style="display: block;">- Show t/syntax/comments.t (5 lines) -</div>
 </a>
 </p>
-<div ID=hide_26 style="display:none; border:1px solid"><pre>
-    :    # L&lt;S02/Whitespace and Comments/&quot;comment may not contain an unspace&quot;&gt;
-    :    my $a;
-    :    ok !eval '$a = #\  (comment) 32', &quot;comments can't contain unspace&quot;;
-    :    is $a, undef, '$a remains undef';
-    :}</pre>
+<div ID=hide_26 style="display:none; border:1px solid">
+<pre>
+    # L&lt;S02/Whitespace and Comments/"comment may not contain an unspace"&gt;
+    my $a;
+    ok !eval '$a = #\  (comment) 32', "comments can't contain unspace";
+    is $a, undef, '$a remains undef';
+}</pre>
 </div><pre>
     #\ (...</pre>
 <p>it is an end-of-line comment, not an embedded comment.  Write:</p>
@@ -836,17 +844,18 @@ where that would entail heroic efforts to bypass a braindead platform.
 <div ID=header_hidden_20 style="display: block;">- Show t/builtins/math/NaN.t (10 lines) -</div>
 </a>
 </p>
-<div ID=hide_20 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Built-In Data Types&quot; /Perl 6 should by default make standard IEEE floating point concepts visible/&gt;
-    :
-    :is 0 * Inf  , NaN, &quot;0 * Inf&quot;;
-    :is Inf / Inf, NaN, &quot;Inf / Inf&quot;;
-    :is Inf - Inf, NaN, &quot;Inf - Inf&quot;;
-    :is NaN ** 0,  NaN, &quot;NaN ** 0&quot;;
-    :
-    :# XXX - the semantics below are unspecified.
-    :is 0**0     , 1, &quot;0**0 is 1, _not_ NaN&quot;;
-    :is Inf**0   , 1, &quot;Inf**0 is 1, _not_ NaN&quot;;</pre>
+<div ID=hide_20 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Built-In Data Types" /Perl 6 should by default make standard IEEE floating point concepts visible/&gt;
+
+is 0 * Inf  , NaN, "0 * Inf";
+is Inf / Inf, NaN, "Inf / Inf";
+is Inf - Inf, NaN, "Inf - Inf";
+is NaN ** 0,  NaN, "NaN ** 0";
+
+# XXX - the semantics below are unspecified.
+is 0**0     , 1, "0**0 is 1, _not_ NaN";
+is Inf**0   , 1, "Inf**0 is 1, _not_ NaN";</pre>
 </div><p>The default floating-point modes do not throw exceptions but rather
 propagate Inf and NaN.  The boxed object types may carry more detailed
 information on where overflow or underflow occurred.  Numerics in Perl
@@ -1032,9 +1041,10 @@ formats for both key and value in the first string: <code>.fmt('%s: %s', &quot;\
 <div ID=header_hidden_4 style="display: block;">- Show t/builtins/sprintf_and_as.t (2 lines) -</div>
 </a>
 </p>
-<div ID=hide_4 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names and Variables&quot; /or list of pairs/&gt;
-    :is (a =&gt; 1.3, b =&gt; 2.4).as(&quot;%s:%d&quot;, &quot;_&quot;), &quot;a:1_b:2&quot;, &quot;as() works with lists of pairs&quot;;</pre>
+<div ID=hide_4 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names and Variables" /or list of pairs/&gt;
+is (a =&gt; 1.3, b =&gt; 2.4).as("%s:%d", "_"), "a:1_b:2", "as() works with lists of pairs";</pre>
 </div><a name="msg_3"></a>
 <a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
 <div ID=header_shown_3 style="display: none;">- Hide t/builtins/sprintf_and_as.t (line 22 ~ line 24) -
@@ -1042,10 +1052,11 @@ formats for both key and value in the first string: <code>.fmt('%s: %s', &quot;\
 <div ID=header_hidden_3 style="display: block;">- Show t/builtins/sprintf_and_as.t (3 lines) -</div>
 </a>
 </p>
-<div ID=hide_3 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names and Variables&quot; /To format a hash value/&gt;
-    :is hash((a =&gt; 1.3), (b =&gt; 2.4)).as(&quot;%s:%d&quot;, &quot;_&quot;), &quot;a:1_b:2&quot;, &quot;as() works with hashes&quot;;
-    :</pre>
+<div ID=hide_3 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names and Variables" /To format a hash value/&gt;
+is hash((a =&gt; 1.3), (b =&gt; 2.4)).as("%s:%d", "_"), "a:1_b:2", "as() works with hashes";
+</pre>
 </div><a name="msg_2"></a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID=header_shown_2 style="display: none;">- Hide t/builtins/sprintf_and_as.t (line 19 ~ line 21) -
@@ -1053,10 +1064,11 @@ formats for both key and value in the first string: <code>.fmt('%s: %s', &quot;\
 <div ID=header_hidden_2 style="display: block;">- Show t/builtins/sprintf_and_as.t (3 lines) -</div>
 </a>
 </p>
-<div ID=hide_2 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names and Variables&quot; /To format an array value/&gt;
-    :is (1.3,2.4,3).as(&quot;%d&quot;, &quot;_&quot;), &quot;1_2_3&quot;, &quot;as() works with lists&quot;;
-    :</pre>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names and Variables" /To format an array value/&gt;
+is (1.3,2.4,3).as("%d", "_"), "1_2_3", "as() works with lists";
+</pre>
 </div><p></p>
 <li></li>
 Subscripts now consistently dereference the container produced by
@@ -1188,198 +1200,199 @@ appropriate adverb to the subscript.
 <div ID=header_hidden_5 style="display: block;">- Show t/operators/subscript_adverbs.t (191 lines) -</div>
 </a>
 </p>
-<div ID=hide_5 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names and Variables&quot; /appropriate adverb to the subscript/&gt;
-    :
-    :# Adverbs on array subscripts
-    :# :p
-    :{
-    :    my @array = &lt;A B&gt;;
-    :
-    :    isa_ok eval('@array[0]:p'), Pair,
-    :        &quot;:p on an array returned a Pair&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0]:p'), &quot;0\tA&quot;,
-    :        &quot;:p on an array returned the correct pair&quot;, :todo&lt;feature&gt;;
-    :
-    :    eval('@array[0]:p.value = &quot;a&quot;');
-    :    is @array[0], &quot;a&quot;,
-    :        &quot;:p on an array returns lvalues (like normal subscripts do as well)&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[0,1]:p'), 2,
-    :        &quot;:p on an array returned a two-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0,1]:p'), &quot;0\ta 1\tB&quot;,
-    :        &quot;:p on an array returned a two-elem array consisting of the correct pairs&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[42,23]:p'),  0, &quot;:p on an array weeded out non-existing entries (1)&quot;;
-    :    is ~eval('@array[42,23]:p'), &quot;&quot;, &quot;:p on an array weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# :kv
-    :{
-    :    my @array = &lt;A B&gt;;
-    :
-    :    is +eval('@array[0]:kv'), 2,
-    :        &quot;:kv on an array returned a two-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0]:kv'), &quot;0 A&quot;,
-    :        &quot;:kv on an array returned the correct two-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    eval('(@array[0]:kv)[1] = &quot;a&quot;');
-    :    is @array[0], &quot;a&quot;,
-    :        &quot;:kv on an array returns lvalues (like normal subscripts do as well)&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[0,1]:kv'), 4,
-    :        &quot;:kv on an array returned a four-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0,1]:kv'), &quot;0 a 1 B&quot;,
-    :        &quot;:kv on an array returned the correct four-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[42,23]:kv'),  0, &quot;:kv on an array weeded out non-existing entries (1)&quot;;
-    :    is ~eval('@array[42,23]:kv'), &quot;&quot;, &quot;:kv on an array weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# :k
-    :{
-    :    my @array = &lt;A B&gt;;
-    :
-    :    is +eval('@array[0]:k'), 1,
-    :        &quot;:k on an array returned an one-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0]:k'), &quot;0&quot;,
-    :        &quot;:k on an array returned the correct one-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[0,1]:k'), 2,
-    :        &quot;:k on an array returned a tow-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0,1]:k'), &quot;0 1&quot;,
-    :        &quot;:k on an array returned the correct two-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[42,23]:k'),  0, &quot;:k on an array weeded out non-existing entries (1)&quot;;
-    :    is ~eval('@array[42,23]:k'), &quot;&quot;, &quot;:k on an array weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# :v
-    :{
-    :    my @array = &lt;A B&gt;;
-    :
-    :    is +eval('@array[0]:v'), 1,
-    :        &quot;:v on an array returned an one-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0]:v'), &quot;A&quot;,
-    :        &quot;:v on an array returned the correct one-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    eval('@array[0]:v = &quot;a&quot;');
-    :    is @array[0], &quot;a&quot;,
-    :        &quot;:v on an array returns lvalues (like normal subscripts do as well)&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[0,1]:v'), 2,
-    :        &quot;:v on an array returned a tow-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0,1]:v'), &quot;a B&quot;,
-    :        &quot;:v on an array returned the correct two-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('@array[42,23]:v'),  0, &quot;:v on an array weeded out non-existing entries (1)&quot;;
-    :    is ~eval('@array[42,23]:v'), &quot;&quot;, &quot;:v on an array weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# Adverbs on hash subscripts
-    :# :p
-    :{
-    :    my %hash = (0 =&gt; &quot;A&quot;, 1 =&gt; &quot;B&quot;);
-    :
-    :    isa_ok eval('%hash&lt;0&gt;:p'), Pair,
-    :        &quot;:p on a hash returned a Pair&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0&gt;:p'), &quot;0\tA&quot;,
-    :        &quot;:p on a hash returned the correct pair&quot;, :todo&lt;feature&gt;;
-    :
-    :    eval('%hash&lt;0&gt;:p.value = &quot;a&quot;');
-    :    is %hash&lt;0&gt;, &quot;a&quot;,
-    :        &quot;:p on a hash returns lvalues (like normal subscripts do as well)&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;0 1&gt;:p'), 2,
-    :        &quot;:p on a hash returned a two-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0 1&gt;:p'), &quot;0\ta 1\tB&quot;,
-    :        &quot;:p on a hash returned a two-elem array consisting of the correct pairs&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;42 23&gt;:p'),  0, &quot;:p on a hash weeded out non-existing entries (1)&quot;;
-    :    is ~eval('%hash&lt;42 23&gt;:p'), &quot;&quot;, &quot;:p on a hash weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# :kv
-    :{
-    :    my %hash = (0 =&gt; &quot;A&quot;, 1 =&gt; &quot;B&quot;);
-    :
-    :    is +eval('%hash&lt;0&gt;:kv'), 2,
-    :        &quot;:kv on a hash returned a two-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0&gt;:kv'), &quot;0 A&quot;,
-    :        &quot;:kv on a hash returned the correct two-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    eval('(%hash&lt;0&gt;:kv)[1] = &quot;a&quot;');
-    :    is %hash&lt;0&gt;, &quot;a&quot;,
-    :        &quot;:kv on a hash returns lvalues (like normal subscripts do as well)&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;0 1&gt;:kv'), 4,
-    :        &quot;:kv on a hash returned a four-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0 1&gt;:kv'), &quot;0 a 1 B&quot;,
-    :        &quot;:kv on a hash returned the correct four-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;42 23&gt;:kv'),  0, &quot;:kv on a hash weeded out non-existing entries (1)&quot;;
-    :    is ~eval('%hash&lt;42 23&gt;:kv'), &quot;&quot;, &quot;:kv on a hash weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# :k
-    :{
-    :    my %hash = (0 =&gt; &quot;A&quot;, 1 =&gt; &quot;B&quot;);
-    :
-    :    is +eval('%hash&lt;0&gt;:k'), 1,
-    :        &quot;:k on a hash returned an one-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0&gt;:k'), &quot;0&quot;,
-    :        &quot;:k on a hash returned the correct one-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;0 1&gt;:k'), 2,
-    :        &quot;:k on a hash returned a tow-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0 1&gt;:k'), &quot;0 1&quot;,
-    :        &quot;:k on a hash returned the correct two-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;42 23&gt;:k'),  0, &quot;:k on a hash weeded out non-existing entries (1)&quot;;
-    :    is ~eval('%hash&lt;42 23&gt;:k'), &quot;&quot;, &quot;:k on a hash weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# :v
-    :{
-    :    my %hash = (0 =&gt; &quot;A&quot;, 1 =&gt; &quot;B&quot;);
-    :
-    :    is +eval('%hash&lt;0&gt;:v'), 1,
-    :        &quot;:v on a hash returned an one-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0&gt;:v'), &quot;A&quot;,
-    :        &quot;:v on a hash returned the correct one-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    eval('%hash&lt;0&gt;:v = &quot;a&quot;');
-    :    is %hash&lt;0&gt;, &quot;a&quot;,
-    :        &quot;:v on a hash returns lvalues (like normal subscripts do as well)&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;0 1&gt;:v'), 2,
-    :        &quot;:v on a hash returned a tow-elem array&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0 1&gt;:v'), &quot;a B&quot;,
-    :        &quot;:v on a hash returned the correct two-elem array&quot;, :todo&lt;feature&gt;;
-    :
-    :    is +eval('%hash&lt;42 23&gt;:v'),  0, &quot;:v on a hash weeded out non-existing entries (1)&quot;;
-    :    is ~eval('%hash&lt;42 23&gt;:v'), &quot;&quot;, &quot;:v on a hash weeded out non-existing entries (2)&quot;;
-    :}
-    :
-    :# The adverbial forms weed out non-existing entries, but undefined (but
-    :# existing) entries should be unaffected by this rule.
-    :{
-    :    my @array = (42, undef, 23);
-    :
-    :    is +eval('@array[0,1,2]:kv'), 6,
-    :        &quot;undefined but existing entries should not be weeded out (1)&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('@array[0,1,2]:kv'), &quot;0 42 1  2 23&quot;,
-    :        &quot;undefined but existing entries should not be weeded out (2)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :{
-    :    my %hash = (0 =&gt; 42, 1 =&gt; undef, 2 =&gt; 23);
-    :
-    :    is +eval('%hash&lt;0 1 2&gt;:kv'), 6,
-    :        &quot;undefined but existing entries should not be weeded out (3)&quot;, :todo&lt;feature&gt;;
-    :    is ~eval('%hash&lt;0 1 2&gt;:kv'), &quot;0 42 1  2 23&quot;,
-    :        &quot;undefined but existing entries should not be weeded out (4)&quot;, :todo&lt;feature&gt;;
-    :}</pre>
+<div ID=hide_5 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names and Variables" /appropriate adverb to the subscript/&gt;
+
+# Adverbs on array subscripts
+# :p
+{
+    my @array = &lt;A B&gt;;
+
+    isa_ok eval('@array[0]:p'), Pair,
+        ":p on an array returned a Pair", :todo&lt;feature&gt;;
+    is ~eval('@array[0]:p'), "0\tA",
+        ":p on an array returned the correct pair", :todo&lt;feature&gt;;
+
+    eval('@array[0]:p.value = "a"');
+    is @array[0], "a",
+        ":p on an array returns lvalues (like normal subscripts do as well)", :todo&lt;feature&gt;;
+
+    is +eval('@array[0,1]:p'), 2,
+        ":p on an array returned a two-elem array", :todo&lt;feature&gt;;
+    is ~eval('@array[0,1]:p'), "0\ta 1\tB",
+        ":p on an array returned a two-elem array consisting of the correct pairs", :todo&lt;feature&gt;;
+
+    is +eval('@array[42,23]:p'),  0, ":p on an array weeded out non-existing entries (1)";
+    is ~eval('@array[42,23]:p'), "", ":p on an array weeded out non-existing entries (2)";
+}
+
+# :kv
+{
+    my @array = &lt;A B&gt;;
+
+    is +eval('@array[0]:kv'), 2,
+        ":kv on an array returned a two-elem array", :todo&lt;feature&gt;;
+    is ~eval('@array[0]:kv'), "0 A",
+        ":kv on an array returned the correct two-elem array", :todo&lt;feature&gt;;
+
+    eval('(@array[0]:kv)[1] = "a"');
+    is @array[0], "a",
+        ":kv on an array returns lvalues (like normal subscripts do as well)", :todo&lt;feature&gt;;
+
+    is +eval('@array[0,1]:kv'), 4,
+        ":kv on an array returned a four-elem array", :todo&lt;feature&gt;;
+    is ~eval('@array[0,1]:kv'), "0 a 1 B",
+        ":kv on an array returned the correct four-elem array", :todo&lt;feature&gt;;
+
+    is +eval('@array[42,23]:kv'),  0, ":kv on an array weeded out non-existing entries (1)";
+    is ~eval('@array[42,23]:kv'), "", ":kv on an array weeded out non-existing entries (2)";
+}
+
+# :k
+{
+    my @array = &lt;A B&gt;;
+
+    is +eval('@array[0]:k'), 1,
+        ":k on an array returned an one-elem array", :todo&lt;feature&gt;;
+    is ~eval('@array[0]:k'), "0",
+        ":k on an array returned the correct one-elem array", :todo&lt;feature&gt;;
+
+    is +eval('@array[0,1]:k'), 2,
+        ":k on an array returned a tow-elem array", :todo&lt;feature&gt;;
+    is ~eval('@array[0,1]:k'), "0 1",
+        ":k on an array returned the correct two-elem array", :todo&lt;feature&gt;;
+
+    is +eval('@array[42,23]:k'),  0, ":k on an array weeded out non-existing entries (1)";
+    is ~eval('@array[42,23]:k'), "", ":k on an array weeded out non-existing entries (2)";
+}
+
+# :v
+{
+    my @array = &lt;A B&gt;;
+
+    is +eval('@array[0]:v'), 1,
+        ":v on an array returned an one-elem array", :todo&lt;feature&gt;;
+    is ~eval('@array[0]:v'), "A",
+        ":v on an array returned the correct one-elem array", :todo&lt;feature&gt;;
+
+    eval('@array[0]:v = "a"');
+    is @array[0], "a",
+        ":v on an array returns lvalues (like normal subscripts do as well)", :todo&lt;feature&gt;;
+
+    is +eval('@array[0,1]:v'), 2,
+        ":v on an array returned a tow-elem array", :todo&lt;feature&gt;;
+    is ~eval('@array[0,1]:v'), "a B",
+        ":v on an array returned the correct two-elem array", :todo&lt;feature&gt;;
+
+    is +eval('@array[42,23]:v'),  0, ":v on an array weeded out non-existing entries (1)";
+    is ~eval('@array[42,23]:v'), "", ":v on an array weeded out non-existing entries (2)";
+}
+
+# Adverbs on hash subscripts
+# :p
+{
+    my %hash = (0 =&gt; "A", 1 =&gt; "B");
+
+    isa_ok eval('%hash&lt;0&gt;:p'), Pair,
+        ":p on a hash returned a Pair", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0&gt;:p'), "0\tA",
+        ":p on a hash returned the correct pair", :todo&lt;feature&gt;;
+
+    eval('%hash&lt;0&gt;:p.value = "a"');
+    is %hash&lt;0&gt;, "a",
+        ":p on a hash returns lvalues (like normal subscripts do as well)", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;0 1&gt;:p'), 2,
+        ":p on a hash returned a two-elem array", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0 1&gt;:p'), "0\ta 1\tB",
+        ":p on a hash returned a two-elem array consisting of the correct pairs", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;42 23&gt;:p'),  0, ":p on a hash weeded out non-existing entries (1)";
+    is ~eval('%hash&lt;42 23&gt;:p'), "", ":p on a hash weeded out non-existing entries (2)";
+}
+
+# :kv
+{
+    my %hash = (0 =&gt; "A", 1 =&gt; "B");
+
+    is +eval('%hash&lt;0&gt;:kv'), 2,
+        ":kv on a hash returned a two-elem array", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0&gt;:kv'), "0 A",
+        ":kv on a hash returned the correct two-elem array", :todo&lt;feature&gt;;
+
+    eval('(%hash&lt;0&gt;:kv)[1] = "a"');
+    is %hash&lt;0&gt;, "a",
+        ":kv on a hash returns lvalues (like normal subscripts do as well)", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;0 1&gt;:kv'), 4,
+        ":kv on a hash returned a four-elem array", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0 1&gt;:kv'), "0 a 1 B",
+        ":kv on a hash returned the correct four-elem array", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;42 23&gt;:kv'),  0, ":kv on a hash weeded out non-existing entries (1)";
+    is ~eval('%hash&lt;42 23&gt;:kv'), "", ":kv on a hash weeded out non-existing entries (2)";
+}
+
+# :k
+{
+    my %hash = (0 =&gt; "A", 1 =&gt; "B");
+
+    is +eval('%hash&lt;0&gt;:k'), 1,
+        ":k on a hash returned an one-elem array", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0&gt;:k'), "0",
+        ":k on a hash returned the correct one-elem array", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;0 1&gt;:k'), 2,
+        ":k on a hash returned a tow-elem array", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0 1&gt;:k'), "0 1",
+        ":k on a hash returned the correct two-elem array", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;42 23&gt;:k'),  0, ":k on a hash weeded out non-existing entries (1)";
+    is ~eval('%hash&lt;42 23&gt;:k'), "", ":k on a hash weeded out non-existing entries (2)";
+}
+
+# :v
+{
+    my %hash = (0 =&gt; "A", 1 =&gt; "B");
+
+    is +eval('%hash&lt;0&gt;:v'), 1,
+        ":v on a hash returned an one-elem array", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0&gt;:v'), "A",
+        ":v on a hash returned the correct one-elem array", :todo&lt;feature&gt;;
+
+    eval('%hash&lt;0&gt;:v = "a"');
+    is %hash&lt;0&gt;, "a",
+        ":v on a hash returns lvalues (like normal subscripts do as well)", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;0 1&gt;:v'), 2,
+        ":v on a hash returned a tow-elem array", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0 1&gt;:v'), "a B",
+        ":v on a hash returned the correct two-elem array", :todo&lt;feature&gt;;
+
+    is +eval('%hash&lt;42 23&gt;:v'),  0, ":v on a hash weeded out non-existing entries (1)";
+    is ~eval('%hash&lt;42 23&gt;:v'), "", ":v on a hash weeded out non-existing entries (2)";
+}
+
+# The adverbial forms weed out non-existing entries, but undefined (but
+# existing) entries should be unaffected by this rule.
+{
+    my @array = (42, undef, 23);
+
+    is +eval('@array[0,1,2]:kv'), 6,
+        "undefined but existing entries should not be weeded out (1)", :todo&lt;feature&gt;;
+    is ~eval('@array[0,1,2]:kv'), "0 42 1  2 23",
+        "undefined but existing entries should not be weeded out (2)", :todo&lt;feature&gt;;
+}
+
+{
+    my %hash = (0 =&gt; 42, 1 =&gt; undef, 2 =&gt; 23);
+
+    is +eval('%hash&lt;0 1 2&gt;:kv'), 6,
+        "undefined but existing entries should not be weeded out (3)", :todo&lt;feature&gt;;
+    is ~eval('%hash&lt;0 1 2&gt;:kv'), "0 42 1  2 23",
+        "undefined but existing entries should not be weeded out (4)", :todo&lt;feature&gt;;
+}</pre>
 </div><pre>
     @array = &lt;A B&gt;;
     @array[0,1,2];      # returns 'A', 'B', undef
@@ -1450,13 +1463,14 @@ The following pseudo-package names are reserved in the first position:
 <div ID=header_hidden_10 style="display: block;">- Show t/var/var.t (6 lines) -</div>
 </a>
 </p>
-<div ID=hide_10 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names&quot; /names are reserved in the first position/&gt;
-    :ok !eval('module MY;     1'), &quot;MY is an out of scope name&quot;;
-    :ok !eval('module OUTER;  1'), &quot;OUTER is an out of scope name&quot;;
-    :ok !eval('module CALLER; 1'), &quot;CALLER is an out of scope name&quot;;
-    :
-    :</pre>
+<div ID=hide_10 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names" /names are reserved in the first position/&gt;
+ok !eval('module MY;     1'), "MY is an out of scope name";
+ok !eval('module OUTER;  1'), "OUTER is an out of scope name";
+ok !eval('module CALLER; 1'), "CALLER is an out of scope name";
+
+</pre>
 </div><pre>
     MY          # Lexical variables declared in the current scope
     OUR         # Package variables declared in the current package
@@ -1578,130 +1592,131 @@ failure.
 <div ID=header_hidden_9 style="display: block;">- Show t/var/caller.t (123 lines) -</div>
 </a>
 </p>
-<div ID=hide_9 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names&quot; /The CALLER package refers to the lexical scope/&gt;
-    :{
-    :  # $_ is always implicitly declared &quot;env&quot;.
-    :  my sub foo () { $CALLER::_ }
-    :  my sub bar () {
-    :    $_ = 42;
-    :    foo();
-    :  }
-    :
-    :  $_ = 23;
-    :  is bar(), 42, '$_ is implicitly declared &quot;env&quot; (1)';
-    :}
-    :
-    :{
-    :  # $_ is always implicitly declared &quot;env&quot;.
-    :  # (And, BTW, $_ is lexical.)
-    :  my sub foo () { $_ = 17; $CALLER::_ }
-    :  my sub bar () {
-    :    $_ = 42;
-    :    foo();
-    :  }
-    :
-    :  $_ = 23;
-    :  is bar(), 42, '$_ is implicitly declared &quot;env&quot; (2)', :todo&lt;bug&gt;;
-    :}
-    :
-    :{
-    :  # ...but other vars are not
-    :  my sub foo { my $abc = 17; $CALLER::abc }
-    :  my sub bar {
-    :    my $abc = 42;
-    :    foo();
-    :  }
-    :
-    :  my $abs = 23;
-    :  dies_ok { bar() },
-    :    'vars not declared &quot;env&quot; are not accessible via $CALLER::';
-    :}
-    :
-    :# Vars declared with env() default to being rw in the creating scope and
-    :# readonly when accessed with $CALLER::.
-    :{
-    :  env $foo = 42;
-    :  $foo++;
-    :  is $foo, 43, &quot;env() vars are rw in the creating scope (1)&quot;;
-    :}
-    :
-    :{
-    :  env $foo = 42;
-    :  { $foo++ }
-    :  is $foo, 43, &quot;env() vars are rw in the creating scope (2)&quot;;
-    :}
-    :
-    :{
-    :  my sub modify { $CALLER::foo++ }
-    :  env $foo = 42;
-    :  dies_ok { modify() }, 'env() vars are ro when accessed with $CALLER::';
-    :}
-    :
-    :{
-    :  my sub modify { $CALLER::_++ }
-    :  $_ = 42;
-    :  lives_ok { modify() }, '$_ is implicitly rw (1)';
-    :  is $_, 43,             '$_ is implicitly rw (2)';
-    :}
-    :
-    :{
-    :  my sub modify { $CALLER::foo++ }
-    :  env $foo is rw = 42;
-    :  lives_ok { modify() },
-    :      'env() vars declared &quot;is rw&quot; are rw when accessed with $CALLER:: (1)', :todo&lt;bug&gt;;
-    :  is $foo, 43,
-    :      'env() vars declared &quot;is rw&quot; are rw when accessed with $CALLER:: (2)', :todo&lt;bug&gt;;
-    :}
-    :
-    :{
-    :  my sub get_foo { try { $+foo } }
-    :  env $foo = 42;
-    :
-    :  is get_foo(), 42, '$+ is short for $CALLER::';
-    :}
-    :
-    :# Rebinding caller's variables -- legal?
-    :{
-    :  my $other_var = 23;
-    :  my sub rebind_foo { $CALLER::foo := $other_var }
-    :  env $foo = 42;
-    :
-    :  lives_ok { rebind_foo() }, 'rebinding $CALLER:: variables works (1)', :todo&lt;bug&gt;;
-    :  is $foo, 23,               'rebinding $CALLER:: variables works (2)', :todo&lt;bug&gt;;
-    :  $other_var++;
-    :  is $foo, 24,               'rebinding $CALLER:: variables works (3)', :todo&lt;bug&gt;;
-    :}
-    :
-    :=pod
-    :
-    :Larry ruled that as erroneous.
-    :
-    :15:13 &lt; iblech&gt; autrijus: :) BTW, WRT lex hoisting: sub foo { $CALLER::a }; { foo(); my $a
-    := 3; foo() }
-    :15:13 &lt; autrijus&gt; iblech: larry ruled it as erroneous.
-    :15:13 &lt; autrijus&gt; i.e. foo()'s behaviour is undefined.
-    :15:14 &lt; iblech&gt; ok then :)
-    :15:14 &lt; autrijus&gt; it's essential we do that because
-    :15:14 &lt; autrijus&gt; foo($a, my $a)
-    :15:14 &lt; autrijus&gt; is legal
-    :15:14 &lt; autrijus&gt; and will be simply hazadrous to implement either way.
-    :15:14 &lt; autrijus&gt; s/implement/mandate/
-    :
-    :{
-    :  if $*OS eq &quot;browser&quot; {  # test works under PIL2JS :)
-    :    my $sub = sub { $CALLER::a };
-    :
-    :    # No declaration of $a yet.
-    :    dies_ok { $sub() }, '$CALLER:: dies when accessing not yet declared vars';
-    :
-    :    my $a = 3;
-    :    is $sub(), 3, '$CALLER:: works now (accessing a declared var)';
-    :  } else {
-    :    flunk &quot;Test loops infinitely&quot;;
-    :    flunk &quot;Test loops infinitely&quot;;
-    :  }
-    :}</pre>
+<div ID=hide_9 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names" /The CALLER package refers to the lexical scope/&gt;
+{
+  # $_ is always implicitly declared "env".
+  my sub foo () { $CALLER::_ }
+  my sub bar () {
+    $_ = 42;
+    foo();
+  }
+
+  $_ = 23;
+  is bar(), 42, '$_ is implicitly declared "env" (1)';
+}
+
+{
+  # $_ is always implicitly declared "env".
+  # (And, BTW, $_ is lexical.)
+  my sub foo () { $_ = 17; $CALLER::_ }
+  my sub bar () {
+    $_ = 42;
+    foo();
+  }
+
+  $_ = 23;
+  is bar(), 42, '$_ is implicitly declared "env" (2)', :todo&lt;bug&gt;;
+}
+
+{
+  # ...but other vars are not
+  my sub foo { my $abc = 17; $CALLER::abc }
+  my sub bar {
+    my $abc = 42;
+    foo();
+  }
+
+  my $abs = 23;
+  dies_ok { bar() },
+    'vars not declared "env" are not accessible via $CALLER::';
+}
+
+# Vars declared with env() default to being rw in the creating scope and
+# readonly when accessed with $CALLER::.
+{
+  env $foo = 42;
+  $foo++;
+  is $foo, 43, "env() vars are rw in the creating scope (1)";
+}
+
+{
+  env $foo = 42;
+  { $foo++ }
+  is $foo, 43, "env() vars are rw in the creating scope (2)";
+}
+
+{
+  my sub modify { $CALLER::foo++ }
+  env $foo = 42;
+  dies_ok { modify() }, 'env() vars are ro when accessed with $CALLER::';
+}
+
+{
+  my sub modify { $CALLER::_++ }
+  $_ = 42;
+  lives_ok { modify() }, '$_ is implicitly rw (1)';
+  is $_, 43,             '$_ is implicitly rw (2)';
+}
+
+{
+  my sub modify { $CALLER::foo++ }
+  env $foo is rw = 42;
+  lives_ok { modify() },
+      'env() vars declared "is rw" are rw when accessed with $CALLER:: (1)', :todo&lt;bug&gt;;
+  is $foo, 43,
+      'env() vars declared "is rw" are rw when accessed with $CALLER:: (2)', :todo&lt;bug&gt;;
+}
+
+{
+  my sub get_foo { try { $+foo } }
+  env $foo = 42;
+
+  is get_foo(), 42, '$+ is short for $CALLER::';
+}
+
+# Rebinding caller's variables -- legal?
+{
+  my $other_var = 23;
+  my sub rebind_foo { $CALLER::foo := $other_var }
+  env $foo = 42;
+
+  lives_ok { rebind_foo() }, 'rebinding $CALLER:: variables works (1)', :todo&lt;bug&gt;;
+  is $foo, 23,               'rebinding $CALLER:: variables works (2)', :todo&lt;bug&gt;;
+  $other_var++;
+  is $foo, 24,               'rebinding $CALLER:: variables works (3)', :todo&lt;bug&gt;;
+}
+
+=pod
+
+Larry ruled that as erroneous.
+
+15:13 &lt; iblech&gt; autrijus: :) BTW, WRT lex hoisting: sub foo { $CALLER::a }; { foo(); my $a
+= 3; foo() }
+15:13 &lt; autrijus&gt; iblech: larry ruled it as erroneous.
+15:13 &lt; autrijus&gt; i.e. foo()'s behaviour is undefined.
+15:14 &lt; iblech&gt; ok then :)
+15:14 &lt; autrijus&gt; it's essential we do that because
+15:14 &lt; autrijus&gt; foo($a, my $a)
+15:14 &lt; autrijus&gt; is legal
+15:14 &lt; autrijus&gt; and will be simply hazadrous to implement either way.
+15:14 &lt; autrijus&gt; s/implement/mandate/
+
+{
+  if $*OS eq "browser" {  # test works under PIL2JS :)
+    my $sub = sub { $CALLER::a };
+
+    # No declaration of $a yet.
+    dies_ok { $sub() }, '$CALLER:: dies when accessing not yet declared vars';
+
+    my $a = 3;
+    is $sub(), 3, '$CALLER:: works now (accessing a declared var)';
+  } else {
+    flunk "Test loops infinitely";
+    flunk "Test loops infinitely";
+  }
+}</pre>
 </div><p>Any lexical declared with the <code>is context</code> trait is by default
 considered readonly outside the current lexical scope.  You may add
 <code>is rw</code> to allow called routines to modify your value.  <code>$_</code>,
@@ -1732,136 +1747,137 @@ declared in the current lexical scope.
 <div ID=header_hidden_6 style="display: block;">- Show t/magicals/env.t (129 lines) -</div>
 </a>
 </p>
-<div ID=hide_6 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names&quot; /environment variables passed to program/&gt;
-    :plan 14;
-    :
-    :if $*OS eq &quot;browser&quot; {
-    :  skip_rest &quot;Programs running in browsers don't have access to regular IO.&quot;;
-    :  exit;
-    :}
-    :
-    :=kwid
-    :
-    := DESCRIPTION
-    :
-    :Tests for %*ENV
-    :
-    :Tests that C&lt;%*ENV&gt; can be read and written to and that
-    :child processes see the modified C&lt;%*ENV&gt;.
-    :
-    :=cut
-    :
-    :# It must not be empty at startup.
-    :ok +%*ENV.keys, '%*ENV has keys';
-    :
-    :# %*ENV should be able to get copied into another variable.
-    :my %vars = %*ENV;
-    :is +%vars.keys, +%*ENV.keys, '%*ENV was successfully copied into another variable';
-    :
-    :# XXX: Should modifying %vars affect the environment? I don't think so, but, of
-    :# course, feel free to change the following test if I'm wrong.
-    :%vars&lt;PATH&gt; = &quot;42&quot;;
-    :ok %*ENV&lt;PATH&gt; ne &quot;42&quot;,
-    :  'modifying a copy of %*ENV didn\'t affect the environment';
-    :
-    :# Similarily, I don't think creating a new entry in %vars should affect the
-    :# environment:
-    :diag '%*ENV&lt;PUGS_ROCKS&gt;=' ~ %*ENV&lt;PUGS_ROCKS&gt;;
-    :ok !defined(%*ENV&lt;PUGS_ROCKS&gt;), &quot;there's no env variable 'PUGS_ROCKS'&quot;;
-    :%vars&lt;PUGS_ROCKS&gt; = &quot;42&quot;;
-    :diag '%*ENV&lt;PUGS_ROCKS&gt;=' ~ %*ENV&lt;PUGS_ROCKS&gt;;
-    :ok !defined(%*ENV&lt;PUGS_ROCKS&gt;), &quot;there's still no env variable 'PUGS_ROCKS'&quot;;
-    :
-    :my ($pugs,$redir,$squo) = (&quot;./pugs&quot;, &quot;&gt;&quot;, &quot;'&quot;);
-    :
-    :if $*OS eq any &lt;MSWin32 mingw msys cygwin&gt; {
-    :    $pugs = 'pugs.exe';
-    :};
-    :
-    :my $expected = 'Hello from subprocess';
-    :%*ENV&lt;PUGS_ROCKS&gt; = $expected;
-    :# Note that the &quot;?&quot; preceeding the &quot;(&quot; is necessary, because we need a Bool,
-    :# not a junction of Bools.
-    :is %*ENV&lt;PUGS_ROCKS&gt;, $expected,'%*ENV is rw';
-    :
-    :my $tempfile = &quot;temp-ex-output.&quot; ~ $*PID ~ &quot;.&quot; ~ rand 1000;
-    :
-    :my $command = qq!$pugs -e &quot;\%*ENV.perl.say&quot; $redir $tempfile!;
-    :diag $command;
-    :system $command;
-    :
-    :my $child_env = slurp $tempfile;
-    :my %child_env = eval $child_env;
-    :unlink $tempfile;
-    :
-    :my $err = 0;
-    :for %*ENV.kv -&gt; $k,$v {
-    :  # Ignore env vars which bash and maybe other shells set automatically.
-    :  next if $k eq any &lt;SHLVL _ OLDPWD PS1&gt;;
-    :  if (%child_env{$k} !~~ $v) {
-    :    if (! $err) {
-    :      flunk(&quot;Environment gets propagated to child.&quot;);
-    :      $err++;
-    :    };
-    :    diag &quot;Expected: $k=$v&quot;;
-    :    diag &quot;Got:      $k=%child_env{$k}&quot;;
-    :  } else {
-    :    # diag &quot;$k=$v&quot;;
-    :  };
-    :};
-    :if (! $err) {
-    :  ok(1,&quot;Environment gets propagated to child.&quot;);
-    :};
-    :
-    :%*ENV.delete('PUGS_ROCKS');
-    :is(%*ENV&lt;PUGS_ROCKS&gt;,undef,'We can remove keys from %*ENV');
-    :
-    :my $command = qq!$pugs -e &quot;\%*ENV.perl.say&quot; $redir $tempfile!;
-    :diag $command;
-    :system $command;
-    :
-    :my $child_env = slurp $tempfile;
-    :my %child_env = eval $child_env;
-    :unlink $tempfile;
-    :
-    :is(%child_env&lt;PUGS_ROCKS&gt;,undef,'The child did not see %*ENV&lt;PUGS_ROCKS&gt;');
-    :
-    :my $err = 0;
-    :for %*ENV.kv -&gt; $k,$v {
-    :  # Ignore env vars which bash and maybe other shells set automatically.
-    :  next if $k eq any &lt;SHLVL _ OLDPWD PS1&gt;;
-    :  if (%child_env{$k} !~~ $v) {
-    :    if (! $err) {
-    :      flunk(&quot;Environment gets propagated to child.&quot;);
-    :      $err++;
-    :    };
-    :    diag &quot;Expected: $k=$v&quot;;
-    :    diag &quot;Got:      $k=%child_env{$k}&quot;;
-    :  } else {
-    :    # diag &quot;$k=$v&quot;;
-    :  };
-    :};
-    :if (! $err) {
-    :  ok(1,&quot;Environment gets propagated to child.&quot;);
-    :};
-    :
-    :ok !%*ENV.exists(&quot;does_not_exist&quot;), &quot;exists() returns false on a not defined env var&quot;;
-    :
-    :# %ENV must not be imported by default
-    :my $x = eval &quot;%ENV&quot;;
-    :ok $! ~~ m:P5/Undeclared/, '%ENV not visible by default', :todo&lt;bug&gt;;
-    :
-    :# following doesn't parse yet
-    :{
-    :    # It must be importable
-    :    use GLOBAL &lt;%ENV&gt;;
-    :    ok +%ENV.keys, 'imported %ENV has keys';
-    :}
-    :# Importation must be lexical
-    :$x = eval &quot;%ENV&quot;;
-    :ok $! ~~ m:P5/Undeclared/, '%ENV not visible by after lexical import scope', :todo&lt;bug&gt;;
-    :1;</pre>
+<div ID=hide_6 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names" /environment variables passed to program/&gt;
+plan 14;
+
+if $*OS eq "browser" {
+  skip_rest "Programs running in browsers don't have access to regular IO.";
+  exit;
+}
+
+=kwid
+
+= DESCRIPTION
+
+Tests for %*ENV
+
+Tests that C&lt;%*ENV&gt; can be read and written to and that
+child processes see the modified C&lt;%*ENV&gt;.
+
+=cut
+
+# It must not be empty at startup.
+ok +%*ENV.keys, '%*ENV has keys';
+
+# %*ENV should be able to get copied into another variable.
+my %vars = %*ENV;
+is +%vars.keys, +%*ENV.keys, '%*ENV was successfully copied into another variable';
+
+# XXX: Should modifying %vars affect the environment? I don't think so, but, of
+# course, feel free to change the following test if I'm wrong.
+%vars&lt;PATH&gt; = "42";
+ok %*ENV&lt;PATH&gt; ne "42",
+  'modifying a copy of %*ENV didn\'t affect the environment';
+
+# Similarily, I don't think creating a new entry in %vars should affect the
+# environment:
+diag '%*ENV&lt;PUGS_ROCKS&gt;=' ~ %*ENV&lt;PUGS_ROCKS&gt;;
+ok !defined(%*ENV&lt;PUGS_ROCKS&gt;), "there's no env variable 'PUGS_ROCKS'";
+%vars&lt;PUGS_ROCKS&gt; = "42";
+diag '%*ENV&lt;PUGS_ROCKS&gt;=' ~ %*ENV&lt;PUGS_ROCKS&gt;;
+ok !defined(%*ENV&lt;PUGS_ROCKS&gt;), "there's still no env variable 'PUGS_ROCKS'";
+
+my ($pugs,$redir,$squo) = ("./pugs", "&gt;", "'");
+
+if $*OS eq any &lt;MSWin32 mingw msys cygwin&gt; {
+    $pugs = 'pugs.exe';
+};
+
+my $expected = 'Hello from subprocess';
+%*ENV&lt;PUGS_ROCKS&gt; = $expected;
+# Note that the "?" preceeding the "(" is necessary, because we need a Bool,
+# not a junction of Bools.
+is %*ENV&lt;PUGS_ROCKS&gt;, $expected,'%*ENV is rw';
+
+my $tempfile = "temp-ex-output." ~ $*PID ~ "." ~ rand 1000;
+
+my $command = qq!$pugs -e "\%*ENV.perl.say" $redir $tempfile!;
+diag $command;
+system $command;
+
+my $child_env = slurp $tempfile;
+my %child_env = eval $child_env;
+unlink $tempfile;
+
+my $err = 0;
+for %*ENV.kv -&gt; $k,$v {
+  # Ignore env vars which bash and maybe other shells set automatically.
+  next if $k eq any &lt;SHLVL _ OLDPWD PS1&gt;;
+  if (%child_env{$k} !~~ $v) {
+    if (! $err) {
+      flunk("Environment gets propagated to child.");
+      $err++;
+    };
+    diag "Expected: $k=$v";
+    diag "Got:      $k=%child_env{$k}";
+  } else {
+    # diag "$k=$v";
+  };
+};
+if (! $err) {
+  ok(1,"Environment gets propagated to child.");
+};
+
+%*ENV.delete('PUGS_ROCKS');
+is(%*ENV&lt;PUGS_ROCKS&gt;,undef,'We can remove keys from %*ENV');
+
+my $command = qq!$pugs -e "\%*ENV.perl.say" $redir $tempfile!;
+diag $command;
+system $command;
+
+my $child_env = slurp $tempfile;
+my %child_env = eval $child_env;
+unlink $tempfile;
+
+is(%child_env&lt;PUGS_ROCKS&gt;,undef,'The child did not see %*ENV&lt;PUGS_ROCKS&gt;');
+
+my $err = 0;
+for %*ENV.kv -&gt; $k,$v {
+  # Ignore env vars which bash and maybe other shells set automatically.
+  next if $k eq any &lt;SHLVL _ OLDPWD PS1&gt;;
+  if (%child_env{$k} !~~ $v) {
+    if (! $err) {
+      flunk("Environment gets propagated to child.");
+      $err++;
+    };
+    diag "Expected: $k=$v";
+    diag "Got:      $k=%child_env{$k}";
+  } else {
+    # diag "$k=$v";
+  };
+};
+if (! $err) {
+  ok(1,"Environment gets propagated to child.");
+};
+
+ok !%*ENV.exists("does_not_exist"), "exists() returns false on a not defined env var";
+
+# %ENV must not be imported by default
+my $x = eval "%ENV";
+ok $! ~~ m:P5/Undeclared/, '%ENV not visible by default', :todo&lt;bug&gt;;
+
+# following doesn't parse yet
+{
+    # It must be importable
+    use GLOBAL &lt;%ENV&gt;;
+    ok +%ENV.keys, 'imported %ENV has keys';
+}
+# Importation must be lexical
+$x = eval "%ENV";
+ok $! ~~ m:P5/Undeclared/, '%ENV not visible by after lexical import scope', :todo&lt;bug&gt;;
+1;</pre>
 </div><p>The <code>CONTEXT</code> package is only for internal overriding of contextual
 information, modelled on how environmental variables work among
 processes.  Despite the fact that the <code>CONTEXT</code> package reflects the
@@ -1933,13 +1949,14 @@ Instead of <code>$?OUTER::SUB</code> you probably want to write <code></code>OUT
 <div ID=header_hidden_7 style="display: block;">- Show t/magicals/file_line.t (6 lines) -</div>
 </a>
 </p>
-<div ID=hide_7 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names&quot; /Which file am I in/&gt;
-    :ok($?FILE eq ('t/magicals/file_line.t' | 't\\magicals\\file_line.t'), '$?FILE works');
-    :
-    :# NOTE:
-    :# above is a junction hack for Unix and Win32 file 
-    :# paths until the FileSpec hack is working - Stevan</pre>
+<div ID=hide_7 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names" /Which file am I in/&gt;
+ok($?FILE eq ('t/magicals/file_line.t' | 't\\magicals\\file_line.t'), '$?FILE works');
+
+# NOTE:
+# above is a junction hack for Unix and Win32 file 
+# paths until the FileSpec hack is working - Stevan</pre>
 </div><pre>
     $?LINE      Which line am I at?
     $?PACKAGE   Which package am I in?
@@ -1961,16 +1978,17 @@ Instead of <code>$?OUTER::SUB</code> you probably want to write <code></code>OUT
 <div ID=header_hidden_8 style="display: block;">- Show t/magicals/subname.t (9 lines) -</div>
 </a>
 </p>
-<div ID=hide_8 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Names&quot; /Which routine am I in/&gt;
-    :sub foo { return &amp;?ROUTINE.name }
-    :is(foo(), '&amp;main::foo', 'got the right routine name');
-    :
-    :my $bar = sub { return &amp;?ROUTINE.name };
-    :is($bar(), '&lt;anon&gt;', 'got the right routine name (anon-block)');
-    :
-    :my $baz = try { &amp;?ROUTINE.name };
-    :ok(not(defined $baz), '&amp;?ROUTINE.name not defined outside of a routine');</pre>
+<div ID=hide_8 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Names" /Which routine am I in/&gt;
+sub foo { return &amp;?ROUTINE.name }
+is(foo(), '&amp;main::foo', 'got the right routine name');
+
+my $bar = sub { return &amp;?ROUTINE.name };
+is($bar(), '&lt;anon&gt;', 'got the right routine name (anon-block)');
+
+my $baz = try { &amp;?ROUTINE.name };
+ok(not(defined $baz), '&amp;?ROUTINE.name not defined outside of a routine');</pre>
 </div><pre>
     @?ROUTINE   Which nested routines am I in?
     &amp;?BLOCK     Which block am I in?
@@ -2054,8 +2072,9 @@ Consent of the governed, and all that.
 <div ID=header_hidden_11 style="display: block;">- Show t/operators/listquote.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_11 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Literals&quot;&gt;</pre>
+<div ID=hide_11 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Literals"&gt;</pre>
 </div><ul>
 <li></li>
 A single underscore is allowed only between any two digits in a
@@ -2311,17 +2330,18 @@ Whitespace is allowed between the ``q'' and its adverb: <code>q :w /.../</code>.
 <div ID=header_hidden_12 style="display: block;">- Show t/operators/quoting.t (10 lines) -</div>
 </a>
 </p>
-<div ID=hide_12 style="display:none; border:1px solid"><pre>
-    :  # L&lt;S02/Literals /Whitespace is allowed between the &quot;q&quot; and its adverb: q :w /..././&gt;
-    :    my @q = ();
-    :    try { eval '@q = (q :w /$foo $bar/)' };
-    :    is(+@q, 2, &quot;q :w // is the same as q:w//&quot;,:todo&lt;bug&gt;);
-    :    is(@q[0], '$foo', &quot;...&quot;,:todo&lt;bug&gt;);
-    :    is(@q[1], '$bar', &quot;...&quot;,:todo&lt;bug&gt;);
-    :};
-    :
-    :
-    :{ # qq:w,Interpolating quote constructor with words adverb</pre>
+<div ID=hide_12 style="display:none; border:1px solid">
+<pre>
+  # L&lt;S02/Literals /Whitespace is allowed between the "q" and its adverb: q :w /..././&gt;
+    my @q = ();
+    try { eval '@q = (q :w /$foo $bar/)' };
+    is(+@q, 2, "q :w // is the same as q:w//",:todo&lt;bug&gt;);
+    is(@q[0], '$foo', "...",:todo&lt;bug&gt;);
+    is(@q[1], '$bar', "...",:todo&lt;bug&gt;);
+};
+
+
+{ # qq:w,Interpolating quote constructor with words adverb</pre>
 </div><p></p>
 <li></li>
 For these ``q'' forms the choice of delimiters has no influence on the
@@ -2396,61 +2416,62 @@ tab between the key and value, and a newline after the pair.)</p>
 <div ID=header_hidden_13 style="display: block;">- Show t/syntax/interpolation/arrays.t (54 lines) -</div>
 </a>
 </p>
-<div ID=hide_13 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/Literals /As with Perl 5 array interpolation/&gt;
-    :# See L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/23224">http://www.nntp.perl.org/group/perl.perl6.language/23224</a>&quot;&gt;:
-    :#   In a private conversation with Larry this afternoon, he said that by 
-    :#   default &quot;$foo&quot; and ~$foo and $foo.as(Str) all give the same result 
-    :#   (assuming scalar context, etc.).  And that &quot;@foo[]&quot; and ~[at]foo and 
-    :#   @foo.as(Str) are the same as join(' ', @foo) where join is effectively:
-    :
-    :plan 10;
-    :
-    :{
-    :  my @array = &lt;a b c d&gt;;
-    :
-    :  is ~@array, &quot;a b c d&quot;,
-    :    &quot;arrays whose elements don't contain whitespace stringify correctly (1)&quot;;
-    :  is &quot;@array[]&quot;, &quot;a b c d&quot;,
-    :    &quot;arrays whose elements don't contain whitespace stringify correctly (2)&quot;;
-    :}
-    :
-    :{
-    :  my @array = &lt;a b c d&gt;;
-    :  push @array, [&lt;e f g h&gt;];
-    :
-    :  is ~@array, &quot;a b c d e f g h&quot;,
-    :    &quot;arrays with embedded array references stringify correctly (1)&quot;;
-    :  is &quot;@array[]&quot;, &quot;a b c d e f g h&quot;,
-    :    &quot;arrays with embedded array references stringify correctly (2)&quot;;
-    :}
-    :
-    :{
-    :  my @array = (&quot;a&quot;, &quot;b &quot;, &quot;c&quot;);
-    :
-    :  is ~@array, &quot;a b  c&quot;,
-    :    &quot;array whose elements do contain whitespace stringify correctly (1-1)&quot;;
-    :  is &quot;@array[]&quot;, &quot;a b  c&quot;,
-    :    &quot;array whose elements do contain whitespace stringify correctly (1-2)&quot;;
-    :}
-    :
-    :{
-    :  my @array = (&quot;a\t&quot;, &quot;b &quot;, &quot;c&quot;);
-    :
-    :  is ~@array, &quot;a\t b  c&quot;,
-    :    &quot;array whose elements do contain whitespace stringify correctly (2-1)&quot;;
-    :  is &quot;@array[]&quot;, &quot;a\t b  c&quot;,
-    :    &quot;array whose elements do contain whitespace stringify correctly (2-2)&quot;;
-    :}
-    :
-    :{
-    :  my @array = (&quot;a\t&quot;, &quot; b &quot;, &quot;c&quot;);
-    :
-    :  is ~@array, &quot;a\t  b  c&quot;,
-    :    &quot;array whose elements do contain whitespace stringify correctly (3-1)&quot;;
-    :  is &quot;@array[]&quot;, &quot;a\t  b  c&quot;,
-    :    &quot;array whose elements do contain whitespace stringify correctly (3-2)&quot;;
-    :}</pre>
+<div ID=hide_13 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/Literals /As with Perl 5 array interpolation/&gt;
+# See L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/23224"&gt;:
+#   In a private conversation with Larry this afternoon, he said that by 
+#   default "$foo" and ~$foo and $foo.as(Str) all give the same result 
+#   (assuming scalar context, etc.).  And that "@foo[]" and ~[at]foo and 
+#   @foo.as(Str) are the same as join(' ', @foo) where join is effectively:
+
+plan 10;
+
+{
+  my @array = &lt;a b c d&gt;;
+
+  is ~@array, "a b c d",
+    "arrays whose elements don't contain whitespace stringify correctly (1)";
+  is "@array[]", "a b c d",
+    "arrays whose elements don't contain whitespace stringify correctly (2)";
+}
+
+{
+  my @array = &lt;a b c d&gt;;
+  push @array, [&lt;e f g h&gt;];
+
+  is ~@array, "a b c d e f g h",
+    "arrays with embedded array references stringify correctly (1)";
+  is "@array[]", "a b c d e f g h",
+    "arrays with embedded array references stringify correctly (2)";
+}
+
+{
+  my @array = ("a", "b ", "c");
+
+  is ~@array, "a b  c",
+    "array whose elements do contain whitespace stringify correctly (1-1)";
+  is "@array[]", "a b  c",
+    "array whose elements do contain whitespace stringify correctly (1-2)";
+}
+
+{
+  my @array = ("a\t", "b ", "c");
+
+  is ~@array, "a\t b  c",
+    "array whose elements do contain whitespace stringify correctly (2-1)";
+  is "@array[]", "a\t b  c",
+    "array whose elements do contain whitespace stringify correctly (2-2)";
+}
+
+{
+  my @array = ("a\t", " b ", "c");
+
+  is ~@array, "a\t  b  c",
+    "array whose elements do contain whitespace stringify correctly (3-1)";
+  is "@array[]", "a\t  b  c",
+    "array whose elements do contain whitespace stringify correctly (3-2)";
+}</pre>
 </div><p></p>
 <li></li>
 In order to interpolate an entire hash, it's necessary to subscript
@@ -2482,37 +2503,38 @@ ending in brackets:
 <div ID=header_hidden_14 style="display: block;">- Show t/syntax/interpolation/strings.t (30 lines) -</div>
 </a>
 </p>
-<div ID=hide_14 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/&quot;Literals&quot; /&quot;In order to interpolate the result of a method call&quot;&gt;
-    :is(&quot;$world.chars()&quot;, '5', 'method calls with parens should interpolate');
-    :is(&quot;$world.chars&quot;, 'World.chars', 'method calls without parens should not interpolate');
-    :is(&quot;$world.reverse.chars()&quot;, '5', 'cascade of argumentless methods, last ending in paren');
-    :is(&quot;$world.substr(0,1)&quot;, 'W', 'method calls with parens and args should interpolate');
-    :
-    :# Single quotes
-    :# XXX the next tests will always succeed even if '' interpolation is buggy
-    :is('Hello $world', 'Hello $world', 'single quoted string interpolation does not work (which is correct)');
-    :is('2 + 2 = { 2+2 }', '2 + 2 = { 2+2 }', 'single quoted closure interpolation does not work (which is correct)');
-    :is('$world @list[] %hash{} &amp;func()', '$world @list[] %hash{} &amp;func()', 'single quoted string interpolation does not work (which is correct)');
-    :
-    :# Corner-cases
-    :is(&quot;Hello $world!&quot;, &quot;Hello World!&quot;, &quot;! is not a part of var names&quot;);
-    :sub list_count (*@args) { +@args }
-    :is(list_count(&quot;@list[]&quot;), 1, 'quoted interpolation gets string context');
-    :is(qq{a{chr 98}c}, 'abc', &quot;curly brace delimiters don't interfere with closure interpolation&quot;);
-    :
-    :# Quoting constructs
-    :# The next test will always succeed, but if there's a bug it probably
-    :# won't compile.
-    :is(qn&quot;abc\\d\\'\/&quot;, qn&quot;abc\\d\\'\/&quot;, &quot;raw quotation works&quot;);
-    :is(q&quot;abc\\d\&quot;\'\/&quot;, qn|abc\d&quot;\'\/|, &quot;single quotation works&quot;); #&quot;
-    :is(qq&quot;abc\\d\&quot;\'\/&quot;, qn|abc\d&quot;'/|, &quot;double quotation works&quot;); #&quot;
-    :is(qa&quot;$world @list[] %hash{}&quot;, qn&quot;$world 1 2 %hash{}&quot;, &quot;only interpolate array&quot;);
-    :is(qb&quot;$world \\\&quot;\n\t&quot;, &quot;\$world \\\&quot;\n\t&quot;, &quot;only interpolate backslash&quot;);
-    :is('$world \qq[@list[]] %hash{}', '$world 1 2 %hash{}', &quot;interpolate quoting constructs in ''&quot;);
-    :
-    :is(&quot; \d[111] \d[107] &quot;, ' o k ', &quot;\\d[] respects whitespaces around it&quot;)
-    :</pre>
+<div ID=hide_14 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/"Literals" /"In order to interpolate the result of a method call"&gt;
+is("$world.chars()", '5', 'method calls with parens should interpolate');
+is("$world.chars", 'World.chars', 'method calls without parens should not interpolate');
+is("$world.reverse.chars()", '5', 'cascade of argumentless methods, last ending in paren');
+is("$world.substr(0,1)", 'W', 'method calls with parens and args should interpolate');
+
+# Single quotes
+# XXX the next tests will always succeed even if '' interpolation is buggy
+is('Hello $world', 'Hello $world', 'single quoted string interpolation does not work (which is correct)');
+is('2 + 2 = { 2+2 }', '2 + 2 = { 2+2 }', 'single quoted closure interpolation does not work (which is correct)');
+is('$world @list[] %hash{} &amp;func()', '$world @list[] %hash{} &amp;func()', 'single quoted string interpolation does not work (which is correct)');
+
+# Corner-cases
+is("Hello $world!", "Hello World!", "! is not a part of var names");
+sub list_count (*@args) { +@args }
+is(list_count("@list[]"), 1, 'quoted interpolation gets string context');
+is(qq{a{chr 98}c}, 'abc', "curly brace delimiters don't interfere with closure interpolation");
+
+# Quoting constructs
+# The next test will always succeed, but if there's a bug it probably
+# won't compile.
+is(qn"abc\\d\\'\/", qn"abc\\d\\'\/", "raw quotation works");
+is(q"abc\\d\"\'\/", qn|abc\d"\'\/|, "single quotation works"); #"
+is(qq"abc\\d\"\'\/", qn|abc\d"'/|, "double quotation works"); #"
+is(qa"$world @list[] %hash{}", qn"$world 1 2 %hash{}", "only interpolate array");
+is(qb"$world \\\"\n\t", "\$world \\\"\n\t", "only interpolate backslash");
+is('$world \qq[@list[]] %hash{}', '$world 1 2 %hash{}', "interpolate quoting constructs in ''");
+
+is(" \d[111] \d[107] ", ' o k ', "\\d[] respects whitespaces around it")
+</pre>
 </div><pre>
     print &quot;The attribute is $obj.attr().\n&quot;
     print &quot;The attribute is $obj.attr&lt;Jan&gt;.\n&quot;</pre>
@@ -2836,8 +2858,9 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
 <div ID=header_hidden_19 style="display: block;">- Show t/syntax/force_context.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_19 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/Context/boolean &quot;?&quot;&gt;</pre>
+<div ID=hide_19 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/Context/boolean "?"&gt;</pre>
 </div><pre>
     integer     int     Int     int
     numeric     num     Num     +</pre>
@@ -2848,19 +2871,20 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
 <div ID=header_hidden_16 style="display: block;">- Show t/syntax/force_context.t (12 lines) -</div>
 </a>
 </p>
-<div ID=hide_16 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/Context/numeric &quot;+&quot;&gt;
-    :# numeric (+) context
-    :{
-    :    my $a = '2 is my favorite number';
-    :    is(ref(+$a), 'Num', 'it is forced into a Num');
-    :    is(+$a, 2, 'forced into numeric context');
-    :
-    :    my $b = 'Did you know that, 2 is my favorite number';
-    :    is(ref(+$b), 'Num', 'it is forced into a Num');
-    :    is(+$b, 0, 'non numbers forced into numeric context are 0');
-    :}
-    :</pre>
+<div ID=hide_16 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/Context/numeric "+"&gt;
+# numeric (+) context
+{
+    my $a = '2 is my favorite number';
+    is(ref(+$a), 'Num', 'it is forced into a Num');
+    is(+$a, 2, 'forced into numeric context');
+
+    my $b = 'Did you know that, 2 is my favorite number';
+    is(ref(+$b), 'Num', 'it is forced into a Num');
+    is(+$b, 0, 'non numbers forced into numeric context are 0');
+}
+</pre>
 </div><pre>
     string      buf     Str     ~</pre>
 <a name="msg_18"></a>
@@ -2870,8 +2894,9 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
 <div ID=header_hidden_18 style="display: block;">- Show t/syntax/force_context.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_18 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/Context/string &quot;~&quot;&gt;</pre>
+<div ID=hide_18 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/Context/string "~"&gt;</pre>
 </div><p>There are also various container contexts that require particular kinds of
 containers.</p>
 <p></p>
@@ -2887,17 +2912,18 @@ can override the class definition:
 <div ID=header_hidden_15 style="display: block;">- Show t/oo/syntax-but.t (10 lines) -</div>
 </a>
 </p>
-<div ID=hide_15 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/Context/&quot;can override the class definition:&quot;&gt;
-    :my $true_zero;
-    :ok((eval '$true_zero = 0 but True; 1'), &quot;0 but True syntax evaluates&quot;);
-    :ok ($true_zero == 0), &quot;0 but True is numerically equal to 0&quot;;
-    :ok ?($true_zero), &quot;0 but True is true&quot;;
-    :# TimToady++ says I can test False as well
-    :my $false_positive;
-    :ok(eval('$false_positive = 3 but False; 1'), &quot;3 but False syntax evaluates&quot;);
-    :ok ($false_positive == 3), &quot;3 but False is numerically equal to 3&quot;;
-    :ok !($false_positive), &quot;3 but False is false&quot;;</pre>
+<div ID=hide_15 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/Context/"can override the class definition:"&gt;
+my $true_zero;
+ok((eval '$true_zero = 0 but True; 1'), "0 but True syntax evaluates");
+ok ($true_zero == 0), "0 but True is numerically equal to 0";
+ok ?($true_zero), "0 but True is true";
+# TimToady++ says I can test False as well
+my $false_positive;
+ok(eval('$false_positive = 3 but False; 1'), "3 but False syntax evaluates");
+ok ($false_positive == 3), "3 but False is numerically equal to 3";
+ok !($false_positive), "3 but False is false";</pre>
 </div><a name="msg_17"></a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID=header_shown_17 style="display: none;">- Hide t/syntax/force_context.t (line 13 ~ line 24) -
@@ -2905,19 +2931,20 @@ can override the class definition:
 <div ID=header_hidden_17 style="display: block;">- Show t/syntax/force_context.t (12 lines) -</div>
 </a>
 </p>
-<div ID=hide_17 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/Context/numeric &quot;+&quot;&gt;
-    :# numeric (+) context
-    :{
-    :    my $a = '2 is my favorite number';
-    :    is(ref(+$a), 'Num', 'it is forced into a Num');
-    :    is(+$a, 2, 'forced into numeric context');
-    :
-    :    my $b = 'Did you know that, 2 is my favorite number';
-    :    is(ref(+$b), 'Num', 'it is forced into a Num');
-    :    is(+$b, 0, 'non numbers forced into numeric context are 0');
-    :}
-    :</pre>
+<div ID=hide_17 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/Context/numeric "+"&gt;
+# numeric (+) context
+{
+    my $a = '2 is my favorite number';
+    is(ref(+$a), 'Num', 'it is forced into a Num');
+    is(+$a, 2, 'forced into numeric context');
+
+    my $b = 'Did you know that, 2 is my favorite number';
+    is(ref(+$b), 'Num', 'it is forced into a Num');
+    is(+$b, 0, 'non numbers forced into numeric context are 0');
+}
+</pre>
 </div><pre>
     return 0 but True;</pre>
 <p></p></ul>
@@ -3028,112 +3055,113 @@ of
 <div ID=header_hidden_28 style="display: block;">- Show t/builtins/io/io.t (105 lines) -</div>
 </a>
 </p>
-<div ID=hide_28 style="display:none; border:1px solid"><pre>
-    :# L&lt;S02/Files /you now write/&gt;
-    :my $in3 = open($filename);
-    :isa_ok($in3, 'IO');
-    :my $line3a = =$in3;
-    :is($line3a, &quot;Hello World&quot;, 'unary =$in worked');
-    :my $line3b = =$in3;
-    :is($line3b, &quot;Foo Bar Baz&quot;, 'unary =$in worked');
-    :my $line3c = =$in3;
-    :is($line3c, &quot;The End&quot;, 'unary =$in worked');
-    :ok($in3.close, 'file closed okay (3)');
-    :
-    :# append to the file
-    :
-    :my $append = open($filename, :a);
-    :isa_ok($append, 'IO');
-    :$append.say(&quot;... Its not over yet!&quot;);
-    :ok($append.close, 'file closed okay (append)');
-    :
-    :# now read in in list context
-    :
-    :my $in4 = open($filename);
-    :isa_ok($in4, 'IO');
-    :my @lines4 = readline($in4);
-    :is(+@lines4, 4, 'we got four lines from the file');
-    :is(@lines4[0], &quot;Hello World&quot;, 'readline($in) worked in list context');
-    :is(@lines4[1], &quot;Foo Bar Baz&quot;, 'readline($in) worked in list context');
-    :is(@lines4[2], &quot;The End&quot;, 'readline($in) worked in list context');
-    :is(@lines4[3], &quot;... Its not over yet!&quot;, 'readline($in) worked in list context');
-    :ok($in4.close, 'file closed okay (4)');
-    :
-    :my $in5 = open($filename);
-    :isa_ok($in5, 'IO');
-    :my @lines5 = $in5.readline();
-    :is(+@lines5, 4, 'we got four lines from the file');
-    :is(@lines5[0], &quot;Hello World&quot;, '$in.readline() worked in list context');
-    :is(@lines5[1], &quot;Foo Bar Baz&quot;, '$in.readline() worked in list context');
-    :is(@lines5[2], &quot;The End&quot;, '$in.readline() worked in list context');
-    :is(@lines5[3], &quot;... Its not over yet!&quot;, '$in.readline() worked in list context');
-    :ok($in5.close, 'file closed okay (5)');
-    :
-    :my $in6 = open($filename);
-    :isa_ok($in6, 'IO');
-    :my @lines6 = =$in6;
-    :is(+@lines6, 4, 'we got four lines from the file');
-    :is(@lines6[0], &quot;Hello World&quot;, 'unary =$in worked in list context');
-    :is(@lines6[1], &quot;Foo Bar Baz&quot;, 'unary =$in worked in list context');
-    :is(@lines6[2], &quot;The End&quot;, 'unary =$in worked in list context');
-    :is(@lines6[3], &quot;... Its not over yet!&quot;, 'unary =$in worked in list context');
-    :ok($in6.close, 'file closed okay (6)');
-    :
-    :# test reading a file into an array and then closing before 
-    :# doing anything with the array (in other words, is pugs too lazy)
-    :my $in7 = open($filename);
-    :isa_ok($in7, 'IO');
-    :my @lines7 = readline($in7);
-    :ok($in7.close, 'file closed okay (7)');
-    :is(+@lines7, 4, 'we got four lines from the file (lazily)');
-    :is(@lines7[0], &quot;Hello World&quot;, 'readline($in) worked in list context');
-    :is(@lines7[1], &quot;Foo Bar Baz&quot;, 'readline($in) worked in list context');
-    :is(@lines7[2], &quot;The End&quot;, 'readline($in) worked in list context');
-    :is(@lines7[3], &quot;... Its not over yet!&quot;, 'readline($in) worked in list context');
-    :
-    :#now be sure to delete the file as well
-    :
-    :is(unlink($filename), 1, 'file has been removed');
-    :
-    :# new file for testing other types of open() calls
-    :
-    :my $out8 = open($filename, :w);
-    :isa_ok($out8, 'IO');
-    :$out8.say(&quot;Hello World&quot;);
-    :ok($out8.close, 'file closed okay (out8)');
-    :
-    :my $in8 = open($filename);
-    :isa_ok($in8, 'IO');
-    :my $line8_1 = readline($in8);
-    :is($line8_1, &quot;Hello World&quot;, 'readline($in) worked');
-    :ok($in8.close, 'file closed okay (in8)');
-    :
-    :my $fh9 = open($filename, :r, :w);  # was &quot;&lt;+&quot; ? 
-    :isa_ok($fh9, 'IO');
-    :#my $line9_1 = readline($fh9);
-    :#is($line9_1, &quot;Hello World&quot;);
-    :#$fh9.say(&quot;Second line&quot;);
-    :ok($fh9.close, 'file closed okay (9)');
-    :
-    :#my $in9 = open($filename);
-    :#isa_ok($in9, 'IO');
-    :#my $line9_1 = readline($in9);
-    :#my $line9_2 = readline($in9);
-    :#is($line9_1, &quot;Hello World&quot;, 'readline($in) worked');
-    :#is($line9_2, &quot;Second line&quot;, 'readline($in) worked');
-    :
-    :my $fh10 = open($filename, :rw);  # was &quot;&lt;+&quot; ? 
-    :isa_ok($fh10, 'IO');
-    :#ok($fh10.close, 'file closed okay (10)');
-    :
-    :# This test fails on win32; skip it for now.
-    :if $*OS eq any &lt;MSWin32 mingw msys cygwin&gt; {
-    :    unlink($filename);
-    :    flunk('skip unlink() test - erratic behaviour on win32', :todo&lt;bug&gt;);
-    :}
-    :else {
-    :    ok(unlink($filename), 'file has been removed');
-    :}</pre>
+<div ID=hide_28 style="display:none; border:1px solid">
+<pre>
+# L&lt;S02/Files /you now write/&gt;
+my $in3 = open($filename);
+isa_ok($in3, 'IO');
+my $line3a = =$in3;
+is($line3a, "Hello World", 'unary =$in worked');
+my $line3b = =$in3;
+is($line3b, "Foo Bar Baz", 'unary =$in worked');
+my $line3c = =$in3;
+is($line3c, "The End", 'unary =$in worked');
+ok($in3.close, 'file closed okay (3)');
+
+# append to the file
+
+my $append = open($filename, :a);
+isa_ok($append, 'IO');
+$append.say("... Its not over yet!");
+ok($append.close, 'file closed okay (append)');
+
+# now read in in list context
+
+my $in4 = open($filename);
+isa_ok($in4, 'IO');
+my @lines4 = readline($in4);
+is(+@lines4, 4, 'we got four lines from the file');
+is(@lines4[0], "Hello World", 'readline($in) worked in list context');
+is(@lines4[1], "Foo Bar Baz", 'readline($in) worked in list context');
+is(@lines4[2], "The End", 'readline($in) worked in list context');
+is(@lines4[3], "... Its not over yet!", 'readline($in) worked in list context');
+ok($in4.close, 'file closed okay (4)');
+
+my $in5 = open($filename);
+isa_ok($in5, 'IO');
+my @lines5 = $in5.readline();
+is(+@lines5, 4, 'we got four lines from the file');
+is(@lines5[0], "Hello World", '$in.readline() worked in list context');
+is(@lines5[1], "Foo Bar Baz", '$in.readline() worked in list context');
+is(@lines5[2], "The End", '$in.readline() worked in list context');
+is(@lines5[3], "... Its not over yet!", '$in.readline() worked in list context');
+ok($in5.close, 'file closed okay (5)');
+
+my $in6 = open($filename);
+isa_ok($in6, 'IO');
+my @lines6 = =$in6;
+is(+@lines6, 4, 'we got four lines from the file');
+is(@lines6[0], "Hello World", 'unary =$in worked in list context');
+is(@lines6[1], "Foo Bar Baz", 'unary =$in worked in list context');
+is(@lines6[2], "The End", 'unary =$in worked in list context');
+is(@lines6[3], "... Its not over yet!", 'unary =$in worked in list context');
+ok($in6.close, 'file closed okay (6)');
+
+# test reading a file into an array and then closing before 
+# doing anything with the array (in other words, is pugs too lazy)
+my $in7 = open($filename);
+isa_ok($in7, 'IO');
+my @lines7 = readline($in7);
+ok($in7.close, 'file closed okay (7)');
+is(+@lines7, 4, 'we got four lines from the file (lazily)');
+is(@lines7[0], "Hello World", 'readline($in) worked in list context');
+is(@lines7[1], "Foo Bar Baz", 'readline($in) worked in list context');
+is(@lines7[2], "The End", 'readline($in) worked in list context');
+is(@lines7[3], "... Its not over yet!", 'readline($in) worked in list context');
+
+#now be sure to delete the file as well
+
+is(unlink($filename), 1, 'file has been removed');
+
+# new file for testing other types of open() calls
+
+my $out8 = open($filename, :w);
+isa_ok($out8, 'IO');
+$out8.say("Hello World");
+ok($out8.close, 'file closed okay (out8)');
+
+my $in8 = open($filename);
+isa_ok($in8, 'IO');
+my $line8_1 = readline($in8);
+is($line8_1, "Hello World", 'readline($in) worked');
+ok($in8.close, 'file closed okay (in8)');
+
+my $fh9 = open($filename, :r, :w);  # was "&lt;+" ? 
+isa_ok($fh9, 'IO');
+#my $line9_1 = readline($fh9);
+#is($line9_1, "Hello World");
+#$fh9.say("Second line");
+ok($fh9.close, 'file closed okay (9)');
+
+#my $in9 = open($filename);
+#isa_ok($in9, 'IO');
+#my $line9_1 = readline($in9);
+#my $line9_2 = readline($in9);
+#is($line9_1, "Hello World", 'readline($in) worked');
+#is($line9_2, "Second line", 'readline($in) worked');
+
+my $fh10 = open($filename, :rw);  # was "&lt;+" ? 
+isa_ok($fh10, 'IO');
+#ok($fh10.close, 'file closed okay (10)');
+
+# This test fails on win32; skip it for now.
+if $*OS eq any &lt;MSWin32 mingw msys cygwin&gt; {
+    unlink($filename);
+    flunk('skip unlink() test - erratic behaviour on win32', :todo&lt;bug&gt;);
+}
+else {
+    ok(unlink($filename), 'file has been removed');
+}</pre>
 </div><pre>
     for =$handle {...}</pre>
 <p>As a unary prefix operator, you may also apply adverbs to <code>=</code>:</p>

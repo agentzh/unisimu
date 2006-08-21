@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
-<title>TITLE</title>
+<title>S10</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 <link rev="made" href="mailto:" />
 <script language="javascript1.2"><!--
@@ -161,50 +161,51 @@ the key is not parsed for <code>::</code>.  It's just a hash lookup.</p>
 <div ID=header_hidden_2 style="display: block;">- Show t/builtins/undef.t (43 lines) -</div>
 </a>
 </p>
-<div ID=hide_2 style="display:none; border:1px solid"><pre>
-    :# L&lt;S10/Autoloading&gt;
-    :
-    :flunk(&quot;FIXME (autoload tests)&quot;, :todo&lt;parsefail&gt;);
-    :# Currently waiting on
-    :# - packages
-    :# - symtable hash
-    :# - autoloading itself
-    :
-    :#{
-    :#    package AutoMechanic {
-    :#        AUTOSCALAR    { \my $_scalar }
-    :#        AUTOARRAY     { \my @_array }
-    :#        AUTOHASH      { \my %_hash }
-    :#        AUTOSUB       { { &quot;code&quot; } }
-    :#        AUTOMETH      { { &quot;code&quot; } }
-    :#
-    :#        AUTOSCALARDEF { %::«{'$' ~ $_}» = &quot;autoscalardef&quot; }
-    :#        AUTOARRAYDEF  { %::«{'@' ~ $_}» = &quot;autoarraydef&quot;.split(&quot;&quot;) }
-    :#        AUTOHASHDEF   { %::«{'%' ~ $_}» = &lt;autohashdef yes&gt; }
-    :#        AUTOSUBDEF    { %::«{'&amp;' ~ $_}» = { &quot;autosubdef&quot; } }
-    :#        AUTOMETHDEF   { %::«{'&amp;' ~ $_}» = { &quot;automethdef&quot; } }
-    :#    }
-    :#
-    :#    is(ref $AutoMechanic::scalar0,    &quot;Scalar&quot;, &quot;autoload - scalar&quot;);
-    :#    is(ref @AutoMechanic::array0,     &quot;Array&quot;,  &quot;autoload - array&quot;);
-    :#    is(ref %AutoMechanic::hash,       &quot;Hash&quot;,   &quot;autoload - hash&quot;);
-    :#    is(ref &amp;AutoMechanic::sub0,       &quot;Code&quot;,   &quot;autoload - sub&quot;);
-    :#    is(ref AutoMechanic.can(&quot;meth0&quot;), &quot;Code&quot;,   &quot;autoload - meth&quot;);
-    :#
-    :#    is($AutoMechanic::scalar, &quot;autoscalardef&quot;,            &quot;autoloaddef - scalar&quot;);
-    :#    is(~@AutoMechanic::ary,   ~(&quot;autoarraydef&quot;.split(&quot;&quot;), &quot;autoloaddef - array&quot;);
-    :#    is(~%AutoMechanic::hash,  ~&lt;autohashdef yes&gt;,         &quot;autoloaddef - hash&quot;);
-    :#    is(&amp;AutoMechanic::sub.(), &quot;autosubdef&quot;,               &quot;autoloaddef - sub&quot;);
-    :#    is(AutoMechanic.meth(),   &quot;automethdef&quot;,              &quot;autoloaddef - method&quot;);
-    :#}
-    :
-    :# Extra tests added due to apparent bugs
-    :is((undef) + 1, 1, 'undef + 1');
-    :is(1 + (undef), 1, '1 + undef');
-    :is((undef) * 2, 0, 'undef * 2');
-    :is(2 * (undef), 0, '2 * undef');
-    :is((undef) xx 2, [undef, undef], 'undef xx 2');
-    :is((undef) * (undef), 0, 'undef * undef');</pre>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+# L&lt;S10/Autoloading&gt;
+
+flunk("FIXME (autoload tests)", :todo&lt;parsefail&gt;);
+# Currently waiting on
+# - packages
+# - symtable hash
+# - autoloading itself
+
+#{
+#    package AutoMechanic {
+#        AUTOSCALAR    { \my $_scalar }
+#        AUTOARRAY     { \my @_array }
+#        AUTOHASH      { \my %_hash }
+#        AUTOSUB       { { "code" } }
+#        AUTOMETH      { { "code" } }
+#
+#        AUTOSCALARDEF { %::«{'$' ~ $_}» = "autoscalardef" }
+#        AUTOARRAYDEF  { %::«{'@' ~ $_}» = "autoarraydef".split("") }
+#        AUTOHASHDEF   { %::«{'%' ~ $_}» = &lt;autohashdef yes&gt; }
+#        AUTOSUBDEF    { %::«{'&amp;' ~ $_}» = { "autosubdef" } }
+#        AUTOMETHDEF   { %::«{'&amp;' ~ $_}» = { "automethdef" } }
+#    }
+#
+#    is(ref $AutoMechanic::scalar0,    "Scalar", "autoload - scalar");
+#    is(ref @AutoMechanic::array0,     "Array",  "autoload - array");
+#    is(ref %AutoMechanic::hash,       "Hash",   "autoload - hash");
+#    is(ref &amp;AutoMechanic::sub0,       "Code",   "autoload - sub");
+#    is(ref AutoMechanic.can("meth0"), "Code",   "autoload - meth");
+#
+#    is($AutoMechanic::scalar, "autoscalardef",            "autoloaddef - scalar");
+#    is(~@AutoMechanic::ary,   ~("autoarraydef".split(""), "autoloaddef - array");
+#    is(~%AutoMechanic::hash,  ~&lt;autohashdef yes&gt;,         "autoloaddef - hash");
+#    is(&amp;AutoMechanic::sub.(), "autosubdef",               "autoloaddef - sub");
+#    is(AutoMechanic.meth(),   "automethdef",              "autoloaddef - method");
+#}
+
+# Extra tests added due to apparent bugs
+is((undef) + 1, 1, 'undef + 1');
+is(1 + (undef), 1, '1 + undef');
+is((undef) * 2, 0, 'undef * 2');
+is(2 * (undef), 0, '2 * undef');
+is((undef) xx 2, [undef, undef], 'undef xx 2');
+is((undef) * (undef), 0, 'undef * undef');</pre>
 </div><p>A package (or any other similar namespace) can control autoloading.
 However, Perl 5's <code>AUTOLOAD</code> is being superseded by MMD autoloaders
 that distinguish declaration from definition, but are not restricted

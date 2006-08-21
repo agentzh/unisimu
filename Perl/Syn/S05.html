@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
-<title>TITLE</title>
+<title>S05</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 <link rev="made" href="mailto:" />
 <script language="javascript1.2"><!--
@@ -2495,67 +2495,68 @@ course some similarity is good.)</p>
 <div ID=header_hidden_3 style="display: block;">- Show t/builtins/strings/trans.t (60 lines) -</div>
 </a>
 </p>
-<div ID=hide_3 style="display:none; border:1px solid"><pre>
-    :L&lt;S05/Transliteration&gt;
-    :=cut
-    :
-    :
-    :plan 13;
-    :
-    :is(&quot;ABC&quot;.trans( ('A'=&gt;'a'), ('B'=&gt;'b'), ('C'=&gt;'c') ),&quot;abc&quot;,
-    :        &quot;Each side can be individual characters&quot;);
-    :
-    :is(&quot;XYZ&quot;.trans( ('XYZ' =&gt; 'xyz') ),&quot;xyz&quot;,
-    :           &quot;The two sides of the any pair can be strings interpreted as tr/// would multichar&quot;);
-    :
-    :
-    :is(&quot;ABC&quot;.trans( ('A-C' =&gt; 'a-c') ),&quot;abc&quot;,
-    :           &quot;The two sides of the any pair can be strings interpreted as tr/// would range&quot;);
-    :
-    :is(&quot;ABC-DEF&quot;.trans((&quot;-AB-Z&quot; =&gt; &quot;_a-z&quot;)),&quot;abc_def&quot;,
-    :           &quot;If the first character is a dash it isn't part of a range&quot;);
-    :
-    :is(&quot;ABC-DEF&quot;.trans((&quot;A-YZ-&quot; =&gt; &quot;a-z_&quot;)),&quot;abc_def&quot;,
-    :           &quot;If the last character is a dash it isn't part of a range&quot;);
-    :
-    :
-    :#skip 2, &quot;loops forever with Pugs 6.2.10&quot;;
-    :is(&quot;ABCDEF&quot;.trans( ('AB-E' =&gt; 'ab-e') ), &quot;abcdeF&quot;,
-    :                  &quot;The two sides can consists of both chars and ranges&quot;);
-    :is(&quot;ABCDEFGH&quot;.trans( ('A-CE-G' =&gt; 'a-ce-g') ),&quot;abcDefgH&quot;,
-    :                  &quot;The two sides can consist of multiple ranges&quot;);
-    :
-    :# These will need the way the hashses deal with pairs.
-    :
-    :# This works by accedent.
-    :is(&quot;ABCXYZ&quot;.trans( (['A'..'C'] =&gt; ['a'..'c']), (&lt;X Y Z&gt; =&gt; &lt;x y z&gt;) ),&quot;abcxyz&quot;,
-    :           &quot;The two sides of each pair may also be array references&quot; );
-    :
-    :# We're probally unable to &quot;fix&quot; these two as long as the left hand of =&gt; gets stringified
-    :is(&quot;abcde&quot;.trans( ('a-e' =&gt; ['A' .. 'E']) ), &quot;ABCDE&quot;,
-    :      &quot;Using string range on one side and array reference on the other&quot;);
-    :
-    :
-    :is(&quot;ABCDE&quot;.trans( (['A' .. 'E'] =&gt; &quot;a-e&quot;) ), &quot;abcde&quot;,
-    :      &quot;Using array reference on one side and string range on the other&quot;);
-    :
-    :
-    :is(&quot; &lt;&gt;&amp;&quot;.trans( (['&lt;',    '&gt;',    '&amp;',    ] =&gt; 
-    :                  ['&amp;lt;', '&amp;gt;', '&amp;amp;' ])),&quot; &amp;lt;&amp;gt;&amp;amp;&quot;,
-    :         &quot;The array version can map one characters to one-or-more characters except spaces&quot;);
-    :
-    :is(&quot; &lt;&gt;&amp;&quot;.trans( ([' ',      '&lt;',    '&gt;',    '&amp;'    ] =&gt; 
-    :                  ['&amp;nbsp;', '&amp;lt;', '&amp;gt;', '&amp;amp;' ])),&quot;&amp;nbsp;&amp;lt;&amp;gt;&amp;amp;&quot;,
-    :         &quot;The array version can map one-or-more characters to one-or-more characters&quot;);
-    :
-    :eval_is('&quot;abc&quot;.trans(&lt;== &quot;a&quot; =&gt; &quot;A&quot;)', &quot;Abc&quot;,
-    :    &quot;you're allowed to leave off the (...) named arg parens when you use &lt;==&quot;,
-    :    :todo&lt;feature&gt;);
-    :
-    :# XXX should this work?
-    :#eval_is('&quot;abc&quot;.trans &lt;== &quot;a&quot; =&gt; &quot;A&quot;', &quot;Abc&quot;,
-    :#   &quot;you're allowed to leave off the (...) named arg parens when you use &lt;==&quot;,
-    :#   :todo&lt;feature&gt;);</pre>
+<div ID=hide_3 style="display:none; border:1px solid">
+<pre>
+L&lt;S05/Transliteration&gt;
+=cut
+
+
+plan 13;
+
+is("ABC".trans( ('A'=&gt;'a'), ('B'=&gt;'b'), ('C'=&gt;'c') ),"abc",
+        "Each side can be individual characters");
+
+is("XYZ".trans( ('XYZ' =&gt; 'xyz') ),"xyz",
+           "The two sides of the any pair can be strings interpreted as tr/// would multichar");
+
+
+is("ABC".trans( ('A-C' =&gt; 'a-c') ),"abc",
+           "The two sides of the any pair can be strings interpreted as tr/// would range");
+
+is("ABC-DEF".trans(("-AB-Z" =&gt; "_a-z")),"abc_def",
+           "If the first character is a dash it isn't part of a range");
+
+is("ABC-DEF".trans(("A-YZ-" =&gt; "a-z_")),"abc_def",
+           "If the last character is a dash it isn't part of a range");
+
+
+#skip 2, "loops forever with Pugs 6.2.10";
+is("ABCDEF".trans( ('AB-E' =&gt; 'ab-e') ), "abcdeF",
+                  "The two sides can consists of both chars and ranges");
+is("ABCDEFGH".trans( ('A-CE-G' =&gt; 'a-ce-g') ),"abcDefgH",
+                  "The two sides can consist of multiple ranges");
+
+# These will need the way the hashses deal with pairs.
+
+# This works by accedent.
+is("ABCXYZ".trans( (['A'..'C'] =&gt; ['a'..'c']), (&lt;X Y Z&gt; =&gt; &lt;x y z&gt;) ),"abcxyz",
+           "The two sides of each pair may also be array references" );
+
+# We're probally unable to "fix" these two as long as the left hand of =&gt; gets stringified
+is("abcde".trans( ('a-e' =&gt; ['A' .. 'E']) ), "ABCDE",
+	   "Using string range on one side and array reference on the other");
+
+
+is("ABCDE".trans( (['A' .. 'E'] =&gt; "a-e") ), "abcde",
+	   "Using array reference on one side and string range on the other");
+
+
+is(" &lt;&gt;&amp;".trans( (['&lt;',    '&gt;',    '&amp;',    ] =&gt; 
+                  ['&amp;lt;', '&amp;gt;', '&amp;amp;' ]))," &amp;lt;&amp;gt;&amp;amp;",
+         "The array version can map one characters to one-or-more characters except spaces");
+
+is(" &lt;&gt;&amp;".trans( ([' ',      '&lt;',    '&gt;',    '&amp;'    ] =&gt; 
+                  ['&amp;nbsp;', '&amp;lt;', '&amp;gt;', '&amp;amp;' ])),"&amp;nbsp;&amp;lt;&amp;gt;&amp;amp;",
+         "The array version can map one-or-more characters to one-or-more characters");
+
+eval_is('"abc".trans(&lt;== "a" =&gt; "A")', "Abc",
+    "you're allowed to leave off the (...) named arg parens when you use &lt;==",
+    :todo&lt;feature&gt;);
+
+# XXX should this work?
+#eval_is('"abc".trans &lt;== "a" =&gt; "A"', "Abc",
+#   "you're allowed to leave off the (...) named arg parens when you use &lt;==",
+#   :todo&lt;feature&gt;);</pre>
 </div><ul>
 <li></li>
 The <code>tr///</code> quote-like operator now also has a method form called
@@ -2643,41 +2644,42 @@ indicates that <code>@foo[42]</code> was the first element <em>not</em> included
 <div ID=header_hidden_2 style="display: block;">- Show t/rules/nonstrings.t (34 lines) -</div>
 </a>
 </p>
-<div ID=hide_2 style="display:none; border:1px solid"><pre>
-    :L&lt;S05/&quot;Matching against non-strings&quot;&gt;
-    :
-    :=cut
-    :
-    :# String-like things...
-    :
-    :my $fh = open($?FILE);
-    :rule monster { dr\wgon }; # contrived pattern which does not match itself; we're going to look for it in this file
-    :rule cheese { camembert | cheddar  };
-    :my $stream;
-    :eval '$stream is from($fh)';
-    :
-    :eval_ok('$stream ~~ /&lt;cheese&gt;/', 'rules on streams, positive', :todo&lt;feature&gt;); # should match
-    :eval_ok('! ($stream ~~ /&lt;monster&gt;/)', 'rules on streams, negative', :todo&lt;feature&gt;); # shouldn't match
-    :
-    :# And arrays...
-    :
-    :my Dog $a;
-    :my Cat $b;
-    :my Fish $c;
-    :
-    :my @array = ($a, $b, $c);
-    :
-    :eval_ok('rule canine { &lt;.isa(Dog)&gt; }; @array ~~ /&lt;canine&gt;/', 'rules on an array - positive', :todo&lt;feature&gt;);
-    :eval_ok('rule herbivore { &lt;.isa(Antelope)&gt; }; ! @array ~~ /&lt;herbivore&gt;/', 'rules on an array - negative', :todo&lt;feature&gt;);
-    :# These seem to be failing for some sort of scoping error rather than a problem with the 
-    :# rule matching itself.
-    :
-    :# And matching against each element of an array... a different topic really, but it's still in
-    :# that bit of the synopsis.
-    :
-    :my @names = ('zaphod', 'ford', 'arthur', 'slartibartfast');
-    :my $arrr = rule { ar };
-    :eval_is('@names&gt;&gt;.match($arrr)', 2, 'matching with hyper-operator', :todo&lt;feature&gt;);</pre>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+L&lt;S05/"Matching against non-strings"&gt;
+
+=cut
+
+# String-like things...
+
+my $fh = open($?FILE);
+rule monster { dr\wgon }; # contrived pattern which does not match itself; we're going to look for it in this file
+rule cheese { camembert | cheddar  };
+my $stream;
+eval '$stream is from($fh)';
+
+eval_ok('$stream ~~ /&lt;cheese&gt;/', 'rules on streams, positive', :todo&lt;feature&gt;); # should match
+eval_ok('! ($stream ~~ /&lt;monster&gt;/)', 'rules on streams, negative', :todo&lt;feature&gt;); # shouldn't match
+
+# And arrays...
+
+my Dog $a;
+my Cat $b;
+my Fish $c;
+
+my @array = ($a, $b, $c);
+
+eval_ok('rule canine { &lt;.isa(Dog)&gt; }; @array ~~ /&lt;canine&gt;/', 'rules on an array - positive', :todo&lt;feature&gt;);
+eval_ok('rule herbivore { &lt;.isa(Antelope)&gt; }; ! @array ~~ /&lt;herbivore&gt;/', 'rules on an array - negative', :todo&lt;feature&gt;);
+# These seem to be failing for some sort of scoping error rather than a problem with the 
+# rule matching itself.
+
+# And matching against each element of an array... a different topic really, but it's still in
+# that bit of the synopsis.
+
+my @names = ('zaphod', 'ford', 'arthur', 'slartibartfast');
+my $arrr = rule { ar };
+eval_is('@names&gt;&gt;.match($arrr)', 2, 'matching with hyper-operator', :todo&lt;feature&gt;);</pre>
 </div><ul>
 <li></li>
 Anything that can be tied to a string can be matched against a

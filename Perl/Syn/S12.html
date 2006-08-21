@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
-<title>TITLE</title>
+<title>S12</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 <link rev="made" href="mailto:" />
 <script language="javascript1.2"><!--
@@ -132,33 +132,34 @@ programming.</p>
 <div ID=header_hidden_33 style="display: block;">- Show t/oo/class/basic.t (26 lines) -</div>
 </a>
 </p>
-<div ID=hide_33 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Classes&quot;&gt;
-    :class Foo {}
-    :
-    :my $foo = Foo.new();
-    :ok($foo ~~ Foo, '... smartmatch our $foo to the Foo class');
-    :
-    :# note that S12 says that .isa() should be called on metaclasses.
-    :# However, making it an object .isa() means that classes are free to
-    :# override the behaviour without playing with the metamodel via traits
-    :ok($foo.isa(Foo), '.isa(Foo)');
-    :ok($foo.isa(::Foo), '.isa(::Foo)');
-    :ok($foo.isa(&quot;Foo&quot;), '.isa(&quot;Foo&quot;)');
-    :ok(!$foo.isa(&quot;Bar&quot;), '!.isa(&quot;Bar&quot;)');
-    :
-    :my $foo_clone = $foo.clone();
-    :ok($foo_clone ~~ Foo, '... smartmatch our $foo_clone to the Foo class');
-    :
-    :class Foo::Bar {}
-    :
-    :my $foo_bar = Foo::Bar.new();
-    :ok($foo_bar ~~ Foo::Bar, '... smartmatch our $foo_bar to the Foo::Bar class');
-    :
-    :ok($foo_bar.isa(Foo::Bar), '.isa(Foo::Bar)');
-    :ok(!$foo_bar.isa(::Foo), '!Foo::Bar.new.isa(::Foo)');
-    :
-    :</pre>
+<div ID=hide_33 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Classes"&gt;
+class Foo {}
+
+my $foo = Foo.new();
+ok($foo ~~ Foo, '... smartmatch our $foo to the Foo class');
+
+# note that S12 says that .isa() should be called on metaclasses.
+# However, making it an object .isa() means that classes are free to
+# override the behaviour without playing with the metamodel via traits
+ok($foo.isa(Foo), '.isa(Foo)');
+ok($foo.isa(::Foo), '.isa(::Foo)');
+ok($foo.isa("Foo"), '.isa("Foo")');
+ok(!$foo.isa("Bar"), '!.isa("Bar")');
+
+my $foo_clone = $foo.clone();
+ok($foo_clone ~~ Foo, '... smartmatch our $foo_clone to the Foo class');
+
+class Foo::Bar {}
+
+my $foo_bar = Foo::Bar.new();
+ok($foo_bar ~~ Foo::Bar, '... smartmatch our $foo_bar to the Foo::Bar class');
+
+ok($foo_bar.isa(Foo::Bar), '.isa(Foo::Bar)');
+ok(!$foo_bar.isa(::Foo), '!Foo::Bar.new.isa(::Foo)');
+
+</pre>
 </div><p>A class is a module declared with the <code>class</code> keyword.  As with
 modules, the public storage, interface, and name of the class is
 represented by a package and its name, which is usually (but not
@@ -228,32 +229,33 @@ of the searched namespaces.</p>
 <div ID=header_hidden_34 style="display: block;">- Show t/oo/class/basic.t (25 lines) -</div>
 </a>
 </p>
-<div ID=hide_34 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Classes&quot; /An \&quot;isa\&quot; is just a trait that happens to be another class\:/&gt;
-    :class Bar is Foo {}
-    :
-    :ok(Bar ~~ Foo, '... smartmatch our Bar to the Foo class');
-    :
-    :my $bar = Bar.new();
-    :ok($bar ~~ Bar, '... smartmatch our $bar to the Bar class');
-    :ok($bar.isa(Bar), &quot;... .isa(Bar)&quot;);
-    :ok($bar ~~ Foo, '... smartmatch our $bar to the Foo class');
-    :ok($bar.isa(Foo), &quot;new Bar .isa(Foo)&quot;);
-    :
-    :my $bar_clone = $bar.clone();
-    :ok($bar_clone ~~ Bar, '... smartmatch our $bar_clone to the Bar class');
-    :ok($bar_clone.isa(Bar), &quot;... .isa(Bar)&quot;);
-    :ok($bar_clone ~~ Foo, '... smartmatch our $bar_clone to the Foo class');
-    :ok($bar_clone.isa(Foo), &quot;... .isa(Foo)&quot;);
-    :
-    :
-    :# Same, but with the &quot;is Foo&quot; declaration inlined
-    :class Baz { is Foo }
-    :
-    :ok(Baz ~~ Foo, '... smartmatch our Baz to the Foo class');
-    :my $baz = Baz.new();
-    :ok($baz ~~ Baz, '... smartmatch our $baz to the Baz class');
-    :ok($baz.isa(Baz), &quot;... .isa(Baz)&quot;);</pre>
+<div ID=hide_34 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Classes" /An \"isa\" is just a trait that happens to be another class\:/&gt;
+class Bar is Foo {}
+
+ok(Bar ~~ Foo, '... smartmatch our Bar to the Foo class');
+
+my $bar = Bar.new();
+ok($bar ~~ Bar, '... smartmatch our $bar to the Bar class');
+ok($bar.isa(Bar), "... .isa(Bar)");
+ok($bar ~~ Foo, '... smartmatch our $bar to the Foo class');
+ok($bar.isa(Foo), "new Bar .isa(Foo)");
+
+my $bar_clone = $bar.clone();
+ok($bar_clone ~~ Bar, '... smartmatch our $bar_clone to the Bar class');
+ok($bar_clone.isa(Bar), "... .isa(Bar)");
+ok($bar_clone ~~ Foo, '... smartmatch our $bar_clone to the Foo class');
+ok($bar_clone.isa(Foo), "... .isa(Foo)");
+
+
+# Same, but with the "is Foo" declaration inlined
+class Baz { is Foo }
+
+ok(Baz ~~ Foo, '... smartmatch our Baz to the Foo class');
+my $baz = Baz.new();
+ok($baz ~~ Baz, '... smartmatch our $baz to the Baz class');
+ok($baz.isa(Baz), "... .isa(Baz)");</pre>
 </div><pre>
     class Dog is Mammal {...}</pre>
 <p>MI is specified with multiple <code>is</code> modifiers:</p>
@@ -339,74 +341,75 @@ use either the dot notation or indirect object notation:</p>
 <div ID=header_hidden_9 style="display: block;">- Show t/oo/methods/instance.t (67 lines) -</div>
 </a>
 </p>
-<div ID=hide_9 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Methods&quot; /&quot;either the dot notation or indirect object notation:&quot;&gt;
-    :class Foo {
-    :  method doit ($a, $b, $c) { $a + $b + $c }
-    :  method noargs () { 42 }
-    :  method nobrackets { 'mice' }
-    :  method callsmethod1() { .noargs(); }
-    :  method callsmethod2 { .noargs(); }
-    :}
-    :
-    :my $foo = Foo.new();
-    :is($foo.doit(1,2,3), 6, &quot;dot method invocation&quot;);
-    :
-    :my $val;
-    :lives_ok {
-    :    $val = doit $foo: 1,2,3;
-    :}, '... indirect method invocation works';
-    :is($val, 6, '... got the right value for indirect method invocation');
-    :
-    :is($foo.noargs, 42, &quot;... no parentheses after method&quot;);
-    :is($foo.noargs(), 42, &quot;... parentheses after method&quot;);
-    :
-    :{
-    :    my $val;
-    :    lives_ok {
-    :        eval '$val = $foo.noargs()';
-    :        die $! if $!;
-    :    }, &quot;... &lt;space&gt; + parentheses after method&quot;;
-    :    is($val, 42, '... we got the value correctly');
-    :}
-    :
-    :{
-    :    my $val;
-    :    lives_ok {
-    :        #eval '$val = $foo.noargs.()';
-    :        #die $! if $!;
-    :        die 'cannot parse &quot;val = $foo.noargs.()&quot;'
-    :    }, &quot;... '.' + parentheses after method&quot;, :todo&lt;bug&gt;;
-    :    is($val, 42, '... we got the value correctly', :todo&lt;feature&gt;);
-    :}
-    :
-    :{
-    :    my $val;
-    :    lives_ok {
-    :        #eval '$val = $foo.noargs .()';
-    :        #die $! if $!;
-    :        die 'cannot parse &quot;$foo.noargs .()&quot;'
-    :    }, &quot;... &lt;space&gt; + '.' + parentheses after method&quot;, :todo&lt;bug&gt;;
-    :    is($val, 42, '... we got the value correctly', :todo&lt;feature&gt;);
-    :}
-    :
-    :{
-    :    my $val;
-    :    lives_ok { $val = $foo.nobrackets() }, 'method declared with no brackets';
-    :    is($val, 'mice', '... we got the value correctly');
-    :}
-    :
-    :{
-    :    my $val;
-    :    lives_ok { $val = $foo.callsmethod1() }, 'method calling method';
-    :    is($val, 42, '... we got the value correctly');
-    :};
-    :
-    :{
-    :    my $val;
-    :    lives_ok { $val = $foo.callsmethod2() }, 'method calling method with no brackets';
-    :    is($val, 42, '... we got the value correctly');
-    :};</pre>
+<div ID=hide_9 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Methods" /"either the dot notation or indirect object notation:"&gt;
+class Foo {
+  method doit ($a, $b, $c) { $a + $b + $c }
+  method noargs () { 42 }
+  method nobrackets { 'mice' }
+  method callsmethod1() { .noargs(); }
+  method callsmethod2 { .noargs(); }
+}
+
+my $foo = Foo.new();
+is($foo.doit(1,2,3), 6, "dot method invocation");
+
+my $val;
+lives_ok {
+    $val = doit $foo: 1,2,3;
+}, '... indirect method invocation works';
+is($val, 6, '... got the right value for indirect method invocation');
+
+is($foo.noargs, 42, "... no parentheses after method");
+is($foo.noargs(), 42, "... parentheses after method");
+
+{
+    my $val;
+    lives_ok {
+        eval '$val = $foo.noargs()';
+        die $! if $!;
+    }, "... &lt;space&gt; + parentheses after method";
+    is($val, 42, '... we got the value correctly');
+}
+
+{
+    my $val;
+    lives_ok {
+        #eval '$val = $foo.noargs.()';
+        #die $! if $!;
+        die 'cannot parse "val = $foo.noargs.()"'
+    }, "... '.' + parentheses after method", :todo&lt;bug&gt;;
+    is($val, 42, '... we got the value correctly', :todo&lt;feature&gt;);
+}
+
+{
+    my $val;
+    lives_ok {
+        #eval '$val = $foo.noargs .()';
+        #die $! if $!;
+        die 'cannot parse "$foo.noargs .()"'
+    }, "... &lt;space&gt; + '.' + parentheses after method", :todo&lt;bug&gt;;
+    is($val, 42, '... we got the value correctly', :todo&lt;feature&gt;);
+}
+
+{
+    my $val;
+    lives_ok { $val = $foo.nobrackets() }, 'method declared with no brackets';
+    is($val, 'mice', '... we got the value correctly');
+}
+
+{
+    my $val;
+    lives_ok { $val = $foo.callsmethod1() }, 'method calling method';
+    is($val, 42, '... we got the value correctly');
+};
+
+{
+    my $val;
+    lives_ok { $val = $foo.callsmethod2() }, 'method calling method with no brackets';
+    is($val, 42, '... we got the value correctly');
+};</pre>
 </div><pre>
     $obj.doit(1,2,3)
     doit $obj: 1,2,3</pre>
@@ -566,48 +569,49 @@ only when a method call is dispatched directly to the current class.</p>
 <div ID=header_hidden_23 style="display: block;">- Show t/oo/attributes/instance.t (41 lines) -</div>
 </a>
 </p>
-<div ID=hide_23 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot;&gt;
-    :
-    :class Foo5 {
-    :  has $.tail is rw;
-    :  has @.legs;
-    :  has $!brain;
-    :
-    :  method set_legs  (*@legs) { @.legs = @legs }
-    :  method inc_brain ()      { $!brain++ }
-    :  method get_brain ()      { $!brain }
-    :};
-    :
-    :{
-    :    my $foo = Foo5.new();
-    :    ok($foo ~~ Foo5, '... our Foo5 instance was created');
-    :        
-    :    lives_ok {
-    :        $foo.tail = &quot;a&quot;;
-    :    }, &quot;setting a public rw attribute&quot;;
-    :    is($foo.tail, &quot;a&quot;, &quot;getting a public rw attribute&quot;);
-    :    
-    :    lives_ok {
-    :        $foo.set_legs(1,2,3)
-    :    }, &quot;setting a public ro attribute (1)&quot;;
-    :    is($foo.legs.[1], 2, &quot;getting a public ro attribute (1)&quot;);
-    :    
-    :    dies_ok {
-    :        $foo.legs = (4,5,6);
-    :    }, &quot;setting a public ro attribute (2)&quot;, :todo&lt;feature&gt;;
-    :    is($foo.legs.[1], 2, &quot;getting a public ro attribute (2)&quot;, :todo&lt;feature&gt;);
-    :    
-    :    lives_ok {
-    :        $foo.inc_brain();
-    :    },  &quot;modifiying a private attribute (1)&quot;;
-    :    is($foo.get_brain, 1, &quot;getting a private attribute (1)&quot;);
-    :    lives_ok {
-    :        $foo.inc_brain();
-    :    },  &quot;modifiying a private attribute (2)&quot;;
-    :    is($foo.get_brain, 2, &quot;getting a private attribute (2)&quot;);
-    :}
-    :</pre>
+<div ID=hide_23 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes"&gt;
+
+class Foo5 {
+  has $.tail is rw;
+  has @.legs;
+  has $!brain;
+
+  method set_legs  (*@legs) { @.legs = @legs }
+  method inc_brain ()      { $!brain++ }
+  method get_brain ()      { $!brain }
+};
+
+{
+    my $foo = Foo5.new();
+    ok($foo ~~ Foo5, '... our Foo5 instance was created');
+        
+    lives_ok {
+        $foo.tail = "a";
+    }, "setting a public rw attribute";
+    is($foo.tail, "a", "getting a public rw attribute");
+    
+    lives_ok {
+        $foo.set_legs(1,2,3)
+    }, "setting a public ro attribute (1)";
+    is($foo.legs.[1], 2, "getting a public ro attribute (1)");
+    
+    dies_ok {
+        $foo.legs = (4,5,6);
+    }, "setting a public ro attribute (2)", :todo&lt;feature&gt;;
+    is($foo.legs.[1], 2, "getting a public ro attribute (2)", :todo&lt;feature&gt;);
+    
+    lives_ok {
+        $foo.inc_brain();
+    },  "modifiying a private attribute (1)";
+    is($foo.get_brain, 1, "getting a private attribute (1)");
+    lives_ok {
+        $foo.inc_brain();
+    },  "modifiying a private attribute (2)";
+    is($foo.get_brain, 2, "getting a private attribute (2)");
+}
+</pre>
 </div><a name="msg_17"></a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID=header_shown_17 style="display: none;">- Hide t/oo/attributes/class.t (line 11 ~ line 29) -
@@ -615,26 +619,27 @@ only when a method call is dispatched directly to the current class.</p>
 <div ID=header_hidden_17 style="display: block;">- Show t/oo/attributes/class.t (19 lines) -</div>
 </a>
 </p>
-<div ID=hide_17 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot;&gt;
-    :
-    :plan 8;
-    :
-    :eval_ok 'class Foo { our $.bar = 23; our $.yada is rw = 13; }; 1', 'class attributes are parsed';
-    :
-    :my $test = 0;
-    :ok eval('$test = Foo.bar'), 'accessors for class attributes work', :todo&lt;feature&gt;;
-    :is $test, 23, 'class attributes really work', :todo&lt;feature&gt;;
-    :
-    :eval_ok 'class Baz is Foo {}; 1', 'inheriting class attributes parsed';
-    :
-    :my $test2 = 0;
-    :ok eval('$test2 = Baz.bar'), 'inherited class attribute accessors work', :todo&lt;feature&gt;;
-    :is $test2, 23, 'inherited class attributes really work', :todo&lt;feature&gt;;
-    :
-    :my $test3 = 0;
-    :ok eval('Baz.yada = 42; $test3 = Baz.yada'), 'inherited rw class attribute accessors work', :todo&lt;feature&gt;;
-    :is $test3, 42, 'inherited rw class attributes really work', :todo&lt;feature&gt;;</pre>
+<div ID=hide_17 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes"&gt;
+
+plan 8;
+
+eval_ok 'class Foo { our $.bar = 23; our $.yada is rw = 13; }; 1', 'class attributes are parsed';
+
+my $test = 0;
+ok eval('$test = Foo.bar'), 'accessors for class attributes work', :todo&lt;feature&gt;;
+is $test, 23, 'class attributes really work', :todo&lt;feature&gt;;
+
+eval_ok 'class Baz is Foo {}; 1', 'inheriting class attributes parsed';
+
+my $test2 = 0;
+ok eval('$test2 = Baz.bar'), 'inherited class attribute accessors work', :todo&lt;feature&gt;;
+is $test2, 23, 'inherited class attributes really work', :todo&lt;feature&gt;;
+
+my $test3 = 0;
+ok eval('Baz.yada = 42; $test3 = Baz.yada'), 'inherited rw class attribute accessors work', :todo&lt;feature&gt;;
+is $test3, 42, 'inherited rw class attributes really work', :todo&lt;feature&gt;;</pre>
 </div><p>Attributes are stored in an opaque datatype, not in a hash.  Not even
 the class has to care how they're stored, since they're declared much like
 ordinary variables.  Instead of <code>my</code>, use <code>has</code>:</p>
@@ -657,23 +662,24 @@ generated.</p>
 <div ID=header_hidden_20 style="display: block;">- Show t/oo/attributes/instance.t (16 lines) -</div>
 </a>
 </p>
-<div ID=hide_20 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot; /the automatic generation of an accessor method of the same name\./&gt;
-    :
-    :class Foo1 { has $.bar; };
-    :
-    :{
-    :    my $foo = Foo1.new();
-    :    ok($foo ~~ Foo1, '... our Foo1 instance was created');
-    :    my $val;
-    :    lives_ok {
-    :        $val = $foo.can(&quot;bar&quot;)
-    :    }, '.. checking autogenerated accessor existence', :todo&lt;feature&gt;;
-    :    ok($val, '... $foo.can(&quot;bar&quot;) should have returned true', :todo&lt;feature&gt;);
-    :    is($foo.bar(), undef, '.. autogenerated accessor works');
-    :    is($foo.bar, undef, '.. autogenerated accessor works w/out parens');    
-    :}
-    :</pre>
+<div ID=hide_20 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes" /the automatic generation of an accessor method of the same name\./&gt;
+
+class Foo1 { has $.bar; };
+
+{
+    my $foo = Foo1.new();
+    ok($foo ~~ Foo1, '... our Foo1 instance was created');
+    my $val;
+    lives_ok {
+        $val = $foo.can("bar")
+    }, '.. checking autogenerated accessor existence', :todo&lt;feature&gt;;
+    ok($val, '... $foo.can("bar") should have returned true', :todo&lt;feature&gt;);
+    is($foo.bar(), undef, '.. autogenerated accessor works');
+    is($foo.bar, undef, '.. autogenerated accessor works w/out parens');    
+}
+</pre>
 </div><pre>
         has $!brain;</pre>
 <p>The ``true name'' of the private variable always has the exclamation, but
@@ -701,30 +707,31 @@ making it an lvalue method.  The default is a read-only accessor.</p>
 <div ID=header_hidden_22 style="display: block;">- Show t/oo/attributes/instance.t (23 lines) -</div>
 </a>
 </p>
-<div ID=hide_22 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot; /making it an lvalue method/&gt;
-    :
-    :class Foo3 { has $.bar is rw; };
-    :
-    :{
-    :    my $foo = Foo3.new();
-    :    ok($foo ~~ Foo3, '... our Foo3 instance was created');
-    :    my $val;
-    :    lives_ok {
-    :        $val = $foo.can(&quot;bar&quot;);
-    :    }, '.. checking autogenerated accessor existence', :todo&lt;feature&gt;;
-    :    ok($val, '... $foo.can(&quot;bar&quot;) should have returned true', :todo&lt;feature&gt;);
-    :    is($foo.bar(), undef, '.. autogenerated accessor works');
-    :    lives_ok {
-    :        $foo.bar = &quot;baz&quot;;
-    :    }, '.. autogenerated mutator as lvalue works';
-    :    is($foo.bar, &quot;baz&quot;, '.. autogenerated mutator as lvalue set the value correctly');    
-    :    lives_ok {
-    :        $foo.bar(&quot;baz2&quot;);
-    :    }, '.. autogenerated mutator works as method', :todo&lt;feature&gt;;    
-    :    is($foo.bar, &quot;baz2&quot;, '.. autogenerated mutator as method set the value correctly', :todo&lt;feature&gt;);        
-    :}
-    :</pre>
+<div ID=hide_22 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes" /making it an lvalue method/&gt;
+
+class Foo3 { has $.bar is rw; };
+
+{
+    my $foo = Foo3.new();
+    ok($foo ~~ Foo3, '... our Foo3 instance was created');
+    my $val;
+    lives_ok {
+        $val = $foo.can("bar");
+    }, '.. checking autogenerated accessor existence', :todo&lt;feature&gt;;
+    ok($val, '... $foo.can("bar") should have returned true', :todo&lt;feature&gt;);
+    is($foo.bar(), undef, '.. autogenerated accessor works');
+    lives_ok {
+        $foo.bar = "baz";
+    }, '.. autogenerated mutator as lvalue works';
+    is($foo.bar, "baz", '.. autogenerated mutator as lvalue set the value correctly');    
+    lives_ok {
+        $foo.bar("baz2");
+    }, '.. autogenerated mutator works as method', :todo&lt;feature&gt;;    
+    is($foo.bar, "baz2", '.. autogenerated mutator as method set the value correctly', :todo&lt;feature&gt;);        
+}
+</pre>
 </div><p>If you declare the class as <code>rw</code>, then all the class's attributes
 default to <code>rw</code>, much like a C struct.</p>
 <a name="msg_24"></a>
@@ -734,30 +741,31 @@ default to <code>rw</code>, much like a C struct.</p>
 <div ID=header_hidden_24 style="display: block;">- Show t/oo/attributes/is_rw_on_class.t (23 lines) -</div>
 </a>
 </p>
-<div ID=hide_24 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot; /If you declare the class as/&gt;
-    :
-    :class Foo {
-    :    has $.readonly_attr;
-    :}
-    :
-    :{
-    :    my Foo $foo .= new;
-    :    dies_ok { $foo.readonly_attr++ }, &quot;basic sanity&quot;, :todo&lt;bug&gt;;
-    :}
-    :
-    :
-    :class Bar is rw {
-    :    has $.readwrite_attr;
-    :}
-    :
-    :{
-    :    my Bar $bar .= new;
-    :    lives_ok { $bar.readwrite_attr++ },
-    :        &quot;'is rw' on the class declaration applies to all attributes (1)&quot;;
-    :    is $bar.readwrite_attr, 1,
-    :        &quot;'is rw' on the class declaration applies to all attributes (2)&quot;;
-    :}</pre>
+<div ID=hide_24 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes" /If you declare the class as/&gt;
+
+class Foo {
+    has $.readonly_attr;
+}
+
+{
+    my Foo $foo .= new;
+    dies_ok { $foo.readonly_attr++ }, "basic sanity", :todo&lt;bug&gt;;
+}
+
+
+class Bar is rw {
+    has $.readwrite_attr;
+}
+
+{
+    my Bar $bar .= new;
+    lives_ok { $bar.readwrite_attr++ },
+        "'is rw' on the class declaration applies to all attributes (1)";
+    is $bar.readwrite_attr, 1,
+        "'is rw' on the class declaration applies to all attributes (2)";
+}</pre>
 </div><p>You may write your own accessors to override any or all of the
 autogenerated ones.</p>
 <p>The attribute variables may be used within instance methods to refer
@@ -797,20 +805,21 @@ refers to the entire object being initialized.</p>
 <div ID=header_hidden_21 style="display: block;">- Show t/oo/attributes/instance.t (13 lines) -</div>
 </a>
 </p>
-<div ID=hide_21 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot; /Pseudo-assignment to an attribute declaration specifies the default/&gt;
-    :
-    :eval 'class Foo2 { has $.bar = &quot;baz&quot;; }';
-    :
-    :{
-    :    my $foo = eval 'Foo2.new()';
-    :    eval_ok('$foo ~~ Foo2', '... our Foo2 instance was created', :todo&lt;feature&gt;);
-    :    eval_ok('$foo.can(&quot;bar&quot;)', '.. checking autogenerated accessor existence', :todo&lt;feature&gt;);
-    :    eval_is('$foo.bar()', &quot;baz&quot;, '.. autogenerated accessor works', :todo&lt;feature&gt;);
-    :    eval_is('$foo.bar', &quot;baz&quot;, '.. autogenerated accessor works w/out parens', :todo&lt;feature&gt;);    
-    :    # what exactly will happen if we try to set bar()
-    :}
-    :</pre>
+<div ID=hide_21 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes" /Pseudo-assignment to an attribute declaration specifies the default/&gt;
+
+eval 'class Foo2 { has $.bar = "baz"; }';
+
+{
+    my $foo = eval 'Foo2.new()';
+    eval_ok('$foo ~~ Foo2', '... our Foo2 instance was created', :todo&lt;feature&gt;);
+    eval_ok('$foo.can("bar")', '.. checking autogenerated accessor existence', :todo&lt;feature&gt;);
+    eval_is('$foo.bar()', "baz", '.. autogenerated accessor works', :todo&lt;feature&gt;);
+    eval_is('$foo.bar', "baz", '.. autogenerated accessor works w/out parens', :todo&lt;feature&gt;);    
+    # what exactly will happen if we try to set bar()
+}
+</pre>
 </div><a name="msg_19"></a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID=header_shown_19 style="display: none;">- Hide t/oo/attributes/defaults.t (line 22 ~ line 102) -
@@ -818,88 +827,89 @@ refers to the entire object being initialized.</p>
 <div ID=header_hidden_19 style="display: block;">- Show t/oo/attributes/defaults.t (81 lines) -</div>
 </a>
 </p>
-<div ID=hide_19 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot; /the attribute being initialized/&gt;
-    :
-    :my $set_by_code_attr;
-    :
-    :eval 'class Foo {
-    :    has $.num  = get_a_num();
-    :    has $.str  = { get_a_str() };
-    :    has $.code = { get_a_code() };
-    :
-    :    has $.set_by_code = {
-    :        $set_by_code_attr := $_;
-    :        42;
-    :    };
-    :
-    :    has $.self_in_code = { self.echo };
-    :
-    :    method echo { &quot;echo&quot; }
-    :}';
-    :
-    :{
-    :    is $got_a_num, 1, &quot;default should be called at compile-time&quot;, :todo&lt;feature&gt;;
-    :    my Foo $foo .= new;
-    :    is $got_a_num, 1, &quot;default should be called only once, at compile-time (1)&quot;, :todo&lt;feature&gt;;
-    :    is $foo.num,  42, &quot;attribute default worked&quot;, :todo&lt;feature&gt;;
-    :    is $got_a_num, 1, &quot;default should be called only once, at compile-time (2)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :{
-    :    $got_a_str = 0;  # reset
-    :
-    :    {
-    :        my Foo $foo .= new;
-    :        is $got_a_str,            1, &quot;using a coderef as a default value delays execution&quot;, :todo&lt;feature&gt;;
-    :        is try { $foo.str }, &quot;Pugs&quot;, &quot;attribute default worked&quot;, :todo&lt;feature&gt;;
-    :    }
-    :
-    :    {
-    :        my Foo $foo .= new;
-    :        is $got_a_str,            2, &quot;using a coderef as a default value delays execution&quot;, :todo&lt;feature&gt;;
-    :        is try { $foo.str }, &quot;Pugs&quot;, &quot;attribute default worked&quot;, :todo&lt;feature&gt;;
-    :    }
-    :}
-    :
-    :{
-    :    $got_a_code = 0;  # reset
-    :
-    :    {
-    :        my Foo $foo .= new;
-    :        is $got_a_code,     1, &quot;using a coderef as a default value delays execution&quot;, :todo&lt;feature&gt;;
-    :        is $was_in_closure, 0, &quot;sub-coderef not yet executed&quot;, :todo&lt;feature&gt;;
-    :        try { $foo.code };
-    :        is $was_in_closure, 0, &quot;sub-coderef still not executed&quot;, :todo&lt;feature&gt;;
-    :    }
-    :
-    :    {
-    :        my Foo $foo .= new;
-    :        is $got_a_code,          2, &quot;using a coderef as a default value delays execution&quot;, :todo&lt;feature&gt;;
-    :        is $was_in_closure,      0, &quot;sub-coderef not yet executed&quot;, :todo&lt;feature&gt;;
-    :        is try { $foo.code() }, 42, &quot;sub-coderef execution works&quot;, :todo&lt;feature&gt;;
-    :        is $was_in_closure,      1, &quot;sub-coderef still not executed&quot;, :todo&lt;feature&gt;;
-    :    }
-    :}
-    :
-    :{
-    :    my Foo $foo .= new;
-    :
-    :    is try { $foo.set_by_code }, 42, '$_ is the attribute being initialized (1)', :todo&lt;feature&gt;;
-    :    is $set_by_code_attr,        42, '$_ is the attribute being initialized (2)', :todo&lt;feature&gt;;
-    :
-    :    lives_ok { $set_by_code_attr++ },
-    :        '$_ is the attribute being initialized (3)';
-    :
-    :    is try { $foo.set_by_code }, 43, '$_ is the attribute being initialized (4)', :todo&lt;feature&gt;;
-    :    is $set_by_code_attr,        43, '$_ is the attribute being initialized (5)', :todo&lt;feature&gt;;
-    :}
-    :
-    :{
-    :    my Foo $foo .= new;
-    :
-    :    is try { $foo.self_in_code }, &quot;echo&quot;, &quot;self is the object being initialized&quot;, :todo&lt;feature&gt;;
-    :}</pre>
+<div ID=hide_19 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes" /the attribute being initialized/&gt;
+
+my $set_by_code_attr;
+
+eval 'class Foo {
+    has $.num  = get_a_num();
+    has $.str  = { get_a_str() };
+    has $.code = { get_a_code() };
+
+    has $.set_by_code = {
+        $set_by_code_attr := $_;
+        42;
+    };
+
+    has $.self_in_code = { self.echo };
+
+    method echo { "echo" }
+}';
+
+{
+    is $got_a_num, 1, "default should be called at compile-time", :todo&lt;feature&gt;;
+    my Foo $foo .= new;
+    is $got_a_num, 1, "default should be called only once, at compile-time (1)", :todo&lt;feature&gt;;
+    is $foo.num,  42, "attribute default worked", :todo&lt;feature&gt;;
+    is $got_a_num, 1, "default should be called only once, at compile-time (2)", :todo&lt;feature&gt;;
+}
+
+{
+    $got_a_str = 0;  # reset
+
+    {
+        my Foo $foo .= new;
+        is $got_a_str,            1, "using a coderef as a default value delays execution", :todo&lt;feature&gt;;
+        is try { $foo.str }, "Pugs", "attribute default worked", :todo&lt;feature&gt;;
+    }
+
+    {
+        my Foo $foo .= new;
+        is $got_a_str,            2, "using a coderef as a default value delays execution", :todo&lt;feature&gt;;
+        is try { $foo.str }, "Pugs", "attribute default worked", :todo&lt;feature&gt;;
+    }
+}
+
+{
+    $got_a_code = 0;  # reset
+
+    {
+        my Foo $foo .= new;
+        is $got_a_code,     1, "using a coderef as a default value delays execution", :todo&lt;feature&gt;;
+        is $was_in_closure, 0, "sub-coderef not yet executed", :todo&lt;feature&gt;;
+        try { $foo.code };
+        is $was_in_closure, 0, "sub-coderef still not executed", :todo&lt;feature&gt;;
+    }
+
+    {
+        my Foo $foo .= new;
+        is $got_a_code,          2, "using a coderef as a default value delays execution", :todo&lt;feature&gt;;
+        is $was_in_closure,      0, "sub-coderef not yet executed", :todo&lt;feature&gt;;
+        is try { $foo.code() }, 42, "sub-coderef execution works", :todo&lt;feature&gt;;
+        is $was_in_closure,      1, "sub-coderef still not executed", :todo&lt;feature&gt;;
+    }
+}
+
+{
+    my Foo $foo .= new;
+
+    is try { $foo.set_by_code }, 42, '$_ is the attribute being initialized (1)', :todo&lt;feature&gt;;
+    is $set_by_code_attr,        42, '$_ is the attribute being initialized (2)', :todo&lt;feature&gt;;
+
+    lives_ok { $set_by_code_attr++ },
+        '$_ is the attribute being initialized (3)';
+
+    is try { $foo.set_by_code }, 43, '$_ is the attribute being initialized (4)', :todo&lt;feature&gt;;
+    is $set_by_code_attr,        43, '$_ is the attribute being initialized (5)', :todo&lt;feature&gt;;
+}
+
+{
+    my Foo $foo .= new;
+
+    is try { $foo.self_in_code }, "echo", "self is the object being initialized", :todo&lt;feature&gt;;
+}</pre>
 </div><a name="msg_18"></a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID=header_shown_18 style="display: none;">- Hide t/oo/attributes/defaults.t (line 7 ~ line 21) -
@@ -907,22 +917,23 @@ refers to the entire object being initialized.</p>
 <div ID=header_hidden_18 style="display: block;">- Show t/oo/attributes/defaults.t (15 lines) -</div>
 </a>
 </p>
-<div ID=hide_18 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Attributes&quot; /The value on the right is evaluated at class composition/&gt;
-    :
-    :my $got_a_num;  sub get_a_num  { $got_a_num++;  42 }
-    :my $got_a_str;  sub get_a_str  { $got_a_str++;  &quot;Pugs&quot; }
-    :
-    :my $got_a_code;
-    :my $was_in_closure;
-    :sub get_a_code {
-    :    $got_a_code++;
-    :    return {
-    :        $was_in_closure++;
-    :        42;
-    :    };
-    :}
-    :</pre>
+<div ID=hide_18 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Attributes" /The value on the right is evaluated at class composition/&gt;
+
+my $got_a_num;  sub get_a_num  { $got_a_num++;  42 }
+my $got_a_str;  sub get_a_str  { $got_a_str++;  "Pugs" }
+
+my $got_a_code;
+my $was_in_closure;
+sub get_a_code {
+    $got_a_code++;
+    return {
+        $was_in_closure++;
+        42;
+    };
+}
+</pre>
 </div><p>Class attributes are declared with either <code>my</code> or <code>our</code>.  The only
 difference from ordinary <code>my</code> or <code>our</code> variables is that an accessor
 is generated according to the secondary sigil:</p>
@@ -943,52 +954,53 @@ is generated according to the secondary sigil:</p>
 <div ID=header_hidden_36 style="display: block;">- Show t/oo/construction.t (45 lines) -</div>
 </a>
 </p>
-<div ID=hide_36 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Construction and Initialization&quot;&gt;
-    :
-    :my $in_own = 0;
-    :eval_ok '
-    :  class OwnConstructor {
-    :    has $.x = 13;
-    :    method own(Class $class) {
-    :      $in_own++;
-    :      return $class.bless(:x(42));
-    :    }
-    :  }
-    :', &quot;class definition worked&quot;, :todo&lt;feature&gt;;
-    :eval_ok 'OwnConstr.new ~~ OwnConstr', &quot;basic class instantiation&quot;, :todo&lt;feature&gt;;
-    :eval_is 'OwnConstr.new.x', 13,        &quot;basic attribute access&quot;, :todo&lt;feature&gt;;
-    :# As usual, is instead of todo_is to suppress unexpected succeedings
-    :is      $in_own, 0,                   &quot;own constructor was not called&quot;;
-    :eval_ok 'OwnConstr.own ~~ OwnConstr', &quot;own construction instantiated its class&quot;, :todo&lt;feature&gt;;
-    :eval_is 'OwnConstr.own.x', 42,        &quot;attribute was set from our constructor&quot;, :todo&lt;feature&gt;;
-    :is      $in_own, 1,                   &quot;own constructor was actually called&quot;, :todo&lt;feature&gt;;
-    :
-    :
-    :# L&lt;&quot;<a href="http://www.mail-archive.com/perl6-language@perl.org/msg20241.html">http://www.mail-archive.com/perl6-language@perl.org/msg20241.html</a>&quot;&gt;
-    :# provide constructor for single positional argument
-    :
-    :class Foo {
-    :  has $.a;
-    :  
-    :  method new (Class $self: Str $string) {
-    :    $.a = $string;
-    :    return $self.bless(string =&gt; $string);
-    :  }
-    :}
-    :
-    :
-    :ok 'Foo.new(&quot;a string&quot;) ~~ Foo', '... our Foo instance was created';
-    :
-    :eval_is 'Foo.new(&quot;a string&quot;).a', 'a string', &quot;our own 'new' was called&quot;, :todo&lt;feature&gt;;
-    :
-    :
-    :# Using &quot;.=&quot; to create an object
-    :{
-    :  class Bar { has $.attr }
-    :  my Bar $bar .= new(:attr(42));
-    :  is $bar.attr, 42, &quot;instantiating an object using .= worked (1)&quot;;
-    :}</pre>
+<div ID=hide_36 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Construction and Initialization"&gt;
+
+my $in_own = 0;
+eval_ok '
+  class OwnConstructor {
+    has $.x = 13;
+    method own(Class $class) {
+      $in_own++;
+      return $class.bless(:x(42));
+    }
+  }
+', "class definition worked", :todo&lt;feature&gt;;
+eval_ok 'OwnConstr.new ~~ OwnConstr', "basic class instantiation", :todo&lt;feature&gt;;
+eval_is 'OwnConstr.new.x', 13,        "basic attribute access", :todo&lt;feature&gt;;
+# As usual, is instead of todo_is to suppress unexpected succeedings
+is      $in_own, 0,                   "own constructor was not called";
+eval_ok 'OwnConstr.own ~~ OwnConstr', "own construction instantiated its class", :todo&lt;feature&gt;;
+eval_is 'OwnConstr.own.x', 42,        "attribute was set from our constructor", :todo&lt;feature&gt;;
+is      $in_own, 1,                   "own constructor was actually called", :todo&lt;feature&gt;;
+
+
+# L&lt;"http://www.mail-archive.com/perl6-language@perl.org/msg20241.html"&gt;
+# provide constructor for single positional argument
+
+class Foo {
+  has $.a;
+  
+  method new (Class $self: Str $string) {
+    $.a = $string;
+    return $self.bless(string =&gt; $string);
+  }
+}
+
+
+ok 'Foo.new("a string") ~~ Foo', '... our Foo instance was created';
+
+eval_is 'Foo.new("a string").a', 'a string', "our own 'new' was called", :todo&lt;feature&gt;;
+
+
+# Using ".=" to create an object
+{
+  class Bar { has $.attr }
+  my Bar $bar .= new(:attr(42));
+  is $bar.attr, 42, "instantiating an object using .= worked (1)";
+}</pre>
 </div><p>All classes inherit a default <code>new</code> constructor from <code>Object</code>.  It
 expects all arguments to be named parameters initializing attributes of
 the same name.  You may write your own <code>new</code> to override the default,
@@ -1044,38 +1056,39 @@ the arguments to <code>bless</code> are passed to the <code>BUILD</code>.</p>
 <div ID=header_hidden_35 style="display: block;">- Show t/oo/clone.t (31 lines) -</div>
 </a>
 </p>
-<div ID=hide_35 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Construction and Initialization&quot; /You can clone an object, changing some of the attributes:/&gt;
-    :class Foo { 
-    :    has $.attr; 
-    :    method set_attr ($attr) { $.attr = $attr; }
-    :    method get_attr () { $.attr }
-    :}
-    :
-    :my $a = Foo.new(:attr(13));
-    :isa_ok($a, 'Foo');
-    :is($a.get_attr(), 13, '... got the right attr value');
-    :
-    :my $c = $a.clone();
-    :isa_ok($c, 'Foo');
-    :is($c.get_attr(), 13, '... cloned object retained attr value');
-    :my $val;
-    :lives_ok {
-    :    $val = $c === $a;
-    :}, &quot;... cloned object isn't identity equal to the original object&quot;;
-    :ok($val.defined &amp;&amp; !$val, &quot;... cloned object isn't identity equal to the original object&quot;);
-    :
-    :my $d;
-    :lives_ok {
-    :    $d = $a.clone(attr =&gt; 42)
-    :}, '... cloning with supplying a new attribute value';
-    :
-    :my $val;
-    :lives_ok {
-    :   $val = $d.get_attr()
-    :}, '... getting attr from cloned value';
-    :
-    :is($val, 42, '... cloned object has proper attr value');</pre>
+<div ID=hide_35 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Construction and Initialization" /You can clone an object, changing some of the attributes:/&gt;
+class Foo { 
+    has $.attr; 
+    method set_attr ($attr) { $.attr = $attr; }
+    method get_attr () { $.attr }
+}
+
+my $a = Foo.new(:attr(13));
+isa_ok($a, 'Foo');
+is($a.get_attr(), 13, '... got the right attr value');
+
+my $c = $a.clone();
+isa_ok($c, 'Foo');
+is($c.get_attr(), 13, '... cloned object retained attr value');
+my $val;
+lives_ok {
+    $val = $c === $a;
+}, "... cloned object isn't identity equal to the original object";
+ok($val.defined &amp;&amp; !$val, "... cloned object isn't identity equal to the original object");
+
+my $d;
+lives_ok {
+    $d = $a.clone(attr =&gt; 42)
+}, '... cloning with supplying a new attribute value';
+
+my $val;
+lives_ok {
+   $val = $d.get_attr()
+}, '... getting attr from cloned value';
+
+is($val, 42, '... cloned object has proper attr value');</pre>
 </div><pre>
     $newdog = $olddog.clone(:trick&lt;RollOver&gt;);</pre>
 <p>You can write your own <code>BUILD</code> submethod to control initialization.
@@ -1088,182 +1101,183 @@ directly, so</p>
 <div ID=header_hidden_37 style="display: block;">- Show t/oo/attributes/instance.t (175 lines) -</div>
 </a>
 </p>
-<div ID=hide_37 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Construction and Initialization&quot; /If you name an attribute as a parameter, that attribute is initialized directly, so/&gt;
-    :
-    :class Foo6 {
-    :  has $.bar is rw;
-    :  has $.baz;
-    :  has $!hidden;
-    :
-    :  submethod BUILD($.bar, $.baz, $!hidden) {}
-    :  method get_hidden() { $!hidden }
-    :}
-    :
-    :{
-    :    my $foo = Foo6.new(bar =&gt; 1, baz =&gt; 2, hidden =&gt; 3);
-    :    ok($foo ~~ Foo6, '... our Foo6 instance was created');
-    :        
-    :    is($foo.bar,        1, &quot;getting a public rw attribute (1)&quot;  );
-    :    is($foo.baz,        2, &quot;getting a public rw attribute (2)&quot;  );
-    :    is($foo.get_hidden, 3, &quot;getting a private ro attribute (3)&quot; );
-    :}
-    :
-    :# check that doing something in submethod BUILD works
-    :class Foo6a {
-    :  has $.bar is rw;
-    :  has $.baz;
-    :  has $!hidden;
-    :
-    :  submethod BUILD ($!hidden, $.bar = 10, $.baz?) {
-    :    $.baz = 5;
-    :  }
-    :  method get_hidden() { $!hidden }
-    :}
-    :
-    :{
-    :    my $foo = Foo6a.new(bar =&gt; 1, hidden =&gt; 3);
-    :    ok($foo ~~ Foo6a, '... our Foo6a instance was created');
-    :        
-    :    is($foo.bar,        1, &quot;getting a public rw attribute (1)&quot;  );
-    :    is($foo.baz,        5, &quot;getting a public rw attribute (2)&quot;  );
-    :    is($foo.get_hidden, 3, &quot;getting a private ro attribute (3)&quot; );
-    :}
-    :
-    :# check that assignment in submethod BUILD works with a bare return, too
-    :class Foo6b {
-    :  has $.bar is rw;
-    :  has $.baz;
-    :
-    :  submethod BUILD ($.bar = 10, $.baz?) {
-    :    $.baz = 9;
-    :    return;
-    :  }
-    :}
-    :
-    :{
-    :    my $foo = Foo6b.new(bar =&gt; 7);
-    :    ok($foo ~~ Foo6b, '... our Foo6b instance was created');
-    :        
-    :    is($foo.bar,        7, &quot;getting a public rw attribute (1)&quot;  );
-    :    is($foo.baz,        9, &quot;getting a public rw attribute (2)&quot;  );
-    :}
-    :
-    :# L&lt;A12/&quot;Default Values&quot;&gt;
-    :eval_ok 'class Foo7 { has $.attr = 42 }', &quot;class definition worked&quot;, :todo&lt;feature&gt;;
-    :eval_is 'Foo7.new.attr', 42,              &quot;default attribute value (1)&quot;, :todo&lt;feature&gt;;
-    :
-    :# L&lt;A12/&quot;Default Values&quot; /is equivalent to this:/&gt;
-    :eval_ok 'class Foo8 { has $.attr is build(42) }',
-    :  &quot;class definition using 'is build' worked&quot;, :todo&lt;feature&gt;;
-    :eval_is 'Foo8.new.attr', 42, &quot;default attribute value (2)&quot;, :todo&lt;feature&gt;;
-    :
-    :# L&lt;A12/&quot;Default Values&quot; /is equivalent to this:/&gt;
-    :eval_ok 'class Foo9 { has $.attr will build(42) }',
-    :  &quot;class definition using 'will build' worked&quot;, :todo&lt;feature&gt;;
-    :eval_is 'Foo9.new.attr', 42, &quot;default attribute value (3)&quot;, :todo&lt;feature&gt;;
-    :
-    :my $was_in_supplier = 0;
-    :sub forty_two_supplier() { $was_in_supplier++; 42 }
-    :# XXX: Currently hard parsefail!
-    :#todo_eval_ok 'class Foo10 { has $.attr = { forty_two_supplier() } }',
-    :#  &quot;class definition using '= {...}' worked&quot;;
-    :flunk &quot;hard parsefail&quot;, :todo&lt;feature&gt;;
-    :eval_is 'Foo10.new.attr', 42, &quot;default attribute value (4)&quot;, :todo&lt;feature&gt;;
-    :is      $was_in_supplier, 1,  &quot;forty_two_supplier() was actually executed (1)&quot;, :todo&lt;feature&gt;;
-    :
-    :# The same, but using 'is build {...}'
-    :# XXX: Currently hard parsefail!
-    :#todo_eval_ok 'class Foo11 { has $.attr is build { forty_two_supplier() } }',
-    :#  &quot;class definition using 'is build {...}' worked&quot;;
-    :flunk &quot;hard parsefail&quot;, :todo&lt;feature&gt;;
-    :eval_is 'Foo11.new.attr', 42, &quot;default attribute value (5)&quot;, :todo&lt;feature&gt;;
-    :is      $was_in_supplier, 2,  &quot;forty_two_supplier() was actually executed (2)&quot;, :todo&lt;feature&gt;;
-    :
-    :# The same, but using 'will build {...}'
-    :# XXX: Currently hard parsefail!
-    :#todo_eval_ok 'class Foo12 { has $.attr will build { forty_two_supplier() } }',
-    :#  &quot;class definition using 'will build {...}' worked&quot;;
-    :flunk &quot;hard parsefail&quot;, :todo&lt;feature&gt;;
-    :eval_is 'Foo11.new.attr', 42, &quot;default attribute value (6)&quot;, :todo&lt;feature&gt;;
-    :is      $was_in_supplier, 3,  &quot;forty_two_supplier() was actually executed (3)&quot;, :todo&lt;feature&gt;;
-    :
-    :# check that doing something in submethod BUILD works
-    :class Foo7 {
-    :  has $.bar;
-    :  has $.baz;
-    :
-    :  submethod BUILD ($.bar = 5, $baz = 10 ) {
-    :    $.baz = 2 * $baz;
-    :  }
-    :}
-    :
-    :my $foo7 = Foo7.new();
-    :is( $foo7.bar, 5,
-    :    'optional attribute should take default value without passed-in value' );
-    :is( $foo7.baz, 20,
-    :    '... optional non-attribute should too' );
-    :$foo7    = Foo7.new( :bar(4), :baz(5) );
-    :is( $foo7.bar, 4,
-    :    'optional attribute should take passed-in value over default' );
-    :is( $foo7.baz, 10,
-    :    '... optional non-attribute should too' );
-    :
-    :
-    :# check that args are passed to BUILD
-    :class Foo8 {
-    :  has $.a;
-    :  has $.b;
-    :  
-    :  submethod BUILD(:$foo, :$bar) {
-    :    $.a = $foo;
-    :    $.b = $bar;
-    :  }
-    :}
-    :
-    :{
-    :    my $foo = Foo8.new(foo =&gt; 'c', bar =&gt; 'd');
-    :    ok($foo.isa(Foo8), '... our Foo8 instance was created');
-    :        
-    :    is($foo.a, 'c', 'BUILD received $foo');
-    :    is($foo.b, 'd', 'BUILD received $bar');
-    :}
-    :
-    :# check mixture of positional/named args to BUILD
-    :
-    :class Foo9 {
-    :  has $.a;
-    :  has $.b;
-    :  
-    :  submethod BUILD($foo, :$bar) {
-    :    $.a = $foo;
-    :    $.b = $bar;
-    :  }
-    :}
-    :
-    :dies_ok({ Foo9.new('pos', bar =&gt; 'd') }, 'cannot pass positional to .new');
-    :
-    :# check $self is passed to BUILD
-    :class Foo10 {
-    :  has $.a;
-    :  has $.b;
-    :  has $.c;
-    :  
-    :  submethod BUILD(Class $self: :$foo, :$bar) {
-    :    $.a = $foo;
-    :    $.b = $bar;
-    :    $.c = 'y' if $self.isa(Foo10);
-    :  }
-    :}
-    :
-    :{
-    :    my $foo = Foo10.new(foo =&gt; 'c', bar =&gt; 'd');
-    :    ok($foo.isa(Foo10), '... our Foo10 instance was created');
-    :    
-    :    is($foo.a, 'c', 'BUILD received $foo');
-    :    is($foo.b, 'd', 'BUILD received $bar');
-    :    is($foo.c, 'y', 'BUILD received $self');
-    :}</pre>
+<div ID=hide_37 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Construction and Initialization" /If you name an attribute as a parameter, that attribute is initialized directly, so/&gt;
+
+class Foo6 {
+  has $.bar is rw;
+  has $.baz;
+  has $!hidden;
+
+  submethod BUILD($.bar, $.baz, $!hidden) {}
+  method get_hidden() { $!hidden }
+}
+
+{
+    my $foo = Foo6.new(bar =&gt; 1, baz =&gt; 2, hidden =&gt; 3);
+    ok($foo ~~ Foo6, '... our Foo6 instance was created');
+        
+    is($foo.bar,        1, "getting a public rw attribute (1)"  );
+    is($foo.baz,        2, "getting a public rw attribute (2)"  );
+    is($foo.get_hidden, 3, "getting a private ro attribute (3)" );
+}
+
+# check that doing something in submethod BUILD works
+class Foo6a {
+  has $.bar is rw;
+  has $.baz;
+  has $!hidden;
+
+  submethod BUILD ($!hidden, $.bar = 10, $.baz?) {
+    $.baz = 5;
+  }
+  method get_hidden() { $!hidden }
+}
+
+{
+    my $foo = Foo6a.new(bar =&gt; 1, hidden =&gt; 3);
+    ok($foo ~~ Foo6a, '... our Foo6a instance was created');
+        
+    is($foo.bar,        1, "getting a public rw attribute (1)"  );
+    is($foo.baz,        5, "getting a public rw attribute (2)"  );
+    is($foo.get_hidden, 3, "getting a private ro attribute (3)" );
+}
+
+# check that assignment in submethod BUILD works with a bare return, too
+class Foo6b {
+  has $.bar is rw;
+  has $.baz;
+
+  submethod BUILD ($.bar = 10, $.baz?) {
+    $.baz = 9;
+    return;
+  }
+}
+
+{
+    my $foo = Foo6b.new(bar =&gt; 7);
+    ok($foo ~~ Foo6b, '... our Foo6b instance was created');
+        
+    is($foo.bar,        7, "getting a public rw attribute (1)"  );
+    is($foo.baz,        9, "getting a public rw attribute (2)"  );
+}
+
+# L&lt;A12/"Default Values"&gt;
+eval_ok 'class Foo7 { has $.attr = 42 }', "class definition worked", :todo&lt;feature&gt;;
+eval_is 'Foo7.new.attr', 42,              "default attribute value (1)", :todo&lt;feature&gt;;
+
+# L&lt;A12/"Default Values" /is equivalent to this:/&gt;
+eval_ok 'class Foo8 { has $.attr is build(42) }',
+  "class definition using 'is build' worked", :todo&lt;feature&gt;;
+eval_is 'Foo8.new.attr', 42, "default attribute value (2)", :todo&lt;feature&gt;;
+
+# L&lt;A12/"Default Values" /is equivalent to this:/&gt;
+eval_ok 'class Foo9 { has $.attr will build(42) }',
+  "class definition using 'will build' worked", :todo&lt;feature&gt;;
+eval_is 'Foo9.new.attr', 42, "default attribute value (3)", :todo&lt;feature&gt;;
+
+my $was_in_supplier = 0;
+sub forty_two_supplier() { $was_in_supplier++; 42 }
+# XXX: Currently hard parsefail!
+#todo_eval_ok 'class Foo10 { has $.attr = { forty_two_supplier() } }',
+#  "class definition using '= {...}' worked";
+flunk "hard parsefail", :todo&lt;feature&gt;;
+eval_is 'Foo10.new.attr', 42, "default attribute value (4)", :todo&lt;feature&gt;;
+is      $was_in_supplier, 1,  "forty_two_supplier() was actually executed (1)", :todo&lt;feature&gt;;
+
+# The same, but using 'is build {...}'
+# XXX: Currently hard parsefail!
+#todo_eval_ok 'class Foo11 { has $.attr is build { forty_two_supplier() } }',
+#  "class definition using 'is build {...}' worked";
+flunk "hard parsefail", :todo&lt;feature&gt;;
+eval_is 'Foo11.new.attr', 42, "default attribute value (5)", :todo&lt;feature&gt;;
+is      $was_in_supplier, 2,  "forty_two_supplier() was actually executed (2)", :todo&lt;feature&gt;;
+
+# The same, but using 'will build {...}'
+# XXX: Currently hard parsefail!
+#todo_eval_ok 'class Foo12 { has $.attr will build { forty_two_supplier() } }',
+#  "class definition using 'will build {...}' worked";
+flunk "hard parsefail", :todo&lt;feature&gt;;
+eval_is 'Foo11.new.attr', 42, "default attribute value (6)", :todo&lt;feature&gt;;
+is      $was_in_supplier, 3,  "forty_two_supplier() was actually executed (3)", :todo&lt;feature&gt;;
+
+# check that doing something in submethod BUILD works
+class Foo7 {
+  has $.bar;
+  has $.baz;
+
+  submethod BUILD ($.bar = 5, $baz = 10 ) {
+    $.baz = 2 * $baz;
+  }
+}
+
+my $foo7 = Foo7.new();
+is( $foo7.bar, 5,
+    'optional attribute should take default value without passed-in value' );
+is( $foo7.baz, 20,
+    '... optional non-attribute should too' );
+$foo7    = Foo7.new( :bar(4), :baz(5) );
+is( $foo7.bar, 4,
+    'optional attribute should take passed-in value over default' );
+is( $foo7.baz, 10,
+    '... optional non-attribute should too' );
+
+
+# check that args are passed to BUILD
+class Foo8 {
+  has $.a;
+  has $.b;
+  
+  submethod BUILD(:$foo, :$bar) {
+    $.a = $foo;
+    $.b = $bar;
+  }
+}
+
+{
+    my $foo = Foo8.new(foo =&gt; 'c', bar =&gt; 'd');
+    ok($foo.isa(Foo8), '... our Foo8 instance was created');
+        
+    is($foo.a, 'c', 'BUILD received $foo');
+    is($foo.b, 'd', 'BUILD received $bar');
+}
+
+# check mixture of positional/named args to BUILD
+
+class Foo9 {
+  has $.a;
+  has $.b;
+  
+  submethod BUILD($foo, :$bar) {
+    $.a = $foo;
+    $.b = $bar;
+  }
+}
+
+dies_ok({ Foo9.new('pos', bar =&gt; 'd') }, 'cannot pass positional to .new');
+
+# check $self is passed to BUILD
+class Foo10 {
+  has $.a;
+  has $.b;
+  has $.c;
+  
+  submethod BUILD(Class $self: :$foo, :$bar) {
+    $.a = $foo;
+    $.b = $bar;
+    $.c = 'y' if $self.isa(Foo10);
+  }
+}
+
+{
+    my $foo = Foo10.new(foo =&gt; 'c', bar =&gt; 'd');
+    ok($foo.isa(Foo10), '... our Foo10 instance was created');
+    
+    is($foo.a, 'c', 'BUILD received $foo');
+    is($foo.b, 'd', 'BUILD received $bar');
+    is($foo.c, 'y', 'BUILD received $self');
+}</pre>
 </div><pre>
     submethod BUILD ($.tail, $!legs) {}</pre>
 <p>is equivalent to</p>
@@ -1287,11 +1301,12 @@ that haven't otherwise been initialized.</p>
 <div ID=header_hidden_38 style="display: block;">- Show t/syntax/inplace.t (4 lines) -</div>
 </a>
 </p>
-<div ID=hide_38 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Mutating methods&quot;&gt;
-    :my @b = &lt;z a b d e&gt;;
-    :@b .= sort;
-    :is ~@b, &quot;a b d e z&quot;, &quot;inplace sort&quot;;</pre>
+<div ID=hide_38 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Mutating methods"&gt;
+my @b = &lt;z a b d e&gt;;
+@b .= sort;
+is ~@b, "a b d e z", "inplace sort";</pre>
 </div><p>You can call an in-place mutator method like this:</p>
 <pre>
     @array .= sort;</pre>
@@ -1511,37 +1526,38 @@ multi method is defined in:</p>
 <div ID=header_hidden_30 style="display: block;">- Show t/oo/roles/conflicts.t (30 lines) -</div>
 </a>
 </p>
-<div ID=hide_30 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot;&gt;
-    :my ($was_in_sentry_shake, $was_in_pet_shake, $was_in_general_shake) = (0) xx 3;
-    :role Sentry { method shake() { $was_in_sentry_shake++; &quot;A&quot; } }
-    :role Pet    { method shake() { $was_in_pet_shake++;    &quot;B&quot; } }
-    :
-    :class General {
-    :does Sentry;
-    :does Pet;
-    :
-    :method shake(Str $what) {
-    :    $was_in_general_shake++;
-    :    given $what {
-    :        when &quot;sentry&quot; { return self.Sentry::shake() }
-    :        when &quot;pet&quot;    { return self.Pet::shake()    }
-    :    }
-    :}
-    :}
-    :ok(Pet.new, &quot;role and class definition worked&quot;);
-    :
-    :my $a;
-    :ok(($a = General.new()),      &quot;basic class instantiation works&quot;);
-    :is $a.shake(&quot;sentry&quot;), &quot;A&quot;, &quot;conflict resolution works (1-1)&quot;;
-    :is      $was_in_general_shake,  1, &quot;conflict resolution works (1-2)&quot;;
-    :is      $was_in_sentry_shake,   1, &quot;conflict resolution works (1-3)&quot;;
-    :# As usual, is instead of todo_is to avoid unexpected suceedings.
-    :is      $was_in_pet_shake,      0, &quot;conflict resolution works (1-4)&quot;;
-    :is $a.shake(&quot;pet&quot;),    &quot;B&quot;, &quot;conflict resolution works (2-1)&quot;;
-    :is      $was_in_general_shake,  2, &quot;conflict resolution works (2-2)&quot;;
-    :is      $was_in_sentry_shake,   1, &quot;conflict resolution works (2-3)&quot;;
-    :is      $was_in_pet_shake,      1, &quot;conflict resolution works (2-4)&quot;;</pre>
+<div ID=hide_30 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles"&gt;
+my ($was_in_sentry_shake, $was_in_pet_shake, $was_in_general_shake) = (0) xx 3;
+role Sentry { method shake() { $was_in_sentry_shake++; "A" } }
+role Pet    { method shake() { $was_in_pet_shake++;    "B" } }
+
+class General {
+does Sentry;
+does Pet;
+
+method shake(Str $what) {
+    $was_in_general_shake++;
+    given $what {
+        when "sentry" { return self.Sentry::shake() }
+        when "pet"    { return self.Pet::shake()    }
+    }
+}
+}
+ok(Pet.new, "role and class definition worked");
+
+my $a;
+ok(($a = General.new()),      "basic class instantiation works");
+is $a.shake("sentry"), "A", "conflict resolution works (1-1)";
+is      $was_in_general_shake,  1, "conflict resolution works (1-2)";
+is      $was_in_sentry_shake,   1, "conflict resolution works (1-3)";
+# As usual, is instead of todo_is to avoid unexpected suceedings.
+is      $was_in_pet_shake,      0, "conflict resolution works (1-4)";
+is $a.shake("pet"),    "B", "conflict resolution works (2-1)";
+is      $was_in_general_shake,  2, "conflict resolution works (2-2)";
+is      $was_in_sentry_shake,   1, "conflict resolution works (2-3)";
+is      $was_in_pet_shake,      1, "conflict resolution works (2-4)";</pre>
 </div><a name="msg_26"></a>
 <a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
 <div ID=header_shown_26 style="display: none;">- Hide t/oo/roles/basic.t (line 13 ~ line 32) -
@@ -1549,27 +1565,28 @@ multi method is defined in:</p>
 <div ID=header_hidden_26 style="display: block;">- Show t/oo/roles/basic.t (20 lines) -</div>
 </a>
 </p>
-<div ID=hide_26 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot;&gt;
-    :# Basic definition
-    :role Foo {}
-    :class Bar does Foo;
-    :
-    :ok Foo.meta, &quot;definition of a role worked&quot;;
-    :ok Bar.meta, &quot;definition of a class which does a role worked&quot;;
-    :
-    :# Smartmatch and .meta.does
-    :my $bar = Bar.new();
-    :ok ($bar ~~ Bar),         '... smartmatch our $bar to the Bar class', :todo&lt;feature&gt;;
-    :ok ($bar.meta.does(Foo)), '.meta.does said our $bar does Foo', :todo&lt;feature&gt;;
-    :ok ($bar ~~ Foo),         'smartmatch said our $bar does Foo', :todo&lt;feature&gt;;
-    :
-    :# Mixing a Role into an Object using imperative C&lt;does&gt;
-    :my $baz = 3;
-    :eval_ok '$baz does Foo',       'mixing in our Foo role into $baz worked', :todo&lt;feature&gt;;
-    :eval_ok '$baz.meta.does(Foo)', '.meta.does said our $baz now does Foo', :todo&lt;feature&gt;;
-    :eval_ok '$baz ~~ Baz',         'smartmatch said our $baz now does Foo', :todo&lt;feature&gt;;
-    :</pre>
+<div ID=hide_26 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles"&gt;
+# Basic definition
+role Foo {}
+class Bar does Foo;
+
+ok Foo.meta, "definition of a role worked";
+ok Bar.meta, "definition of a class which does a role worked";
+
+# Smartmatch and .meta.does
+my $bar = Bar.new();
+ok ($bar ~~ Bar),         '... smartmatch our $bar to the Bar class', :todo&lt;feature&gt;;
+ok ($bar.meta.does(Foo)), '.meta.does said our $bar does Foo', :todo&lt;feature&gt;;
+ok ($bar ~~ Foo),         'smartmatch said our $bar does Foo', :todo&lt;feature&gt;;
+
+# Mixing a Role into an Object using imperative C&lt;does&gt;
+my $baz = 3;
+eval_ok '$baz does Foo',       'mixing in our Foo role into $baz worked', :todo&lt;feature&gt;;
+eval_ok '$baz.meta.does(Foo)', '.meta.does said our $baz now does Foo', :todo&lt;feature&gt;;
+eval_ok '$baz ~~ Baz',         'smartmatch said our $baz now does Foo', :todo&lt;feature&gt;;
+</pre>
 </div><a name="msg_25"></a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID=header_shown_25 style="display: none;">- Hide t/oo/roles/anonymous.t (line 7 ~ line 42) -
@@ -1577,43 +1594,44 @@ multi method is defined in:</p>
 <div ID=header_hidden_25 style="display: block;">- Show t/oo/roles/anonymous.t (36 lines) -</div>
 </a>
 </p>
-<div ID=hide_25 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot;&gt;
-    :{
-    :  my $a = 3;
-    :  is $a, 3, &quot;basic sanity&quot;;
-    :  eval_ok '$a does role { has $.cool = &quot;yeah&quot; }', &quot;anonymous role mixin&quot;, :todo&lt;feature&gt;;
-    :  is $a, 3, &quot;still basic sanity&quot;;
-    :  eval_is '$a.cool', &quot;yeah&quot;, &quot;anonymous role gave us an attribute&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# The same, but we story the anonymous role in a variable
-    :{
-    :  my $a = 3;
-    :  is $a, 3, &quot;basic sanity&quot;;
-    :  my $role;
-    :  eval_ok 'my $role = role { has $.cool = &quot;yeah&quot; }', &quot;anonymous role definition&quot;, :todo&lt;feature&gt;;
-    :  eval_ok '$a does $role', &quot;anonymous role variable mixin&quot;, :todo&lt;feature&gt;;
-    :  is $a, 3, &quot;still basic sanity&quot;;
-    :  eval_is '$a.cool', &quot;yeah&quot;, &quot;anonymous role variable gave us an attribute&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# Guarantee roles are really first-class-entities:
-    :{
-    :  eval_ok '
-    :    sub role_generator(Str $val) {
-    :      return role {
-    :        has $.cool = $val;
-    :      }
-    :    }
-    :  ', &quot;role generating functions defined&quot;, :todo&lt;feature&gt;;
-    :
-    :  my $a = 3;
-    :  is $a, 3, &quot;basic sanity&quot;;
-    :  eval_ok '$a does role_generator(&quot;hi&quot;)', &quot;role generating function mixin&quot;, :todo&lt;feature&gt;;
-    :  is $a, 3, &quot;still basic sanity&quot;;
-    :  eval_is '$a.cool', &quot;hi&quot;, &quot;role generating function gave us an attribute&quot;, :todo&lt;feature&gt;;
-    :}</pre>
+<div ID=hide_25 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles"&gt;
+{
+  my $a = 3;
+  is $a, 3, "basic sanity";
+  eval_ok '$a does role { has $.cool = "yeah" }', "anonymous role mixin", :todo&lt;feature&gt;;
+  is $a, 3, "still basic sanity";
+  eval_is '$a.cool', "yeah", "anonymous role gave us an attribute", :todo&lt;feature&gt;;
+}
+
+# The same, but we story the anonymous role in a variable
+{
+  my $a = 3;
+  is $a, 3, "basic sanity";
+  my $role;
+  eval_ok 'my $role = role { has $.cool = "yeah" }', "anonymous role definition", :todo&lt;feature&gt;;
+  eval_ok '$a does $role', "anonymous role variable mixin", :todo&lt;feature&gt;;
+  is $a, 3, "still basic sanity";
+  eval_is '$a.cool', "yeah", "anonymous role variable gave us an attribute", :todo&lt;feature&gt;;
+}
+
+# Guarantee roles are really first-class-entities:
+{
+  eval_ok '
+    sub role_generator(Str $val) {
+      return role {
+        has $.cool = $val;
+      }
+    }
+  ', "role generating functions defined", :todo&lt;feature&gt;;
+
+  my $a = 3;
+  is $a, 3, "basic sanity";
+  eval_ok '$a does role_generator("hi")', "role generating function mixin", :todo&lt;feature&gt;;
+  is $a, 3, "still basic sanity";
+  eval_is '$a.cool', "hi", "role generating function gave us an attribute", :todo&lt;feature&gt;;
+}</pre>
 </div><p>Classes are primarily in charge of object management, and only
 secondarily in charge of software reuse.  In Perl 6, roles take over
 the job of managing software reuse.  Depending on how you care to look
@@ -1635,15 +1653,16 @@ instantiated.</p>
 <div ID=header_hidden_27 style="display: block;">- Show t/oo/roles/basic.t (8 lines) -</div>
 </a>
 </p>
-<div ID=hide_27 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot; /but with a role keyword:/&gt;
-    :# Roles may have methods
-    :eval_ok 'role A { method say_hello(Str $to) { &quot;Hello, $to&quot; } }',
-    :  &quot;definition of a role with a method worked&quot;, :todo&lt;feature&gt;;
-    :eval_ok 'my Foo $a does A .= new()', 'mixing A into $a worked';
-    :eval_is '$a.say_hello(&quot;Ingo&quot;)', &quot;Ingo&quot;,
-    :  'our $a &quot;inherited&quot; the .say_hello method of A', :todo&lt;feature&gt;;
-    :</pre>
+<div ID=hide_27 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles" /but with a role keyword:/&gt;
+# Roles may have methods
+eval_ok 'role A { method say_hello(Str $to) { "Hello, $to" } }',
+  "definition of a role with a method worked", :todo&lt;feature&gt;;
+eval_ok 'my Foo $a does A .= new()', 'mixing A into $a worked';
+eval_is '$a.say_hello("Ingo")', "Ingo",
+  'our $a "inherited" the .say_hello method of A', :todo&lt;feature&gt;;
+</pre>
 </div><pre>
     role Pet {
         method feed ($food) {
@@ -1679,60 +1698,61 @@ other types explicitly using type parameters:</p>
 <div ID=header_hidden_32 style="display: block;">- Show t/oo/roles/parameterized.t (53 lines) -</div>
 </a>
 </p>
-<div ID=hide_32 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot; /A role's main type is generic by default/&gt;
-    :eval_ok '
-    :  role InitialAttribType[^vartype:] {
-    :    method hi(vartype $foo) { 42 }
-    :  }
-    :', &quot;parameterized role definition (2)&quot;, :todo&lt;feature&gt;;
-    :my $c;
-    :ok eval('$c does InitialAttribType[Code]'),
-    :  &quot;imperative does to apply a parametrized role (3)&quot;, :todo&lt;feature&gt;;
-    :ok eval('$c.meta.does(InitialAttribType)'),
-    :  &quot;.meta.does gives correct information (3-1)&quot;, :todo&lt;feature&gt;;
-    :ok eval('$c.meta.does(InitialAttribType[Code])'),
-    :  &quot;.meta.does gives correct information (3-2)&quot;, :todo&lt;feature&gt;;
-    :is try { $c.hi(sub {}) }, 42,
-    :  &quot;type information was processed correctly (1)&quot;, :todo&lt;feature&gt;;
-    :dies_ok { $c.hi(&quot;not a code object&quot;) },
-    :  &quot;type information was processed correctly (2)&quot;;
-    :
-    :
-    :
-    :
-    :# Parameterized role using both a parameter which will add to the &quot;long name&quot;
-    :# of the role and one which doesn't.
-    :# (Explanation: This one is easier. The two attributes $.type and $.name will
-    :# be predefined (using the role parameterization). The $type adds to the long
-    :# name of the role, $name does not. Such:
-    :#   my $a does InitialAttribBoth[&quot;foo&quot;, &quot;bar&quot;];
-    :#   my $b does InitialAttribBoth[&quot;foo&quot;, &quot;grtz&quot;];
-    :#   $a ~~ InitialAttribBoth                ==&gt; true
-    :#   $b ~~ InitialAttribBoth                ==&gt; true
-    :#   $a ~~ InitialAttribBoth[&quot;foo&quot;]         ==&gt; true
-    :#   $b ~~ InitialAttribBoth[&quot;foo&quot;]         ==&gt; true
-    :#   $a ~~ InitialAttribBoth[&quot;foo&quot;, &quot;bar&quot;]  ==&gt; false
-    :#   $b ~~ InitialAttribBoth[&quot;foo&quot;, &quot;grtz&quot;] ==&gt; false
-    :# Heavy stuff, eh?)
-    :ok eval('
-    :  role InitialAttribBoth[Str $type: Str $name] {
-    :    has $.type = $type;
-    :    has $.name = $name;
-    :  }
-    :  1
-    :'), &quot;parameterized role definition (3)&quot;, :todo&lt;feature&gt;;
-    :my $d;
-    :ok eval('$d does InitialAttribBoth[&quot;type1&quot;, &quot;name1&quot;]'),
-    :  &quot;imperative does to apply a parametrized role (4)&quot;, :todo&lt;feature&gt;;
-    :ok eval('$c.meta.does(InitialAttribType)'),
-    :  &quot;.meta.does gives correct information (4-1)&quot;, :todo&lt;feature&gt;;
-    :ok eval('$d.meta.does(InitialAttribType[&quot;type1&quot;])'),
-    :  &quot;.meta.does gives correct information (4-2)&quot;, :todo&lt;feature&gt;;
-    :ok eval('!$d.meta.does(InitialAttribType[&quot;type1&quot;, &quot;name1&quot;])'),
-    :  &quot;.meta.does gives correct information (4-3)&quot;;
-    :is try { $d.type }, &quot;type1&quot;, &quot;.type works correctly&quot;, :todo&lt;feature&gt;;
-    :is try { $d.name }, &quot;name1&quot;, &quot;.name works correctly&quot;, :todo&lt;feature&gt;;</pre>
+<div ID=hide_32 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles" /A role's main type is generic by default/&gt;
+eval_ok '
+  role InitialAttribType[^vartype:] {
+    method hi(vartype $foo) { 42 }
+  }
+', "parameterized role definition (2)", :todo&lt;feature&gt;;
+my $c;
+ok eval('$c does InitialAttribType[Code]'),
+  "imperative does to apply a parametrized role (3)", :todo&lt;feature&gt;;
+ok eval('$c.meta.does(InitialAttribType)'),
+  ".meta.does gives correct information (3-1)", :todo&lt;feature&gt;;
+ok eval('$c.meta.does(InitialAttribType[Code])'),
+  ".meta.does gives correct information (3-2)", :todo&lt;feature&gt;;
+is try { $c.hi(sub {}) }, 42,
+  "type information was processed correctly (1)", :todo&lt;feature&gt;;
+dies_ok { $c.hi("not a code object") },
+  "type information was processed correctly (2)";
+
+
+
+
+# Parameterized role using both a parameter which will add to the "long name"
+# of the role and one which doesn't.
+# (Explanation: This one is easier. The two attributes $.type and $.name will
+# be predefined (using the role parameterization). The $type adds to the long
+# name of the role, $name does not. Such:
+#   my $a does InitialAttribBoth["foo", "bar"];
+#   my $b does InitialAttribBoth["foo", "grtz"];
+#   $a ~~ InitialAttribBoth                ==&gt; true
+#   $b ~~ InitialAttribBoth                ==&gt; true
+#   $a ~~ InitialAttribBoth["foo"]         ==&gt; true
+#   $b ~~ InitialAttribBoth["foo"]         ==&gt; true
+#   $a ~~ InitialAttribBoth["foo", "bar"]  ==&gt; false
+#   $b ~~ InitialAttribBoth["foo", "grtz"] ==&gt; false
+# Heavy stuff, eh?)
+ok eval('
+  role InitialAttribBoth[Str $type: Str $name] {
+    has $.type = $type;
+    has $.name = $name;
+  }
+  1
+'), "parameterized role definition (3)", :todo&lt;feature&gt;;
+my $d;
+ok eval('$d does InitialAttribBoth["type1", "name1"]'),
+  "imperative does to apply a parametrized role (4)", :todo&lt;feature&gt;;
+ok eval('$c.meta.does(InitialAttribType)'),
+  ".meta.does gives correct information (4-1)", :todo&lt;feature&gt;;
+ok eval('$d.meta.does(InitialAttribType["type1"])'),
+  ".meta.does gives correct information (4-2)", :todo&lt;feature&gt;;
+ok eval('!$d.meta.does(InitialAttribType["type1", "name1"])'),
+  ".meta.does gives correct information (4-3)";
+is try { $d.type }, "type1", ".type works correctly", :todo&lt;feature&gt;;
+is try { $d.name }, "name1", ".name works correctly", :todo&lt;feature&gt;;</pre>
 </div><pre>
     role Pet[::Petfood = TableScraps] {
         method feed (Petfood $food) {...}
@@ -1764,14 +1784,15 @@ be installed somewhere to ``supply'' a missing method's declaration.</p>
 <div ID=header_hidden_28 style="display: block;">- Show t/oo/roles/basic.t (7 lines) -</div>
 </a>
 </p>
-<div ID=hide_28 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot; /Roles may have attributes:/&gt;
-    :eval_ok 'role B { has $.attr = 42 is rw }',
-    :  &quot;definition of a role with an attribute worked&quot;, :todo&lt;feature&gt;;
-    :eval_ok 'my Foo $b does B .= new()', 'mixing B into $b worked';
-    :eval_is '$b.attr', 42,      'our $b &quot;inherited&quot; the $.attr attribute of B (1)', :todo&lt;feature&gt;;
-    :eval_is '$b.attr = 23', 23, 'our $b &quot;inherited&quot; the $.attr attribute of B (2)', :todo&lt;feature&gt;;
-    :</pre>
+<div ID=hide_28 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles" /Roles may have attributes:/&gt;
+eval_ok 'role B { has $.attr = 42 is rw }',
+  "definition of a role with an attribute worked", :todo&lt;feature&gt;;
+eval_ok 'my Foo $b does B .= new()', 'mixing B into $b worked';
+eval_is '$b.attr', 42,      'our $b "inherited" the $.attr attribute of B (1)', :todo&lt;feature&gt;;
+eval_is '$b.attr = 23', 23, 'our $b "inherited" the $.attr attribute of B (2)', :todo&lt;feature&gt;;
+</pre>
 </div><pre>
     role Pet {
         has $.collar = { Collar.new(Tag.new) };
@@ -1788,43 +1809,44 @@ part of the long name:</p>
 <div ID=header_hidden_31 style="display: block;">- Show t/oo/roles/parameterized.t (36 lines) -</div>
 </a>
 </p>
-<div ID=hide_31 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot; /to be considered part of the long name:/&gt;
-    :# L&lt;A12/&quot;Encapsulated Attributes&quot; /to be considered part of the long name:/&gt;
-    :ok eval('
-    :  role InitialAttribVal[: $val] {
-    :    has $.attr = $val;
-    :  }
-    :  1
-    :'), &quot;parameterized role definition (1)&quot;, :todo&lt;feature&gt;;
-    :
-    :my $a;
-    :ok eval('$a does InitialAttribVal[42]'),
-    :  &quot;imperative does to apply a parametrized role (1)&quot;, :todo&lt;feature&gt;;
-    :is try { $a.attr }, 42,
-    :  &quot;attribute was initialized correctly (1)&quot;, :todo&lt;feature&gt;;
-    :# L&lt;A12/&quot;Encapsulated Attributes&quot; /In which case all of these are true:/&gt;
-    :ok eval('$a.meta.does(InitialAttribVal)'),
-    :  &quot;.meta.does gives correct information (1-1)&quot;, :todo&lt;feature&gt;;
-    :# L&lt;A12/&quot;Encapsulated Attributes&quot; /but this is false:/&gt;
-    :ok eval('!$a.meta.does(InitialAttribVal[42])'),
-    :  &quot;.meta.does gives correct information (1-2)&quot;, :todo&lt;feature&gt;;
-    :
-    :my $b;
-    :ok eval('$a does InitialAttribVal[23]'),
-    :  &quot;imperative does to apply a parametrized role (2)&quot;, :todo&lt;feature&gt;;
-    :is try { $a.attr }, 23,
-    :  &quot;attribute was initialized correctly (2)&quot;, :todo&lt;feature&gt;;
-    :# L&lt;A12/&quot;Encapsulated Attributes&quot; /In which case all of these are true:/&gt;
-    :ok eval('$a.meta.does(InitialAttribVal)'),
-    :  &quot;.meta.does gives correct information (2-1)&quot;, :todo&lt;feature&gt;;
-    :# L&lt;A12/&quot;Encapsulated Attributes&quot; /but this is false:/&gt;
-    :ok eval('!$a.meta.does(InitialAttribVal[23])'),
-    :  &quot;.meta.does gives correct information (2-2)&quot;, :todo&lt;feature&gt;;
-    :
-    :
-    :
-    :# L&lt;A12/&quot;Parametric types&quot; /but you can also parameterize other types explicitly:/&gt;</pre>
+<div ID=hide_31 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles" /to be considered part of the long name:/&gt;
+# L&lt;A12/"Encapsulated Attributes" /to be considered part of the long name:/&gt;
+ok eval('
+  role InitialAttribVal[: $val] {
+    has $.attr = $val;
+  }
+  1
+'), "parameterized role definition (1)", :todo&lt;feature&gt;;
+
+my $a;
+ok eval('$a does InitialAttribVal[42]'),
+  "imperative does to apply a parametrized role (1)", :todo&lt;feature&gt;;
+is try { $a.attr }, 42,
+  "attribute was initialized correctly (1)", :todo&lt;feature&gt;;
+# L&lt;A12/"Encapsulated Attributes" /In which case all of these are true:/&gt;
+ok eval('$a.meta.does(InitialAttribVal)'),
+  ".meta.does gives correct information (1-1)", :todo&lt;feature&gt;;
+# L&lt;A12/"Encapsulated Attributes" /but this is false:/&gt;
+ok eval('!$a.meta.does(InitialAttribVal[42])'),
+  ".meta.does gives correct information (1-2)", :todo&lt;feature&gt;;
+
+my $b;
+ok eval('$a does InitialAttribVal[23]'),
+  "imperative does to apply a parametrized role (2)", :todo&lt;feature&gt;;
+is try { $a.attr }, 23,
+  "attribute was initialized correctly (2)", :todo&lt;feature&gt;;
+# L&lt;A12/"Encapsulated Attributes" /In which case all of these are true:/&gt;
+ok eval('$a.meta.does(InitialAttribVal)'),
+  ".meta.does gives correct information (2-1)", :todo&lt;feature&gt;;
+# L&lt;A12/"Encapsulated Attributes" /but this is false:/&gt;
+ok eval('!$a.meta.does(InitialAttribVal[23])'),
+  ".meta.does gives correct information (2-2)", :todo&lt;feature&gt;;
+
+
+
+# L&lt;A12/"Parametric types" /but you can also parameterize other types explicitly:/&gt;</pre>
 </div><pre>
     role Pet[::ID; $tag] {
         has ID $.collar .= new($tag);
@@ -1965,14 +1987,15 @@ how to generalize a particular enumerated value to its role.  So</p>
 <div ID=header_hidden_29 style="display: block;">- Show t/oo/roles/basic.t (7 lines) -</div>
 </a>
 </p>
-<div ID=hide_29 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Roles&quot; /operator creates a copy and works on that./&gt;
-    :# As usual, ok instead of todo_ok to avoid unexpected succeedings.
-    :eval_ok 'my Foo $c .= new()',        'creating a Foo worked';
-    :ok           !eval('$c ~~ B'),            '$c does not B';
-    :eval_ok 'my $d = $c but B',          'mixing in a Role via but worked', :todo&lt;feature&gt;;
-    :ok           !eval('$c ~~ B'),            '$c still does not B...';
-    :eval_ok '$d ~~ B',                   '...but $d does B', :todo&lt;feature&gt;;</pre>
+<div ID=hide_29 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Roles" /operator creates a copy and works on that./&gt;
+# As usual, ok instead of todo_ok to avoid unexpected succeedings.
+eval_ok 'my Foo $c .= new()',        'creating a Foo worked';
+ok           !eval('$c ~~ B'),            '$c does not B';
+eval_ok 'my $d = $c but B',          'mixing in a Role via but worked', :todo&lt;feature&gt;;
+ok           !eval('$c ~~ B'),            '$c still does not B...';
+eval_ok '$d ~~ B',                   '...but $d does B', :todo&lt;feature&gt;;</pre>
 </div><pre>
     0 but True</pre>
 <p>is short for something like:</p>
@@ -2016,33 +2039,34 @@ property.  The above really means something like:</p>
 <div ID=header_hidden_3 style="display: block;">- Show t/oo/traits/parameterized.t (26 lines) -</div>
 </a>
 </p>
-<div ID=hide_3 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Traits&quot;&gt;
-    :# Basic definition
-    :my $role_works;
-    :eval_ok 'role cool {
-    :  has $.cool;
-    :
-    :  multi sub trait_auxiliary:&lt;is&gt;(cool $trait, Any $container; $val) {
-    :    $.cool = $val;
-    :    $container does cool($val);
-    :  }
-    :  $role_works = 1;
-    :', &quot;role definition works&quot;, :todo&lt;feature&gt;;
-    :
-    :unless ($role_works) {
-    :    skip_rest 'role definition is broken'; exit;
-    :}
-    :
-    :my $a = 42;
-    :is           $a, 42, &quot;basic sanity (1)&quot;;
-    :eval_ok '$a does cool(23)',   &quot;imperative does worked (1)&quot;, :todo&lt;feature&gt;;
-    :eval_is '$a.cool',      23,   &quot;attribute was set correctly (1)&quot;, :todo&lt;feature&gt;;
-    :
-    :my $b = 23;
-    :is           $b, 23, &quot;basic sanity (2)&quot;;
-    :eval_ok '$b does cool(&quot;hi&quot;)', &quot;imperative does worked (2)&quot;, :todo&lt;feature&gt;;
-    :eval_is '$b.cool',      &quot;hi&quot;, &quot;attribute was set correctly (2)&quot;, :todo&lt;feature&gt;;</pre>
+<div ID=hide_3 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Traits"&gt;
+# Basic definition
+my $role_works;
+eval_ok 'role cool {
+  has $.cool;
+
+  multi sub trait_auxiliary:&lt;is&gt;(cool $trait, Any $container; $val) {
+    $.cool = $val;
+    $container does cool($val);
+  }
+  $role_works = 1;
+', "role definition works", :todo&lt;feature&gt;;
+
+unless ($role_works) {
+    skip_rest 'role definition is broken'; exit;
+}
+
+my $a = 42;
+is           $a, 42, "basic sanity (1)";
+eval_ok '$a does cool(23)',   "imperative does worked (1)", :todo&lt;feature&gt;;
+eval_is '$a.cool',      23,   "attribute was set correctly (1)", :todo&lt;feature&gt;;
+
+my $b = 23;
+is           $b, 23, "basic sanity (2)";
+eval_ok '$b does cool("hi")', "imperative does worked (2)", :todo&lt;feature&gt;;
+eval_is '$b.cool',      "hi", "attribute was set correctly (2)", :todo&lt;feature&gt;;</pre>
 </div><a name="msg_2"></a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID=header_shown_2 style="display: none;">- Hide t/oo/traits/basic.t (line 13 ~ line 38) -
@@ -2050,33 +2074,34 @@ property.  The above really means something like:</p>
 <div ID=header_hidden_2 style="display: block;">- Show t/oo/traits/basic.t (26 lines) -</div>
 </a>
 </p>
-<div ID=hide_2 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Traits&quot;&gt;
-    :# Basic definition
-    :my $was_in_any_sub   = 0;
-    :my $was_in_class_sub = 0;
-    :eval_ok 'role cool {
-    :  has $.is_cool = 42;
-    :
-    :  multi sub trait_auxiliary:&lt;is&gt;(cool $trait, Any $container:) {
-    :    $was_in_any_sub++;
-    :    $container does cool;
-    :  }
-    :
-    :  multi sub trait_auxiliary:&lt;is&gt;(cool $trait, Class $container:) {
-    :    $was_in_class_sub++;
-    :    $container does cool;
-    :  }
-    :', &quot;role definition worked&quot;, :todo&lt;feature&gt;;
-    :
-    :eval_ok 'my $a is cool',      'mixing in our role into a scalar via &quot;is&quot; worked', :todo&lt;feature&gt;;
-    :is      $was_in_any_sub,  1,  'our trait_auxiliary:is was called', :todo&lt;feature&gt;;
-    :eval_is '$a.is_cool',    42,  'our var &quot;inherited&quot; an attribute', :todo&lt;feature&gt;;
-    :
-    :my $b;
-    :eval_ok 'class B is cool {}', 'mixing in our role into a class via &quot;is&quot; worked', :todo&lt;feature&gt;;
-    :eval_ok '$b = B.new()',       'creating an instance worked', :todo&lt;feature&gt;;
-    :eval_is '$b.is_cool',    42,  'our class &quot;inherited&quot; an attribute', :todo&lt;feature&gt;;</pre>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Traits"&gt;
+# Basic definition
+my $was_in_any_sub   = 0;
+my $was_in_class_sub = 0;
+eval_ok 'role cool {
+  has $.is_cool = 42;
+
+  multi sub trait_auxiliary:&lt;is&gt;(cool $trait, Any $container:) {
+    $was_in_any_sub++;
+    $container does cool;
+  }
+
+  multi sub trait_auxiliary:&lt;is&gt;(cool $trait, Class $container:) {
+    $was_in_class_sub++;
+    $container does cool;
+  }
+', "role definition worked", :todo&lt;feature&gt;;
+
+eval_ok 'my $a is cool',      'mixing in our role into a scalar via "is" worked', :todo&lt;feature&gt;;
+is      $was_in_any_sub,  1,  'our trait_auxiliary:is was called', :todo&lt;feature&gt;;
+eval_is '$a.is_cool',    42,  'our var "inherited" an attribute', :todo&lt;feature&gt;;
+
+my $b;
+eval_ok 'class B is cool {}', 'mixing in our role into a class via "is" worked', :todo&lt;feature&gt;;
+eval_ok '$b = B.new()',       'creating an instance worked', :todo&lt;feature&gt;;
+eval_is '$b.is_cool',    42,  'our class "inherited" an attribute', :todo&lt;feature&gt;;</pre>
 </div><p>Traits are just properties (roles) applied to declared items like
 containers or classes.  It's the declaration of the item itself that
 makes traits seem more permanent than ordinary properties.  In addition
@@ -2150,36 +2175,37 @@ time like it would at compile time.</p>
 <div ID=header_hidden_5 style="display: block;">- Show t/oo/delegation.t (29 lines) -</div>
 </a>
 </p>
-<div ID=hide_5 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Delegation&quot;&gt;
-    :
-    :class Backend1 { method hi() { 42 } method cool() { 1337 } }
-    :class Backend2 { method hi() { 23 } method cool() {  539 } }
-    :class Frontend { has $.backend is rw handles &quot;hi&quot; }
-    :ok Backend1.new, &quot;class definition worked&quot;;
-    :
-    :is eval('Backend1.new.hi'), 42, &quot;basic sanity (1)&quot;;
-    :is eval('Backend2.new.hi'), 23, &quot;basic sanity (2)&quot;;
-    :
-    :{
-    :  my $a;
-    :  ok ($a = Frontend.new), &quot;basic instantiation worked (1)&quot;;
-    :  ok (!try { $a.hi }), &quot;calling a method on no object didn't succeed (1)&quot;;
-    :  ok $a.backend = Backend1.new(), &quot;setting a handler object (1)&quot;;
-    :  ok (!($a ~~ Backend1)),             &quot;object wasn't isa()ed (1)&quot;;
-    :  is try{ $a.hi }, 42, &quot;method was successfully handled by backend object (1)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :{
-    :  my $a;
-    :  ok ($a = Frontend.new), &quot;basic instantiation worked (2)&quot;;
-    :  ok (!try { $a.hi }), &quot;calling a method on no object didn't succeed (2)&quot;;
-    :  ok ($a.backend = Backend2.new()), &quot;setting a handler object (2)&quot;;
-    :  ok (!($a ~~ Backend2)),             &quot;object wasn't isa()ed (2)&quot;;
-    :  is try{ $a.hi }, 23, &quot;method was successfully handled by backend object (2)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :</pre>
+<div ID=hide_5 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Delegation"&gt;
+
+class Backend1 { method hi() { 42 } method cool() { 1337 } }
+class Backend2 { method hi() { 23 } method cool() {  539 } }
+class Frontend { has $.backend is rw handles "hi" }
+ok Backend1.new, "class definition worked";
+
+is eval('Backend1.new.hi'), 42, "basic sanity (1)";
+is eval('Backend2.new.hi'), 23, "basic sanity (2)";
+
+{
+  my $a;
+  ok ($a = Frontend.new), "basic instantiation worked (1)";
+  ok (!try { $a.hi }), "calling a method on no object didn't succeed (1)";
+  ok $a.backend = Backend1.new(), "setting a handler object (1)";
+  ok (!($a ~~ Backend1)),             "object wasn't isa()ed (1)";
+  is try{ $a.hi }, 42, "method was successfully handled by backend object (1)", :todo&lt;feature&gt;;
+}
+
+{
+  my $a;
+  ok ($a = Frontend.new), "basic instantiation worked (2)";
+  ok (!try { $a.hi }), "calling a method on no object didn't succeed (2)";
+  ok ($a.backend = Backend2.new()), "setting a handler object (2)";
+  ok (!($a ~~ Backend2)),             "object wasn't isa()ed (2)";
+  is try{ $a.hi }, 23, "method was successfully handled by backend object (2)", :todo&lt;feature&gt;;
+}
+
+</pre>
 </div><p>Delegation lets you pretend that some other object's methods are your own.
 Delegation is specified by a <code>handles</code> trait verb with an argument
 specifying one or more method names that the current object and the
@@ -2198,38 +2224,39 @@ time, the following <code>.wag</code> method is autogenerated for you:</p>
 <div ID=header_hidden_8 style="display: block;">- Show t/oo/delegation.t (31 lines) -</div>
 </a>
 </p>
-<div ID=hide_8 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Delegation&quot; /You can specify multiple method names:/&gt;
-    :class MultiFrontend { has $.backend is rw handles &lt;hi cool&gt; }
-    :ok MultiFrontend.new, &quot;class definition using multiple method names worked&quot;;
-    :{
-    :  my $a;
-    :  ok ($a = MultiFrontend.new), &quot;basic instantiation worked (5)&quot;;
-    :  ok (!try { $a.hi   }), &quot;calling a method on no object didn't succeed (5-1)&quot;;
-    :  ok (!try { $a.cool }), &quot;calling a method on no object didn't succeed (5-2)&quot;;
-    :  ok ($a.backend = Backend1.new()), &quot;setting a handler object (5)&quot;;
-    :  ok (!($a ~~ Backend1)),             &quot;object wasn't isa()ed (5)&quot;;
-    :  is (try { $a.hi }),     42, &quot;method was successfully handled by backend object (5-1)&quot;, :todo&lt;feature&gt;;
-    :  is (try { $a.cool }), 1337, &quot;method was successfully handled by backend object (5-2)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :#
-    :
-    :class MyArray {
-    :    has @.elems handles &quot;join&quot;;
-    :    method concat handles &lt;chars bytes graphs codes&gt; { .join(&quot;&quot;) }
-    :}
-    :
-    :ok MyArray.new, &quot;class with attribute and return value delegation&quot;;
-    :{
-    :  my $a;
-    :  ok ($a = MyArray.new(elems =&gt; [1..5])), &quot;basic instantiation worked&quot;;
-    :  is try{ $a.concat }, &quot;12345&quot;, &quot;attribute delegation worked&quot;, :todo&lt;feature&gt;;
-    :  is try{ $a.bytes  }, 5, &quot;return delegation worked&quot;, :todo&lt;feature&gt;;
-    :  is try{ $a.chars  }, 5, &quot;return delegation worked&quot;, :todo&lt;feature&gt;;
-    :  is try{ $a.codes  }, 5, &quot;return delegation worked&quot;, :todo&lt;feature&gt;;
-    :  is try{ $a.graphs }, 5, &quot;return delegation worked&quot;, :todo&lt;feature&gt;;
-    :}</pre>
+<div ID=hide_8 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Delegation" /You can specify multiple method names:/&gt;
+class MultiFrontend { has $.backend is rw handles &lt;hi cool&gt; }
+ok MultiFrontend.new, "class definition using multiple method names worked";
+{
+  my $a;
+  ok ($a = MultiFrontend.new), "basic instantiation worked (5)";
+  ok (!try { $a.hi   }), "calling a method on no object didn't succeed (5-1)";
+  ok (!try { $a.cool }), "calling a method on no object didn't succeed (5-2)";
+  ok ($a.backend = Backend1.new()), "setting a handler object (5)";
+  ok (!($a ~~ Backend1)),             "object wasn't isa()ed (5)";
+  is (try { $a.hi }),     42, "method was successfully handled by backend object (5-1)", :todo&lt;feature&gt;;
+  is (try { $a.cool }), 1337, "method was successfully handled by backend object (5-2)", :todo&lt;feature&gt;;
+}
+
+#
+
+class MyArray {
+    has @.elems handles "join";
+    method concat handles &lt;chars bytes graphs codes&gt; { .join("") }
+}
+
+ok MyArray.new, "class with attribute and return value delegation";
+{
+  my $a;
+  ok ($a = MyArray.new(elems =&gt; [1..5])), "basic instantiation worked";
+  is try{ $a.concat }, "12345", "attribute delegation worked", :todo&lt;feature&gt;;
+  is try{ $a.bytes  }, 5, "return delegation worked", :todo&lt;feature&gt;;
+  is try{ $a.chars  }, 5, "return delegation worked", :todo&lt;feature&gt;;
+  is try{ $a.codes  }, 5, "return delegation worked", :todo&lt;feature&gt;;
+  is try{ $a.graphs }, 5, "return delegation worked", :todo&lt;feature&gt;;
+}</pre>
 </div><pre>
     has $.legs handles &lt;walk run lope shake pee&gt;;</pre>
 <p>It's illegal to call the outer method unless the attribute
@@ -2250,21 +2277,22 @@ smartmatch selector for methods.  So you can say:</p>
 <div ID=header_hidden_6 style="display: block;">- Show t/oo/delegation.t (14 lines) -</div>
 </a>
 </p>
-<div ID=hide_6 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Delegation&quot; /Any other kind of argument to handles is considered to be a smartmatch selector for methods/&gt;
-    :class ReFrontend { has $.backend is rw handles /^hi/ };
-    :ok ReFrontend.new, &quot;class definition using a smartmatch handle worked&quot;;
-    :
-    :{
-    :  my $a;
-    :  ok ($a = ReFrontend.new), &quot;basic instantiation worked (3)&quot;;
-    :  ok (!try { $a.hi }), &quot;calling a method on no object didn't succeed (3)&quot;;
-    :  ok ($a.backend = Backend1.new()), &quot;setting a handler object (3)&quot;;
-    :  ok (!($a ~~ Backend1)),             &quot;object wasn't isa()ed (3)&quot;;
-    :  is try{ $a.hi }, 42, &quot;method was successfully handled by backend object (3)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :</pre>
+<div ID=hide_6 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Delegation" /Any other kind of argument to handles is considered to be a smartmatch selector for methods/&gt;
+class ReFrontend { has $.backend is rw handles /^hi/ };
+ok ReFrontend.new, "class definition using a smartmatch handle worked";
+
+{
+  my $a;
+  ok ($a = ReFrontend.new), "basic instantiation worked (3)";
+  ok (!try { $a.hi }), "calling a method on no object didn't succeed (3)";
+  ok ($a.backend = Backend1.new()), "setting a handler object (3)";
+  ok (!($a ~~ Backend1)),             "object wasn't isa()ed (3)";
+  is try{ $a.hi }, 42, "method was successfully handled by backend object (3)", :todo&lt;feature&gt;;
+}
+
+</pre>
 </div><pre>
     has $.fur is rw handles /^get_/;</pre>
 <p>If you say</p>
@@ -2275,21 +2303,22 @@ smartmatch selector for methods.  So you can say:</p>
 <div ID=header_hidden_7 style="display: block;">- Show t/oo/delegation.t (14 lines) -</div>
 </a>
 </p>
-<div ID=hide_7 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Delegation&quot; /If you say/&gt;
-    :class ClassFrontend { has $.backend is rw handles Backend2 };
-    :ok ClassFrontend.new, &quot;class definition using a Class handle worked&quot;;
-    :{
-    :  my $a;
-    :  ok ($a = ClassFrontend.new), &quot;basic instantiation worked (4)&quot;;
-    :  ok (!try { $a.hi }), &quot;calling a method on no object didn't succeed (4)&quot;;
-    :  ok ($a.backend = Backend1.new()), &quot;setting a handler object (4)&quot;;
-    :  ok (!($a ~~ Backend1)),             &quot;object wasn't isa()ed (4-1)&quot;;
-    :  ok (!($a ~~ Backend2)),             &quot;object wasn't isa()ed (4-2)&quot;;
-    :  is (try{ $a.hi }), 42, &quot;method was successfully handled by backend object (4)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :</pre>
+<div ID=hide_7 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Delegation" /If you say/&gt;
+class ClassFrontend { has $.backend is rw handles Backend2 };
+ok ClassFrontend.new, "class definition using a Class handle worked";
+{
+  my $a;
+  ok ($a = ClassFrontend.new), "basic instantiation worked (4)";
+  ok (!try { $a.hi }), "calling a method on no object didn't succeed (4)";
+  ok ($a.backend = Backend1.new()), "setting a handler object (4)";
+  ok (!($a ~~ Backend1)),             "object wasn't isa()ed (4-1)";
+  ok (!($a ~~ Backend2)),             "object wasn't isa()ed (4-2)";
+  is (try{ $a.hi }), 42, "method was successfully handled by backend object (4)", :todo&lt;feature&gt;;
+}
+
+</pre>
 </div><pre>
     has $.fur is rw handles Groomable;</pre>
 <p>then you get only those methods available via the <code>Groomable</code> role
@@ -2348,76 +2377,77 @@ automatically performed.</p>
 <div ID=header_hidden_4 style="display: block;">- Show t/data_types/subtypes.t (69 lines) -</div>
 </a>
 </p>
-<div ID=hide_4 style="display:none; border:1px solid"><pre>
-    :L&lt;S12/&quot;Types and Subtypes&quot;&gt;
-    :
-    :=cut
-    :
-    :my $abs = '
-    :multi sub my_abs (Num where { $^n &gt;= 0 } $n){ $n }
-    :multi sub my_abs (Num where { $^n &lt;  0 } $n){ -$n }
-    :';
-    :
-    :eval_ok(&quot;$abs; 1&quot;, &quot;we can compile subtype declarations&quot;, :todo&lt;feature&gt;);
-    :
-    :eval_is(&quot;$abs; my_abs(3)&quot;, 3, &quot;and we can use them, too&quot;, :todo&lt;feature&gt;);
-    :eval_is(&quot;$abs; my_abs(-5)&quot;, 5, &quot;and they actually work&quot;, :todo&lt;feature&gt;);
-    :
-    :
-    :# Basic subtype creation
-    :eval_ok 'subtype Num::Odd of Num where { $^num % 2 == 1 }',
-    :  &quot;subtype is correctly parsed&quot;, :todo&lt;feature&gt;;
-    :eval_is 'my Num::Odd $a = 3', 3, &quot;3 is an odd num&quot;;
-    :# The eval inside the eval is/will be necessary to hider our smarty
-    :# compiler's compile-time from bailing.
-    :# (Actually, if the compiler is *really* smarty, it will notice our eval trick,
-    :# too :))
-    :eval_is 'my Num::Odd $b = 3; try { $a = eval 4 }; $a', 3,
-    :  &quot;objects of Num::Odd don't get even&quot;, :todo&lt;feature&gt;;
-    :
-    :# The same, but lexically
-    :my $eval1 = '{
-    :  my subtype Num::Even of Num where { $^num % 2 == 0 }
-    :  ok my Num::Even $c = 6, :todo&lt;feature&gt;;
-    :  ok $c ~~ Num::Even, &quot;our var is a Num::Even&quot;, :todo&lt;feature&gt;;
-    :  try { $c = eval 7 }
-    :  is $c, 6, &quot;setting a Num::Even to an odd value dies&quot;, :todo&lt;feature&gt;;
-    :}';
-    :eval $eval1;
-    :eval_ok '!try { my Num::Even $d }',
-    :  &quot;lexically declared subtype went out of scope&quot;;
-    :
-    :# Subs with arguments of a subtype
-    :eval_ok 'sub only_accepts_odds(Num::Odd $odd) { $odd + 1 }',
-    :  &quot;sub requiring a Num::Odd as argument defined (1)&quot;, :todo&lt;feature&gt;;
-    :eval_is 'only_accepts_odds(3)', 4,
-    :  &quot;calling sub worked&quot;;
-    :eval_ok '!try { only_accepts_odds(4) }',
-    :  &quot;calling sub did not work&quot;, :todo&lt;feature&gt;;
-    :
-    :# Normal Ints automatically morphed to Num::Odd
-    :eval_ok 'sub is_num_odd(Num::Odd $odd) { $odd ~~ Num::Odd }',
-    :  &quot;sub requiring a Num::Odd as argument defined (2)&quot;, :todo&lt;feature&gt;;
-    :eval_ok 'is_num_odd(3)', &quot;Int automatically morphed to Num::Odd&quot;, :todo&lt;feature&gt;;
-    :eval_is 'only_accepts_odds(&quot;3&quot;)', 4, &quot;Str automatically morphed to Num::Odd&quot;;
-    :
-    :# Following code is evil, but should work:
-    :my $eval2 = '
-    :  my Int $multiple_of;
-    :  subtype Num::Multiple of Num where { $^num % $multiple_of == 0 }
-    :
-    :  $multiple_of = 5;
-    :  ok $multiple_of ~~ Isa, &quot;basic sanity (1)&quot;, :todo&lt;feature&gt;;
-    :  is $multiple_of,     5, &quot;basic sanity (2)&quot;, :todo&lt;feature&gt;;
-    :
-    :  ok my Num::Multiple $d = 10, &quot;creating a new Num::Multiple&quot;, :todo&lt;feature&gt;;
-    :  is $d,                   10, &quot;creating a new Num::Multiple actually worked&quot;, :todo&lt;feature&gt;;
-    :  
-    :  $multiple_of = 6;
-    :  ok !try { my Num::Multiple $e = eval 10 },
-    :    &quot;changed subtype definition worked&quot;;
-    :';
-    :eval $eval2;</pre>
+<div ID=hide_4 style="display:none; border:1px solid">
+<pre>
+L&lt;S12/"Types and Subtypes"&gt;
+
+=cut
+
+my $abs = '
+multi sub my_abs (Num where { $^n &gt;= 0 } $n){ $n }
+multi sub my_abs (Num where { $^n &lt;  0 } $n){ -$n }
+';
+
+eval_ok("$abs; 1", "we can compile subtype declarations", :todo&lt;feature&gt;);
+
+eval_is("$abs; my_abs(3)", 3, "and we can use them, too", :todo&lt;feature&gt;);
+eval_is("$abs; my_abs(-5)", 5, "and they actually work", :todo&lt;feature&gt;);
+
+
+# Basic subtype creation
+eval_ok 'subtype Num::Odd of Num where { $^num % 2 == 1 }',
+  "subtype is correctly parsed", :todo&lt;feature&gt;;
+eval_is 'my Num::Odd $a = 3', 3, "3 is an odd num";
+# The eval inside the eval is/will be necessary to hider our smarty
+# compiler's compile-time from bailing.
+# (Actually, if the compiler is *really* smarty, it will notice our eval trick,
+# too :))
+eval_is 'my Num::Odd $b = 3; try { $a = eval 4 }; $a', 3,
+  "objects of Num::Odd don't get even", :todo&lt;feature&gt;;
+
+# The same, but lexically
+my $eval1 = '{
+  my subtype Num::Even of Num where { $^num % 2 == 0 }
+  ok my Num::Even $c = 6, :todo&lt;feature&gt;;
+  ok $c ~~ Num::Even, "our var is a Num::Even", :todo&lt;feature&gt;;
+  try { $c = eval 7 }
+  is $c, 6, "setting a Num::Even to an odd value dies", :todo&lt;feature&gt;;
+}';
+eval $eval1;
+eval_ok '!try { my Num::Even $d }',
+  "lexically declared subtype went out of scope";
+
+# Subs with arguments of a subtype
+eval_ok 'sub only_accepts_odds(Num::Odd $odd) { $odd + 1 }',
+  "sub requiring a Num::Odd as argument defined (1)", :todo&lt;feature&gt;;
+eval_is 'only_accepts_odds(3)', 4,
+  "calling sub worked";
+eval_ok '!try { only_accepts_odds(4) }',
+  "calling sub did not work", :todo&lt;feature&gt;;
+
+# Normal Ints automatically morphed to Num::Odd
+eval_ok 'sub is_num_odd(Num::Odd $odd) { $odd ~~ Num::Odd }',
+  "sub requiring a Num::Odd as argument defined (2)", :todo&lt;feature&gt;;
+eval_ok 'is_num_odd(3)', "Int automatically morphed to Num::Odd", :todo&lt;feature&gt;;
+eval_is 'only_accepts_odds("3")', 4, "Str automatically morphed to Num::Odd";
+
+# Following code is evil, but should work:
+my $eval2 = '
+  my Int $multiple_of;
+  subtype Num::Multiple of Num where { $^num % $multiple_of == 0 }
+
+  $multiple_of = 5;
+  ok $multiple_of ~~ Isa, "basic sanity (1)", :todo&lt;feature&gt;;
+  is $multiple_of,     5, "basic sanity (2)", :todo&lt;feature&gt;;
+
+  ok my Num::Multiple $d = 10, "creating a new Num::Multiple", :todo&lt;feature&gt;;
+  is $d,                   10, "creating a new Num::Multiple actually worked", :todo&lt;feature&gt;;
+  
+  $multiple_of = 6;
+  ok !try { my Num::Multiple $e = eval 10 },
+    "changed subtype definition worked";
+';
+eval $eval2;</pre>
 </div><p>The type system of Perl consists of roles, classes, and subtypes.
 You can declare a subtype like this:</p>
 <pre>
@@ -2501,94 +2531,95 @@ preferred.</p>
 <div ID=header_hidden_10 style="display: block;">- Show t/data_types/enum.t (87 lines) -</div>
 </a>
 </p>
-<div ID=hide_10 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/Enums&gt;
-    :{
-    :    my %hash; eval '%hash = enum «:Mon(1) Tue Wed Thu Fri Sat Sun»';
-    :
-    :    #is((%hash&lt;Mon Tue Wed Thu Fri Sat Sun&gt;) »eq« (1 .. 7)), &quot;enum generated correct sequence&quot;);
-    :    is(%hash&lt;Mon&gt;, 1, &quot;first value ok&quot;, :todo);
-    :    is(%hash&lt;Thu&gt;, 4, &quot;fourth value ok&quot;, :todo);
-    :    is(%hash&lt;Sun&gt;, 7, &quot;last value ok&quot;, :todo);
-    :};
-    :
-    :{
-    :    my %hash; eval '%hash = enum «:Two(2) Three Four»';
-    :
-    :    #is((%hash&lt;Two Three Four&gt;) »eq« (2 .. 4)), &quot;enum generated correct sequence&quot;);
-    :    is(%hash&lt;Two&gt;, 2, &quot;first value ok&quot;, :todo);
-    :    is(%hash&lt;Three&gt;, 3, &quot;second value ok&quot;, :todo);
-    :    is(%hash&lt;Four&gt;, 4, &quot;last value ok&quot;, :todo);
-    :};
-    :
-    :my %hash;
-    :
-    :lives_ok { %hash = enum &lt;&lt;:Sun(1) :Mon(2) :Tue(3) :Wed(4) :Thu(5) :Fri(6) :Sat(7)&gt;&gt;; }, 'specifying keys and values works...', :todo&lt;feature&gt;;
-    :
-    :is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :
-    :lives_ok { %hash = enum &lt;&lt;:Sun(1) Mon Tue Wed Thu Fri Sat&gt;&gt;; }, 'specifying a value for only the first key works...', :todo&lt;feature&gt;;
-    :
-    :is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :
-    :lives_ok { %hash = enum «:Sun(1) Mon Tue Wed Thu Fri Sat»; }, 'french quotes work...', :todo&lt;feature&gt;;
-    :
-    :is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :
-    :lives_ok { %hash = enum &lt;&lt;:Sun(1) Mon Tue :Wed(4) Thu Fri Sat&gt;&gt;; }, 'specifying continuous values in the middle works...', :todo&lt;feature&gt;;
-    :
-    :is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :
-    :lives_ok { %hash = enum &lt;&lt;:Sun(1) Mon Tue :Wed(5) Thu Fri Sat&gt;&gt;; }, 'specifying different values in the middle works...', :todo&lt;feature&gt;;
-    :
-    :is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, (1, 2, 3, 5, 6, 7, 8), '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :
-    :lives_ok { %hash = enum «:Alpha&lt;A&gt; Bravo Charlie Delta Echo»; }, 'specifying a string up front works', :todo&lt;feature&gt;;
-    :
-    :is %hash.keys, &lt;Alpha Bravo Charlie Delta Echo&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, &lt;A B C D E&gt;, '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :
-    :eval q[
-    :lives_ok { %hash = enum &lt;&lt;:Alpha&lt;A&gt; Bravo Charlie Delta Echo&gt;&gt;; }, 'specifying a string up front works (Texas quotes)', :todo&lt;feature&gt;;
-    :];
-    :
-    :is %hash.keys, &lt;Alpha Bravo Charlie Delta Echo&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, &lt;A B C D E&gt;, '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :
-    :lives_ok { %hash = enum «:zero(0) one two three four five six seven eight nine :ten&lt;a&gt; eleven twelve thirteen fourteen fifteen»; }, 'mixing strings and integers works', :todo&lt;feature&gt;;
-    :
-    :is %hash.keys, &lt;zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
-    :
-    :is %hash.values, (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'), '...and the right values are assigned', :todo&lt;feature&gt;;
-    :
-    :%hash = ();
-    :</pre>
+<div ID=hide_10 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/Enums&gt;
+{
+    my %hash; eval '%hash = enum «:Mon(1) Tue Wed Thu Fri Sat Sun»';
+
+    #is((%hash&lt;Mon Tue Wed Thu Fri Sat Sun&gt;) »eq« (1 .. 7)), "enum generated correct sequence");
+    is(%hash&lt;Mon&gt;, 1, "first value ok", :todo);
+    is(%hash&lt;Thu&gt;, 4, "fourth value ok", :todo);
+    is(%hash&lt;Sun&gt;, 7, "last value ok", :todo);
+};
+
+{
+    my %hash; eval '%hash = enum «:Two(2) Three Four»';
+
+    #is((%hash&lt;Two Three Four&gt;) »eq« (2 .. 4)), "enum generated correct sequence");
+    is(%hash&lt;Two&gt;, 2, "first value ok", :todo);
+    is(%hash&lt;Three&gt;, 3, "second value ok", :todo);
+    is(%hash&lt;Four&gt;, 4, "last value ok", :todo);
+};
+
+my %hash;
+
+lives_ok { %hash = enum &lt;&lt;:Sun(1) :Mon(2) :Tue(3) :Wed(4) :Thu(5) :Fri(6) :Sat(7)&gt;&gt;; }, 'specifying keys and values works...', :todo&lt;feature&gt;;
+
+is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+
+lives_ok { %hash = enum &lt;&lt;:Sun(1) Mon Tue Wed Thu Fri Sat&gt;&gt;; }, 'specifying a value for only the first key works...', :todo&lt;feature&gt;;
+
+is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+
+lives_ok { %hash = enum «:Sun(1) Mon Tue Wed Thu Fri Sat»; }, 'french quotes work...', :todo&lt;feature&gt;;
+
+is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+
+lives_ok { %hash = enum &lt;&lt;:Sun(1) Mon Tue :Wed(4) Thu Fri Sat&gt;&gt;; }, 'specifying continuous values in the middle works...', :todo&lt;feature&gt;;
+
+is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, 1..7, '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+
+lives_ok { %hash = enum &lt;&lt;:Sun(1) Mon Tue :Wed(5) Thu Fri Sat&gt;&gt;; }, 'specifying different values in the middle works...', :todo&lt;feature&gt;;
+
+is %hash.keys, &lt;Sun Mon Tue Wed Thu Fri Sat&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, (1, 2, 3, 5, 6, 7, 8), '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+
+lives_ok { %hash = enum «:Alpha&lt;A&gt; Bravo Charlie Delta Echo»; }, 'specifying a string up front works', :todo&lt;feature&gt;;
+
+is %hash.keys, &lt;Alpha Bravo Charlie Delta Echo&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, &lt;A B C D E&gt;, '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+
+eval q[
+lives_ok { %hash = enum &lt;&lt;:Alpha&lt;A&gt; Bravo Charlie Delta Echo&gt;&gt;; }, 'specifying a string up front works (Texas quotes)', :todo&lt;feature&gt;;
+];
+
+is %hash.keys, &lt;Alpha Bravo Charlie Delta Echo&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, &lt;A B C D E&gt;, '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+
+lives_ok { %hash = enum «:zero(0) one two three four five six seven eight nine :ten&lt;a&gt; eleven twelve thirteen fourteen fifteen»; }, 'mixing strings and integers works', :todo&lt;feature&gt;;
+
+is %hash.keys, &lt;zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen&gt;, '...and the right keys are assigned', :todo&lt;feature&gt;;
+
+is %hash.values, (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'), '...and the right values are assigned', :todo&lt;feature&gt;;
+
+%hash = ();
+</pre>
 </div><p>An enum is a low-level class that can function as a role or property.
 A given enum value can function as a subtype, a method, or as an ordinary
 value (an argumentless sub).  The names of the values are specified as a list:</p>
@@ -2654,15 +2685,16 @@ sure the object in question has the right semantics mixed in:</p>
 <div ID=header_hidden_11 style="display: block;">- Show t/oo/enums.t (8 lines) -</div>
 </a>
 </p>
-<div ID=hide_11 style="display:none; border:1px solid"><pre>
-    :  # L&lt;S12/&quot;Enums&quot; /has the right semantics mixed in:/&gt;
-    :  eval_ok '$x does Tue', &quot;basic enum mixing worked (1-1)&quot;, :todo&lt;feature&gt;;
-    :  test_stuff($x);
-    :}
-    :
-    :{
-    :  my $x = 2;
-    :  is $x, 2, &quot;basic sanity (2)&quot;;</pre>
+<div ID=hide_11 style="display:none; border:1px solid">
+<pre>
+  # L&lt;S12/"Enums" /has the right semantics mixed in:/&gt;
+  eval_ok '$x does Tue', "basic enum mixing worked (1-1)", :todo&lt;feature&gt;;
+  test_stuff($x);
+}
+
+{
+  my $x = 2;
+  is $x, 2, "basic sanity (2)";</pre>
 </div><pre>
     $x = &quot;Today&quot; but Tue;</pre>
 <p>is the same as</p>
@@ -2673,15 +2705,16 @@ sure the object in question has the right semantics mixed in:</p>
 <div ID=header_hidden_13 style="display: block;">- Show t/oo/enums.t (8 lines) -</div>
 </a>
 </p>
-<div ID=hide_13 style="display:none; border:1px solid"><pre>
-    :  # L&lt;S12/&quot;Enums&quot; /is the same as/&gt;
-    :  eval_ok '$x does day::Tue', &quot;basic enum mixing worked (3-1)&quot;, :todo&lt;feature&gt;;
-    :  test_stuff($x);
-    :}
-    :
-    :{
-    :  my $x = 4;
-    :  is $x, 4, &quot;basic sanity (4)&quot;;</pre>
+<div ID=hide_13 style="display:none; border:1px solid">
+<pre>
+  # L&lt;S12/"Enums" /is the same as/&gt;
+  eval_ok '$x does day::Tue', "basic enum mixing worked (3-1)", :todo&lt;feature&gt;;
+  test_stuff($x);
+}
+
+{
+  my $x = 4;
+  is $x, 4, "basic sanity (4)";</pre>
 </div><pre>
     $x = &quot;Today&quot; but day::Tue;</pre>
 <p>or pseudo-hash form:</p>
@@ -2692,15 +2725,16 @@ sure the object in question has the right semantics mixed in:</p>
 <div ID=header_hidden_12 style="display: block;">- Show t/oo/enums.t (8 lines) -</div>
 </a>
 </p>
-<div ID=hide_12 style="display:none; border:1px solid"><pre>
-    :  # L&lt;S12/&quot;Enums&quot; /or pseudo-hash form:/&gt;
-    :  eval_ok '$x does day&lt;Tue&gt;', &quot;basic enum mixing worked (2-1)&quot;, :todo&lt;feature&gt;;
-    :  test_stuff($x);
-    :}
-    :
-    :{
-    :  my $x = 3;
-    :  is $x, 3, &quot;basic sanity (3)&quot;;</pre>
+<div ID=hide_12 style="display:none; border:1px solid">
+<pre>
+  # L&lt;S12/"Enums" /or pseudo-hash form:/&gt;
+  eval_ok '$x does day&lt;Tue&gt;', "basic enum mixing worked (2-1)", :todo&lt;feature&gt;;
+  test_stuff($x);
+}
+
+{
+  my $x = 3;
+  is $x, 3, "basic sanity (3)";</pre>
 </div><pre>
     $x = &quot;Today&quot; but day&lt;Tue&gt;;</pre>
 <p>which is short for something like:</p>
@@ -2711,12 +2745,13 @@ sure the object in question has the right semantics mixed in:</p>
 <div ID=header_hidden_14 style="display: block;">- Show t/oo/enums.t (5 lines) -</div>
 </a>
 </p>
-<div ID=hide_14 style="display:none; border:1px solid"><pre>
-    :  # L&lt;S12/&quot;Enums&quot; /which is short for something like:/&gt;
-    :  eval_ok '$x does day',            &quot;basic enum mixing worked (4-0)&quot;, :todo&lt;feature&gt;;
-    :  eval_ok '$x.day = &amp;day::(&quot;Tue&quot;)', &quot;basic enum mixing worked (4-1)&quot;, :todo&lt;feature&gt;;
-    :  test_stuff($x);
-    :}</pre>
+<div ID=hide_14 style="display:none; border:1px solid">
+<pre>
+  # L&lt;S12/"Enums" /which is short for something like:/&gt;
+  eval_ok '$x does day',            "basic enum mixing worked (4-0)", :todo&lt;feature&gt;;
+  eval_ok '$x.day = &amp;day::("Tue")', "basic enum mixing worked (4-1)", :todo&lt;feature&gt;;
+  test_stuff($x);
+}</pre>
 </div><pre>
     $x = &quot;Today&quot;;
     $x does day;
@@ -2847,13 +2882,14 @@ of the class:</p>
 <div ID=header_hidden_16 style="display: block;">- Show t/oo/meta_class.t (6 lines) -</div>
 </a>
 </p>
-<div ID=hide_16 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Introspection&quot; /Class traits may include\:/&gt;
-    :
-    :eval_ok(&quot;Foo.meta.name() eq 'Foo'&quot;, '... the name() property is Foo');
-    :eval_ok(&quot;Foo.meta.version() == 0.0.1&quot;, '... the version() property is 0.0.1', :todo&lt;feature&gt;);
-    :eval_ok(&quot;(Foo.meta.isa())[0] ~~ Foo&quot;, '... the isa() property returns Foo as the first parent class', :todo&lt;feature&gt;);
-    :</pre>
+<div ID=hide_16 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Introspection" /Class traits may include\:/&gt;
+
+eval_ok("Foo.meta.name() eq 'Foo'", '... the name() property is Foo');
+eval_ok("Foo.meta.version() == 0.0.1", '... the version() property is 0.0.1', :todo&lt;feature&gt;);
+eval_ok("(Foo.meta.isa())[0] ~~ Foo", '... the isa() property returns Foo as the first parent class', :todo&lt;feature&gt;);
+</pre>
 </div><pre>
     identifier    Dog-1.2.1-<a href="http://www.some.com/~jrandom">http://www.some.com/~jrandom</a>
         name      Dog
@@ -2898,12 +2934,13 @@ should be called through the meta object:</p>
 <div ID=header_hidden_15 style="display: block;">- Show t/oo/meta_class.t (5 lines) -</div>
 </a>
 </p>
-<div ID=hide_15 style="display:none; border:1px solid"><pre>
-    :# L&lt;S12/&quot;Introspection&quot; /should be called through the meta object\:/&gt;
-    :
-    :eval_ok(&quot;Foo.meta.can('bar')&quot;, '... Foo can bar', :todo&lt;feature&gt;);
-    :eval_ok(&quot;Foo.meta.isa(Foo)&quot;, '... Foo is-a Foo (of course)');
-    :</pre>
+<div ID=hide_15 style="display:none; border:1px solid">
+<pre>
+# L&lt;S12/"Introspection" /should be called through the meta object\:/&gt;
+
+eval_ok("Foo.meta.can('bar')", '... Foo can bar', :todo&lt;feature&gt;);
+eval_ok("Foo.meta.isa(Foo)", '... Foo is-a Foo (of course)');
+</pre>
 </div><pre>
     $obj.META.can(&quot;bark&quot;)
     $obj.META.does(Dog)

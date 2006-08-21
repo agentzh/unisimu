@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
-<title>TITLE</title>
+<title>S04</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 <link rev="made" href="mailto:" />
 <script language="javascript1.2"><!--
@@ -124,129 +124,130 @@ statement syntax of Perl.</p>
 <div ID=header_hidden_8 style="display: block;">- Show t/var/var.t (122 lines) -</div>
 </a>
 </p>
-<div ID=hide_8 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;The Relationship of Blocks and Declarations&quot;&gt;
-    :ok eval('my $x; my $x; 1'),       'it is legal to declare $x twice in the same scope.';
-    :ok eval('state $x; state $x; 1'), 'it is legal to declare $x twice in the same scope.';
-    :
-    :# XXX -- dunno why test test fails, but the next outer test works. --iblech
-    :{ my $a = 1; {
-    :   my $a=2; {
-    :      my $a=3;
-    :      is($a, 3,               'get regular a'); 
-    :      is($OUTER::a, 2,        'get $OUTER::a'); 
-    :      is($OUTER::OUTER::a, 1, 'get $OUTER::OUTER::a');
-    :}}}
-    :
-    :{
-    :  my $a = 1;
-    :  is $a, 1, 'get regular $a (1)';
-    :
-    :  {
-    :    is $a, 1, 'get regular $a (2)';
-    :    my $a = 2;
-    :    is $a, 2, 'get new regular $a (1)';
-    :
-    :    {
-    :      is $a, 2, 'get new regular $a (2)';
-    :      my $a = 3;
-    :
-    :      is $a,               3, 'get very new regular $a';
-    :      is $OUTER::a,        2, 'get $OUTER::a';
-    :      is $OUTER::OUTER::a, 1, 'get $OUTER::OUTER::a';
-    :    }
-    :  }
-    :}
-    :
-    :{
-    :  my $a = 3;
-    :  my $sub = { $a++ };
-    :
-    :  {
-    :    my $a = -10;
-    :    is $a, -10,   'get regular $a';
-    :    is $sub(), 3, 'get hidden $a (1)';
-    :    is $sub(), 4, 'get hidden $a (2)';
-    :    is $sub(), 5, 'get hidden $a (3)';
-    :  }
-    :}
-    :
-    :{
-    :  my $sub = -&gt; $stop {
-    :    my $x = 3;
-    :    if $stop {
-    :      $x++;
-    :    } else {
-    :      $sub(1);
-    :      $x;
-    :    }
-    :  };
-    :
-    :  is $sub(0), 3,
-    :    &quot;recursively called subref shouldn't stomp on the lexical vars of other instances&quot;;
-    :}
-    :
-    :{
-    :  sub stomptest ($stop) {
-    :    my $x = 3;
-    :    if $stop {
-    :      $x++;
-    :    } else {
-    :      stomptest 1;
-    :      $x;
-    :    }
-    :  };
-    :
-    :  is stomptest(0), 3,
-    :    &quot;recursively called sub shouldn't stomp on the lexical vars of other instances&quot;;
-    :}
-    :
-    :{
-    :  is foo(), 0, &quot;get variable not yet declared using a sub (1)&quot;;
-    :  is foo(), 1, &quot;get variable not yet declared using a sub (2)&quot;;
-    :  is foo(), 2, &quot;get variable not yet declared using a sub (3)&quot;;
-    :
-    :  my $a;
-    :  sub foo { $a++ }
-    :}
-    :
-    :{
-    :  is bar(), 0, &quot;runtime part of my not yet executed (1)&quot;;
-    :  is bar(), 1, &quot;runtime part of my not yet executed (2)&quot;;
-    :  is bar(), 2, &quot;runtime part of my not yet executed (3)&quot;;
-    :
-    :  my $a = 3;
-    :  sub bar { $a++ }
-    :}
-    :
-    :{
-    :  is baz(), 3, &quot;runtime part of my not yet executed (1)&quot;;
-    :  is baz(), 4, &quot;runtime part of my not yet executed (2)&quot;;
-    :  is baz(), 5, &quot;runtime part of my not yet executed (3)&quot;;
-    :
-    :  my $a; BEGIN { $a = 3 };
-    :  sub baz { $a++ }
-    :}
-    :
-    :{
-    :  {
-    :    my $a = 3;
-    :    sub grtz { $a++ }
-    :  }
-    :
-    :  is grtz(), 3, &quot;get real hidden var using a sub (1)&quot;;
-    :  is grtz(), 4, &quot;get real hidden var using a sub (1)&quot;;
-    :  is grtz(), 5, &quot;get real hidden var using a sub (1)&quot;;
-    :}
-    :
-    :{
-    :  my $a;
-    :  sub rmbl { $a++ }
-    :
-    :  is rmbl(), 0, &quot;var captured by sub is the right var (1)&quot;;
-    :  $a++;
-    :  is rmbl(), 2, &quot;var captured by sub is the right var (2)&quot;;
-    :}</pre>
+<div ID=hide_8 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"The Relationship of Blocks and Declarations"&gt;
+ok eval('my $x; my $x; 1'),       'it is legal to declare $x twice in the same scope.';
+ok eval('state $x; state $x; 1'), 'it is legal to declare $x twice in the same scope.';
+
+# XXX -- dunno why test test fails, but the next outer test works. --iblech
+{ my $a = 1; {
+   my $a=2; {
+      my $a=3;
+      is($a, 3,               'get regular a'); 
+      is($OUTER::a, 2,        'get $OUTER::a'); 
+      is($OUTER::OUTER::a, 1, 'get $OUTER::OUTER::a');
+}}}
+
+{
+  my $a = 1;
+  is $a, 1, 'get regular $a (1)';
+
+  {
+    is $a, 1, 'get regular $a (2)';
+    my $a = 2;
+    is $a, 2, 'get new regular $a (1)';
+
+    {
+      is $a, 2, 'get new regular $a (2)';
+      my $a = 3;
+
+      is $a,               3, 'get very new regular $a';
+      is $OUTER::a,        2, 'get $OUTER::a';
+      is $OUTER::OUTER::a, 1, 'get $OUTER::OUTER::a';
+    }
+  }
+}
+
+{
+  my $a = 3;
+  my $sub = { $a++ };
+
+  {
+    my $a = -10;
+    is $a, -10,   'get regular $a';
+    is $sub(), 3, 'get hidden $a (1)';
+    is $sub(), 4, 'get hidden $a (2)';
+    is $sub(), 5, 'get hidden $a (3)';
+  }
+}
+
+{
+  my $sub = -&gt; $stop {
+    my $x = 3;
+    if $stop {
+      $x++;
+    } else {
+      $sub(1);
+      $x;
+    }
+  };
+
+  is $sub(0), 3,
+    "recursively called subref shouldn't stomp on the lexical vars of other instances";
+}
+
+{
+  sub stomptest ($stop) {
+    my $x = 3;
+    if $stop {
+      $x++;
+    } else {
+      stomptest 1;
+      $x;
+    }
+  };
+
+  is stomptest(0), 3,
+    "recursively called sub shouldn't stomp on the lexical vars of other instances";
+}
+
+{
+  is foo(), 0, "get variable not yet declared using a sub (1)";
+  is foo(), 1, "get variable not yet declared using a sub (2)";
+  is foo(), 2, "get variable not yet declared using a sub (3)";
+
+  my $a;
+  sub foo { $a++ }
+}
+
+{
+  is bar(), 0, "runtime part of my not yet executed (1)";
+  is bar(), 1, "runtime part of my not yet executed (2)";
+  is bar(), 2, "runtime part of my not yet executed (3)";
+
+  my $a = 3;
+  sub bar { $a++ }
+}
+
+{
+  is baz(), 3, "runtime part of my not yet executed (1)";
+  is baz(), 4, "runtime part of my not yet executed (2)";
+  is baz(), 5, "runtime part of my not yet executed (3)";
+
+  my $a; BEGIN { $a = 3 };
+  sub baz { $a++ }
+}
+
+{
+  {
+    my $a = 3;
+    sub grtz { $a++ }
+  }
+
+  is grtz(), 3, "get real hidden var using a sub (1)";
+  is grtz(), 4, "get real hidden var using a sub (1)";
+  is grtz(), 5, "get real hidden var using a sub (1)";
+}
+
+{
+  my $a;
+  sub rmbl { $a++ }
+
+  is rmbl(), 0, "var captured by sub is the right var (1)";
+  $a++;
+  is rmbl(), 2, "var captured by sub is the right var (2)";
+}</pre>
 </div><a name="msg_3"></a>
 <a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
 <div ID=header_shown_3 style="display: none;">- Hide t/data_types/anon_block.t (line 13 ~ line 104) -
@@ -254,99 +255,100 @@ statement syntax of Perl.</p>
 <div ID=header_hidden_3 style="display: block;">- Show t/data_types/anon_block.t (92 lines) -</div>
 </a>
 </p>
-<div ID=hide_3 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;The Relationship of Blocks and Declarations&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 32;
-    :
-    :# anon blocks L&lt;S06/&quot;Standard Subroutines&quot;&gt;
-    :my $anon_sub = sub { 1 };
-    :isa_ok($anon_sub, 'Sub');
-    :is($anon_sub(), 1, 'sub { } works');
-    :
-    :my $anon_sub_w_arg = sub ($arg) { 1 + $arg };
-    :isa_ok($anon_sub_w_arg, 'Sub');
-    :is($anon_sub_w_arg(3), 4, 'sub ($arg) {} works');
-    :
-    :# anon blocks L&lt;S06/&quot;Blocks&quot;&gt;
-    :my $anon_block = { 1 };
-    :isa_ok($anon_block, 'Block');
-    :is($anon_block(), 1, '{} &lt;anon block&gt; works');
-    :
-    :# pointy subs L&lt;S06/&quot;Pointy subs&quot;&gt;
-    :my $pointy_block = -&gt; { 1 };
-    :isa_ok($pointy_block, 'Block');
-    :is($pointy_block(), 1, '-&gt; {} &lt;&quot;pointy&quot; block&gt; works');
-    :
-    :my $pointy_block_w_arg = -&gt; $arg { 1 + $arg };
-    :isa_ok($pointy_block_w_arg, 'Block');
-    :is($pointy_block_w_arg(3), 4, '-&gt; $arg {} &lt;&quot;pointy&quot; block w/args&gt; works');
-    :
-    :my $pointy_block_w_multiple_args = -&gt; $arg1, $arg2 { $arg1 + $arg2 };
-    :isa_ok($pointy_block_w_multiple_args, 'Block');
-    :is($pointy_block_w_multiple_args(3, 4), 7, '-&gt; $arg1, $arg2 {} &lt;&quot;pointy&quot; block w/multiple args&gt; works');
-    :
-    :my $pointy_block_nested = -&gt; $a { -&gt; $b { $a + $b }};
-    :isa_ok($pointy_block_nested, Block);
-    :isa_ok($pointy_block_nested(5), Block);
-    :is $pointy_block_nested(5)(6), 11, '-&gt; $a { -&gt; $b { $a+$b }} nested &lt;&quot;pointy&quot; block&gt; works';
-    :
-    :# bare blocks L&lt;S06/&quot;Blocks&quot;&gt;
-    :
-    :my $foo;
-    :{$foo = &quot;blah&quot;};
-    :is($foo, &quot;blah&quot;, &quot;lone block actually executes it's content&quot;);
-    :
-    :my $foo2;
-    :{$foo2 = &quot;blah&quot;};
-    :is($foo2, &quot;blah&quot;, &quot;lone block w/out a semicolon actually executes it's content&quot;);
-    :
-    :my $foo3;
-    :({$foo3 = &quot;blah&quot;});
-    :ok(!defined($foo3), &quot;block enclosed by parentheses should not auto-execute (1)&quot;, :todo&lt;bug&gt;);
-    :
-    :my $foo4;
-    :({$foo4 = &quot;blah&quot;},);
-    :ok(!defined($foo4), &quot;block enclosed by parentheses should not auto-execute (2)&quot;);
-    :
-    :my ($one, $two);
-    :# The try's here because it should die: $foo{...} should only work if $foo isa
-    :# Hash (or sth. which provides appropriate tieing/&amp;postcircumfix:&lt;{
-    :# }&gt;/whatever, but a Code should surely not support hash access).
-    :# Additionally, a smart compiler will detect thus errors at compile-time, so I
-    :# added an eval().  --iblech
-    :try { eval '{$one = 1}{$two = 2}' };
-    :is($one, undef, 'two blocks ({} {}) no semicolon after either,.. first block does not execute');
-    :is($two, 2, '... but second block does (parsed as hash subscript)');
-    :
-    :my ($one_a, $two_a);
-    :{$one_a = 1}; {$two_a = 2}
-    :is($one_a, 1, '... two blocks ({}; {}) semicolon after the first only,.. first block does execute');
-    :is($two_a, 2, '... and second block does too');
-    :
-    :my ($one_b, $two_b);
-    :{
-    :    $one_b = 1
-    :}
-    :{
-    :    $two_b = 2
-    :};
-    :is($one_b, 1, '... two stand-alone blocks ({\n...\n}\n{\n...\n}),.. first block does execute');
-    :is($two_b, 2, '... and second block does too');
-    :
-    :my ($one_c, $two_c);
-    :{$one_c = 1}; {$two_c = 2};
-    :is($one_c, 1, '... two blocks ({}; {};) semicolon after both,.. first block does execute');
-    :is($two_c, 2, '... and second block does too');
-    :
-    :sub f { { 3 } }
-    :is(f(), 3, 'bare blocks immediately runs even as the last statement');
-    :is((sub { { 3 } }).(), 3, 'ditto for anonymous subs');
-    :is((sub { { { 3 } } }).(), 3, 'ditto, even if nested');
-    :dies_ok({(sub { { $^x } }).()}, 'implicit params become errors');
-    :isnt((sub { -&gt; { 3 } }).(), 3, 'as are pointies');</pre>
+<div ID=hide_3 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"The Relationship of Blocks and Declarations"&gt;
+
+=cut
+
+plan 32;
+
+# anon blocks L&lt;S06/"Standard Subroutines"&gt;
+my $anon_sub = sub { 1 };
+isa_ok($anon_sub, 'Sub');
+is($anon_sub(), 1, 'sub { } works');
+
+my $anon_sub_w_arg = sub ($arg) { 1 + $arg };
+isa_ok($anon_sub_w_arg, 'Sub');
+is($anon_sub_w_arg(3), 4, 'sub ($arg) {} works');
+
+# anon blocks L&lt;S06/"Blocks"&gt;
+my $anon_block = { 1 };
+isa_ok($anon_block, 'Block');
+is($anon_block(), 1, '{} &lt;anon block&gt; works');
+
+# pointy subs L&lt;S06/"Pointy subs"&gt;
+my $pointy_block = -&gt; { 1 };
+isa_ok($pointy_block, 'Block');
+is($pointy_block(), 1, '-&gt; {} &lt;"pointy" block&gt; works');
+
+my $pointy_block_w_arg = -&gt; $arg { 1 + $arg };
+isa_ok($pointy_block_w_arg, 'Block');
+is($pointy_block_w_arg(3), 4, '-&gt; $arg {} &lt;"pointy" block w/args&gt; works');
+
+my $pointy_block_w_multiple_args = -&gt; $arg1, $arg2 { $arg1 + $arg2 };
+isa_ok($pointy_block_w_multiple_args, 'Block');
+is($pointy_block_w_multiple_args(3, 4), 7, '-&gt; $arg1, $arg2 {} &lt;"pointy" block w/multiple args&gt; works');
+
+my $pointy_block_nested = -&gt; $a { -&gt; $b { $a + $b }};
+isa_ok($pointy_block_nested, Block);
+isa_ok($pointy_block_nested(5), Block);
+is $pointy_block_nested(5)(6), 11, '-&gt; $a { -&gt; $b { $a+$b }} nested &lt;"pointy" block&gt; works';
+
+# bare blocks L&lt;S06/"Blocks"&gt;
+
+my $foo;
+{$foo = "blah"};
+is($foo, "blah", "lone block actually executes it's content");
+
+my $foo2;
+{$foo2 = "blah"};
+is($foo2, "blah", "lone block w/out a semicolon actually executes it's content");
+
+my $foo3;
+({$foo3 = "blah"});
+ok(!defined($foo3), "block enclosed by parentheses should not auto-execute (1)", :todo&lt;bug&gt;);
+
+my $foo4;
+({$foo4 = "blah"},);
+ok(!defined($foo4), "block enclosed by parentheses should not auto-execute (2)");
+
+my ($one, $two);
+# The try's here because it should die: $foo{...} should only work if $foo isa
+# Hash (or sth. which provides appropriate tieing/&amp;postcircumfix:&lt;{
+# }&gt;/whatever, but a Code should surely not support hash access).
+# Additionally, a smart compiler will detect thus errors at compile-time, so I
+# added an eval().  --iblech
+try { eval '{$one = 1}{$two = 2}' };
+is($one, undef, 'two blocks ({} {}) no semicolon after either,.. first block does not execute');
+is($two, 2, '... but second block does (parsed as hash subscript)');
+
+my ($one_a, $two_a);
+{$one_a = 1}; {$two_a = 2}
+is($one_a, 1, '... two blocks ({}; {}) semicolon after the first only,.. first block does execute');
+is($two_a, 2, '... and second block does too');
+
+my ($one_b, $two_b);
+{
+    $one_b = 1
+}
+{
+    $two_b = 2
+};
+is($one_b, 1, '... two stand-alone blocks ({\n...\n}\n{\n...\n}),.. first block does execute');
+is($two_b, 2, '... and second block does too');
+
+my ($one_c, $two_c);
+{$one_c = 1}; {$two_c = 2};
+is($one_c, 1, '... two blocks ({}; {};) semicolon after both,.. first block does execute');
+is($two_c, 2, '... and second block does too');
+
+sub f { { 3 } }
+is(f(), 3, 'bare blocks immediately runs even as the last statement');
+is((sub { { 3 } }).(), 3, 'ditto for anonymous subs');
+is((sub { { { 3 } } }).(), 3, 'ditto, even if nested');
+dies_ok({(sub { { $^x } }).()}, 'implicit params become errors');
+isnt((sub { -&gt; { 3 } }).(), 3, 'as are pointies');</pre>
 </div><p>Every block is a closure.  (That is, in the abstract, they're all
 anonymous subroutines that take a snapshot of their lexical scope.)
 How a block is invoked and how its results are used are matters of
@@ -405,78 +407,79 @@ declared ``<code>my $x</code>''.</p>
 <div ID=header_hidden_2 style="display: block;">- Show t/builtins/my.t (71 lines) -</div>
 </a>
 </p>
-<div ID=hide_2 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;The Relationship of Blocks and Declarations&quot; /prior to the first declaration/&gt;
-    :# &quot;If you've referred to $x prior to the first declaration, and the
-    :#  compiler tentatively bound it to $OUTER::x, then it's an error to
-    :#  declare it, and the compiler is allowed to complain at that point.&quot;
-    :# A fully conformant compiler will fail this test.  At best,
-    :#   is($d, 1, '$d is still the outer $d');
-    :# passes &quot;tentatively&quot;, and the subsequent my is an uncomplained error.
-    :
-    :# shadowing a lexical with a new lexical of the same name
-    :# and that lexical does not leak out into the outer scope
-    :
-    :my $d = 1;
-    :if (1) { # create a new lexical scope
-    :    is($d, 1, '$d is still the outer $d');
-    :    my $d = 2;
-    :    is($d, 2, '$d is now the lexical (inner) $d');    
-    :}
-    :is($d, 1, '$d is available, and the outer value has not changed');
-    :
-    :# check closures with functions
-    :
-    :my $func;
-    :my $func2;
-    :if (1) { # create a new lexical scope
-    :    my $e = 0;
-    :    $func = sub { $e++ }; # one to inc
-    :    $func2 = sub { $e };  # one to access it
-    :}
-    :
-    :ok(!(eval '$e'), '$e is the not available in this scope');
-    :is($func2(), 0, '$func2() just returns the $e lexical which is held by the closure');
-    :$func();
-    :is($func2(), 1, '$func() increments the $e lexical which is held by the closure');
-    :$func();
-    :is($func2(), 2, '... and one more time just to be sure');
-    :
-    :# check my as simultaneous lvalue and rvalue
-    :
-    :is(eval('my $e1 = my $e2 = 42'), 42, 'can parse squinting my value');
-    :is(eval('my $e1 = my $e2 = 42; $e1'), 42, 'can capture squinting my value');
-    :is(eval('my $e1 = my $e2 = 42; $e2'), 42, 'can set squinting my variable');
-    :
-    :is(eval('my $x = 1, my $y = 2; $y'), 2, 'precedence of my wrt = and ,');
-    :
-    :# check proper scoping of my in while condition
-    :
-    :my $result;
-    :my $x = 0;
-    :is(eval('while my $x = 1 { $result = $x; last } $result'), 1, 'my in while cond seen from body');
-    :is(eval('while my $x = 1 { last } $x'), 1, 'my in while cond seen after');
-    :
-    :# check proper scoping of my in if condition
-    :
-    :is(eval('if my $x = 1 { $x } else { 0 }'), 1, 'my in if cond seen from then');
-    :is(eval('if not my $x = 1 { 0 } else { $x }'), 1, 'my in if cond seen from else');
-    :is(eval('if my $x = 1 { 0 } else { 0 } $x'), 1, 'my in if cond seen after');
-    :
-    :# check proper scoping of my in loop initializer
-    :
-    :is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { $result = $x; last } $result'), 1, '1st my in loop cond seen from body');
-    :is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { $result = $y; last } $result'), 2, '2nd my in loop cond seen from body');
-    :is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { last } $x'), 1, '1st my in loop cond seen after');
-    :is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { last } $y'), 2, '2nd my in loop cond seen after');
-    :
-    :# check that can declaring lexical twice is noop
-    :{
-    :    my $f;
-    :    $f = 5;
-    :    my $f;
-    :    is($f, 5, &quot;two lexicals declared in scope is noop&quot;);
-    :}</pre>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"The Relationship of Blocks and Declarations" /prior to the first declaration/&gt;
+# "If you've referred to $x prior to the first declaration, and the
+#  compiler tentatively bound it to $OUTER::x, then it's an error to
+#  declare it, and the compiler is allowed to complain at that point."
+# A fully conformant compiler will fail this test.  At best,
+#   is($d, 1, '$d is still the outer $d');
+# passes "tentatively", and the subsequent my is an uncomplained error.
+
+# shadowing a lexical with a new lexical of the same name
+# and that lexical does not leak out into the outer scope
+
+my $d = 1;
+if (1) { # create a new lexical scope
+    is($d, 1, '$d is still the outer $d');
+    my $d = 2;
+    is($d, 2, '$d is now the lexical (inner) $d');    
+}
+is($d, 1, '$d is available, and the outer value has not changed');
+
+# check closures with functions
+
+my $func;
+my $func2;
+if (1) { # create a new lexical scope
+    my $e = 0;
+    $func = sub { $e++ }; # one to inc
+    $func2 = sub { $e };  # one to access it
+}
+
+ok(!(eval '$e'), '$e is the not available in this scope');
+is($func2(), 0, '$func2() just returns the $e lexical which is held by the closure');
+$func();
+is($func2(), 1, '$func() increments the $e lexical which is held by the closure');
+$func();
+is($func2(), 2, '... and one more time just to be sure');
+
+# check my as simultaneous lvalue and rvalue
+
+is(eval('my $e1 = my $e2 = 42'), 42, 'can parse squinting my value');
+is(eval('my $e1 = my $e2 = 42; $e1'), 42, 'can capture squinting my value');
+is(eval('my $e1 = my $e2 = 42; $e2'), 42, 'can set squinting my variable');
+
+is(eval('my $x = 1, my $y = 2; $y'), 2, 'precedence of my wrt = and ,');
+
+# check proper scoping of my in while condition
+
+my $result;
+my $x = 0;
+is(eval('while my $x = 1 { $result = $x; last } $result'), 1, 'my in while cond seen from body');
+is(eval('while my $x = 1 { last } $x'), 1, 'my in while cond seen after');
+
+# check proper scoping of my in if condition
+
+is(eval('if my $x = 1 { $x } else { 0 }'), 1, 'my in if cond seen from then');
+is(eval('if not my $x = 1 { 0 } else { $x }'), 1, 'my in if cond seen from else');
+is(eval('if my $x = 1 { 0 } else { 0 } $x'), 1, 'my in if cond seen after');
+
+# check proper scoping of my in loop initializer
+
+is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { $result = $x; last } $result'), 1, '1st my in loop cond seen from body');
+is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { $result = $y; last } $result'), 2, '2nd my in loop cond seen from body');
+is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { last } $x'), 1, '1st my in loop cond seen after');
+is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { last } $y'), 2, '2nd my in loop cond seen after');
+
+# check that can declaring lexical twice is noop
+{
+    my $f;
+    $f = 5;
+    my $f;
+    is($f, 5, "two lexicals declared in scope is noop");
+}</pre>
 </div><p>As in Perl 5, ``<code>our $foo</code>'' introduces a lexically scoped alias for
 a variable in the current package.</p>
 <p>The new <code>constant</code> declarator introduces a lexically scoped name
@@ -494,20 +497,21 @@ may be initialized with either a pseudo-assignment or a block:</p>
 <div ID=header_hidden_4 style="display: block;">- Show t/var/constant.t (13 lines) -</div>
 </a>
 </p>
-<div ID=hide_4 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;The Relationship of Blocks and Declarations&quot; /In any case the initializing value is evaluated at BEGIN time./&gt;
-    :{
-    :    my $ok;
-    :
-    :    eval '
-    :        my $foo = 42;
-    :        BEGIN { $foo = 23 }
-    :        my constant timecheck = $foo;
-    :        $ok++ if timecheck == 23;
-    :    ';
-    :
-    :    ok $ok, &quot;the initializing values for constants are evaluated at compile-time&quot;, :todo&lt;feature&gt;;
-    :}</pre>
+<div ID=hide_4 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"The Relationship of Blocks and Declarations" /In any case the initializing value is evaluated at BEGIN time./&gt;
+{
+    my $ok;
+
+    eval '
+        my $foo = 42;
+        BEGIN { $foo = 23 }
+        my constant timecheck = $foo;
+        $ok++ if timecheck == 23;
+    ';
+
+    ok $ok, "the initializing values for constants are evaluated at compile-time", :todo&lt;feature&gt;;
+}</pre>
 </div><p>There is a new <code>state</code> declarator that introduces a lexically scoped
 variable like <code>my</code> does, but with a lifetime that persists for the
 life of the closure, so that it keeps its value from the end of one
@@ -520,159 +524,160 @@ get separate state variables.</p>
 <div ID=header_hidden_6 style="display: block;">- Show t/var/state.t (152 lines) -</div>
 </a>
 </p>
-<div ID=hide_6 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;The Relationship of Blocks and Declarations&quot; /There is a new state declarator that introduces/&gt;
-    :
-    :# state() inside subs
-    :{
-    :    sub inc () {
-    :        state $svar;
-    :        $svar++;
-    :        return $svar;
-    :    };
-    :
-    :    is(inc(), 1, &quot;state() works inside subs (#1)&quot;);
-    :    is(inc(), 2, &quot;state() works inside subs (#2)&quot;);
-    :    is(inc(), 3, &quot;state() works inside subs (#3)&quot;);
-    :}
-    :
-    :# state() inside coderefs
-    :{
-    :    my $gen = {
-    :        # Note: The following line is only executed once, because it's equivalent
-    :        # to
-    :        #   state $svar will first { 42 };
-    :        # See L&lt;S04/&quot;Closure traits&quot; /emantics to any initializer, so this also works/&gt;
-    :        state $svar = 42;
-    :        my $ret = { $svar++ };
-    :    };
-    :
-    :    my $a = $gen(); # $svar == 42
-    :    $a(); $a();     # $svar == 44
-    :    my $b = $gen(); # $svar == 44
-    :
-    :    is $b(), 44, &quot;state() works inside coderefs&quot;;
-    :}
-    :
-    :# state() inside for-loops
-    :{
-    :    for 1,2,3 -&gt; $val {
-    :        state $svar;
-    :        $svar++;
-    :
-    :        # Only check on last run
-    :        if $val == 3 {
-    :            is $svar, 3, &quot;state() works inside for-loops&quot;;
-    :        }
-    :    }
-    :}
-    :
-    :# state will first {...}
-    :{
-    :    my ($a, $b);
-    :    eval '
-    :        my $gen = {
-    :            state $svar will first { 42 };
-    :            -&gt; { $svar++ };
-    :        }
-    :        $a = $gen();    # $svar == 42
-    :        $a(); $a();     # $svar == 44
-    :        $b = $gen()();  # $svar == 44
-    :    ';
-    :
-    :    is $b, 44, 'state will first {...} works', :todo&lt;feature&gt;;
-    :}
-    :
-    :# Return of a reference to a state() var
-    :{
-    :    my $gen = {
-    :        state $svar = 42;
-    :        \$svar;
-    :    };
-    :
-    :    my $svar_ref = $gen();
-    :    $$svar_ref++; $$svar_ref++;
-    :
-    :    my $svar_ref = $gen();
-    :    is $$svar_ref, 44, &quot;reference to a state() var&quot;, :todo&lt;bug&gt;;
-    :}
-    :
-    :# Anonymous state vars
-    :# L&lt;&quot;<a href="http://groups.google.de/group/perl.perl6.language/msg/07aefb88f5fc8429">http://groups.google.de/group/perl.perl6.language/msg/07aefb88f5fc8429</a>&quot;&gt;
-    :{
-    :    # XXX -- currently this is parsed as \&amp;state()
-    :    my $gen = eval '{ try { \state } }';
-    :    $gen //= sub { \(my $x) };
-    :
-    :    my $svar_ref = $gen();               # $svar == 0
-    :    try { $$svar_ref++; $$svar_ref++ };  # $svar == 2
-    :
-    :    my $svar_ref = $gen();               # $svar == 2
-    :    is try { $$svar_ref }, 2, &quot;anonymous state() vars&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/20888">http://www.nntp.perl.org/group/perl.perl6.language/20888</a>&quot;&gt;
-    :# (&quot;Re: Declaration and definition of state() vars&quot; from Larry)
-    :{
-    :    my ($a, $b);
-    :    eval '
-    :        my $gen = {
-    :            (state $svar) = 42;
-    :            my $ret = { $svar++ };
-    :        };
-    :
-    :        $a = $gen();        # $svar == 42
-    :        $a(); $a();         # $svar == 44
-    :        $b = $gen()();      # $svar == 42
-    :    ';
-    :    is $b, 42, &quot;state() and parens&quot;; # svar == 43
-    :}
-    :
-    :# state() inside regular expressions
-    :{
-    :    my $str = &quot;abc&quot;;
-    :
-    :    my $re  = {
-    :    # Perl 5 RE, as we don't want to force people to install Parrot ATM. (The
-    :    # test passes when using the Perl 6 RE, too.)
-    :    $str ~~ s:Perl5/^(.)/{
-    :      state $svar;
-    :      ++$svar;
-    :    }/;
-    :    };
-    :    $re();
-    :    $re();
-    :    $re();
-    :    is +$str, 3, &quot;state() inside regular expressions works&quot;;
-    :}
-    :
-    :# state() inside subs, chained declaration
-    :{
-    :    sub step () {
-    :        state $svar = state $svar2 = 42;
-    :        try {
-    :            $svar++;
-    :            $svar2--;
-    :            return ($svar, $svar2);
-    :        }
-    :    };
-    :
-    :    is(step().perl, &quot;(43, 41)&quot;, &quot;chained state (#1)&quot;, :todo&lt;bug&gt;);
-    :    is(step().perl, &quot;(44, 40)&quot;, &quot;chained state (#2)&quot;, :todo&lt;bug&gt;);
-    :}
-    :
-    :# state in cloned closures
-    :{
-    :    for &lt;first second&gt; {
-    :        my $code = {
-    :            state $foo = 42;
-    :            ++$foo;
-    :        };
-    :
-    :        is $code(), 43, &quot;state was initialized properly ($_ time)&quot;;
-    :        is $code(), 44, &quot;state keeps its value across calls ($_ time)&quot;;
-    :    }
-    :}</pre>
+<div ID=hide_6 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"The Relationship of Blocks and Declarations" /There is a new state declarator that introduces/&gt;
+
+# state() inside subs
+{
+    sub inc () {
+        state $svar;
+        $svar++;
+        return $svar;
+    };
+
+    is(inc(), 1, "state() works inside subs (#1)");
+    is(inc(), 2, "state() works inside subs (#2)");
+    is(inc(), 3, "state() works inside subs (#3)");
+}
+
+# state() inside coderefs
+{
+    my $gen = {
+        # Note: The following line is only executed once, because it's equivalent
+        # to
+        #   state $svar will first { 42 };
+        # See L&lt;S04/"Closure traits" /emantics to any initializer, so this also works/&gt;
+        state $svar = 42;
+        my $ret = { $svar++ };
+    };
+
+    my $a = $gen(); # $svar == 42
+    $a(); $a();     # $svar == 44
+    my $b = $gen(); # $svar == 44
+
+    is $b(), 44, "state() works inside coderefs";
+}
+
+# state() inside for-loops
+{
+    for 1,2,3 -&gt; $val {
+        state $svar;
+        $svar++;
+
+        # Only check on last run
+        if $val == 3 {
+            is $svar, 3, "state() works inside for-loops";
+        }
+    }
+}
+
+# state will first {...}
+{
+    my ($a, $b);
+    eval '
+        my $gen = {
+            state $svar will first { 42 };
+            -&gt; { $svar++ };
+        }
+        $a = $gen();    # $svar == 42
+        $a(); $a();     # $svar == 44
+        $b = $gen()();  # $svar == 44
+    ';
+
+    is $b, 44, 'state will first {...} works', :todo&lt;feature&gt;;
+}
+
+# Return of a reference to a state() var
+{
+    my $gen = {
+        state $svar = 42;
+        \$svar;
+    };
+
+    my $svar_ref = $gen();
+    $$svar_ref++; $$svar_ref++;
+
+    my $svar_ref = $gen();
+    is $$svar_ref, 44, "reference to a state() var", :todo&lt;bug&gt;;
+}
+
+# Anonymous state vars
+# L&lt;"http://groups.google.de/group/perl.perl6.language/msg/07aefb88f5fc8429"&gt;
+{
+    # XXX -- currently this is parsed as \&amp;state()
+    my $gen = eval '{ try { \state } }';
+    $gen //= sub { \(my $x) };
+
+    my $svar_ref = $gen();               # $svar == 0
+    try { $$svar_ref++; $$svar_ref++ };  # $svar == 2
+
+    my $svar_ref = $gen();               # $svar == 2
+    is try { $$svar_ref }, 2, "anonymous state() vars", :todo&lt;feature&gt;;
+}
+
+# L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/20888"&gt;
+# ("Re: Declaration and definition of state() vars" from Larry)
+{
+    my ($a, $b);
+    eval '
+        my $gen = {
+            (state $svar) = 42;
+            my $ret = { $svar++ };
+        };
+
+        $a = $gen();        # $svar == 42
+        $a(); $a();         # $svar == 44
+        $b = $gen()();      # $svar == 42
+    ';
+    is $b, 42, "state() and parens"; # svar == 43
+}
+
+# state() inside regular expressions
+{
+    my $str = "abc";
+
+    my $re  = {
+    # Perl 5 RE, as we don't want to force people to install Parrot ATM. (The
+    # test passes when using the Perl 6 RE, too.)
+    $str ~~ s:Perl5/^(.)/{
+      state $svar;
+      ++$svar;
+    }/;
+    };
+    $re();
+    $re();
+    $re();
+    is +$str, 3, "state() inside regular expressions works";
+}
+
+# state() inside subs, chained declaration
+{
+    sub step () {
+        state $svar = state $svar2 = 42;
+        try {
+            $svar++;
+            $svar2--;
+            return ($svar, $svar2);
+        }
+    };
+
+    is(step().perl, "(43, 41)", "chained state (#1)", :todo&lt;bug&gt;);
+    is(step().perl, "(44, 40)", "chained state (#2)", :todo&lt;bug&gt;);
+}
+
+# state in cloned closures
+{
+    for &lt;first second&gt; {
+        my $code = {
+            state $foo = 42;
+            ++$foo;
+        };
+
+        is $code(), 43, "state was initialized properly ($_ time)";
+        is $code(), 44, "state keeps its value across calls ($_ time)";
+    }
+}</pre>
 </div><p>Perl 5's ``<code>local</code>'' function has been renamed to <code>temp</code> to better
 reflect what it does.  There is also a <code>let</code> function that sets a
 hypothetical value.  It works exactly like <code>temp</code>, except that the
@@ -688,108 +693,109 @@ the default is not to undefine a variable.  So</p>
 <div ID=header_hidden_7 style="display: block;">- Show t/var/temp.t (101 lines) -</div>
 </a>
 </p>
-<div ID=hide_7 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;The Relationship of Blocks and Declarations&quot; /function has been renamed/&gt;
-    :{
-    :  my $a = 42;
-    :  {
-    :    temp $a = 23;
-    :    is $a, 23, &quot;temp() changed the variable (1)&quot;;
-    :  }
-    :  is $a, 42, &quot;temp() restored the variable (1)&quot;;
-    :}
-    :
-    :# Test that temp() restores the variable at scope exit, not at subroutine
-    :# entry.
-    :{
-    :  my $a     = 42;
-    :  my $get_a = { $a };
-    :  {
-    :    temp $a = 23;
-    :    is $a,       23, &quot;temp() changed the variable (2-1)&quot;;
-    :    is $get_a(), 23, &quot;temp() changed the variable (2-2)&quot;;
-    :  }
-    :  is $a, 42, &quot;temp() restored the variable (2)&quot;;
-    :}
-    :
-    :# temp() shouldn't change the variable containers
-    :{
-    :  my $a     = 42;
-    :  my $get_a = { $a };
-    :  {
-    :    temp $a = 23;
-    :    ok $a =:= $get_a(), &quot;temp() shouldn't change the variable containers&quot;;
-    :  }
-    :}
-    :
-    :{
-    :  our $pkgvar = 42;
-    :  {
-    :    temp $pkgvar = 'not 42';
-    :    is $pkgvar, 'not 42', &quot;temp() changed the package variable (3-1)&quot;;
-    :  }
-    :  is $pkgvar, 42, &quot;temp() restored the package variable (3-2)&quot;;
-    :}
-    :
-    :# Test that temp() restores variable even when not exited regularly (using a
-    :# (possibly implicit) call to return()), but when left because of an exception.
-    :{
-    :  my $a = 42;
-    :  try {
-    :    temp $a = 23;
-    :    is $a, 23, &quot;temp() changed the variable in a try block&quot;;
-    :    die 57;
-    :  };
-    :  is $a, 42, &quot;temp() restored the variable, the block was exited using an exception&quot;;
-    :}
-    :
-    :eval('
-    :{
-    :  my @array = (0, 1, 2);
-    :  {
-    :    temp @array[1] = 42;
-    :    is @array[1], 42, &quot;temp() changed our array element&quot;;
-    :  }
-    :  is @array[1], 1, &quot;temp() restored our array element&quot;;
-    :}
-    :&quot;1 - delete this line when the parsefail eval() is removed&quot;;
-    :') or skip(2, &quot;parsefail: temp \@array[1]&quot;);
-    :
-    :eval('
-    :{
-    :  my %hash = (:a(1), :b(2), :c(3));
-    :  {
-    :    temp %hash&lt;b&gt; = 42;
-    :    is %hash&lt;b&gt;, 42, &quot;temp() changed our hash element&quot;;
-    :  }
-    :  is %hash&lt;b&gt;, 2, &quot;temp() restored our array element&quot;;
-    :}
-    :&quot;1 - delete this line when the parsefail eval() is removed&quot;;
-    :') or skip(2, &quot;parsefail: temp \%hash&lt;b&gt;&quot;);
-    :
-    :eval('
-    :{
-    :  my $struct = [
-    :    &quot;doesnt_matter&quot;,
-    :    {
-    :      doesnt_matter =&gt; &quot;doesnt_matter&quot;,
-    :      key           =&gt; [
-    :        &quot;doesnt_matter&quot;,
-    :        42,
-    :      ],
-    :    },
-    :  ];
-    :
-    :  {
-    :    temp $struct[1]&lt;key&gt;[1] = 23;
-    :    is $struct[1]&lt;key&gt;[1], 23, &quot;temp() changed our nested arrayref/hashref element&quot;;
-    :  }
-    :  is $struct[1]&lt;key&gt;[1], 1, &quot;temp() restored our nested arrayref/hashref element&quot;, :todo&lt;feature&gt;;
-    :}
-    :&quot;1 - delete this line when the parsefail eval() is removed&quot;;
-    :') or skip(2, &quot;parsefail: temp \$struct[1]&lt;key&gt;[1]&quot;);
-    :
-    :# Block TEMP{}</pre>
+<div ID=hide_7 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"The Relationship of Blocks and Declarations" /function has been renamed/&gt;
+{
+  my $a = 42;
+  {
+    temp $a = 23;
+    is $a, 23, "temp() changed the variable (1)";
+  }
+  is $a, 42, "temp() restored the variable (1)";
+}
+
+# Test that temp() restores the variable at scope exit, not at subroutine
+# entry.
+{
+  my $a     = 42;
+  my $get_a = { $a };
+  {
+    temp $a = 23;
+    is $a,       23, "temp() changed the variable (2-1)";
+    is $get_a(), 23, "temp() changed the variable (2-2)";
+  }
+  is $a, 42, "temp() restored the variable (2)";
+}
+
+# temp() shouldn't change the variable containers
+{
+  my $a     = 42;
+  my $get_a = { $a };
+  {
+    temp $a = 23;
+    ok $a =:= $get_a(), "temp() shouldn't change the variable containers";
+  }
+}
+
+{
+  our $pkgvar = 42;
+  {
+    temp $pkgvar = 'not 42';
+    is $pkgvar, 'not 42', "temp() changed the package variable (3-1)";
+  }
+  is $pkgvar, 42, "temp() restored the package variable (3-2)";
+}
+
+# Test that temp() restores variable even when not exited regularly (using a
+# (possibly implicit) call to return()), but when left because of an exception.
+{
+  my $a = 42;
+  try {
+    temp $a = 23;
+    is $a, 23, "temp() changed the variable in a try block";
+    die 57;
+  };
+  is $a, 42, "temp() restored the variable, the block was exited using an exception";
+}
+
+eval('
+{
+  my @array = (0, 1, 2);
+  {
+    temp @array[1] = 42;
+    is @array[1], 42, "temp() changed our array element";
+  }
+  is @array[1], 1, "temp() restored our array element";
+}
+"1 - delete this line when the parsefail eval() is removed";
+') or skip(2, "parsefail: temp \@array[1]");
+
+eval('
+{
+  my %hash = (:a(1), :b(2), :c(3));
+  {
+    temp %hash&lt;b&gt; = 42;
+    is %hash&lt;b&gt;, 42, "temp() changed our hash element";
+  }
+  is %hash&lt;b&gt;, 2, "temp() restored our array element";
+}
+"1 - delete this line when the parsefail eval() is removed";
+') or skip(2, "parsefail: temp \%hash&lt;b&gt;");
+
+eval('
+{
+  my $struct = [
+    "doesnt_matter",
+    {
+      doesnt_matter =&gt; "doesnt_matter",
+      key           =&gt; [
+        "doesnt_matter",
+        42,
+      ],
+    },
+  ];
+
+  {
+    temp $struct[1]&lt;key&gt;[1] = 23;
+    is $struct[1]&lt;key&gt;[1], 23, "temp() changed our nested arrayref/hashref element";
+  }
+  is $struct[1]&lt;key&gt;[1], 1, "temp() restored our nested arrayref/hashref element", :todo&lt;feature&gt;;
+}
+"1 - delete this line when the parsefail eval() is removed";
+') or skip(2, "parsefail: temp \$struct[1]&lt;key&gt;[1]");
+
+# Block TEMP{}</pre>
 </div><a name="msg_5"></a>
 <a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
 <div ID=header_shown_5 style="display: none;">- Hide t/var/let.t (line 7 ~ line 7) -
@@ -797,8 +803,9 @@ the default is not to undefine a variable.  So</p>
 <div ID=header_hidden_5 style="display: block;">- Show t/var/let.t (1 lines) -</div>
 </a>
 </p>
-<div ID=hide_5 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;The Relationship of Blocks and Declarations&quot; /There is also a let function/&gt;</pre>
+<div ID=hide_5 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"The Relationship of Blocks and Declarations" /There is also a let function/&gt;</pre>
 </div><pre>
     temp $x;</pre>
 <p>causes <code>$x</code> to start with its current value.  Use</p>
@@ -851,109 +858,110 @@ this is now invalid:</p>
 <div ID=header_hidden_10 style="display: block;">- Show t/statements/if.t (102 lines) -</div>
 </a>
 </p>
-<div ID=hide_10 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;Conditional statements&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 19;
-    :
-    :my $x = 'test';
-    :if ($x eq $x) { pass(&quot;if ($x eq $x) {} works&quot;); } else { flunk(&quot;if ($x eq $x) {} failed&quot;); }
-    :if ($x ne $x) { flunk(&quot;if ($x ne $x) {} failed&quot;); } else { pass(&quot;if ($x ne $x) {} works&quot;); }
-    :if (1) { pass(&quot;if (1) {} works&quot;); } else { flunk(&quot;if (1) {} failed&quot;); }
-    :if (0) { flunk(&quot;if (0) {} failed&quot;); } else { pass(&quot;if (0) {} works&quot;); }
-    :if (undef) { flunk(&quot;if (undef) {} failed&quot;); } else { pass(&quot;if (undef) {} works&quot;); }
-    :
-    :# die called in the condition part of an if statement should die immediately
-    :# rather than being evaluated as true
-    :my $foo = 1;
-    :try { if (die &quot;should die&quot;) { $foo = 3 } else { $foo = 2; } };
-    :#say '# $foo = ' ~ $foo;
-    :is $foo, 1, &quot;die should stop execution immediately.&quot;;
-    :
-    :{
-    :    my $foo = 1; # just in case
-    :    if 1 &gt; 2 { $foo = 2 } else { $foo = 3 };
-    :    is $foo, 3, 'if with no parens';
-    :};
-    :
-    :# if...elsif
-    :{
-    :    my $foo = 1;
-    :    if (1) { $foo = 2 } elsif (1) { $foo = 3 };
-    :    is $foo, 2, 'if (1) {} elsif (1) {}';
-    :}
-    :
-    :{
-    :    my $foo = 1;
-    :    if (1) { $foo = 2 } elsif (0) { $foo = 3 };
-    :    is $foo, 2, 'if (1) {} elsif (0) {}';
-    :}
-    :
-    :{
-    :    my $foo = 1;
-    :    if (0) { $foo = 2 } elsif (1) { $foo = 3 };
-    :    is $foo, 3, 'if (0) {} elsif (1) {}';
-    :}
-    :
-    :{
-    :    my $foo = 1;
-    :    if (0) { $foo = 2 } elsif (0) { $foo = 3 };
-    :    is $foo, 1, 'if (0) {} elsif (0) {}';
-    :}
-    :
-    :# if...elsif...else
-    :
-    :{
-    :    my $foo = 1;
-    :    if (0) { $foo = 2 } elsif (0) { $foo = 3 } else { $foo = 4 };
-    :    is $foo, 4;
-    :}
-    :
-    :{
-    :    my $foo = 1;
-    :    if (1) { $foo = 2 } elsif (0) { $foo = 3 } else { $foo = 4 };
-    :    is $foo, 2;
-    :}
-    :
-    :{
-    :    my $foo = 1;
-    :    if (1) { $foo = 2 } elsif (1) { $foo = 3 } else { $foo = 4 };
-    :    is $foo, 2;
-    :}
-    :
-    :{
-    :    my $foo = 1;
-    :    if (0) { $foo = 2 } elsif (1) { $foo = 3 } else { $foo = 4 };
-    :    is $foo, 3;
-    :}
-    :
-    :{
-    :    my $foo = 1;
-    :    if ({ 1 &gt; 0 }) { $foo = 2 } else { $foo = 3 };
-    :    is $foo, 2, 'if with no parens, and closure as cond';
-    :}
-    :
-    :{
-    :    my $var = 9;
-    :    my sub func( $a, $b, $c ) { $var };
-    :    if func 1, 2, 3 { $var = 4 } else { $var = 5 };
-    :    is $var, 4, 'if with no parens, and call a function without parenthesis';
-    :}
-    :
-    :# I'm not sure where this should go
-    :
-    :{
-    :    eval_is(
-    :        'if ( my $x = 2 ) == 2 { $x; }',
-    :        2,
-    :        &quot;'my' variable within 'if' conditional&quot;);
-    :}
-    :
-    :{
-    :    isnt(eval('if 1; 2'), 2, 'test &quot;if 1&quot;');
-    :}</pre>
+<div ID=hide_10 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"Conditional statements"&gt;
+
+=cut
+
+plan 19;
+
+my $x = 'test';
+if ($x eq $x) { pass("if ($x eq $x) {} works"); } else { flunk("if ($x eq $x) {} failed"); }
+if ($x ne $x) { flunk("if ($x ne $x) {} failed"); } else { pass("if ($x ne $x) {} works"); }
+if (1) { pass("if (1) {} works"); } else { flunk("if (1) {} failed"); }
+if (0) { flunk("if (0) {} failed"); } else { pass("if (0) {} works"); }
+if (undef) { flunk("if (undef) {} failed"); } else { pass("if (undef) {} works"); }
+
+# die called in the condition part of an if statement should die immediately
+# rather than being evaluated as true
+my $foo = 1;
+try { if (die "should die") { $foo = 3 } else { $foo = 2; } };
+#say '# $foo = ' ~ $foo;
+is $foo, 1, "die should stop execution immediately.";
+
+{
+    my $foo = 1; # just in case
+    if 1 &gt; 2 { $foo = 2 } else { $foo = 3 };
+    is $foo, 3, 'if with no parens';
+};
+
+# if...elsif
+{
+    my $foo = 1;
+    if (1) { $foo = 2 } elsif (1) { $foo = 3 };
+    is $foo, 2, 'if (1) {} elsif (1) {}';
+}
+
+{
+    my $foo = 1;
+    if (1) { $foo = 2 } elsif (0) { $foo = 3 };
+    is $foo, 2, 'if (1) {} elsif (0) {}';
+}
+
+{
+    my $foo = 1;
+    if (0) { $foo = 2 } elsif (1) { $foo = 3 };
+    is $foo, 3, 'if (0) {} elsif (1) {}';
+}
+
+{
+    my $foo = 1;
+    if (0) { $foo = 2 } elsif (0) { $foo = 3 };
+    is $foo, 1, 'if (0) {} elsif (0) {}';
+}
+
+# if...elsif...else
+
+{
+    my $foo = 1;
+    if (0) { $foo = 2 } elsif (0) { $foo = 3 } else { $foo = 4 };
+    is $foo, 4;
+}
+
+{
+    my $foo = 1;
+    if (1) { $foo = 2 } elsif (0) { $foo = 3 } else { $foo = 4 };
+    is $foo, 2;
+}
+
+{
+    my $foo = 1;
+    if (1) { $foo = 2 } elsif (1) { $foo = 3 } else { $foo = 4 };
+    is $foo, 2;
+}
+
+{
+    my $foo = 1;
+    if (0) { $foo = 2 } elsif (1) { $foo = 3 } else { $foo = 4 };
+    is $foo, 3;
+}
+
+{
+    my $foo = 1;
+    if ({ 1 &gt; 0 }) { $foo = 2 } else { $foo = 3 };
+    is $foo, 2, 'if with no parens, and closure as cond';
+}
+
+{
+    my $var = 9;
+    my sub func( $a, $b, $c ) { $var };
+    if func 1, 2, 3 { $var = 4 } else { $var = 5 };
+    is $var, 4, 'if with no parens, and call a function without parenthesis';
+}
+
+# I'm not sure where this should go
+
+{
+    eval_is(
+        'if ( my $x = 2 ) == 2 { $x; }',
+        2,
+        "'my' variable within 'if' conditional");
+}
+
+{
+    isnt(eval('if 1; 2'), 2, 'test "if 1"');
+}</pre>
 </div><p>The <code>if</code> and <code>unless</code> statements work almost exactly as they do in
 Perl 5, except that you may omit the parentheses on the conditional:</p>
 <pre>
@@ -975,90 +983,91 @@ implicit conditionals implied by short-circuit operators.</p>
 <div ID=header_hidden_11 style="display: block;">- Show t/statements/values_in_bool_context.t (83 lines) -</div>
 </a>
 </p>
-<div ID=hide_11 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Conditional statements/Conditional statement
-    :#   modifiers work as in Perl 5&gt;
-    :
-    :##  scalar checking  ##
-    :
-    :{
-    :    my $var = 20;
-    :
-    :    my ($a, $b, $c, $d, $e, $f, $g, $h);
-    :
-    :    $a = 1 if 1;
-    :    $b = 1 if 0;
-    :    $c = 1 if &quot;true&quot;;
-    :    $d = 1 if &quot;&quot;;
-    :    $e = 1 if &quot;1&quot;;
-    :    $f = 1 if &quot;0&quot;;
-    :    $g = 1 if undef;
-    :    $h = 1 if $var;
-    :
-    :    ok  $a, 'literal in bool context - numeric true value';
-    :    ok !$b, 'literal in bool context - numeric false value';
-    :    ok  $c, 'literal in bool context - string true value';
-    :    ok !$d, 'literal in bool context - string false value';
-    :    ok  $e, 'literal in bool context - stringified true value';
-    :    ok !$f, 'literal in bool context - stringified false value';
-    :    ok !$g, 'literal in bool context - undef value';
-    :    ok  $h, 'literal in bool context - scalar variable';
-    :}
-    :
-    :##  array checking  ##
-    :
-    :{
-    :    my @array = (1, 0, &quot;true&quot;, &quot;&quot;, &quot;1&quot;, &quot;0&quot;, undef);
-    :
-    :    my ($a, $b, $c, $d, $e, $f, $g, $h);
-    :
-    :    $a = 1 if @array[0];
-    :    $b = 1 if @array[1];
-    :    $c = 1 if @array[2];
-    :    $d = 1 if @array[3];
-    :    $e = 1 if @array[4];
-    :    $f = 1 if @array[5];
-    :    $g = 1 if @array[6];
-    :    $h = 1 if @array;
-    :
-    :    ok  $a, 'array in bool context - numeric true value';
-    :    ok !$b, 'array in bool context - numeric false value';
-    :    ok  $c, 'array in bool context - string true value';
-    :    ok !$d, 'array in bool context - string false value';
-    :    ok  $e, 'array in bool context - stringified true value';
-    :    ok !$f, 'array in bool context - stringified false value';
-    :    ok !$g, 'array in bool context - undef value';
-    :    ok  $h, 'array in bool context  array as a whole';
-    :}
-    :
-    :##  hash checking  ##
-    :
-    :{
-    :    my %hash = (
-    :        0 =&gt; 1, 1 =&gt; 0, 2 =&gt; &quot;true&quot;,
-    :        3 =&gt; &quot;&quot;, 4 =&gt; &quot;1&quot;, 5 =&gt; &quot;0&quot;, 6 =&gt; undef
-    :    );
-    :
-    :    my ($a, $b, $c, $d, $e, $f, $g, $h);
-    :
-    :    $a = 1 if %hash{0};
-    :    $b = 1 if %hash{1};
-    :    $c = 1 if %hash{2};
-    :    $d = 1 if %hash{3};
-    :    $e = 1 if %hash{4};
-    :    $f = 1 if %hash{5};
-    :    $g = 1 if %hash{6};
-    :    $h = 1 if %hash;
-    :
-    :    ok  $a, 'hash in bool context - numeric true value';
-    :    ok !$b, 'hash in bool context - numeric false value';
-    :    ok  $c, 'hash in bool context - string true value';
-    :    ok !$d, 'hash in bool context - string false value';
-    :    ok  $e, 'hash in bool context - stringified true value';
-    :    ok !$f, 'hash in bool context - stringified false value';
-    :    ok !$g, 'hash in bool context - undef value';
-    :    ok  $h, 'hash in bool context - hash as a whole';
-    :}</pre>
+<div ID=hide_11 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Conditional statements/Conditional statement
+#   modifiers work as in Perl 5&gt;
+
+##  scalar checking  ##
+
+{
+    my $var = 20;
+
+    my ($a, $b, $c, $d, $e, $f, $g, $h);
+
+    $a = 1 if 1;
+    $b = 1 if 0;
+    $c = 1 if "true";
+    $d = 1 if "";
+    $e = 1 if "1";
+    $f = 1 if "0";
+    $g = 1 if undef;
+    $h = 1 if $var;
+
+    ok  $a, 'literal in bool context - numeric true value';
+    ok !$b, 'literal in bool context - numeric false value';
+    ok  $c, 'literal in bool context - string true value';
+    ok !$d, 'literal in bool context - string false value';
+    ok  $e, 'literal in bool context - stringified true value';
+    ok !$f, 'literal in bool context - stringified false value';
+    ok !$g, 'literal in bool context - undef value';
+    ok  $h, 'literal in bool context - scalar variable';
+}
+
+##  array checking  ##
+
+{
+    my @array = (1, 0, "true", "", "1", "0", undef);
+
+    my ($a, $b, $c, $d, $e, $f, $g, $h);
+
+    $a = 1 if @array[0];
+    $b = 1 if @array[1];
+    $c = 1 if @array[2];
+    $d = 1 if @array[3];
+    $e = 1 if @array[4];
+    $f = 1 if @array[5];
+    $g = 1 if @array[6];
+    $h = 1 if @array;
+
+    ok  $a, 'array in bool context - numeric true value';
+    ok !$b, 'array in bool context - numeric false value';
+    ok  $c, 'array in bool context - string true value';
+    ok !$d, 'array in bool context - string false value';
+    ok  $e, 'array in bool context - stringified true value';
+    ok !$f, 'array in bool context - stringified false value';
+    ok !$g, 'array in bool context - undef value';
+    ok  $h, 'array in bool context  array as a whole';
+}
+
+##  hash checking  ##
+
+{
+    my %hash = (
+        0 =&gt; 1, 1 =&gt; 0, 2 =&gt; "true",
+        3 =&gt; "", 4 =&gt; "1", 5 =&gt; "0", 6 =&gt; undef
+    );
+
+    my ($a, $b, $c, $d, $e, $f, $g, $h);
+
+    $a = 1 if %hash{0};
+    $b = 1 if %hash{1};
+    $c = 1 if %hash{2};
+    $d = 1 if %hash{3};
+    $e = 1 if %hash{4};
+    $f = 1 if %hash{5};
+    $g = 1 if %hash{6};
+    $h = 1 if %hash;
+
+    ok  $a, 'hash in bool context - numeric true value';
+    ok !$b, 'hash in bool context - numeric false value';
+    ok  $c, 'hash in bool context - string true value';
+    ok !$d, 'hash in bool context - string false value';
+    ok  $e, 'hash in bool context - stringified true value';
+    ok !$f, 'hash in bool context - stringified false value';
+    ok !$g, 'hash in bool context - undef value';
+    ok  $h, 'hash in bool context - hash as a whole';
+}</pre>
 </div><p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
@@ -1071,76 +1080,77 @@ implicit conditionals implied by short-circuit operators.</p>
 <div ID=header_hidden_22 style="display: block;">- Show t/statements/while.t (69 lines) -</div>
 </a>
 </p>
-<div ID=hide_22 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;Loop statements&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 11;
-    :
-    :{
-    :  my $i = 0;
-    :  while $i &lt; 5 { $i++; };
-    :  is($i, 5, 'while $i &lt; 5 {} works');
-    :}
-    :{
-    :  my $i = 0;
-    :  while 5 &gt; $i { $i++; };
-    :  is($i, 5, 'while 5 &gt; $i {} works');
-    :}
-    :# with parens
-    :{
-    :  my $i = 0;
-    :  while ($i &lt; 5) { $i++; };
-    :  is($i, 5, 'while ($i &lt; 5) {} works');
-    :}
-    :{
-    :  my $i = 0;
-    :  while (5 &gt; $i) { $i++; };
-    :  is($i, 5, 'while (5 &gt; $i) {} works');
-    :}
-    :
-    :# single value
-    :{
-    :  my $j = 0;
-    :  while 0 { $j++; };
-    :  is($j, 0, 'while 0 {...} works');
-    :}
-    :{
-    :  my $k = 0;
-    :  while $k { $k++; };
-    :  is($k, 0, 'while $var {...} works');
-    :}
-    :
-    :# other tests
-    :{
-    :  # this seems like a bit of a messy test, but the point is being able to
-    :  # declare my $x within the while statement more suited for a file read
-    :  # or iterator, but I didn't feel like creating one just for this test.
-    :  eval_is(
-    :    'my $y; while (my $x = 2) == 2 { $y = $x; last; } $y',
-    :    2,
-    :    &quot;'my' variable within 'while' conditional&quot;);
-    :}
-    :
-    :# while ... -&gt; $x {...}
-    :{
-    :  my @array = (0..5);
-    :  my $was_in_while;
-    :  my @new;
-    :  eval 'while @array.shift -&gt; $x { $was_in_while++; push @new, $x }';
-    :  ok $was_in_while,  'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
-    :  is ~@new, ~@array, 'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
-    :}
-    :
-    :{
-    :  my @array = (0..5);
-    :  my $was_in_while;
-    :  my @new;
-    :  eval 'while shift @array -&gt; $x { $was_in_while++; push @new, $x }';
-    :  ok $was_in_while,  'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
-    :  is ~@new, ~@array, 'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
-    :}</pre>
+<div ID=hide_22 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"Loop statements"&gt;
+
+=cut
+
+plan 11;
+
+{
+  my $i = 0;
+  while $i &lt; 5 { $i++; };
+  is($i, 5, 'while $i &lt; 5 {} works');
+}
+{
+  my $i = 0;
+  while 5 &gt; $i { $i++; };
+  is($i, 5, 'while 5 &gt; $i {} works');
+}
+# with parens
+{
+  my $i = 0;
+  while ($i &lt; 5) { $i++; };
+  is($i, 5, 'while ($i &lt; 5) {} works');
+}
+{
+  my $i = 0;
+  while (5 &gt; $i) { $i++; };
+  is($i, 5, 'while (5 &gt; $i) {} works');
+}
+
+# single value
+{
+  my $j = 0;
+  while 0 { $j++; };
+  is($j, 0, 'while 0 {...} works');
+}
+{
+  my $k = 0;
+  while $k { $k++; };
+  is($k, 0, 'while $var {...} works');
+}
+
+# other tests
+{
+  # this seems like a bit of a messy test, but the point is being able to
+  # declare my $x within the while statement more suited for a file read
+  # or iterator, but I didn't feel like creating one just for this test.
+  eval_is(
+    'my $y; while (my $x = 2) == 2 { $y = $x; last; } $y',
+    2,
+    "'my' variable within 'while' conditional");
+}
+
+# while ... -&gt; $x {...}
+{
+  my @array = (0..5);
+  my $was_in_while;
+  my @new;
+  eval 'while @array.shift -&gt; $x { $was_in_while++; push @new, $x }';
+  ok $was_in_while,  'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
+  is ~@new, ~@array, 'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
+}
+
+{
+  my @array = (0..5);
+  my $was_in_while;
+  my @new;
+  eval 'while shift @array -&gt; $x { $was_in_while++; push @new, $x }';
+  ok $was_in_while,  'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
+  is ~@new, ~@array, 'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
+}</pre>
 </div><a name="msg_15"></a>
 <a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
 <div ID=header_shown_15 style="display: none;">- Hide t/statements/loop.t (line 72 ~ line 142) -
@@ -1148,78 +1158,79 @@ implicit conditionals implied by short-circuit operators.</p>
 <div ID=header_hidden_15 style="display: block;">- Show t/statements/loop.t (71 lines) -</div>
 </a>
 </p>
-<div ID=hide_15 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;Loop statements&quot;&gt;
-    :
-    :=cut
-    :
-    :{
-    :  my $x = 0; repeat { $x++ } while $x &lt; 10;
-    :  is($x, 10, 'repeat {} while');
-    :}
-    :
-    :{
-    :  my $x = 1; repeat { $x++ } while 0;
-    :  is($x, 2, 'ensure repeat {} while runs at least once');
-    :}
-    :
-    :{
-    :  my $x = 0; try { repeat { $x++; redo if $x &lt; 10 } while 0 };
-    :  is($x, 10, 'redo works in repeat', :todo&lt;feature&gt;);
-    :}
-    :
-    :{
-    :  my $x = 0; repeat while $x &lt; 10 { $x++ }
-    :  is($x, 10, 'repeat {} while');
-    :}
-    :
-    :{
-    :  my $x = 1; repeat while 0 { $x++ }
-    :  is($x, 2, 'ensure repeat {} while runs at least once');
-    :}
-    :
-    :{
-    :  my $x = 0; try { repeat while 0 { $x++; redo if $x &lt; 10 } };
-    :  is($x, 10, 'redo works in repeat', :todo&lt;feature&gt;);
-    :}
-    :
-    :{
-    :  my $x = 0; repeat { $x++ } until $x &gt;= 10;
-    :  is($x, 10, 'repeat {} until');
-    :}
-    :
-    :{
-    :  my $x = 1; repeat { $x++ } until 1;
-    :  is($x, 2, 'ensure repeat {} until runs at least once');
-    :}
-    :
-    :{
-    :  my $x = 0; try { repeat { $x++; redo if $x &lt; 10 } until 1 };
-    :  is($x, 10, 'redo works in repeat {} until', :todo&lt;feature&gt;);
-    :}
-    :
-    :{
-    :  my $x = 0; repeat until $x &gt;= 10 { $x++ }
-    :  is($x, 10, 'repeat until {}');
-    :}
-    :
-    :{
-    :  my $x = 1; repeat until 1 { $x++ }
-    :  is($x, 2, 'ensure repeat until {} runs at least once');
-    :}
-    :
-    :{
-    :  my $x = 0; try { repeat until 1 { $x++; redo if $x &lt; 10 } };
-    :  is($x, 10, 'redo works in repeat until {}', :todo&lt;feature&gt;);
-    :}
-    :
-    :my $loopvar = 0;
-    :
-    :loop {
-    :    is($loopvar, $loopvar, &quot;bare loop iterates $loopvar&quot;);
-    :    last if ++$loopvar == 3;
-    :}
-    :is($loopvar, 3, &quot;bare loop exited after 3 iterations&quot;);</pre>
+<div ID=hide_15 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"Loop statements"&gt;
+
+=cut
+
+{
+  my $x = 0; repeat { $x++ } while $x &lt; 10;
+  is($x, 10, 'repeat {} while');
+}
+
+{
+  my $x = 1; repeat { $x++ } while 0;
+  is($x, 2, 'ensure repeat {} while runs at least once');
+}
+
+{
+  my $x = 0; try { repeat { $x++; redo if $x &lt; 10 } while 0 };
+  is($x, 10, 'redo works in repeat', :todo&lt;feature&gt;);
+}
+
+{
+  my $x = 0; repeat while $x &lt; 10 { $x++ }
+  is($x, 10, 'repeat {} while');
+}
+
+{
+  my $x = 1; repeat while 0 { $x++ }
+  is($x, 2, 'ensure repeat {} while runs at least once');
+}
+
+{
+  my $x = 0; try { repeat while 0 { $x++; redo if $x &lt; 10 } };
+  is($x, 10, 'redo works in repeat', :todo&lt;feature&gt;);
+}
+
+{
+  my $x = 0; repeat { $x++ } until $x &gt;= 10;
+  is($x, 10, 'repeat {} until');
+}
+
+{
+  my $x = 1; repeat { $x++ } until 1;
+  is($x, 2, 'ensure repeat {} until runs at least once');
+}
+
+{
+  my $x = 0; try { repeat { $x++; redo if $x &lt; 10 } until 1 };
+  is($x, 10, 'redo works in repeat {} until', :todo&lt;feature&gt;);
+}
+
+{
+  my $x = 0; repeat until $x &gt;= 10 { $x++ }
+  is($x, 10, 'repeat until {}');
+}
+
+{
+  my $x = 1; repeat until 1 { $x++ }
+  is($x, 2, 'ensure repeat until {} runs at least once');
+}
+
+{
+  my $x = 0; try { repeat until 1 { $x++; redo if $x &lt; 10 } };
+  is($x, 10, 'redo works in repeat until {}', :todo&lt;feature&gt;);
+}
+
+my $loopvar = 0;
+
+loop {
+    is($loopvar, $loopvar, "bare loop iterates $loopvar");
+    last if ++$loopvar == 3;
+}
+is($loopvar, 3, "bare loop exited after 3 iterations");</pre>
 </div><p>Looping statement modifiers are the same as in Perl 5.
 Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also work as in Perl 5.</p>
 <a name="msg_18"></a>
@@ -1229,108 +1240,109 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 <div ID=header_hidden_18 style="display: block;">- Show t/statements/redo.t (101 lines) -</div>
 </a>
 </p>
-<div ID=hide_18 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Loop statements&quot; /work as in Perl 5/&gt;
-    :plan 10;
-    :
-    :{
-    :    my $i = 0;
-    :    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
-    :    is($i, 3, &quot;redo caused reapplication of block&quot;);
-    :}
-    :
-    :{
-    :    my @log;    
-    :    my $i;
-    :    while ++$i &lt; 5 {
-    :        push @log, &quot;before&quot;;
-    :        if (++$i == 2) {
-    :            redo;
-    :        } else {
-    :            push @log, &quot;no_redo&quot;;
-    :        }
-    :        push @log, &quot;after&quot;;
-    :    }
-    :    
-    :    is(~@log, &quot;before before no_redo after before no_redo after&quot;, &quot;statements after redo are not executed&quot;);
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 2, '$j++ encountered twice');
-    :    is($i, 1, '$i++ encountered once');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0, 1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 4, '$j++ encountered four times');
-    :    is($i, 3, '$i++ encountered three times');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j;
-    :
-    :    loop ($j = 0; $j &lt; 4; $j++) {
-    :        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
-    :        $i-=2;
-    :    }
-    :
-    :    is($j, 4, '$j unaltered by the fiasco');
-    :    is($i, -4, '$i incremented and decremented correct number of times');
-    :}
-    :
-    :{
-    :    # rubicon TestLoopStuff.rb
-    :    #  def testRedoWithFor
-    :    #    sum = 0
-    :    #    for i in 1..10
-    :    #      sum += i
-    :    #      i -= 1
-    :    #      if i &gt; 0
-    :    #        redo
-    :    #      end
-    :    #    end
-    :    #    assert_equal(220, sum)
-    :    #  end
-    :    my $stopping = 100;
-    :    my $sum = 0;
-    :    for 1..10 -&gt; $i is copy {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;testRedoWithFor&quot;, :todo&lt;bug&gt;);
-    :
-    :    $stopping = 100;
-    :    $sum = 0;
-    :    my $j = 1;
-    :    my $i;
-    :    while do{$i = $j; $j++ &lt;= 10} {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;test redo with while&quot;);
-    :}</pre>
+<div ID=hide_18 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
+plan 10;
+
+{
+    my $i = 0;
+    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
+    is($i, 3, "redo caused reapplication of block");
+}
+
+{
+    my @log;    
+    my $i;
+    while ++$i &lt; 5 {
+        push @log, "before";
+        if (++$i == 2) {
+            redo;
+        } else {
+            push @log, "no_redo";
+        }
+        push @log, "after";
+    }
+    
+    is(~@log, "before before no_redo after before no_redo after", "statements after redo are not executed");
+}
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 2, '$j++ encountered twice');
+    is($i, 1, '$i++ encountered once');
+}
+
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0, 1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 4, '$j++ encountered four times');
+    is($i, 3, '$i++ encountered three times');
+}
+
+
+{
+    my $i = 0;
+    my $j;
+
+    loop ($j = 0; $j &lt; 4; $j++) {
+        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
+        $i-=2;
+    }
+
+    is($j, 4, '$j unaltered by the fiasco');
+    is($i, -4, '$i incremented and decremented correct number of times');
+}
+
+{
+    # rubicon TestLoopStuff.rb
+    #  def testRedoWithFor
+    #    sum = 0
+    #    for i in 1..10
+    #      sum += i
+    #      i -= 1
+    #      if i &gt; 0
+    #        redo
+    #      end
+    #    end
+    #    assert_equal(220, sum)
+    #  end
+    my $stopping = 100;
+    my $sum = 0;
+    for 1..10 -&gt; $i is copy {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "testRedoWithFor", :todo&lt;bug&gt;);
+
+    $stopping = 100;
+    $sum = 0;
+    my $j = 1;
+    my $i;
+    while do{$i = $j; $j++ &lt;= 10} {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "test redo with while");
+}</pre>
 </div><a name="msg_16"></a>
 <a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
 <div ID=header_shown_16 style="display: none;">- Hide t/statements/next.t (line 6 ~ line 151) -
@@ -1338,153 +1350,154 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 <div ID=header_hidden_16 style="display: block;">- Show t/statements/next.t (146 lines) -</div>
 </a>
 </p>
-<div ID=hide_16 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;Loop statements&quot; /work as in Perl 5/&gt;
-    :next
-    :next if &lt;condition&gt;;
-    :&lt;condition&gt; and next;
-    :next &lt;label&gt;;
-    :next in nested loops
-    :next &lt;label&gt; in nested loops
-    :
-    :=cut
-    :
-    :plan 12;
-    :
-    :# test for loops with next
-    :
-    :{
-    :    my $tracker=0;for (1..2) { next; $tracker++;}
-    :    is(
-    :        $tracker,
-    :        0,
-    :        &quot;tracker is 0 because next before increment&quot;,
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker = 0; for (1..5) { next if 2 &lt; $_ &lt; 4; $tracker = $_;}
-    :    is(
-    :        $tracker,
-    :        3,
-    :        &quot;... nothing before or after 3 (next if &lt;cond&gt;)&quot;,
-    :        :todo&lt;bug&gt;
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker = 0; for (1..5) { $_ &gt; 3 &amp;&amp; next; $tracker = $_;}
-    :    is(
-    :        $tracker,
-    :        3,
-    :        &quot;... nothing after 3 (&lt;cond&gt; &amp;&amp; next)&quot;,
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker = 0; for (1..5) { $_ &gt; 3 and next; $tracker = $_;}
-    :    is(
-    :        $tracker,
-    :        3,
-    :        &quot;... nothing after 3 (&lt;cond&gt; and next)&quot;,
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker=&quot;err&quot;; eval '$tracker = 0; DONE: for (1..2) { next DONE; $tracker++;}';
-    :    is(
-    :        $tracker,
-    :        0,
-    :        &quot;tracker is 0 because next before increment&quot;,
-    :        :todo&lt;bug&gt;
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker=0;for (1..5)-&gt;$out {for (10..11)-&gt;$in {next if $out &gt; 2;$tracker = $in + $out;}}
-    :    is($tracker,
-    :        13,
-    :        'inner loop skips once inner is run twice (next inside nested loops)',
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker=&quot;err&quot;; eval '$tracker = 0; OUT: for (1..2) { IN: for (1..2) { next OUT; $tracker++; } }';
-    :    is(
-    :        $tracker,
-    :        0,
-    :        &quot;tracker is 0 because next before increment in nested loop&quot;,
-    :        :todo&lt;bug&gt;
-    :    );
-    :}
-    :
-    :=pod
-    :
-    :Check that C&lt;next&gt; works on the correct loop/block
-    :
-    :=cut
-    :
-    :{
-    :  my $foo;
-    :  for 1..2 -&gt; $a {
-    :    $foo ~= &quot;A&quot;;
-    :    for 1..2 -&gt; $b {
-    :        $foo ~= &quot;B&quot;;
-    :        next;             # works on higher level loop, should work on inner
-    :    }
-    :  }
-    :  is($foo, &quot;ABBABB&quot;, &quot;next works on inner loop of 2&quot;);
-    :}
-    :
-    :{
-    :    my $bar;
-    :    for 1..2 -&gt; $a {
-    :        $bar ~= &quot;A&quot;;
-    :        for 1..2 -&gt; $b {
-    :            $bar ~= &quot;B&quot;;
-    :            for 1..2 -&gt; $c {
-    :                $bar ~= &quot;C&quot;;
-    :                next;         # same thing
-    :            }
-    :        }
-    :    }
-    :    is($bar, &quot;ABCCBCCABCCBCC&quot;, &quot;next works on inner loop of 3&quot;);
-    :}
-    :
-    :{
-    :    my @log;    
-    :    my $i;
-    :    while ++$i &lt; 2 {
-    :        push @log, &quot;before&quot;;
-    :        next;
-    :        push @log, &quot;after&quot;;
-    :    }
-    :    
-    :    is(~@log, &quot;before&quot;, &quot;statements after next are not executed&quot;);
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    
-    :    for (1, 1, 0, 1, 0, 1) -&gt; $x {
-    :        if ($x) { next }
-    :        $i++;
-    :    }
-    :    
-    :    is($i, 2, '$i++ executed only twice, because next ')
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    my $j;
-    :    
-    :    loop ($j = 0; $j &lt; 6; $j++) {
-    :        if ($j % 2 == 0) { next }
-    :        $i++;
-    :    }
-    :    
-    :    is($i, 3, '$i++ was not executed when next was called before it in loop {}');
-    :}</pre>
+<div ID=hide_16 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
+next
+next if &lt;condition&gt;;
+&lt;condition&gt; and next;
+next &lt;label&gt;;
+next in nested loops
+next &lt;label&gt; in nested loops
+
+=cut
+
+plan 12;
+
+# test for loops with next
+
+{
+    my $tracker=0;for (1..2) { next; $tracker++;}
+    is(
+        $tracker,
+        0,
+        "tracker is 0 because next before increment",
+    );
+}
+
+{
+    my $tracker = 0; for (1..5) { next if 2 &lt; $_ &lt; 4; $tracker = $_;}
+    is(
+        $tracker,
+        3,
+        "... nothing before or after 3 (next if &lt;cond&gt;)",
+        :todo&lt;bug&gt;
+    );
+}
+
+{
+    my $tracker = 0; for (1..5) { $_ &gt; 3 &amp;&amp; next; $tracker = $_;}
+    is(
+        $tracker,
+        3,
+        "... nothing after 3 (&lt;cond&gt; &amp;&amp; next)",
+    );
+}
+
+{
+    my $tracker = 0; for (1..5) { $_ &gt; 3 and next; $tracker = $_;}
+    is(
+        $tracker,
+        3,
+        "... nothing after 3 (&lt;cond&gt; and next)",
+    );
+}
+
+{
+    my $tracker="err"; eval '$tracker = 0; DONE: for (1..2) { next DONE; $tracker++;}';
+    is(
+        $tracker,
+        0,
+        "tracker is 0 because next before increment",
+        :todo&lt;bug&gt;
+    );
+}
+
+{
+    my $tracker=0;for (1..5)-&gt;$out {for (10..11)-&gt;$in {next if $out &gt; 2;$tracker = $in + $out;}}
+    is($tracker,
+        13,
+        'inner loop skips once inner is run twice (next inside nested loops)',
+    );
+}
+
+{
+    my $tracker="err"; eval '$tracker = 0; OUT: for (1..2) { IN: for (1..2) { next OUT; $tracker++; } }';
+    is(
+        $tracker,
+        0,
+        "tracker is 0 because next before increment in nested loop",
+        :todo&lt;bug&gt;
+    );
+}
+
+=pod
+
+Check that C&lt;next&gt; works on the correct loop/block
+
+=cut
+
+{
+  my $foo;
+  for 1..2 -&gt; $a {
+    $foo ~= "A";
+    for 1..2 -&gt; $b {
+        $foo ~= "B";
+        next;             # works on higher level loop, should work on inner
+    }
+  }
+  is($foo, "ABBABB", "next works on inner loop of 2");
+}
+
+{
+    my $bar;
+    for 1..2 -&gt; $a {
+        $bar ~= "A";
+        for 1..2 -&gt; $b {
+            $bar ~= "B";
+            for 1..2 -&gt; $c {
+                $bar ~= "C";
+                next;         # same thing
+            }
+        }
+    }
+    is($bar, "ABCCBCCABCCBCC", "next works on inner loop of 3");
+}
+
+{
+    my @log;    
+    my $i;
+    while ++$i &lt; 2 {
+        push @log, "before";
+        next;
+        push @log, "after";
+    }
+    
+    is(~@log, "before", "statements after next are not executed");
+}
+
+{
+    my $i = 0;
+    
+    for (1, 1, 0, 1, 0, 1) -&gt; $x {
+        if ($x) { next }
+        $i++;
+    }
+    
+    is($i, 2, '$i++ executed only twice, because next ')
+}
+
+{
+    my $i = 0;
+    my $j;
+    
+    loop ($j = 0; $j &lt; 6; $j++) {
+        if ($j % 2 == 0) { next }
+        $i++;
+    }
+    
+    is($i, 3, '$i++ was not executed when next was called before it in loop {}');
+}</pre>
 </div><a name="msg_19"></a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID=header_shown_19 style="display: none;">- Hide t/statements/redo.t (line 4 ~ line 104) -
@@ -1492,108 +1505,109 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 <div ID=header_hidden_19 style="display: block;">- Show t/statements/redo.t (101 lines) -</div>
 </a>
 </p>
-<div ID=hide_19 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Loop statements&quot; /work as in Perl 5/&gt;
-    :plan 10;
-    :
-    :{
-    :    my $i = 0;
-    :    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
-    :    is($i, 3, &quot;redo caused reapplication of block&quot;);
-    :}
-    :
-    :{
-    :    my @log;    
-    :    my $i;
-    :    while ++$i &lt; 5 {
-    :        push @log, &quot;before&quot;;
-    :        if (++$i == 2) {
-    :            redo;
-    :        } else {
-    :            push @log, &quot;no_redo&quot;;
-    :        }
-    :        push @log, &quot;after&quot;;
-    :    }
-    :    
-    :    is(~@log, &quot;before before no_redo after before no_redo after&quot;, &quot;statements after redo are not executed&quot;);
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 2, '$j++ encountered twice');
-    :    is($i, 1, '$i++ encountered once');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0, 1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 4, '$j++ encountered four times');
-    :    is($i, 3, '$i++ encountered three times');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j;
-    :
-    :    loop ($j = 0; $j &lt; 4; $j++) {
-    :        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
-    :        $i-=2;
-    :    }
-    :
-    :    is($j, 4, '$j unaltered by the fiasco');
-    :    is($i, -4, '$i incremented and decremented correct number of times');
-    :}
-    :
-    :{
-    :    # rubicon TestLoopStuff.rb
-    :    #  def testRedoWithFor
-    :    #    sum = 0
-    :    #    for i in 1..10
-    :    #      sum += i
-    :    #      i -= 1
-    :    #      if i &gt; 0
-    :    #        redo
-    :    #      end
-    :    #    end
-    :    #    assert_equal(220, sum)
-    :    #  end
-    :    my $stopping = 100;
-    :    my $sum = 0;
-    :    for 1..10 -&gt; $i is copy {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;testRedoWithFor&quot;, :todo&lt;bug&gt;);
-    :
-    :    $stopping = 100;
-    :    $sum = 0;
-    :    my $j = 1;
-    :    my $i;
-    :    while do{$i = $j; $j++ &lt;= 10} {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;test redo with while&quot;);
-    :}</pre>
+<div ID=hide_19 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
+plan 10;
+
+{
+    my $i = 0;
+    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
+    is($i, 3, "redo caused reapplication of block");
+}
+
+{
+    my @log;    
+    my $i;
+    while ++$i &lt; 5 {
+        push @log, "before";
+        if (++$i == 2) {
+            redo;
+        } else {
+            push @log, "no_redo";
+        }
+        push @log, "after";
+    }
+    
+    is(~@log, "before before no_redo after before no_redo after", "statements after redo are not executed");
+}
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 2, '$j++ encountered twice');
+    is($i, 1, '$i++ encountered once');
+}
+
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0, 1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 4, '$j++ encountered four times');
+    is($i, 3, '$i++ encountered three times');
+}
+
+
+{
+    my $i = 0;
+    my $j;
+
+    loop ($j = 0; $j &lt; 4; $j++) {
+        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
+        $i-=2;
+    }
+
+    is($j, 4, '$j unaltered by the fiasco');
+    is($i, -4, '$i incremented and decremented correct number of times');
+}
+
+{
+    # rubicon TestLoopStuff.rb
+    #  def testRedoWithFor
+    #    sum = 0
+    #    for i in 1..10
+    #      sum += i
+    #      i -= 1
+    #      if i &gt; 0
+    #        redo
+    #      end
+    #    end
+    #    assert_equal(220, sum)
+    #  end
+    my $stopping = 100;
+    my $sum = 0;
+    for 1..10 -&gt; $i is copy {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "testRedoWithFor", :todo&lt;bug&gt;);
+
+    $stopping = 100;
+    $sum = 0;
+    my $j = 1;
+    my $i;
+    while do{$i = $j; $j++ &lt;= 10} {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "test redo with while");
+}</pre>
 </div><a name="msg_14"></a>
 <a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
 <div ID=header_shown_14 style="display: none;">- Hide t/statements/last.t (line 6 ~ line 83) -
@@ -1601,85 +1615,86 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 <div ID=header_hidden_14 style="display: block;">- Show t/statements/last.t (78 lines) -</div>
 </a>
 </p>
-<div ID=hide_14 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;Loop statements&quot; /work as in Perl 5/&gt;
-    :last
-    :last if &lt;condition&gt;;
-    :&lt;condition&gt; and last;
-    :last &lt;label&gt;;
-    :last in nested loops
-    :last &lt;label&gt; in nested loops
-    :
-    :=cut
-    :
-    :plan 7;
-    :
-    :# test for loops with last
-    :
-    :{
-    :    my $tracker = 0;
-    :    for 1 .. 5 {
-    :        $tracker = $_;
-    :        last;  
-    :    }
-    :    is($tracker, 1, '... our loop only got to 1 (last)');
-    :}
-    :
-    :{
-    :    my $tracker = 0;
-    :    for 1 .. 5 {
-    :        $tracker = $_;
-    :        last if $_ == 3;  
-    :    }
-    :    is($tracker, 3, '... our loop only got to 3 (last if &lt;cond&gt;)');
-    :}
-    :
-    :{
-    :    my $tracker = 0;
-    :    for 1 .. 5 {
-    :        $tracker = $_;
-    :        $_ == 3 &amp;&amp; last;  
-    :    }
-    :    is($tracker, 3, '... our loop only got to 3 (&lt;cond&gt; &amp;&amp; last)');
-    :}
-    :
-    :{
-    :    my $tracker = 0;
-    :    for 1 .. 5 {
-    :        $tracker = $_;
-    :        $_ == 3 and last;  
-    :    }
-    :    is($tracker, 3, '... our loop only got to 3 (&lt;cond&gt; and last)');
-    :}
-    :
-    :{
-    :    eval_is(
-    :        'my $var=0; DONE: for (1..2) { last DONE; $var++;} $var',
-    :        0,
-    :        &quot;var is 0 because last before increment&quot;,
-    :        :todo(1)
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker = 0;
-    :    for (1 .. 5) -&gt; $out {
-    :        for (10 .. 11) -&gt; $in {
-    :            $tracker = $in + $out;
-    :            last;
-    :        }
-    :    }
-    :    is($tracker, 15, 'our inner loop only runs once per (last inside nested loops)');
-    :}
-    :
-    :{
-    :    eval_is(
-    :        'my $var=0; OUT: for (1..2) { IN: for (1..2) { last OUT } $var++;} $var',
-    :        0,
-    :        &quot;var is 0 because last before increment in nested loop&quot;,
-    :        :todo(1)
-    :    );
-    :}</pre>
+<div ID=hide_14 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
+last
+last if &lt;condition&gt;;
+&lt;condition&gt; and last;
+last &lt;label&gt;;
+last in nested loops
+last &lt;label&gt; in nested loops
+
+=cut
+
+plan 7;
+
+# test for loops with last
+
+{
+    my $tracker = 0;
+    for 1 .. 5 {
+        $tracker = $_;
+        last;  
+    }
+    is($tracker, 1, '... our loop only got to 1 (last)');
+}
+
+{
+    my $tracker = 0;
+    for 1 .. 5 {
+        $tracker = $_;
+        last if $_ == 3;  
+    }
+    is($tracker, 3, '... our loop only got to 3 (last if &lt;cond&gt;)');
+}
+
+{
+    my $tracker = 0;
+    for 1 .. 5 {
+        $tracker = $_;
+        $_ == 3 &amp;&amp; last;  
+    }
+    is($tracker, 3, '... our loop only got to 3 (&lt;cond&gt; &amp;&amp; last)');
+}
+
+{
+    my $tracker = 0;
+    for 1 .. 5 {
+        $tracker = $_;
+        $_ == 3 and last;  
+    }
+    is($tracker, 3, '... our loop only got to 3 (&lt;cond&gt; and last)');
+}
+
+{
+    eval_is(
+        'my $var=0; DONE: for (1..2) { last DONE; $var++;} $var',
+        0,
+        "var is 0 because last before increment",
+        :todo(1)
+    );
+}
+
+{
+    my $tracker = 0;
+    for (1 .. 5) -&gt; $out {
+        for (10 .. 11) -&gt; $in {
+            $tracker = $in + $out;
+            last;
+        }
+    }
+    is($tracker, 15, 'our inner loop only runs once per (last inside nested loops)');
+}
+
+{
+    eval_is(
+        'my $var=0; OUT: for (1..2) { IN: for (1..2) { last OUT } $var++;} $var',
+        0,
+        "var is 0 because last before increment in nested loop",
+        :todo(1)
+    );
+}</pre>
 </div><a name="msg_20"></a>
 <a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
 <div ID=header_shown_20 style="display: none;">- Hide t/statements/redo.t (line 4 ~ line 104) -
@@ -1687,108 +1702,109 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 <div ID=header_hidden_20 style="display: block;">- Show t/statements/redo.t (101 lines) -</div>
 </a>
 </p>
-<div ID=hide_20 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Loop statements&quot; /work as in Perl 5/&gt;
-    :plan 10;
-    :
-    :{
-    :    my $i = 0;
-    :    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
-    :    is($i, 3, &quot;redo caused reapplication of block&quot;);
-    :}
-    :
-    :{
-    :    my @log;    
-    :    my $i;
-    :    while ++$i &lt; 5 {
-    :        push @log, &quot;before&quot;;
-    :        if (++$i == 2) {
-    :            redo;
-    :        } else {
-    :            push @log, &quot;no_redo&quot;;
-    :        }
-    :        push @log, &quot;after&quot;;
-    :    }
-    :    
-    :    is(~@log, &quot;before before no_redo after before no_redo after&quot;, &quot;statements after redo are not executed&quot;);
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 2, '$j++ encountered twice');
-    :    is($i, 1, '$i++ encountered once');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0, 1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 4, '$j++ encountered four times');
-    :    is($i, 3, '$i++ encountered three times');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j;
-    :
-    :    loop ($j = 0; $j &lt; 4; $j++) {
-    :        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
-    :        $i-=2;
-    :    }
-    :
-    :    is($j, 4, '$j unaltered by the fiasco');
-    :    is($i, -4, '$i incremented and decremented correct number of times');
-    :}
-    :
-    :{
-    :    # rubicon TestLoopStuff.rb
-    :    #  def testRedoWithFor
-    :    #    sum = 0
-    :    #    for i in 1..10
-    :    #      sum += i
-    :    #      i -= 1
-    :    #      if i &gt; 0
-    :    #        redo
-    :    #      end
-    :    #    end
-    :    #    assert_equal(220, sum)
-    :    #  end
-    :    my $stopping = 100;
-    :    my $sum = 0;
-    :    for 1..10 -&gt; $i is copy {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;testRedoWithFor&quot;, :todo&lt;bug&gt;);
-    :
-    :    $stopping = 100;
-    :    $sum = 0;
-    :    my $j = 1;
-    :    my $i;
-    :    while do{$i = $j; $j++ &lt;= 10} {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;test redo with while&quot;);
-    :}</pre>
+<div ID=hide_20 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
+plan 10;
+
+{
+    my $i = 0;
+    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
+    is($i, 3, "redo caused reapplication of block");
+}
+
+{
+    my @log;    
+    my $i;
+    while ++$i &lt; 5 {
+        push @log, "before";
+        if (++$i == 2) {
+            redo;
+        } else {
+            push @log, "no_redo";
+        }
+        push @log, "after";
+    }
+    
+    is(~@log, "before before no_redo after before no_redo after", "statements after redo are not executed");
+}
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 2, '$j++ encountered twice');
+    is($i, 1, '$i++ encountered once');
+}
+
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0, 1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 4, '$j++ encountered four times');
+    is($i, 3, '$i++ encountered three times');
+}
+
+
+{
+    my $i = 0;
+    my $j;
+
+    loop ($j = 0; $j &lt; 4; $j++) {
+        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
+        $i-=2;
+    }
+
+    is($j, 4, '$j unaltered by the fiasco');
+    is($i, -4, '$i incremented and decremented correct number of times');
+}
+
+{
+    # rubicon TestLoopStuff.rb
+    #  def testRedoWithFor
+    #    sum = 0
+    #    for i in 1..10
+    #      sum += i
+    #      i -= 1
+    #      if i &gt; 0
+    #        redo
+    #      end
+    #    end
+    #    assert_equal(220, sum)
+    #  end
+    my $stopping = 100;
+    my $sum = 0;
+    for 1..10 -&gt; $i is copy {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "testRedoWithFor", :todo&lt;bug&gt;);
+
+    $stopping = 100;
+    $sum = 0;
+    my $j = 1;
+    my $i;
+    while do{$i = $j; $j++ &lt;= 10} {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "test redo with while");
+}</pre>
 </div><a name="msg_17"></a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID=header_shown_17 style="display: none;">- Hide t/statements/next.t (line 6 ~ line 151) -
@@ -1796,153 +1812,154 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 <div ID=header_hidden_17 style="display: block;">- Show t/statements/next.t (146 lines) -</div>
 </a>
 </p>
-<div ID=hide_17 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;Loop statements&quot; /work as in Perl 5/&gt;
-    :next
-    :next if &lt;condition&gt;;
-    :&lt;condition&gt; and next;
-    :next &lt;label&gt;;
-    :next in nested loops
-    :next &lt;label&gt; in nested loops
-    :
-    :=cut
-    :
-    :plan 12;
-    :
-    :# test for loops with next
-    :
-    :{
-    :    my $tracker=0;for (1..2) { next; $tracker++;}
-    :    is(
-    :        $tracker,
-    :        0,
-    :        &quot;tracker is 0 because next before increment&quot;,
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker = 0; for (1..5) { next if 2 &lt; $_ &lt; 4; $tracker = $_;}
-    :    is(
-    :        $tracker,
-    :        3,
-    :        &quot;... nothing before or after 3 (next if &lt;cond&gt;)&quot;,
-    :        :todo&lt;bug&gt;
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker = 0; for (1..5) { $_ &gt; 3 &amp;&amp; next; $tracker = $_;}
-    :    is(
-    :        $tracker,
-    :        3,
-    :        &quot;... nothing after 3 (&lt;cond&gt; &amp;&amp; next)&quot;,
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker = 0; for (1..5) { $_ &gt; 3 and next; $tracker = $_;}
-    :    is(
-    :        $tracker,
-    :        3,
-    :        &quot;... nothing after 3 (&lt;cond&gt; and next)&quot;,
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker=&quot;err&quot;; eval '$tracker = 0; DONE: for (1..2) { next DONE; $tracker++;}';
-    :    is(
-    :        $tracker,
-    :        0,
-    :        &quot;tracker is 0 because next before increment&quot;,
-    :        :todo&lt;bug&gt;
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker=0;for (1..5)-&gt;$out {for (10..11)-&gt;$in {next if $out &gt; 2;$tracker = $in + $out;}}
-    :    is($tracker,
-    :        13,
-    :        'inner loop skips once inner is run twice (next inside nested loops)',
-    :    );
-    :}
-    :
-    :{
-    :    my $tracker=&quot;err&quot;; eval '$tracker = 0; OUT: for (1..2) { IN: for (1..2) { next OUT; $tracker++; } }';
-    :    is(
-    :        $tracker,
-    :        0,
-    :        &quot;tracker is 0 because next before increment in nested loop&quot;,
-    :        :todo&lt;bug&gt;
-    :    );
-    :}
-    :
-    :=pod
-    :
-    :Check that C&lt;next&gt; works on the correct loop/block
-    :
-    :=cut
-    :
-    :{
-    :  my $foo;
-    :  for 1..2 -&gt; $a {
-    :    $foo ~= &quot;A&quot;;
-    :    for 1..2 -&gt; $b {
-    :        $foo ~= &quot;B&quot;;
-    :        next;             # works on higher level loop, should work on inner
-    :    }
-    :  }
-    :  is($foo, &quot;ABBABB&quot;, &quot;next works on inner loop of 2&quot;);
-    :}
-    :
-    :{
-    :    my $bar;
-    :    for 1..2 -&gt; $a {
-    :        $bar ~= &quot;A&quot;;
-    :        for 1..2 -&gt; $b {
-    :            $bar ~= &quot;B&quot;;
-    :            for 1..2 -&gt; $c {
-    :                $bar ~= &quot;C&quot;;
-    :                next;         # same thing
-    :            }
-    :        }
-    :    }
-    :    is($bar, &quot;ABCCBCCABCCBCC&quot;, &quot;next works on inner loop of 3&quot;);
-    :}
-    :
-    :{
-    :    my @log;    
-    :    my $i;
-    :    while ++$i &lt; 2 {
-    :        push @log, &quot;before&quot;;
-    :        next;
-    :        push @log, &quot;after&quot;;
-    :    }
-    :    
-    :    is(~@log, &quot;before&quot;, &quot;statements after next are not executed&quot;);
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    
-    :    for (1, 1, 0, 1, 0, 1) -&gt; $x {
-    :        if ($x) { next }
-    :        $i++;
-    :    }
-    :    
-    :    is($i, 2, '$i++ executed only twice, because next ')
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    my $j;
-    :    
-    :    loop ($j = 0; $j &lt; 6; $j++) {
-    :        if ($j % 2 == 0) { next }
-    :        $i++;
-    :    }
-    :    
-    :    is($i, 3, '$i++ was not executed when next was called before it in loop {}');
-    :}</pre>
+<div ID=hide_17 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
+next
+next if &lt;condition&gt;;
+&lt;condition&gt; and next;
+next &lt;label&gt;;
+next in nested loops
+next &lt;label&gt; in nested loops
+
+=cut
+
+plan 12;
+
+# test for loops with next
+
+{
+    my $tracker=0;for (1..2) { next; $tracker++;}
+    is(
+        $tracker,
+        0,
+        "tracker is 0 because next before increment",
+    );
+}
+
+{
+    my $tracker = 0; for (1..5) { next if 2 &lt; $_ &lt; 4; $tracker = $_;}
+    is(
+        $tracker,
+        3,
+        "... nothing before or after 3 (next if &lt;cond&gt;)",
+        :todo&lt;bug&gt;
+    );
+}
+
+{
+    my $tracker = 0; for (1..5) { $_ &gt; 3 &amp;&amp; next; $tracker = $_;}
+    is(
+        $tracker,
+        3,
+        "... nothing after 3 (&lt;cond&gt; &amp;&amp; next)",
+    );
+}
+
+{
+    my $tracker = 0; for (1..5) { $_ &gt; 3 and next; $tracker = $_;}
+    is(
+        $tracker,
+        3,
+        "... nothing after 3 (&lt;cond&gt; and next)",
+    );
+}
+
+{
+    my $tracker="err"; eval '$tracker = 0; DONE: for (1..2) { next DONE; $tracker++;}';
+    is(
+        $tracker,
+        0,
+        "tracker is 0 because next before increment",
+        :todo&lt;bug&gt;
+    );
+}
+
+{
+    my $tracker=0;for (1..5)-&gt;$out {for (10..11)-&gt;$in {next if $out &gt; 2;$tracker = $in + $out;}}
+    is($tracker,
+        13,
+        'inner loop skips once inner is run twice (next inside nested loops)',
+    );
+}
+
+{
+    my $tracker="err"; eval '$tracker = 0; OUT: for (1..2) { IN: for (1..2) { next OUT; $tracker++; } }';
+    is(
+        $tracker,
+        0,
+        "tracker is 0 because next before increment in nested loop",
+        :todo&lt;bug&gt;
+    );
+}
+
+=pod
+
+Check that C&lt;next&gt; works on the correct loop/block
+
+=cut
+
+{
+  my $foo;
+  for 1..2 -&gt; $a {
+    $foo ~= "A";
+    for 1..2 -&gt; $b {
+        $foo ~= "B";
+        next;             # works on higher level loop, should work on inner
+    }
+  }
+  is($foo, "ABBABB", "next works on inner loop of 2");
+}
+
+{
+    my $bar;
+    for 1..2 -&gt; $a {
+        $bar ~= "A";
+        for 1..2 -&gt; $b {
+            $bar ~= "B";
+            for 1..2 -&gt; $c {
+                $bar ~= "C";
+                next;         # same thing
+            }
+        }
+    }
+    is($bar, "ABCCBCCABCCBCC", "next works on inner loop of 3");
+}
+
+{
+    my @log;    
+    my $i;
+    while ++$i &lt; 2 {
+        push @log, "before";
+        next;
+        push @log, "after";
+    }
+    
+    is(~@log, "before", "statements after next are not executed");
+}
+
+{
+    my $i = 0;
+    
+    for (1, 1, 0, 1, 0, 1) -&gt; $x {
+        if ($x) { next }
+        $i++;
+    }
+    
+    is($i, 2, '$i++ executed only twice, because next ')
+}
+
+{
+    my $i = 0;
+    my $j;
+    
+    loop ($j = 0; $j &lt; 6; $j++) {
+        if ($j % 2 == 0) { next }
+        $i++;
+    }
+    
+    is($i, 3, '$i++ was not executed when next was called before it in loop {}');
+}</pre>
 </div><a name="msg_21"></a>
 <a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
 <div ID=header_shown_21 style="display: none;">- Hide t/statements/redo.t (line 4 ~ line 104) -
@@ -1950,108 +1967,109 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 <div ID=header_hidden_21 style="display: block;">- Show t/statements/redo.t (101 lines) -</div>
 </a>
 </p>
-<div ID=hide_21 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Loop statements&quot; /work as in Perl 5/&gt;
-    :plan 10;
-    :
-    :{
-    :    my $i = 0;
-    :    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
-    :    is($i, 3, &quot;redo caused reapplication of block&quot;);
-    :}
-    :
-    :{
-    :    my @log;    
-    :    my $i;
-    :    while ++$i &lt; 5 {
-    :        push @log, &quot;before&quot;;
-    :        if (++$i == 2) {
-    :            redo;
-    :        } else {
-    :            push @log, &quot;no_redo&quot;;
-    :        }
-    :        push @log, &quot;after&quot;;
-    :    }
-    :    
-    :    is(~@log, &quot;before before no_redo after before no_redo after&quot;, &quot;statements after redo are not executed&quot;);
-    :}
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 2, '$j++ encountered twice');
-    :    is($i, 1, '$i++ encountered once');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j = 0;
-    :
-    :    for (1, 0, 1, 0) -&gt; $x {
-    :        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
-    :        $j++;
-    :    }
-    :
-    :    is($j, 4, '$j++ encountered four times');
-    :    is($i, 3, '$i++ encountered three times');
-    :}
-    :
-    :
-    :{
-    :    my $i = 0;
-    :    my $j;
-    :
-    :    loop ($j = 0; $j &lt; 4; $j++) {
-    :        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
-    :        $i-=2;
-    :    }
-    :
-    :    is($j, 4, '$j unaltered by the fiasco');
-    :    is($i, -4, '$i incremented and decremented correct number of times');
-    :}
-    :
-    :{
-    :    # rubicon TestLoopStuff.rb
-    :    #  def testRedoWithFor
-    :    #    sum = 0
-    :    #    for i in 1..10
-    :    #      sum += i
-    :    #      i -= 1
-    :    #      if i &gt; 0
-    :    #        redo
-    :    #      end
-    :    #    end
-    :    #    assert_equal(220, sum)
-    :    #  end
-    :    my $stopping = 100;
-    :    my $sum = 0;
-    :    for 1..10 -&gt; $i is copy {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;testRedoWithFor&quot;, :todo&lt;bug&gt;);
-    :
-    :    $stopping = 100;
-    :    $sum = 0;
-    :    my $j = 1;
-    :    my $i;
-    :    while do{$i = $j; $j++ &lt;= 10} {
-    :    $sum += $i;
-    :    $i -= 1;
-    :    last if !$stopping--;
-    :    if $i &gt; 0 { redo }
-    :    }
-    :    is($sum, 220, &quot;test redo with while&quot;);
-    :}</pre>
+<div ID=hide_21 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
+plan 10;
+
+{
+    my $i = 0;
+    while (defined($i)) { if (++$i &lt; 3) { redo }; last }
+    is($i, 3, "redo caused reapplication of block");
+}
+
+{
+    my @log;    
+    my $i;
+    while ++$i &lt; 5 {
+        push @log, "before";
+        if (++$i == 2) {
+            redo;
+        } else {
+            push @log, "no_redo";
+        }
+        push @log, "after";
+    }
+    
+    is(~@log, "before before no_redo after before no_redo after", "statements after redo are not executed");
+}
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 2, '$j++ encountered twice');
+    is($i, 1, '$i++ encountered once');
+}
+
+
+{
+    my $i = 0;
+    my $j = 0;
+
+    for (1, 0, 1, 0) -&gt; $x {
+        if ($x &amp;&amp; (++$i % 2 == 0)) { redo };
+        $j++;
+    }
+
+    is($j, 4, '$j++ encountered four times');
+    is($i, 3, '$i++ encountered three times');
+}
+
+
+{
+    my $i = 0;
+    my $j;
+
+    loop ($j = 0; $j &lt; 4; $j++) {
+        if ($j % 2 == 0 and $i++ % 2 == 0) { redo }
+        $i-=2;
+    }
+
+    is($j, 4, '$j unaltered by the fiasco');
+    is($i, -4, '$i incremented and decremented correct number of times');
+}
+
+{
+    # rubicon TestLoopStuff.rb
+    #  def testRedoWithFor
+    #    sum = 0
+    #    for i in 1..10
+    #      sum += i
+    #      i -= 1
+    #      if i &gt; 0
+    #        redo
+    #      end
+    #    end
+    #    assert_equal(220, sum)
+    #  end
+    my $stopping = 100;
+    my $sum = 0;
+    for 1..10 -&gt; $i is copy {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "testRedoWithFor", :todo&lt;bug&gt;);
+
+    $stopping = 100;
+    $sum = 0;
+    my $j = 1;
+    my $i;
+    while do{$i = $j; $j++ &lt;= 10} {
+    $sum += $i;
+    $i -= 1;
+    last if !$stopping--;
+    if $i &gt; 0 { redo }
+    }
+    is($sum, 220, "test redo with while");
+}</pre>
 </div><p>There is no longer a <code>continue</code> block.  Instead, use a <code>NEXT</code> block
 within the body of the loop.  See below.</p>
 <p>
@@ -2119,70 +2137,71 @@ rules, the previous example may be rewritten into a very clear:</p>
 <div ID=header_hidden_42 style="display: block;">- Show t/statements/loop.t (63 lines) -</div>
 </a>
 </p>
-<div ID=hide_42 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;The general loop statement&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 26;
-    :
-    :# basic loop
-    :
-    :my $i = 0;
-    :is($i, 0, 'verify our starting condition');
-    :loop ($i = 0; $i &lt; 10; $i++) {}
-    :is($i, 10, 'verify our ending condition');
-    :
-    :# loop with last()
-    :
-    :my $i = 0;
-    :is($i, 0, 'verify our starting condition');
-    :loop ($i = 0; $i &lt; 10; $i++) {
-    :    if ($i == 5) { 
-    :        last(); # should this really need the ()
-    :    }
-    :}
-    :is($i, 5, 'verify our ending condition');
-    :
-    :# infinite loop
-    :
-    :my $i = 0;
-    :is($i, 0, 'verify our starting condition');
-    :loop (;;) { $i++; last(); }
-    :is($i, 1, 'verify our ending condition');
-    :
-    :# declare variable $j inside loop
-    :my $count  = 0;
-    :is($count, 0, 'verify our starting condition');
-    :my $j; loop ($j = 0; $j &lt; 10; $j++) { $count++; };
-    :is($count, 10, 'verify our ending condition');
-    :
-    :# Ensure condition is tested on the first iteration
-    :{
-    :    my $never_did_body = 1;
-    :    loop (;0;)
-    :    {
-    :        $never_did_body = 0;
-    :    }
-    :    ok($never_did_body, &quot;loop with an initially-false condition executes 0 times&quot;);
-    :}
-    :
-    :# Loop with next should still execute the continue expression
-    :{
-    :    my ($i,    $continued);
-    :    loop ($i = 0;; $continued = 1)
-    :    {
-    :        last if $i;
-    :        $i++;
-    :        next;
-    :    }
-    :    ok($continued, &quot;next performs a loop's continue expression&quot;);
-    :}
-    :
-    :=kwid
-    :
-    :repeat { } while tests... i.e. loops without the () bits
-    :</pre>
+<div ID=hide_42 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"The general loop statement"&gt;
+
+=cut
+
+plan 26;
+
+# basic loop
+
+my $i = 0;
+is($i, 0, 'verify our starting condition');
+loop ($i = 0; $i &lt; 10; $i++) {}
+is($i, 10, 'verify our ending condition');
+
+# loop with last()
+
+my $i = 0;
+is($i, 0, 'verify our starting condition');
+loop ($i = 0; $i &lt; 10; $i++) {
+    if ($i == 5) { 
+        last(); # should this really need the ()
+    }
+}
+is($i, 5, 'verify our ending condition');
+
+# infinite loop
+
+my $i = 0;
+is($i, 0, 'verify our starting condition');
+loop (;;) { $i++; last(); }
+is($i, 1, 'verify our ending condition');
+
+# declare variable $j inside loop
+my $count  = 0;
+is($count, 0, 'verify our starting condition');
+my $j; loop ($j = 0; $j &lt; 10; $j++) { $count++; };
+is($count, 10, 'verify our ending condition');
+
+# Ensure condition is tested on the first iteration
+{
+    my $never_did_body = 1;
+    loop (;0;)
+    {
+        $never_did_body = 0;
+    }
+    ok($never_did_body, "loop with an initially-false condition executes 0 times");
+}
+
+# Loop with next should still execute the continue expression
+{
+    my ($i,    $continued);
+    loop ($i = 0;; $continued = 1)
+    {
+        last if $i;
+        $i++;
+        next;
+    }
+    ok($continued, "next performs a loop's continue expression");
+}
+
+=kwid
+
+repeat { } while tests... i.e. loops without the () bits
+</pre>
 </div><p>The <code>loop</code> statement is the C-style <code>for</code> loop in disguise:</p>
 <pre>
     loop ($i = 0; $i &lt; 10; $i++) {
@@ -2206,14 +2225,15 @@ That is,</p>
 <div ID=header_hidden_40 style="display: block;">- Show t/statements/for.t (7 lines) -</div>
 </a>
 </p>
-<div ID=hide_40 style="display:none; border:1px solid"><pre>
-    :L&lt;S04/&quot;The C&lt;for&gt; statement&quot;&gt;
-    :
-    :=cut
-    :
-    :plan 36;
-    :
-    :## for with plain old range operator w/out parens</pre>
+<div ID=hide_40 style="display:none; border:1px solid">
+<pre>
+L&lt;S04/"The C&lt;for&gt; statement"&gt;
+
+=cut
+
+plan 36;
+
+## for with plain old range operator w/out parens</pre>
 </div><p>There is no <code>foreach</code> statement any more. It's always spelled <code>for</code>
 in Perl 6, so it always takes a list as an argument:</p>
 <pre>
@@ -2227,257 +2247,258 @@ to the closure:</p>
 <div ID=header_hidden_41 style="display: block;">- Show t/statements/for.t (250 lines) -</div>
 </a>
 </p>
-<div ID=hide_41 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;The C&lt;for&gt; statement&quot; /to the closure:/&gt;
-    :
-    :my $b;
-    :for 0 .. 5 -&gt; $_ { $b = $b ~ $_; };
-    :is($b, '012345', 'for 0 .. 5 -&gt; {} works');
-    :
-    :{
-    :    my $str;
-    :    my @a = 1..3;
-    :    my @b = 4..6;
-    :    for each(@a; @b) -&gt; $x, $y {
-    :        $str ~= &quot;($x $y)&quot;;
-    :    }
-    :    is $str, &quot;(1 4)(2 5)(3 6)&quot;;
-    :}
-    :
-    :{
-    :    my $str;
-    :    my @a = 1..3;
-    :    my @b = 5..6;
-    :    eval q{
-    :        for zip(@a; @b) -&gt; [$x, $y] {
-    :            $str ~= &quot;($x $y)&quot;;
-    :        }
-    :    };
-    :    is $str, &quot;(1 5)(2 4)(3 6)&quot;;
-    :}
-    :
-    :# ... with sub
-    :
-    :my $c;
-    :for (0 .. 5) sub { $c = $c ~ $_; };
-    :is($c, '012345', 'for 0 .. 5 sub {} works');
-    :
-    :# ... with referential sub
-    :
-    :my $d;
-    :sub some_sub_1 ($arg) { $d = $d ~ $arg; }
-    :for (0 .. 5) { .some_sub_1 };
-    :is($d, '012345', 'for 0 .. 5 { .some_sub } works');
-    :
-    :## and now with parens around the range operator
-    :
-    :my $e;
-    :for (0 .. 5) { $e = $e ~ $_; };
-    :is($e, '012345', 'for () {} works');
-    :
-    :# ... with 'pointer'
-    :
-    :my $f;
-    :for (0 .. 5) -&gt; $_ { $f = $f ~ $_; };
-    :is($f, '012345', 'for () -&gt; {} works');
-    :
-    :# ... with sub
-    :
-    :my $g;
-    :for (0 .. 5) sub { $g = $g ~ $_; };
-    :is($g, '012345', 'for (0 .. 5) sub {} works');
-    :
-    :# ... with referential sub
-    :
-    :my $h;
-    :sub some_sub_2 ($arg) { $h = $h ~ $arg; }
-    :for (0 .. 5) { .some_sub_2 };
-    :is($h, '012345', 'for (0 .. 5) { .some_sub } works');
-    :
-    :# ... with implicit topic
-    :
-    :$_ = &quot;GLOBAL VALUE&quot;;
-    :for &quot;INNER VALUE&quot; {
-    :  is( .lc, &quot;inner value&quot;, &quot;Implicit default topic is seen by lc()&quot;);
-    :};
-    :is($_,&quot;GLOBAL VALUE&quot;,&quot;After the loop the implicit topic gets restored&quot;);
-    :
-    :$_ = &quot;GLOBAL VALUE&quot;;
-    :is( .lc, &quot;inner value&quot;, &quot;Implicit default topic is seen by lc()&quot; )
-    :  for &quot;INNER VALUE&quot;;
-    :is($_,&quot;GLOBAL VALUE&quot;,&quot;After the loop the implicit topic gets restored&quot;);
-    :
-    :## and now for with 'topical' variables
-    :
-    :# ... w/out parens
-    :
-    :my $i;
-    :for 0 .. 5 -&gt; $topic { $i = $i ~ $topic; };
-    :is($i, '012345', 'for 0 .. 5 -&gt; $topic {} works');
-    :
-    :# ... with parens
-    :
-    :my $j;
-    :for (0 .. 5) -&gt; $topic { $j = $j ~ $topic; };
-    :is($j, '012345', 'for () -&gt; $topic {} works');
-    :
-    :
-    :## for with @array operator w/out parens
-    :
-    :my @array_k = (0 .. 5);
-    :my $k;
-    :for @array_k { $k = $k ~ $_; };
-    :is($k, '012345', 'for @array {} works');
-    :
-    :# ... with 'pointer'
-    :
-    :my @array_l = (0 .. 5);
-    :my $l;
-    :for @array_l -&gt; $_ { $l = $l ~ $_; };
-    :is($l, '012345', 'for @array -&gt; {} works');
-    :
-    :# ... with sub
-    :
-    :my @array_m = (0 .. 5);
-    :my $m;
-    :for (@array_m) sub { $m = $m ~ $_; };
-    :is($m, '012345', 'for @array sub {} works');
-    :
-    :# ... with referential sub
-    :
-    :my @array_n = (0 .. 5);
-    :my $n;
-    :sub some_sub_3 ($arg) { $n = $n ~ $arg; }
-    :for (@array_n) { .some_sub_3 };
-    :is($n, '012345', 'for @array { .some_sub } works');
-    :
-    :## and now with parens around the @array
-    :
-    :my @array_o = (0 .. 5);
-    :my $o;
-    :for (@array_o) { $o = $o ~ $_; };
-    :is($o, '012345', 'for (@array) {} works');
-    :
-    :# ... with 'pointer'
-    :
-    :my @array_p = (0 .. 5);
-    :my $p;
-    :for (@array_p) -&gt; $_ { $p = $p ~ $_; };
-    :is($p, '012345', 'for (@array) -&gt; {} works');
-    :
-    :# ... with sub
-    :
-    :my @array_q = (0 .. 5);
-    :my $q;
-    :for (@array_q) sub { $q ~= $_; };
-    :is($q, '012345', 'for (@array) sub {} works');
-    :
-    :# ... with referential sub
-    :
-    :my @array_r = (0 .. 5);
-    :my $r;
-    :sub some_sub_4 ($arg) { $r ~= $arg; }
-    :for (@array_r) { .some_sub_4 };
-    :is($r, '012345', 'for (@array) { .some_sub } works');
-    :
-    :
-    :my @elems = &lt;a b c d e&gt;;
-    :
-    :{
-    :    my @a;
-    :    for (@elems) {
-    :        push @a, $_;
-    :    }
-    :    my @e = &lt;a b c d e&gt;;
-    :    is(@a, @e, 'for (@a) { ... $_ ... } iterates all elems');
-    :}
-    :
-    :{
-    :    my @a;
-    :        for (@elems) -&gt; $_ { push @a, $_ };
-    :    my @e = @elems;
-    :    is(@a, @e, 'for (@a)-&gt;$_ { ... $_ ... } iterates all elems' );
-    :}
-    :
-    :{
-    :    my @a;
-    :    for (@elems) { push @a, $_, $_; }
-    :    my @e = &lt;a a b b c c d d e e&gt;;
-    :    is(@a, @e, 'for (@a) { ... $_ ... $_ ... } iterates all elems, not just odd');
-    :}
-    :
-    :
-    :# for with &quot;is rw&quot;
-    :
-    :my @array_s = (0..2);
-    :my @s = (1..3);
-    :for @array_s { $_++ };
-    :is(@array_s, @s, 'for @array { $_++ }');
-    :
-    :my @array_t = (0..2);
-    :my @t = (1..3);
-    :for @array_t -&gt; $val is rw { $val++ };
-    :is(@array_t, @t, 'for @array -&gt; $val is rw { $val++ }');
-    :
-    :my @array_v = (0..2);
-    :my @v = (1..3);
-    :try { for @array_v.values -&gt; $val is rw { $val++ }; };
-    :is(@array_v, @v, 'for @array.values -&gt; $val is rw { $val++ }', :todo&lt;feature&gt;);
-    :
-    :my @array_kv = (0..2);
-    :my @kv = (1..3);
-    :try { for @array_kv.kv -&gt; $key, $val is rw { $val++ }; };
-    :is(@array_kv, @kv, 'for @array.kv -&gt; $key, $val is rw { $val++ }', :todo&lt;feature&gt;);
-    :
-    :my %hash_v = ( a =&gt; 1, b =&gt; 2, c =&gt; 3 );
-    :my %v = ( a =&gt; 2, b =&gt; 3, c =&gt; 4 );
-    :try { for %hash_v.values -&gt; $val is rw { $val++ }; };
-    :is(%hash_v, %v, 'for %hash.values -&gt; $val is rw { $val++ }', :todo&lt;feature&gt;);
-    :
-    :my %hash_kv = ( a =&gt; 1, b =&gt; 2, c =&gt; 3 );
-    :my %kv = ( a =&gt; 2, b =&gt; 3, c =&gt; 4 );
-    :try { for %hash_kv.kv -&gt; $key, $val is rw { $val++ }; };
-    :is( %hash_kv.sort, %kv.sort, 'for %hash.kv -&gt; $key, $val is rw { $val++ }', :todo&lt;feature&gt;);
-    :
-    :
-    :# .key //= ++$i for @array1;
-    :{
-    :   class TestClass is rw { has $.key; };
-    :   my @array1 = (TestClass.new(),TestClass.new(:key&lt;2&gt;));
-    :   my @array2 = (TestClass.new(:key&lt;1&gt;),TestClass.new(:key&lt;3&gt;));   
-    :   
-    :   my $i = 0;
-    :   try { .key //= ++$i for @array1 };
-    :   my $sum1 = @array1.map:{ $_.key };
-    :   my $sum2 = @array2.map:{ $_.key };
-    :   is( $sum1, $sum2, '.key //= ++$i for @array1;', :todo&lt;bug&gt;);
-    :
-    :}
-    :
-    :# .key = 1 for @array1;
-    :{
-    :   class TestClass is rw { has $.key; };
-    :   my @array1 = (TestClass.new(),TestClass.new(:key&lt;2&gt;));
-    :   my @array2 = (TestClass.new(:key&lt;1&gt;),TestClass.new(:key&lt;1&gt;));   
-    :
-    :   try { .key = 1 for @array1 };
-    :   my $sum1 = @array1.map:{ $_.key };
-    :   my $sum2 = @array2.map:{ $_.key };
-    :   is($sum1, $sum2, '.key = 1 for @array1;');
-    :}
-    :
-    :# $_.key = 1 for @array1;
-    :{
-    :   class TestClass is rw { has $.key; };
-    :   my @array1 = (TestClass.new(),TestClass.new(:key&lt;2&gt;));
-    :   my @array2 = (TestClass.new(:key&lt;1&gt;),TestClass.new(:key&lt;1&gt;));   
-    :
-    :   try { $_.key = 1 for @array1 };
-    :   my $sum1 = @array1.map:{ $_.key };
-    :   my $sum2 = @array2.map:{ $_.key };
-    :   is( $sum1, $sum2, '$_.key = 1 for @array1;');
-    :
-    :}</pre>
+<div ID=hide_41 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"The C&lt;for&gt; statement" /to the closure:/&gt;
+
+my $b;
+for 0 .. 5 -&gt; $_ { $b = $b ~ $_; };
+is($b, '012345', 'for 0 .. 5 -&gt; {} works');
+
+{
+    my $str;
+    my @a = 1..3;
+    my @b = 4..6;
+    for each(@a; @b) -&gt; $x, $y {
+        $str ~= "($x $y)";
+    }
+    is $str, "(1 4)(2 5)(3 6)";
+}
+
+{
+    my $str;
+    my @a = 1..3;
+    my @b = 5..6;
+    eval q{
+        for zip(@a; @b) -&gt; [$x, $y] {
+            $str ~= "($x $y)";
+        }
+    };
+    is $str, "(1 5)(2 4)(3 6)";
+}
+
+# ... with sub
+
+my $c;
+for (0 .. 5) sub { $c = $c ~ $_; };
+is($c, '012345', 'for 0 .. 5 sub {} works');
+
+# ... with referential sub
+
+my $d;
+sub some_sub_1 ($arg) { $d = $d ~ $arg; }
+for (0 .. 5) { .some_sub_1 };
+is($d, '012345', 'for 0 .. 5 { .some_sub } works');
+
+## and now with parens around the range operator
+
+my $e;
+for (0 .. 5) { $e = $e ~ $_; };
+is($e, '012345', 'for () {} works');
+
+# ... with 'pointer'
+
+my $f;
+for (0 .. 5) -&gt; $_ { $f = $f ~ $_; };
+is($f, '012345', 'for () -&gt; {} works');
+
+# ... with sub
+
+my $g;
+for (0 .. 5) sub { $g = $g ~ $_; };
+is($g, '012345', 'for (0 .. 5) sub {} works');
+
+# ... with referential sub
+
+my $h;
+sub some_sub_2 ($arg) { $h = $h ~ $arg; }
+for (0 .. 5) { .some_sub_2 };
+is($h, '012345', 'for (0 .. 5) { .some_sub } works');
+
+# ... with implicit topic
+
+$_ = "GLOBAL VALUE";
+for "INNER VALUE" {
+  is( .lc, "inner value", "Implicit default topic is seen by lc()");
+};
+is($_,"GLOBAL VALUE","After the loop the implicit topic gets restored");
+
+$_ = "GLOBAL VALUE";
+is( .lc, "inner value", "Implicit default topic is seen by lc()" )
+  for "INNER VALUE";
+is($_,"GLOBAL VALUE","After the loop the implicit topic gets restored");
+
+## and now for with 'topical' variables
+
+# ... w/out parens
+
+my $i;
+for 0 .. 5 -&gt; $topic { $i = $i ~ $topic; };
+is($i, '012345', 'for 0 .. 5 -&gt; $topic {} works');
+
+# ... with parens
+
+my $j;
+for (0 .. 5) -&gt; $topic { $j = $j ~ $topic; };
+is($j, '012345', 'for () -&gt; $topic {} works');
+
+
+## for with @array operator w/out parens
+
+my @array_k = (0 .. 5);
+my $k;
+for @array_k { $k = $k ~ $_; };
+is($k, '012345', 'for @array {} works');
+
+# ... with 'pointer'
+
+my @array_l = (0 .. 5);
+my $l;
+for @array_l -&gt; $_ { $l = $l ~ $_; };
+is($l, '012345', 'for @array -&gt; {} works');
+
+# ... with sub
+
+my @array_m = (0 .. 5);
+my $m;
+for (@array_m) sub { $m = $m ~ $_; };
+is($m, '012345', 'for @array sub {} works');
+
+# ... with referential sub
+
+my @array_n = (0 .. 5);
+my $n;
+sub some_sub_3 ($arg) { $n = $n ~ $arg; }
+for (@array_n) { .some_sub_3 };
+is($n, '012345', 'for @array { .some_sub } works');
+
+## and now with parens around the @array
+
+my @array_o = (0 .. 5);
+my $o;
+for (@array_o) { $o = $o ~ $_; };
+is($o, '012345', 'for (@array) {} works');
+
+# ... with 'pointer'
+
+my @array_p = (0 .. 5);
+my $p;
+for (@array_p) -&gt; $_ { $p = $p ~ $_; };
+is($p, '012345', 'for (@array) -&gt; {} works');
+
+# ... with sub
+
+my @array_q = (0 .. 5);
+my $q;
+for (@array_q) sub { $q ~= $_; };
+is($q, '012345', 'for (@array) sub {} works');
+
+# ... with referential sub
+
+my @array_r = (0 .. 5);
+my $r;
+sub some_sub_4 ($arg) { $r ~= $arg; }
+for (@array_r) { .some_sub_4 };
+is($r, '012345', 'for (@array) { .some_sub } works');
+
+
+my @elems = &lt;a b c d e&gt;;
+
+{
+    my @a;
+    for (@elems) {
+        push @a, $_;
+    }
+    my @e = &lt;a b c d e&gt;;
+    is(@a, @e, 'for (@a) { ... $_ ... } iterates all elems');
+}
+
+{
+    my @a;
+        for (@elems) -&gt; $_ { push @a, $_ };
+    my @e = @elems;
+    is(@a, @e, 'for (@a)-&gt;$_ { ... $_ ... } iterates all elems' );
+}
+
+{
+    my @a;
+    for (@elems) { push @a, $_, $_; }
+    my @e = &lt;a a b b c c d d e e&gt;;
+    is(@a, @e, 'for (@a) { ... $_ ... $_ ... } iterates all elems, not just odd');
+}
+
+
+# for with "is rw"
+
+my @array_s = (0..2);
+my @s = (1..3);
+for @array_s { $_++ };
+is(@array_s, @s, 'for @array { $_++ }');
+
+my @array_t = (0..2);
+my @t = (1..3);
+for @array_t -&gt; $val is rw { $val++ };
+is(@array_t, @t, 'for @array -&gt; $val is rw { $val++ }');
+
+my @array_v = (0..2);
+my @v = (1..3);
+try { for @array_v.values -&gt; $val is rw { $val++ }; };
+is(@array_v, @v, 'for @array.values -&gt; $val is rw { $val++ }', :todo&lt;feature&gt;);
+
+my @array_kv = (0..2);
+my @kv = (1..3);
+try { for @array_kv.kv -&gt; $key, $val is rw { $val++ }; };
+is(@array_kv, @kv, 'for @array.kv -&gt; $key, $val is rw { $val++ }', :todo&lt;feature&gt;);
+
+my %hash_v = ( a =&gt; 1, b =&gt; 2, c =&gt; 3 );
+my %v = ( a =&gt; 2, b =&gt; 3, c =&gt; 4 );
+try { for %hash_v.values -&gt; $val is rw { $val++ }; };
+is(%hash_v, %v, 'for %hash.values -&gt; $val is rw { $val++ }', :todo&lt;feature&gt;);
+
+my %hash_kv = ( a =&gt; 1, b =&gt; 2, c =&gt; 3 );
+my %kv = ( a =&gt; 2, b =&gt; 3, c =&gt; 4 );
+try { for %hash_kv.kv -&gt; $key, $val is rw { $val++ }; };
+is( %hash_kv.sort, %kv.sort, 'for %hash.kv -&gt; $key, $val is rw { $val++ }', :todo&lt;feature&gt;);
+
+
+# .key //= ++$i for @array1;
+{
+   class TestClass is rw { has $.key; };
+   my @array1 = (TestClass.new(),TestClass.new(:key&lt;2&gt;));
+   my @array2 = (TestClass.new(:key&lt;1&gt;),TestClass.new(:key&lt;3&gt;));   
+   
+   my $i = 0;
+   try { .key //= ++$i for @array1 };
+   my $sum1 = @array1.map:{ $_.key };
+   my $sum2 = @array2.map:{ $_.key };
+   is( $sum1, $sum2, '.key //= ++$i for @array1;', :todo&lt;bug&gt;);
+
+}
+
+# .key = 1 for @array1;
+{
+   class TestClass is rw { has $.key; };
+   my @array1 = (TestClass.new(),TestClass.new(:key&lt;2&gt;));
+   my @array2 = (TestClass.new(:key&lt;1&gt;),TestClass.new(:key&lt;1&gt;));   
+
+   try { .key = 1 for @array1 };
+   my $sum1 = @array1.map:{ $_.key };
+   my $sum2 = @array2.map:{ $_.key };
+   is($sum1, $sum2, '.key = 1 for @array1;');
+}
+
+# $_.key = 1 for @array1;
+{
+   class TestClass is rw { has $.key; };
+   my @array1 = (TestClass.new(),TestClass.new(:key&lt;2&gt;));
+   my @array2 = (TestClass.new(:key&lt;1&gt;),TestClass.new(:key&lt;1&gt;));   
+
+   try { $_.key = 1 for @array1 };
+   my $sum1 = @array1.map:{ $_.key };
+   my $sum2 = @array2.map:{ $_.key };
+   is( $sum1, $sum2, '$_.key = 1 for @array1;');
+
+}</pre>
 </div><pre>
     for @foo -&gt; $item { print $item }</pre>
 <p>Multiple parameters may be passed, in which case the list is traversed
@@ -2546,22 +2567,23 @@ modifier on it; use <code>repeat</code> for that).</p>
 <div ID=header_hidden_35 style="display: block;">- Show t/statements/do.t (15 lines) -</div>
 </a>
 </p>
-<div ID=hide_35 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/The do-once loop/&quot;can't&quot; put while or until modifier&gt;
-    :{
-    :    my $i;
-    :    ok !eval 'do { $i++ } while $i &lt; 5;',
-    :        &quot;'do' can't take the 'while' modifier&quot;;
-    :    is $i, undef, 'the code never run';
-    :}
-    :
-    :{
-    :    my $i;
-    :    ok !eval 'do { $i++ } until $i &gt; 4;',
-    :        &quot;'do' can't take the 'until' modifier&quot;;
-    :    is $i, undef, 'the code never run';
-    :}
-    :</pre>
+<div ID=hide_35 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/The do-once loop/"can't" put while or until modifier&gt;
+{
+    my $i;
+    ok !eval 'do { $i++ } while $i &lt; 5;',
+        "'do' can't take the 'while' modifier";
+    is $i, undef, 'the code never run';
+}
+
+{
+    my $i;
+    ok !eval 'do { $i++ } until $i &gt; 4;',
+        "'do' can't take the 'until' modifier";
+    is $i, undef, 'the code never run';
+}
+</pre>
 </div><p>For any statement, prefixing with a <code>do</code> allows you to 
 return the value of that statement and use it in an expression:</p>
 <pre>
@@ -2582,16 +2604,17 @@ terminated by an unmatched right bracket of some kind.</p>
 <div ID=header_hidden_36 style="display: block;">- Show t/statements/do.t (9 lines) -</div>
 </a>
 </p>
-<div ID=hide_36 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/The do-once loop/&quot;you may use&quot; do &quot;on an expression&quot;&gt;
-    :{
-    :    my $ret = do 42;
-    :    is($ret, 42, 'do EXPR should also work (single number)');
-    :
-    :    $ret = do 3 + 2;
-    :    is($ret, 5, 'do EXPR should also work (simple + expr)');
-    :}
-    :</pre>
+<div ID=hide_36 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/The do-once loop/"you may use" do "on an expression"&gt;
+{
+    my $ret = do 42;
+    is($ret, 42, 'do EXPR should also work (single number)');
+
+    $ret = do 3 + 2;
+    is($ret, 5, 'do EXPR should also work (simple + expr)');
+}
+</pre>
 </div><p>Since <code>do</code> is defined as going in front of a statement, it follows
 that it can always be followed by a statement label.  This is particularly
 useful for the do-once block, since it is offically a loop and can take
@@ -2603,28 +2626,29 @@ therefore loop control statements.</p>
 <div ID=header_hidden_37 style="display: block;">- Show t/statements/do.t (21 lines) -</div>
 </a>
 </p>
-<div ID=hide_37 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/The do-once loop/&quot;can take&quot; &quot;loop control statements&quot;&gt;
-    :{
-    :    my $i;
-    :    do {
-    :        $i++;
-    :        next;
-    :        $i--;
-    :    }
-    :    is $i, 1, &quot;'next' works in 'do' block&quot;;
-    :}
-    :
-    :{
-    :    my $i;
-    :    do {
-    :        $i++;
-    :        last;
-    :        $i--;
-    :    }
-    :    is $i, 1, &quot;'last' works in 'do' block&quot;;
-    :}
-    :</pre>
+<div ID=hide_37 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/The do-once loop/"can take" "loop control statements"&gt;
+{
+    my $i;
+    do {
+        $i++;
+        next;
+        $i--;
+    }
+    is $i, 1, "'next' works in 'do' block";
+}
+
+{
+    my $i;
+    do {
+        $i++;
+        last;
+        $i--;
+    }
+    is $i, 1, "'last' works in 'do' block";
+}
+</pre>
 </div><p>Although a bare block is no longer a do-once loop, it still executes
 immediately as in Perl 5, as if it were immediately dereferenced with
 a <code>.()</code> postfix, so within such a block <code>CALLER::</code> refers to the
@@ -2640,19 +2664,20 @@ course, use a placeholder parameter if you also use <code>return</code>.)</p>
 <div ID=header_hidden_38 style="display: block;">- Show t/statements/do.t (12 lines) -</div>
 </a>
 </p>
-<div ID=hide_38 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/The do-once loop/&quot;bare block&quot; &quot;no longer a do-once loop&quot;&gt;
-    :{
-    :    my $i;
-    :    ok !eval('{ $i++; next; $i--; }'), &quot;bare block can't take 'next'&quot;;
-    :    is $i, undef, &quot;the code snippet never run&quot;;
-    :}
-    :
-    :{
-    :    my $i;
-    :    ok !eval('{ $i++; last; $i--; }'), &quot;bare block can't take 'last'&quot;;
-    :    is $i, undef, &quot;the code snippet never run&quot;;
-    :}</pre>
+<div ID=hide_38 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/The do-once loop/"bare block" "no longer a do-once loop"&gt;
+{
+    my $i;
+    ok !eval('{ $i++; next; $i--; }'), "bare block can't take 'next'";
+    is $i, undef, "the code snippet never run";
+}
+
+{
+    my $i;
+    ok !eval('{ $i++; last; $i--; }'), "bare block can't take 'last'";
+    is $i, undef, "the code snippet never run";
+}</pre>
 </div><p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
@@ -2695,83 +2720,84 @@ directly to the first appropriate test that might possibly match.)</p>
 <div ID=header_hidden_9 style="display: block;">- Show t/statements/given.t (76 lines) -</div>
 </a>
 </p>
-<div ID=hide_9 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Switch statements&quot; /&quot;is exactly equivalent to&quot;&gt;
-    :eval '
-    :    my @input = (0, 1);
-    :    my @got;
-    :
-    :    for @input -&gt; $x {
-    :        given $x {
-    :              when true { push @got, &quot;true&quot; }
-    :          default { push @got, &quot;false&quot; }
-    :                  #when !true { push @got, &quot;false&quot; }
-    :        }
-    :    }
-    :
-    :    is(@got.join(&quot;,&quot;), &quot;false,true&quot;, q!given { when true { } }!);
-    :';
-    :flunk(&quot;when true is parsefail&quot;, :todo&lt;feature&gt;) if $!;
-    :
-    :# given + hash deref
-    :{
-    :    my %h;
-    :    given %h { .{'key'} = 'value'; }
-    :    ok(%h{'key'} eq 'value', 'given and hash deref using .{}');
-    :    given %h { .&lt;key&gt; = &quot;value&quot;; }
-    :    ok(%h{'key'} eq 'value', 'given and hash deref using .&lt;&gt;');
-    :}
-    :
-    :# given + 0-arg closure
-    :{
-    :    my $x;
-    :    given 41 {
-    :        when ({ $_ == 49 }) { diag &quot;this really shouldn't happen&quot;; $x = 49 }
-    :        when ({ $_ == 41 }) { $x++ }
-    :    }
-    :    ok $x, 'given tests 0-arg closures for truth';
-    :}
-    :
-    :# given + 1-arg closure
-    :{
-    :    my $x;
-    :    given 41 {
-    :        when (-&gt; $t { $t == 49 }) { diag &quot;this really shouldn't happen&quot;; $x = 49 }
-    :        when (-&gt; $t { $t == 41 }) { $x++ }
-    :    }
-    :    ok $x, 'given tests 1-arg closures for truth';
-    :}
-    :
-    :# given + n&gt;1-arg closure (should fail)
-    :{
-    :    dies_ok {
-    :        given 41 {
-    :            when (-&gt; $t, $r { $t == $r }) { ... }
-    :        }
-    :    }, 'fail on arities &gt; 1';
-    :    is $!, 'Unexpected arity in smart match: 2', '...with useful error message';
-    :}
-    :
-    :# given + 0-arg sub
-    :{
-    :    my $x = 41;
-    :    sub always_true { Bool::True }
-    :    given 1 {
-    :        when &amp;always_true { $x++ }
-    :    }
-    :    is $x, 42, 'given tests 0-arg subs for truth';
-    :}
-    :
-    :# given + 1-arg sub
-    :{
-    :    my $x = 41;
-    :    sub maybe_true ($value) { $value eq &quot;mytopic&quot; }
-    :    given &quot;mytopic&quot; {
-    :        when &amp;maybe_true { $x++ }
-    :    }
-    :    is $x, 42, 'given tests 1-arg subs for truth';
-    :}
-    :</pre>
+<div ID=hide_9 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Switch statements" /"is exactly equivalent to"&gt;
+eval '
+    my @input = (0, 1);
+    my @got;
+
+    for @input -&gt; $x {
+        given $x {
+              when true { push @got, "true" }
+          default { push @got, "false" }
+                  #when !true { push @got, "false" }
+        }
+    }
+
+    is(@got.join(","), "false,true", q!given { when true { } }!);
+';
+flunk("when true is parsefail", :todo&lt;feature&gt;) if $!;
+
+# given + hash deref
+{
+    my %h;
+    given %h { .{'key'} = 'value'; }
+    ok(%h{'key'} eq 'value', 'given and hash deref using .{}');
+    given %h { .&lt;key&gt; = "value"; }
+    ok(%h{'key'} eq 'value', 'given and hash deref using .&lt;&gt;');
+}
+
+# given + 0-arg closure
+{
+    my $x;
+    given 41 {
+        when ({ $_ == 49 }) { diag "this really shouldn't happen"; $x = 49 }
+        when ({ $_ == 41 }) { $x++ }
+    }
+    ok $x, 'given tests 0-arg closures for truth';
+}
+
+# given + 1-arg closure
+{
+    my $x;
+    given 41 {
+        when (-&gt; $t { $t == 49 }) { diag "this really shouldn't happen"; $x = 49 }
+        when (-&gt; $t { $t == 41 }) { $x++ }
+    }
+    ok $x, 'given tests 1-arg closures for truth';
+}
+
+# given + n&gt;1-arg closure (should fail)
+{
+    dies_ok {
+        given 41 {
+            when (-&gt; $t, $r { $t == $r }) { ... }
+        }
+    }, 'fail on arities &gt; 1';
+    is $!, 'Unexpected arity in smart match: 2', '...with useful error message';
+}
+
+# given + 0-arg sub
+{
+    my $x = 41;
+    sub always_true { Bool::True }
+    given 1 {
+        when &amp;always_true { $x++ }
+    }
+    is $x, 42, 'given tests 0-arg subs for truth';
+}
+
+# given + 1-arg sub
+{
+    my $x = 41;
+    sub maybe_true ($value) { $value eq "mytopic" }
+    given "mytopic" {
+        when &amp;maybe_true { $x++ }
+    }
+    is $x, 42, 'given tests 1-arg subs for truth';
+}
+</pre>
 </div><pre>
     when * {...}</pre>
 <p>Because <code>when</code> statements are executed in order, the default must
@@ -2972,35 +2998,36 @@ either returns an unthrown exception, or throws the exception.</p>
 <div ID=header_hidden_13 style="display: block;">- Show t/builtins/control_flow/fail.t (28 lines) -</div>
 </a>
 </p>
-<div ID=hide_13 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Exceptions&quot; /The fail function/&gt;
-    :
-    :{
-    :  # &quot;use fatal&quot; is not standard, so we don't have to disable it here
-    :  my $was_after_fail  = 0;
-    :  my $was_before_fail = 0;
-    :  my $sub = sub { $was_before_fail++; my $exception = fail_ 42; $was_after_fail++ };
-    :
-    :  my $unthrown_exception = $sub();
-    :  # Note: We don't further access $unthrown_exception, so it doesn't get thrown
-    :  is $was_before_fail, 1, &quot;fail() doesn't cause our sub to not get executed&quot;;
-    :  is $was_after_fail,  0, &quot;fail() causes our sub to return (1)&quot;;
-    :}
-    :
-    :{
-    :  # Explicitly &quot;use fatal&quot;
-    :  # use fatal; -- Commented as there's no fatal.pm yet.
-    :  # Instead, we set the magical variable $?FAIL_SHOULD_DIE to a true value.
-    :  my $?FAIL_SHOULD_DIE = 1;
-    :  my $was_after_fail = 0;
-    :  my $was_after_sub  = 0;
-    :  my $sub = sub { fail_ 42; $was_after_fail++ };
-    :
-    :  try { $sub(); $was_after_sub++ };
-    :
-    :  is $was_after_fail, 0, &quot;fail() causes our sub to return (2)&quot;;
-    :  is $was_after_sub,  0, &quot;fail() causes our try{} to die&quot;;
-    :}</pre>
+<div ID=hide_13 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Exceptions" /The fail function/&gt;
+
+{
+  # "use fatal" is not standard, so we don't have to disable it here
+  my $was_after_fail  = 0;
+  my $was_before_fail = 0;
+  my $sub = sub { $was_before_fail++; my $exception = fail_ 42; $was_after_fail++ };
+
+  my $unthrown_exception = $sub();
+  # Note: We don't further access $unthrown_exception, so it doesn't get thrown
+  is $was_before_fail, 1, "fail() doesn't cause our sub to not get executed";
+  is $was_after_fail,  0, "fail() causes our sub to return (1)";
+}
+
+{
+  # Explicitly "use fatal"
+  # use fatal; -- Commented as there's no fatal.pm yet.
+  # Instead, we set the magical variable $?FAIL_SHOULD_DIE to a true value.
+  my $?FAIL_SHOULD_DIE = 1;
+  my $was_after_fail = 0;
+  my $was_after_sub  = 0;
+  my $sub = sub { fail_ 42; $was_after_fail++ };
+
+  try { $sub(); $was_after_sub++ };
+
+  is $was_after_fail, 0, "fail() causes our sub to return (2)";
+  is $was_after_sub,  0, "fail() causes our try{} to die";
+}</pre>
 </div><p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
@@ -3013,60 +3040,61 @@ either returns an unthrown exception, or throws the exception.</p>
 <div ID=header_hidden_26 style="display: block;">- Show t/closure_traits/in_loop.t (53 lines) -</div>
 </a>
 </p>
-<div ID=hide_26 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Closure traits&quot;&gt;
-    :
-    :{
-    :    my $str;
-    :
-    :    for 1..10 -&gt; $i {
-    :        last if $i &gt; 3;
-    :        $str ~= &quot;($i a)&quot;;
-    :        next if $i % 2 == 1;
-    :        $str ~= &quot;($i b)&quot;;
-    :        LAST  { $str ~= &quot;($i Last)&quot; }
-    :        LEAVE { $str ~= &quot;($i Leave)&quot; }
-    :        NEXT  { $str ~= &quot;($i N)&quot; }
-    :        START { $str ~= &quot;($i S)&quot; }
-    :        ENTER { $str ~= &quot;($i E)&quot; }
-    :    }
-    :
-    :    is $str, &quot;(1 S)(1 E)(1 a)&quot; ~ &quot;(1 N)(1 Leave)&quot; ~
-    :                  &quot;(2 E)(2 a)(2 b)(2 N)(2 Leave)&quot; ~
-    :                  &quot;(3 E)(3 a)&quot; ~ &quot;(3 N)(3 Leave)&quot; ~
-    :                  &quot;(4 E)&quot;  ~  &quot;(4 Last)(4 Leave)&quot;,
-    :       'trait blocks work properly in for loop';
-    :}
-    :
-    :{
-    :    my $str;
-    :
-    :    for 1..10 -&gt; $i {
-    :        last if $i &gt; 3;
-    :        $str ~= &quot;($i a)&quot;;
-    :
-    :        ENTER { $str ~= &quot;($i E1)&quot; }
-    :        LAST  { $str ~= &quot;($i Last1)&quot; }
-    :        START { $str ~= &quot;($i S1)&quot; }
-    :        LEAVE { $str ~= &quot;($i Leave1)&quot; }
-    :
-    :        next if $i % 2 == 1;
-    :        $str ~= &quot;($i b)&quot;;
-    :
-    :        LAST  { $str ~= &quot;($i Last2)&quot; }
-    :        NEXT  { $str ~= &quot;($i N1)&quot; }
-    :        START { $str ~= &quot;($i S2)&quot; }
-    :        LEAVE { $str ~= &quot;($i Leave2)&quot; }
-    :        ENTER { $str ~= &quot;($i E2)&quot; }
-    :        NEXT  { $str ~= &quot;($i N2)&quot; }
-    :    }
-    :
-    :    is $str, &quot;(1 S1)(1 S2)(1 E1)(1 E2)(1 a)&quot; ~ &quot;(1 N1)(1 N2)&quot; ~  &quot;(1 Leave1)(1 Leave2)&quot; ~
-    :                         &quot;(2 E1)(2 E2)(2 a)(2 b)(2 N1)(2 N2)&quot; ~  &quot;(2 Leave1)(2 Leave2)&quot; ~
-    :                         &quot;(3 E1)(3 E2)(3 a)&quot; ~ &quot;(3 N1)(3 N2)&quot; ~  &quot;(3 Leave1)(3 Leave2)&quot; ~
-    :                         &quot;(4 E1)(4 E2)&quot;  ~     &quot;(4 Last1)(4 Last2)(4 Leave1)(4 Leave2)&quot;,
-    :       'trait blocks work properly in for loop';
-    :}</pre>
+<div ID=hide_26 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Closure traits"&gt;
+
+{
+    my $str;
+
+    for 1..10 -&gt; $i {
+        last if $i &gt; 3;
+        $str ~= "($i a)";
+        next if $i % 2 == 1;
+        $str ~= "($i b)";
+        LAST  { $str ~= "($i Last)" }
+        LEAVE { $str ~= "($i Leave)" }
+        NEXT  { $str ~= "($i N)" }
+        START { $str ~= "($i S)" }
+        ENTER { $str ~= "($i E)" }
+    }
+
+    is $str, "(1 S)(1 E)(1 a)" ~ "(1 N)(1 Leave)" ~
+                  "(2 E)(2 a)(2 b)(2 N)(2 Leave)" ~
+                  "(3 E)(3 a)" ~ "(3 N)(3 Leave)" ~
+                  "(4 E)"  ~  "(4 Last)(4 Leave)",
+       'trait blocks work properly in for loop';
+}
+
+{
+    my $str;
+
+    for 1..10 -&gt; $i {
+        last if $i &gt; 3;
+        $str ~= "($i a)";
+
+        ENTER { $str ~= "($i E1)" }
+        LAST  { $str ~= "($i Last1)" }
+        START { $str ~= "($i S1)" }
+        LEAVE { $str ~= "($i Leave1)" }
+
+        next if $i % 2 == 1;
+        $str ~= "($i b)";
+
+        LAST  { $str ~= "($i Last2)" }
+        NEXT  { $str ~= "($i N1)" }
+        START { $str ~= "($i S2)" }
+        LEAVE { $str ~= "($i Leave2)" }
+        ENTER { $str ~= "($i E2)" }
+        NEXT  { $str ~= "($i N2)" }
+    }
+
+    is $str, "(1 S1)(1 S2)(1 E1)(1 E2)(1 a)" ~ "(1 N1)(1 N2)" ~  "(1 Leave1)(1 Leave2)" ~
+                         "(2 E1)(2 E2)(2 a)(2 b)(2 N1)(2 N2)" ~  "(2 Leave1)(2 Leave2)" ~
+                         "(3 E1)(3 E2)(3 a)" ~ "(3 N1)(3 N2)" ~  "(3 Leave1)(3 Leave2)" ~
+                         "(4 E1)(4 E2)"  ~     "(4 Last1)(4 Last2)(4 Leave1)(4 Leave2)",
+       'trait blocks work properly in for loop';
+}</pre>
 </div><p>A <code>CATCH</code> block is just a trait of the closure containing it.  Other
 blocks can be installed as traits as well.  These other blocks are
 called at various times, and some of them respond to various control
@@ -3082,69 +3110,70 @@ exceptions and exit values:</p>
 <div ID=header_hidden_27 style="display: block;">- Show t/closure_traits/init.t (62 lines) -</div>
 </a>
 </p>
-<div ID=hide_27 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Closure traits&quot;/INIT &quot;at run time&quot; ASAP&gt;
-    :# INIT {...} blocks in &quot;void&quot; context
-    :{
-    :    my $str;
-    :    is $str, &quot;begin1 begin2 init &quot;, &quot;init blocks run after begin blocks&quot;;
-    :
-    :    BEGIN { $str ~= &quot;begin1 &quot;; }
-    :    INIT  { $str ~= &quot;init &quot;; }
-    :    BEGIN { $str ~= &quot;begin2 &quot;; }
-    :}
-    :
-    :{
-    :    my $str;
-    :    is $str, &quot;check2 check1 init &quot;, &quot;init blocks run after check blocks&quot;;
-    :
-    :    CHECK { $str ~= &quot;check1 &quot;; }
-    :    INIT  { $str ~= &quot;init &quot;; }
-    :    CHECK { $str ~= &quot;check2 &quot;; }
-    :}
-    :
-    :{
-    :    my $str;
-    :    is $str, &quot;begin init1 init2 &quot;, &quot;init blocks run in forward order&quot;;
-    :
-    :    INIT  { $str ~= &quot;init1 &quot;; }
-    :    BEGIN { $str ~= &quot;begin &quot;; }
-    :    INIT  { $str ~= &quot;init2 &quot;; }
-    :}
-    :
-    :# INIT {...} blocks as rvalues
-    :{
-    :    my $str;
-    :    my $handle = { my $retval = INIT { $str ~= 'I' } };
-    :
-    :    is $str, 'I', 'our INIT {...} block already gets called';
-    :    is $handle(), 'I', 'our INIT {...} block returned the correct var (1)';
-    :    is $handle(), 'I', 'our INIT {...} block returned the correct var (2)';
-    :    is $str, 'I', 'our rvalue INIT {...} block was executed exactly once';
-    :}
-    :
-    :# IRC note:
-    :# ---------------------------------------------------------------
-    :# &lt;TimToady1&gt; also, the INIT's settings are going to get wiped
-    :#             out when the my is executed, so you probably just
-    :#             end up with 'o'
-    :{
-    :    my $str = 'o';
-    :    INIT { $str ~= 'i' }
-    :    is $str, 'o', 'the value set by INIT {} wiped out by the initializer of $str';
-    :}
-    :
-    :# IRC note:
-    :# ---------------------------------------------------------------
-    :# &lt;TimToady1&gt; INIT runs once just before the mainline code runs.
-    :# &lt;agentzh&gt; even if INIT is in a block?
-    :# &lt;TimToady1&gt; yes.
-    :my $str ~= 'o';  # Note that this is different from  &quot;my $str = 'o';&quot;.
-    :{
-    :    INIT { $str ~= 'i' }
-    :}
-    :is $str, 'io', 'INIT {} always runs before the mainline code runs';
-    :</pre>
+<div ID=hide_27 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Closure traits"/INIT "at run time" ASAP&gt;
+# INIT {...} blocks in "void" context
+{
+    my $str;
+    is $str, "begin1 begin2 init ", "init blocks run after begin blocks";
+
+    BEGIN { $str ~= "begin1 "; }
+    INIT  { $str ~= "init "; }
+    BEGIN { $str ~= "begin2 "; }
+}
+
+{
+    my $str;
+    is $str, "check2 check1 init ", "init blocks run after check blocks";
+
+    CHECK { $str ~= "check1 "; }
+    INIT  { $str ~= "init "; }
+    CHECK { $str ~= "check2 "; }
+}
+
+{
+    my $str;
+    is $str, "begin init1 init2 ", "init blocks run in forward order";
+
+    INIT  { $str ~= "init1 "; }
+    BEGIN { $str ~= "begin "; }
+    INIT  { $str ~= "init2 "; }
+}
+
+# INIT {...} blocks as rvalues
+{
+    my $str;
+    my $handle = { my $retval = INIT { $str ~= 'I' } };
+
+    is $str, 'I', 'our INIT {...} block already gets called';
+    is $handle(), 'I', 'our INIT {...} block returned the correct var (1)';
+    is $handle(), 'I', 'our INIT {...} block returned the correct var (2)';
+    is $str, 'I', 'our rvalue INIT {...} block was executed exactly once';
+}
+
+# IRC note:
+# ---------------------------------------------------------------
+# &lt;TimToady1&gt; also, the INIT's settings are going to get wiped
+#             out when the my is executed, so you probably just
+#             end up with 'o'
+{
+    my $str = 'o';
+    INIT { $str ~= 'i' }
+    is $str, 'o', 'the value set by INIT {} wiped out by the initializer of $str';
+}
+
+# IRC note:
+# ---------------------------------------------------------------
+# &lt;TimToady1&gt; INIT runs once just before the mainline code runs.
+# &lt;agentzh&gt; even if INIT is in a block?
+# &lt;TimToady1&gt; yes.
+my $str ~= 'o';  # Note that this is different from  "my $str = 'o';".
+{
+    INIT { $str ~= 'i' }
+}
+is $str, 'io', 'INIT {} always runs before the mainline code runs';
+</pre>
 </div><pre>
         END {...}       at run time, ALAP, only ever runs once</pre>
 <a name="msg_29"></a>
@@ -3154,37 +3183,38 @@ exceptions and exit values:</p>
 <div ID=header_hidden_29 style="display: block;">- Show t/closure_traits/interpolate.t (30 lines) -</div>
 </a>
 </p>
-<div ID=hide_29 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/END &quot;at run time&quot; ALAP&gt;
-    :
-    :# IRC log:
-    :# ----------------------------------------------------------------
-    :# agentzh   question: should BEGIN blocks interpolated in double-quoted
-    :#           strings be fired at compile-time or run-time?
-    :#           for example, say &quot;This is { BEGIN { say 'hi' } }&quot;;
-    :# audreyt   compile time.
-    :#           qq is not eval.
-    :
-    :my $hist;
-    :
-    :END {
-    :    is $hist, 'BCISE', 'interpolated END {...} executed';
-    :}
-    :
-    :is &quot;{ END { $hist ~= 'E' } }&quot;, undef,
-    :    'END {...} not yet executed';
-    :
-    :is &quot;{ START { $hist ~= 'S' } }&quot;, &quot;BCIS&quot;,
-    :    'START {...} fired at run-time, entry time of the mainline code';
-    :
-    :is &quot;{ INIT { $hist ~= 'I' } }&quot;, 'BCI',
-    :    'INIT {...} fired at the beginning of runtime';
-    :
-    :is &quot;{ CHECK { $hist ~= 'C' } }&quot;, &quot;BC&quot;,
-    :    'CHECK {...} fired at compile-time, ALAP';
-    :
-    :is &quot;{ BEGIN { $hist ~= 'B' } }&quot;, &quot;B&quot;,
-    :    'BEGIN {...} fired at compile-time, ASAP';</pre>
+<div ID=hide_29 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/END "at run time" ALAP&gt;
+
+# IRC log:
+# ----------------------------------------------------------------
+# agentzh   question: should BEGIN blocks interpolated in double-quoted
+#           strings be fired at compile-time or run-time?
+#           for example, say "This is { BEGIN { say 'hi' } }";
+# audreyt   compile time.
+#           qq is not eval.
+
+my $hist;
+
+END {
+    is $hist, 'BCISE', 'interpolated END {...} executed';
+}
+
+is "{ END { $hist ~= 'E' } }", undef,
+    'END {...} not yet executed';
+
+is "{ START { $hist ~= 'S' } }", "BCIS",
+    'START {...} fired at run-time, entry time of the mainline code';
+
+is "{ INIT { $hist ~= 'I' } }", 'BCI',
+    'INIT {...} fired at the beginning of runtime';
+
+is "{ CHECK { $hist ~= 'C' } }", "BC",
+    'CHECK {...} fired at compile-time, ALAP';
+
+is "{ BEGIN { $hist ~= 'B' } }", "B",
+    'BEGIN {...} fired at compile-time, ASAP';</pre>
 </div><a name="msg_24"></a>
 <a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
 <div ID=header_shown_24 style="display: none;">- Hide t/closure_traits/descending_order.t (line 11 ~ line 53) -
@@ -3192,50 +3222,51 @@ exceptions and exit values:</p>
 <div ID=header_hidden_24 style="display: block;">- Show t/closure_traits/descending_order.t (43 lines) -</div>
 </a>
 </p>
-<div ID=hide_24 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/END &quot;at run time&quot; ALAP&gt;
-    :
-    :my $var;
-    :my ($var_at_enter, $var_at_init, $var_at_check, $var_at_begin);
-    :my $eof_var;
-    :
-    :$var = 13;
-    :
-    :my $hist;
-    :
-    :END {
-    :    # tests for END blocks:
-    :    is $var, 13, '$var gets initialized at END time';
-    :    is $eof_var, 29, '$eof_var gets assigned at END time';
-    :}
-    :
-    :ENTER {
-    :    $hist ~= 'enter ';
-    :    $var_at_enter = $var;
-    :}
-    :
-    :INIT {
-    :    $hist ~= 'init ';
-    :    $var_at_init = $var;
-    :}
-    :
-    :CHECK {
-    :    $hist ~= 'check ';
-    :    $var_at_check = $var;
-    :}
-    :
-    :BEGIN {
-    :    $hist ~= 'begin ';
-    :    $var_at_begin = $var;
-    :}
-    :
-    :is $hist, 'begin check init first ', 'BEGIN {} runs only once';
-    :is $var_at_begin, undef, 'BEGIN {...} ran at compile time';
-    :is $var_at_check, undef, 'CHECK {...} ran at compile time';
-    :is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
-    :is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
-    :
-    :$eof_var = 29;</pre>
+<div ID=hide_24 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/END "at run time" ALAP&gt;
+
+my $var;
+my ($var_at_enter, $var_at_init, $var_at_check, $var_at_begin);
+my $eof_var;
+
+$var = 13;
+
+my $hist;
+
+END {
+    # tests for END blocks:
+    is $var, 13, '$var gets initialized at END time';
+    is $eof_var, 29, '$eof_var gets assigned at END time';
+}
+
+ENTER {
+    $hist ~= 'enter ';
+    $var_at_enter = $var;
+}
+
+INIT {
+    $hist ~= 'init ';
+    $var_at_init = $var;
+}
+
+CHECK {
+    $hist ~= 'check ';
+    $var_at_check = $var;
+}
+
+BEGIN {
+    $hist ~= 'begin ';
+    $var_at_begin = $var;
+}
+
+is $hist, 'begin check init first ', 'BEGIN {} runs only once';
+is $var_at_begin, undef, 'BEGIN {...} ran at compile time';
+is $var_at_check, undef, 'CHECK {...} ran at compile time';
+is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
+is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
+
+$eof_var = 29;</pre>
 </div><a name="msg_30"></a>
 <a href="?hide_quotes=no#msg_30" onclick="return tog_quote(30);">
 <div ID=header_shown_30 style="display: none;">- Hide t/closure_traits/interpolate.t (line 11 ~ line 40) -
@@ -3243,37 +3274,38 @@ exceptions and exit values:</p>
 <div ID=header_hidden_30 style="display: block;">- Show t/closure_traits/interpolate.t (30 lines) -</div>
 </a>
 </p>
-<div ID=hide_30 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/END &quot;at run time&quot; ALAP&gt;
-    :
-    :# IRC log:
-    :# ----------------------------------------------------------------
-    :# agentzh   question: should BEGIN blocks interpolated in double-quoted
-    :#           strings be fired at compile-time or run-time?
-    :#           for example, say &quot;This is { BEGIN { say 'hi' } }&quot;;
-    :# audreyt   compile time.
-    :#           qq is not eval.
-    :
-    :my $hist;
-    :
-    :END {
-    :    is $hist, 'BCISE', 'interpolated END {...} executed';
-    :}
-    :
-    :is &quot;{ END { $hist ~= 'E' } }&quot;, undef,
-    :    'END {...} not yet executed';
-    :
-    :is &quot;{ START { $hist ~= 'S' } }&quot;, &quot;BCIS&quot;,
-    :    'START {...} fired at run-time, entry time of the mainline code';
-    :
-    :is &quot;{ INIT { $hist ~= 'I' } }&quot;, 'BCI',
-    :    'INIT {...} fired at the beginning of runtime';
-    :
-    :is &quot;{ CHECK { $hist ~= 'C' } }&quot;, &quot;BC&quot;,
-    :    'CHECK {...} fired at compile-time, ALAP';
-    :
-    :is &quot;{ BEGIN { $hist ~= 'B' } }&quot;, &quot;B&quot;,
-    :    'BEGIN {...} fired at compile-time, ASAP';</pre>
+<div ID=hide_30 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/END "at run time" ALAP&gt;
+
+# IRC log:
+# ----------------------------------------------------------------
+# agentzh   question: should BEGIN blocks interpolated in double-quoted
+#           strings be fired at compile-time or run-time?
+#           for example, say "This is { BEGIN { say 'hi' } }";
+# audreyt   compile time.
+#           qq is not eval.
+
+my $hist;
+
+END {
+    is $hist, 'BCISE', 'interpolated END {...} executed';
+}
+
+is "{ END { $hist ~= 'E' } }", undef,
+    'END {...} not yet executed';
+
+is "{ START { $hist ~= 'S' } }", "BCIS",
+    'START {...} fired at run-time, entry time of the mainline code';
+
+is "{ INIT { $hist ~= 'I' } }", 'BCI',
+    'INIT {...} fired at the beginning of runtime';
+
+is "{ CHECK { $hist ~= 'C' } }", "BC",
+    'CHECK {...} fired at compile-time, ALAP';
+
+is "{ BEGIN { $hist ~= 'B' } }", "B",
+    'BEGIN {...} fired at compile-time, ASAP';</pre>
 </div><a name="msg_23"></a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID=header_shown_23 style="display: none;">- Hide t/closure_traits/ascending_order.t (line 11 ~ line 59) -
@@ -3281,56 +3313,57 @@ exceptions and exit values:</p>
 <div ID=header_hidden_23 style="display: block;">- Show t/closure_traits/ascending_order.t (49 lines) -</div>
 </a>
 </p>
-<div ID=hide_23 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/END &quot;at run time&quot; ALAP&gt;
-    :
-    :my $var;
-    :my ($var_at_begin, $var_at_check, $var_at_init, $var_at_start, $var_at_enter);
-    :my $eof_var;
-    :
-    :$var = 13;
-    :
-    :my $hist;
-    :
-    :BEGIN {
-    :    $hist ~= 'begin ';
-    :    $var_at_begin = $var;
-    :}
-    :
-    :CHECK {
-    :    $hist ~= 'check ';
-    :    $var_at_check = $var;
-    :}
-    :
-    :INIT {
-    :    $hist ~= 'init ';
-    :    $var_at_init = $var;
-    :}
-    :
-    :ENTER {
-    :    $hist ~= 'enter ';
-    :    $var_at_enter = $var;
-    :}
-    :
-    :START {
-    :    $hist ~= 'start ';
-    :    $var_at_start = $var + 1;
-    :}
-    :
-    :END {
-    :    # tests for END blocks:
-    :    is $var, 13, '$var gets initialized at END time';
-    :    is $eof_var, 29, '$eof_var gets assigned at END time';
-    :}
-    :
-    :is $hist, 'begin check init start ', 'BEGIN {} runs only once';
-    :is $var_at_begin, undef, 'BEGIN {...} ran at compile time';
-    :is $var_at_check, undef, 'CHECK {...} ran at compile time';
-    :is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
-    :is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
-    :is $var_at_start, 14, 'START {...} at runtime, just in time';
-    :
-    :$eof_var = 29;</pre>
+<div ID=hide_23 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/END "at run time" ALAP&gt;
+
+my $var;
+my ($var_at_begin, $var_at_check, $var_at_init, $var_at_start, $var_at_enter);
+my $eof_var;
+
+$var = 13;
+
+my $hist;
+
+BEGIN {
+    $hist ~= 'begin ';
+    $var_at_begin = $var;
+}
+
+CHECK {
+    $hist ~= 'check ';
+    $var_at_check = $var;
+}
+
+INIT {
+    $hist ~= 'init ';
+    $var_at_init = $var;
+}
+
+ENTER {
+    $hist ~= 'enter ';
+    $var_at_enter = $var;
+}
+
+START {
+    $hist ~= 'start ';
+    $var_at_start = $var + 1;
+}
+
+END {
+    # tests for END blocks:
+    is $var, 13, '$var gets initialized at END time';
+    is $eof_var, 29, '$eof_var gets assigned at END time';
+}
+
+is $hist, 'begin check init start ', 'BEGIN {} runs only once';
+is $var_at_begin, undef, 'BEGIN {...} ran at compile time';
+is $var_at_check, undef, 'CHECK {...} ran at compile time';
+is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
+is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
+is $var_at_start, 14, 'START {...} at runtime, just in time';
+
+$eof_var = 29;</pre>
 </div><a name="msg_31"></a>
 <a href="?hide_quotes=no#msg_31" onclick="return tog_quote(31);">
 <div ID=header_shown_31 style="display: none;">- Hide t/closure_traits/interpolate.t (line 11 ~ line 40) -
@@ -3338,37 +3371,38 @@ exceptions and exit values:</p>
 <div ID=header_hidden_31 style="display: block;">- Show t/closure_traits/interpolate.t (30 lines) -</div>
 </a>
 </p>
-<div ID=hide_31 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/END &quot;at run time&quot; ALAP&gt;
-    :
-    :# IRC log:
-    :# ----------------------------------------------------------------
-    :# agentzh   question: should BEGIN blocks interpolated in double-quoted
-    :#           strings be fired at compile-time or run-time?
-    :#           for example, say &quot;This is { BEGIN { say 'hi' } }&quot;;
-    :# audreyt   compile time.
-    :#           qq is not eval.
-    :
-    :my $hist;
-    :
-    :END {
-    :    is $hist, 'BCISE', 'interpolated END {...} executed';
-    :}
-    :
-    :is &quot;{ END { $hist ~= 'E' } }&quot;, undef,
-    :    'END {...} not yet executed';
-    :
-    :is &quot;{ START { $hist ~= 'S' } }&quot;, &quot;BCIS&quot;,
-    :    'START {...} fired at run-time, entry time of the mainline code';
-    :
-    :is &quot;{ INIT { $hist ~= 'I' } }&quot;, 'BCI',
-    :    'INIT {...} fired at the beginning of runtime';
-    :
-    :is &quot;{ CHECK { $hist ~= 'C' } }&quot;, &quot;BC&quot;,
-    :    'CHECK {...} fired at compile-time, ALAP';
-    :
-    :is &quot;{ BEGIN { $hist ~= 'B' } }&quot;, &quot;B&quot;,
-    :    'BEGIN {...} fired at compile-time, ASAP';</pre>
+<div ID=hide_31 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/END "at run time" ALAP&gt;
+
+# IRC log:
+# ----------------------------------------------------------------
+# agentzh   question: should BEGIN blocks interpolated in double-quoted
+#           strings be fired at compile-time or run-time?
+#           for example, say "This is { BEGIN { say 'hi' } }";
+# audreyt   compile time.
+#           qq is not eval.
+
+my $hist;
+
+END {
+    is $hist, 'BCISE', 'interpolated END {...} executed';
+}
+
+is "{ END { $hist ~= 'E' } }", undef,
+    'END {...} not yet executed';
+
+is "{ START { $hist ~= 'S' } }", "BCIS",
+    'START {...} fired at run-time, entry time of the mainline code';
+
+is "{ INIT { $hist ~= 'I' } }", 'BCI',
+    'INIT {...} fired at the beginning of runtime';
+
+is "{ CHECK { $hist ~= 'C' } }", "BC",
+    'CHECK {...} fired at compile-time, ALAP';
+
+is "{ BEGIN { $hist ~= 'B' } }", "B",
+    'BEGIN {...} fired at compile-time, ASAP';</pre>
 </div><a name="msg_25"></a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID=header_shown_25 style="display: none;">- Hide t/closure_traits/descending_order.t (line 11 ~ line 53) -
@@ -3376,50 +3410,51 @@ exceptions and exit values:</p>
 <div ID=header_hidden_25 style="display: block;">- Show t/closure_traits/descending_order.t (43 lines) -</div>
 </a>
 </p>
-<div ID=hide_25 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/END &quot;at run time&quot; ALAP&gt;
-    :
-    :my $var;
-    :my ($var_at_enter, $var_at_init, $var_at_check, $var_at_begin);
-    :my $eof_var;
-    :
-    :$var = 13;
-    :
-    :my $hist;
-    :
-    :END {
-    :    # tests for END blocks:
-    :    is $var, 13, '$var gets initialized at END time';
-    :    is $eof_var, 29, '$eof_var gets assigned at END time';
-    :}
-    :
-    :ENTER {
-    :    $hist ~= 'enter ';
-    :    $var_at_enter = $var;
-    :}
-    :
-    :INIT {
-    :    $hist ~= 'init ';
-    :    $var_at_init = $var;
-    :}
-    :
-    :CHECK {
-    :    $hist ~= 'check ';
-    :    $var_at_check = $var;
-    :}
-    :
-    :BEGIN {
-    :    $hist ~= 'begin ';
-    :    $var_at_begin = $var;
-    :}
-    :
-    :is $hist, 'begin check init first ', 'BEGIN {} runs only once';
-    :is $var_at_begin, undef, 'BEGIN {...} ran at compile time';
-    :is $var_at_check, undef, 'CHECK {...} ran at compile time';
-    :is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
-    :is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
-    :
-    :$eof_var = 29;</pre>
+<div ID=hide_25 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/END "at run time" ALAP&gt;
+
+my $var;
+my ($var_at_enter, $var_at_init, $var_at_check, $var_at_begin);
+my $eof_var;
+
+$var = 13;
+
+my $hist;
+
+END {
+    # tests for END blocks:
+    is $var, 13, '$var gets initialized at END time';
+    is $eof_var, 29, '$eof_var gets assigned at END time';
+}
+
+ENTER {
+    $hist ~= 'enter ';
+    $var_at_enter = $var;
+}
+
+INIT {
+    $hist ~= 'init ';
+    $var_at_init = $var;
+}
+
+CHECK {
+    $hist ~= 'check ';
+    $var_at_check = $var;
+}
+
+BEGIN {
+    $hist ~= 'begin ';
+    $var_at_begin = $var;
+}
+
+is $hist, 'begin check init first ', 'BEGIN {} runs only once';
+is $var_at_begin, undef, 'BEGIN {...} ran at compile time';
+is $var_at_check, undef, 'CHECK {...} ran at compile time';
+is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
+is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
+
+$eof_var = 29;</pre>
 </div><a name="msg_32"></a>
 <a href="?hide_quotes=no#msg_32" onclick="return tog_quote(32);">
 <div ID=header_shown_32 style="display: none;">- Hide t/closure_traits/interpolate.t (line 11 ~ line 40) -
@@ -3427,37 +3462,38 @@ exceptions and exit values:</p>
 <div ID=header_hidden_32 style="display: block;">- Show t/closure_traits/interpolate.t (30 lines) -</div>
 </a>
 </p>
-<div ID=hide_32 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/END &quot;at run time&quot; ALAP&gt;
-    :
-    :# IRC log:
-    :# ----------------------------------------------------------------
-    :# agentzh   question: should BEGIN blocks interpolated in double-quoted
-    :#           strings be fired at compile-time or run-time?
-    :#           for example, say &quot;This is { BEGIN { say 'hi' } }&quot;;
-    :# audreyt   compile time.
-    :#           qq is not eval.
-    :
-    :my $hist;
-    :
-    :END {
-    :    is $hist, 'BCISE', 'interpolated END {...} executed';
-    :}
-    :
-    :is &quot;{ END { $hist ~= 'E' } }&quot;, undef,
-    :    'END {...} not yet executed';
-    :
-    :is &quot;{ START { $hist ~= 'S' } }&quot;, &quot;BCIS&quot;,
-    :    'START {...} fired at run-time, entry time of the mainline code';
-    :
-    :is &quot;{ INIT { $hist ~= 'I' } }&quot;, 'BCI',
-    :    'INIT {...} fired at the beginning of runtime';
-    :
-    :is &quot;{ CHECK { $hist ~= 'C' } }&quot;, &quot;BC&quot;,
-    :    'CHECK {...} fired at compile-time, ALAP';
-    :
-    :is &quot;{ BEGIN { $hist ~= 'B' } }&quot;, &quot;B&quot;,
-    :    'BEGIN {...} fired at compile-time, ASAP';</pre>
+<div ID=hide_32 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/END "at run time" ALAP&gt;
+
+# IRC log:
+# ----------------------------------------------------------------
+# agentzh   question: should BEGIN blocks interpolated in double-quoted
+#           strings be fired at compile-time or run-time?
+#           for example, say "This is { BEGIN { say 'hi' } }";
+# audreyt   compile time.
+#           qq is not eval.
+
+my $hist;
+
+END {
+    is $hist, 'BCISE', 'interpolated END {...} executed';
+}
+
+is "{ END { $hist ~= 'E' } }", undef,
+    'END {...} not yet executed';
+
+is "{ START { $hist ~= 'S' } }", "BCIS",
+    'START {...} fired at run-time, entry time of the mainline code';
+
+is "{ INIT { $hist ~= 'I' } }", 'BCI',
+    'INIT {...} fired at the beginning of runtime';
+
+is "{ CHECK { $hist ~= 'C' } }", "BC",
+    'CHECK {...} fired at compile-time, ALAP';
+
+is "{ BEGIN { $hist ~= 'B' } }", "B",
+    'BEGIN {...} fired at compile-time, ASAP';</pre>
 </div><pre>
       START {...}*      on first ever execution, once per closure clone</pre>
 <pre>
@@ -3483,47 +3519,48 @@ exceptions and exit values:</p>
 <div ID=header_hidden_34 style="display: block;">- Show t/closure_traits/rvalue.t (40 lines) -</div>
 </a>
 </p>
-<div ID=hide_34 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/&quot;marked with a *&quot; &quot;used within&quot; expression&gt;
-    :
-    :my $hist = '';
-    :
-    :# Test INIT {} as rval:
-    :
-    :my $init_val;
-    :my $init = {
-    :    $init_val = INIT { $hist ~= 'I' };
-    :}
-    :
-    :is $init(), 'BCI', 'INIT {} runs only once';
-    :is $init_val, 'BCI', 'INIT {} as rval is its ret val';
-    :is $init(), 'BCI', 'INIT {} runs only once';
-    :
-    :# Test CHECK {} as rval:
-    :
-    :my $check_val;
-    :my $check = {
-    :    $check_val = CHECK { $hist ~= 'C' };
-    :}
-    :
-    :is $check(), 'BC', 'CHECK {} runs only once';
-    :is $check_val, 'BC', 'CHECK {} as rval is its ret val';
-    :is $check(), 'BC', 'CHECK {} runs only once';
-    :
-    :# Test BEGIN {} as rval:
-    :
-    :my $begin_val;
-    :my $begin = {
-    :    $begin_val = BEGIN { $hist ~= 'B' };
-    :}
-    :
-    :is $begin(), 'B', 'BEGIN {} runs only once';
-    :is $begin_val, 'B', 'BEGIN {} as rval is its ret val';
-    :is $begin(), 'B', 'BEGIN {} runs only once';
-    :
-    :# Test END {} as rval:
-    :
-    :ok !eval 'my $end_val = END { 3 }', &quot;END {} can't be used as a rvalue&quot;;</pre>
+<div ID=hide_34 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/"marked with a *" "used within" expression&gt;
+
+my $hist = '';
+
+# Test INIT {} as rval:
+
+my $init_val;
+my $init = {
+    $init_val = INIT { $hist ~= 'I' };
+}
+
+is $init(), 'BCI', 'INIT {} runs only once';
+is $init_val, 'BCI', 'INIT {} as rval is its ret val';
+is $init(), 'BCI', 'INIT {} runs only once';
+
+# Test CHECK {} as rval:
+
+my $check_val;
+my $check = {
+    $check_val = CHECK { $hist ~= 'C' };
+}
+
+is $check(), 'BC', 'CHECK {} runs only once';
+is $check_val, 'BC', 'CHECK {} as rval is its ret val';
+is $check(), 'BC', 'CHECK {} runs only once';
+
+# Test BEGIN {} as rval:
+
+my $begin_val;
+my $begin = {
+    $begin_val = BEGIN { $hist ~= 'B' };
+}
+
+is $begin(), 'B', 'BEGIN {} runs only once';
+is $begin_val, 'B', 'BEGIN {} as rval is its ret val';
+is $begin(), 'B', 'BEGIN {} runs only once';
+
+# Test END {} as rval:
+
+ok !eval 'my $end_val = END { 3 }', "END {} can't be used as a rvalue";</pre>
 </div><pre>
     my $compiletime = BEGIN { localtime };
     our $temphandle = START { maketemp() };</pre>
@@ -3549,35 +3586,36 @@ a list of closures rather than a single closure.</p>
 <div ID=header_hidden_33 style="display: block;">- Show t/closure_traits/multiple.t (28 lines) -</div>
 </a>
 </p>
-<div ID=hide_33 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/&quot;occur multiple times&quot;&gt;
-    :# IRC log:
-    :# [05:41] &lt;agentzh&gt; TimToady: S04 doesn't discuss the running order 
-    :#                   of multiple closure traits (say, two END {} in 
-    :#                   the same scope), so should we assume it's the
-    :#                   same as in Perl 5?
-    :# [05:41] &lt;TimToady&gt; yes
-    :
-    :my $hist;
-    :
-    :END { is $hist, 'B b c C I i S s end End ', 'running order of multiple closure traits' }
-    :
-    :END { $hist ~= 'End ' }
-    :END { $hist ~= 'end ' }
-    :
-    :START { $hist ~= 'S ' }
-    :START { $hist ~= 's ' }
-    :
-    :INIT { $hist ~= 'I ' }
-    :INIT { $hist ~= 'i ' }
-    :
-    :CHECK { $hist ~= 'C ' }
-    :CHECK { $hist ~= 'c ' }
-    :
-    :BEGIN { $hist ~= 'B ' }
-    :BEGIN { $hist ~= 'b ' }
-    :
-    :is $hist, 'B b c C I i S s ', 'running order of multiple closure traits';</pre>
+<div ID=hide_33 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/"occur multiple times"&gt;
+# IRC log:
+# [05:41] &lt;agentzh&gt; TimToady: S04 doesn't discuss the running order 
+#                   of multiple closure traits (say, two END {} in 
+#                   the same scope), so should we assume it's the
+#                   same as in Perl 5?
+# [05:41] &lt;TimToady&gt; yes
+
+my $hist;
+
+END { is $hist, 'B b c C I i S s end End ', 'running order of multiple closure traits' }
+
+END { $hist ~= 'End ' }
+END { $hist ~= 'end ' }
+
+START { $hist ~= 'S ' }
+START { $hist ~= 's ' }
+
+INIT { $hist ~= 'I ' }
+INIT { $hist ~= 'i ' }
+
+CHECK { $hist ~= 'C ' }
+CHECK { $hist ~= 'c ' }
+
+BEGIN { $hist ~= 'B ' }
+BEGIN { $hist ~= 'b ' }
+
+is $hist, 'B b c C I i S s ', 'running order of multiple closure traits';</pre>
 </div><p>The semantics of <code>INIT</code> and <code>START</code> are not equivalent to each
 other in the case of cloned closures.  An <code>INIT</code> only runs once for
 all copies of a cloned closure.  A <code>START</code> runs separately for each
@@ -3589,15 +3627,16 @@ clone, so separate clones can keep separate state variables:</p>
 <div ID=header_hidden_28 style="display: block;">- Show t/closure_traits/init.t (8 lines) -</div>
 </a>
 </p>
-<div ID=hide_28 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/Closure traits/INIT &quot;runs once for all copies of&quot; &quot;cloned closure&quot;&gt;
-    :{
-    :   my $var;
-    :   for &lt;first second&gt; {
-    :           my $sub = { INIT { $var++ } };
-    :           is $var, 1, &quot;INIT has run exactly once ($_ time)&quot;;
-    :   }
-    :}</pre>
+<div ID=hide_28 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/Closure traits/INIT "runs once for all copies of" "cloned closure"&gt;
+{
+	my $var;
+	for &lt;first second&gt; {
+		my $sub = { INIT { $var++ } };
+		is $var, 1, "INIT has run exactly once ($_ time)";
+	}
+}</pre>
 </div><pre>
     our $i = 0;
     ...
@@ -3762,177 +3801,178 @@ must use something like <code>do {...}</code> or <code>try {...}</code>.</p>
 <div ID=header_hidden_12 style="display: block;">- Show t/builtins/control_flow/try.t (170 lines) -</div>
 </a>
 </p>
-<div ID=hide_12 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Statement parsing&quot;/&quot;or try {...}&quot;&gt;
-    :
-    :plan 26;
-    :
-    :{
-    :    # simple try
-    :    my $lived = undef;
-    :    try { die &quot;foo&quot; };
-    :    is($!, &quot;foo&quot;, &quot;error var was set&quot;);
-    :};
-    :
-    :# try should work when returning an array or hash
-    :{
-    :    my @array = try { 42 };
-    :    is +@array,    1, '@array = try {...} worked (1)';
-    :    is ~@array, &quot;42&quot;, '@array = try {...} worked (2)';
-    :}
-    :
-    :{
-    :    my @array = try { (42,) };
-    :    is +@array,    1, '@array = try {...} worked (3)';
-    :    is ~@array, &quot;42&quot;, '@array = try {...} worked (4)';
-    :}
-    :
-    :{
-    :    my %hash = try { &quot;a&quot; };
-    :    is +%hash,        1, '%hash = try {...} worked (1)';
-    :    is ~%hash.keys, &quot;a&quot;, '%hash = try {...} worked (2)';
-    :}
-    :
-    :{
-    :    my %hash = try { (&quot;a&quot;,) };
-    :    is +%hash,        1, '%hash = try {...} worked (3)';
-    :    is ~%hash.keys, &quot;a&quot;, '%hash = try {...} worked (4)';
-    :}
-    :
-    :{
-    :    warn &quot;Please ignore the next warning about odd number of elements,\n&quot;;
-    :    warn &quot;it's expected.\n&quot;;
-    :    my %hash = try { hash(&quot;a&quot;,) };
-    :    is +%hash,        1, '%hash = try {...} worked (5)';
-    :    is ~%hash.keys, &quot;a&quot;, '%hash = try {...} worked (6)';
-    :}
-    :
-    :{
-    :    my %hash;
-    :    # Extra try necessary because current Pugs dies without it.
-    :    try { %hash = try { a =&gt; 3 } };
-    :    is +%hash,        1, '%hash = try {...} worked (7)', :todo&lt;bug&gt;;
-    :    is ~%hash.keys, &quot;a&quot;, '%hash = try {...} worked (8)', :todo&lt;bug&gt;;
-    :    is ~%hash&lt;a&gt;,     3, '%hash = try {...} worked (9)', :todo&lt;bug&gt;;
-    :}
-    :
-    :{
-    :    # try with a catch
-    :    my $caught;
-    :    eval 'try {
-    :        die &quot;blah&quot;
-    :
-    :        CATCH { $caught = 1 }
-    :    }';
-    :
-    :    ok($caught, &quot;exception caught&quot;, :todo);
-    :};
-    :
-    :# return inside try{}-blocks
-    :# PIL2JS *seems* to work, but it does not, actually:
-    :# The &quot;return 42&quot; works without problems, and the caller actually sees the
-    :# return value 42. But when the end of the test is reached, &amp;try will
-    :# **resume after the return**, effectively running the tests twice.
-    :# (Therefore I moved the tests to the end, so not all tests are rerun).
-    :{
-    :    my $was_in_foo;
-    :    sub foo {
-    :        $was_in_foo++;
-    :        try { return 42 };
-    :        $was_in_foo++;
-    :        return 23;
-    :    }
-    :    is foo(), 42,      'return() inside try{}-blocks works (1)', :todo&lt;bug&gt;;
-    :    is $was_in_foo, 1, 'return() inside try{}-blocks works (2)', :todo&lt;bug&gt;;
-    :}
-    :
-    :{
-    :    my sub test1 {
-    :        try { return 42 };
-    :        return 23;
-    :    }
-    :
-    :    my sub test2 {
-    :        test1();
-    :        die 42;
-    :    }
-    :
-    :    dies_ok { test2() },
-    :        &quot;return() inside a try{}-block should cause following exceptions to really die&quot;;
-    :}
-    :
-    :unless (eval 'Exception.new') {
-    :    skip_rest &quot;No Exception objects&quot;; exit
-    :}
-    :
-    :{
-    :    # exception classes
-    :    class Naughty is Exception {};
-    :
-    :    my ($not_died, $caught);
-    :    eval 'try {
-    :        die Naughty &quot;error&quot;
-    :
-    :        $not_died = 1;
-    :
-    :        CATCH {
-    :            when Naughty {
-    :                $caught = 1;
-    :            }
-    :        }
-    :    }';
-    :
-    :    ok(!$not_died, &quot;did not live after death&quot;);
-    :    ok($caught, &quot;caught exception of class Naughty&quot;, :todo);
-    :};
-    :
-    :{
-    :    # exception superclass
-    :    class Naughty::Specific is Naughty {};
-    :    class Naughty::Other is Naughty {};
-    :
-    :    my ($other, $naughty);
-    :    eval 'try {
-    :        die Naughty::Specific &quot;error&quot;;
-    :
-    :        CATCH {
-    :            when Naughty::Other {
-    :                $other = 1;
-    :            }
-    :            when Naughty {
-    :                $naughty = 1;
-    :            }
-    :        }
-    :    }';
-    :
-    :    ok(!$other, &quot;did not catch sibling error class&quot;);
-    :    ok($naughty, &quot;caught superclass&quot;, :todo);
-    :};
-    :
-    :{
-    :    # uncaught class
-    :    eval 'class Dandy is Exception {}';
-    :
-    :    my ($naughty, $lived);
-    :    eval 'try {
-    :        die Dandy &quot;error&quot;;
-    :        
-    :        CATCH {
-    :            when Naughty {
-    :                $naughty = 1;
-    :            }
-    :        }
-    :    };
-    :
-    :    $lived = 1;
-    :    ';
-    :
-    :    ok(!$lived, &quot;did not live past uncaught throw in try&quot;);
-    :    ok(~ref($!), '$! is an object');
-    :    ok(!$naughty, &quot;did not get caught by wrong handler&quot;);
-    :    is(eval('ref($!)'), Dandy, &quot;.. of the right class&quot;, :todo&lt;bug&gt;);
-    :};
-    :</pre>
+<div ID=hide_12 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Statement parsing"/"or try {...}"&gt;
+
+plan 26;
+
+{
+    # simple try
+    my $lived = undef;
+    try { die "foo" };
+    is($!, "foo", "error var was set");
+};
+
+# try should work when returning an array or hash
+{
+    my @array = try { 42 };
+    is +@array,    1, '@array = try {...} worked (1)';
+    is ~@array, "42", '@array = try {...} worked (2)';
+}
+
+{
+    my @array = try { (42,) };
+    is +@array,    1, '@array = try {...} worked (3)';
+    is ~@array, "42", '@array = try {...} worked (4)';
+}
+
+{
+    my %hash = try { "a" };
+    is +%hash,        1, '%hash = try {...} worked (1)';
+    is ~%hash.keys, "a", '%hash = try {...} worked (2)';
+}
+
+{
+    my %hash = try { ("a",) };
+    is +%hash,        1, '%hash = try {...} worked (3)';
+    is ~%hash.keys, "a", '%hash = try {...} worked (4)';
+}
+
+{
+    warn "Please ignore the next warning about odd number of elements,\n";
+    warn "it's expected.\n";
+    my %hash = try { hash("a",) };
+    is +%hash,        1, '%hash = try {...} worked (5)';
+    is ~%hash.keys, "a", '%hash = try {...} worked (6)';
+}
+
+{
+    my %hash;
+    # Extra try necessary because current Pugs dies without it.
+    try { %hash = try { a =&gt; 3 } };
+    is +%hash,        1, '%hash = try {...} worked (7)', :todo&lt;bug&gt;;
+    is ~%hash.keys, "a", '%hash = try {...} worked (8)', :todo&lt;bug&gt;;
+    is ~%hash&lt;a&gt;,     3, '%hash = try {...} worked (9)', :todo&lt;bug&gt;;
+}
+
+{
+    # try with a catch
+    my $caught;
+    eval 'try {
+        die "blah"
+
+        CATCH { $caught = 1 }
+    }';
+
+    ok($caught, "exception caught", :todo);
+};
+
+# return inside try{}-blocks
+# PIL2JS *seems* to work, but it does not, actually:
+# The "return 42" works without problems, and the caller actually sees the
+# return value 42. But when the end of the test is reached, &amp;try will
+# **resume after the return**, effectively running the tests twice.
+# (Therefore I moved the tests to the end, so not all tests are rerun).
+{
+    my $was_in_foo;
+    sub foo {
+        $was_in_foo++;
+        try { return 42 };
+        $was_in_foo++;
+        return 23;
+    }
+    is foo(), 42,      'return() inside try{}-blocks works (1)', :todo&lt;bug&gt;;
+    is $was_in_foo, 1, 'return() inside try{}-blocks works (2)', :todo&lt;bug&gt;;
+}
+
+{
+    my sub test1 {
+        try { return 42 };
+        return 23;
+    }
+
+    my sub test2 {
+        test1();
+        die 42;
+    }
+
+    dies_ok { test2() },
+        "return() inside a try{}-block should cause following exceptions to really die";
+}
+
+unless (eval 'Exception.new') {
+    skip_rest "No Exception objects"; exit
+}
+
+{
+    # exception classes
+    class Naughty is Exception {};
+
+    my ($not_died, $caught);
+    eval 'try {
+        die Naughty "error"
+
+        $not_died = 1;
+
+        CATCH {
+            when Naughty {
+                $caught = 1;
+            }
+        }
+    }';
+
+    ok(!$not_died, "did not live after death");
+    ok($caught, "caught exception of class Naughty", :todo);
+};
+
+{
+    # exception superclass
+    class Naughty::Specific is Naughty {};
+    class Naughty::Other is Naughty {};
+
+    my ($other, $naughty);
+    eval 'try {
+        die Naughty::Specific "error";
+
+        CATCH {
+            when Naughty::Other {
+                $other = 1;
+            }
+            when Naughty {
+                $naughty = 1;
+            }
+        }
+    }';
+
+    ok(!$other, "did not catch sibling error class");
+    ok($naughty, "caught superclass", :todo);
+};
+
+{
+    # uncaught class
+    eval 'class Dandy is Exception {}';
+
+    my ($naughty, $lived);
+    eval 'try {
+        die Dandy "error";
+        
+        CATCH {
+            when Naughty {
+                $naughty = 1;
+            }
+        }
+    };
+
+    $lived = 1;
+    ';
+
+    ok(!$lived, "did not live past uncaught throw in try");
+    ok(~ref($!), '$! is an object');
+    ok(!$naughty, "did not get caught by wrong handler");
+    is(eval('ref($!)'), Dandy, ".. of the right class", :todo&lt;bug&gt;);
+};
+</pre>
 </div><pre>
     $x =  do { given $foo { when 1 {2} when 3 {4} }} + $bar;
     $x = try { given $foo { when 1 {2} when 3 {4} }} + $bar;</pre>
@@ -3968,70 +4008,71 @@ In particular, a syntax error will be reported for C-isms such as these:</p>
 <div ID=header_hidden_39 style="display: block;">- Show t/var/let.t (63 lines) -</div>
 </a>
 </p>
-<div ID=hide_39 style="display:none; border:1px solid"><pre>
-    :# L&lt;S04/&quot;Definition of Success&quot;&gt;
-    :# let() should not restore the variable if the block exited successfully
-    :# (returned a true value).
-    :{
-    :  my $a = 42;
-    :  {
-    :    let $a = 23;
-    :    is $a, 23, &quot;let() changed the variable (1)&quot;;
-    :    1;
-    :  }
-    :  is $a, 23, &quot;let() should not restore the variable, as our block exited succesfully (1)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# let() should restore the variable if the block failed (returned a false
-    :# value).
-    :{
-    :  my $a = 42;
-    :  {
-    :    let $a = 23;
-    :    is $a, 23, &quot;let() changed the variable (1)&quot;;
-    :    0;
-    :  }
-    :  is $a, 42, &quot;let() should restore the variable, as our block failed&quot;;
-    :}
-    :
-    :# Test that let() restores the variable at scope exit, not at subroutine
-    :# entry.  (This might be a possibly bug.)
-    :{
-    :  my $a     = 42;
-    :  my $get_a = { $a };
-    :  {
-    :    let $a = 23;
-    :    is $a,       23, &quot;let() changed the variable (2-1)&quot;;
-    :    is $get_a(), 23, &quot;let() changed the variable (2-2)&quot;, :todo&lt;feature&gt;;
-    :    1;
-    :  }
-    :  is $a, 23, &quot;let() should not restore the variable, as our block exited succesfully (2)&quot;, :todo&lt;feature&gt;;
-    :}
-    :
-    :# Test that let() restores variable even when not exited regularly (using a
-    :# (possibly implicit) call to return()), but when left because of an exception.
-    :{
-    :  my $a = 42;
-    :  try {
-    :    let $a = 23;
-    :    is $a, 23, &quot;let() changed the variable in a try block&quot;;
-    :    die 57;
-    :  };
-    :  is $a, 42, &quot;let() restored the variable, the block was exited using an exception&quot;;
-    :}
-    :
-    :eval('
-    :{
-    :  my @array = (0, 1, 2);
-    :  {
-    :    let @array[1] = 42;
-    :    is @array[1], 42, &quot;let() changed our array element&quot;;
-    :    0;
-    :  }
-    :  is @array[1], 1, &quot;let() restored our array element&quot;;
-    :}
-    :&quot;1 - delete this line when the parsefail eval() is removed&quot;;
-    :') or skip(2, &quot;parsefail: let \@array[1]&quot;);</pre>
+<div ID=hide_39 style="display:none; border:1px solid">
+<pre>
+# L&lt;S04/"Definition of Success"&gt;
+# let() should not restore the variable if the block exited successfully
+# (returned a true value).
+{
+  my $a = 42;
+  {
+    let $a = 23;
+    is $a, 23, "let() changed the variable (1)";
+    1;
+  }
+  is $a, 23, "let() should not restore the variable, as our block exited succesfully (1)", :todo&lt;feature&gt;;
+}
+
+# let() should restore the variable if the block failed (returned a false
+# value).
+{
+  my $a = 42;
+  {
+    let $a = 23;
+    is $a, 23, "let() changed the variable (1)";
+    0;
+  }
+  is $a, 42, "let() should restore the variable, as our block failed";
+}
+
+# Test that let() restores the variable at scope exit, not at subroutine
+# entry.  (This might be a possibly bug.)
+{
+  my $a     = 42;
+  my $get_a = { $a };
+  {
+    let $a = 23;
+    is $a,       23, "let() changed the variable (2-1)";
+    is $get_a(), 23, "let() changed the variable (2-2)", :todo&lt;feature&gt;;
+    1;
+  }
+  is $a, 23, "let() should not restore the variable, as our block exited succesfully (2)", :todo&lt;feature&gt;;
+}
+
+# Test that let() restores variable even when not exited regularly (using a
+# (possibly implicit) call to return()), but when left because of an exception.
+{
+  my $a = 42;
+  try {
+    let $a = 23;
+    is $a, 23, "let() changed the variable in a try block";
+    die 57;
+  };
+  is $a, 42, "let() restored the variable, the block was exited using an exception";
+}
+
+eval('
+{
+  my @array = (0, 1, 2);
+  {
+    let @array[1] = 42;
+    is @array[1], 42, "let() changed our array element";
+    0;
+  }
+  is @array[1], 1, "let() restored our array element";
+}
+"1 - delete this line when the parsefail eval() is removed";
+') or skip(2, "parsefail: let \@array[1]");</pre>
 </div><p>Hypothetical variables are somewhat transactional--they keep their
 new values only on successful exit of the current block, and otherwise
 are rolled back to their original values.</p>

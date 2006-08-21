@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
-<title>TITLE</title>
+<title>S13</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 <link rev="made" href="mailto:" />
 <script language="javascript1.2"><!--
@@ -163,34 +163,35 @@ routine.  This can easily be handled with Perl 6's aliasing:</p>
 <div ID=header_hidden_2 style="display: block;">- Show t/oo/methods/ref.t (27 lines) -</div>
 </a>
 </p>
-<div ID=hide_2 style="display:none; border:1px solid"><pre>
-    :# L&lt;S13/&quot;Syntax&quot; /This can easily be handled with Perl 6's aliasing:/&gt;
-    :
-    :class Foo {
-    :  method bar()     { 42 }
-    :  method bar_ref() { &amp;bar }
-    :}
-    :
-    :{
-    :  my $foo = Foo.new;
-    :  lives_ok { $foo.bar_ref }, &quot;returning a method reference works&quot;;
-    :}
-    :
-    :try {
-    :  class Baz {
-    :    method bar() { 42 }
-    :    our &amp;baz ::= &amp;bar;
-    :  }
-    :};
-    :
-    :{
-    :  my $ret;
-    :  lives_ok {
-    :    my $baz = Baz.new;
-    :    $ret    = $baz.baz();
-    :  }, &quot;calling an aliased method worked&quot;;
-    :  is $ret, 42, &quot;the aliased method returned the right thing&quot;;
-    :}</pre>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+# L&lt;S13/"Syntax" /This can easily be handled with Perl 6's aliasing:/&gt;
+
+class Foo {
+  method bar()     { 42 }
+  method bar_ref() { &amp;bar }
+}
+
+{
+  my $foo = Foo.new;
+  lives_ok { $foo.bar_ref }, "returning a method reference works";
+}
+
+try {
+  class Baz {
+    method bar() { 42 }
+    our &amp;baz ::= &amp;bar;
+  }
+};
+
+{
+  my $ret;
+  lives_ok {
+    my $baz = Baz.new;
+    $ret    = $baz.baz();
+  }, "calling an aliased method worked";
+  is $ret, 42, "the aliased method returned the right thing";
+}</pre>
 </div><pre>
     multi sub unimpl (MyFoo $x, MyFoo $y) { upchuck(); }
     &amp;infix:&lt;+&gt; ::= &amp;unimpl;
