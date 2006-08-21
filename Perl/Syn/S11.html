@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
+<head>
+<title>TITLE</title>
+<link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
+<link rev="made" href="mailto:" />
+<script language="javascript1.2"><!--
+var agt = navigator.userAgent.toLowerCase();
+
+var is_opera = (agt.indexOf("opera") != -1);
+var is_ie = (agt.indexOf("msie") != -1) && document.all && !is_opera;
+var is_ie5 = (agt.indexOf("msie 5") != -1) && document.all;
+
+function tog() {
+  // tog: toggle the visibility of html elements (arguments[1..]) from none to
+  // arguments[0].  Return what should be returned in a javascript onevent().
+  display = arguments[0];
+  for( var i=1; i<arguments.length; i++ ) {    
+    var x = document.getElementById(arguments[i]);
+    if (!x) continue;
+    if (x.style.display == "none" || x.style.display == "") {
+      x.style.display = display;
+    } else {
+      x.style.display = "none";
+    }
+  } 
+
+  var e = is_ie ? window.event : this;
+  if (e) {
+    if (is_ie) {
+      e.cancelBubble = true;
+      e.returnValue = false;
+      return false;
+    } else {
+      return false;
+    }
+  }
+}
+
+function tog_quote( idnum ) {
+  return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
+	   'hide_' + idnum );
+}
+
+//--></script>
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#TITLE">TITLE</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#Overview">Overview</a></li>
+	<li><a href="#Modules">Modules</a></li>
+	<li><a href="#Exportation">Exportation</a></li>
+	<li><a href="#Dynamic20exportation">Dynamic exportation</a></li>
+	<li><a href="#Compile2dtime20Importation">Compile-time Importation</a></li>
+	<li><a href="#Runtime20Importation">Runtime Importation</a></li>
+	<li><a href="#Importing20from20a20pseudo2dpackage">Importing from a pseudo-package</a></li>
+	<li><a href="#Versioning">Versioning</a></li>
+	<li><a href="#Forcing20Perl206">Forcing Perl 6</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="TITLE">TITLE</a></h1>
+<p>Synopsis 11: Modules</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Larry Wall &lt;<a href="mailto:larry@wall.org">larry@wall.org</a>&gt;</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+  Maintainer: Larry Wall &lt;larry@wall.org&gt;
+  Date: 27 Oct 2004
+  Last Modified: 6 Jul 2006
+  Number: 11
+  Version: 14</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Overview">Overview</a></h1>
+<p>This synopsis discusses those portions of Apocalypse 12 that ought to have
+been in Apocalypse 11.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Modules">Modules</a></h1>
+<p>As in Perl 5, a module is just a kind of package.  Unlike in
+Perl 5, modules and classes are declared with separate keywords,
+but they're still just packages with extra behaviors.</p>
+<p>A module is declared with the <code>module</code> keyword.  There are
+two basic declaration syntaxes:</p>
+<pre>
+    module Foo; # rest of scope is in module Foo
+    ...</pre>
+<pre>
+    module Bar {...}    # block is in module Bar</pre>
+<p>The first form is allowed only as the first statement in the file.</p>
+<p>A named module declaration can occur as part of an expression, just like
+named subroutine declarations.</p>
+<p>Since there are no barewords in Perl 6, module names must be predeclared,
+or use the sigil-like <code>::ModuleName</code> syntax.  The <code>::</code> prefix does not
+imply top-levelness as it does in Perl 5.  (Use <code>::*</code> or <code>GLOBAL::</code> for that.)</p>
+<p>A bare <code>module</code> declarator declares an <code>our</code> module name in the current
+package.  At the start of the file, the current package is <code>*</code>, so the
+first declaration in the file is automatically global.</p>
+<p>You can use <code>our module</code> to explicitly
+declare a module in the current package (or module, or class).
+To declare a lexically scoped module, use <code>my module</code>.
+Module names are always searched for from innermost scopes to outermost.
+As with an initial <code>::</code>, the presence of a <code>::</code> within the name
+does not imply globalness (unlike in Perl 5).</p>
+<p>The <code>::*</code> namespace is not ``main''.  The default namespace for the
+main program is <code>::*Main</code>, which it switches to from * as soon as
+it sees the first declaration, if that declaration doesn't set the
+package name.  (Putting <code>module Main;</code> at the top of your program
+is redundant, except insofar as it tells Perl that the code is Perl
+6 code and not Perl 5 code.  But it's better to say ``use v6'' for that.)</p>
+<p>But note that if you say</p>
+<pre>
+    use v6;
+    module Foo {...}</pre>
+<p>you've just created Main::Foo, not *Foo.</p>
+<p>Module traits are set using <code>is</code>:</p>
+<pre>
+    module Foo is bar {...}</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Exportation">Exportation</a></h1>
+<p>Exportation is now done by trait declaration on the exportable item:</p>
+<pre>
+    module Foo;                                # Tagset...
+    sub foo is export(:DEFAULT)         {...}  #  :DEFAULT, :ALL
+    sub bar is export(:DEFAULT :others) {...}  #  :DEFAULT, :ALL, :others
+    sub baz is export(:MANDATORY)       {...}  #  (always exported)
+    sub bop is export                   {...}  #  :ALL
+    sub qux is export(:others)          {...}  #  :ALL, :others</pre>
+<p>Declarations marked as <code>is export</code> are bound into the <code>EXPORT</code> inner
+modules, with their tagsets as inner module names within it.  For example,
+the <code>sub bar</code> above will bind as <code>&amp;Foo::EXPORT::DEFAULT::bar</code>,
+<code>&amp;Foo::EXPORT::ALL::bar</code>, and <code>&amp;Foo::EXPORT::others::bar</code>.</p>
+<p>Tagset names consisting entirely of capitals are reserved for Perl.</p>
+<p>Inner modules automatically add their export list to modules in all their
+outer scopes:</p>
+<pre>
+    module Foo {
+        sub foo is export {...}
+        module Bar {
+            sub bar is export {...}
+            module Baz {
+                sub baz is export {...}
+            }
+        }
+    }</pre>
+<p>The <code>Foo</code> module will export <code>&amp;foo</code>, <code>&amp;bar</code> and <code>&amp;baz</code> by default;
+calling <code>Foo::Bar.EXPORTALL</code> will export <code>&amp;bar</code> and <code>&amp;baz</code> at runtime
+to the caller's package.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Dynamic20exportation">Dynamic exportation</a></h1>
+<p>The default <code>EXPORTALL</code> handles symbol exports by removing recognized
+export items and tagsets from the argument list, then calls the <code>EXPORT</code>
+subroutine in that module (if there is one), passing in the remaining
+arguments.</p>
+<p>If the exporting module is actually a class, <code>EXPORTALL</code> will invoke its
+<code>EXPORT</code> method with the class itself as the invocant.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Compile2dtime20Importation">Compile-time Importation</a></h1>
+<p>Importing via <code>use</code> binds into the current lexical scope by default
+(rather than the current package, as in Perl 5).</p>
+<pre>
+    use Sense &lt;common @horse&gt;;</pre>
+<p>You can be explicit about the desired namespace:</p>
+<pre>
+    use Sense :MY&lt;common&gt; :OUR&lt;@horse&gt; :GLOBAL&lt;$warming&gt;;</pre>
+<p>That's pretty much equivalent to:</p>
+<pre>
+    use Sense;
+    my &amp;common ::= &amp;Sense::common;
+    our @horse ::= @Sense::horse;
+    $*warming  ::= $Sense::warming;</pre>
+<p>It is also possible to re-export the imported symbols:</p>
+<pre>
+    use Sense :EXPORT;                  # import and re-export the defaults
+    use Sense &lt;common&gt; :EXPORT;         # import &quot;common&quot; and re-export it
+    use Sense &lt;common&gt; :EXPORT&lt;@horse&gt;; # import &quot;common&quot; but export &quot;@horse&quot;</pre>
+<p>In the absence of a specific scoping specified by the caller, the module
+may also specify a different scoping default by use of <code>:MY</code> or <code>:OUR</code>
+tags as arguments to <code>is export</code>.  (Of course, mixing incompatible scoping
+in different scopes is likely to lead to confusion.)</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Runtime20Importation">Runtime Importation</a></h1>
+<p>Importing via <code>require</code> also binds into the current lexical scope by
+default, but performs the binding at runtime:</p>
+<pre>
+    require Sense &lt;common @horse&gt;;
+    require &quot;/home/non/Sense.pm&quot; &lt;common @horse&gt;;</pre>
+<p>Tagsets are not recognized in the default import list to <code>:MY</code>, but you can
+explicitly request to put them into the <code>:OUR</code> scope:</p>
+<pre>
+    require Sense &lt;:ALL&gt;    # does not work
+    require Sense :MY&lt;ALL&gt;  # this doesn't work either
+    require Sense :OUR&lt;ALL&gt; # but this works</pre>
+<p>If the import list is omitted, then nothing is imported.  Calling <code>.import</code>
+at runtime cannot import into the lexical scope:</p>
+<pre>
+    require Sense;
+    Sense.EXPORTALL;   # goes to the OUR scope by default, not MY</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Importing20from20a20pseudo2dpackage">Importing from a pseudo-package</a></h1>
+<p>You may also import symbols from the various pseudo-packages listed in S02.
+They behave as if all their symbols are in the <code>:ALL</code> export list:</p>
+<pre>
+    use GLOBAL &lt;$IN $OUT $ERR&gt;;
+    require CALLER &lt;$x $y&gt;;</pre>
+<pre>
+    # Same as:
+    #     my ($IN, $OUT, $ERR) ::= ($*IN, $*OUT, $*ERR)
+    #     my ($x, $y) := ($CALLER::x, $CALLER::y)</pre>
+<p>As pseudo-packages are always already preloaded, <code>use</code> and <code>require</code> will
+never attempt to load, for example, <code>GLOBAL.pm</code> from an external source.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Versioning">Versioning</a></h1>
+<p>When at the top of a file you say something like</p>
+<pre>
+    module Cat;</pre>
+<p>or</p>
+<pre>
+    class Dog;</pre>
+<p>you're really only giving one part of the name of the module.
+The full name of the module or class includes other metadata,
+in particular, the version, and the author.</p>
+<p>Modules posted to CPAN or entered into any standard Perl 6 library
+are required to declare their full name so that installations can know
+where to keep them, such that multiple versions by different authors
+can coexist, all of them available to any installed version of Perl.</p>
+<p>The syntax of a versioned module or class declaration has three parts
+separated by hyphens.  The three parts are the short name of the
+class/module, its version number, and a URI identifying the author
+(or authorizing authority). For example:</p>
+<pre>
+    class Dog-1.2.1-cpan:JRANDOM;
+    class Dog-1.2.1-<a href="http://www.some.com/~jrandom">http://www.some.com/~jrandom</a>;
+    class Dog-1.2.1-<a href="mailto:jrandom@some.com">mailto:jrandom@some.com</a>;</pre>
+<p>Such a declaration automatically aliases the full name
+of the class (or module) to the short name.  So for the rest of the
+lexical scope, <code>Dog</code> refers to the longer name.</p>
+<p>If there are extra classes or modules or packages declared within
+the same file, they implicitly have a long name including the file's
+version and author, but you needn't declare them again.</p>
+<p>Since these long names are the actual names of the classes, when you say:</p>
+<pre>
+    use Dog;</pre>
+<p>you're really wildcarding the unspecified bits:</p>
+<pre>
+    use Dog-(Any)-(Any);</pre>
+<p>And when you say:</p>
+<pre>
+    use Dog-1.2.1;</pre>
+<p>you're really asking for:</p>
+<pre>
+    use Dog-1.2.1-(Any);</pre>
+<p>Saying <code>1.2.1</code> specifies an <em>exact</em> match on the version number,
+not a minimum match.  To match more than one version, put a range
+operator in parens:</p>
+<pre>
+    use Dog-(1.2.1..1.2.3);
+    use Dog-(1.2.1..^1.3);
+    use Dog-(1.2.1..*);</pre>
+<p>Subversions are wildcarded, so <code>1.2</code> really means <code>1.2.*</code>.  If you
+say:</p>
+<pre>
+    use v6;</pre>
+<p>which is short for:</p>
+<a name="msg_2"></a>
+<a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
+<div ID=header_shown_2 style="display: none;">- Hide t/packages/use_perl_6.t (line 3 ~ line 9) -
+</div>
+<div ID=header_hidden_2 style="display: block;">- Show t/packages/use_perl_6.t (7 lines) -</div>
+</a>
+</p>
+<div ID=hide_2 style="display:none; border:1px solid"><pre>
+    :# L&lt;S11/&quot;Versioning&quot; /which is short for/&gt;
+    :
+    :use Perl-6;
+    :use Test;
+    :
+    :plan 1;
+    :ok &quot;'use Perl-6' works (and means the same as 'use v6')&quot;;</pre>
+</div><pre>
+    use Perl-6;</pre>
+<p>you're asking for any version of Perl 6.  You need to say:</p>
+<pre>
+    use Perl-6.0;
+    use Perl-6.0.0;
+    use Perl-6.2.7.1;</pre>
+<p>if you want to lock in a particular set of semantics at some greater
+degree of specificity.  And if some large company ever forks Perl, you can say</p>
+<pre>
+    use Perl-6-cpan:TPF</pre>
+<p>to guarantee that you get the unembraced Perl.  <code>:-)</code></p>
+<p>Perl is the default module name, so this means the same thing:</p>
+<pre>
+    use v6-cpan:TPF;</pre>
+<p>Before the full specification of Perl 6.0.0 is released, you can use <code>alpha</code>
+as the author slot to denote a program using syntax that is still subject
+to change:</p>
+<pre>
+    use v6-alpha;</pre>
+<p>The <code>use v6-alpha</code> line also serves as the Perl 5 incantation to switch to
+Perl 6 parsing.  In Perl 5 this actually ends up calling the v6.pm module with a
+<code>-alpha</code> argument, for insane-but-useful reasons.</p>
+<p>For wildcards any valid smartmatch selector works:</p>
+<pre>
+    use Dog-(1.2.1 | 1.3.4)-(/:i jrandom/);
+    use Dog-(Any)-(/^cpan\:/)</pre>
+<p>Parens are optional on a closure smartmatcher.  The preceding may
+also be written:</p>
+<pre>
+    use Dog-{$^ver ~~ 1.2.1 | 1.3.4}-{$^auth ~~ /:i jrandom/};
+    use Dog-{$^ver ~~ Any}-{$^auth ~~ /^cpan\:/}</pre>
+<p>In any event, however you select the module, its full name is
+automatically aliased to the short name for the rest of your lexical
+scope.  So you can just say</p>
+<pre>
+    my Dog $spot .= new(&quot;woof&quot;);</pre>
+<p>and it knows (even if you don't) that you mean</p>
+<pre>
+    my Dog-1.3.4-cpan:JRANDOM $spot .= new(&quot;woof&quot;);</pre>
+<p>The <code>use</code> statement actually allows a language on the front of a module name,
+so that you can use modules from other languages.  The language is separated
+by a colon.  For instance:</p>
+<pre>
+    use perl5:Acme::Bleach-1.12-DCONWAY;
+    use ruby:Rails &lt;PR_MACHINE&gt;;</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Forcing20Perl206">Forcing Perl 6</a></h1>
+<p>To get Perl 6 parsing rather than the default Perl 5 parsing,
+we said you could force Perl 6 mode in your main program with:</p>
+<pre>
+    use Perl-6;</pre>
+<p>Actually, you can just start your main program with any of:</p>
+<pre>
+    use v6;
+    module;
+    class;</pre>
+<p>Those all specify the latest Perl 6 semantics, and are equivalent to</p>
+<pre>
+    use Perl-(v6..*)-(Any);</pre>
+<p>To lock the semantics to 6.0.0, say:</p>
+<pre>
+    use v6.0.0;</pre>
+<p>In any of those cases, strictures and warnings are the default
+in your main program.  But if you start your program with a bare
+version number or other literal:</p>
+<pre>
+    v6.0.0;
+    v6;
+    6;
+    &quot;Coolness, dude!&quot;;</pre>
+<p>it runs Perl 6 in ``lax'' mode, without strictures or warnings, since obviously
+a bare literal in a void context <em>ought</em> to have produced a warning.
+(Invoking perl with <code>-e6</code> has the same effect.)</p>
+<p>It's not necessary to force Perl 6 if the interpreter or command
+specified already implies it, such as use of a ``<code>#!/usr/bin/perl6</code>''
+shebang line.  Nor is it necessary to force Perl 6 in any file that
+begins with the ``class'' or ``module'' keywords.</p>
+<p><a href="#__index__"><small>Back to Top</small></a></p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

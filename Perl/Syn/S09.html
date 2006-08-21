@@ -1,0 +1,963 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
+<head>
+<title>TITLE</title>
+<link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
+<link rev="made" href="mailto:" />
+<script language="javascript1.2"><!--
+var agt = navigator.userAgent.toLowerCase();
+
+var is_opera = (agt.indexOf("opera") != -1);
+var is_ie = (agt.indexOf("msie") != -1) && document.all && !is_opera;
+var is_ie5 = (agt.indexOf("msie 5") != -1) && document.all;
+
+function tog() {
+  // tog: toggle the visibility of html elements (arguments[1..]) from none to
+  // arguments[0].  Return what should be returned in a javascript onevent().
+  display = arguments[0];
+  for( var i=1; i<arguments.length; i++ ) {    
+    var x = document.getElementById(arguments[i]);
+    if (!x) continue;
+    if (x.style.display == "none" || x.style.display == "") {
+      x.style.display = display;
+    } else {
+      x.style.display = "none";
+    }
+  } 
+
+  var e = is_ie ? window.event : this;
+  if (e) {
+    if (is_ie) {
+      e.cancelBubble = true;
+      e.returnValue = false;
+      return false;
+    } else {
+      return false;
+    }
+  }
+}
+
+function tog_quote( idnum ) {
+  return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
+	   'hide_' + idnum );
+}
+
+//--></script>
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#TITLE">TITLE</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#Overview">Overview</a></li>
+	<li><a href="#Lazy20lists">Lazy lists</a></li>
+	<li><a href="#Sized20types">Sized types</a></li>
+	<li><a href="#Compact20structs">Compact structs</a></li>
+	<li><a href="#Compact20arrays">Compact arrays</a></li>
+	<li><a href="#Multidimensional20arrays">Multidimensional arrays</a></li>
+	<li><a href="#PDL20support">PDL support</a></li>
+	<li><a href="#Subscript20and20slice20notation">Subscript and slice notation</a></li>
+	<li><a href="#The20semicolon20operator">The semicolon operator</a></li>
+	<li><a href="#PDL20signatures">PDL signatures</a></li>
+	<li><a href="#Junctions">Junctions</a></li>
+	<li><a href="#Parallelized20parameters20and20autothreading">Parallelized parameters and autothreading</a></li>
+	<li><a href="#Hashes">Hashes</a></li>
+	<li><a href="#Autosorted20hashes">Autosorted hashes</a></li>
+	<li><a href="#Autovivification">Autovivification</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="TITLE">TITLE</a></h1>
+<p>Synopsis 9: Data Structures</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Larry Wall &lt;<a href="mailto:larry@wall.org">larry@wall.org</a>&gt;</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+  Maintainer: Larry Wall &lt;larry@wall.org&gt;
+  Date: 13 Sep 2004
+  Last Modified: 18 Aug 2006
+  Number: 9
+  Version: 13</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Overview">Overview</a></h1>
+<p>This synopsis summarizes the non-existent Apocalypse 9, which
+discussed in detail the design of Perl 6 data structures.  It was
+primarily a discussion of how the existing features of Perl 6 combine
+to make it easier for the PDL folks to write numeric Perl.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Lazy20lists">Lazy lists</a></h1>
+<p>All list contexts are lazy by default.  They still flatten eventually,
+but only when forced to.  You have to use the <code>eager</code> list operator to get a
+non-lazy flattening list context (that is, to flatten immediately like Perl 5).</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Sized20types">Sized types</a></h1>
+<p>Sized low-level types are named most generally by appending the number
+of bits to a generic low-level type name:</p>
+<pre>
+    int1
+    int2
+    int4
+    int8
+    int16
+    int32       (aka int on 32-bit machines)
+    int64       (aka int on 64-bit machines)</pre>
+<pre>
+    uint1       (aka bit)
+    uint2
+    uint4
+    uint8       (aka byte)
+    uint16
+    uint32
+    uint64</pre>
+<pre>
+    num32
+    num64       (aka num on most architectures)
+    num128</pre>
+<pre>
+    complex32
+    complex64   (aka complex on most architectures)
+    complex128</pre>
+<pre>
+    buf8        aka buf, a &quot;normal&quot; byte buffer
+    buf16       a uint16 buffer
+    buf32       a uint32 buffer
+    buf64       a uint64 buffer</pre>
+<p>Complex sizes indicate the size of each <code>num</code> component rather than
+the total.  This would extend to tensor typenames as well if they're
+built-in types.  Of course, the typical tensor structure is just
+reflected in the dimensions of the array--but the principle still holds
+that the name is based on the number of bits of the simple base type.</p>
+<p>The unsized types <code>int</code> and <code>num</code> are based on the architecture's
+normal size for <code>int</code> and <code>double</code> in whatever version of C the
+run-time system (presumably Parrot) is compiled in.  So <code>int</code>
+typically means <code>int32</code> or <code>int64</code>, while <code>num</code> usually means
+<code>num64</code>, and <code>complex</code> means two of whatever <code>num</code> turns out to be.</p>
+<p>You are, of course, free to use macros or type declarations to
+associate additional names, such as ``short'' or ``single''.  These are
+not provided by default.  An implementation of Perl is not required
+to support 64-bit integer types or 128-bit floating-point types unless
+the underlying architecture supports them.</p>
+<p>And yes, an <code>int1</code> can store only -1 or 0.  I'm sure someone'll think of
+a use for it...</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Compact20structs">Compact structs</a></h1>
+<p>A class whose attributes are all low-level types can behave as
+a struct.  (Access from outside the class is still only through
+accessors, though.)  Whether such a class is actually stored compactly
+is up to the implementation, but it ought to behave that way,
+at least to the extent that it's trivially easy (from the user's
+perspective) to read and write to the equivalent C structure.
+That is, when byte-stringified, it should look like the C struct,
+even if that's not how it's actually represented inside the class.
+(This is to be construed as a substitute for at least some of the
+current uses of <code>pack</code>/<code>unpack</code>.)</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Compact20arrays">Compact arrays</a></h1>
+<p>In declarations of the form:</p>
+<pre>
+    my bit @bits;
+    my int @ints;
+    my num @nums;
+    my int4 @nybbles;
+    my buf @buffers;
+    my complex128 @longdoublecomplex;
+    my Array @ragged2d;</pre>
+<p>the presence of a low-level type tells Perl that it is free to
+implement the array with ``compact storage'', that is, with a chunk
+of memory containing contiguous (or as contiguous as practical)
+elements of the specified type without any fancy object boxing that
+typically applies to undifferentiated scalars.  (Perl tries really
+hard to make these elements look like objects when you treat them
+like objects--this is called autoboxing.)</p>
+<p>A compact array is for most purposes interchangeable with the
+corresponding buffer type.  For example, apart from the sigil,
+these are equivalent declarations:</p>
+<pre>
+    my uint8 @buffer;
+    my buf8 $buffer;</pre>
+<p>(Note: If you actually said both of those, you'd still get two
+different names, since the sigil is part of the name.)</p>
+<p>So given <code>@buffer</code> you can say</p>
+<pre>
+    $piece = substr(@buffer, $beg, $end - $beg);</pre>
+<p>and given <code>$buffer</code> you can also say</p>
+<pre>
+    @pieces = $buffer[$n..^$end];</pre>
+<p>Note that subscripting still pulls the elements out as numbers,
+but <code>substr()</code> returns a buffer of the same type.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Multidimensional20arrays">Multidimensional arrays</a></h1>
+<p>The declarations above declare one-dimensional arrays of indeterminate
+length.  Such arrays are autoextending just like ordinary Perl arrays
+(at the price of occasionally copying the block of data to another
+memory location, or using a tree structure).  For many purposes,
+though, it's useful to define array types of a particular size and
+shape that, instead of autoextending, throw an exception if you try
+to access outside their declared dimensionality.  Such arrays tend
+to be faster to allocate and access as well.  (The language must,
+however, continue to protect you against overflow--these days, that's
+not just a reliability issue, but also a security issue.)</p>
+<p>A multidimensional array is indexed by a semicolon list, which is really
+a list of feeds in disguise.  Each sublist is a slice/feed of one particular
+dimension.  So</p>
+<pre>
+    @array[0..10; 42; @x]</pre>
+<p>is really short for</p>
+<pre>
+    @array.postcircumfix:&lt;[ ]&gt;( &lt;== 0..10 &lt;== 42 &lt;== @x );</pre>
+<p>The compiler is free to optimize to something faster when it is known
+that lazy multidimensional subscripts are not necessary.</p>
+<p>Note that</p>
+<pre>
+    @array[@x,@y]</pre>
+<p>is always interpreted as a one-dimensional slice in the outermost
+dimension, which is the same as:</p>
+<pre>
+    @array[@x,@y;]</pre>
+<p>or more verbosely:</p>
+<pre>
+    @array.postcircumfix:&lt;[ ]&gt;( &lt;== @x,@y );</pre>
+<p>To interpolate an array at the semicolon level rather than the comma level,
+use the <code>[;]</code> reduce operator:</p>
+<pre>
+    @array[[;] @x]</pre>
+<p>which is equivalent to</p>
+<pre>
+    @array.postcircumfix:&lt;[ ]&gt;( &lt;== @x[0] &lt;== @x[1] &lt;== @x[2]..*);</pre>
+<p>Alternately, use a multislice array, indicated by a double <code>@@</code> sigil:</p>
+<pre>
+    @array[@@x]</pre>
+<p>Multislice arrays can keep track of their dimensionality as they
+are being defined.  Use of multislice syntax can then pull out those
+distinct dimensions:</p>
+<pre>
+    my @@x;
+    @@x &lt;==  %hash.keys.grep: {/^X/};
+    @@x &lt;== =&lt;&gt;;
+    @@x &lt;== 1..*;
+    @@x &lt;== gather { loop { take rand 100 } };</pre>
+<pre>
+    %hash{@@x}</pre>
+<p>Conjecture, since @@x and @x are really the same object, any array can
+keep track of its dimensionality, and it only matters how you use it
+in contexts that care about the dimensionality:</p>
+<pre>
+    my @x;
+    @x &lt;==  %hash.keys.grep: {/^X/};
+    @x &lt;== =&lt;&gt;;
+    @x &lt;== 1..*;
+    @x &lt;== gather { loop { take rand 100 } };</pre>
+<pre>
+    %hash{@@x}  # multidimensional
+    %hash{@x}   # flattened</pre>
+<p>To declare a multidimensional array, you may declare it with a signature as
+if it were a function returning <em>one</em> of its entries:</p>
+<pre>
+    my num @nums (Int);   # one dimension, @nums[Int]</pre>
+<p>or alternately:</p>
+<pre>
+    my @nums (Int --&gt; num);   # one dimension, @nums[Int]</pre>
+<p>You can use ranges as types:</p>
+<pre>
+    my @nums (0..2 --&gt; num);   # one dimension, @nums[0..2]
+    my @ints (0..3, 0..1 --&gt; int);   # one dimension, @ints[0..3; 0..1]</pre>
+<p>That includes the ``upto'' range type:</p>
+<pre>
+    my @ints (^4, ^2 --&gt; int);   # one dimension, @ints[0..3; 0..1]</pre>
+<p>You can pretend you're programming in Fortran, or awk:</p>
+<pre>
+    my int @ints (1..4, 1..2); # two dimensions, @ints[1..4; 1..2]</pre>
+<p>Note that this only influences your view of the array in the current
+lexical scope, not the actual shape of the array.  If you pass
+this array to another module, it will see it as having a shape
+of <code>(0..3,0..1)</code> unless it also declares a variable to view it
+differently.</p>
+<p>Alternately, you may declare it using a prototype subscript,
+but then you must remember to use semicolons instead of commas to
+separate dimensions, because each slice represents an enumeration of
+the possible values, so the following are all equivalent:</p>
+<pre>
+    my @ints (0..3, 0..1 --&gt; int);
+    my int @ints (0..3, 0..1);
+    my int @ints[^4;^2];
+    my int @ints[0..3; 0..1];
+    my int @ints[0,1,2,3; 0,1];</pre>
+<p>You can pass a multislice for the shape as well:</p>
+<pre>
+    @@fooshape = (0..3; 0..1);
+    my int @ints[[;]@fooshape];
+    my int @ints[@@fooshape];   # same thing</pre>
+<p>Again, the <code>[;]</code> list operator interpolates a list into a semicolon
+list, which we do for consistency with subscript notation, not because
+it makes a great deal of sense to allow slices for dimensional specs
+(apart from ranges).  So while the following is okay:</p>
+<pre>
+    my int @ints[0,1,2,3,4];    # same as 0..4</pre>
+<p>the following is a semantic error that the compiler should catch:</p>
+<pre>
+    my int @ints[^3,^3,^3];     # oops, comma instead of semicolon</pre>
+<p>The shape may be supplied entirely by the object at run-time:</p>
+<pre>
+    my num @nums = Array of num.new(:shape(^3;^3;^3));
+    my num @nums .=new():shape(^3;^3;^3); # same thing</pre>
+<p>Any dimension of the array may be specified as ``<code>Int</code>'', in which case
+that dimension will autoextend.  Typically this would be used in the
+final dimension to make a ragged array functionally equivalent to an
+array of arrays:</p>
+<pre>
+    my int @ints[^42; Int];
+    push(@ints[41], getsomeints());</pre>
+<p>The shape may also be specified by types rather than sizes:</p>
+<pre>
+    my int @ints[Even; Odd];</pre>
+<p>or by both:</p>
+<pre>
+    my int @ints[0..100 where Even; 1..99 where Odd];</pre>
+<p>(presuming <code>Even</code> and <code>Odd</code> are types already constrained to be even or odd).</p>
+<p>The <code>Whatever</code> type will be taken to mean <code>Int</code> within an array
+subscript, so you can also write:</p>
+<pre>
+    my int @ints[^42; *];</pre>
+<p>Saying</p>
+<pre>
+    my int @ints[^42; **];</pre>
+<p>would give you an array of indeterminate dimensionality.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="PDL20support">PDL support</a></h1>
+<p>An array <code>@array</code> can be tied to a PDL at declaration time:</p>
+<pre>
+    my num @array[@@mytensorshape] is PDL;
+    my @array is PDL(:shape(^2;^2;^2;^2)) of int8;</pre>
+<p>PDLs are allowed to assume a type of <code>num</code> by default rather than
+the usual simple scalar.  (And in general, the type info is merely
+made available to the ``tie'' implementation to do with what it will.
+Some data structures may ignore the ``of'' type and just store everything
+as general scalars.  Too bad...)</p>
+<p>Arrays by default are one dimensional, but may be declared to have any
+dimensionality supported by the implementation.  You may use arrays
+just like scalars -- the main caveat is that you have to use
+binding rather than assignment to set one without copying:</p>
+<pre>
+    @b := @a[0..*:by(2)]</pre>
+<p>With PDLs in particular, this might alias each of the individual
+elements rather than the array as a whole.  So modifications to @b
+are likely to be reflected back into @a.  (But maybe the PDLers will
+prefer a different notation for that.)</p>
+<p>The dimensionality of an array may be declared on the variable, but
+the actual dimensionality of the array depends on how it was created.
+Reconciling these views is a job for the particular array implementation.
+It's not necessarily the case that the declared dimensionality must match
+the actual dimensionality.  It's quite possible that the array variable
+is deliberately declared with a different dimensionality to provide a
+different ``view'' on the actual value:</p>
+<pre>
+    my int @array[^2;^2] is Puddle .= new(:shape(^4) &lt;== 0,1,2,3);</pre>
+<p>Again, reconciling those ideas is up to the implementation, <code>Puddle</code>
+in this case.  The traits system is flexible enough to pass any
+metadata required, including ideas about sparseness, raggedness,
+and various forms of non-rectangleness such as triangleness.
+The implementation should probably carp about any metadata it doesn't
+recognize though.  The implementation is certainly free to reject
+any object that doesn't conform to the variable's shape requirements.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Subscript20and20slice20notation">Subscript and slice notation</a></h1>
+<p>A subscript indicates a ``slice'' of an array.  Each dimension
+of an array is sliced separately, so we say a subscript is a
+semicolon-separated list of slice specifiers, also known as a multislice.
+A three-dimensional slice might look like this:</p>
+<pre>
+    @x[0..10; 1,0; 1..*:by(2)]</pre>
+<p>It is up to the implementation of <code>@x</code> to decide how aggressively
+or lazily this subscript is evaluated, and whether the slice entails
+copying.  (The PDL folks will generally want it to merely produce a
+virtual PDL where the new array aliases its values back into the
+old one.)</p>
+<p>Of course, a single element can be selected merely by providing a single
+index value to each slice list:</p>
+<pre>
+    @x[0;1;42]</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="The20semicolon20operator">The semicolon operator</a></h1>
+<p>At the statement level, a semicolon terminates the current expression.
+Within any kind of bracketing construct, semicolon notionally
+separates slices, the interpretation of which depends on
+the context.  Such a semicolon list always provides list context to
+each of its sublists.  The storage of these sublists is hidden in
+the inner workings of the list.  It does not produce a list of lists.</p>
+<p>Single dimensional arrays expect simple slice subscripts, meaning
+they will treat a list subscript as a slice in the single dimension of
+the array.  Multi-dimensional arrays, on the other hand, know how to
+handle multiple slices, one for each dimension.  You need not specify
+all the dimensions; if you don't, the unspecified dimensions are
+``wildcarded''.  Supposing you have:</p>
+<pre>
+    my num @nums[^3;^3;^3];</pre>
+<p>Then</p>
+<pre>
+    @nums[0..2]</pre>
+<p>is the same as</p>
+<pre>
+    @nums[0..2;]</pre>
+<p>which is the same as</p>
+<pre>
+    @nums[0,1,2;*;*]</pre>
+<p>But you should maybe write the last form anyway just for good
+documentation, unless you don't actually know how many more dimensions
+there are.  For that case you may use <code>**</code>:</p>
+<pre>
+    @nums[0,1,2;**]</pre>
+<p>If you wanted that <code>0..2</code> range to mean</p>
+<pre>
+    @nums[0;1;2]</pre>
+<p>instead, then you need to use the <code>[;]</code> reduction operator:</p>
+<pre>
+    @nums[[;] 0..2]</pre>
+<p>The zero-dimensional slice:</p>
+<pre>
+    @x[]</pre>
+<p>is assumed to want everything, not nothing.  It's particularly handy
+because Perl 6 (unlike Perl 5) won't interpolate a bare array without brackets:</p>
+<pre>
+    @x = (1,2,3);
+    say &quot;@x = @x[]&quot;;    # prints @x = 1 2 3</pre>
+<p>Lists are lazy in Perl 6, and the slice lists are no exception.
+In particular, things like range objects are not flattened until they
+need to be, if ever.  So a PDL implementation is free to steal the
+values from these ranges and ``piddle'' around with them:</p>
+<pre>
+    @nums[$min..$max:by(3)]
+    @nums[$min..$max]
+    @nums[$min..*:by(3)]
+    @nums[1..*:by(2)]           # the odds
+    @nums[0..*:by(2)]           # the evens</pre>
+<p>That's all just the standard Perl 6 notation for ranges.  Additional
+syntactic relief is always available as long as it's predeclared
+somehow.  It's possible the range operator could be taught that <code>:2</code>
+means <code>:by(2)</code>, for instance.  (But I rather dislike the RFC-proposed
+<code>0:10:2</code> notation that makes colon mean two different things so close
+together, plus it conflicts with Perl 6's general adverb notation if
+the next thing is alphabetic.  On top of which, we're using <code>:2</code> as
+a general radix notation.)</p>
+<p>Another thing that's not going to fly easily is simply dropping out
+terms.  Perl depends rather heavily on knowing when it's expecting
+a term or an operator, and simply leaving out terms before or after
+a binary operator really screws that up.  For instance,</p>
+<pre>
+    0..:by(2)</pre>
+<p>parses as</p>
+<pre>
+    0 .. (by =&gt; 2)</pre>
+<p>rather than</p>
+<pre>
+    0 .. Inf :by(2)</pre>
+<p>That's why we have <code>..*</code> to mean <code>..Inf</code>.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="PDL20signatures">PDL signatures</a></h1>
+<p>To rewrite a Perl 5 PDL definition like this:</p>
+<pre>
+       pp_def(
+            'inner',
+            Pars =&gt; 'a(n); b(n); [o]c(); ', # the signature, see above
+            Code =&gt; 'double tmp = 0;
+                     loop(n) %{ tmp += $a() * $b(); %}
+                     $c() = tmp;' );</pre>
+<p>you might want to write a macro that parses something vaguely
+resembling this:</p>
+<pre>
+    role PDL_stuff[::TYPE] {
+        PDLsub inner (@a[$n], @b[$n] --&gt; @c[]) {
+            my TYPE $tmp = 0;
+            for ^$n {
+                $tmp += @a[$_] * @b[$_];
+            }
+            @c[] = tmp;
+        }
+    }</pre>
+<p>where that turns into something like this:</p>
+<pre>
+    role PDL_stuff[::TYPE] {
+        multi inner (TYPE @a, TYPE @b --&gt; TYPE) {
+            my $n = @a.shape[0];        # or maybe $n is just a parameter
+            assert($n == @b.shape[0]);  #  and this is already checked by PDL
+            my TYPE $tmp = 0;
+            for ^$n {
+                $tmp += @a[$_] * @b[$_];
+            }
+            return $tmp;
+        }
+    }</pre>
+<p>Then any class that <code>does PDL_stuff[num]</code> has an <code>inner()</code> function that
+can (hopefully) be compiled down to a form useful to the PDL threading
+engine.  Presumably the macro also stores away the PDL signature
+somewhere safe, since the translated code hides that information
+down in procedural code.  Possibly some of the <code>[n]</code> information can
+come back into the signature via <code>where</code> constraints on the types.
+This would presumably make multimethod dispatch possible on similarly
+typed arrays with differing constraints.</p>
+<p>(The special destruction problems of Perl 5's PDL should go away with
+Perl 6's GC approach, as long as PDL's objects are registered with Parrot
+correctly.)</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Junctions">Junctions</a></h1>
+<a name="msg_7"></a>
+<a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
+<div ID=header_shown_7 style="display: none;">- Hide t/junction/s09eg.t (line 9 ~ line 29) -
+</div>
+<div ID=header_hidden_7 style="display: block;">- Show t/junction/s09eg.t (21 lines) -</div>
+</a>
+</p>
+<div ID=hide_7 style="display:none; border:1px solid"><pre>
+    :L&lt;S09/&quot;Junctions&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 3;
+    :
+    :# test auto-threading
+    :
+    :my $c = 0;
+    :
+    :is(substr(&quot;camel&quot;, 0, 2),  &quot;ca&quot;, &quot;substr()&quot;);
+    :
+    :$c = 0;
+    :sub my_substr ($str, $i, $j) {
+    :    $c++;
+    :    my @c = split &quot;&quot;, $str;
+    :    join(&quot;&quot;, @c[$i..($i+$j-1)]);
+    :}
+    :
+    :my $j = my_substr(&quot;camel&quot;, 0|1, 2&amp;3);
+    :</pre>
+</div><a name="msg_6"></a>
+<a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
+<div ID=header_shown_6 style="display: none;">- Hide t/junction/misc_junctions.t (line 11 ~ line 12) -
+</div>
+<div ID=header_hidden_6 style="display: block;">- Show t/junction/misc_junctions.t (2 lines) -</div>
+</a>
+</p>
+<div ID=hide_6 style="display:none; border:1px solid"><pre>
+    :L&lt;S09/&quot;Junctions&quot;&gt;
+    :</pre>
+</div><a name="msg_2"></a>
+<a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
+<div ID=header_shown_2 style="display: none;">- Hide t/junction/associative.t (line 11 ~ line 12) -
+</div>
+<div ID=header_hidden_2 style="display: block;">- Show t/junction/associative.t (2 lines) -</div>
+</a>
+</p>
+<div ID=hide_2 style="display:none; border:1px solid"><pre>
+    :L&lt;S09/&quot;Junctions&quot;&gt;
+    :</pre>
+</div><p>A junction is a superposition of data values pretending to be a single
+data value.  Junctions come in four varieties:</p>
+<pre>
+    list op     infix op
+    =======     ========
+    any()       |
+    all()       &amp;
+    one()       ^
+    none()      (no &quot;nor&quot; op defined)</pre>
+<p>Note that the infix ops are ``list-associative'', insofar as</p>
+<pre>
+    $a | $b | $c
+    $a &amp; $b &amp; $c
+    $a ^ $b ^ $c</pre>
+<p>mean</p>
+<pre>
+    any($a,$b,$c)
+    all($a,$b,$c)
+    one($a,$b,$c)</pre>
+<p>rather than</p>
+<pre>
+    any(any($a,$b),$c)
+    all(all($a,$b),$c)
+    one(one($a,$b),$c)</pre>
+<p>Some contexts, such as boolean contexts, have special rules for dealing
+with junctions.  In any scalar context not expecting a junction of
+values, a junction produces automatic parallelization of the algorithm.
+In particular, if a junction is used as an argument to any routine
+(operator, closure, method, etc.), and the scalar parameter you
+are attempting to bind the argument to is inconsistent with the
+Junction type, that routine is ``autothreaded'', meaning the routine
+will be called automatically as many times as necessary to process
+the individual scalar elements of the junction in parallel.</p>
+<p>The results of these separate calls are then recombined into a
+single junction of the same species as the junctive argument.
+If two or more arguments are junctive, then the argument that is
+chosen to be ``autothreaded'' is:</p>
+<ul>
+<li></li>
+the left-most conjunction or injunction (if any), or else
+<p></p>
+<li></li>
+the left-most abjunction or disjunction
+<p></p></ul>
+<p>with the tests applied in that order.</p>
+<p>Each of the resulting set of calls is then recursively autothreaded
+until no more junctive arguments remain. That is:</p>
+<a name="msg_8"></a>
+<a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
+<div ID=header_shown_8 style="display: none;">- Hide t/junction/s09eg.t (line 30 ~ line 38) -
+</div>
+<div ID=header_hidden_8 style="display: block;">- Show t/junction/s09eg.t (9 lines) -</div>
+</a>
+</p>
+<div ID=hide_8 style="display:none; border:1px solid"><pre>
+    :# L&lt;S09/&quot;Junctions&quot; /Each of the resulting set of calls is then recursively autothreaded/&gt;
+    :is($c, 4, &quot;substr() called 4 times&quot;);
+    :
+    :# all(any(&quot;am&quot;,&quot;ca&quot;),any(&quot;ame&quot;,&quot;cam&quot;));
+    :
+    :ok( ($j == all(&quot;am&quot;,&quot;ame&quot;)) &amp;&amp;
+    :    ($j == all(&quot;ca&quot;,&quot;cam&quot;)),
+    :    &quot;Junctions as arg inputs work as expected&quot; );
+    :</pre>
+</div><pre>
+       substr(&quot;camel&quot;, 0|1, 2&amp;3)</pre>
+<pre>
+    -&gt; all( substr(&quot;camel&quot;, 0|1, 2),      # autothread the conjunctive arg
+            substr(&quot;camel&quot;, 0|1, 3)
+          )</pre>
+<pre>
+    -&gt; all( any( substr(&quot;camel&quot;, 0, 2),   # autothread the disjunctive arg
+                 substr(&quot;camel&quot;, 1, 2),
+               ),
+            any( substr(&quot;camel&quot;, 0, 3),   # autothread the disjunctive arg
+                 substr(&quot;camel&quot;, 1, 3),
+               )
+          )</pre>
+<pre>
+    -&gt; all( any( &quot;ca&quot;,                    # evaluate
+                 &quot;am&quot;,
+               ),
+            any( &quot;cam&quot;,
+                 &quot;ame&quot;,
+               )</pre>
+<pre>
+    -&gt; (&quot;ca&quot;|&quot;am&quot;) &amp; (&quot;cam&quot;|&quot;ame&quot;)        # recombine results in junctions</pre>
+<p>Junctions passed as part of a container do not cause autothreading
+unless individually pulled out and used as a scalar.  It follows that
+junctions passed as members of a ``slurpy'' array or hash do not cause
+autothreading on that parameter.  Only individually declared parameters
+may autothread.  (Note that positional array and hash parameters are
+in fact scalar parameters, though, so you could pass a junction of
+array or hash objects.)</p>
+<p>For junctions used with chained operators in a list context, the resulting
+value will be a subset of the first <code>any</code> used in comparison:</p>
+<a name="msg_4"></a>
+<a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
+<div ID=header_shown_4 style="display: none;">- Hide t/junction/chained_operators.t (line 36 ~ line 38) -
+</div>
+<div ID=header_hidden_4 style="display: block;">- Show t/junction/chained_operators.t (3 lines) -</div>
+</a>
+</p>
+<div ID=hide_4 style="display:none; border:1px solid"><pre>
+    :    #L&lt;S09/Junctions/&quot;will be a subset&quot;&gt;
+    :    ok all(@results) eqv any(@expected_results),
+    :        &quot;junctions w/chained ops in list context return subset of C&lt;any&gt;&quot;;</pre>
+</div><a name="msg_3"></a>
+<a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
+<div ID=header_shown_3 style="display: none;">- Hide t/junction/chained_operators.t (line 23 ~ line 35) -
+</div>
+<div ID=header_hidden_3 style="display: block;">- Show t/junction/chained_operators.t (13 lines) -</div>
+</a>
+</p>
+<div ID=hide_3 style="display:none; border:1px solid"><pre>
+    :    #L&lt;S09/Junctions/&quot;used with chained operators&quot;&gt;
+    :    my @x = -1..10;
+    :    my @y = 4..12;
+    :    my @results =
+    :        gather {
+    :            for 0 &lt;= any(@x) &lt; all(@y) {
+    :                .take;
+    :            }
+    :        };
+    :    my @expected_results = 0..3;
+    :    is @results.elems, @expected_results.elems,
+    :        'junctions with chained ops in list context return correct number' ~
+    :            'of elems';</pre>
+</div><pre>
+    for 0 &lt;= any(@x) &lt; all(@y) {...}</pre>
+<p>will use only those values from <code>@x</code> that satisfy the constraint.
+Usually junctions do not guarantee order of evalution, but in
+this particular case, the original ordering <code>@x</code> is guaranteed to
+be preserved in the returned list.  In particular,</p>
+<a name="msg_5"></a>
+<a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
+<div ID=header_shown_5 style="display: none;">- Hide t/junction/chained_operators.t (line 39 ~ line 41) -
+</div>
+<div ID=header_hidden_5 style="display: block;">- Show t/junction/chained_operators.t (3 lines) -</div>
+</a>
+</p>
+<div ID=hide_5 style="display:none; border:1px solid"><pre>
+    :    #L&lt;S09/Junctions/&quot;original ordering&quot; &quot;guaranteed&quot; &quot;preserved&quot;&gt;
+    :    ok @results eqv @expected_results,
+    :        'junctions w/chained ops in list context preserve ordering';</pre>
+</div><pre>
+    @result = any(@x) ~~ {...};</pre>
+<p>is equivalent to</p>
+<pre>
+    @result = grep {...}, @x;</pre>
+<a name="msg_9"></a>
+<a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
+<div ID=header_shown_9 style="display: none;">- Hide t/operators/smartmatch.t (line 184 ~ line 227) -
+</div>
+<div ID=header_hidden_9 style="display: block;">- Show t/operators/smartmatch.t (44 lines) -</div>
+</a>
+</p>
+<div ID=hide_9 style="display:none; border:1px solid"><pre>
+    :    #L&lt;S09/&quot;Junctions&quot;/grep&gt;
+    :    my @x = 1..20;
+    :    my $code = -&gt; $x { $x % 2 };
+    :    my @result;
+    :    my $parsed = 0;
+    :    try {
+    :        @result = any(@x) ~~ $code;
+    :        $parsed = 1;
+    :    };
+    :    ok $parsed, 'C&lt;my @result = any(@x) ~~ $code&gt; parses';
+    :    my @expected_result = grep $code, @x;
+    :    ok @result eqv @expected_result,
+    :        'C&lt;any(@x) ~~ {...}&gt; works like C&lt;grep&gt;';
+    :
+    :    my $result = 0;
+    :    $parsed = 0;
+    :    try {
+    :        $result = all(@x) ~~ { $_ &lt; 21 };
+    :        $parsed = 1;
+    :    };
+    :    ok $parsed, 'C&lt;all(@x) ~~ { ... }&gt; parses';
+    :    ok $result, 'C&lt;all(@x) ~~ { ... } when true for all';
+    :
+    :    $result = 0;
+    :    try {
+    :        $result = !(all(@x) ~~ { $_ &lt; 20 });
+    :    };
+    :    ok $result,
+    :        'C&lt;all(@x) ~~ {...} when true for one';
+    :
+    :    $result = 0;
+    :    try {
+    :        $result = !(all(@x) ~~ { $_ &lt; 12 });
+    :    };
+    :    ok $result,
+    :        'C&lt;all(@x) ~~ {...} when true for most';
+    :
+    :    $result = 0;
+    :    try {
+    :        $result = !(all(@x) ~~ { $_ &lt; 1  });
+    :    };
+    :    ok $result,
+    :        'C&lt;all(@x) ~~ {...} when true for one';
+    :};</pre>
+</div><p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Parallelized20parameters20and20autothreading">Parallelized parameters and autothreading</a></h1>
+<p>Within the scope of a <code>use autoindex</code> pragma (or equivalent, such as
+<code>use PDL</code> (maybe)), any closure that uses parameters as subscripts
+is also a candidate for autothreading.  For each such parameter, the
+compiler supplies a default value that is a range of all possible
+values that subscript can take on (where ``possible'' is taken to
+mean the declared shape of a shaped array, or the actual shape of an
+autoextending array).  That is, if you have a closure of the form:</p>
+<pre>
+    -&gt; $x, $y { @foo[$x;$y] }</pre>
+<p>then the compiler adds defaults for you, something like:</p>
+<pre>
+    -&gt; $x = @foo.shape[0].range,
+       $y = @foo.shape[1].range { @foo[$x;$y] }</pre>
+<p>where each such range is autoiterated for you.</p>
+<p>In the abstract (and often in the concrete), this puts an implicit
+loop around the block of the closure that visits all the possible
+subscript values for that dimension (unless the parameter is actually
+supplied to the closure, in which case that is what is used as the
+slice subscript).</p>
+<p>So to write a typical tensor multiplication:</p>
+<pre>
+    Cijkl = Aij * Bkl</pre>
+<p>you can just write this:</p>
+<pre>
+    use autoindex;
+    do { @c[$^i, $^j, $^k, $^l] = @a[$^i, $^j] * @b[$^k, $^l] };</pre>
+<p>or equivalently:</p>
+<pre>
+    -&gt; $i, $j, $k, $l { @c[$i, $j, $k, $l] = @a[$i, $j] * @b[$k, $l] }();</pre>
+<p>or even:</p>
+<pre>
+    do -&gt; $i, $j, $k, $l {
+        @c[$i, $j, $k, $l] = @a[$i, $j] * @b[$k, $l]
+    }</pre>
+<p>That's almost pretty.</p>
+<p>It is erroneous for an unbound parameter to match multiple existing array
+subscripts differently.  (Arrays being created don't count.)</p>
+<p>Note that you could pass any of $i, $j, $k or $l explicitly, or prebind
+them with a <code>.assuming</code> method, in which only the unbound parameters
+autothread.</p>
+<p>If you use an unbound array parameter as a semicolon-list interpolator
+(via the <code>[;]</code> reduction operator), it functions as a wildcard list of
+subscripts that must match the same everywhere that parameter is used.
+For example,</p>
+<pre>
+    do -&gt; @wild { @b[[;] reverse @wild] = @a[[;] @wild]; };</pre>
+<p>produces an array with the dimensions reversed regardless of the
+dimensionality of <code>@a</code>.  Since the multidimensional <code>@@wild</code> notation
+is more or less equivalent to <code>[;]@wild</code>, you can also write that as:</p>
+<pre>
+    do -&gt; @@wild { @b[reverse @@wild] = @a[[;] @@wild]; };</pre>
+<p>The optimizer is, of course, free to optimize away any implicit loops
+that it can figure out how to do more efficiently without changing
+the semantics.</p>
+<p>See RFC 207 for more ideas on how to use autothreading (though the syntax
+proposed there is rather different).</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Hashes">Hashes</a></h1>
+<p>Everything we've said for arrays applies to hashes as well, except that
+if you're going to limit the keys of one dimension of a hash, you have
+to provide an explicit list of keys to that dimension of the shape,
+or an equivalent range:</p>
+<pre>
+    my num %hash{&lt;a b c d e f&gt;; Str};
+    my num %hash{'a'..'f'; Str};                # same thing</pre>
+<p>To declare a hash that can take any object as a key rather than
+just a string, say something like:</p>
+<pre>
+    my %hash{Any};
+    my %hash{*};</pre>
+<p>A hash of indeterminate dimensionality is:</p>
+<pre>
+    my %hash{**};</pre>
+<p>As with arrays, you can limit the keys to objects of particular types:</p>
+<pre>
+    my Fight %hash{Dog; Cat where {!.scared}};</pre>
+<p>The standard Hash is just</p>
+<pre>
+    my Any %hash{Str};</pre>
+<p>Note that any type used as a key must be intrinsically immutable,
+or it has to be able to make a copy that functions as an immutable key,
+or it has to have copy-on-write semantics.  It is erroneous to change
+a key object's value within the hash except by deleting it and reinserting
+it.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Autosorted20hashes">Autosorted hashes</a></h1>
+<p>The default hash iterator is a property called <code>.iterator</code> that can be
+user replaced.  When the hash itself needs an iterator for <code>.pairs</code>,
+<code>.keys</code>, <code>.values</code>, or <code>.kv</code>, it calls <code>%hash.iterator()</code> to
+start one.  In scalar context, <code>.iterator</code> returns an iterator object.
+In list context, it returns a lazy list fed by the iterator.  It must
+be possible for a hash to be in more than one iterator at a time,
+as long as the iterator state is stored in a lazy list.
+However, there is only one implicit iterator (the <code>each</code> iterator)
+that works in scalar context to return the next pair.  [Or maybe not.]</p>
+<p>The downside to making a hash autosort via the iterator is that you'd
+have to store all the keys in sorted order, and resort it when the
+hash changes.  Alternately, the entire hash could be tied to an ISAM
+implementation (not included (XXX or should it be?)).</p>
+<p>For multidimensional hashes, the key returned by any hash iterator is
+a list of keys, the size of which is the number of declared dimensions
+of the hash.  [XXX but this seems to imply another lookup to find the
+value.  Perhaps the associated value can also be bundled in somehow.]</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Autovivification">Autovivification</a></h1>
+<p>Autovivification will only happen if the vivifiable path is used as a
+container, by binding, assigning, or capturing into an argument list.
+On the other hand, value extraction does not autovivify.</p>
+<p>This is as opposed to Perl 5, where autovivification could happen
+unintentionally, even when the code looks like a non-destructive test:</p>
+<pre>
+    # This is Perl 5 code
+    my %hash;
+    exists $hash{foo}{bar}; # creates $hash{foo} as an empty hash reference</pre>
+<p>In Perl 6 these read-only operations are indeed non-destructive:</p>
+<pre>
+    my %hash;
+    exists %hash&lt;foo&gt;&lt;bar&gt;; # %hash is still empty</pre>
+<p>But these ones <em>do</em> autovivify:</p>
+<pre>
+    my %hash;
+    my $val := %hash&lt;foo&gt;&lt;bar&gt;;</pre>
+<pre>
+    my @array;
+    my $ref = \@array[0][0]; # $ref is a Capture object - see S02</pre>
+<pre>
+    my %hash;
+    %hash&lt;foo&gt;&lt;bar&gt; = &quot;foo&quot;; # duh</pre>
+<p>This rule applies to <code>Array</code>, <code>Hash</code>, and <code>Scalar</code> container objects.</p>
+<p><a href="#__index__"><small>Back to Top</small></a></p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

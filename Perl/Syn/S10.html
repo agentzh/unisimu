@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
+<head>
+<title>TITLE</title>
+<link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
+<link rev="made" href="mailto:" />
+<script language="javascript1.2"><!--
+var agt = navigator.userAgent.toLowerCase();
+
+var is_opera = (agt.indexOf("opera") != -1);
+var is_ie = (agt.indexOf("msie") != -1) && document.all && !is_opera;
+var is_ie5 = (agt.indexOf("msie 5") != -1) && document.all;
+
+function tog() {
+  // tog: toggle the visibility of html elements (arguments[1..]) from none to
+  // arguments[0].  Return what should be returned in a javascript onevent().
+  display = arguments[0];
+  for( var i=1; i<arguments.length; i++ ) {    
+    var x = document.getElementById(arguments[i]);
+    if (!x) continue;
+    if (x.style.display == "none" || x.style.display == "") {
+      x.style.display = display;
+    } else {
+      x.style.display = "none";
+    }
+  } 
+
+  var e = is_ie ? window.event : this;
+  if (e) {
+    if (is_ie) {
+      e.cancelBubble = true;
+      e.returnValue = false;
+      return false;
+    } else {
+      return false;
+    }
+  }
+}
+
+function tog_quote( idnum ) {
+  return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
+	   'hide_' + idnum );
+}
+
+//--></script>
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#TITLE">TITLE</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#Overview">Overview</a></li>
+	<li><a href="#Packages">Packages</a></li>
+	<li><a href="#Autoloading">Autoloading</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="TITLE">TITLE</a></h1>
+<p>Synopsis 10: Packages</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Larry Wall &lt;<a href="mailto:larry@wall.org">larry@wall.org</a>&gt;</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+  Maintainer: Larry Wall &lt;larry@wall.org&gt;
+  Date: 27 Oct 2004
+  Last Modified: 6 Apr 2006
+  Number: 10
+  Version: 6</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Overview">Overview</a></h1>
+<p>This synopsis summarizes Apocalypse 10, which discusses packages
+despite never having been written.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Packages">Packages</a></h1>
+<p>As in Perl 5, packages are the basis of modules and classes.  Unlike in
+Perl 5, modules and classes are declared with separate keywords,
+but they're still just packages with extra behaviors.</p>
+<p>An ordinary package is declared with the <code>package</code> keyword.  It can
+only be used with a block:</p>
+<pre>
+    package Bar {...}   # block is in package Bar</pre>
+<p>A named package declaration can occur as part of an expression, just like
+named subroutine declarations.</p>
+<p>As a special exception, if a braceless <code>package</code> declaration occurs
+as the first executable statement in a file, then it's taken to mean that the rest of
+the file is Perl 5 code.</p>
+<pre>
+    package Foo;        # the entire file is Perl 5
+    ...</pre>
+<p>This form is illegal in the middle of a Perl 6 file.</p>
+<p>Since there are no barewords in Perl 6, package names must be predeclared,
+or use the sigil-like <code>::PackageName</code> syntax.  The <code>::</code> prefix does not
+imply top-levelness as it does in Perl 5.  (Use <code>::*</code> for that.)</p>
+<p>A bare <code>package</code> declarator declares an <code>our</code> package within the
+current package (or module, or class, or role, or...).  Use <code>*</code>
+or <code>GLOBAL::</code> to declare a global package name.</p>
+<p>To declare a lexically scoped package, use <code>my package</code>.
+Package names are always searched for from innermost scopes to outermost.
+As with an initial <code>::</code>, the presence of a <code>::</code> within the name
+does not imply globalness (unlike in Perl 5).  True globals are always
+in the <code>GLOBAL::</code> namespace, which has the shortcut <code>*</code> where that
+is not ambiguous with ``real'' operators.</p>
+<p>The <code>*</code> namespace is not ``main''.  The default namespace for the main
+program is <code>*Main</code> in Perl 6.  All files start out being parsed in the <code>*</code>
+package, but switch to some other package scope depending on the first
+declaration.  If that first declaration is not a package variant, then
+the parsing switches to the ``<code>*main</code>'' package for Perl 5 code and the
+``<code>*Main</code>'' package for Perl 6 code.</p>
+<p>Package traits are set using <code>is</code>:</p>
+<pre>
+    package Foo is bar {...}</pre>
+<p>All symbolic links are done with the <code>::($expr)</code> syntax, which is
+legal in any variable, package, module, or class name anywhere a
+<code>::Ident</code> is legal.  The string returned by the expression will be
+parsed for <code>::</code> indicating subpackage names.  Do not confuse this
+with the</p>
+<pre>
+    Foo::{$key}</pre>
+<p>syntax that lets you do a lookup in a particular symbol table.  In this case,
+the key is not parsed for <code>::</code>.  It's just a hash lookup.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Autoloading">Autoloading</a></h1>
+<a name="msg_2"></a>
+<a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
+<div ID=header_shown_2 style="display: none;">- Hide t/builtins/undef.t (line 273 ~ line 315) -
+</div>
+<div ID=header_hidden_2 style="display: block;">- Show t/builtins/undef.t (43 lines) -</div>
+</a>
+</p>
+<div ID=hide_2 style="display:none; border:1px solid"><pre>
+    :# L&lt;S10/Autoloading&gt;
+    :
+    :flunk(&quot;FIXME (autoload tests)&quot;, :todo&lt;parsefail&gt;);
+    :# Currently waiting on
+    :# - packages
+    :# - symtable hash
+    :# - autoloading itself
+    :
+    :#{
+    :#    package AutoMechanic {
+    :#        AUTOSCALAR    { \my $_scalar }
+    :#        AUTOARRAY     { \my @_array }
+    :#        AUTOHASH      { \my %_hash }
+    :#        AUTOSUB       { { &quot;code&quot; } }
+    :#        AUTOMETH      { { &quot;code&quot; } }
+    :#
+    :#        AUTOSCALARDEF { %::«{'$' ~ $_}» = &quot;autoscalardef&quot; }
+    :#        AUTOARRAYDEF  { %::«{'@' ~ $_}» = &quot;autoarraydef&quot;.split(&quot;&quot;) }
+    :#        AUTOHASHDEF   { %::«{'%' ~ $_}» = &lt;autohashdef yes&gt; }
+    :#        AUTOSUBDEF    { %::«{'&amp;' ~ $_}» = { &quot;autosubdef&quot; } }
+    :#        AUTOMETHDEF   { %::«{'&amp;' ~ $_}» = { &quot;automethdef&quot; } }
+    :#    }
+    :#
+    :#    is(ref $AutoMechanic::scalar0,    &quot;Scalar&quot;, &quot;autoload - scalar&quot;);
+    :#    is(ref @AutoMechanic::array0,     &quot;Array&quot;,  &quot;autoload - array&quot;);
+    :#    is(ref %AutoMechanic::hash,       &quot;Hash&quot;,   &quot;autoload - hash&quot;);
+    :#    is(ref &amp;AutoMechanic::sub0,       &quot;Code&quot;,   &quot;autoload - sub&quot;);
+    :#    is(ref AutoMechanic.can(&quot;meth0&quot;), &quot;Code&quot;,   &quot;autoload - meth&quot;);
+    :#
+    :#    is($AutoMechanic::scalar, &quot;autoscalardef&quot;,            &quot;autoloaddef - scalar&quot;);
+    :#    is(~@AutoMechanic::ary,   ~(&quot;autoarraydef&quot;.split(&quot;&quot;), &quot;autoloaddef - array&quot;);
+    :#    is(~%AutoMechanic::hash,  ~&lt;autohashdef yes&gt;,         &quot;autoloaddef - hash&quot;);
+    :#    is(&amp;AutoMechanic::sub.(), &quot;autosubdef&quot;,               &quot;autoloaddef - sub&quot;);
+    :#    is(AutoMechanic.meth(),   &quot;automethdef&quot;,              &quot;autoloaddef - method&quot;);
+    :#}
+    :
+    :# Extra tests added due to apparent bugs
+    :is((undef) + 1, 1, 'undef + 1');
+    :is(1 + (undef), 1, '1 + undef');
+    :is((undef) * 2, 0, 'undef * 2');
+    :is(2 * (undef), 0, '2 * undef');
+    :is((undef) xx 2, [undef, undef], 'undef xx 2');
+    :is((undef) * (undef), 0, 'undef * undef');</pre>
+</div><p>A package (or any other similar namespace) can control autoloading.
+However, Perl 5's <code>AUTOLOAD</code> is being superseded by MMD autoloaders
+that distinguish declaration from definition, but are not restricted
+to declaring subs.  A run-time declarator multisub is declared as:</p>
+<pre>
+    multi CANDO ( MyPackage, $type, $name; *%args --&gt; Container)</pre>
+<p>which stands in for the declaration of a container object within
+another container object; it is called when anyone is searching for
+a name in the package (or module, or class), and the name doesn't
+already exist in the package.  (In particular, <code>.can</code> calls <code>CANDO</code>
+when trying to determine if a class supports a particular method.)
+The arguments to <code>CANDO</code> include type information on what kind
+of object is expected in context, or this may be intuited from the
+name requested.  In any case, there may be multiple <code>CANDO</code> routines
+that are dispatched via MMD:</p>
+<pre>
+    multi CANDO ( MyPackage, Item, $name; *%args --&gt; Container)
+    multi CANDO ( MyPackage, Array, $name; *%args --&gt; Container)
+    multi CANDO ( MyPackage, Hash, $name; *%args --&gt; Container)
+    multi CANDO ( MyPackage, Code, $name; *%args --&gt; Container)</pre>
+<p>The package itself is just passed as the
+first argument, since it's the container object.  Subsequent arguments
+identify the desired type of the inner container and the ``name'' or
+``key'' by which the object is to be looked up in the outer container.
+Such a name does not include its container name, unlike Perl 5's magical
+<code>$AUTOLOAD</code> variable.</p>
+<p>The <code>CANDO</code> is expected to return an inner container object of the proper
+sort (i.e. a variable, subroutine, or method object), or to a proxy
+object that can ``autovivify'' lazily, or <code>undef</code> if that name is not to be
+considered declared in the namespace in question.</p>
+<p>The declaration merely defines the interface to the new object.  That object
+need not be completely defined yet, though the <code>CANDO</code> routine is certainly
+<em>allowed</em> to define it eagerly, and even install the inner object into the
+outer container (the symbol table) if it wants to cache the declaration.</p>
+<p>At declaration time it might not yet be known whether the inner
+container object will be used in lvalue or rvalue context; the use
+of a proxy object can supply either readonly or rw semantics later.</p>
+<p>When the package in question is a class, it is also possible to declare 
+real methods or submethods:</p>
+<pre>
+    multi method CANDO ($self: Code, $name; *%args --&gt; Container)</pre>
+<pre>
+    multi submethod CANDO ($self: Item, $name; *%args --&gt; Container)</pre>
+<p>The method form is inherited by subclasses.  Submethods are never
+inherited but may still do MMD within the class.   (Ordinary multisubs
+are inherited only to the extent allowed by the MMD mechanism.)</p>
+<p>When someone tries to actually call or access an undefined object
+(which may have come from one of the routines above, or might have just
+been declared with a body of <code>{...}</code>), or might just be a variable
+declared without an initializer, a different hook is used to define
+actual behavior at the last moment:</p>
+<pre>
+    submethod AUTODEF ($self:) { ... }</pre>
+<p>(Unlike the <code>CANDO</code> interface, we do not pass the package.)</p>
+<p>This routine is passed an uninitialized (or underinitialized) object,
+and is expected to define or build the object, but not to call it,
+since the call is already ``scheduled'' from somewhere else.  (Perl 5's
+<code>goto &amp;$AUTOLOAD</code> is implicit, in other words.  But you can hijack
+the call via the <code>call</code> builtin, in which case the autoloader behaves
+just like a wrapper--see S06.)</p>
+<p>In any case, there is no longer any magical <code>$AUTOLOAD</code> variable.
+The <code>AUTODEF</code> is a mutator, and thus is not expected to return the
+object.  No name is passed to <code>AUTODEF</code>--in a context where a name
+is being declared at call time, the name is automatically introduced
+with <code>CANDO</code> before <code>AUTODEF</code> is called.  The outer container,
+if available, is accessed via <code>$+CONTAINER</code>.  In the case of a
+sub call, the call's unbound <code>ArgList</code> object will be available
+via <code>$+ARGLIST</code>.  <code>$+ARGLIST</code> is a rw variable, and mutations to it
+will be seen by the eventual ``real'' call.</p>
+<p>If a <code>AUTODEF</code> submethod wishes merely to perform some action without
+defining <code>$self</code>, that is fine.  It needs to signal that desire by
+use of an explicit ``return;'' statement.</p>
+<p>A <code>AUTODEF</code> submethod is really just a variant of <code>BUILD</code> with no named
+arguments.  As with <code>BUILD</code>, default values for attributes are applied at
+the end for any attributes not explicitly set.  A typical <code>AUTODEF</code>
+definition might be:</p>
+<pre>
+    submethod AUTODEF { self.=BUILD }</pre>
+<p>or maybe even just:</p>
+<pre>
+    our &amp;AUTODEF ::= &amp;BUILD;</pre>
+<p><a href="#__index__"><small>Back to Top</small></a></p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

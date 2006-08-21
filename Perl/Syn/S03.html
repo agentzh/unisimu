@@ -1,0 +1,3615 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
+<head>
+<title>TITLE</title>
+<link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
+<link rev="made" href="mailto:" />
+<script language="javascript1.2"><!--
+var agt = navigator.userAgent.toLowerCase();
+
+var is_opera = (agt.indexOf("opera") != -1);
+var is_ie = (agt.indexOf("msie") != -1) && document.all && !is_opera;
+var is_ie5 = (agt.indexOf("msie 5") != -1) && document.all;
+
+function tog() {
+  // tog: toggle the visibility of html elements (arguments[1..]) from none to
+  // arguments[0].  Return what should be returned in a javascript onevent().
+  display = arguments[0];
+  for( var i=1; i<arguments.length; i++ ) {    
+    var x = document.getElementById(arguments[i]);
+    if (!x) continue;
+    if (x.style.display == "none" || x.style.display == "") {
+      x.style.display = display;
+    } else {
+      x.style.display = "none";
+    }
+  } 
+
+  var e = is_ie ? window.event : this;
+  if (e) {
+    if (is_ie) {
+      e.cancelBubble = true;
+      e.returnValue = false;
+      return false;
+    } else {
+      return false;
+    }
+  }
+}
+
+function tog_quote( idnum ) {
+  return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
+	   'hide_' + idnum );
+}
+
+//--></script>
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#TITLE">TITLE</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#Changes20to20Perl20520operators">Changes to Perl 5 operators</a></li>
+	<li><a href="#New20operators">New operators</a></li>
+	<li><a href="#Smart20matching">Smart matching</a></li>
+	<li><a href="#Meta20operators">Meta operators</a></li>
+	<ul>
+
+		<li><a href="#Assignment20operators">Assignment operators</a></li>
+		<li><a href="#Negated20relational20operators2e">Negated relational operators.</a></li>
+		<li><a href="#Hyper20operators">Hyper operators</a></li>
+		<li><a href="#Reduction20operators">Reduction operators</a></li>
+	</ul>
+
+	<li><a href="#Junctive20operators">Junctive operators</a></li>
+	<li><a href="#Chained20comparisons">Chained comparisons</a></li>
+	<li><a href="#Binding">Binding</a></li>
+	<li><a href="#Declarators">Declarators</a></li>
+	<li><a href="#Argument20List20Interpolating">Argument List Interpolating</a></li>
+	<li><a href="#Feed20operators">Feed operators</a></li>
+	<li><a href="#Invocant20marker">Invocant marker</a></li>
+	<li><a href="#Traversing20arrays20in20parallel">Traversing arrays in parallel</a></li>
+	<li><a href="#Minimal20whitespace20DWIMmery">Minimal whitespace DWIMmery</a></li>
+	<li><a href="#Precedence">Precedence</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="TITLE">TITLE</a></h1>
+<p>Synopsis 3: Summary of Perl 6 Operators</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Luke Palmer &lt;<a href="mailto:luke@luqui.org">luke@luqui.org</a>&gt;</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+  Maintainer: Larry Wall &lt;larry@wall.org&gt;
+  Date: 8 Mar 2004
+  Last Modified: 16 Aug 2006
+  Number: 3
+  Version: 56</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Changes20to20Perl20520operators">Changes to Perl 5 operators</a></h1>
+<p>Several operators have been given new names to increase clarity and better
+Huffman-code the language, while others have changed precedence.  (If an
+operator is not mentioned in this Synopsis, assume that it remains the
+same as in Perl 5.  And if that doesn't make sense, assume this document
+is faulty. :)</p>
+<ul>
+<li><strong><a name="item_Perl_52527s_2524257B252E252E252E257D252C_2540257B252E252E252E257">Perl 5's <code>${...}</code>, <code>@{...}</code>, <code>%{...}</code>, etc. dereferencing
+forms are now <code>$(...)</code>, <code>@(...)</code>, <code>%(...)</code>, etc. instead.</a></strong><br />
+</li>
+<li><strong><a name="item_becomes"><code>-&gt;</code> becomes <code>.</code>, like the rest of the world uses.</a></strong><br />
+</li>
+<li><strong><a name="item_The_string_concatenation_252E_becomes_257E252E_Think_">The string concatenation <code>.</code> becomes <code>~</code>.  Think of it as
+``stitching'' the two ends of its arguments together.  String append
+is likewise <code>~=</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_x">All postfix operators that do not start with a dot also have
+an alternate form that does.  (The converse does not hold--just because
+you can write <code>x().foo</code> doesn't mean you can write <code>x()foo</code>.)  In the
+absence of a postfix interpretation, the dot form will call the corresponding
+prefix operator instead.  So <code>x().!</code> will call <code>!x()</code> unless someone
+defines a postfix <code>!</code> operator.  In particular, you can say things like
+<code>$array.@</code> and <code>$filename.-e.-r</code>, but you can't say <code>$fh.=</code> because
+there's a <code>.=</code> operator already.</a></strong><br />
+</li>
+<li><strong><a name="item_string">Unary <code>~</code> now imposes a string (<code>Str</code>) context on its
+argument, and <code>+</code> imposes a numeric (<code>Num</code>) context (as opposed
+to being a no-op in Perl 5).  Along the same lines, <code>?</code> imposes
+a boolean (<code>Bool</code>) context, and the <code>[,]</code> list operator imposes
+a function-arguments (<code>Capture</code>) context on its arguments.
+Unary sigils impose the container context implied by their sigil.
+As with Perl 5, however, <code>$$foo[bar]</code> parses as <code>$($foo)[bar]</code>,
+so you need <code>$($foo[bar])</code> to mean the other way.</a></strong><br />
+</li>
+<a name="msg_28"></a>
+<a href="?hide_quotes=no#msg_28" onclick="return tog_quote(28);">
+<div ID=header_shown_28 style="display: none;">- Hide t/syntax/force_context.t (line 55 ~ line 74) -
+</div>
+<div ID=header_hidden_28 style="display: block;">- Show t/syntax/force_context.t (20 lines) -</div>
+</a>
+</p>
+<div ID=hide_28 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/Changes to Perl 5 operators/&quot;?&quot; imposes boolean context&gt;
+    :# boolean context
+    :{
+    :    my $a = '';
+    :    is(ref(?$a), 'Bool', 'it is forced into a Bool');
+    :    ok(!(?$a), 'it is forced into boolean context');
+    :
+    :    my $b = 'This will be true';
+    :    is(ref(?$b), 'Bool', 'it is forced into a Bool');
+    :    ok(?$b, 'it is forced into boolean context');
+    :
+    :    my $c = 0;
+    :    is(ref(?$c), 'Bool', 'it is forced into a Bool');
+    :    ok(!(?$c), 'it is forced into boolean context');
+    :
+    :    my $d = 1;
+    :    is(ref(?$d), 'Bool', 'it is forced into a Bool');
+    :    ok(?$d, 'it is forced into boolean context');
+    :}
+    :</pre>
+</div><a name="msg_27"></a>
+<a href="?hide_quotes=no#msg_27" onclick="return tog_quote(27);">
+<div ID=header_shown_27 style="display: none;">- Hide t/syntax/force_context.t (line 38 ~ line 53) -
+</div>
+<div ID=header_hidden_27 style="display: block;">- Show t/syntax/force_context.t (16 lines) -</div>
+</a>
+</p>
+<div ID=hide_27 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/Changes to Perl 5 operators/Unary ~ string context&gt;
+    :# string context
+    :{
+    :    my $a = 10.500000;
+    :    is(ref(~$a), 'Str', 'it is forced into a Str');
+    :    is(~$a, '10.5', 'forced into string context');
+    :
+    :    my $b = -100;
+    :    is(ref(~$b), 'Str', 'it is forced into a Str');
+    :    is(~$b, '-100', 'forced into string context');
+    :
+    :    my $c = -100.1010;
+    :    is(ref(~$c), 'Str', 'it is forced into a Str');
+    :    is(~$c, '-100.101', 'forced into string context');
+    :}
+    :</pre>
+</div><li><strong><a name="item_Bitwise_operators_get_a_data_type_prefix253A_252B252C">Bitwise operators get a data type prefix: <code>+</code>, <code>~</code>, or <code>?</code>.
+For example, Perl 5's <code>|</code> becomes either <code>+|</code> or <code>~|</code> or <code>?|</code>,
+depending on whether the operands are to be treated as numbers,
+strings, or boolean values.  Perl 5's left shift <code> &lt;&lt; </code> becomes
+<code> +&lt; </code>, and correspondingly with right shift. Perl 5's unary <code>~</code>
+(one's complement) becomes either <code>+^</code> or <code>~^</code> or <code>?^</code>, since a
+bitwise NOT is like an exclusive-or against solid ones.  Note that
+<code>?^</code> is functionally identical to <code>!</code>, but conceptually coerces to
+boolean first and then flips the bit.  Please use <code>!</code> instead.</a></strong><br />
+</li>
+<code>?|</code> is a logical OR but differs from <code>||</code> in that <code>?|</code> always
+evaluates both sides and returns a standard boolean value.  That is,
+it's equivalent to <code>?$a + ?$b != 0</code>.  Another difference is that
+it has the precedence of an additive operator.
+<p><code>?&amp;</code> is a logical AND but differs from <code>&amp;&amp;</code> in that <code>?&amp;</code> always
+evaluates both sides and returns a standard boolean value.  That is,
+it's equivalent to <code>?$a * ?$b != 0</code>.  Another difference is that
+it has the precedence of a multiplicative operator.</p>
+<p>Bitwise string operators (those starting with <code>~</code>) may only be
+applied to <code>Buf</code> types or similar compact integer arrays, and treat
+the entire chunk of memory as a single huge integer.  They differ from
+the <code>+</code> operators in that the <code>+</code> operators would try to convert
+the string to a number first on the assumption that the string was an
+ASCII representation of a number.</p>
+<p></p>
+<li><strong><code>x</code> splits into two operators: <code>x</code> (which concatenates repetitions 
+of a string to produce a single string), and <code>xx</code> (which creates a list of 
+repetitions of a list or scalar).  <code>&quot;foo&quot; xx *</code> represents an arbitrary
+number of copies, useful for initializing lists.  The left side of
+an <code>xx</code> is evaluated only once.  (To call a block repeatedly, use a <code>map</code>
+instead.)</strong><br />
+</li>
+<li><strong><a name="item_The_253F_253A_conditional_operator_becomes_253F253F_252">The <code>? :</code> conditional operator becomes <code>?? !!</code>.  It is a syntax error to use an
+operator in the middle that binds looser in precedence, such as <code>=</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_qw257B_252E252E252E_257D_gets_a_synonym253A_253C_252E252E252"><code>qw{ ... }</code> gets a synonym: <code> &lt; ... </code> &gt;, and an interpolating
+variant, <code>«...»</code>.
+For those still living without the blessings of Unicode, that can also be
+written: <code>&lt;&lt; ... &gt;&gt;</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_The_scalar_comma_252C_now_constructs_a_List_object_">The scalar comma <code>,</code> now constructs a <code>List</code> object from its
+operands.  You have to use a <code>[-1]</code> subscript to get the last one.</a></strong><br />
+</li>
+<li><strong><a name="item_The_unary_backslash_operator_captures_its_argument">The unary backslash operator captures its arguments, and returns an
+object representing those arguments.  You can <em>dereference</em> this object
+in several ways to retrieve different parts of the arguments; see the
+definition of <code>Capture</code> in S02 for details.  (No whitespace is allowed
+after the backslash because that would instead start an ``unspace'', that is,
+an escaped sequence of whitespace or comments.  See S02 for details.
+However, oddly enough, because of that unspace rule, saying <code>\\ $foo</code>
+turns out to be equivalent to <code>\$foo</code>.)</a></strong><br />
+</li>
+<li><strong><a name="item_The_old_scalar_252E252E_flipflop_operator_is_now_don">The old scalar <code>..</code> flipflop operator is now done with
+<code>ff</code> operator.  (<code>..</code> now always produces a <code>Range</code> object
+even in scalar context.)  The <code>ff</code> operator may take a caret on
+either end to exclude either the beginning or ending.  There is
+also a corresponding <code>fff</code> operator with Perl 5's <code>...</code> semantics.
+You may say</a></strong><br />
+</li>
+<pre>
+    /foo/ ff *</pre>
+<p>to indicate a flipflop that never flops once flipped.</p>
+<li><strong><a name="item_All_comparison_operators_are_unified_at_the_same_p">All comparison operators are unified at the same precedence level.
+See Chained Comparisons below.</a></strong><br />
+</li>
+<li><strong><a name="item_The_list_assignment_operator_now_parses_on_the_rig">The list assignment operator now parses on the right like
+any other list operator, so you don't need parens on the right side of:</a></strong><br />
+</li>
+<pre>
+    @foo = 1,2,3;</pre>
+<p>You do still need them on the left for</p>
+<pre>
+    ($a,$b,$c) = 1,2,3;</pre>
+<p>since assignment operators are tighter than comma to their left.</p>
+<li><strong><a name="item_The_scalar_assignment_operator_still_parses_as_it_">The scalar assignment operator still parses as it did before, so</a></strong><br />
+</li>
+<pre>
+    loop ($a = 1, $b = 2; ; $a++, $b++) {...}</pre>
+<p>still works fine.  The syntactic distinction between scalar and list
+assignment is similar to the way Perl 5 defines it, but has to be a
+little different because we can no longer decide on the basis of
+the sigil.  The following forms are parsed as ``simple lvalues'',
+and imply scalar assignment:</p>
+<pre>
+    $a          # simple scalar variable
+    $(ANY)      # scalar dereference (including $$a)
+    $::(ANY)    # symbolic scalar dereference
+    ANY[SIMPLE] # single simple subscript
+    ANY{SIMPLE} # single simple subscript
+    ANY&lt;x&gt;      # single literal subscript</pre>
+<p>Where SIMPLE is (recursively) defined as one of the forms above,
+plus the following forms:</p>
+<pre>
+    123         # single literal
+    'x'         # single literal
+    &quot;$x&quot;        # single literal
+    qq/$x/      # single literal
+    +TERM       # any single term coerced to numeric
+    -TERM       # any single term coerced to numeric</pre>
+<a name="msg_26"></a>
+<a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
+<div ID=header_shown_26 style="display: none;">- Hide t/syntax/force_context.t (line 25 ~ line 36) -
+</div>
+<div ID=header_hidden_26 style="display: block;">- Show t/syntax/force_context.t (12 lines) -</div>
+</a>
+</p>
+<div ID=hide_26 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/Changes to Perl 5 operators/&quot;-TERM&quot; &quot;coerced to numeric&quot;&gt;
+    :# numeric (-) context
+    :{
+    :    my $a = '2 is my favorite number';
+    :    is(ref(-$a), 'Num', 'it is forced into a Num');
+    :    is(-$a, -2, 'forced into numeric context');
+    :
+    :    my $b = 'Did you know that, 2 is my favorite number';
+    :    is(ref(-$b), 'Num', 'it is forced into a Num');
+    :    is(-$b, 0, 'non numbers forced into numeric context are 0');
+    :}
+    :</pre>
+</div><pre>
+    ~TERM       # any single term coerced to string
+    ?TERM       # any single term coerced to boolean
+    !TERM       # any single term coerced to boolean</pre>
+<a name="msg_29"></a>
+<a href="?hide_quotes=no#msg_29" onclick="return tog_quote(29);">
+<div ID=header_shown_29 style="display: none;">- Hide t/syntax/force_context.t (line 75 ~ line 108) -
+</div>
+<div ID=header_hidden_29 style="display: block;">- Show t/syntax/force_context.t (34 lines) -</div>
+</a>
+</p>
+<div ID=hide_29 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/Changes to Perl 5 operators/&quot;!TERM&quot; &quot;coerced to boolean&quot;&gt;
+    :# ! boolean context
+    :{
+    :    my $a = '';
+    :    is(ref(!$a), 'Bool', 'it is forced into a Bool');
+    :    ok(!$a, 'it is forced into boolean context');
+    :
+    :    my $b = 'This will be true';
+    :    is(ref(!$b), 'Bool', 'it is forced into a Bool');
+    :    ok(!(!$b), 'it is forced into boolean context');
+    :
+    :    my $c = 0;
+    :    is(ref(!$c), 'Bool', 'it is forced into a Bool');
+    :    ok(!$c, 'it is forced into boolean context');
+    :
+    :    my $d = 1;
+    :    is(ref(!$d), 'Bool', 'it is forced into a Bool');
+    :    ok(!(!$d), 'it is forced into boolean context');
+    :}
+    :
+    :# int context
+    :{
+    :    my $a = '2 is my favorite number';
+    :    is(ref(int($a)), 'Int', 'it is forced into a Int');
+    :    is(+$a, 2, 'forced into integer context');
+    :
+    :    my $b = 'Did you know that, 2 is my favorite number';
+    :    is(ref(int($b)), 'Int', 'it is forced into a Int');
+    :    is(int($b), 0, 'non numbers forced into integer context are 0');
+    :
+    :    my $c = 1.21122111;
+    :    is(ref(int($c)), 'Int', 'it is forced into a Int');
+    :    is(int($c), 1, 'float numbers forced into integer context are 0');
+    :}</pre>
+</div><pre>
+    (SIMPLE)    # any simple expression in circumfix parens</pre>
+<p>Note that circumfix parens are considered simple only when used as
+part of a subscript.  Putting parens around the entire lvalue still
+implies list context as in Perl 5.</p>
+<p>We also include:</p>
+<pre>
+    OP SIMPLE   
+    SIMPLE OP
+    SIMPLE OP SIMPLE</pre>
+<p>where <code>OP</code> includes any standard scalar operators in the five
+precedence levels autoincrement, exponentiation, symbolic unary,
+multiplicative, and additive; but these are limited to standard
+operators that are known to return numbers, strings, or booleans.</p>
+<p>Operators that imply list operations are excluded: prefix <code>@</code>,
+prefix <code>%</code> and infix <code>xx</code>, for instance.  Hyper operators are
+also excluded, but post-assignment forms such as <code>SIMPLE += SIMPLE</code>
+are allowed.</p>
+<p>All other forms imply parsing as a list assignment, which may or may not
+result in a list assignment at run time.  (See below.) However, this is
+exclusively a syntactic distinction, and no semantic or type information
+is used, since it influences subsequent parsing.  In particular, even
+if a function is known to return a scalar value from its declaration,
+you must use <code>+</code> or <code>~</code> if you wish to force scalar parsing from
+within a subscript:</p>
+<pre>
+    @a[foo()] = bar();          # foo() and bar() called in list context
+    @a[+foo()] = bar();         # foo() and bar() called in scalar context</pre>
+<p>But note that the first form still works fine if <code>foo()</code> and <code>bar()</code>
+are scalar functions that are not context sensitive.  The difference
+in parsing is only an issue if <code>bar()</code> is followed by a comma or
+some such.</p>
+<p>For non-simple lvalues, at run time, both sides are evaluated in list
+context, but if the left side results in a single non-list scalar,
+the right side is treated as a single scalar value, as if the right
+side had been evaluated in list context (which is indeed the case)
+but coerced into scalar context.</p>
+<p>If the left side returns a list, however, then regardless of whether
+the list contains a single or multiple values, the right side values
+are assigned one by one as in any other list assignment, discarding any
+extra values if the right side is too long, or assigning undef if the
+right side is too short.  To force list assignment when a subscript
+would return a non-list, either put parens around the entire lvalue,
+or use a comma within the subscript.  (A semicolon in the subscript
+also works to indicate multidimensional slices.)</p>
+<p>Assuming</p>
+<pre>
+    sub bar { return &lt;a b c&gt; }</pre>
+<p>then we have:</p>
+<pre>
+    sub foo { return 1,2,3 }
+    @a[foo()] = bar();          # (@a[1,2,3]) = &lt;a b c&gt;</pre>
+<pre>
+    sub foo { return 1 }
+    @a[foo()] = bar();          # @a[1] = [&lt;a b c&gt;]</pre>
+<pre>
+    sub foo { return(1) }
+    @a[foo()] = bar();          # @a[1] = [&lt;a b c&gt;]</pre>
+<pre>
+    sub foo { return (1) }
+    @a[foo()] = bar();          # (@a[1]) = &lt;a b c&gt;</pre>
+<pre>
+    sub foo { return 1 }
+    @a[foo(),] = bar();         # (@a[1]) = &lt;a b c&gt;</pre>
+<pre>
+    sub foo { return 1 }
+    (@a[foo()]) = bar();        # (@a[1]) = &lt;a b c&gt;</pre>
+<p>Those are all parsed as list assignments, but we get different run-time
+behaviors based on the run-time type of the left side.</p>
+<p>In general, this will all just do what the user expects most of the time.
+The rest of the time scalar or list behavior can be forced with minimal
+syntax.</p>
+<li><strong><a name="item_list">List operators are all parsed consistently.  As in Perl 5,
+to the left a list operator look like term, while to the right it looks like
+an operator that is looser than comma.  Unlike in Perl 5, the difference
+between the list operator form and the function form is consistently
+indicated via whitespace between the list operator and the first
+argument.  If there is whitespace, it is always a list operator,
+and the next token will be taken as the first term of the list (or
+if there are no terms, as the expression terminator).  Any infix operator
+occurring where a term is expected will be misinterpreted as a term:</a></strong><br />
+</li>
+<pre>
+    say + 2;    # means say(+2);</pre>
+<p>If there is no whitespace, subsequent parsing depends on the
+syntactic category of the next item.  Parentheses (with or without
+a dot) turn the list operator into a function call instead, and
+all the function's arguments must be passed inside the parentheses
+(with the sole exception of an adverbial block, which may follow the
+parentheses).</p>
+<p>Other than various forms of parentheses, all other postfixes are
+disallowed immediately after a list operator, even if there are no
+arguments.  To add a postfix to an argumentless list operator you
+must write it as a function call with empty parentheses:</p>
+<pre>
+    foo.[]      # ILLEGAL
+    foo++       # ILLEGAL
+    foo().[]    # legal
+    foo()++     # legal (if foo() is rw)</pre>
+<p>After the parentheses any postfix operators are allowed, and apply
+to the result of the function call.  (Also note that the postfix
+restriction applies only to list operators; it doesn't apply to
+methods.  It is legal to say</p>
+<pre>
+    $foo.bar&lt;a b c&gt;</pre>
+<p>to mean</p>
+<pre>
+    $foo.bar().{'a','b','c'}</pre>
+<p>because methods never assume there are arguments unless followed by
+parentheses or a colon.)</p>
+<p>If the next item after the list operator is either an infix operator
+or a term, a syntax error is reported.  [Conjecture: this may be relaxed in
+non-strict mode.]</p>
+<p>Examples:</p>
+<pre>
+    say foo + 1;                        say(foo(+1));
+    say foo $x;                         say(foo($x));
+    say foo$x;                          ILLEGAL, need space or parens
+    say foo+1;                          ILLEGAL, need space or parens
+    say foo++;                          ILLEGAL, need parens</pre>
+<pre>
+    say foo($bar+1),$baz                say(foo($bar+1), $baz);
+    say foo.($bar+1),$baz               say(foo($bar+1), $baz);
+    say foo ($bar+1),$baz               say(foo($bar+1, $baz));
+    say foo .($bar+1),$baz              say(foo($_.($bar+1), $baz));</pre>
+<pre>
+    say foo[$bar+1],$baz                ILLEGAL, need foo()[]
+    say foo.[$bar+1],$baz               ILLEGAL, need foo().[]
+    say foo [$bar+1],$baz               say(foo([$bar+1], $baz));
+    say foo .[$bar+1],$baz              say(foo($_.[$bar+1], $baz));</pre>
+<pre>
+    say foo{$bar+1},$baz                ILLEGAL, need foo(){}
+    say foo.{$bar+1},$baz               ILLEGAL, need foo().{}
+    say foo {$bar+1},$baz               say(foo({$bar+1}, $baz));
+    say foo .{$bar+1},$baz              say(foo($_.{$bar+1}, $baz));</pre>
+<pre>
+    say foo&lt;$bar+1&gt;,$baz                ILLEGAL, need foo()&lt;&gt;
+    say foo.&lt;$bar+1&gt;,$baz               ILLEGAL, need foo().&lt;&gt;
+    say foo &lt;$bar+1&gt;,$baz               say(foo(&lt;$bar+1&gt;, $baz));
+    say foo .&lt;$bar+1&gt;,$baz              say(foo($_.&lt;$bar+1&gt;, $baz));</pre>
+<p>Note that Perl 6 is making a consistent three-way distinction between
+term vs postfix vs infix, and will interpret an overloaded character
+like <code>&lt;</code> accordingly:</p>
+<pre>
+    any &lt;a b c&gt;                 any('a','b','c')        # term
+    any()&lt;a b c&gt;                (any).{'a','b','c'}     # postfix
+    any() &lt; $x                  (any) &lt; $x              # infix
+    any&lt;a b c&gt;                  ILLEGAL                 # stealth postfix</pre>
+<p>This will seem unfamiliar and ``undwimmy'' to Perl 5 programmers, who
+are used to a grammar that sloppily hardwires a few postfix operators
+at the price of extensibility.  Perl 6 chooses instead to mandate a
+whitespace dependency in order to gain a completely extensible class
+of postfix operators.</p>
+<li><strong><a name="item_A_list_operator2527s_arguments_are_also_terminated_">A list operator's arguments are also terminated by a closure
+that is not followed by a comma or colon.  (And a semicolon is implied
+if the closure is the final thing on a line.  Use an ``unspace'' to
+suppress that.)  This final closure may be followed by a postfix,
+in which case the postfix is applied to the result of the entire
+list operator.</a></strong><br />
+</li>
+<li><strong><a name="item_arguments">A function predeclared as 0-ary is never considered list
+operator, though it allows an optional set of empty parentheses.
+Unlike functions and list operators with arguments (see above),
+a 0-ary function does not require parentheses even if followed
+immediately by a postfix.</a></strong><br />
+</li>
+<li><strong><a name="item_A_non252Dmulti_sub_predeclared_with_an_arity_of_exa">A non-multi sub predeclared with an arity of exactly 1 parses
+as a named unary in precedence.  All other subs with arguments
+parse as list operators.  (In other words, a named unary operator
+may be declared to take extra arguments only if they are named-only
+arguments.)</a></strong><br />
+</li>
+</ul>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="New20operators">New operators</a></h1>
+<a name="msg_8"></a>
+<a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
+<div ID=header_shown_8 style="display: none;">- Hide t/operators/operator.t (line 8 ~ line 84) -
+</div>
+<div ID=header_hidden_8 style="display: block;">- Show t/operators/operator.t (77 lines) -</div>
+</a>
+</p>
+<div ID=hide_8 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;New operators&quot;&gt;
+    :=cut
+    :
+    :plan 29;
+    :
+    :my $str1 = &quot;foo&quot;;
+    :my $str2 = &quot;bar&quot;;
+    :my $str3 = &quot;foobar&quot;;
+    :my $str4 = $str1~$str2;
+    :
+    :is($str3, $str4, &quot;~&quot;);
+    :
+    :my $bar = &quot;&quot;;
+    :($str3 eq $str4) ?? ($bar = 1) !! ($bar = 0);
+    :
+    :ok($bar, &quot;?? !!&quot;);
+    :
+    :my $five = 5;
+    :my $four = 4;
+    :my $wibble = 4;
+    :
+    :ok(!($five == $four), &quot;== (false)&quot;);
+    :ok($wibble == $four, &quot;== (true)&quot;);
+    :ok(!($wibble != $four), &quot;== (false)&quot;);
+    :ok($five != $four, &quot;!= (true)&quot;);
+    :
+    :ok($five == 5, &quot;== (const on rhs)&quot;);
+    :ok(!($five != 5), &quot;!= (const on rhs)&quot;);
+    :
+    :ok(5 == $five, &quot;== (const on lhs)&quot;);
+    :ok(!(5 != $five), &quot;!= (const on lhs)&quot;);
+    :
+    :ok($five == (2 + 3), &quot;== (sum on rhs)&quot;);
+    :ok(!($five != (2 + 3)), &quot;== (sum on rhs)&quot;);
+    :
+    :is(2 + 3, $five, &quot;== (sum on lhs)&quot;);
+    :ok((2 + 3) == 5, &quot;== (sum on lhs)&quot;);
+    :ok(!((2 + 3) != $five), &quot;== (sum on lhs)&quot;);
+    :
+    :# String Operations
+    :is(&quot;text &quot; ~ &quot;stitching&quot;, &quot;text stitching&quot;, 'concatenation with ~ operator');
+    :
+    :# Bit Stitching
+    :
+    :is(2 || 3, 2, &quot;|| returns first true value&quot;);
+    :is(2 ?| 3, 1, &quot;boolean or (?|) returns 0 or 1&quot;);
+    :ok(!(defined( 0 || undef)), &quot;|| returns last false value of list?&quot;);
+    :is(0 ?| undef, 0, &quot;boolean or (?|) returns 0 or 1&quot;, :todo);
+    :
+    :#junctions
+    :
+    :ok((all((4|5|6) + 3) == one(7|8|9)), &quot;all elements in junction are incremented&quot;);
+    :ok((any(1..6) == one(1|2|3|4|5|6)), &quot;any elements will match via junction&quot;);
+    :
+    :
+    :ok( 7 &gt; any(4..12), &quot;any test against scalar&quot; );
+    :
+    :
+    :my @oldval  = (5, 8, 12);
+    :
+    :my @newval1 = (17, 15, 14); # all greater
+    :my @newval2 = (15, 7,  20); # some less some greater
+    :my @newval3 = (3, 1, 4);    # all less
+    :my @newval4 = (1,2,40);     
+    :
+    :ok( any(@newval4) &gt; any(@oldval), &quot;any test array against any array&quot; );
+    :ok( any(@newval4) &gt; all(@oldval), &quot;any test array against all array&quot; );
+    :ok( all(@newval2) &gt; any(@oldval), &quot;all test array against any array&quot; );
+    :ok( all(@newval1) &gt; all(@oldval), &quot;all test array against all array&quot; );
+    :
+    :ok(42 &gt; 12 &amp; 20 &amp; 32, &quot;test the all infix operator&quot;);
+    :
+    :
+    :# Hyper ops
+    :my @rv;
+    :@rv = (1,2,3,4) &gt;&gt;+&lt;&lt; (1,2,3,4);
+    :is(&quot;@rv[]&quot;, &quot;2 4 6 8&quot;, 'hyper-add');</pre>
+</div><ul>
+<li><strong><a name="item_Binary_252F252F_is_just_like_257C257C252C_except_that_i">Binary <code>//</code> is just like <code>||</code>, except that it tests its left
+side for definedness instead of truth. There is a low-precedence form,
+too: <code>err</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_types">Binary <code>===</code> tests immutable type and value correspondence:
+for two value types (that is, immutable types), tests whether
+they are the same value (eg. <code>1 === 1</code>); for two mutable types
+(object types), checks whether they have the same identity value.
+(For most such types the identity is simply the reference itself.)
+It is not true that <code>[1,2] === [1,2]</code> because those are different
+<code>Array</code> objects, but it is true that <code>@a === @a</code> because those are
+the same <code>Array</code> object).</a></strong><br />
+</li>
+Any object type may pretend to be a value type by defining a <code>.SKID</code>
+method which returns a value type that can be recursively compared
+using <code>===</code>, or in cases where that is impractical, by overloading
+<code>===</code> such that the comparison treats values consistently with their
+``eternal'' identity.  (Strings are defined as values this way despite
+also being objects.)
+<p>Two values are never equivalent unless they are of exactly the same type.  By
+contrast, <code>eq</code> always coerces to string, while <code>==</code> always coerces to
+numeric.  In fact, <code>$a eq $b</code> really means ``<code>~$a === ~$b</code>'' and <code>$a == $b</code>
+means <code>+$a === +$b</code>.</p>
+<p>Note also that, while string hashes use <code>eq</code> semantics by default,
+object hashes use <code>===</code> semantics.</p>
+<p></p>
+<li><strong><a name="item_those">Binary <code>eqv</code> tests equality much like <code>===</code> does, but does
+so with ``snapshot'' semantics rather than ``eternal'' semantics.  For
+top-level components of your value that are of immutable types, <code>eqv</code>
+is identical in behavior to <code>===</code>.  For components of your value
+that are mutable, however, rather than comparing object identity using
+<code>===</code>, the <code>eqv</code> operator tests whether the canonical representation
+of both subvalues would be identical if we took a snapshot of them
+right now and compared those (now-immutable) snapshots using <code>===</code>.</a></strong><br />
+</li>
+If that's not enough flexibility, there is also an <code>eqv()</code> function
+that can be passed additional information specifying how you want
+canonical values to be generated before comparison.  This gives
+<code>eqv()</code> the same kind of expressive power as a sort signature.
+(And indeed, the <code>cmp</code> operator from Perl 5 also has a functional
+analog, <code>cmp()</code>, that takes additional instructions on how to
+do 3-way comparisons of the kind that a sorting algorithm wants.)
+In particular, a signature passed to <code>eqv()</code> will be bound to the
+two operands in question, and then the comparison will proceed
+on the formal parameters according to the information contained
+in the signature, so you can force numeric, string, natural, or
+other comparisons with proper declarations of the parameter's type
+and traits.  If the signature doesn't match the operands, <code>eqv()</code>
+reverts to standard <code>eqv</code> comparison.  (Likewise for <code>cmp()</code>.)
+<p></p>
+<li><strong><a name="item_Binary_cmp_is_no_longer_the_comparison_operator_th">Binary <code>cmp</code> is no longer the comparison operator that
+forces stringification.  Use the <code>leg</code> operator for the old Perl 5
+<code>cmp</code> semantics.  The <code>cmp</code> is just like the <code>eqv</code> above except that
+instead of returning <code>Bool::False</code> or <code>Bool::True</code> values it always
+returns <code>Order::Increase</code>, <code>Order::Same</code>, or <code>Order::Decrease</code>
+(which numerify to -1, 0, or +1).</a></strong><br />
+</li>
+<li><strong><a name="item_operator">the <code>leg</code> operator (less than, equal, or greater) is defined
+in terms of <code>cmp</code>, so <code>$a leg $b</code> is now defined as <code>~$a cmp ~$b</code>.
+The sort operator still defaults to <code>cmp</code> rather than <code>leg</code>.  The
+<code>&lt;=&gt;</code> operator's semantics are unchanged except that it returns
+an <code>Order</code> value as described above.  In other words, <code>$a &lt;=&gt; $b</code>
+is now equivalent to <code>+$a cmp +$b</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_Binary_253D253E_is_no_longer_just_a_2522fancy_comma252">Binary <code>=&gt;</code> is no longer just a ``fancy comma''.  It now
+constructs a <code>Pair</code> object that can, among other things, be used to
+pass named arguments to functions.  It provides scalar context to both sides.
+Its precedence is now equivalent to assignment, and it is right associative.</a></strong><br />
+</li>
+<li><strong><a name="item_255E255E_is_the_high252Dprecedence_version_of_xor252E"><code>^^</code> is the high-precedence version of <code>xor</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_253D257E_becomes_the_2522smart_match2522_operator_257E25"><code>=~</code> becomes the ``smart match'' operator <code>~~</code>, with a whole new set
+of semantics.  Anywhere you used <code>=~</code> before you now use <code>~~</code>, but <code>~~</code>
+is much more general now.  See ``Smart matching'' below for details.  (To catch
+``brainos'', the Perl 6 parser defines an <code>infix:&lt;=~&gt;</code> macro which always
+fails at compile time with a message directing the user either to use <code>~~</code>
+or <code>~=</code> (string append) instead, or to put a space between if they
+really wanted to assign a stringified value.)  A negated smart match is
+spelled <code>!~~</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_argument">``Unary'' <code>.</code> calls its single argument (which must be a postfix
+operator) on <code>$_</code>.  (It's not really a unary operator, so we put it in
+quotes.)</a></strong><br />
+</li>
+<li><strong><a name="item_values">The <code>..</code> range operator has variants with <code>^</code> on either
+end to indicate exclusion of that endpoint from the range.  It always
+produces a <code>Range</code> object.  Range objects are lazy iterators, and can
+be interrogated for their current <code>.min</code> and <code>.max</code> values (which
+change as they are iterated).  Ranges are not autoreversing: <code>2..1</code>
+is always a null range, as is <code>1^..^2</code>.  To reverse a range use:</a></strong><br />
+</li>
+<pre>
+    2..1:by(-1)
+    reverse 1..2</pre>
+<p>(The <code>reverse</code> is preferred because it works for alphabetic ranges
+as well.)</p>
+<p>Because <code>Range</code> objects are lazy, they do not automatically generate
+a list.  So smart matching against a <code>Range</code> object smartmatches the
+endpoints in the domain of the object being matched, so fractional
+numbers are <code>not</code> truncated before comparison to integer ranges:</p>
+<pre>
+    1.5 ~~ 1^..^2  # true, equivalent to 1 &lt; 1.5 &lt; 2
+    2.1 ~~ 1..2    # false, equivalent to 1 &lt;= 2.1 &lt;= 2</pre>
+<p>If a <code>*</code> (see the ``Whatever'' type in S02) occurs on
+the right side of a range, it is taken to mean ``positive infinity''
+in whatever space the range is operating.  A <code>*</code> on the left means
+``negative infinity'' for types that support negative values.  If the
+<code>*</code> occurs on one side but not the other, the type is inferred from
+the other argument.  A star on both sides will match any value that
+supports the <code>Ordered</code> role.</p>
+<pre>
+    0..*        # 0 .. +Inf
+    'a'..*      # 'a' .. 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzz...'
+    *..0        # -Inf .. 0
+    *..*        # &quot;-Inf .. +Inf&quot;, really Ordered
+    1.2.3..*    # Any version higher than 1.2.3.</pre>
+<p>Note: infinite lists are constructed lazily.  And even though <code>*..*</code>
+can't be constructed at all, it's still useful as a selector object.</p>
+<li><strong><a name="item_The_unary_255E_operator_generates_a_range_from_0_up">The unary <code>^</code> operator generates a range from <code>0</code> up to
+one less than its argument.  So <code>^4</code> is short for <code>0..^4</code> or <code>0..3</code>.</a></strong><br />
+</li>
+<pre>
+    for ^4 { say $_ } # 0, 1, 2, 3</pre>
+<p>If applied to a list, it generates a multidimensional set of subscripts.</p>
+<pre>
+    for ^(3,3) { ... } # (0,0)(0,1)(0,2)(1,0)(1,1)(1,2)(2,0)(2,1)(2,2)</pre>
+<p>If applied to a type name, it indicates the metaclass instance instead,
+so <code>^Moose</code> is short for <code>META(Moose)</code> or <code>Moose.META</code>.  It still kinda
+means ``what is this thing's domain'' in an abstract sort of way.</p>
+<li><strong><a name="item_bitterly">The <code>...</code> operator is the ``yada, yada, yada'' list operator,
+which is used as the body in function prototypes.  It complains
+bitterly (by calling <code>fail</code>) if it is ever executed.  Variant <code>???</code>
+calls <code>warn</code>, and <code>!!!</code> calls <code>die</code>.  The argument is optional,
+but if provided, is passed onto the <code>fail</code>, <code>warn</code>, or <code>die</code>.
+Otherwise the system will make up a message for you based on the
+context, indicating that you tried to execute something that is
+stubbed out.  (This message differs from what <code>fail</code>, <code>warn</code>, and
+<code>die</code> would say by default, since the latter operators typically point
+out bad data or programming rather than just an incomplete design.)</a></strong><br />
+</li>
+<li><strong><a name="item_In_addition_to_the_ordinary_252E_method_invocation25">In addition to the ordinary <code>.</code> method invocation, there are
+variants <code>.*</code>, <code>.?</code>, and <code>.+</code> to control how multiple related methods
+of the same name are handled.  The <code>.=</code> operator does inplace modification
+of the object on the left.  The <code>.^</code> operator calls a class metamethod;
+<code>foo.^bar</code> is short for <code>foo.META.bar</code>.</a></strong><br />
+</li>
+<li><strong><a name="item_Unary_253D_reads_lines_from_a_filehandle_or_filenam">Unary <code>=</code> reads lines from a filehandle or filename, or
+iterates an iterator, or in general causes a scalar to explode its guts
+when it would otherwise not.  How it does that is context sensitive.
+For instance, <code>=$iterator</code> is scalar/list sensitive and will
+produce one value in scalar context but many values in list context.
+(Use <code>@$iterator</code> to force a fetch of all the values even in scalar
+context, and <code>$$iterator</code> to force a fetch of a single value even
+in list context.)  On the other hand, <code>=$capture</code> interpolates all
+parts of the capture that makes sense in the current list context,
+depending on what controls that list context.</a></strong><br />
+</li>
+</ul>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Smart20matching">Smart matching</a></h1>
+<p>Here is the current table of smart matches.
+The list is intended to reflect forms that can be recognized at
+compile time.  If none of these forms is recognized at compile time, it
+falls through to do MMD to <code>infix:&lt;~~&gt;()</code>, which presumably
+reflects similar semantics, but can finesse things that aren't exact
+type matches.  Note that all types are scalarized here.  Both <code>~~</code>
+and <code>given</code>/<code>when</code> provide scalar contexts to their arguments.
+(You can always hyperize <code>~~</code> explicitly, though.)  So both <code>$_</code>
+and <code>$x</code> here are potentially references to container objects.
+And since lists promote to arrays in scalar context, there need be no
+separate entries for lists.</p>
+<pre>
+    $_      $x        Type of Match Implied    Matching Code
+    ======  =====     =====================    =============
+    Any     Code:($)   scalar sub truth         match if $x($_)
+    Hash    Hash      hash keys identical      match if $_.keys.sort »eq« $x.keys.sort
+    Hash    any(Hash) hash key intersection    match if $_{any(Hash.keys)}
+    Hash    Array     hash value slice truth   match if $_{any(@$x)}
+    Hash    any(list) hash key slice existence match if exists $_{any(list)}
+    Hash    all(list) hash key slice existence match if exists $_{all(list)}
+    Hash    Regex     hash key grep            match if any($_.keys) ~~ /$x/
+    Hash    Any       hash entry existence     match if exists $_{$x}
+    Hash    .{Any}    hash element truth*      match if $_{Any}
+    Hash    .&lt;string&gt; hash element truth*      match if $_&lt;string&gt;
+    Array   Array     arrays are comparable    match if $_ »~~« $x
+    Array   any(list) list intersection        match if any(@$_) ~~ any(list)
+    Array   Regex     array grep               match if any(@$_) ~~ /$x/
+    Array   Num       array contains number    match if any($_) == $x
+    Array   Str       array contains string    match if any($_) eq $x
+    Array   .[number] array element truth*     match if $_[number]
+    Num     NumRange  in numeric range         match if $min &lt;= $_ &lt;= $max
+    Str     StrRange  in string range          match if $min le $_ le $max
+    Capture Signature parameter binding        match if $cap can bind to $sig
+    Code    Signature signature compatibility* match if $_ is a subset of $x
+  Signature Signature signature compatibility  match if $_ is a subset of $x
+    Any     Code:()   simple closure truth*    match if $x() (ignoring $_)
+    Any     Class     class membership         match if $_.does($x)
+    Any     Role      role playing             match if $_.does($x)
+    Any     Num       numeric equality         match if $_ == $x
+    Any     Str       string equality          match if $_ eq $x
+    Any     .method   method truth*            match if $_.method
+    Any     Regex     pattern match            match if $_ ~~ /$x/
+    Any     subst     substitution match*      match if $_ ~~ subst
+    Any     boolean   simple expression truth* match if $x.true given $_
+    Any     undef     undefined                match unless defined $_
+    Any     Whatever  default                  match anything
+    Any     Any       run-time dispatch        match if infix:&lt;~~&gt;($_, $x)</pre>
+<p>Matches marked with * are non-reversible, typically because <code>~~</code> takes
+its left side as the topic for the right side, and sets the topic to a
+private instance of <code>$_</code> for its right side, so <code>$_</code> means something
+different on either side.  Such non-reversible constructs can be made
+reversible by putting the leading term into a closure to defer the
+binding of <code>$_</code>.  For example:</p>
+<pre>
+    $x ~~ .does(Storable)       # okay
+    .does(Storable) ~~ $x       # not okay--gets wrong $_ on left
+    { .does(Storable) } ~~ $x   # okay--closure binds its $_ to $x</pre>
+<p>Exactly the same consideration applies to <code>given</code> and <code>when</code>:</p>
+<pre>
+    given $x { when .does(Storable) {...} }      # okay
+    given .does(Storable) { when $x {...} }      # not okay
+    given { .does(Storable) } { when $x {...} }  # okay</pre>
+<p>Boolean expressions are those known to return a boolean value, such
+as comparisons, or the unary <code>?</code> operator.  They may reference <code>$_</code>
+explicitly or implicitly.  If they don't reference <code>$_</code> at all, that's
+okay too--in that case you're just using the switch structure as a more
+readable alternative to a string of elsifs.  Note, however, that this means
+you can't write:</p>
+<pre>
+    given $boolean {
+        when True {...}
+        when False {...}
+    }</pre>
+<p>because it will always choose the <code>True</code> case.  Instead use something like:</p>
+<pre>
+    given $boolean {
+        when .true {...}
+        when .not {...}
+    }</pre>
+<p>Better, just use an <code>if</code> statement.</p>
+<p>The primary use of the <code>~~</code> operator is to return a boolean value in
+a boolean context.  However, for certain operands such as regular
+expressions, use of the operator within scalar or list context transfers
+the context to that operand, so that, for instance, a regular expression
+can return a list of matched substrings, as in Perl 5.  The complete
+list of such operands is TBD.</p>
+<p>It has not yet been determined if run-time dispatch of <code>~~</code> will
+attempt to emulate the compile-time precedence table before reverting
+to MMD, or just go directly to MMD.  There are good arguments for
+both sides, and we can decide when we see more examples of how
+it'll work out.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Meta20operators">Meta operators</a></h1>
+<p>Perl 6's operators have been greatly regularized, for instance, by
+consistently prefixing numeric, stringwise, and boolean operators
+with <code>+</code>, <code>~</code> and <code>?</code> respectively to indicate whether the bitwise
+operation is done on a number, a string, or a single bit.
+But that's just a naming convention, and if you wanted to add a new
+bitwise <code>¬</code> operator, you'd have the add the <code>+¬</code>, <code>~¬</code>, and <code>?¬</code>
+operators yourself.  Similarly, the carets that exclude the endpoints
+on ranges are there by convention only.</p>
+<p>In contrast to that, Perl 6 has four standard metaoperators for
+turning a given existing operator into a related operator that is
+more powerful (or at least differently powerful).  These differ from a
+mere naming convention in that Perl automatically generates these new
+metaoperators from user-defined operators as well as from builtins.
+In fact, you're not generally supposed to define the individual
+metaoperations--their semantics are supposed to be self-evident by
+the transformation of the base operator.</p>
+<p>Note: spaces are never allowed between any metaoperator and the
+operator it's modifying, because all operators including modified
+ones have to be recognized by the Longest-Token Rule, which disallows
+spaces within a token.</p>
+<p>
+</p>
+<h2><a name="Assignment20operators">Assignment operators</a></h2>
+<p>These are already familiar to C and Perl programmers.  (Though the
+<code>.=</code> operator now means to call a mutating method on the object on
+the left, and <code>~=</code> is string concatenation.)  Most non-relational
+infix operators may be turned into their corresponding assignment
+operator by suffixing with <code>=</code>.  The limitation is actually based
+on whether the left side can function both as an rvalue and an lvalue
+by the usual correspondence:</p>
+<pre>
+    A op= B;
+    A = A op B;</pre>
+<p>Existing forms ending in <code>=</code> may not be modified with this metaoperator.</p>
+<p>Regardless of the precedence of the base operator, the precedence
+of any assignment operators is forced to be the same as that of
+ordinary assignment.</p>
+<p>
+</p>
+<h2><a name="Negated20relational20operators2e">Negated relational operators.</a></h2>
+<p>Any infix relational operator may be transformed into its negative
+by prefixing with <code>!</code>.  A couple of these have traditional shortcuts:</p>
+<pre>
+    Full form   Shortcut
+    ---------   --------
+    !==         !=
+    !eq         ne</pre>
+<p>but most of them do not:</p>
+<pre>
+    !~~
+    !&lt;
+    !&gt;=
+    !ge
+    !===
+    !eqv
+    !=:=</pre>
+<p>To avoid visual confusion with the <code>!!</code> operator, you may not modify
+any operator already beginning with <code>!</code>.</p>
+<p>The precedence of any negated operator is the same as the base operator.</p>
+<p>
+</p>
+<h2><a name="Hyper20operators">Hyper operators</a></h2>
+<p>The Unicode characters <code>»</code> (<code>\x[BB]</code>) and <code>«</code> (<code>\x[AB]</code>) and
+their ASCII digraphs <code>&gt;&gt;</code> and <code>&lt;&lt;</code> are used to denote
+``list operations'', which operate on each element of two lists (or
+arrays) and return a list (or array) of the results.  Spaces are not
+allowed on the ``pointy'' end of each ``hyper'', but are allowed on the
+blunt end (except for postfix operators, which must still follow postfix
+spacing rules, but do allow for an additional dot before the ``hyper'').</p>
+<p>The precedence of any hyperoperator is the same as its base operator.
+This means that you must parenthesize your lists for most operators.
+For example:</p>
+<pre>
+     (1,1,2,3,5) »+« (1,2,3,5,8);  # (2,3,5,8,13)</pre>
+<p>If either argument is insufficiently dimensioned, Perl ``upgrades'' it:</p>
+<pre>
+     (3,8,2,9,3,8) &gt;&gt;-&lt;&lt; 1;          # (2,7,1,8,2,7)</pre>
+<p>In fact, this is the <em>only</em> form that will work for an unordered type
+such as a <code>Bag</code>:</p>
+<pre>
+     Bag(3,8,2,9,3,8) &gt;&gt;-&lt;&lt; 1;       # Bag(2,7,1,8,2,7) ~~ Bag(1,2,2,7,7,8)</pre>
+<p>When using a unary operator, only put the ``hyper'' on the side of the
+single operand:</p>
+<pre>
+     @negatives = -« @positives;</pre>
+<pre>
+     @positions»++;            # Increment all positions</pre>
+<pre>
+     @positions.»++;           # Same thing, dot form
+     @positions».++;           # Same thing, dot form
+     @positions.».++;          # Same thing, dot form
+     @positions\  .»\  .++;    # Same thing, long dot form</pre>
+<pre>
+     @objects.».run();
+     (&quot;f&quot;,&quot;oo&quot;,&quot;bar&quot;).&gt;&gt;.chars;   # (1,2,3)</pre>
+<p>Note that method calls are really postfix operators, not infix, so you
+shouldn't put a <code>«</code> after the dot.</p>
+<p>Hyper operators are defined recursively on arrays, so:</p>
+<pre>
+    -« [[1, 2], 3]               #    [-«[1, 2], -«3]
+                                 # == [[-1, -2], -3]
+    [[1, 2], 3] »+« [4, [5, 6]]  #    [[1,2] »+« 4, 3 »+« [5, 6]]
+                                 # == [[5, 6], [8, 9]]</pre>
+<p>More generally, hyper operators work recursively for any object
+matching the <code>Each</code> role even if the object itself doesn't support
+the operator in question:</p>
+<pre>
+    Bag(3,8,[2,Seq(9,3)],8) &gt;&gt;-&lt;&lt; 1;         # Bag(2,7,[1,Seq(8,2)],7)
+    Seq(3,8,[2,Seq(9,3)],8) &gt;&gt;-&lt;&lt; (1,1,2,1); # Seq(2,7,[0,Seq(7,1)],7)</pre>
+<p>In particular, tree node types with <code>Each</code> semantics enable visitation:</p>
+<pre>
+    $tree.».foo;       # short for $tree.foo, $tree.each: { .».foo }</pre>
+<p>If not all nodes support the operation, you need a form of it that
+specifies the call is optional:</p>
+<pre>
+    $tree.».?foo;      # short for $tree.?foo, $tree.each: { .».?foo }
+    $tree.».*foo;      # short for $tree.*foo, $tree.each: { .».*foo }</pre>
+<p>You are not allowed to define your own hyper operators, because they
+are supposed to have consistent semantics derivable entirely from
+the modified scalar operator.  If you're looking for a mathematical
+vector product, this isn't where you'll find it.  A hyperoperator
+is one of the ways that you can promise to the optimizer that your
+code is parallelizable.  (The tree visitation above is allowed to
+have side effects, but it is erroneous for the meaning of those side
+effects to depend on the order of visitation.  [Conjecture: we could
+allow dependencies that assume top-down visitation and only leaves
+sibling calls unordered.])</p>
+<p>Even in the absence of hardware that can do parallel processing,
+hyperoperators may be faster than the corresponding scalar operators
+if they can factor out looping overhead to lower-level code, or
+can apply loop-unrolling optimizations, or can factor out some or
+all of the MMD dispatch overhead, based on the known types of the
+operands (and also based on the fact that hyper operators promise
+no interaction among the ``iterations'', whereas the corresponding
+scalar operator in a loop cannot make the same promise unless all
+the operations within the loop are known to be side-effect free.)</p>
+<p>In particular, infix hyperops on two <code>int</code> or <code>num</code> arrays need
+only do a single MMD dispatch to find the correct function to call for
+all pairs, and can further bypass any type-checking or type-coercion
+entry points to such functions when there are known to be low-level
+entry points of the appropriate type.  (And similarly for unary <code>int</code>
+or <code>num</code> ops.)</p>
+<p>Application-wide analysis of finalizable object types may also enable
+such optimizations to be applied to <code>Int</code>, <code>Num</code>, and such.  In the
+absence of that, run-time analysis of partial MMD dispatch may save
+some MMD searching overhead.  Or particular object arrays might even
+keep track of their own run-time type purity and cache partial MMD
+dispatch tables when they know they're likely to be used in hyperops.</p>
+<p>
+</p>
+<h2><a name="Reduction20operators">Reduction operators</a></h2>
+<a name="msg_10"></a>
+<a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
+<div ID=header_shown_10 style="display: none;">- Hide t/subroutines/multi_sub.t (line 69 ~ line 86) -
+</div>
+<div ID=header_hidden_10 style="display: block;">- Show t/subroutines/multi_sub.t (18 lines) -</div>
+</a>
+</p>
+<div ID=hide_10 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Reduction operators&quot;&gt;
+    :
+    :proto prefix:&lt;[+]&gt; (*@args) {
+    :    my $accum = 0;
+    :    $accum += $_ for @args;
+    :    return $accum * 2; # * 2 is intentional here
+    :}
+    :
+    :is ([+] 1,2,3), 12, &quot;[+] overloaded by proto definition&quot;;
+    :
+    :# more similar tests
+    :
+    :proto prefix:&lt;moose&gt; ($arg) { $arg + 1 }
+    :is (moose 3), 4, &quot;proto definition of prefix:&lt;moose&gt; works&quot;;
+    :
+    :proto prefix:&lt;elk&gt; ($arg) {...}
+    :multi prefix:&lt;elk&gt; ($arg) { $arg + 1 }
+    :is (elk 3), 4, &quot;multi definition of prefix:&lt;elk&gt; works&quot;;</pre>
+</div><a name="msg_9"></a>
+<a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
+<div ID=header_shown_9 style="display: none;">- Hide t/operators/reduce_le1arg.t (line 6 ~ line 58) -
+</div>
+<div ID=header_hidden_9 style="display: block;">- Show t/operators/reduce_le1arg.t (53 lines) -</div>
+</a>
+</p>
+<div ID=hide_9 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Reduction operators&quot;&gt;
+    :
+    :is ([**] ()), 1, &quot;[**] () eq 1 (arguably nonsensical)&quot;;
+    :is ([*] ()), 1, &quot;[*] () eq 1&quot;;
+    :dies_ok( { [/] () }, &quot;[/] () should fail&quot;);
+    :dies_ok( { [%] () }, &quot;[%] () should fail&quot;);
+    :dies_ok( { [x] () }, &quot;[x] () should fail&quot;);
+    :dies_ok( { [xx] () }, &quot;[xx] () should fail&quot;);
+    :is ([+&amp;] ()), +^0, &quot;[+&amp;] () eq +^0&quot;;
+    :dies_ok( { [+&lt;] () }, &quot;[+&lt;] () should fail&quot;);
+    :dies_ok( { [+&gt;] () }, &quot;[+&gt;] () should fail&quot;);
+    :dies_ok( { [~&amp;] () }, &quot;[~&amp;] () should fail&quot;);
+    :dies_ok( { [~&lt;] () }, &quot;[~&lt;] () should fail&quot;);
+    :dies_ok( { [~&gt;] () }, &quot;[~&gt;] () should fail&quot;);
+    :is ([+] ()), 0, &quot;[+] () eq 0&quot;;
+    :is ([-] ()), 0, &quot;[-] () eq 0&quot;;
+    :is ([~] ()), '', &quot;[~] () eq ''&quot;;
+    :is ([+|] ()), 0, &quot;[+|] () eq 0&quot;;
+    :is ([+^] ()), 0, &quot;[+^] () eq 0&quot;;
+    :is ([~|] ()), '', &quot;[~|] () eq ''&quot;;
+    :is ([~^] ()), '', &quot;[~^] () eq ''&quot;;
+    :# eval_is &quot;[&amp;] ()&quot;, all(), &quot;[&amp;] () eq all()&quot;;
+    :# eval_is &quot;[|] ()&quot;, any(), &quot;[|] () eq any()&quot;;
+    :# eval_is &quot;[^] ()&quot;, one(), &quot;[^] () eq one()&quot;;
+    :eval_is &quot;[!==] ()&quot;, Bool::False, &quot;[!==] () eq False&quot;;
+    :is ([==] ()), Bool::True, &quot;[==] () eq True&quot;;
+    :is ([&lt;] ()), Bool::True, &quot;[&lt;] () eq True&quot;;
+    :is ([&lt;=] ()), Bool::True, &quot;[&lt;=] () eq True&quot;;
+    :is ([&gt;] ()), Bool::True, &quot;[&gt;] () eq True&quot;;
+    :is ([&gt;=] ()), Bool::True, &quot;[&gt;=] () eq True&quot;;
+    :is ([~~] ()), Bool::True, &quot;[~~] () eq True&quot;;
+    :eval_is &quot;[!~~] ()&quot;, Bool::False, &quot;[!~~] () eq False&quot;;
+    :is ([eq] ()), Bool::True, &quot;[eq] () eq True)&quot;;
+    :eval_is &quot;[!eq] ()&quot;, Bool::False, &quot;[!eq] () eq False&quot;;
+    :is ([lt] ()), Bool::True, &quot;[lt] () eq True&quot;;
+    :is ([le] ()), Bool::True, &quot;[le] () eq True&quot;;
+    :is ([gt] ()), Bool::True, &quot;[gt] () eq True&quot;;
+    :is ([ge] ()), Bool::True, &quot;[ge] () eq True&quot;;
+    :is ([=:=] ()), Bool::True, &quot;[=:=] () eq True&quot;;
+    :eval_is &quot;[!=:=] ()&quot;, Bool::False, &quot;[!=:=] () eq False&quot;;
+    :is ([===] ()), Bool::True, &quot;[===] () eq True&quot;;
+    :eval_is &quot;[!===] ()&quot;, Bool::False, &quot;[!===] () eq False&quot;;
+    :eval_is &quot;[eqv] ()&quot;, Bool::True, &quot;[eqv] () eq True&quot;;
+    :eval_is &quot;[!eqv] ()&quot;, Bool::False, &quot;[!eqv] () eq False&quot;;
+    :is ([&amp;&amp;] ()), Bool::True, &quot;[&amp;&amp;] () eq True&quot;;
+    :is ([||] ()), Bool::False, &quot;[||] () eq False&quot;;
+    :is ([^^] ()), Bool::False, &quot;[^^] () eq False&quot;;
+    :is (defined ([//] ())), Bool::False, &quot;[//] () not defined&quot;;
+    :is (defined ([=] ())), Bool::False, &quot;[=] () not defined&quot;;
+    :is ([,] ()), (), &quot;[,] () eq ()&quot;;
+    :eval_is &quot;[¥] ()&quot;, [], &quot;[¥] () eq []&quot;;
+    :
+    :# need to add one elems list cases</pre>
+</div><p>The final metaoperator in Perl 6 is the reduction operator.  Any
+infix operator (except for non-associating operators and assignment
+operators) can be surrounded by square brackets in term position to
+create a list operator that reduces using that operation:</p>
+<pre>
+    [+] 1, 2, 3;      # 1 + 2 + 3 = 6
+    my @a = (5,6);
+    [*] @a;           # 5 * 6 = 30</pre>
+<p>As with all the metaoperators, space is not allowed inside.  The whole
+thing parses as a single token.</p>
+<p>A reduction operator has the same precedence as a list operator.  In fact,
+a reduction operator really is a list operator, and is invoked as one.
+Hence, you can implement a reduction operator in one of two ways.  Either
+you can write an explicit list operator:</p>
+<pre>
+    proto prefix:&lt;[+]&gt; (*@args) {
+        my $accum = 0;
+        while (@args) {
+            $accum += @args.shift();
+        }
+        return $accum;
+    }</pre>
+<p>or you can let the system autogenerate one for you based on the
+corresponding infix operator, probably by currying:</p>
+<pre>
+    # (examples, actual system may define prefix:[**] instead)
+    &amp;prefix:&lt;[*]&gt; ::= &amp;reduce.assuming(&amp;infix:&lt;*&gt;, 1);
+    &amp;prefix:&lt;[**]&gt; ::= &amp;reducerev.assuming(&amp;infix:&lt;**&gt;);</pre>
+<p>As a special form of name, the non-prefix notation, as in</p>
+<pre>
+    proto [foo] (*@args) {
+        ...
+    }</pre>
+<p>or</p>
+<pre>
+    &amp;[foo] ::= ...</pre>
+<p>defines both the <code>[foo]</code> reduce operator and the <code>foo</code> infix operator.
+Where appropriate, use of the infix form may be optimized like this:</p>
+<pre>
+    # Original          # Optimized
+    $a foo $b           # [foo] $a, $b
+    $a foo $b foo $c    # [foo] $a, $b, $c</pre>
+<p>If the reduction operator is defined separately from the infix operator,
+it must associate the same way as the operator used:</p>
+<pre>
+    [-] 4, 3, 2;      # 4-3-2 = (4-3)-2 = -1
+    [**] 4, 3, 2;     # 4**3**2 = 4**(3**2) = 262144</pre>
+<p>For list-associating operators (like <code>&lt;</code>), all arguments are taken
+together, just as if you had written it out explicitly:</p>
+<pre>
+    [&lt;] 1, 3, 5;      # 1 &lt; 3 &lt; 5</pre>
+<p>If fewer than two arguments are given, a dispatch is still attempted
+with whatever arguments are given, and it is up to the receiver of that
+dispatch to deal with fewer than two arguments.  Note that the proto
+list operator definition is the most general, so you are allowed to define
+different ways to handle the one argument case depending on type:</p>
+<pre>
+    multi prefix:&lt;[foo]&gt; (Int $x) { 42 }
+    multi prefix:&lt;[foo]&gt; (Str $x) { fail &quot;Can't foo a single Str&quot; }</pre>
+<p>However, the zero argument case must of necessity be handled by the
+proto version, since there is no type information to dispatch on.
+Operators that wish to specify an identity value should do so by
+specifying the proto listop.  Among the builtin operators, <code>[+]()</code>
+returns 0 and <code>[*]()</code> returns 1, for instance.</p>
+<p>By default, if there is one argument, the built-in reduce operators
+return that one argument.  However, this default doesn't make sense
+for operators like <code>&lt;</code> that don't return the same type as they
+take, so these kinds of operators overload the single-argument case
+to return something more meaningful.  All the comparison operators
+return a boolean for either 1 or 0 arguments.  Negated operators
+return <code>Bool::False</code>, and all the rest return <code>Bool::True</code>.</p>
+<p>You can also make a reduce operator of the comma operator.  This has
+the effect of dereferencing its arguments into another argument list
+as if they'd been placed there directly.</p>
+<pre>
+    @args = \@foo,1,2,3;
+    push [,] @args;     # same as push @foo,1,2,3</pre>
+<p>See S06 for more.</p>
+<p>You may also reduce using the semicolon second-dimension separator:</p>
+<pre>
+    [[;] 1,2,3]   # equivalent to [1;2;3]</pre>
+<p>Builtin reduce operators return the following identity values:</p>
+<pre>
+    [**]()      # 1     (arguably nonsensical)
+    [*]()       # 1
+    [/]()       # fail  (reduce is nonsensical)
+    [%]()       # fail  (reduce is nonsensical)
+    [x]()       # fail  (reduce is nonsensical)
+    [xx]()      # fail  (reduce is nonsensical)
+    [+&amp;]()      # +^0   (-1 on 2's complement machine)
+    [+&lt;]()      # fail  (reduce is nonsensical)
+    [+&gt;]()      # fail  (reduce is nonsensical)
+    [~&amp;]()      # fail  (sensical but 1's length indeterminate)
+    [~&lt;]()      # fail  (reduce is nonsensical)
+    [~&gt;]()      # fail  (reduce is nonsensical)
+    [+]()       # 0
+    [-]()       # 0
+    [~]()       # ''
+    [+|]()      # 0
+    [+^]()      # 0
+    [~|]()      # ''    (length indeterminate but 0's default)
+    [~^]()      # ''    (length indeterminate but 0's default)
+    [&amp;]()       # all()
+    [|]()       # any()
+    [^]()       # one()
+    [!==]()     # Bool::False   (also for 1 arg)
+    [==]()      # Bool::True    (also for 1 arg)
+    [&lt;]()       # Bool::True    (also for 1 arg)
+    [&lt;=]()      # Bool::True    (also for 1 arg)
+    [&gt;]()       # Bool::True    (also for 1 arg)
+    [&gt;=]()      # Bool::True    (also for 1 arg)
+    [~~]()      # Bool::True    (also for 1 arg)
+    [!~~]()     # Bool::False   (also for 1 arg)
+    [eq]()      # Bool::True    (also for 1 arg)
+    [!eq]()     # Bool::False   (also for 1 arg)
+    [lt]()      # Bool::True    (also for 1 arg)
+    [le]()      # Bool::True    (also for 1 arg)
+    [gt]()      # Bool::True    (also for 1 arg)
+    [ge]()      # Bool::True    (also for 1 arg)
+    [=:=]()     # Bool::True    (also for 1 arg)
+    [!=:=]()    # Bool::False   (also for 1 arg)
+    [===]()     # Bool::True    (also for 1 arg)
+    [!===]()    # Bool::False   (also for 1 arg)
+    [eqv]()     # Bool::True    (also for 1 arg)
+    [!eqv]()    # Bool::False   (also for 1 arg)
+    [&amp;&amp;]()      # Bool::True
+    [||]()      # Bool::False
+    [^^]()      # Bool::False
+    [//]()      # undef
+    [=]()       # undef    (same for all assignment operators)
+    [,]()       # ()
+    [¥]()       # []</pre>
+<p>User-defined operators may define their own identity values, but
+there is no explicit identity property.  The value is implicit in the
+behavior of the 0-arg reduce, so mathematical code wishing to find
+the identity value for an operation can call <code>prefix:{&quot;[$opname]&quot;}()</code>
+to discover it.</p>
+<p>To call some other non-infix function as a reduce operator, you may
+define an alias in infix form.  The infix form will parse the right
+argument as a scalar even if the aliased function would have parsed it
+as a list:</p>
+<pre>
+    &amp;infix:&lt;dehash&gt; ::= postcircumfix:&lt;{ }&gt;;
+    $x = [dehash] $a,'foo','bar';  # $a&lt;foo&gt;&lt;bar&gt;, not $a&lt;foo bar&gt;</pre>
+<p>Alternately, just define your own <code>prefix:&lt;[dehash]&gt;</code> routine.</p>
+<p>Note that, because a reduce is a list operator, the argument list is
+evaluated in list context.  Therefore the following would be incorrect:</p>
+<pre>
+    $x = [dehash] %a,'foo','bar';</pre>
+<p>You'd instead have to say one of:</p>
+<pre>
+    $x = [dehash] \%a,'foo','bar';
+    $x = [dehash] %a&lt;foo&gt;,'bar';</pre>
+<p>On the plus side, this works without a star:</p>
+<pre>
+    @args = (\%a,'foo','bar');
+    $x = [dehash] @args;</pre>
+<p>A reduce operator returns only a scalar result regardless of context.
+(Even <code>[,]</code> returns a single <code>Capture</code> object which is then spliced
+into the outer argument list.)  To return all intermediate results,
+backslash the operator:</p>
+<pre>
+    say [\+] 1..*  #  (1, 3, 6, 10, 15, ...)</pre>
+<p>The visual picture of a triangle is not accidental.  To produce a triangular
+list of lists, you can use a ``triangular comma'':</p>
+<pre>
+    [\,] 1..5
+    [1],
+    [1,2],
+    [1,2,3],
+    [1,2,3,4],
+    [1,2,3,4,5]</pre>
+<p>If there is ambiguity between a triangular reduce and an infix operator
+beginning with backslash, the infix operator is chosen, and an extra backslash
+indicates the corresponding triangular reduce.  As a consequence, defining an
+infix operator beginning with backslash, <code>infix:&lt;\x&gt;</code> say, will make it
+impossible to write certain triangular reduction operators, since <code>[\x]</code> would
+mean the normal reduction of <code>infix:&lt;\x&gt;</code> operator, not the triangular
+reduction of <code>infix:&lt;x&gt;</code>.  This is deemed to be an insignificant problem.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Junctive20operators">Junctive operators</a></h1>
+<a name="msg_13"></a>
+<a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
+<div ID=header_shown_13 style="display: none;">- Hide t/junction/misc_junctions.t (line 145 ~ line 152) -
+</div>
+<div ID=header_hidden_13 style="display: block;">- Show t/junction/misc_junctions.t (8 lines) -</div>
+</a>
+</p>
+<div ID=hide_13 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Junctive operators&quot;&gt;
+    :
+    :=cut
+    :
+    :# Canonical stringification of a junction
+    :sub j (Junction $j) { return $j.perl }
+    :
+    :{</pre>
+</div><a name="msg_12"></a>
+<a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
+<div ID=header_shown_12 style="display: none;">- Hide t/junction/misc_junctions.t (line 13 ~ line 144) -
+</div>
+<div ID=header_hidden_12 style="display: block;">- Show t/junction/misc_junctions.t (132 lines) -</div>
+</a>
+</p>
+<div ID=hide_12 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Junctive operators&quot;&gt;
+    :
+    :=cut
+    :
+    :{ # L&lt;S09/&quot;Junctions&quot;&gt;
+    :
+    :    # initalize them all to empty strings
+    :    my $a = '';
+    :    my $b = '';
+    :    my $c = '';
+    :    
+    :    # make sure they all match to an empty string
+    :    ok('' eq ($a &amp; $b &amp; $c), 'junction of ($a &amp; $b &amp; $c) matches and empty string');
+    :    ok('' eq all($a, $b, $c), 'junction of all($a, $b, $c) matches and empty string');   
+    :    
+    :    # give $a a value
+    :    $a = 'a';  
+    :    
+    :    # make sure that at least one of them matches 'a' 
+    :    ok('a' eq ($b | $c | $a), 'junction of ($b | $c | $a) matches at least one &quot;a&quot;');
+    :    ok('a' eq any($b, $c, $a), 'junction of any($b, $c, $a) matches at least one &quot;a&quot;');   
+    :
+    :    ok('' eq ($b | $c | $a), 'junction of ($b | $c | $a) matches at least one empty string');
+    :    ok('' eq any($b, $c, $a), 'junction of any($b, $c, $a) matches at least one empty string');
+    :    
+    :    # make sure that ~only~ one of them matches 'a'
+    :    ok('a' eq ($b ^ $c ^ $a), 'junction of ($b ^ $c ^ $a) matches at ~only~ one &quot;a&quot;');
+    :    ok('a' eq one($b, $c, $a), 'junction of one($b, $c, $a) matches at ~only~ one &quot;a&quot;');
+    :    
+    :    # give $b a value
+    :    $b = 'a';
+    :    
+    :    # now this will fail
+    :    ok('a' ne ($b ^ $c ^ $a), 'junction of ($b ^ $c ^ $a) matches at more than one &quot;a&quot;');              
+    :
+    :    # change $b and give $c a value
+    :    $b = 'b';
+    :    $c = 'c';
+    :    
+    :    ok('a' eq ($b ^ $c ^ $a), 'junction of ($b ^ $c ^ $a) matches at ~only~ one &quot;a&quot;');
+    :    ok('b' eq ($a ^ $b ^ $c), 'junction of ($a ^ $b ^ $c) matches at ~only~ one &quot;b&quot;');
+    :    ok('c' eq ($c ^ $a ^ $b), 'junction of ($c ^ $a ^ $b) matches at ~only~ one &quot;c&quot;');  
+    :
+    :    ok('a' eq ($b | $c | $a), 'junction of ($b | $c | $a) matches at least one &quot;a&quot;');
+    :    ok('b' eq ($a | $b | $c), 'junction of ($a | $b | $c) matches at least one &quot;b&quot;');
+    :    ok('c' eq ($c | $a | $b), 'junction of ($c | $a | $b) matches at least one &quot;c&quot;'); 
+    :    
+    :    # test junction to junction
+    :    
+    :    ok(('a' | 'b' | 'c') eq ($a &amp; $b &amp; $c), 'junction (&quot;a&quot; | &quot;b&quot; | &quot;c&quot;) matches junction ($a &amp; $b &amp; $c)');    
+    :    ok(('a' &amp; 'b' &amp; 'c') eq ($a | $b | $c), 'junction (&quot;a&quot; &amp; &quot;b&quot; &amp; &quot;c&quot;) matches junction ($a | $b | $c)'); 
+    :    
+    :    # mix around variables and literals
+    :    
+    :    ok(($a &amp; 'b' &amp; 'c') eq ('a' | $b | $c), 'junction ($a &amp; &quot;b&quot; &amp; &quot;c&quot;) matches junction (&quot;a&quot; | $b | $c)');              
+    :    ok(($a &amp; 'b' &amp; $c) eq ('a' | $b | 'c'), 'junction ($a &amp; &quot;b&quot; &amp; $c) matches junction (&quot;a&quot; | $b | &quot;c&quot;)');              
+    :    
+    :}
+    :
+    :# same tests, but with junctions as variables
+    :{
+    :        # initalize them all to empty strings
+    :    my $a = '';
+    :    my $b = '';
+    :    my $c = '';
+    :    
+    :    my $all_of_them = $a &amp; $b &amp; $c;
+    :    ok('' eq $all_of_them, 'junction variable of ($a &amp; $b &amp; $c) matches and empty string');
+    :    
+    :    $a = 'a';  
+    :    
+    :    my $any_of_them = $b | $c | $a;
+    :    ok('a' eq $any_of_them, 'junction variable of ($b | $c | $a) matches at least one &quot;a&quot;');  
+    :    ok('' eq $any_of_them, 'junction variable of ($b | $c | $a) matches at least one empty string');
+    :    
+    :    my $one_of_them = $b ^ $c ^ $a;
+    :    ok('a' eq $one_of_them, 'junction variable of ($b ^ $c ^ $a) matches at ~only~ one &quot;a&quot;');
+    :    
+    :    $b = 'a';
+    :    
+    :    {
+    :        my $one_of_them = $b ^ $c ^ $a;
+    :        ok('a' ne $one_of_them, 'junction variable of ($b ^ $c ^ $a) matches at more than one &quot;a&quot;');              
+    :    }
+    :    
+    :    $b = 'b';
+    :    $c = 'c';
+    :    
+    :    {
+    :        my $one_of_them = $b ^ $c ^ $a;    
+    :        ok('a' eq $one_of_them, 'junction of ($b ^ $c ^ $a) matches at ~only~ one &quot;a&quot;');
+    :        ok('b' eq $one_of_them, 'junction of ($a ^ $b ^ $c) matches at ~only~ one &quot;b&quot;');
+    :        ok('c' eq $one_of_them, 'junction of ($c ^ $a ^ $b) matches at ~only~ one &quot;c&quot;');  
+    :    }
+    :
+    :    {
+    :        my $any_of_them = $b | $c | $a;
+    :        ok('a' eq $any_of_them, 'junction of ($b | $c | $a) matches at least one &quot;a&quot;');
+    :        ok('b' eq $any_of_them, 'junction of ($a | $b | $c) matches at least one &quot;b&quot;');
+    :        ok('c' eq $any_of_them, 'junction of ($c | $a | $b) matches at least one &quot;c&quot;'); 
+    :    }
+    :
+    :}
+    :
+    :{
+    :    my $j = 1 | 2;
+    :    $j = 5;
+    :    is($j, 5, 'reassignment of junction variable');
+    :}
+    :
+    :{
+    :    my ($j,$k,$l);
+    :
+    :    $j = 1|2;
+    :    is(ref($j),'Junction', 'basic junction type reference test');
+    :
+    :    $k=$j;
+    :    is(ref($k),'Junction', 'assignment preserves reference');
+    :
+    :    # XXX does this next one make any sense?
+    :    $l=\$j;
+    :    is(ref($l),'Junction', 'hard reference to junction');
+    :}
+    :
+    :
+    :=pod
+    :
+    :Tests junction examples from Synopsis 03 
+    :
+    :j() is used to convert a junction to canonical string form, currently
+    :just using .perl until a better approach presents itself.
+    :</pre>
+</div><a name="msg_11"></a>
+<a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
+<div ID=header_shown_11 style="display: none;">- Hide t/junction/associative.t (line 13 ~ line 40) -
+</div>
+<div ID=header_hidden_11 style="display: block;">- Show t/junction/associative.t (28 lines) -</div>
+</a>
+</p>
+<div ID=hide_11 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Junctive operators&quot;&gt;
+    :
+    :=cut
+    :
+    :{ # L&lt;S09/&quot;Junctions&quot;&gt;
+    :
+    :    is('1 2 3', ~((1|2)|3).values, &quot;Left-associative any, | operator&quot;);
+    :    is('1 2 3', ~(1|(2|3)).values, &quot;Right-associative any, | operator&quot;);
+    :
+    :    is('1 2 3', ~any(any(1,2),3).values, &quot;Left-associative any()&quot;);
+    :    is('1 2 3', ~any(1,any(2,3)).values, &quot;Right-associative any()&quot;);
+    :
+    :    is('1 2 3', ~((1&amp;2)&amp;3).values, &quot;Left-associative all, &amp; operator&quot;);
+    :    is('1 2 3', ~(1&amp;(2&amp;3)).values, &quot;Right-associative all, &amp; operator&quot;);
+    :
+    :    is('1 2 3', ~all(all(1,2),3).values, &quot;Left-associative all()&quot;);
+    :    is('1 2 3', ~all(1,all(2,3)).values, &quot;Right-associative all()&quot;);
+    :
+    :    isnt('1 2 3', ~((1^2)^3).values, &quot;Left-associative one, ^ operator&quot;);
+    :    isnt('1 2 3', ~(1^(2^3)).values, &quot;Right-associative one, ^ operator&quot;);
+    :
+    :    isnt('1 2 3', ~one(one(1,2),3).values, &quot;Left-associative one()&quot;);
+    :    isnt('1 2 3', ~one(1,one(2,3)).values, &quot;Right-associative one()&quot;);
+    :
+    :    is('1 2 3', ~none(none(1,2),3).values, &quot;Left-associative none()&quot;);
+    :    is('1 2 3', ~none(1,none(2,3)).values, &quot;Right-associative none()&quot;);
+    :
+    :}</pre>
+</div><p><code>|</code>, <code>&amp;</code>, and <code>^</code> are no longer bitwise operators (see
+<a href="#changes20to20perl20520operators">Changes to Perl 5 operators</a>) but now serve a much higher cause:
+they are now the junction constructors.</p>
+<p>A junction is a single value that is equivalent to multiple values. They
+thread through operations, returning another junction representing the
+result:</p>
+<a name="msg_18"></a>
+<a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
+<div ID=header_shown_18 style="display: none;">- Hide t/junction/misc_junctions.t (line 215 ~ line 286) -
+</div>
+<div ID=header_hidden_18 style="display: block;">- Show t/junction/misc_junctions.t (72 lines) -</div>
+</a>
+</p>
+<div ID=hide_18 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Junctive operators&quot; /They thread through operations/&gt;
+    :
+    : On Fri, 2005-02-11 at 10:46 +1100, Damian Conway wrote:
+    : &gt; Subject: Re: Fwd: Junctive puzzles.
+    : &gt;
+    : &gt; Junctions have an associated boolean predicate that's preserved across 
+    : &gt; operations on the junction. Junctions also implicitly distribute across 
+    : &gt; operations, and rejunctify the results.
+    :
+    :=cut
+    :
+    :{
+    :    my @subs = (sub {3}, sub {2});
+    :
+    :    my ($got, $want);
+    :
+    :    is(j(any(@subs)()), j(3|2), '.() on any() junction of subs');
+    :
+    :    $want = (3&amp;2);
+    :    $got = all(@subs)();
+    :    is(j($got), j($want), '.() on all() junction of subs');
+    :
+    :    $want = (3^2);
+    :    $got = one(@subs)();
+    :    is(j($got), j($want), '.() on one() junction of subs');
+    :
+    :    $want = none(3,2);
+    :    $got = none(@subs)();
+    :    is(j($got), j($want), '.() on none() junction of subs');
+    :
+    :    $want = one( any(3,2), all(3,2) );
+    :    $got = one( any(@subs), all(@subs) )();
+    :    is(j($got), j($want), '.() on complex junction of subs');
+    :
+    :    # Avoid future constant folding
+    :    #my $rand = rand;
+    :    #my $zero = int($rand-$rand);
+    :    #my @subs = (sub {3+$zero}, sub {2+$zero});
+    :}
+    :
+    :# Check functional and operator versions produce the same structure
+    :{
+    :    is(j((1|2)^(3&amp;4)), j(one(any(1,2),all(3,4))),
+    :        '((1|2)^(3&amp;4)) equiv to one(any(1,2),all(3,4))');
+    :
+    :    is(j((1|2)&amp;(3&amp;4)), j(all(any(1,2),all(3,4))), 
+    :        '((1|2)&amp;(3&amp;4)) equiv to all(any(1,2),all(3,4))');
+    :
+    :    is(j((1|2)|(3&amp;4)), j(any(any(1,2),all(3,4))),
+    :        '((1|2)|(3&amp;4)) equiv to any(any(1,2),all(3,4))');
+    :}
+    :
+    :is(none(1).pick, undef, 'none(1).pick should be undef');
+    :is(none(1,1).pick, undef, 'none(1,1).pick should be undef');
+    :
+    :is(one(1).pick, 1, 'one(1).pick should be 1');
+    :is(one(1,1).pick, undef, 'one(1,1).pick should be undef');
+    :
+    :is(all(1).pick, 1, 'all(1).pick should be 1');
+    :is(all(1,1).pick, 1, 'all(1,1).pick should be 1');
+    :is(all(1,2).pick, undef, 'all(1,2).pick should be undef');
+    :
+    :# junction in boolean context
+    :ok(?(0&amp;0) == ?(0&amp;&amp;0), 'boolean context');
+    :ok(?(0&amp;1) == ?(0&amp;&amp;1), 'boolean context');
+    :ok(?(1&amp;1) == ?(1&amp;&amp;1), 'boolean context');
+    :ok(?(1&amp;0) == ?(1&amp;&amp;0), 'boolean context');
+    :ok(!(?(0&amp;0) != ?(0&amp;&amp;0)), 'boolean context');
+    :ok(!(?(0&amp;1) != ?(0&amp;&amp;1)), 'boolean context');
+    :ok(!(?(1&amp;1) != ?(1&amp;&amp;1)), 'boolean context');
+    :ok(!(?(1&amp;0) != ?(1&amp;&amp;0)), 'boolean context');
+    :</pre>
+</div><a name="msg_14"></a>
+<a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
+<div ID=header_shown_14 style="display: none;">- Hide t/junction/misc_junctions.t (line 153 ~ line 162) -
+</div>
+<div ID=header_hidden_14 style="display: block;">- Show t/junction/misc_junctions.t (10 lines) -</div>
+</a>
+</p>
+<div ID=hide_14 style="display:none; border:1px solid"><pre>
+    :    # L&lt;S03/&quot;Junctive operators&quot; /They thread through operations/&gt;
+    :    my ($got, $want);
+    :    $got = ((1|2|3)+4);
+    :    $want = (5|6|7);
+    :    is( j($got), j($want), 'thread + returning junctive result');
+    :
+    :    $got = ((1|2) + (3&amp;4));
+    :    $want = ((4|5) &amp; (5|6));
+    :    is( j($got), j($want), 'thread + returning junctive combination of results');
+    :</pre>
+</div><a name="msg_19"></a>
+<a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
+<div ID=header_shown_19 style="display: none;">- Hide t/junction/misc_junctions.t (line 215 ~ line 286) -
+</div>
+<div ID=header_hidden_19 style="display: block;">- Show t/junction/misc_junctions.t (72 lines) -</div>
+</a>
+</p>
+<div ID=hide_19 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Junctive operators&quot; /They thread through operations/&gt;
+    :
+    : On Fri, 2005-02-11 at 10:46 +1100, Damian Conway wrote:
+    : &gt; Subject: Re: Fwd: Junctive puzzles.
+    : &gt;
+    : &gt; Junctions have an associated boolean predicate that's preserved across 
+    : &gt; operations on the junction. Junctions also implicitly distribute across 
+    : &gt; operations, and rejunctify the results.
+    :
+    :=cut
+    :
+    :{
+    :    my @subs = (sub {3}, sub {2});
+    :
+    :    my ($got, $want);
+    :
+    :    is(j(any(@subs)()), j(3|2), '.() on any() junction of subs');
+    :
+    :    $want = (3&amp;2);
+    :    $got = all(@subs)();
+    :    is(j($got), j($want), '.() on all() junction of subs');
+    :
+    :    $want = (3^2);
+    :    $got = one(@subs)();
+    :    is(j($got), j($want), '.() on one() junction of subs');
+    :
+    :    $want = none(3,2);
+    :    $got = none(@subs)();
+    :    is(j($got), j($want), '.() on none() junction of subs');
+    :
+    :    $want = one( any(3,2), all(3,2) );
+    :    $got = one( any(@subs), all(@subs) )();
+    :    is(j($got), j($want), '.() on complex junction of subs');
+    :
+    :    # Avoid future constant folding
+    :    #my $rand = rand;
+    :    #my $zero = int($rand-$rand);
+    :    #my @subs = (sub {3+$zero}, sub {2+$zero});
+    :}
+    :
+    :# Check functional and operator versions produce the same structure
+    :{
+    :    is(j((1|2)^(3&amp;4)), j(one(any(1,2),all(3,4))),
+    :        '((1|2)^(3&amp;4)) equiv to one(any(1,2),all(3,4))');
+    :
+    :    is(j((1|2)&amp;(3&amp;4)), j(all(any(1,2),all(3,4))), 
+    :        '((1|2)&amp;(3&amp;4)) equiv to all(any(1,2),all(3,4))');
+    :
+    :    is(j((1|2)|(3&amp;4)), j(any(any(1,2),all(3,4))),
+    :        '((1|2)|(3&amp;4)) equiv to any(any(1,2),all(3,4))');
+    :}
+    :
+    :is(none(1).pick, undef, 'none(1).pick should be undef');
+    :is(none(1,1).pick, undef, 'none(1,1).pick should be undef');
+    :
+    :is(one(1).pick, 1, 'one(1).pick should be 1');
+    :is(one(1,1).pick, undef, 'one(1,1).pick should be undef');
+    :
+    :is(all(1).pick, 1, 'all(1).pick should be 1');
+    :is(all(1,1).pick, 1, 'all(1,1).pick should be 1');
+    :is(all(1,2).pick, undef, 'all(1,2).pick should be undef');
+    :
+    :# junction in boolean context
+    :ok(?(0&amp;0) == ?(0&amp;&amp;0), 'boolean context');
+    :ok(?(0&amp;1) == ?(0&amp;&amp;1), 'boolean context');
+    :ok(?(1&amp;1) == ?(1&amp;&amp;1), 'boolean context');
+    :ok(?(1&amp;0) == ?(1&amp;&amp;0), 'boolean context');
+    :ok(!(?(0&amp;0) != ?(0&amp;&amp;0)), 'boolean context');
+    :ok(!(?(0&amp;1) != ?(0&amp;&amp;1)), 'boolean context');
+    :ok(!(?(1&amp;1) != ?(1&amp;&amp;1)), 'boolean context');
+    :ok(!(?(1&amp;0) != ?(1&amp;&amp;0)), 'boolean context');
+    :</pre>
+</div><pre>
+     (1|2|3) + 4;                            # 5|6|7
+     (1|2) + (3&amp;4);                          # (4|5) &amp; (5|6)</pre>
+<p>Note how when two junctions are applied through an operator, the result
+is a junction representing the operator applied to each combination of
+values.</p>
+<p>Junctions come with the functional variants <code>any</code>, <code>all</code>, <code>one</code>, and <code>none</code>.</p>
+<p>This opens doors for constructions like:</p>
+<a name="msg_15"></a>
+<a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
+<div ID=header_shown_15 style="display: none;">- Hide t/junction/misc_junctions.t (line 163 ~ line 183) -
+</div>
+<div ID=header_hidden_15 style="display: block;">- Show t/junction/misc_junctions.t (21 lines) -</div>
+</a>
+</p>
+<div ID=hide_15 style="display:none; border:1px solid"><pre>
+    :    # L&lt;S03/&quot;Junctive operators&quot; /This opens doors for constructions like/&gt;
+    :    # unless $roll == any(1..6) { print &quot;Invalid roll&quot; }
+    :    my ($roll, $note);
+    :    $roll = 3; $note = '';
+    :    unless $roll == any(1..6) { $note = &quot;Invalid roll&quot;; };
+    :    is($note, &quot;&quot;, 'any() junction threading ==');
+    :
+    :    $roll = 7; $note = '';
+    :    unless $roll == any(1..6) { $note = &quot;Invalid roll&quot;; };
+    :    is($note, &quot;Invalid roll&quot;, 'any() junction threading ==');
+    :
+    :    # if $roll == 1|2|3 { print &quot;Low roll&quot; }
+    :    $roll = 4; $note = '';
+    :    if $roll == 1|2|3 { $note = &quot;Low roll&quot; }
+    :    is($note, &quot;&quot;, '| junction threading ==');
+    :
+    :    $roll = 2; $note = '';
+    :    if $roll == 1|2|3 { $note = &quot;Low roll&quot; }
+    :    is($note, &quot;Low roll&quot;, '| junction threading ==');
+    :
+    :</pre>
+</div><pre>
+     unless $roll == any(1..6) { print &quot;Invalid roll&quot; }</pre>
+<pre>
+     if $roll == 1|2|3 { print &quot;Low roll&quot; }</pre>
+<p>Junctions work through subscripting:</p>
+<a name="msg_16"></a>
+<a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
+<div ID=header_shown_16 style="display: none;">- Hide t/junction/misc_junctions.t (line 184 ~ line 198) -
+</div>
+<div ID=header_hidden_16 style="display: block;">- Show t/junction/misc_junctions.t (15 lines) -</div>
+</a>
+</p>
+<div ID=hide_16 style="display:none; border:1px solid"><pre>
+    :    # L&lt;S03/&quot;Junctive operators&quot; /Junctions work through subscripting/&gt;
+    :    my ($got, @foo);
+    :    $got = ''; @foo = ();
+    :    $got ~= 'y' if try { @foo[any(1,2,3)] };
+    :    is($got, '', &quot;junctions work through subscripting, 0 matches&quot;);
+    :
+    :    $got = ''; @foo = (0,1);
+    :    $got ~= 'y' if try { @foo[any(1,2,3)] };
+    :    is($got, '', &quot;junctions work through subscripting, 1 match&quot;);
+    :
+    :    $got = ''; @foo = (1,1,1);
+    :    $got ~= 'y' if try { @foo[any(1,2,3)] };
+    :    is($got, '', &quot;junctions work through subscripting, 3 matches&quot;);
+    :
+    :</pre>
+</div><pre>
+    print if @foo[any(1,2,3)]</pre>
+<p>Junctions are specifically unordered.  So if you say</p>
+<a name="msg_17"></a>
+<a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
+<div ID=header_shown_17 style="display: none;">- Hide t/junction/misc_junctions.t (line 199 ~ line 214) -
+</div>
+<div ID=header_hidden_17 style="display: block;">- Show t/junction/misc_junctions.t (16 lines) -</div>
+</a>
+</p>
+<div ID=hide_17 style="display:none; border:1px solid"><pre>
+    :    # L&lt;S03/&quot;Junctive operators&quot; /Junctions are specifically unordered/&gt;
+    :    # Compiler *can* reorder and parallelize but *may not* so don't test
+    :    # for all(@foo) {...};  
+    :
+    :    # Not sure what is expected
+    :    #my %got = ('1' =&gt; 1); # Hashes are unordered too
+    :    #@foo = (2,3,4);
+    :    #for all(@foo) { %got{$_} = 1; };
+    :    #is( %got.keys.sort.join(','), '1,2,3,4',
+    :    #    'for all(...) { ...} as parallelizable');
+    :}
+    :
+    :=pod
+    :
+    :These are implemented but still awaiting clarification on p6l.
+    :</pre>
+</div><pre>
+    for all(@foo) {...}</pre>
+<p>it indicates to the compiler that there is no coupling between loop
+iterations and they can be run in any order or even in parallel.</p>
+<p>Use of negative operators with syntactically recognizable junctions may
+produce a warning on code that works differently in English than in Perl.
+Instead of writing</p>
+<pre>
+    if $a != 1 | 2 | 3 {...}</pre>
+<p>you need to write</p>
+<pre>
+    if not $a == 1 | 2 | 3 {...}</pre>
+<p>However, this is only a syntactic warning, and</p>
+<pre>
+    if $a != $b {...}</pre>
+<p>will not complain if $b happens to contain a junction at runtime.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Chained20comparisons">Chained comparisons</a></h1>
+<a name="msg_25"></a>
+<a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
+<div ID=header_shown_25 style="display: none;">- Hide t/operators/relational.t (line 103 ~ line 110) -
+</div>
+<div ID=header_hidden_25 style="display: block;">- Show t/operators/relational.t (8 lines) -</div>
+</a>
+</p>
+<div ID=hide_25 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Chained comparisons&quot;&gt;
+    :
+    :ok(&quot;5&quot; gt &quot;4&quot; gt &quot;3&quot;, &quot;5 gt 4 gt 3 chained str comparison&quot;);
+    :ok(&quot;3&quot; lt &quot;4&quot; lt &quot;5&quot;, &quot;3 lt 4 gt 5 chained str comparison&quot;);
+    :ok(!(&quot;3&quot; gt &quot;4&quot; lt &quot;5&quot;), &quot;!(3 gt 4 lt 5) chained str comparison&quot;);
+    :ok(&quot;5&quot; eq &quot;5&quot; gt &quot;0&quot;, '&quot;5&quot; eq &quot;5&quot; gt &quot;0&quot; chained str comparison with equality');
+    :ok(&quot;5&quot; le &quot;5&quot; gt &quot;0&quot;, &quot;5 le 5 gt 0 chained str comparison with le&quot;);
+    :ok(&quot;0&quot; lt &quot;5&quot; ge &quot;5&quot;, &quot;0 lt 5 ge 5 chained comparison with ge&quot;);</pre>
+</div><a name="msg_24"></a>
+<a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
+<div ID=header_shown_24 style="display: none;">- Hide t/operators/relational.t (line 93 ~ line 102) -
+</div>
+<div ID=header_hidden_24 style="display: block;">- Show t/operators/relational.t (10 lines) -</div>
+</a>
+</p>
+<div ID=hide_24 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Chained comparisons&quot;&gt;
+    :
+    :# this works ...
+    :is('e' gt 'a' lt 'j', 'e' gt 'a' &amp;&amp; 'a' lt 'j', 'multi-way comp e gt a lt j works');
+    :
+    :# however this doesn't which makes 
+    :# me think these are not implemented
+    :is('e' lt 'a' lt 'j', 'e' lt 'a' &amp;&amp; 'a' lt 'j', 'multi-way comp e lt a lt j works');
+    :
+    :## NOTE: these tests moved here from t/03operator.t</pre>
+</div><a name="msg_23"></a>
+<a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
+<div ID=header_shown_23 style="display: none;">- Hide t/operators/relational.t (line 53 ~ line 92) -
+</div>
+<div ID=header_hidden_23 style="display: block;">- Show t/operators/relational.t (40 lines) -</div>
+</a>
+</p>
+<div ID=hide_23 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Chained comparisons&quot;&gt;
+    :
+    :ok(5 &gt; 4 &gt; 3, &quot;chained comparison&quot;);
+    :ok(3 &lt; 4 &lt; 5, &quot;chained comparison&quot;);
+    :ok(5 == 5 &gt; -5, &quot;chained comparison with equality&quot;);
+    :ok(!(3 &gt; 4 &lt; 5), &quot;chained n &gt; n &lt; n comparison&quot;);
+    :ok(5 &lt;= 5 &gt; -5, &quot;chained comparison with &lt;=&quot;);
+    :ok(-5 &lt; 5 &gt;= 5, &quot;chained comparison with &gt;=&quot;);
+    :
+    :## For Strings: &lt;, &lt;=, &lt;=&gt;, &gt;=, &gt;
+    :
+    :# less than
+    :
+    :ok('a' lt 'b', 'a is less than b');
+    :ok(!('b' lt 'a'), 'b is ~not~ less than a');
+    :
+    :# greater than
+    :
+    :ok('b' gt 'a', 'b is greater than a');
+    :ok(!('a' gt 'b'), 'a is ~not~ greater than b');
+    :
+    :# less than or equal to
+    :
+    :ok('a' le 'b', 'a is less than or equal to b');
+    :ok('a' le 'a', 'a is less than or equal to a');
+    :ok(!('b' le 'a'), 'b is ~not~ less than or equal to a');
+    :
+    :# greater than or eqaul to
+    :
+    :ok('b' ge 'a', 'b is greater than or equal to a');
+    :ok('b' ge 'b', 'b is greater than or equal to b');
+    :ok(!('b' ge 'c'), 'b is ~not~ greater than or equal to c');
+    :
+    :# cmp
+    :
+    :is('a' cmp 'a', 0,  'a is equal to a');
+    :is('a' cmp 'b', -1, 'a is less than b');
+    :is('b' cmp 'a', 1,  'b is greater than a');
+    :
+    :## Multiway comparisons (RFC 025)</pre>
+</div><a name="msg_22"></a>
+<a href="?hide_quotes=no#msg_22" onclick="return tog_quote(22);">
+<div ID=header_shown_22 style="display: none;">- Hide t/operators/relational.t (line 43 ~ line 52) -
+</div>
+<div ID=header_hidden_22 style="display: block;">- Show t/operators/relational.t (10 lines) -</div>
+</a>
+</p>
+<div ID=hide_22 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Chained comparisons&quot;&gt;
+    :
+    :# this works ...
+    :is(5 &gt; 1 &lt; 10, 5 &gt; 1 &amp;&amp; 1 &lt; 10, 'multi-way comp 5 &gt; 1 &lt; 10 works');
+    :
+    :# however this doesn't which makes 
+    :# me think these are not implemented
+    :is(5 &lt; 1 &lt; 10, 5 &lt; 1 &amp;&amp; 1 &lt; 10, 'multi-way comp 5 &lt; 1 &lt; 10 works');
+    :
+    :## NOTE: these tests moved here from t/03operator.t</pre>
+</div><a name="msg_21"></a>
+<a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
+<div ID=header_shown_21 style="display: none;">- Hide t/operators/listquote.t (line 38 ~ line 76) -
+</div>
+<div ID=header_hidden_21 style="display: block;">- Show t/operators/listquote.t (39 lines) -</div>
+</a>
+</p>
+<div ID=hide_21 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Chained comparisons&quot;&gt;
+    :
+    :my $s = join 'a', &lt;x y z&gt;;
+    :is($s, &quot;xayaz&quot;, 'list context &lt;list&gt;');
+    :
+    :my $s = join [,] &lt;a x y z&gt;;
+    :is($s, &quot;xayaz&quot;, 'listop &lt;list&gt;');
+    :
+    :my $x = try { [1,2,3].join&lt;a b c&gt; };
+    :ok($!, '.join&lt;abc&gt; parses but semantic error');
+    :is($x, [1,2,3].join()&lt;a b c&gt;, '.join&lt;a b c&gt; not treated as argument');
+    :
+    :my @y = try { {:a&lt;1&gt;, :b(2)}&lt;a b c&gt; };
+    :is(@y, [1,2,undef], '{...}&lt;a b c&gt; is hash subscript');
+    :
+    :eval '{:a&lt;1&gt;, :b(2)} &lt;a b c&gt;';
+    :ok($!, '{...} &lt;...&gt; parsefail');
+    :
+    :ok((1 | 3) &lt; 3, '(...) &lt; 3 no parsefail');
+    :
+    :eval '(1 | 3)&lt;3';
+    :ok($!, '()&lt;3 parsefail');
+    :
+    :eval 'print &lt; 3';
+    :ok($!, 'print &lt; 3 parsefail');
+    :
+    :my $z = eval 'reverse&lt;1 2 3&gt;';
+    :ok($!, 'reverse&lt;1 2 3&gt; parsefail');
+    :
+    :eval ':foo &lt;1 2 3&gt;';
+    :ok($!, ':foo &lt;1 2 3&gt; parsefail');
+    :
+    :my $r = eval ':foo &lt;3';
+    :is($r, Bool::True, ':foo &lt;3 is comparison');
+    :
+    :my $p = eval ':foo&lt;1 2 3&gt;';
+    :is($p, 'foo' =&gt; (1,2,3), ':foo&lt;1 2 3&gt; is pair of list');
+    :
+    :=cut</pre>
+</div><p>Perl 6 supports the natural extension to the comparison operators,
+allowing multiple operands.</p>
+<pre>
+    if 1 &lt; $a &lt; 100 { say &quot;Good, you picked a number *between* 1 and 100.&quot; }</pre>
+<pre>
+    if 3 &lt; $roll &lt;= 6              { print &quot;High roll&quot; }</pre>
+<pre>
+    if 1 &lt;= $roll1 == $roll2 &lt;= 6  { print &quot;Doubles!&quot; }</pre>
+<p>Note: any operator beginning with <code>&lt;</code> must have whitespace
+in front of it, or it will be interpreted as a hash subscript instead.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Binding">Binding</a></h1>
+<a name="msg_7"></a>
+<a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
+<div ID=header_shown_7 style="display: none;">- Hide t/operators/binding/subs.t (line 5 ~ line 85) -
+</div>
+<div ID=header_hidden_7 style="display: block;">- Show t/operators/binding/subs.t (81 lines) -</div>
+</a>
+</p>
+<div ID=hide_7 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Binding&quot;&gt;
+    :
+    :# Tests for binding the return value of subroutines (both as RHS and LHS).
+    :
+    :plan 8;
+    :
+    :{
+    :    my sub foo { 42 }
+    :
+    :    my $var := foo();
+    :    is $var, 42,
+    :        &quot;binding a var to the return value of a sub (a constant) works (1)&quot;;
+    :
+    :    dies_ok { $var = 23 },
+    :        &quot;binding a var to the return value of a sub (a constant) works (2)&quot;;
+    :}
+    :
+    :=begin unspecced
+    :
+    :{
+    :    my sub foo { 42 }
+    :
+    :    dies_ok { foo() := 23 },
+    :        &quot;using the constant return value of a sub as the LHS in a binding operation dies&quot;;
+    :}
+    :
+    :There're two ways one can argue:
+    :* 42 is constant, and rebinding constants doesn't work, so foo() := 23 should
+    :  die.
+    :* 42 is constant, but the implicit return() packs the constant 42 into a
+    :  readonly 42, and readonly may be rebound.
+    :  To clear the terminology,
+    :    42                  # 42 is a constant
+    :    sub foo ($a) {...}  # $a is a readonly
+    :
+    :=end unspecced
+    :
+    :=cut
+    :
+    :{
+    :    my sub foo { my $var = 42; $var }
+    :
+    :    my $var := foo();
+    :    is $var, 42,
+    :        &quot;binding a var to the return value of a sub (a variable) works (1)&quot;;
+    :
+    :    dies_ok { $var = 23 },
+    :        &quot;binding a var to the return value of a sub (a variable) works (2)&quot;, :todo&lt;bug&gt;;
+    :}
+    :
+    :{
+    :    my sub foo is rw { my $var = 42; $var }
+    :
+    :    my $var := foo();
+    :    is $var, 42,
+    :        &quot;binding a var to the return value of an 'is rw' sub (a variable) works (1)&quot;;
+    :
+    :    lives_ok { $var = 23 },
+    :        &quot;binding a var to the return value of an 'is rw' sub (a variable) works (2)&quot;;
+    :    is $var, 23,
+    :        &quot;binding a var to the return value of an 'is rw' sub (a variable) works (3)&quot;;
+    :}
+    :
+    :{
+    :    my sub foo is rw { my $var = 42; $var }
+    :
+    :    lives_ok { foo() := 23 },
+    :        &quot;using the variable return value of an 'is rw' sub as the LHS in a binding operation works&quot;, :todo&lt;bug&gt;;
+    :}
+    :
+    :=for discussion
+    :
+    :Should the constant return value be autopromoted to a var? Or should it stay a
+    :constant?
+    :
+    :{
+    :    my sub foo is rw { 42 }
+    :
+    :    dies_ok/lives_ok { foo() := 23 },
+    :        &quot;using the constant return value of an 'is rw' sub as the LHS in a binding operation behaves correctly&quot;;
+    :}</pre>
+</div><a name="msg_5"></a>
+<a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
+<div ID=header_shown_5 style="display: none;">- Hide t/operators/binding/scalars.t (line 9 ~ line 14) -
+</div>
+<div ID=header_hidden_5 style="display: block;">- Show t/operators/binding/scalars.t (6 lines) -</div>
+</a>
+</p>
+<div ID=hide_5 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Binding&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 28;
+    :</pre>
+</div><a name="msg_4"></a>
+<a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
+<div ID=header_shown_4 style="display: none;">- Hide t/operators/binding/nested.t (line 5 ~ line 340) -
+</div>
+<div ID=header_hidden_4 style="display: block;">- Show t/operators/binding/nested.t (336 lines) -</div>
+</a>
+</p>
+<div ID=hide_4 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Binding&quot;&gt;
+    :
+    :# Tests for binding multidimensional structures.
+    :
+    :plan 43;
+    :
+    :# Nested refs as RHS in a binding operation
+    :{
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                ignored =&gt; 23,
+    :                subkey  =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    42,
+    :                ],
+    :            },
+    :            ignored =&gt; 19,
+    :        },
+    :    ];
+    :
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 42, &quot;basic sanity (1)&quot;;
+    :
+    :    my $abbrev := $struct[1]&lt;key&gt;&lt;subkey&gt;[1];
+    :    is $abbrev, 42,
+    :        &quot;using a multidimensional structure as RHS in a binding op works (1)&quot;;
+    :
+    :    $struct[1]&lt;key&gt;&lt;subkey&gt;[1] = 43;
+    :    is $abbrev, 43,
+    :        &quot;using a multidimensional structure as RHS in a binding op works (2)&quot;;
+    :
+    :    $abbrev = 44;
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 44,
+    :        &quot;using a multidimensional structure as RHS in a binding op works (3)&quot;;
+    :}
+    :
+    :# Nested refs as LHS in a binding operation
+    :{
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                ignored =&gt; 23,
+    :                subkey  =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    42,
+    :                ],
+    :            },
+    :            ignored =&gt; 19,
+    :        },
+    :    ];
+    :
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 42, &quot;basic sanity (2)&quot;;
+    :
+    :    my $abbrev = 30;
+    :    try { $struct[1]&lt;key&gt;&lt;subkey&gt;[1] := $abbrev };
+    :    is $abbrev, 30,
+    :        &quot;using a multidimensional structure as LHS in a binding op works (1)&quot;;
+    :
+    :    $struct[1]&lt;key&gt;&lt;subkey&gt;[1] = 31;
+    :    is $abbrev, 31,
+    :        &quot;using a multidimensional structure as LHS in a binding op works (2)&quot;, :todo&lt;bug&gt;;
+    :
+    :    $abbrev = 32;
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 32,
+    :        &quot;using a multidimensional structure as LHS in a binding op works (3)&quot;, :todo&lt;bug&gt;;
+    :}
+    :
+    :# Evil more evil structure: with an embedded &quot;is rw&quot; sub!
+    :# As RHS...
+    :{
+    :    my $innerstruct = {
+    :        ignored =&gt; 23,
+    :        subkey  =&gt; [
+    :            &quot;ignored&quot;,
+    :            42,
+    :        ],
+    :    };
+    :
+    :    my sub get_innerstruct () is rw { $innerstruct }
+    :
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key     =&gt; &amp;get_innerstruct,
+    :            ignored =&gt; 19,
+    :        },
+    :    ];
+    :
+    :    is $struct[1]&lt;key&gt;()&lt;subkey&gt;[1], 42, &quot;basic sanity (3)&quot;;
+    :
+    :    my $abbrev := $struct[1]&lt;key&gt;()&lt;subkey&gt;[1];
+    :    is $abbrev, 42,
+    :        &quot;using a multidimensional structure with an embedded sub as RHS works (1)&quot;;
+    :
+    :    $struct[1]&lt;key&gt;()&lt;subkey&gt;[1] = 43;
+    :    is $abbrev, 43,
+    :        &quot;using a multidimensional structure with an embedded sub as RHS works (2)&quot;;
+    :
+    :    $abbrev = 44;
+    :    is $struct[1]&lt;key&gt;()&lt;subkey&gt;[1], 44,
+    :        &quot;using a multidimensional structure with an embedded sub as RHS works (3)&quot;;
+    :}
+    :
+    :# ...and as LHS
+    :{
+    :    my $innerstruct = {
+    :        ignored =&gt; 23,
+    :        subkey  =&gt; [
+    :            &quot;ignored&quot;,
+    :            42,
+    :        ],
+    :    };
+    :
+    :    my sub get_innerstruct () is rw { $innerstruct }
+    :
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key     =&gt; &amp;get_innerstruct,
+    :            ignored =&gt; 19,
+    :        },
+    :    ];
+    :
+    :    is $struct[1]&lt;key&gt;()&lt;subkey&gt;[1], 42, &quot;basic sanity (4)&quot;;
+    :
+    :    my $abbrev = 30;
+    :    try { $struct[1]&lt;key&gt;()&lt;subkey&gt;[1] := $abbrev };
+    :    is $abbrev, 30,
+    :        &quot;using a multidimensional structure with an embedded sub as LHS works (1)&quot;;
+    :
+    :    $struct[1]&lt;key&gt;()&lt;subkey&gt;[1] = 31;
+    :    is $abbrev, 31,
+    :        &quot;using a multidimensional structure with an embedded sub as LHS works (2)&quot;, :todo&lt;bug&gt;;
+    :
+    :    $abbrev = 32;
+    :    is $struct[1]&lt;key&gt;()&lt;subkey&gt;[1], 32,
+    :        &quot;using a multidimensional structure with an embedded sub as LHS works (3)&quot;, :todo&lt;bug&gt;;
+    :}
+    :
+    :# Binding should cope with a subtree being redefined.
+    :# As RHS...
+    :{
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                ignored =&gt; 23,
+    :                subkey  =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    42,
+    :                ],
+    :            },
+    :            ignored =&gt; 19,
+    :        },
+    :    ];
+    :
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 42, &quot;basic sanity (5)&quot;;
+    :
+    :    my $abbrev := $struct[1]&lt;key&gt;&lt;subkey&gt;[1];
+    :    is $abbrev, 42,
+    :        &quot;RHS binding should cope with a subtree being redefined (1)&quot;;
+    :
+    :    $struct[1]&lt;key&gt;&lt;subkey&gt;[1] = 43;
+    :    is $abbrev, 43,
+    :        &quot;RHS binding should cope with a subtree being redefined (2)&quot;;
+    :
+    :    $struct[1] = &quot;foo&quot;;
+    :    is $struct[1], &quot;foo&quot;,
+    :        &quot;RHS binding should cope with a subtree being redefined (3)&quot;;
+    :    is $abbrev, 43,
+    :        &quot;RHS binding should cope with a subtree being redefined (4)&quot;;
+    :
+    :    $abbrev = 44;
+    :    is $abbrev, 44,
+    :        &quot;RHS binding should cope with a subtree being redefined (5)&quot;;
+    :    is $struct[1], &quot;foo&quot;,
+    :        &quot;RHS binding should cope with a subtree being redefined (6)&quot;;
+    :}
+    :
+    :# ...and as LHS
+    :{
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                ignored =&gt; 23,
+    :                subkey  =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    42,
+    :                ],
+    :            },
+    :            ignored =&gt; 19,
+    :        },
+    :    ];
+    :
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 42, &quot;basic sanity (6)&quot;;
+    :
+    :    my $abbrev = 42;
+    :    try { $struct[1]&lt;key&gt;&lt;subkey&gt;[1] := $abbrev };
+    :    is $abbrev, 42,
+    :        &quot;LHS binding should cope with a subtree being redefined (1)&quot;;
+    :
+    :    $struct[1]&lt;key&gt;&lt;subkey&gt;[1] = 43;
+    :    is $abbrev, 43,
+    :        &quot;LHS binding should cope with a subtree being redefined (2)&quot;, :todo&lt;bug&gt;;
+    :
+    :    $struct[1] = &quot;foo&quot;;
+    :    is $struct[1], &quot;foo&quot;,
+    :        &quot;LHS binding should cope with a subtree being redefined (3)&quot;;
+    :    is $abbrev, 43,
+    :        &quot;LHS binding should cope with a subtree being redefined (4)&quot;, :todo&lt;bug&gt;;
+    :
+    :    $abbrev = 44;
+    :    is $abbrev, 44,
+    :        &quot;LHS binding should cope with a subtree being redefined (5)&quot;;
+    :    is $struct[1], &quot;foo&quot;,
+    :        &quot;LHS binding should cope with a subtree being redefined (6)&quot;;
+    :}
+    :
+    :# Tests for binding an element of a structure to an element of another
+    :# structure.
+    :{
+    :    my $foo = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                ignored =&gt; 1,
+    :                subkey  =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    2,
+    :                ],
+    :            },
+    :            ignored =&gt; 3,
+    :        },
+    :    ];
+    :
+    :    my $bar = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                ignored =&gt; 4,
+    :                subkey  =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    5,
+    :                ],
+    :            },
+    :            ignored =&gt; 6,
+    :        },
+    :    ];
+    :
+    :    try { $bar[1]&lt;key&gt;&lt;subkey&gt; := $foo[1]&lt;key&gt; };
+    :    is try{ $bar[1]&lt;key&gt;&lt;subkey&gt;&lt;subkey&gt;[1] }, 2,
+    :        &quot;binding an element of a structure to an element of another structure works (1)&quot;, :todo&lt;bug&gt;;
+    :
+    :    try { $foo[1]&lt;key&gt;&lt;subkey&gt;[1] = 7 };
+    :    is try{ $bar[1]&lt;key&gt;&lt;subkey&gt;&lt;subkey&gt;[1] }, 7,
+    :        &quot;binding an element of a structure to an element of another structure works (2)&quot;, :todo&lt;bug&gt;;
+    :
+    :    try { $bar[1]&lt;key&gt;&lt;subkey&gt;&lt;subkey&gt;[1] = 8 };
+    :    is try { $foo[1]&lt;key&gt;&lt;subkey&gt;[1] }, 8,
+    :        &quot;binding an element of a structure to an element of another structure works (3)&quot;, :todo&lt;bug&gt;;
+    :}
+    :
+    :# Tests for binding an element of a structure to an element of *the same*
+    :# structure, effectively creating an infinite structure.
+    :{
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                foo    =&gt; &quot;bar&quot;,
+    :                subkey =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    100,
+    :                ],
+    :            },
+    :            ignored =&gt; 200,
+    :        },
+    :    ];
+    :
+    :    try { $struct[1]&lt;key&gt;&lt;subkey&gt;[1] := $struct[1]&lt;key&gt; };
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1]&lt;foo&gt;, &quot;bar&quot;,
+    :        &quot;binding an element of a structure to an element of the same structure works (1)&quot;, :todo&lt;bug&gt;;
+    :
+    :    try { $struct[1]&lt;key&gt;&lt;subkey&gt;[1]&lt;foo&gt; = &quot;new_value&quot; };
+    :    is $struct[1]&lt;key&gt;&lt;foo&gt;, &quot;new_value&quot;,
+    :        &quot;binding an element of a structure to an element of the same structure works (2)&quot;, :todo&lt;bug&gt;;
+    :
+    :    $struct[1]&lt;key&gt;&lt;foo&gt; = &quot;very_new_value&quot;;
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1]&lt;foo&gt;, &quot;very_new_value&quot;,
+    :        &quot;binding an element of a structure to an element of the same structure works (3)&quot;, :todo&lt;bug&gt;;
+    :
+    :    $struct[1]&lt;key&gt;&lt;subkey&gt;[1] = 23;
+    :    is $struct[1]&lt;key&gt;, 23,
+    :        &quot;binding an element of a structure to an element of the same structure works (4)&quot;, :todo&lt;bug&gt;;
+    :}
+    :
+    :# Test that rebinding to some other value really breaks up the binding.
+    :{
+    :    my $struct = [
+    :        &quot;ignored&quot;,
+    :        {
+    :            key =&gt; {
+    :                ignored =&gt; 23,
+    :                subkey  =&gt; [
+    :                    &quot;ignored&quot;,
+    :                    42,
+    :                ],
+    :            },
+    :            ignored =&gt; 19,
+    :        },
+    :    ];
+    :
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 42, &quot;basic sanity (7)&quot;;
+    :
+    :    my $abbrev := $struct[1]&lt;key&gt;&lt;subkey&gt;[1];
+    :    is $abbrev, 42,
+    :        &quot;rebinding to some other value destroys the previous binding (1)&quot;;
+    :
+    :    $struct[1]&lt;key&gt;&lt;subkey&gt;[1] = 43;
+    :    is $abbrev, 43,
+    :        &quot;rebinding to some other value destroys the previous binding (2)&quot;;
+    :
+    :    $abbrev = 44;
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 44,
+    :        &quot;rebinding to some other value destroys the previous binding (3)&quot;;
+    :
+    :    $abbrev := 45;
+    :    is $abbrev, 45,
+    :        &quot;rebinding to some other value destroys the previous binding (4)&quot;;
+    :    is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 44,
+    :        &quot;rebinding to some other value destroys the previous binding (5)&quot;;
+    :}
+    :</pre>
+</div><a name="msg_3"></a>
+<a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
+<div ID=header_shown_3 style="display: none;">- Hide t/operators/binding/hashes.t (line 5 ~ line 181) -
+</div>
+<div ID=header_hidden_3 style="display: block;">- Show t/operators/binding/hashes.t (177 lines) -</div>
+</a>
+</p>
+<div ID=hide_3 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Binding&quot;&gt;
+    :
+    :plan 37;
+    :
+    :# Binding of hash elements.
+    :# See thread &quot;Binding of array elements&quot; on p6l started by Ingo Blechschmidt:
+    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/22915">http://www.nntp.perl.org/group/perl.perl6.language/22915</a>&quot;&gt;
+    :{
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :
+    :  try { %hash&lt;b&gt; := $var };
+    :  is %hash&lt;b&gt;, &quot;d&quot;, &quot;basic binding of a hash element (1)&quot;, :todo&lt;feature&gt;;
+    :  unless %hash&lt;b&gt; eq &quot;d&quot; {
+    :    skip_rest &quot;Skipping binding of hash elements tests (not yet implemented in the normal runcore)&quot;;
+    :    exit;
+    :  }
+    :
+    :  $var = &quot;e&quot;;
+    :  is %hash&lt;b&gt;, &quot;e&quot;, &quot;basic binding of a hash element (2)&quot;;
+    :
+    :  %hash&lt;b&gt; = &quot;f&quot;;
+    :  is $var,     &quot;f&quot;, &quot;basic binding of a hash element (3)&quot;;
+    :}
+    :
+    :{
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :
+    :  %hash&lt;b&gt; := $var;
+    :  $var      = &quot;e&quot;;
+    :  is %hash&lt;b&gt;, &quot;e&quot;,             &quot;binding of hash elements works with .delete (1)&quot;;
+    :
+    :  %hash.delete(&quot;b&quot;);
+    :  # $var unchanged, but assigning to $var doesn't modify @hash any
+    :  # longer; similarily, changing @hash[1] doesn't modify $var now
+    :  is $var,   &quot;e&quot;,               &quot;binding of hash elements works with .delete (2)&quot;;
+    :  is ~%hash.values.sort, &quot;x z&quot;, &quot;binding of hash elements works with .delete (3)&quot;;
+    :
+    :  $var     = &quot;f&quot;;
+    :  %hash&lt;b&gt; = &quot;g&quot;;
+    :  is $var,     &quot;f&quot;,             &quot;binding of hash elements works with .delete (4)&quot;;
+    :  is %hash&lt;b&gt;, &quot;g&quot;,             &quot;binding of hash elements works with .delete (5)&quot;;
+    :}
+    :
+    :{
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :
+    :  %hash&lt;b&gt; := $var;
+    :  $var      = &quot;e&quot;;
+    :  is %hash&lt;b&gt;, &quot;e&quot;, &quot;binding of hash elements works with resetting the hash (1)&quot;;
+    :
+    :  %hash = ();
+    :  # $var unchanged, but assigning to $var doesn't modify @hash any
+    :  # longer; similarily, changing @hash[1] doesn't modify $var now
+    :  is $var,   &quot;e&quot;,   &quot;binding of hash elements works with resetting the hash (2)&quot;;
+    :  is ~%hash, &quot;&quot;,    &quot;binding of hash elements works with resetting the hash (3)&quot;;
+    :
+    :  $var     = &quot;f&quot;;
+    :  %hash&lt;b&gt; = &quot;g&quot;;
+    :  is $var,     &quot;f&quot;, &quot;binding of hash elements works with resetting the hash (4)&quot;;
+    :  is %hash&lt;b&gt;, &quot;g&quot;, &quot;binding of hash elements works with resetting the hash (5)&quot;;
+    :}
+    :
+    :{
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :
+    :  %hash&lt;b&gt; := $var;
+    :  $var      = &quot;e&quot;;
+    :  is %hash&lt;b&gt;, &quot;e&quot;, &quot;binding of hash elements works with rebinding the hash (1)&quot;;
+    :
+    :  my %other_hash = (:p&lt;q&gt;, :r&lt;s&gt;, :t&lt;u&gt;);
+    :  %hash := %other_hash;
+    :  # $var unchanged, but assigning to $var doesn't modify @hash any
+    :  # longer; similarily, changing @hash[1] doesn't modify $var now
+    :  is $var,    &quot;e&quot;,  &quot;binding of hash elements works with rebinding the hash (2)&quot;;
+    :  is ~%hash.values.sort, &quot;q s u&quot;,
+    :    &quot;binding of hash elements works with rebinding the hash (3)&quot;;
+    :
+    :  $var     = &quot;f&quot;;
+    :  %hash&lt;b&gt; = &quot;g&quot;;
+    :  is $var,     &quot;f&quot;, &quot;binding of hash elements works with rebinding the hash (4)&quot;;
+    :  is %hash&lt;b&gt;, &quot;g&quot;, &quot;binding of hash elements works with rebinding the hash (5)&quot;;
+    :}
+    :
+    :{
+    :  my sub foo (%h) { %h&lt;b&gt; = &quot;new_value&quot; }
+    :
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :  %hash&lt;b&gt; := $var;
+    :
+    :  foo %hash;
+    :  is $var,    &quot;new_value&quot;,     &quot;passing a hash to a sub expecting a hash behaves correctly (1)&quot;;
+    :  is ~%hash.values.sort, &quot;new_value x z&quot;,
+    :    &quot;passing a hash to a sub expecting a hash behaves correctly (2)&quot;;
+    :}
+    :
+    :{
+    :  my sub foo (Hash $h) { $h&lt;b&gt; = &quot;new_value&quot; }
+    :
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :  %hash&lt;b&gt; := $var;
+    :
+    :  foo %hash;
+    :  is $var, &quot;new_value&quot;,
+    :    &quot;passing a hash to a sub expecting a hashref behaves correctly (1)&quot;;
+    :  is ~%hash.values.sort, &quot;new_value x z&quot;,
+    :    &quot;passing a hash to a sub expecting a hashref behaves correctly (2)&quot;;
+    :}
+    :
+    :# Binding of not yet existing elements should autovivify
+    :{
+    :  my %hash;
+    :  my $var = &quot;d&quot;;
+    :
+    :  lives_ok { %hash&lt;b&gt; := $var },
+    :                    &quot;binding of not yet existing elements should autovivify (1)&quot;;
+    :  is %hash&lt;b&gt;, &quot;d&quot;, &quot;binding of not yet existing elements should autovivify (2)&quot;;
+    :
+    :  $var = &quot;e&quot;;
+    :  is %hash&lt;b&gt;, &quot;e&quot;, &quot;binding of not yet existing elements should autovivify (3)&quot;;
+    :  is $var,     &quot;e&quot;, &quot;binding of not yet existing elements should autovivify (4)&quot;;
+    :}
+    :
+    :# Assignment (not binding) creates new containers
+    :{
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :
+    :  %hash&lt;b&gt; := $var;
+    :  $var      = &quot;e&quot;;
+    :  is %hash&lt;b&gt;, &quot;e&quot;,                   &quot;hash assignment creates new containers (1)&quot;;
+    :
+    :  my %new_hash = %hash;
+    :  $var         = &quot;f&quot;;
+    :  # %hash&lt;b&gt; and $var are now &quot;f&quot;, but %new_hash is unchanged.
+    :  is $var,                   &quot;f&quot;,     &quot;hash assignment creates new containers (2)&quot;;
+    :  is ~%hash\   .values.sort, &quot;f x z&quot;, &quot;hash assignment creates new containers (3)&quot;;
+    :  is ~%new_hash.values.sort, &quot;e x z&quot;, &quot;hash assignment creates new containers (4)&quot;;
+    :}
+    :
+    :# Binding does not create new containers
+    :{
+    :  my %hash  = (:a&lt;x&gt;, :b&lt;y&gt;, :c&lt;z&gt;);
+    :  my $var   = &quot;d&quot;;
+    :
+    :  %hash&lt;b&gt; := $var;
+    :  $var      = &quot;e&quot;;
+    :  is %hash&lt;b&gt;, &quot;e&quot;,                   &quot;hash binding does not create new containers (1)&quot;;
+    :
+    :  my %new_hash := %hash;
+    :  $var          = &quot;f&quot;;
+    :  # %hash&lt;b&gt; and $var are now &quot;f&quot;, but %new_hash is unchanged.
+    :  is $var,        &quot;f&quot;,                &quot;hash binding does not create new containers (2)&quot;;
+    :  is ~%hash\   .values.sort, &quot;f x z&quot;, &quot;hash binding does not create new containers (3)&quot;;
+    :  is ~%new_hash.values.sort, &quot;f x z&quot;, &quot;hash binding does not create new containers (4)&quot;;
+    :}
+    :
+    :# Binding %hash := $hashref.
+    :# See
+    :# <a href="http://colabti.de/irclogger/irclogger_log/perl6?date=2005-11-06">http://colabti.de/irclogger/irclogger_log/perl6?date=2005-11-06</a>,Sun&amp;sel=388#l564
+    :# and consider the magic behind parameter binding (which is really normal
+    :# binding).
+    :{
+    :  my $hashref = { a =&gt; &quot;a&quot;, b =&gt; &quot;b&quot; };
+    :  my %hash   := $hashref;
+    :
+    :  is +%hash, 2,                    'binding %hash := $hashref works (1)';
+    :
+    :  %hash&lt;b&gt; = &quot;c&quot;;
+    :  is ~$hashref.values.sort, &quot;a c&quot;, 'binding %hash := $hashref works (2)';
+    :  is ~%hash\  .values.sort, &quot;a c&quot;, 'binding %hash := $hashref works (3)';
+    :}</pre>
+</div><a name="msg_2"></a>
+<a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
+<div ID=header_shown_2 style="display: none;">- Hide t/operators/binding/arrays.t (line 5 ~ line 222) -
+</div>
+<div ID=header_hidden_2 style="display: block;">- Show t/operators/binding/arrays.t (218 lines) -</div>
+</a>
+</p>
+<div ID=hide_2 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Binding&quot;&gt;
+    :
+    :plan 46;
+    :
+    :# Binding of array elements.
+    :# See thread &quot;Binding of array elements&quot; on p6l started by Ingo Blechschmidt:
+    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/22915">http://www.nntp.perl.org/group/perl.perl6.language/22915</a>&quot;&gt;
+    :{
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  try { @array[1] := $var };
+    :  is @array[1], &quot;d&quot;, &quot;basic binding of an array element (1)&quot;, :todo&lt;feature&gt;;
+    :  unless @array[1] eq &quot;d&quot; {
+    :    skip_rest &quot;Skipping binding of array elements tests (not yet implemented in the normal runcore)&quot;;
+    :    exit;
+    :  }
+    :
+    :  $var = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;, &quot;basic binding of an array element (2)&quot;;
+    :
+    :  @array[1] = &quot;f&quot;;
+    :  is $var,      &quot;f&quot;, &quot;basic binding of an array element (3)&quot;;
+    :}
+    :
+    :{
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  @array[1] := $var;
+    :  $var       = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;,  &quot;binding of array elements works with .delete (1)&quot;;
+    :
+    :  @array.delete(1);
+    :  # $var unchanged, but assigning to $var doesn't modify @array any
+    :  # longer; similarily, changing @array[1] doesn't modify $var now
+    :  is $var,    &quot;e&quot;,    &quot;binding of array elements works with .delete (2)&quot;;
+    :  is ~@array, &quot;a  c&quot;, &quot;binding of array elements works with .delete (3)&quot;;
+    :
+    :  $var      = &quot;f&quot;;
+    :  @array[1] = &quot;g&quot;;
+    :  is $var,      &quot;f&quot;,  &quot;binding of array elements works with .delete (4)&quot;;
+    :  is @array[1], &quot;g&quot;,  &quot;binding of array elements works with .delete (5)&quot;;
+    :}
+    :
+    :{
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  @array[1] := $var;
+    :  $var       = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;, &quot;binding of array elements works with resetting the array (1)&quot;;
+    :
+    :  @array = ();
+    :  # $var unchanged, but assigning to $var doesn't modify @array any
+    :  # longer; similarily, changing @array[1] doesn't modify $var now
+    :  is $var,    &quot;e&quot;,   &quot;binding of array elements works with resetting the array (2)&quot;;
+    :  is ~@array, &quot;&quot;,    &quot;binding of array elements works with resetting the array (3)&quot;;
+    :
+    :  $var      = &quot;f&quot;;
+    :  @array[1] = &quot;g&quot;;
+    :  is $var,      &quot;f&quot;, &quot;binding of array elements works with resetting the array (4)&quot;;
+    :  is @array[1], &quot;g&quot;, &quot;binding of array elements works with resetting the array (5)&quot;;
+    :}
+    :
+    :{
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  @array[1] := $var;
+    :  $var       = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;,   &quot;binding of array elements works with rebinding the array (1)&quot;;
+    :
+    :  my @other_array = &lt;x y z&gt;;
+    :  @array := @other_array;
+    :  # $var unchanged, but assigning to $var doesn't modify @array any
+    :  # longer; similarily, changing @array[1] doesn't modify $var now
+    :  is $var,    &quot;e&quot;,     &quot;binding of array elements works with rebinding the array (2)&quot;;
+    :  is ~@array, &quot;x y z&quot;, &quot;binding of array elements works with rebinding the array (3)&quot;;
+    :
+    :  $var      = &quot;f&quot;;
+    :  @array[1] = &quot;g&quot;;
+    :  is $var,      &quot;f&quot;,   &quot;binding of array elements works with rebinding the array (4)&quot;;
+    :  is @array[1], &quot;g&quot;,   &quot;binding of array elements works with rebinding the array (5)&quot;;
+    :}
+    :
+    :{
+    :  my sub foo (@arr) { @arr[1] = &quot;new_value&quot; }
+    :
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :  @array[1] := $var;
+    :
+    :  foo @array;
+    :  is $var,    &quot;new_value&quot;,     &quot;passing an array to a sub expecting an array behaves correctly (1)&quot;;
+    :  is ~@array, &quot;a new_value c&quot;, &quot;passing an array to a sub expecting an array behaves correctly (2)&quot;;
+    :}
+    :
+    :{
+    :  my sub foo (Array $arr) { $arr[1] = &quot;new_value&quot; }
+    :
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :  @array[1] := $var;
+    :
+    :  foo @array;
+    :  is $var,    &quot;new_value&quot;,     &quot;passing an array to a sub expecting an arrayref behaves correctly (1)&quot;;
+    :  is ~@array, &quot;a new_value c&quot;, &quot;passing an array to a sub expecting an arrayref behaves correctly (2)&quot;;
+    :}
+    :
+    :{
+    :  my sub foo (*@args) { @args[1] = &quot;new_value&quot; }
+    :
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :  @array[1] := $var;
+    :
+    :  foo @array;
+    :  is $var,    &quot;new_value&quot;,     &quot;passing an array to a slurpying sub behaves correctly (1)&quot;;
+    :  is ~@array, &quot;a new_value c&quot;, &quot;passing an array to a slurpying sub behaves correctly (2)&quot;;
+    :}
+    :
+    :{
+    :  my sub foo (*@args) { push @args, &quot;new_value&quot; }
+    :
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :  @array[1] := $var;
+    :
+    :  foo @array;
+    :  is $var,    &quot;d&quot;,     &quot;passing an array to a slurpying sub behaves correctly (3)&quot;;
+    :  is ~@array, &quot;a d c&quot;, &quot;passing an array to a slurpying sub behaves correctly (4)&quot;;
+    :}
+    :
+    :# Binding of not yet existing elements should autovivify
+    :{
+    :  my @array;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  lives_ok { @array[1] := $var },
+    :                     &quot;binding of not yet existing elements should autovivify (1)&quot;;
+    :  is @array[1], &quot;d&quot;, &quot;binding of not yet existing elements should autovivify (2)&quot;;
+    :
+    :  $var = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;, &quot;binding of not yet existing elements should autovivify (3)&quot;;
+    :  is $var,      &quot;e&quot;, &quot;binding of not yet existing elements should autovivify (4)&quot;;
+    :}
+    :
+    :# Binding with .splice
+    :{
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  @array[1] := $var;
+    :  $var       = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;,  &quot;binding of array elements works with splice (1)&quot;;
+    :
+    :  splice @array, 1, 1, ();
+    :  # $var unchanged, but assigning to $var doesn't modify @array any
+    :  # longer; similarily, changing @array[1] doesn't modify $var now
+    :  is $var,    &quot;e&quot;,    &quot;binding of array elements works with splice (2)&quot;;
+    :  is ~@array, &quot;a  c&quot;, &quot;binding of array elements works with splice (3)&quot;;
+    :
+    :  $var      = &quot;f&quot;;
+    :  @array[1] = &quot;g&quot;;
+    :  is $var,      &quot;f&quot;,  &quot;binding of array elements works with splice (4)&quot;;
+    :  is @array[1], &quot;g&quot;,  &quot;binding of array elements works with splice (5)&quot;;
+    :}
+    :
+    :# Assignment (not binding) creates new containers
+    :{
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  @array[1] := $var;
+    :  $var       = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;,       &quot;array assignment creates new containers (1)&quot;;
+    :
+    :  my @new_array = @array;
+    :  $var          = &quot;f&quot;;
+    :  # @array[$idx] and $var are now &quot;f&quot;, but @new_array is unchanged.
+    :  is $var,        &quot;f&quot;,     &quot;array assignment creates new containers (2)&quot;;
+    :  is ~@array,     &quot;a f c&quot;, &quot;array assignment creates new containers (3)&quot;;
+    :  is ~@new_array, &quot;a e c&quot;, &quot;array assignment creates new containers (4)&quot;;
+    :}
+    :
+    :# Binding does not create new containers
+    :{
+    :  my @array  = &lt;a b c&gt;;
+    :  my $var    = &quot;d&quot;;
+    :
+    :  @array[1] := $var;
+    :  $var       = &quot;e&quot;;
+    :  is @array[1], &quot;e&quot;,       &quot;array binding does not create new containers (1)&quot;;
+    :
+    :  my @new_array := @array;
+    :  $var           = &quot;f&quot;;
+    :  # @array[$idx] and $var are now &quot;f&quot;, but @new_array is unchanged.
+    :  is $var,        &quot;f&quot;,     &quot;array binding does not create new containers (2)&quot;;
+    :  is ~@array,     &quot;a f c&quot;, &quot;array binding does not create new containers (3)&quot;;
+    :  is ~@new_array, &quot;a f c&quot;, &quot;array binding does not create new containers (4)&quot;;
+    :}
+    :
+    :# Binding @array := $arrayref.
+    :# See
+    :# <a href="http://colabti.de/irclogger/irclogger_log/perl6?date=2005-11-06">http://colabti.de/irclogger/irclogger_log/perl6?date=2005-11-06</a>,Sun&amp;sel=388#l564
+    :# and consider the magic behind parameter binding (which is really normal
+    :# binding).
+    :{
+    :  my $arrayref  = [&lt;a b c&gt;];
+    :  my @array    := $arrayref;
+    :
+    :  is +@array, 3,          'binding @array := $arrayref works (1)';
+    :
+    :  @array[1] = &quot;B&quot;;
+    :  is ~$arrayref, &quot;a B c&quot;, 'binding @array := $arrayref works (2)';
+    :  is ~@array,    &quot;a B c&quot;, 'binding @array := $arrayref works (3)';
+    :}</pre>
+</div><p>A new form of assignment is present in Perl 6, called <em>binding</em>, used in
+place of typeglob assignment.  It is performed with the <code>:=</code> operator.
+Instead of replacing the value in a container like normal assignment, it
+replaces the container itself.  For instance:</p>
+<a name="msg_6"></a>
+<a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
+<div ID=header_shown_6 style="display: none;">- Hide t/operators/binding/scalars.t (line 15 ~ line 124) -
+</div>
+<div ID=header_hidden_6 style="display: block;">- Show t/operators/binding/scalars.t (110 lines) -</div>
+</a>
+</p>
+<div ID=hide_6 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/&quot;Binding&quot; /replaces the container itself\.  For instance:/&gt;
+    :# Basic scalar binding tests
+    :{
+    :  my $x = 'Just Another';
+    :  is($x, 'Just Another', 'normal assignment works');
+    :
+    :  my $y := $x;
+    :  is($y, 'Just Another', 'y is now bound to x');
+    :
+    :  ok($y =:= $x, 'y is bound to x (we checked with the =:= identity op)');
+    :
+    :  my $z = $x;
+    :  is($z, 'Just Another', 'z is not bound to x');
+    :
+    :  ok(!($z =:= $x), 'z is not bound to x (we checked with the =:= identity op)', :todo);
+    :
+    :  $y = 'Perl Hacker';
+    :  is($y, 'Perl Hacker', 'y has been changed to &quot;Perl Hacker&quot;');
+    :  is($x, 'Perl Hacker', 'x has also been changed to &quot;Perl Hacker&quot;');
+    :
+    :  is($z, 'Just Another', 'z is still &quot;Just Another&quot; because it was not bound to x');
+    :}
+    :
+    :# Binding and $CALLER::
+    :{
+    :  sub bar {
+    :    return $CALLER::a eq $CALLER::b;
+    :  }
+    :
+    :  sub foo {
+    :    env $a = &quot;foo&quot;;
+    :    env $b := $a;
+    :    return bar(); # &amp;&amp; bar2();
+    :  }
+    :
+    :  ok(foo(), &quot;CALLER resolves bindings in caller's dynamic scope&quot;);
+    :}
+    :
+    :# Binding to swap
+    :{
+    :  my $a = &quot;a&quot;;
+    :  my $b = &quot;b&quot;;
+    :
+    :  ($a, $b) := ($b, $a);
+    :  is($a, 'b', '$a has been changed to &quot;b&quot;');
+    :  is($b, 'a', '$b has been changed to &quot;a&quot;');
+    :
+    :  $a = &quot;c&quot;;
+    :  is($a, 'c', 'binding to swap didn\'t make the vars readonly');
+    :}
+    :
+    :# More tests for binding a list
+    :{
+    :  my $a = &quot;a&quot;;
+    :  my $b = &quot;b&quot;;
+    :  my $c = &quot;c&quot;;
+    :
+    :  ($a, $b) := ($c, $c);
+    :  is($a, 'c', 'binding a list literal worked (1)');
+    :  is($b, 'c', 'binding a list literal worked (2)');
+    :
+    :  $c = &quot;d&quot;;
+    :  is($a, 'd', 'binding a list literal really worked (1)');
+    :  is($b, 'd', 'binding a list literal really worked (2)');
+    :}
+    :
+    :# Binding subroutine parameters
+    :# XXX! When executed in interactive Pugs, the following test works!
+    :{
+    :  my $a;
+    :  my $b = sub($arg) { $a := $arg };
+    :  my $val = 42;
+    :
+    :  $b($val);
+    :  is $a, 42, &quot;bound readonly sub param was bound correctly (1)&quot;;
+    :  $val++;
+    :  is $a, 43, &quot;bound readonly sub param was bound correctly (2)&quot;;
+    :
+    :  dies_ok { $a = 23 },
+    :    &quot;bound readonly sub param remains readonly (1)&quot;;
+    :  is $a, 43,
+    :    &quot;bound readonly sub param remains readonly (2)&quot;;
+    :  is $val, 43,
+    :    &quot;bound readonly sub param remains readonly (3)&quot;;
+    :}
+    :
+    :{
+    :  my $a;
+    :  my $b = sub($arg is rw) { $a := $arg };
+    :  my $val = 42;
+    :
+    :  $b($val);
+    :  is $a, 42, &quot;bound rw sub param was bound correctly (1)&quot;;
+    :  $val++;
+    :  is $a, 43, &quot;bound rw sub param was bound correctly (2)&quot;;
+    :
+    :  lives_ok { $a = 23 }, &quot;bound rw sub param remains rw (1)&quot;;
+    :  is $a, 23,            &quot;bound rw sub param remains rw (2)&quot;;
+    :  is $val, 23,          &quot;bound rw sub param remains rw (3)&quot;;
+    :}
+    :
+    :# := actually takes subroutine parameter list
+    :{
+    :  my $a;
+    :  eval '(:$a) := (:a&lt;foo&gt;)';
+    :  is($a, &quot;foo&quot;, &quot;bound keyword&quot;, :todo);
+    :  my @tail;
+    :  eval '($a, *@tail) := (1, 2, 3)';
+    :  ok($a == 1 and ~@tail eq '2 3', 'bound slurpy', :todo);
+    :}</pre>
+</div><pre>
+    my $x = 'Just Another';
+    my $y := $x;
+    $y = 'Perl Hacker';</pre>
+<p>After this, both <code>$x</code> and <code>$y</code> contain the string <code>&quot;Perl Hacker&quot;</code>,
+since they are really just two different names for the same variable.</p>
+<p>There is another variant, spelled <code>::=</code>, that does the same thing at
+compile time.</p>
+<p>There is also an identity test, <code>=:=</code>, which tests whether two names
+are bound to the same underlying variable.  <code>$x =:= $y</code> would return
+true in the above example.</p>
+<p>The binding fails if the type of the variable being bound is sufficiently
+inconsistent with the type of the current declaration.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Declarators">Declarators</a></h1>
+<p>The list of variable declarators has expanded from <code>my</code> and <code>our</code>
+to include:</p>
+<pre>
+    my $foo             # ordinary lexically scoped variable
+    our $foo            # lexically scoped alias to package variable
+    has $foo            # object attribute
+    state $foo          # persistent lexical (cloned with closures)
+    constant $foo       # lexically scoped compile-time constant</pre>
+<p>Variable declarators such as <code>my</code> now take a <em>signature</em> as their
+argument.  (The syntax of function signatures is described more fully in S06.)
+The parentheses around the signature may be omitted for a
+simple declaration that declares a single variable, along with its
+associated type and traits.  Parentheses must always be used when
+declaring multiple parameters:</p>
+<pre>
+    my $a;              # okay
+    my ($b, $c);        # okay
+    my $b, $c;          # wrong: &quot;Use of undeclared variable: $c&quot;</pre>
+<p>[XXX the following probably belongs in S06.]
+The syntax for constructing a <code>Signature</code> object when the parser isn't already
+expecting one is:</p>
+<pre>
+    :(Dog $a, *@c)</pre>
+<p>This might be used like this:</p>
+<pre>
+    my $sig = :(Dog $a, *@c);</pre>
+<p>Signatures are expected after declarators such as <code>my</code>, <code>sub</code>, <code>method</code>,
+<code>rule</code>, etc.  In such declarators the colon may be omitted.  But it's
+also legal to use it:</p>
+<pre>
+    my :($b, $c);               # okay
+    sub foo :($a,$b) {...}      # okay</pre>
+<p>The <code>-&gt;</code> ``pointy block'' token also introduces a signature, but
+in this case you must omit both the colon and the parens.  For instance,
+if you're defining the ``loop variable'' of a loop block:</p>
+<pre>
+    for @dogpound -&gt; Dog $fido { ... }</pre>
+<p>If a signature is assigned to (whether declared or colon form), the
+signature is converted to a list of lvalue variables and the ordinary
+rules of assignment apply, except that the evaluation of the right
+side and the assignment happens at time determined by the declarator.
+(With <code>my</code> this is always when an ordinary assignment would happen.)
+If the signature is too complicated to convert to an assignment,
+a compile-time error occurs.  Assignment to a signature makes the
+same scalar/list distinction as ordinary assignment, so</p>
+<pre>
+    my $a = foo();      # foo in scalar context
+    my ($a) = foo();    # foo in list context</pre>
+<p>If a signature is bound to an argument list, then the binding of the
+arguments proceeds as if the signature were the formal parameters for
+a function, except that, unlike in a function call, the parameters
+are bound <code>rw</code> by default rather than <code>readonly</code>.  See Binding above.</p>
+<p>Note that <code>temp</code> and <code>let</code> are <em>not</em> variable declarators, because
+their effects only take place at runtime.  Therefore, they take an ordinary
+lvalue object as their argument.  See S04 for more details.</p>
+<p>There are a number of other declarators that are not variable
+declarators.  These include both type declarators:</p>
+<pre>
+    package Foo
+    module Foo
+    class Foo
+    role Foo
+    subset Foo</pre>
+<p>and code declarators:</p>
+<pre>
+    sub foo
+    method foo
+    submethod foo
+    multi foo
+    proto foo
+    macro foo
+    quote qX
+    regex foo
+    rule foo
+    token foo</pre>
+<p>These all have their uses and are explained in subsequent Synopses.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Argument20List20Interpolating">Argument List Interpolating</a></h1>
+<p>Perl 5 forced interpolation of a function's argument list by use of
+the <code>&amp;</code> prefix.  That option is no longer available in Perl 6, so
+instead the <code>[,]</code> reduction operator serves as an
+interpolator, by casting its operands to <code>Capture</code> objects
+and inserting them into the current argument list.</p>
+<p>It can be used to interpolate an <code>Array</code> or <code>Hash</code> into the current
+call, as positional and named arguments respectively.</p>
+<p>Note that those arguments still must comply with the subroutine's
+signature, but the presence of <code>[,]</code> defers that test until run time for
+that argument (and for any subsequent arguments):</p>
+<pre>
+    my @args = \@foo, @bar;
+    push [,] @args;</pre>
+<p>is equivalent to:</p>
+<pre>
+    push @foo, @bar;</pre>
+<p>as is this:</p>
+<pre>
+    my $args = \(@foo, @bar);    # construct a Capture object
+    push [,] @$args;</pre>
+<p>In list context, a <code>Scalar</code> holding an <code>Array</code> object does not flatten.  Hence</p>
+<pre>
+    $bar = @bar;
+    push @foo, $bar;</pre>
+<p>merely pushes a single <code>Array</code> object onto <code>@foo</code>.  You can
+explicitly flatten it in either of these ways:</p>
+<pre>
+    push @foo, @$bar;
+    push @foo, $bar[];</pre>
+<p>Those two forms work because the slurpy array in <code>push</code>'s signature
+flattens the <code>Array</code> object into a list argument.</p>
+<p>Note that those two forms also allow you to specify list context on
+assignment:</p>
+<pre>
+    @$bar = 1,2,3;
+    $bar[] = 1,2,3;</pre>
+<p>For long lvalue expressions, the second form can keep the ``arrayness''
+of the lvalue close to the assignment operator:</p>
+<pre>
+    $foo.bar.baz.bletch.whatever.attr[] = 1,2,3;</pre>
+<p>Otherwise you'd have to write:</p>
+<pre>
+    @($foo.bar.baz.bletch.whatever.attr) = 1,2,3;</pre>
+<p>and remember the <code>@</code> at the front until you get to the <code>=</code>.</p>
+<p>The empty <code>[]</code> and <code>.[]</code> postfix operators are interpreted as
+zero-dimensional slices returning the entire array, not null slices
+returning no elements.  Likewise for <code>{}</code> and <code>.{}</code> on hashes,
+as well as the <code>&lt;&gt;</code>, <code>.&lt;&gt;</code>, <code>«»</code>, and <code>.«»</code> constant and
+interpolating slice subscripting forms.</p>
+<p>The <code>[,]</code> operator interpolates lazily for <code>Array</code> and <code>Range</code> objects.
+To get an immediate interpolation like Perl 5 does, add the <code>eager</code> list
+operator:</p>
+<pre>
+    func([,] 1..Inf);         # works fine
+    func([,] eager 1..Inf);   # never terminates</pre>
+<p>To interpolate a function's return value, you must say:</p>
+<pre>
+    push [,] func();</pre>
+<p>Within the argument list of a <code>[,]</code>, function return values are
+automatically exploded into their various parts, as if you'd said:</p>
+<pre>
+    my \$capture := func();
+    push [,] $$capture: @$capture, %$capture;</pre>
+<p>or some such.  The <code>[,]</code> then handles the various zones appropriately
+depending on the context.  An invocant only makes sense as the first
+argument to the outer function call.  An invocant inserted anywhere
+else just becomes a positional argument at the front of its list,
+as if its colon changed back to a comma.</p>
+<p>If you already have a capture variable, you can interpolate all of
+its bits at once using the <code>prefix:&lt;=&gt;</code> operator, which serves
+to iterate or dereference a scalar that would otherwise stay packed
+into its scalar value.  The above is equivalent to:</p>
+<pre>
+    my \$capture := func();
+    push [,] =$capture;</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Feed20operators">Feed operators</a></h1>
+<a name="msg_20"></a>
+<a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
+<div ID=header_shown_20 style="display: none;">- Hide t/operators/pipe.t (line 12 ~ line 57) -
+</div>
+<div ID=header_hidden_20 style="display: block;">- Show t/operators/pipe.t (46 lines) -</div>
+</a>
+</p>
+<div ID=hide_20 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Feed operators&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 7;
+    :
+    :{
+    :    my @a = (1, 2);
+    :    my (@b, @c);
+    :    
+    :    eval '@a ==&gt; @b';
+    :    #eval '@c &lt;== @a'; # this yields the error:
+    :    #Fail: cannot cast into a handle: VList [VInt 1,VInt 2]
+    :
+    :    is(~@b, ~@a, &quot;ltr pipe as simple assignment&quot;, :todo);
+    :    is(~@c, ~@a, &quot;rtl pipe as simple assignment&quot;, :todo);
+    :};
+    :
+    :{
+    :    my @a = (1 .. 5);
+    :    my @e = (2, 4);
+    :
+    :    my (@b, @c);
+    :    eval '@a ==&gt; grep { ($_ % 2) == 0 } ==&gt; @b';
+    :    #eval '@c &lt;== grep { ($_ % 2) == 0 } &lt;== @a';
+    :
+    :    is(~@b, ~@e, &quot;array ==&gt; grep ==&gt; result&quot;, :todo);
+    :    is(~@c, ~@e, &quot;result &lt;== grep &lt;== array&quot;, :todo);
+    :};
+    :
+    :{
+    :    my ($got_x, $got_y, @got_z);
+    :    sub foo ($x, $y?, *@z) {
+    :        $got_x = $x;
+    :        $got_y = $y;
+    :        @got_z = @z;
+    :    }
+    :
+    :    my @a = (1 .. 5);
+    :
+    :    eval '@a ==&gt; foo &quot;x&quot;';
+    :
+    :    is($got_x, &quot;x&quot;, &quot;x was passed as explicit param&quot;, :todo);
+    :    is($got_y, undef, &quot;optional param y was not bound to piped list&quot;);
+    :    is(~@got_z, ~@a, '...slurpy array *@z got it', :todo);
+    :};</pre>
+</div><p>The new operators <code>==&gt;</code> and <code>&lt;==</code> are akin to UNIX pipes, but
+work with functions that accept and return lists.  Since these lists are
+composed of discrete objects and not liquids, we call these <em>feed</em> operators
+rather than pipes.  For example,</p>
+<pre>
+     @result = map { floor($^x / 2) },
+                 grep { /^ \d+ $/ },
+                   @data;</pre>
+<p>can also now be written with rightward feeds as:</p>
+<pre>
+     @data ==&gt; grep { /^ \d+ $/ }
+           ==&gt; map { floor($^x / 2) }
+           ==&gt; @result;</pre>
+<p>or with leftward feeds as:</p>
+<pre>
+     @result &lt;== map { floor($^x / 2) }
+             &lt;== grep { /^ \d+ $/ }
+             &lt;== @data;</pre>
+<p>Either form more clearly indicates the flow of data.  See S06 for 
+more of the (less-than-obvious) details on these two operators.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Invocant20marker">Invocant marker</a></h1>
+<p>An appended <code>:</code> marks the invocant when using the indirect-object
+syntax for Perl 6 method calls.  The following two statements are
+equivalent:</p>
+<pre>
+    $hacker.feed('Pizza and cola');
+    feed $hacker: 'Pizza and cola';</pre>
+<p>A colon may also be used on an ordinary method call to indicate that
+it should be parsed as a list operator:</p>
+<pre>
+    $hacker.feed: 'Pizza and cola';</pre>
+<p>This colon is a separate token.  A colon prefixing an adverb is not
+a separate token.  Therefore, under the longest-token rule,</p>
+<pre>
+    $hacker.feed:xxx('Pizza and cola');</pre>
+<p>is tokenized as an adverb applying to the method:</p>
+<pre>
+    $hacker.feed :xxx('Pizza and cola');</pre>
+<p>not as an xxx sub in the argument list of .feed:</p>
+<pre>
+    $hacker.feed: xxx('Pizza and cola');  # wrong</pre>
+<p>If you want both meanings of colon, you have to put it twice:</p>
+<pre>
+    $hacker.feed: :xxx('Pizza and cola'), 1,2,3;</pre>
+<p>(For similar reasons it's required to put whitespace after the colon of a label.)</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Traversing20arrays20in20parallel">Traversing arrays in parallel</a></h1>
+<a name="msg_32"></a>
+<a href="?hide_quotes=no#msg_32" onclick="return tog_quote(32);">
+<div ID=header_shown_32 style="display: none;">- Hide t/builtins/lists/zip.t (line 9 ~ line 78) -
+</div>
+<div ID=header_hidden_32 style="display: block;">- Show t/builtins/lists/zip.t (70 lines) -</div>
+</a>
+</p>
+<div ID=hide_32 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Traversing arrays in parallel&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 12;
+    :
+    :{
+    :    my @a = (0, 2, 4);
+    :    my @b = (1, 3, 5);
+    :
+    :    my @e = (0 .. 5);
+    :
+    :    my @z; @z = zip(@a; @b);
+    :    my @y; @y = (@a ¥ @b);
+    :    my @x; @x = (@a Y @b);
+    :
+    :    is(~@z, ~@e, &quot;simple zip&quot;);
+    :    is(~@y, ~@e, &quot;also with yen char&quot;);
+    :    is(~@x, ~@e, &quot;also with Y char&quot;);
+    :};
+    :
+    :{
+    :    my @a = (0, 3);
+    :    my @b = (1, 4);
+    :    my @c = (2, 5);
+    :
+    :    my @e = (0 .. 5);
+    :
+    :    my @z; @z = zip(@a; @b; @c);
+    :    my @y; @y = (@a ¥ @b ¥ @c);
+    :    my @x; @x = (@a Y @b Y @c);
+    :
+    :    is(~@z, ~@e, &quot;zip of 3 arrays&quot;);
+    :    is(~@y, ~@e, &quot;also with yen char&quot;);
+    :    is(~@x, ~@e, &quot;also with Y char&quot;);
+    :};
+    :
+    :{
+    :    my @a = (0, 4);
+    :    my @b = (2, 6);
+    :    my @c = (1, 3, 5, 7);
+    :
+    :    my @e = (0 .. 7);
+    :
+    :    my @z; @z = zip(zip(@a; @b); @c);
+    :    my @y; @y = ((@a ¥ @b) ¥ @c);
+    :    my @x; @x = ((@a Y @b) Y @c);
+    :
+    :    is(~@z, ~@e, &quot;zip of zipped arrays with other array&quot;);
+    :    is(~@y, ~@e, &quot;also as ¥&quot;);
+    :    is(~@x, ~@e, &quot;also as Y&quot;);
+    :};
+    :
+    :{
+    :    my @a = (0, 2);
+    :    my @b = (1, 3, 5);
+    :    my @e = (0, 1, 2, 3, undef, 5);
+    :
+    :    my @z = (@a ¥ @b);
+    :    is(@z, @e, &quot;bug in zipping - should use length of longest&quot;);
+    :}
+    :
+    :{
+    :    my @a;
+    :    my @b;
+    :
+    :    (@a ¥ @b) = (1, 2, 3, 4);
+    :    is(@a, [1, 3], &quot;first half of two zipped arrays as lvalues&quot;, :todo);
+    :    is(@b, [2, 4], &quot;second half of the lvalue zip&quot;, :todo);
+    :}</pre>
+</div><p>In order to support parallel iteration over multiple arrays, Perl 6 has
+a <code>zip</code> function that builds <code>Seq</code> objects from the elements of two or more
+arrays.</p>
+<pre>
+    for zip(@names; @codes) -&gt; [$name, $zip] {
+        print &quot;Name: $name;   Zip code: $zip\n&quot;;
+    }</pre>
+<p><code>zip</code> has an infix synonym, the Unicode operator <code>¥</code>, and its ASCII
+equivalent <code>Y</code>.</p>
+<p>To read arrays in parallel like <code>zip</code> but just sequence the values
+rather than generating tuples, use <code>each</code> instead of <code>zip</code>.</p>
+<pre>
+    for each(@names; @codes) -&gt; $name, $zip {
+        print &quot;Name: $name;   Zip code: $zip\n&quot;;
+    }</pre>
+<p>The <code>each</code> function reads to the end of the longest list, not counting
+lists that are known to be infinite such as <code>0..Inf</code>.  Missing values
+are replaced with <code>undef</code>.  In contrast, use <code>roundrobin</code> if you just
+wish to skip missing entries:</p>
+<pre>
+    for roundrobin(@queue1; @queue2; @queue3) -&gt; $next {
+        ...
+    }</pre>
+<p>To read arrays serially rather than in parallel, use <code>cat(@x;@y)</code>.
+This wins a ``useless use of cat award'' in this case since you could
+always just write <code>(@x,@y)</code> to mean the same thing.  But sometimes
+it's nice to be explicit about that:</p>
+<pre>
+    @foo := [[1,2,3],[4,5,6]]; say cat([;] @foo); # 1,2,3,4,5,6</pre>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Minimal20whitespace20DWIMmery">Minimal whitespace DWIMmery</a></h1>
+<p>Whitespace is no longer allowed before the opening bracket of an array
+or hash subscript, or the opening parenthesis of an argument list.  That is:</p>
+<pre>
+    @deadbeef[$x]         # okay
+    @a       [$b]         # WRONG
+    %monsters{'cookie'}   # okay
+    %people  {'john'}     # WRONG
+    saymewant('cookie')   # okay
+    mewant   ('cookie')   # WRONG</pre>
+<p>One of the several useful side-effects of this restriction is that
+parentheses are no longer required around the condition of control
+constructs:</p>
+<pre>
+    if $value eq $target {
+        print &quot;Bullseye!&quot;;
+    }
+    while $i &lt; 10 { $i++ }</pre>
+<p>It is, however, still possible to align subscripts and other postfix
+operators by explicitly using the <em>long dot</em> syntax (see S02):</p>
+<pre>
+     %monsters.{'cookie'} = Monster.new;
+     %beatles\.{'ringo'}  = Beatle.new;
+     %people\ .{'john'}   = Person.new;
+     %cats\   .{'fluffy'} = Cat.new;</pre>
+<p>Whitespace is in general required between any keyword and any opening
+bracket that is <em>not</em> introducing a subscript or function arguments.
+Any keyword followed directly by parentheses will be taken as a
+function call instead.</p>
+<pre>
+    if $a == 1 { say &quot;yes&quot; }            # preferred syntax
+    if ($a == 1) { say &quot;yes&quot; }          # P5-ish if construct
+    if($a,$b,$c)                        # if function call</pre>
+<p>It is possible for <code>if()</code> to also invoke a macro call, but if so, it's a
+<code>prefix:&lt;if&gt;</code> macro rather than a <code>statement_control:&lt;if&gt;</code> macro.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Precedence">Precedence</a></h1>
+<a name="msg_31"></a>
+<a href="?hide_quotes=no#msg_31" onclick="return tog_quote(31);">
+<div ID=header_shown_31 style="display: none;">- Hide t/operators/precedence.t (line 12 ~ line 165) -
+</div>
+<div ID=header_hidden_31 style="display: block;">- Show t/operators/precedence.t (154 lines) -</div>
+</a>
+</p>
+<div ID=hide_31 style="display:none; border:1px solid"><pre>
+    :L&lt;S03/&quot;Precedence&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 41;
+    :
+    :
+    :# 1. terms
+    :
+    :# FIXME how do we test this?
+    :
+    :# 2. postfix method
+    :
+    :# this wants objects, but maybe it can also work like
+    :# @sort.map binds tighter than ++ somehow?
+    :
+    :# 3. autoincrement
+    :
+    :my $i = 2;
+    :is(++$i ** 2, 9, &quot;++ bind tighter than **&quot;);
+    :is(--$i ** 2, 4, &quot;-- does too&quot;);
+    :
+    :# 4. exponentiation
+    :
+    :is(-2**2, -4, &quot;** bind tighter than unary -&quot;);
+    :isa_ok(~2**4, &quot;Str&quot;, &quot;~4**4 is a string&quot;);
+    :
+    :# 5. symbolic unary
+    :
+    :is(-2 x 2, &quot;-2-2&quot;, &quot;unary - binds tighter than x&quot;);
+    :is(-(2 x 2), &quot;-22&quot;, &quot;beh&quot;);
+    :is(?2*2, 2, &quot;binary -&gt; numify causes reinterpretation as, binds tighter than *&quot;);
+    :
+    :# 6. multiplicative
+    :
+    :is(2 x 2 + 10, 32, &quot;x bind tighter than binary +&quot;);
+    :is(4 + 3 * 2, 10, &quot;* binds tighter than binary +&quot;);
+    :is(0 - 3 / 3, -1, &quot;/ bind tighter than binary -&quot;);
+    :
+    :# 7. additive
+    :
+    :is(1 ~ 2 * 3, 16, &quot;~ binds looser than *&quot;);
+    :ok((1 ~ 2 &amp; 12) == 12, &quot;but tighter than &amp;&quot;);
+    :ok((2 + 2 | 4) == 4, &quot;and + binds tigher than |&quot;);
+    :
+    :# 8. junctive and
+    :
+    :ok(       (1 &amp; 2 | 3) !=3, '&amp; binds tighter than |');
+    :ok((!(1 &amp; 2 | 3) &lt; 2), &quot;ditto&quot;);
+    :ok(((1 &amp; 2 ^ 3) &lt; 3), &quot;and also ^&quot;);
+    :ok(     !(1 &amp; 2 ^ 4) != 3, &quot;blah blah blah&quot;);
+    :
+    :# 9. junctive or
+    :
+    :{ # test that | and ^ are on the same level
+    :    my $a = (1 | 2 ^ 3);
+    :    my $b = (1 ^ 2 | 3);
+    :
+    :    ok($a == 3, &quot;only one is eq 3&quot;);
+    :    ok($a != 3, &quot;either is ne 3&quot;);
+    :    ok($a == 1, &quot;either is eq 1&quot;);
+    :    ok($b == 2, &quot;either is eq 2, ne 3&quot;);
+    :    ok($b == 1, &quot;either is eq 1&quot;);
+    :    ok($b == 3, &quot;either is eq 3, of which only one is&quot;);
+    :    ok(!($b != 3), &quot;1 is ne 3, and (2 | 3) is both ne 3 and eq 3, so it's ne, so 1 ^ 2 | 3&quot;);
+    :};
+    :
+    :{
+    :    my $a = (abs -1 ^ -1); # read as abs(-1 ^ -1) -&gt; (1^1)
+    :    ok(!($a == 1), 'junctive or binds more tightly then abs (1)');
+    :
+    :    my $b = ((abs -1) ^ -1); # -&gt; (1 ^ -1)
+    :    ok($b == 1, &quot;this is true because only one is == 1&quot;);
+    :};
+    :
+    :# 10. named unary
+    :
+    :is((abs -1 .. 3), (1 .. 3), &quot;abs binds tighter than ..&quot;);
+    :is((rand 3 &lt;=&gt; 5), -1, &quot;rand binds tighter than &lt;=&gt;&quot;);
+    :
+    :# 11. nonchaining binary
+    :
+    :ok(0 &lt; 2 &lt;=&gt; 1 &lt; 2, &quot;0 &lt; 2 &lt;=&gt; 1 &lt; 2 means 0 &lt; 1 &lt; 2&quot;);
+    :
+    :# 12. chaining binary
+    :
+    :is((0 != 1 &amp;&amp; &quot;foo&quot;), &quot;foo&quot;, &quot;!= binds tigher than &amp;&amp;&quot;);
+    :ok((0 || 1 == (2-1) == (0+1) || &quot;foo&quot;) ne &quot;foo&quot;, &quot;== binds tigher than || also when chaning&quot;);
+    :
+    :# 13. tight and (&amp;&amp;)
+    :
+    :# 14. tight or (||, ^^, //)
+    :
+    :is((1 &amp;&amp; 0 ?? 2 !! 3), 3, &quot;&amp;&amp; binds tighter than ??&quot;);
+    :### FIXME - need also ||, otherwise we don't prove || and ?? are diff
+    :
+    :# 15. ternary
+    :
+    :{
+    :    my $a = 0 ?? &quot;yes&quot; !! &quot;no&quot;;
+    :    is($a, &quot;no&quot;, &quot;??!! binds tighter than =&quot;);
+    :#    (my $b = 1) ?? &quot;true&quot; !! &quot;false&quot;;
+    :#    is($b, 1, &quot;?? !! just thrown away with = in parens&quot;);
+    :};
+    :
+    :
+    :# 16. assignment
+    :
+    :{
+    :    my @c = 1, 2, 3;
+    :    is(@c, (1), &quot;= binds tighter than , (*sigh*)&quot;, :todo);
+    :    my @a = (1, 3) ¥ (2, 4);
+    :    is(@a, [1, 3], &quot;= binds tighter than yen&quot;);
+    :};
+    :
+    :{
+    :    my @b = ((1, 3) ¥ (2, 4));
+    :    is(@b, [1 .. 4], &quot;parens work around this&quot;);
+    :};
+    :
+    :# 17. list item separator
+    :
+    :{
+    :    my @d;
+    :    eval_ok '@d &lt;== (1, 3) ¥ (2, 4), &quot;left pointing pipe parses&quot;', :todo;
+    :    is(@d, [1 .. 4], &quot;to complicate things further, left pointing pipe *does* DWIM&quot;, :todo);
+    :    my $c = any 1, 2, 3;
+    :    ok($c == 2, &quot;any is less tight than comma&quot;);
+    :}
+    :
+    :# 18. rightward list op
+    :
+    :{
+    :    my @e; eval '@e = (map { $_+1 } &lt;== (1, 2, 3) ==&gt; map { $_*2 })'; # =D
+    :    is(@e, [4, 6, 8], &quot;&lt;== is tighter than ==&gt;&quot;, :todo);
+    :}
+    :
+    :# 19. pipe forward
+    :
+    :# 20. loose and
+    :
+    :# 21. loose or
+    :
+    :# 22. expr terminator
+    :
+    :# 23. uc|ucfirst|lc|lcfirst
+    :# t/builtins/strings/uc|ucfirst|lc|lcfirst.t didn't compile because of this bug.
+    :# Compare:
+    :#   $ perl -we 'print uc &quot;a&quot; eq &quot;A&quot;'
+    :#   1
+    :# opposed to Pugs parses it:
+    :#   $ perl -we 'print uc(&quot;a&quot; eq &quot;A&quot;)'
+    :#   $    (no output)
+    :ok (uc &quot;a&quot; eq &quot;A&quot;), &quot;uc has the correct precedence in comparision to eq&quot;;</pre>
+</div><p>Perl 6 has 22 precedence levels (which is fewer than Perl 5):</p>
+<pre>
+    terms               42 3.14 &quot;eek&quot; qq[&quot;foo&quot;] [1,2,3] {...} \(@a,$b,%c)
+                            $x @y %z /abc/ MyType @@multidim $^a
+                            (1+2) a(1) :by(2) :!verbose :(Dog $self:)
+                            .meth with implicit invocant
+                            listops leftward
+    method postfix      .meth .+ .? .* .() .[] .{} .&lt;&gt; .«» .:: .= .^
+    autoincrement       ++ --
+    exponentiation      **
+    symbolic unary      ! + - ~ ? $ @ % &amp; +^ ~^ ?^ \ ^ =
+    multiplicative      * / % x xx +&amp; +&lt; +&gt; ~&amp; ~&lt; ~&gt; ?&amp;
+    additive            + - ~ +| +^ ~| ~^ ?| ?^
+    junctive and (all)  &amp;
+    junctive or (any)   | ^
+    named unary         rand sleep abs etc. -e -r -w -x etc.
+    nonchaining binary  but does &lt;=&gt; leg cmp
+                            .. ^.. ..^ ^..^
+                            ff ^ff ff^ ^ff^
+                            fff ^fff fff^ ^fff^
+    chaining binary     != == &lt; &lt;= &gt; &gt;=
+                            eq ne lt le gt ge
+                            ~~ =:= === eqv
+                            !== !~~ !eq !=:= !=== !eqv etc.
+    tight and           &amp;&amp;
+    tight or            || ^^ //
+    conditional         ?? !!
+    assignment          := ::= =&gt;
+                            (also = with simple lvalues)
+                            += -= **= xx= .= etc.
+    loose unary         true not
+    list ops            , print push say join split substr open etc.
+                            any all one none
+                            die fail warn
+                            !!! ...  ???
+                            [+] [*] [&lt;] [,] [\+] [\*] etc.
+                            (also = as list assignment)
+    list infix          ¥ &lt;== ==&gt;
+    loose and           and</pre>
+<a name="msg_30"></a>
+<a href="?hide_quotes=no#msg_30" onclick="return tog_quote(30);">
+<div ID=header_shown_30 style="display: none;">- Hide t/operators/and_precedence.t (line 6 ~ line 14) -
+</div>
+<div ID=header_hidden_30 style="display: block;">- Show t/operators/and_precedence.t (9 lines) -</div>
+</a>
+</p>
+<div ID=hide_30 style="display:none; border:1px solid"><pre>
+    :# L&lt;S03/Precedence /loose and/&gt;
+    :my $run = 1;
+    :
+    :sub isfive (*@args) {
+    :    is(@args[0], 5, &quot;First arg is 5, run &quot; ~ $run++)
+    :}
+    :
+    :isfive(5) and isfive(5);
+    :isfive 5  and isfive 5;</pre>
+</div><pre>
+    loose or            or xor err
+    expr terminator     ; {} as control block, statement modifiers
+                            unmatched ), ], }, etc.</pre>
+<p>Comma is the only listop that is allowed to occur where an operator is
+expected.  All other listops function as a term within the list to the left.</p>
+<p><a href="#__index__"><small>Back to Top</small></a></p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,4205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
+<head>
+<title>TITLE</title>
+<link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
+<link rev="made" href="mailto:" />
+<script language="javascript1.2"><!--
+var agt = navigator.userAgent.toLowerCase();
+
+var is_opera = (agt.indexOf("opera") != -1);
+var is_ie = (agt.indexOf("msie") != -1) && document.all && !is_opera;
+var is_ie5 = (agt.indexOf("msie 5") != -1) && document.all;
+
+function tog() {
+  // tog: toggle the visibility of html elements (arguments[1..]) from none to
+  // arguments[0].  Return what should be returned in a javascript onevent().
+  display = arguments[0];
+  for( var i=1; i<arguments.length; i++ ) {    
+    var x = document.getElementById(arguments[i]);
+    if (!x) continue;
+    if (x.style.display == "none" || x.style.display == "") {
+      x.style.display = display;
+    } else {
+      x.style.display = "none";
+    }
+  } 
+
+  var e = is_ie ? window.event : this;
+  if (e) {
+    if (is_ie) {
+      e.cancelBubble = true;
+      e.returnValue = false;
+      return false;
+    } else {
+      return false;
+    }
+  }
+}
+
+function tog_quote( idnum ) {
+  return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
+	   'hide_' + idnum );
+}
+
+//--></script>
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#TITLE">TITLE</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#Subroutines20and20other20code20objects">Subroutines and other code objects</a></li>
+	<li><a href="#Routine20modifiers">Routine modifiers</a></li>
+	<ul>
+
+		<li><a href="#Named20subroutines">Named subroutines</a></li>
+		<li><a href="#Anonymous20subroutines">Anonymous subroutines</a></li>
+		<li><a href="#Perl5ish20subroutine20declarations">Perl5ish subroutine declarations</a></li>
+		<li><a href="#Blocks">Blocks</a></li>
+		<li><a href="#22Pointy20blocks22">``Pointy blocks''</a></li>
+		<li><a href="#Stub20declarations">Stub declarations</a></li>
+		<li><a href="#Globally20scoped20subroutines">Globally scoped subroutines</a></li>
+		<li><a href="#Lvalue20subroutines">Lvalue subroutines</a></li>
+		<li><a href="#Operator20overloading">Operator overloading</a></li>
+	</ul>
+
+	<li><a href="#Parameters20and20arguments">Parameters and arguments</a></li>
+	<ul>
+
+		<li><a href="#Named20arguments">Named arguments</a></li>
+		<li><a href="#Invocant20parameters">Invocant parameters</a></li>
+		<li><a href="#Longname20parameters">Longname parameters</a></li>
+		<li><a href="#Required20parameters">Required parameters</a></li>
+		<li><a href="#Optional20parameters">Optional parameters</a></li>
+		<li><a href="#Named20parameters">Named parameters</a></li>
+		<li><a href="#List20parameters">List parameters</a></li>
+		<li><a href="#Slurpy20block">Slurpy block</a></li>
+		<li><a href="#Argument20list20binding">Argument list binding</a></li>
+		<li><a href="#Flattening20argument20lists">Flattening argument lists</a></li>
+		<li><a href="#Multidimensional20argument20list20binding">Multidimensional argument list binding</a></li>
+		<li><a href="#Zero2ddimensional20argument20list">Zero-dimensional argument list</a></li>
+		<li><a href="#Feed20operators">Feed operators</a></li>
+		<li><a href="#Closure20parameters">Closure parameters</a></li>
+		<li><a href="#Type20parameters">Type parameters</a></li>
+		<li><a href="#Unpacking20array20parameters">Unpacking array parameters</a></li>
+		<li><a href="#Unpacking20a20single20list20argument">Unpacking a single list argument</a></li>
+		<li><a href="#Unpacking20hash20parameters">Unpacking hash parameters</a></li>
+		<li><a href="#Unpacking20tree20node20parameters">Unpacking tree node parameters</a></li>
+		<li><a href="#Attributive20parameters">Attributive parameters</a></li>
+		<li><a href="#Placeholder20variables">Placeholder variables</a></li>
+	</ul>
+
+	<li><a href="#Built2din20Types">Built-in Types</a></li>
+	<ul>
+
+		<li><a href="#Native20types">Native types</a></li>
+		<li><a href="#Undefined20types">Undefined types</a></li>
+		<li><a href="#Immutable20types">Immutable types</a></li>
+		<li><a href="#Mutable20types">Mutable types</a></li>
+		<li><a href="#Value20types">Value types</a></li>
+		<li><a href="#Implementation20types">Implementation types</a></li>
+		<li><a href="#Hierarchical20types">Hierarchical types</a></li>
+		<li><a href="#Polymorphic20types">Polymorphic types</a></li>
+		<li><a href="#Parameter20types">Parameter types</a></li>
+		<li><a href="#Generic20types">Generic types</a></li>
+		<li><a href="#Return20types">Return types</a></li>
+	</ul>
+
+	<li><a href="#Properties20and20traits">Properties and traits</a></li>
+	<ul>
+
+		<li><a href="#Subroutine20traits">Subroutine traits</a></li>
+		<li><a href="#Parameter20traits">Parameter traits</a></li>
+	</ul>
+
+	<li><a href="#Advanced20subroutine20features">Advanced subroutine features</a></li>
+	<ul>
+
+		<li><a href="#The20return20function">The <code>return</code> function</a></li>
+		<li><a href="#The20caller20function">The <code>caller</code> function</a></li>
+		<li><a href="#The20want20function">The <code>want</code> function</a></li>
+		<li><a href="#The20leave20function">The <code>leave</code> function</a></li>
+		<li><a href="#Temporization">Temporization</a></li>
+		<li><a href="#Wrapping">Wrapping</a></li>
+		<li><a href="#The20263fROUTINE20object">The <code>&amp;?ROUTINE</code> object</a></li>
+		<li><a href="#The20263fBLOCK20object">The <code>&amp;?BLOCK</code> object</a></li>
+		<li><a href="#Currying">Currying</a></li>
+		<li><a href="#Macros">Macros</a></li>
+		<li><a href="#Quasiquoting">Quasiquoting</a></li>
+		<li><a href="#Splicing">Splicing</a></li>
+	</ul>
+
+	<li><a href="#Other20matters">Other matters</a></li>
+	<ul>
+
+		<li><a href="#Anonymous20hashes20vs20blocks">Anonymous hashes vs blocks</a></li>
+		<li><a href="#Pairs20as20lvalues">Pairs as lvalues</a></li>
+		<li><a href="#Out2dof2dscope20names">Out-of-scope names</a></li>
+		<li><a href="#Declaring20a20MAIN20subroutine">Declaring a <code>MAIN</code> subroutine</a></li>
+	</ul>
+
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="TITLE">TITLE</a></h1>
+<p>Synopsis 6: Subroutines</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Damian Conway &lt;<a href="mailto:damian@conway.org">damian@conway.org</a>&gt; and
+Allison Randal &lt;<a href="mailto:al@shadowed.net">al@shadowed.net</a>&gt;</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+  Maintainer: Larry Wall &lt;larry@wall.org&gt;
+  Date: 21 Mar 2003
+  Last Modified: 18 Aug 2006
+  Number: 6
+  Version: 52</pre>
+<p>This document summarizes Apocalypse 6, which covers subroutines and the
+new type system.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Subroutines20and20other20code20objects">Subroutines and other code objects</a></h1>
+<a name="msg_3"></a>
+<a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
+<div ID=header_shown_3 style="display: none;">- Hide t/subroutines/sub_return_values.t (line 9 ~ line 223) -
+</div>
+<div ID=header_hidden_3 style="display: block;">- Show t/subroutines/sub_return_values.t (215 lines) -</div>
+</a>
+</p>
+<div ID=hide_3 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Subroutines and other code objects&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 63;
+    :
+    :# These test the returning of values from a subroutine.
+    :# We test each data-type with 4 different styles of return.
+    :#
+    :# The datatypes are:
+    :#     Scalar
+    :#     Array
+    :#     Array-ref (aka List)
+    :#     Hash
+    :#     Hash-ref
+    :#
+    :# The 4 return styles are:
+    :#     create a variable, and return it with the return statement
+    :#     create a variable, and make it the last value in the sub (implied return)
+    :#     create the value inline and return it with the return statement
+    :#     create the value inline and make it the last value in the sub (implied return)
+    :#
+    :# NOTE:
+    :# we do not really check return context here. That should be
+    :# in it's own test file
+    :
+    :# TODO-NOTE:
+    :# Currently the Hash and Hash-ref tests are not complete, becuase hashes seem to be
+    :# broken in a number of ways. I will get back to those later.
+    :
+    :## void
+    :# eval_ok('sub ret { return }; 1', &quot;return without value parses ok&quot;);
+    :
+    :sub bare_return { return };
+    :
+    :ok(! bare_return(), &quot;A bare return is a false value&quot;);
+    :
+    :my @l = &lt;some values&gt;;
+    :@l = bare_return();
+    :is( @l, [], &quot;A bare return is an empty list in array/list context&quot;);
+    :
+    :my $s = &quot;hello&quot;;
+    :$s = bare_return();
+    :is($s, undef, &quot;A bare return is undef in scalar context&quot;);
+    :
+    :## scalars
+    :
+    :sub foo_scalar {
+    :    my $foo = 'foo';
+    :    return $foo;
+    :}
+    :is(foo_scalar(), 'foo', 'got the right return value');
+    :
+    :# ... w/out return statement
+    :
+    :sub foo_scalar2 {
+    :    my $foo = 'foo';
+    :    $foo;
+    :}
+    :is(foo_scalar2(), 'foo', 'got the right return value');
+    :
+    :# ... returning constant
+    :
+    :sub foo_scalar3 {
+    :    return 'foo';
+    :}
+    :is(foo_scalar3(), 'foo', 'got the right return value');
+    :
+    :# ... returning constant w/out return statement
+    :
+    :sub foo_scalar4 {
+    :    'foo';
+    :}
+    :is(foo_scalar4(), 'foo', 'got the right return value');
+    :
+    :## arrays
+    :
+    :sub foo_array {
+    :    my @foo = ('foo', 'bar', 'baz');
+    :    return @foo;
+    :}
+    :my @foo_array_return = foo_array();
+    :isa_ok(@foo_array_return, 'Array');
+    :is(+@foo_array_return, 3, 'got the right number of return value');
+    :is(@foo_array_return[0], 'foo', 'got the right return value');
+    :is(@foo_array_return[1], 'bar', 'got the right return value');
+    :is(@foo_array_return[2], 'baz', 'got the right return value');
+    :
+    :# ... without the last return statement
+    :
+    :sub foo_array2 {
+    :    my @foo = ('foo', 'bar', 'baz');
+    :    @foo;
+    :}
+    :my @foo_array_return2 = foo_array2();
+    :isa_ok(@foo_array_return2, 'Array');
+    :is(+@foo_array_return2, 3, 'got the right number of return value');
+    :is(@foo_array_return2[0], 'foo', 'got the right return value');
+    :is(@foo_array_return2[1], 'bar', 'got the right return value');
+    :is(@foo_array_return2[2], 'baz', 'got the right return value');
+    :
+    :# ... returning an Array constructed &quot;on the fly&quot;
+    :
+    :sub foo_array3 {
+    :    return ('foo', 'bar', 'baz');
+    :}
+    :my @foo_array_return3 = foo_array3();
+    :isa_ok(@foo_array_return3, 'Array');
+    :is(+@foo_array_return3, 3, 'got the right number of return value');
+    :is(@foo_array_return3[0], 'foo', 'got the right return value');
+    :is(@foo_array_return3[1], 'bar', 'got the right return value');
+    :is(@foo_array_return3[2], 'baz', 'got the right return value');
+    :
+    :# ... returning an Array constructed &quot;on the fly&quot; w/out return statement
+    :
+    :sub foo_array4 {
+    :    ('foo', 'bar', 'baz');
+    :}
+    :my @foo_array_return4 = foo_array4();
+    :isa_ok(@foo_array_return4, 'Array');
+    :is(+@foo_array_return4, 3, 'got the right number of return value');
+    :is(@foo_array_return4[0], 'foo', 'got the right return value');
+    :is(@foo_array_return4[1], 'bar', 'got the right return value');
+    :is(@foo_array_return4[2], 'baz', 'got the right return value');
+    :
+    :## Array Refs aka - Lists
+    :
+    :sub foo_array_ref {
+    :   my $foo = ['foo', 'bar', 'baz'];
+    :   return $foo;
+    :}
+    :my $foo_array_ref_return = foo_array_ref();
+    :isa_ok($foo_array_ref_return, 'List');
+    :is(+$foo_array_ref_return, 3, 'got the right number of return value');
+    :is($foo_array_ref_return[0], 'foo', 'got the right return value');
+    :is($foo_array_ref_return[1], 'bar', 'got the right return value');
+    :is($foo_array_ref_return[2], 'baz', 'got the right return value');
+    :
+    :# ... w/out the return statement
+    :
+    :sub foo_array_ref2 {
+    :   my $foo = ['foo', 'bar', 'baz'];
+    :   $foo;
+    :}
+    :my $foo_array_ref_return2 = foo_array_ref2();
+    :isa_ok($foo_array_ref_return2, 'List');
+    :is(+$foo_array_ref_return2, 3, 'got the right number of return value');
+    :is($foo_array_ref_return2[0], 'foo', 'got the right return value');
+    :is($foo_array_ref_return2[1], 'bar', 'got the right return value');
+    :is($foo_array_ref_return2[2], 'baz', 'got the right return value');
+    :
+    :# ... returning list constructed &quot;on the fly&quot;
+    :
+    :sub foo_array_ref3 {
+    :   return ['foo', 'bar', 'baz'];
+    :}
+    :my $foo_array_ref_return3 = foo_array_ref3();
+    :isa_ok($foo_array_ref_return3, 'List');
+    :is(+$foo_array_ref_return3, 3, 'got the right number of return value');
+    :is($foo_array_ref_return3[0], 'foo', 'got the right return value');
+    :is($foo_array_ref_return3[1], 'bar', 'got the right return value');
+    :is($foo_array_ref_return3[2], 'baz', 'got the right return value');
+    :
+    :# ... returning list constructed &quot;on the fly&quot; w/out return statement
+    :
+    :sub foo_array_ref4 {
+    :   ['foo', 'bar', 'baz'];
+    :}
+    :my $foo_array_ref_return4 = foo_array_ref4();
+    :isa_ok($foo_array_ref_return4, 'List');
+    :is(+$foo_array_ref_return4, 3, 'got the right number of return value');
+    :is($foo_array_ref_return4[0], 'foo', 'got the right return value');
+    :is($foo_array_ref_return4[1], 'bar', 'got the right return value');
+    :is($foo_array_ref_return4[2], 'baz', 'got the right return value');
+    :
+    :## hashes
+    :
+    :sub foo_hash {
+    :    my %foo = ('foo', 1, 'bar', 2, 'baz', 3);
+    :    return %foo;
+    :}
+    :
+    :my %foo_hash_return = foo_hash();
+    :isa_ok(%foo_hash_return, 'Hash');
+    :is(+%foo_hash_return.keys, 3, 'got the right number of return value');
+    :is(%foo_hash_return&lt;foo&gt;, 1, 'got the right return value');
+    :is(%foo_hash_return&lt;bar&gt;, 2, 'got the right return value');
+    :is(%foo_hash_return&lt;baz&gt;, 3, 'got the right return value');
+    :
+    :my $keys;
+    :lives_ok({ $keys = +(foo_hash().keys) },
+    :    &quot;can call method on return value (hashref)&quot;);
+    :is($keys, 3, &quot;got right result&quot;);
+    :lives_ok({ foo_hash()&lt;foo&gt; },
+    :    &quot;can hash de-ref return value (hashref)&quot;);
+    :
+    :# now hash refs
+    :
+    :sub foo_hash_ref {
+    :    my %foo = ( 'foo', 1, 'bar', 2, 'baz', 3 );
+    :    return \%foo;
+    :}
+    :
+    :my $foo_hash_ref_return = foo_hash_ref();
+    :isa_ok($foo_hash_ref_return, 'Hash');
+    :is(+$foo_hash_ref_return.keys, 3, 'got the right number of return value');
+    :is($foo_hash_ref_return&lt;foo&gt;, 1, 'got the right return value');
+    :is($foo_hash_ref_return&lt;bar&gt;, 2, 'got the right return value');
+    :is($foo_hash_ref_return&lt;baz&gt;, 3, 'got the right return value');
+    :
+    :lives_ok({ $keys = +(foo_hash_ref().keys) },
+    :    &quot;can call method on return value (hashref)&quot;);
+    :is($keys, 3, &quot;got right result&quot;);
+    :lives_ok({ foo_hash_ref()&lt;foo&gt; },
+    :    &quot;can hash de-ref return value (hashref)&quot;);</pre>
+</div><p><strong>Subroutines</strong> (keyword: <code>sub</code>) are non-inheritable routines with
+parameter lists.</p>
+<p><strong>Methods</strong> (keyword: <code>method</code>) are inheritable routines which always
+have an associated object (known as their invocant) and belong to a
+particular kind or class.</p>
+<p><strong>Submethods</strong> (keyword: <code>submethod</code>) are non-inheritable methods, or
+subroutines masquerading as methods. They have an invocant and belong to
+a particular kind or class.</p>
+<p><strong>Regexes</strong> (keyword: <code>regex</code>) are methods (of a grammar) that perform
+pattern matching. Their associated block has a special syntax (see
+Synopsis 5).  (We also use the term ``regex'' for anonymous patterns
+of the traditional form.)</p>
+<p><strong>Tokens</strong> (keyword: <code>token</code>) are regexes that perform low-level
+non-backtracking (by default) pattern matching.</p>
+<p><strong>Rules</strong> (keyword: <code>rule</code>) are regexes that perform non-backtracking
+(by default) pattern matching (and also enable rules to do whitespace
+dwimmery).</p>
+<p><strong>Macros</strong> (keyword: <code>macro</code>) are routines whose calls execute as soon
+as they are parsed (i.e. at compile-time). Macros may return another
+source code string or a parse-tree.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Routine20modifiers">Routine modifiers</a></h1>
+<a name="msg_15"></a>
+<a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
+<div ID=header_shown_15 style="display: none;">- Hide t/subroutines/multi_sub.t (line 50 ~ line 68) -
+</div>
+<div ID=header_hidden_15 style="display: block;">- Show t/subroutines/multi_sub.t (19 lines) -</div>
+</a>
+</p>
+<div ID=hide_15 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Routine modifiers&quot;&gt;
+    :
+    :multi declared_wo_sub (Int $x) { 1 }
+    :multi declared_wo_sub (Str $x) { 2 }
+    :is declared_wo_sub(42),   1, &quot;omitting 'sub' when declaring 'multi sub's works (1)&quot;;
+    :is declared_wo_sub(&quot;42&quot;), 2, &quot;omitting 'sub' when declaring 'multi sub's works (2)&quot;;
+    :
+    :# Test for slurpy MMDs
+    :
+    :proto mmd () {...}  # L&lt;S06/&quot;Routine modifiers&quot;&gt;
+    :multi mmd () { 1 }
+    :multi mmd (*$x, *@xs) { 2 }
+    :
+    :is(mmd(), 1, 'Slurpy MMD to nullary');
+    :is(mmd(1,2,3), 2, 'Slurpy MMD to listop via args');
+    :is(mmd(1..3), 2, 'Slurpy MMD to listop via list');
+    :
+    :# Test for proto definitions
+    :</pre>
+</div><p><strong>Multimethods</strong> (keyword: <code>multi</code>) are routines that can have multiple
+variants that share the same name, selected by arity, types, or some
+other constraints.</p>
+<p><strong>Prototypes</strong> (keyword: <code>proto</code>) specify the commonalities (such
+as parameter names, fixity, and associativity) shared by all multis
+of that name in the scope of the <code>proto</code> declaration.</p>
+<p>A modifier keyword may occur before the routine keyword in a named routine:</p>
+<pre>
+    proto sub foo {...}
+    multi sub foo {...}
+    proto method bar {...}
+    multi method bar {...}</pre>
+<p>If the routine keyword is omitted, it defaults to <code>sub</code>.</p>
+<p>
+</p>
+<h2><a name="Named20subroutines">Named subroutines</a></h2>
+<p>The general syntax for named subroutines is any of:</p>
+<pre>
+     my RETTYPE sub NAME ( PARAMS ) TRAITS {...}    # lexical only
+    our RETTYPE sub NAME ( PARAMS ) TRAITS {...}    # also package-scoped
+                sub NAME ( PARAMS ) TRAITS {...}    # same as &quot;our&quot;</pre>
+<p>The return type may also be put inside the parentheses:</p>
+<pre>
+    sub NAME (PARAMS --&gt; RETTYPE) {...}</pre>
+<p>Unlike in Perl 5, named subroutines are considered expressions,
+so this is valid Perl 6:</p>
+<pre>
+    my @subs = (sub foo { ... }, sub bar { ... });</pre>
+<p>
+</p>
+<h2><a name="Anonymous20subroutines">Anonymous subroutines</a></h2>
+<p>The general syntax for anonymous subroutines is:</p>
+<pre>
+    sub ( PARAMS ) TRAITS {...}</pre>
+<p>But one can also use a scope modifier to introduce the return type first:</p>
+<pre>
+     my RETTYPE sub ( PARAMS ) TRAITS {...}
+    our RETTYPE sub ( PARAMS ) TRAITS {...} # means the same as &quot;my&quot; here</pre>
+<p><strong>Trait</strong> is the name for a compile-time (<code>is</code>) property.
+See <a href="#properties20and20traits">Properties and traits</a>.</p>
+<p>
+</p>
+<h2><a name="Perl5ish20subroutine20declarations">Perl5ish subroutine declarations</a></h2>
+<p>You can declare a sub without parameter list, as in Perl 5:</p>
+<pre>
+    sub foo {...}</pre>
+<p>Arguments implicitly come in via the <code>@_</code> array, but they are <code>readonly</code>
+aliases to actual arguments:</p>
+<pre>
+    sub say { print qq{&quot;@_[]&quot;\n}; }   # args appear in @_</pre>
+<pre>
+    sub cap { $_ = uc $_ for @_ }   # Error: elements of @_ are read-only</pre>
+<p>If you need to modify the elements of <code>@_</code>, declare the array explicitly
+with the <a href="#item_is_rw"><code>is rw</code></a> trait:</p>
+<pre>
+    sub swap (*@_ is rw) { @_[0,1] = @_[1,0] }</pre>
+<p>
+</p>
+<h2><a name="Blocks">Blocks</a></h2>
+<a name="msg_29"></a>
+<a href="?hide_quotes=no#msg_29" onclick="return tog_quote(29);">
+<div ID=header_shown_29 style="display: none;">- Hide t/data_types/anon_block.t (line 12 ~ line 12) -
+</div>
+<div ID=header_hidden_29 style="display: block;">- Show t/data_types/anon_block.t (1 lines) -</div>
+</a>
+</p>
+<div ID=hide_29 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Blocks&quot;&gt;</pre>
+</div><p>Raw blocks are also executable code structures in Perl 6.</p>
+<p>Every block defines an object of type <code>Code</code>, which may either be
+executed immediately or passed on as a <code>Code</code> object.  A
+bare block where an operator is expected is bound to the current
+statement level control syntax.  A bare block where a term is expected
+merely produces a <code>Code</code> object.  If the term bare block occurs in a list,
+it is considered the final element of that list unless followed immediately
+by a comma or comma surrogate.</p>
+<p>
+</p>
+<h2><a name="22Pointy20blocks22">``Pointy blocks''</a></h2>
+<a name="msg_20"></a>
+<a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
+<div ID=header_shown_20 style="display: none;">- Hide t/subroutines/pointy.t (line 11 ~ line 14) -
+</div>
+<div ID=header_hidden_20 style="display: block;">- Show t/subroutines/pointy.t (4 lines) -</div>
+</a>
+</p>
+<div ID=hide_20 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;&quot;Pointy blocks&quot;&quot;&gt;
+    :
+    :=cut
+    :</pre>
+</div><p>Semantically the arrow operator <code>-&gt;</code> is almost a synonym for
+the anonymous <code>sub</code> keyword, except that the parameter list of a
+pointy block does not require parentheses, and a pointy block may not be
+given traits.  Syntactically, a pointy block is parsed exactly like a
+bare block:</p>
+<pre>
+    my $sq = -&gt; $val { $val**2 };
+    say $sq(10); # 100</pre>
+<pre>
+    my @list = 1..3;
+    for @list -&gt; $elem {
+        say $elem; # prints &quot;1\n2\n3\n&quot;
+    }</pre>
+<p>It also behaves like a block with respect to control exceptions.  If you
+<code>return</code> from within a pointy block, it will return from the innermost
+enclosing <code>sub</code> or <code>method</code>, not the block itself.  It is referenced
+by <code>&amp;?BLOCK</code>, not <code>&amp;?ROUTINE</code>.</p>
+<a name="msg_22"></a>
+<a href="?hide_quotes=no#msg_22" onclick="return tog_quote(22);">
+<div ID=header_shown_22 style="display: none;">- Hide t/subroutines/pointy.t (line 61 ~ line 81) -
+</div>
+<div ID=header_hidden_22 style="display: block;">- Show t/subroutines/pointy.t (21 lines) -</div>
+</a>
+</p>
+<div ID=hide_22 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;&quot;Pointy blocks&quot;&quot; /will return from the innermost enclosing sub or method&gt;
+    :my $str = '';
+    :
+    :sub outer {  
+    :    my $s = -&gt; { 
+    :        is(&amp;?ROUTINE.name, '&amp;main::outer', 'pointy still sees outer\'s &amp;?ROUTINE'); 
+    :
+    :        $str ~= 'inner'; 
+    :        return 'inner ret'; 
+    :    };
+    :    $s.(); 
+    :    $str ~= 'outer';
+    :    return 'outer ret';
+    :}
+    :
+    :is outer(), 'inner ret', 'return in pointy returns from enclosing sub';
+    :is $str, 'inner', 'return in pointy returns from enclosing sub';
+    :
+    :# What about nested pointies -&gt; { ... -&gt; {} }?
+    :
+    :</pre>
+</div><a name="msg_21"></a>
+<a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
+<div ID=header_shown_21 style="display: none;">- Hide t/subroutines/pointy.t (line 50 ~ line 60) -
+</div>
+<div ID=header_hidden_21 style="display: block;">- Show t/subroutines/pointy.t (11 lines) -</div>
+</a>
+</p>
+<div ID=hide_21 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;&quot;Pointy blocks&quot;&quot; /behaves like a block with respect to control exceptions/&gt;
+    :my $n = 1;
+    :my $s = -&gt; { 
+    :    last if $n == 10;
+    :    $n++;
+    :    redo if $n &lt; 10;
+    :};
+    :try { $s.() };
+    :is($!, undef, 'pointy with block control exceptions', :todo&lt;feature&gt;);
+    :is $n, 10, &quot;pointy control exceptions ran&quot;, :todo&lt;feature&gt;;
+    :</pre>
+</div><p>
+</p>
+<h2><a name="Stub20declarations">Stub declarations</a></h2>
+<p>To predeclare a subroutine without actually defining it, use a ``stub block'':</p>
+<pre>
+    sub foo {...}     # Yes, those three dots are part of the actual syntax</pre>
+<p>The old Perl 5 form:</p>
+<pre>
+    sub foo;</pre>
+<p>is a compile-time error in Perl 6 (because it would imply that the body of the
+subroutine extends from that statement to the end of the file, as <code>class</code> and
+<code>module</code> declarations do).  The only allowed use of the semicolon form is to
+declare a <code>MAIN</code> sub--see <a href="#declaring20a20main20subroutine">Declaring a MAIN subroutine</a> below.</p>
+<p>Redefining a stub subroutine does not produce an error, but redefining
+an already-defined subroutine does. If you wish to redefine a defined sub,
+you must explicitly use the ``<code>is instead</code>'' trait.</p>
+<p>The <code>...</code> is the ``yadayadayada'' operator, which is executable but returns
+a failure.  You can also use <code>???</code> to produce a warning, or <code>!!!</code> to
+always die.  These also officially define stub blocks if used as the
+only expression in the block.</p>
+<p>
+</p>
+<h2><a name="Globally20scoped20subroutines">Globally scoped subroutines</a></h2>
+<p>Subroutines and variables can be declared in the global namespace, and are
+thereafter visible everywhere in a program.</p>
+<p>Global subroutines and variables are normally referred to by prefixing
+their identifiers with <code>*</code> (short for ``<code>GLOBAL::</code>'').   The <code>*</code>
+is normally required on the declaration but may be omitted on use if
+the reference is unambiguous:</p>
+<pre>
+    $*next_id = 0;
+    sub *saith($text)  { print &quot;Yea verily, $text&quot; }</pre>
+<pre>
+    module A {
+        my $next_id = 2;    # hides any global or package $next_id
+        saith($next_id);    # print the lexical $next_id;
+        saith($*next_id);   # print the global $next_id;
+    }</pre>
+<pre>
+    module B {
+        saith($next_id);    # Unambiguously the global $next_id
+    }</pre>
+<p>Only the name is installed into the <code>GLOBAL</code> package by <code>*</code>.  To define
+subs completely within the scope of the <code>GLOBAL</code> namespace you should
+use ``<code>package GLOBAL {...}</code>'' around the declaration.</p>
+<p>
+</p>
+<h2><a name="Lvalue20subroutines">Lvalue subroutines</a></h2>
+<a name="msg_12"></a>
+<a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
+<div ID=header_shown_12 style="display: none;">- Hide t/subroutines/lvalue_subroutines.t (line 11 ~ line 112) -
+</div>
+<div ID=header_hidden_12 style="display: block;">- Show t/subroutines/lvalue_subroutines.t (102 lines) -</div>
+</a>
+</p>
+<div ID=hide_12 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Lvalue subroutines&quot;&gt;
+    :
+    :=cut
+    :
+    :# Lvalue subrefs
+    :{
+    :  my $var1 = 1;
+    :  my $var2 = 2;
+    :
+    :  my $lastvar = sub () is rw { return $var2      };
+    :  my $prevvar = sub () is rw { return $lastvar() };
+    :
+    :  $lastvar() = 3;
+    :  is $var2, 3, &quot;lvalue subroutine references work (simple)&quot;;
+    :
+    :  $prevvar() = 4;
+    :  is $var2, 4, &quot;lvalue subroutine references work (nested)&quot;;
+    :}
+    :
+    :{
+    :  my $var = 42;
+    :  my $notlvalue = sub () { return $var };
+    :
+    :  dies_ok { $notlvalue() = 23 },
+    :    &quot;assigning to non-rw subrefs should die&quot;, :todo&lt;bug&gt;;
+    :  is $var, 42,
+    :    &quot;assigning to non-rw subrefs shouldn't modify the original variable&quot;, :todo&lt;bug&gt;;
+    :}
+    :
+    :{
+    :  my $var1 = 1;
+    :  my $var2 = 2;
+    :
+    :  sub lastvar is rw { return $var2; }
+    :  sub prevvar is rw { return lastvar(); }
+    :
+    :  lastvar() = 3;
+    :  is($var2, 3, &quot;lvalue subroutines work (simple)&quot;);
+    :
+    :  prevvar() = 4;
+    :  is($var2, 4, &quot;lvalue subroutines work (nested)&quot;);
+    :}
+    :
+    :{
+    :  my $var = 42;
+    :
+    :  # S6 says that lvalue subroutines are marked out by 'is rw'
+    :  sub notlvalue { return $val1; } # without rw
+    :
+    :  dies_ok { notlvalue() = 5 },
+    :    &quot;assigning to non-rw subs should die&quot;;
+    :  is $var, 42,
+    :    &quot;assigning to non-rw subs shouldn't modify the original variable&quot;;
+    :}
+    :
+    :sub check ($passwd) { return $password eq &quot;fish&quot;; };
+    :
+    :eval 'sub checklastval ($passwd) is rw {
+    :    my $proxy is Proxy(
+    :    FETCH =&gt; sub ($self) {
+    :            return lastval();
+    :         },
+    :    STORE =&gt; sub ($self, $val) {
+    :            die &quot;wrong password&quot; unless check($passwd);
+    :            lastval() = $val;
+    :         }
+    :    );
+    :    return $proxy;
+    :};';
+    :
+    :my $errors;
+    :eval 'try { checklastval(&quot;octopus&quot;) = 10 }; $errors=$!;';
+    :is($errors, &quot;wrong password&quot;, 'checklastval STORE can die', :todo&lt;feature&gt;);
+    :
+    :# Above test may well die for the wrong reason, if the Proxy stuff didn't
+    :# parse OK, it will complain that it couldn't find the desired subroutine
+    :eval_is('checklastval(&quot;fish&quot;) = 12; $val2', 12, 'proxy lvalue subroutine STORE works', :todo&lt;feature&gt;);
+    :my $resultval;
+    :eval '$resultval = checklastval(&quot;fish&quot;);';
+    :is($resultval, 12, 'proxy lvalue subroutine FETCH works', :todo&lt;feature&gt;);
+    :
+    :my $realvar = &quot;foo&quot;;
+    :sub proxyvar ($prefix) is rw {
+    :    return Proxy.new(
+    :        FETCH =&gt; { $prefix ~ lc($realvar) },
+    :        STORE =&gt; { lc($realvar = $^val) },
+    :    );
+    :}
+    :is try { proxyvar(&quot;PRE&quot;) }, 'PREfoo', 'proxy lvalue subroutine FETCH works', :todo&lt;feature&gt;;
+    :# Return value of assignments of Proxy objects is decided now.
+    :# See thread &quot;Assigning Proxy objects&quot; on p6l,
+    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/21838">http://www.nntp.perl.org/group/perl.perl6.language/21838</a>&quot;&gt;.
+    :# Quoting Larry:
+    :#   The intention is that lvalue subs behave in all respects as if they
+    :#   were variables.  So consider what
+    :#   
+    :#       say $nonproxy = 40;
+    :#   
+    :#   should do.
+    :is try { proxyvar(&quot;PRE&quot;) = &quot;BAR&quot; }, 'BAR',
+    :    'proxy lvalue subroutine STORE works and returns the correct value', :todo&lt;feature&gt;;
+    :is $realvar, 'BAR', 'variable was modified', :todo&lt;feature&gt;;</pre>
+</div><p>Lvalue subroutines return a ``proxy'' object that can be assigned to.
+It's known as a proxy because the object usually represents the
+purpose or outcome of the subroutine call.</p>
+<p>Subroutines are specified as being lvalue using the <a href="#item_is_rw"><code>is rw</code></a> trait.</p>
+<p>An lvalue subroutine may return a variable:</p>
+<pre>
+    my $lastval;
+    sub lastval () is rw { return $lastval }</pre>
+<p>or the result of some nested call to an lvalue subroutine:</p>
+<pre>
+    sub prevval () is rw { return lastval() }</pre>
+<p>or a specially tied proxy object, with suitably programmed
+<code>FETCH</code> and <code>STORE</code> methods:</p>
+<pre>
+    sub checklastval ($passwd) is rw {
+        return new Proxy:
+                FETCH =&gt; method {
+                            return lastval();
+                         },
+                STORE =&gt; method ($val) {
+                            die unless check($passwd);
+                            lastval() = $val;
+                         };
+    }</pre>
+<p>Other methods may be defined for specialized purposes such as temporizing
+the value of the proxy.</p>
+<p>
+</p>
+<h2><a name="Operator20overloading">Operator overloading</a></h2>
+<a name="msg_14"></a>
+<a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
+<div ID=header_shown_14 style="display: none;">- Hide t/oo/methods/overload.t (line 7 ~ line 76) -
+</div>
+<div ID=header_hidden_14 style="display: block;">- Show t/oo/methods/overload.t (70 lines) -</div>
+</a>
+</p>
+<div ID=hide_14 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Operator overloading&quot;&gt;
+    :# Later, we want to run the same tests with two classes, Foo and Bar.
+    :# Foo overloads the operators by using multi methods, Bar by using multi subs.
+    :# But as currently both Foo and Bar do not compile, we have to create a
+    :# stubclass, which is then given to &amp;run_tests_with.
+    :# But if the class does compile, $foo_class and $bar_class will be set to the
+    :# correct classes (Foo and Bar), and the tests have a chance to succeed.
+    :class StubClass {}
+    :my ($foo_class, $bar_class) = (StubClass, StubClass);
+    :
+    :eval '
+    :    class Foo {
+    :    has $.bar is rw;
+    :    multi method prefix:&lt;~&gt; ($self)  { return $.bar }
+    :    mutli method infix:&lt;+&gt;  ($a, $b) { return &quot;$a $b&quot; }
+    :    }
+    :
+    :    $foo_class = Foo;
+    :';
+    :
+    :eval '
+    :    class Bar {
+    :    has $.bar is rw;
+    :    }
+    :
+    :    multi sub prefix:&lt;~&gt; (Bar $self)      { return $self.bar }
+    :    mutli sub infix:&lt;+&gt;  (Bar $a, Bar $b) { return &quot;$a $b&quot; }
+    :
+    :    $bar_class = Bar;
+    :';
+    :
+    :run_tests_with($foo_class);
+    :run_tests_with($bar_class);
+    :
+    :sub run_tests_with($class) {
+    :    {
+    :    my $val;
+    :    lives_ok {
+    :        my $foo = $class.new();
+    :        $foo.bar = 'software';
+    :        $val = &quot;$foo&quot;
+    :    }, '... class methods work for class', :todo&lt;feature&gt;;
+    :    is($val, 'software', '... basic prefix operator overloading worked', :todo&lt;feature&gt;);
+    :
+    :    lives_ok {
+    :        my $foo = $class.new();
+    :        $foo.bar = 'software';
+    :        $val = $foo + $foo;
+    :    }, '... class methods work for class', :todo&lt;feature&gt;;
+    :    is($val, 'software software', '... basic infix operator overloading worked', :todo&lt;feature&gt;);
+    :    }
+    :
+    :    # Test that the object is correctly stringified when it is in an array.
+    :    # And test that »...« automagically work, too.
+    :    {
+    :      my $obj;
+    :      lives_ok {
+    :      $obj     = $class.new;
+    :      $obj.bar = &quot;pugs&quot;;
+    :      }, &quot;instantiating a class which defines operators worked&quot;, :todo&lt;feature&gt;;
+    :
+    :      my @foo = ($obj, $obj, $obj);
+    :      my $res;
+    :      lives_ok { $res = ~@foo }, &quot;stringification didn't die&quot;, :todo&lt;feature&gt;;
+    :      is $res, &quot;pugs pugs pugs&quot;, &quot;stringification overloading worked in array stringification&quot;, :todo&lt;feature&gt;;
+    :
+    :      lives_ok { $res = ~[@foo »~« &quot;!&quot;] }, &quot;stringification with hyperization didn't die&quot;, :todo&lt;feature&gt;;
+    :      is $res, &quot;pugs! pugs! pugs!&quot;, &quot;stringification overloading was hyperized correctly&quot;, :todo&lt;feature&gt;;
+    :    }
+    :}</pre>
+</div><a name="msg_13"></a>
+<a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
+<div ID=header_shown_13 style="display: none;">- Hide t/operators/operator_overloading.t (line 11 ~ line 118) -
+</div>
+<div ID=header_hidden_13 style="display: block;">- Show t/operators/operator_overloading.t (108 lines) -</div>
+</a>
+</p>
+<div ID=hide_13 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Operator overloading&quot;&gt;
+    :
+    :=cut
+    :
+    :# This set of tests is very basic for now.
+    :
+    :sub prefix:&lt;X&gt; ($thing) { return &quot;ROUGHLY$thing&quot;; };
+    :
+    :is(X &quot;fish&quot;, &quot;ROUGHLYfish&quot;,
+    :   'prefix operator overloading for new operator');
+    :
+    :sub prefix:&lt;±&gt; ($thing) { return &quot;AROUND$thing&quot;; };
+    :is ± &quot;fish&quot;, &quot;AROUNDfish&quot;, 'prefix operator overloading for new operator (unicode)';
+    :sub prefix:&lt;(+-)&gt; ($thing) { return &quot;ABOUT$thing&quot;; };
+    :is (+-) &quot;fish&quot;, &quot;ABOUTfish&quot;, 'prefix operator overloading for new operator (nasty)';
+    :
+    :{
+    :  my sub prefix:&lt;-&gt;($thing) { return &quot;CROSS$thing&quot;; };
+    :  is(-&quot;fish&quot;, &quot;CROSSfish&quot;,
+    :     'prefix operator overloading for existing operator (but only lexically so we don\'t mess up runtime internals (needed at least for PIL2JS, probably for PIL-Run, too)');
+    :}
+    :
+    :sub infix:&lt;×&gt; ($a, $b) { $a * $b }
+    :is(5 × 3, 15, &quot;infix Unicode operator&quot;);
+    :
+    :sub infix:&lt;C&gt; ($text, $owner) { return &quot;$text copyright $owner&quot;; };
+    :is &quot;romeo &amp; juliet&quot; C &quot;Shakespeare&quot;, &quot;romeo &amp; juliet copyright Shakespeare&quot;,
+    :    'infix operator overloading for new operator';
+    :
+    :sub infix:&lt;©&gt; ($text, $owner) { return &quot;$text Copyright $owner&quot;; };
+    :is &quot;romeo &amp; juliet&quot; © &quot;Shakespeare&quot;, &quot;romeo &amp; juliet Copyright Shakespeare&quot;,
+    :    'infix operator overloading for new operator (unicode)';
+    :
+    :sub infix:&lt;(C)&gt; ($text, $owner) { return &quot;$text CopyRight $owner&quot;; };
+    :is &quot;romeo &amp; juliet&quot; (C) &quot;Shakespeare&quot;, &quot;romeo &amp; juliet CopyRight Shakespeare&quot;,
+    :    'infix operator overloading for new operator (nasty)';
+    :
+    :sub infix:«_&lt;_»($one, $two) { return 42 }
+    :is 3 _&lt;_ 5, 42, &quot;frenchquoted infix sub&quot;;
+    :
+    :sub postfix:&lt;W&gt; ($wobble) { return &quot;ANDANDAND$wobble&quot;; };
+    :
+    :is(&quot;boop&quot; W, &quot;ANDANDANDboop&quot;, 
+    :   'postfix operator overloading for new operator');
+    :
+    :sub postfix:&lt;&amp;&amp;&amp;&amp;&amp;&gt; ($wobble) { return &quot;ANDANDANDANDAND$wobble&quot;; };
+    :is(&quot;boop&quot;&amp;&amp;&amp;&amp;&amp;, &quot;ANDANDANDANDANDboop&quot;,
+    :   &quot;postfix operator overloading for new operator (weird)&quot;);
+    :
+    :my $var = 0;
+    :eval_ok('macro circumfix:&lt;!--...--&gt;   ($text) { &quot;&quot; }; &lt;!-- $var = 1; --&gt;; $var == 0;', 'circumfix macro', :todo&lt;feature&gt;);
+    :
+    :# demonstrate sum prefix
+    :
+    :sub prefix:&lt;Σ&gt; ($x) { [+] *$x }
+    :is(Σ [1..10], 55, &quot;sum prefix operator&quot;);
+    :
+    :# check that the correct overloaded method is called
+    :multi postfix:&lt;!&gt; ($x) { [*] 1..$x }
+    :multi postfix:&lt;!&gt; (Str $x) { return($x.uc ~ &quot;!!!&quot;) }
+    :
+    :is(10!, 3628800, &quot;factorial postfix operator&quot;);
+    :is(&quot;boobies&quot;!, &quot;BOOBIES!!!&quot;, &quot;correct overloaded method called&quot;);
+    :
+    :# Overloading by setting the appropriate code variable
+    :{
+    :  my &amp;infix:&lt;plus&gt;;
+    :  BEGIN {
+    :    &amp;infix:&lt;plus&gt; := { $^a + $^b };
+    :  }
+    :
+    :  is 3 plus 5, 8, 'overloading an operator using &quot;my &amp;infix:&lt;...&gt;&quot; worked';
+    :}
+    :
+    :# Overloading by setting the appropriate code variable using symbolic
+    :# dereferentiation
+    :{
+    :  my &amp;infix:&lt;times&gt;;
+    :  BEGIN {
+    :    &amp;::(&quot;infix:&lt;times&gt;&quot;) := { $^a * $^b };
+    :  }
+    :
+    :  is 3 times 5, 15, 'operator overloading using symbolic dereferentiation';
+    :}
+    :
+    :# Accessing an operator using its subroutine name
+    :{
+    :  is &amp;infix:&lt;+&gt;(2, 3), 5, &quot;accessing a builtin operator using its subroutine name&quot;;
+    :
+    :  my &amp;infix:&lt;z&gt; := { $^a + $^b };
+    :  is &amp;infix:&lt;z&gt;(2, 3), 5, &quot;accessing a userdefined operator using its subroutine name&quot;;
+    :
+    :  is ~(&amp;infix:&lt;»+«&gt;([1,2,3],[4,5,6])), &quot;5 7 9&quot;, &quot;accessing a hyperoperator using its subroutine name&quot;;
+    :}
+    :
+    :# Overriding infix:&lt;;&gt;
+    :{
+    :    my proto infix:&lt;;&gt; ($a, $b) { $a + $b }
+    :    is (3 ; 2), 5  # XXX correct?
+    :}
+    :
+    :# [NOTE]
+    :# pmichaud ruled that prefix:&lt;;&gt; and postfix:&lt;;&gt; shouldn't be defined by
+    :# the synopses:
+    :#   <a href="http://colabti.de/irclogger/irclogger_log/perl6?date=2006-07-29">http://colabti.de/irclogger/irclogger_log/perl6?date=2006-07-29</a>,Sat&amp;sel=189#l299
+    :# so we won't test them here.
+    :
+    :# Overriding prefix:&lt;if&gt;</pre>
+</div><p>Operators are just subroutines with special names and scoping.
+An operator name consists of a grammatical category name followed by
+a single colon followed by an operator name specified as if it were
+a hash subscript (but evaluated at compile time).  So any of these
+indicates the same binary addition operator:</p>
+<pre>
+    infix:&lt;+&gt;
+    infix:«+»
+    infix:&lt;&lt;+&gt;&gt;
+    infix:{'+'}
+    infix:{&quot;+&quot;}</pre>
+<p>Use the <code>&amp;</code> sigil just as you would on ordinary subs.</p>
+<p>Unary operators are defined as <code>prefix</code> or <code>postfix</code>:</p>
+<pre>
+    sub prefix:&lt;OPNAME&gt;  ($operand) {...}
+    sub postfix:&lt;OPNAME&gt; ($operand) {...}</pre>
+<p>Binary operators are defined as <code>infix</code>:</p>
+<pre>
+    sub infix:&lt;OPNAME&gt; ($leftop, $rightop) {...}</pre>
+<p>Bracketing operators are defined as <code>circumfix</code> where a term is expected
+or <code>postcircumfix</code> where a postfix is expected.  A two-element slice
+containing the leading and trailing delimiters is the name of the
+operator.</p>
+<pre>
+    sub circumfix:&lt;LEFTDELIM RIGHTDELIM&gt; ($contents) {...}
+    sub circumfix:{'LEFTDELIM','RIGHTDELIM'} ($contents) {...}</pre>
+<p>Contrary to Apocalypse 6, there is no longer any rule about splitting an even
+number of characters.  You must use a two element slice.  Such names
+are canonicalized to a single form within the symbol table, so you
+must use the canonical name if you wish to subscript the symbol table
+directly (as in <code>PKG::{'infix:&lt;+&gt;'}</code>).  Otherwise any form will
+do.  (Symbolic references do not count as direct subscripts since they
+go through a parsing process.)  The canonical form always uses angle
+brackets and a single space between slice elements.  The elements
+are not escaped, so <code>PKG::circumfix:{'&lt;','&gt;'}</code> is canonicalized
+to <code>PKG::{'circumfix:&lt;&lt; &gt;&gt;'}</code>, and decanonicalizing always
+involves stripping the outer angles and splitting on space, if any.
+This works because a hash key knows how long it is, so there's no
+ambiguity about where the final angle is.  And space works because
+operators are not allowed to contain spaces.</p>
+<p>Operator names can be any sequence of non-whitespace characters
+including Unicode characters. For example:</p>
+<pre>
+    sub infix:&lt;(c)&gt; ($text, $owner) { return $text but Copyright($owner) }
+    method prefix:&lt;±&gt; (Num $x --&gt; Num) { return +$x | -$x }
+    multi sub postfix:&lt;!&gt; (Int $n) { $n &lt; 2 ?? 1 !! $n*($n-1)! }
+    macro circumfix:«&lt;!-- --&gt;» ($text) is parsed / .*? / { &quot;&quot; }</pre>
+<pre>
+    my $document = $text (c) $me;</pre>
+<pre>
+    my $tolerance = ±7!;</pre>
+<pre>
+    &lt;!-- This is now a comment --&gt;</pre>
+<p>Whitespace may never be part of the name (except as separator
+within a <code>&lt;...&gt;</code> or <code>«...»</code> slice, as in the example above).</p>
+<p>A null operator name does not define a null or whitespace operator, but
+a default matching subrule for that syntactic category, which is useful when
+there is no fixed string that can be recognized, such as tokens beginning
+with digits.  Such an operator <em>must</em> supply an <a href="#item_is_parsed"><code>is parsed</code></a> trait.
+The Perl grammar uses a default subrule for the <code>:1st</code>, <code>:2nd</code>, <code>:3rd</code>,
+etc. regex modifiers, something like this:</p>
+<pre>
+    sub regex_mod_external:&lt;&gt; ($x) is parsed(token { \d+[st|nd|rd|th] }) {...}</pre>
+<p>Such default rules are attempted in the order declared.  (They always follow
+any rules with a known prefix, by the longest-token-first rule.)</p>
+<p>Although the name of an operator can be installed into any package or
+lexical namespace, the syntactic effects of an operator declaration are
+always lexically scoped.  Operators other than the standard ones should
+not be installed into the <code>*</code> namespace.  Always use exportation to make
+non-standard syntax available to other scopes.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Parameters20and20arguments">Parameters and arguments</a></h1>
+<p>Perl 6 subroutines may be declared with parameter lists.</p>
+<p>By default, all parameters are readonly aliases to their corresponding
+arguments--the parameter is just another name for the original
+argument, but the argument can't be modified through it. To allow
+modification, use the <a href="#item_is_rw"><code>is rw</code></a> trait. To pass-by-copy, use the <a href="#item_is_copy"><code>is copy</code></a>
+trait.</p>
+<p>Parameters may be required or optional. They may be passed by position,
+or by name. Individual parameters may confer a scalar or list context
+on their corresponding arguments, but unlike in Perl 5, this is decided
+lazily at parameter binding time.</p>
+<p>Arguments destined for required positional parameters must come before
+those bound to optional positional parameters. Arguments destined
+for named parameters may come before and/or after the positional
+parameters.  (To avoid confusion it is highly recommended that all
+positional parameters be kept contiguous in the call syntax, but
+this is not enforced, and custom arg list processors are certainly
+possible on those arguments that are bound to a final slurpy or
+arglist variable.)</p>
+<p>
+</p>
+<h2><a name="Named20arguments">Named arguments</a></h2>
+<p>Named arguments are recognized syntactically at the ``comma'' level.
+Since parameters are identified using identifiers, the recognized
+syntaxes are those where the identifier in question is obvious.
+You may use either the adverbial form, <code>:name($value)</code>, or the
+autoquoted arrow form, <code>name =&gt; $value</code>.  These must occur at
+the top ``comma'' level, and no other forms are taken as named pairs
+by default.  Pairs intended as positional arguments rather than named
+arguments may be indicated by extra parens or by explicitly quoting
+the key to suppress autoquoting:</p>
+<pre>
+    doit :when&lt;now&gt;,1,2,3;      # always a named arg
+    doit (:when&lt;now&gt;),1,2,3;    # always a positional arg</pre>
+<pre>
+    doit when =&gt; 'now',1,2,3;   # always a named arg
+    doit (when =&gt; 'now'),1,2,3; # always a positional arg
+    doit 'when' =&gt; 'now',1,2,3; # always a positional arg</pre>
+<p>Only bare keys with valid identifier names are recognized as named arguments:</p>
+<pre>
+    doit when =&gt; 'now';         # always a named arg
+    doit 'when' =&gt; 'now';       # always a positional arg
+    doit 123  =&gt; 'now';         # always a positional arg
+    doit :123&lt;now&gt;;             # always a positional arg</pre>
+<p>Going the other way, pairs intended as named arguments that don't look
+like pairs must be introduced with the <code>[,]</code> reduction operator:</p>
+<pre>
+    $pair = :when&lt;now&gt;;
+    doit $pair,1,2,3;                   # always a positional arg
+    doit [,] %$pair,1,2,3;              # always a named arg
+    doit [,] %(get_pair()),1,2,3;       # always a named arg
+    doit [,] %('when' =&gt; 'now'),1,2,3;  # always a named arg</pre>
+<p>Note that, to apply <code>[,]</code> to a single arg you may need to use parentheses.
+In general it doesn't matter.</p>
+<p>Likewise, if you wish to pass a hash and have its entries treated as
+named arguments, you must dereference it with a <code>[,]</code>:</p>
+<pre>
+    %pairs = {:when&lt;now&gt; :what&lt;any&gt;};
+    doit %pairs,1,2,3;          # always a positional arg
+    doit [,](%pairs),1,2,3;     # always named args</pre>
+<p>Variables with a <code>:</code> prefix in rvalue context autogenerate pairs, so you
+can also say this:</p>
+<pre>
+    $when = 'now';
+    doit $when,1,2,3;   # always a positional arg of 'now'
+    doit :$when,1,2,3;  # always a named arg of :when&lt;now&gt;</pre>
+<p>In other words <code>:$when</code> is shorthand for <code>:when($when)</code>.  This works
+for any sigil:</p>
+<pre>
+    :$what      :what($what)
+    :@what      :what(@what)
+    :%what      :what(%what)
+    :&amp;what      :what(&amp;what)</pre>
+<p>There is a corresponding shortcut for hash keys if you prefix the
+subscript instead of the sigil.  The <code>:</code> is not functioning as an
+operator here, but as a modifier of the following token:</p>
+<pre>
+    doit %hash:&lt;a&gt;,1,2,3;
+    doit %hash:{'b'},1,2,3;</pre>
+<p>are short for</p>
+<pre>
+    doit :a(%hash&lt;a&gt;),1,2,3;
+    doit :b(%hash{'b'}),1,2,3;</pre>
+<p>Ordinary hash notation will just pass the value of the hash entry as a
+positional argument regardless of whether it is a pair or not.
+To pass both key and value out of hash as a positional pair, use <code>:p</code>
+instead:</p>
+<pre>
+    doit %hash&lt;a&gt;:p,1,2,3;
+    doit %hash{'b'}:p,1,2,3;</pre>
+<p>(The <code>:p</code> stands for ``pairs'', not ``positional''--the
+<code>:p</code> adverb may be placed on any Hash objects to make it mean
+``pairs'' instead of ``values''.)</p>
+<p>Pair constructors are recognized syntactically at the call level and
+put into the named slot of the <code>Capture</code> structure.  Hence they may be
+bound to positionals only by name, not as ordinary positional <code>Pair</code>
+objects.  Leftover named arguments can be slurped into a slurpy hash.</p>
+<p>Because named and positional arguments can be freely mixed, the
+programmer always needs to disambiguate pairs literals from named
+arguments with parentheses or quotes:</p>
+<pre>
+    # Named argument &quot;a&quot;
+    push @array, 1, 2, :a&lt;b&gt;;</pre>
+<pre>
+    # Pair object (a=&gt;'b')
+    push @array, 1, 2, (:a&lt;b&gt;);
+    push @array, 1, 2, 'a' =&gt; 'b';</pre>
+<p>Perl 6 allows multiple same-named arguments, and records the relative
+order of arguments with the same name.  When there are more than one
+argument, the <code>@</code> sigil in the parameter list causes the arguments
+to be concatenated:</p>
+<pre>
+    sub fun (Int @x) { ... }
+    fun( x =&gt; 1, x =&gt; 2 );              # @x := (1, 2)
+    fun( x =&gt; (1, 2), x =&gt; (3, 4) );    # @x := (1, 2, 3, 4)</pre>
+<p>Other sigils bind only to the <em>last</em> argument with that name:</p>
+<pre>
+    sub fun (Int $x) { ... }
+    f( x =&gt; 1, x =&gt; 2 );                # $x := 2
+    fun( x =&gt; (1, 2), x =&gt; (3, 4) );    # $x := (3, 4)</pre>
+<p>This means a hash holding default values must come <em>before</em> known named
+parameters, similar to how hash constructors work:</p>
+<pre>
+    # Allow &quot;x&quot; and &quot;y&quot; in %defaults to be overridden
+    f( [,](%defaults), x =&gt; 1, y =&gt; 2 );</pre>
+<p>
+</p>
+<h2><a name="Invocant20parameters">Invocant parameters</a></h2>
+<p>A method invocant may be specified as the first parameter in the parameter
+list, with a colon (rather than a comma) immediately after it:</p>
+<pre>
+    method get_name ($self:) {...}
+    method set_name ($_: $newname) {...}</pre>
+<p>The corresponding argument (the invocant) is evaluated in scalar context
+and is passed as the left operand of the method call operator:</p>
+<pre>
+    print $obj.get_name();
+    $obj.set_name(&quot;Sam&quot;);</pre>
+<p>For the purpose of matching positional arguments against invocant parameters,
+the invocant argument passed via the method call syntax is considered the
+first positional argument when failover happens from single dispatch to
+multiple dispatch:</p>
+<pre>
+    handle_event($w, $e, $m);   # calls the multi sub
+    $w.handle_event($e, $m);    # ditto, but only if there is no
+                                # suitable $w.handle_event method</pre>
+<p>Invocants may also be passed using the indirect object syntax, with a colon
+after them. The colon is just a special form of the comma, and has the
+same precedence:</p>
+<pre>
+    set_name $obj: &quot;Sam&quot;;   # try $obj.set_name(&quot;Sam&quot;) first, then
+                            # fall-back to set_name($obj, &quot;Sam&quot;)
+    $obj.set_name(&quot;Sam&quot;);   # same as the above</pre>
+<p>An invocant is the topic of the corresponding method if that formal
+parameter is declared with the name <code>$_</code>.  A method's invocant
+always has the alias <code>self</code>.  Other styles of self can be declared
+with the <code>self</code> pragma.</p>
+<p>
+</p>
+<h2><a name="Longname20parameters">Longname parameters</a></h2>
+<p>Much like ordinary methods give preference to the invocant,
+multimethods and multisubs can give preference to earlier parameters.
+These are called <em>longnames</em>; see S12 for more about the semantics
+of multiple dispatch.  Syntactically, longnames are declared by
+terminating the list of important parameters with a semicolon:</p>
+<pre>
+    multi sub handle_event ($window, $event; $mode) {...}
+    multi method set_name ($self: $name; $nick) {...}</pre>
+<p>If the parameter list for a <code>multi</code> contains no semicolon to delimit
+the list of important parameters, then all positional parameters are
+considered important.  If it's a <code>multi method</code> or <code>multi submethod</code>,
+an additional implicit unnamed <code>self</code> invocant is added to the
+signature list unless the first parameter is explicitly marked with a colon.</p>
+<p>
+</p>
+<h2><a name="Required20parameters">Required parameters</a></h2>
+<p>Required parameters are specified at the start of a subroutine's parameter
+list:</p>
+<pre>
+    sub numcmp ($x, $y) { return $x &lt;=&gt; $y }</pre>
+<p>Required parameters may optionally be declared with a trailing <code>!</code>,
+though that's already the default for positional parameters:</p>
+<a name="msg_17"></a>
+<a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
+<div ID=header_shown_17 style="display: none;">- Hide t/subroutines/sub_named_params.t (line 77 ~ line 170) -
+</div>
+<div ID=header_hidden_17 style="display: block;">- Show t/subroutines/sub_named_params.t (94 lines) -</div>
+</a>
+</p>
+<div ID=hide_17 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Required parameters&quot; /declared with a trailing/&gt;
+    :sub mandatory (:$param!) {
+    :    return $param;
+    :}
+    :
+    :is(mandatory(param =&gt; 5) , 5, &quot;named mandatory parameter is returned&quot;);
+    :is(try { mandatory() }, undef, &quot;not specifying a mandatory parameter fails&quot;);
+    :
+    :sub mandatory_by_trait (:$param is required) {
+    :    return $param;
+    :}
+    :
+    :is(mandatory_by_trait(param =&gt; 5) , 5, &quot;named mandatory parameter is returned&quot;);
+    :is(try { mandatory_by_trait() }, undef, &quot;not specifying a mandatory parameter fails&quot;);
+    :
+    :
+    :# From L&lt;S06/&quot;Named parameters&quot; /sub formalize/&gt;
+    :sub formalize($text, :$case, :$justify)  returns List {
+    :   return($text,$case,$justify); 
+    :}
+    :
+    :{
+    :my ($text,$case,$justify)  = formalize('title', case=&gt;'upper');
+    :is($text,'title', &quot;text param was positional&quot;);
+    :is($justify, undef, &quot;justification param was not given&quot;);
+    :is($case, 'upper', &quot;case param was named, and in justification param's position&quot;);
+    :}
+    :
+    :
+    :{
+    :my ($text,$case,$justify)   = formalize('title', justify=&gt;'left');
+    :is($text,'title', &quot;text param was positional&quot;);
+    :is($justify, 'left', &quot;justify param was named&quot;);
+    :is($case, undef, &quot;case was not given at all&quot;);
+    :}
+    :
+    :{
+    :my  ($text,$case,$justify) = formalize(&quot;title&quot;, :justify&lt;right&gt;, :case&lt;title&gt;);
+    :
+    :is($text,'title', &quot;title param was positional&quot;);
+    :is($justify, 'right', &quot;justify param was named with funny syntax&quot;);
+    :is($case, 'title', &quot;case param was named with funny syntax&quot;);
+    :}
+    :
+    :{
+    :sub h($a,$b,$d) { $d ?? h($b,$a,$d-1) !! $a~$b }
+    :
+    :is(h('a','b',1),'ba',&quot;parameters don\'t bind incorrectly&quot;);
+    :}
+    :
+    :# Slurpy Hash Params
+    :{
+    :sub slurpee(*%args) { return %args }
+    :my %fellowship = slurpee(hobbit =&gt; 'Frodo', wizard =&gt; 'Gandalf');
+    :is(%fellowship&lt;hobbit&gt;, 'Frodo', &quot;hobbit arg was slurped&quot;);
+    :is(%fellowship&lt;wizard&gt;, 'Gandalf', &quot;wizard arg was slurped&quot;);
+    :is(+%fellowship, 2, &quot;exactly 2 arguments were slurped&quot;);
+    :is(%fellowship&lt;dwarf&gt;, undef, &quot;dwarf arg was not given&quot;);
+    :}
+    :
+    :{
+    :  if $*OS eq &quot;browser&quot; {
+    :    skip 5, &quot;skipping tests which infloop under PIL2JS&quot;;
+    :  } else {
+    :    sub named_and_slurp(:$grass, *%rest) { return($grass, %rest) }
+    :    my ($grass, %rest) = named_and_slurp(sky =&gt; 'blue', grass =&gt; 'green', fire =&gt; 'red');
+    :    is($grass, 'green', &quot;explicit named arg received despite slurpy hash&quot;);
+    :    is(+%rest, 2, &quot;exactly 2 arguments were slurped&quot;);
+    :    is(%rest&lt;sky&gt;, 'blue', &quot;sky argument was slurped&quot;);
+    :    is(%rest&lt;fire&gt;, 'red', &quot;fire argument was slurped&quot;);
+    :    is(%rest&lt;grass&gt;, undef, &quot;grass argument was NOT slurped&quot;);
+    :  }
+    :}
+    :
+    :{
+    :my $ref;
+    :sub setref($refin) {
+    :    $ref = $refin;
+    :}
+    :my $aref = [0];
+    :setref(refin =&gt; $aref);
+    :$aref[0]++;
+    :is($aref[0], 1, &quot;aref actually implemented&quot;);
+    :is($ref[0], 1, &quot;ref is the same as aref&quot;);
+    :}
+    :
+    :=kwid
+    :
+    := AUTHOR
+    :
+    :Jesse Vincent &lt;jesse@bestpractical.com&gt;
+    :Carl Masak &lt;cmasak@gmail.com&gt;
+    :
+    :=cut</pre>
+</div><pre>
+    sub numcmp ($x!, $y!) { return $x &lt;=&gt; $y }</pre>
+<p>The corresponding arguments are evaluated in scalar context and may be
+passed positionally or by name. To pass an argument by name,
+specify it as a pair: <code>parameter_name =&gt; argument_value</code>.</p>
+<pre>
+    $comparison = numcmp(2,7);
+    $comparison = numcmp(x=&gt;2, y=&gt;7);
+    $comparison = numcmp(y=&gt;7, x=&gt;2);</pre>
+<p>Pairs may also be passed in adverbial pair notation:</p>
+<pre>
+    $comparison = numcmp(:x(2), :y(7));
+    $comparison = numcmp(:y(7), :x(2));</pre>
+<p>Passing the wrong number of required arguments to a normal subroutine
+is a fatal error.  Passing a named argument that cannot be bound to a normal
+subroutine is also a fatal error.  (Methods are different.)</p>
+<p>The number of required parameters a subroutine has can be determined by
+calling its <code>.arity</code> method:</p>
+<a name="msg_16"></a>
+<a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
+<div ID=header_shown_16 style="display: none;">- Hide t/builtins/arity.t (line 7 ~ line 37) -
+</div>
+<div ID=header_hidden_16 style="display: block;">- Show t/builtins/arity.t (31 lines) -</div>
+</a>
+</p>
+<div ID=hide_16 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Required parameters&quot; /method:/&gt;
+    :{
+    :    my sub foo () {}
+    :    is &amp;foo.arity, 0;
+    :}
+    :
+    :{
+    :    my sub foo ($a) {}
+    :    is &amp;foo.arity, 1;
+    :}
+    :
+    :{
+    :    my sub foo ($a, $b) {}
+    :    is &amp;foo.arity, 2;
+    :}
+    :
+    :{
+    :    my sub foo ($a, $b, @c) {}
+    :    is &amp;foo.arity, 3;
+    :}
+    :
+    :{
+    :    my sub foo ($a, $b, @c, %d) {}
+    :    is &amp;foo.arity, 4;
+    :}
+    :
+    :# It's not really specced in what way (*@slurpy_params) should influence
+    :# .arity. Also it's unclear what the result of &amp;multisub.arity is.
+    :# See the thread &quot;&amp;multisub.arity?&quot; on p6l started by Ingo Blechschmidt for
+    :# details:
+    :# L&lt;&quot;<a href="http://thread.gmane.org/gmane.comp.lang.perl.perl6.language/4915">http://thread.gmane.org/gmane.comp.lang.perl.perl6.language/4915</a>&quot;&gt;</pre>
+</div><pre>
+    $args_required = &amp;foo.arity;</pre>
+<p>
+</p>
+<h2><a name="Optional20parameters">Optional parameters</a></h2>
+<p>Optional positional parameters are specified after all the required
+parameters and each is marked with a <code>?</code> after the parameter:</p>
+<pre>
+    sub my_substr ($str, $from?, $len?) {...}</pre>
+<p>Alternately, optional fields may be marked by supplying a default value.
+The <code>=</code> sign introduces a default value:</p>
+<pre>
+    sub my_substr ($str, $from = 0, $len = Inf) {...}</pre>
+<p>Default values can be calculated at run-time. They may even use the values of
+preceding parameters:</p>
+<a name="msg_31"></a>
+<a href="?hide_quotes=no#msg_31" onclick="return tog_quote(31);">
+<div ID=header_shown_31 style="display: none;">- Hide t/subroutines/defaults.t (line 8 ~ line 33) -
+</div>
+<div ID=header_hidden_31 style="display: block;">- Show t/subroutines/defaults.t (26 lines) -</div>
+</a>
+</p>
+<div ID=hide_31 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Optional parameters&quot; /Default values can be calculated at run-time/&gt;
+    :=cut
+    :
+    :plan 2;
+    :
+    :sub doubler($x) { return 2 * $x }
+    :
+    :sub value_v(Code :$func = &amp;doubler) {
+    :    return $func(5);
+    :}
+    :
+    :is(value_v, 10, &quot;default sub called&quot;);
+    :
+    :package MyPack {
+    :
+    :sub double($x) { return 2 * $x }
+    :
+    :sub val_v(Code :$func = &amp;double) is export {
+    :    return $func(5);
+    :}
+    :
+    :}
+    :
+    :use Test;
+    :
+    :ok((MyPack::val_v), &quot;default sub called in package namespace&quot;);</pre>
+</div><pre>
+    sub xml_tag ($tag, $endtag = matching_tag($tag) ) {...}</pre>
+<p>Arguments that correspond to optional parameters are evaluated in
+scalar context. They can be omitted, passed positionally, or passed by
+name:</p>
+<pre>
+    my_substr(&quot;foobar&quot;);            # $from is 0, $len is infinite
+    my_substr(&quot;foobar&quot;,1);          # $from is 1, $len is infinite
+    my_substr(&quot;foobar&quot;,1,3);        # $from is 1, $len is 3
+    my_substr(&quot;foobar&quot;,len=&gt;3);     # $from is 0, $len is 3</pre>
+<p>Missing optional arguments default to their default values, or to
+an undefined value if they have no default.  (A supplied argument that is
+undefined is not considered to be missing, and hence does not trigger
+the default.  Use <code>//=</code> within the body for that.)</p>
+<p>(Conjectural: Within the body you may also use <code>exists</code> on the
+parameter name to determine whether it was passed.  Maybe this will have to
+be restricted to the <code>?</code> form, unless we're willing to admit that a parameter
+could be simultaneously defined and non-existant.)</p>
+<p>
+</p>
+<h2><a name="Named20parameters">Named parameters</a></h2>
+<p>Named-only parameters follow any required or optional parameters in the
+signature. They are marked by a prefix <code>:</code>:</p>
+<pre>
+    sub formalize($text, :$case, :$justify) {...}</pre>
+<p>This is actually shorthand for:</p>
+<pre>
+    sub formalize($text, :case($case), :justify($justify)) {...}</pre>
+<p>If the longhand form is used, the label name and variable name can be
+different:</p>
+<pre>
+    sub formalize($text, :case($required_case), :justify($justification)) {...}</pre>
+<p>so that you can use more descriptive internal parameter names without
+imposing inconveniently long external labels on named arguments.</p>
+<p>Arguments that correspond to named parameters are evaluated in scalar
+context. They can only be passed by name, so it doesn't matter what
+order you pass them in, so long as they don't intermingle with any
+positional arguments:</p>
+<pre>
+    $formal = formalize($title, case=&gt;'upper');
+    $formal = formalize($title, justify=&gt;'left');
+    $formal = formalize($title, :justify&lt;right&gt;, :case&lt;title&gt;);</pre>
+<p>Named parameters are optional unless marked with a following <code>!</code>.  Default values for
+optional named parameters are defined in the same way as for positional
+parameters, but may depend only on the values of parameters that have
+already been bound.  (Note that binding happens in the call order,
+not declaration order.)  Named optional parameters default to <code>undef</code> if they
+have no default.  Named required parameters fail unless an argument pair
+of that name is supplied.</p>
+<p>Again, note the use of adverbial pairs in the argument list.  See S02 for
+the correspondence between adverbial form and arrow notation.</p>
+<p>
+</p>
+<h2><a name="List20parameters">List parameters</a></h2>
+<p>List parameters capture a variable length list of data. They're used
+in subroutines like <code>print</code>, where the number of arguments needs to be
+flexible. They're also called ``variadic parameters'', because they take a
+<em>variable</em> number of arguments.  But generally we call them ``slurpy''
+parameters because they slurp up arguments.</p>
+<p>Slurpy parameters follow any required or optional parameters. They are
+marked by a <code>*</code> before the parameter:</p>
+<pre>
+    sub duplicate($n, *%flag, *@data) {...}</pre>
+<p>Named arguments are bound to the slurpy hash (<code>*%flag</code>
+in the above example). Such arguments are evaluated in scalar context.
+Any remaining variadic arguments at the end of the argument list
+are bound to the slurpy array (<code>*@data</code> above) and are evaluated
+in list context.</p>
+<p>For example:</p>
+<pre>
+    duplicate(3, reverse =&gt; 1, collate =&gt; 0, 2, 3, 5, 7, 11, 14);
+    duplicate(3, :reverse, :!collate, 2, 3, 5, 7, 11, 14);  # same</pre>
+<pre>
+    # The @data parameter receives [2, 3, 5, 7, 11, 14]
+    # The %flag parameter receives { reverse =&gt; 1, collate =&gt; 0 }</pre>
+<p>Slurpy scalar parameters capture what would otherwise be the first
+elements of the variadic array:</p>
+<pre>
+    sub head(*$head, *@tail)         { return $head }
+    sub neck(*$head, *$neck, *@tail) { return $neck }
+    sub tail(*$head, *@tail)         { return @tail }</pre>
+<pre>
+    head(1, 2, 3, 4, 5);        # $head parameter receives 1
+                                # @tail parameter receives [2, 3, 4, 5]</pre>
+<pre>
+    neck(1, 2, 3, 4, 5);        # $head parameter receives 1
+                                # $neck parameter receives 2
+                                # @tail parameter receives [3, 4, 5]</pre>
+<p>Slurpy scalars still impose list context on their arguments.</p>
+<p>Slurpy parameters are treated lazily -- the list is only flattened
+into an array when individual elements are actually accessed:</p>
+<pre>
+    @fromtwo = tail(1..Inf);        # @fromtwo contains a lazy [2..Inf]</pre>
+<p>You can't bind to the name of a slurpy parameter: the name is just there
+so you can refer to it within the body.</p>
+<pre>
+    sub foo(*%flag, *@data) {...}</pre>
+<pre>
+    foo(:flag{ a =&gt; 1 }, :data[ 1, 2, 3 ]);
+        # %flag has elements (flag =&gt; (a =&gt; 1)) and (data =&gt; [1,2,3])
+        # @data has nothing</pre>
+<p>
+</p>
+<h2><a name="Slurpy20block">Slurpy block</a></h2>
+<p>It's also possible to declare a slurpy block: <code>*&amp;block</code>.  It slurps
+up any nameless block, specified by <code>{...}</code>, at either the current positional
+location or the end of the syntactic list.  Put it first if you want the
+option of putting a block either first or last in the arguments.  Put it
+last if you want to force it to come in as the last argument.</p>
+<p>
+</p>
+<h2><a name="Argument20list20binding">Argument list binding</a></h2>
+<p>The underlying <code>Capture</code> object may be bound to a single scalar
+parameter marked with a <code>\</code>.</p>
+<a name="msg_2"></a>
+<a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
+<div ID=header_shown_2 style="display: none;">- Hide t/data_types/arglist.t (line 54 ~ line 107) -
+</div>
+<div ID=header_hidden_2 style="display: block;">- Show t/data_types/arglist.t (54 lines) -</div>
+</a>
+</p>
+<div ID=hide_2 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Argument list binding&quot; /single scalar parameter marked/&gt;
+    :{
+    :    my sub bar ($a, $b, $c) { &quot;$a!$b!$c&quot; }
+    :    my sub foo (\$arglist)  { bar *$arglist }
+    :
+    :    is try { foo(1,2,3) }, &quot;1!2!3&quot;,
+    :        &quot;arglist creation with \\$ works (1)&quot;, :todo&lt;feature&gt;;
+    :    dies_ok { foo(1,2,3,4) },  # too many args
+    :        &quot;arglist creation with \\$ works (2)&quot;;
+    :    dies_ok { foo(1,2) },      # too few args
+    :        &quot;arglist creation with \\$ works (3)&quot;;
+    :    is try { foo(a =&gt; 1, b =&gt; 2, c =&gt; 3) }, &quot;1!2!3&quot;,
+    :        &quot;arglist creation with \\$ works (4)&quot;, :todo&lt;feature&gt;;
+    :    is try { foo(1, b =&gt; 2, c =&gt; 3) }, &quot;1!2!3&quot;,
+    :        &quot;arglist creation with \\$ works (5)&quot;, :todo&lt;feature&gt;;
+    :}
+    :
+    :# Arglists are first-class objects
+    :{
+    :    my $arglist;
+    :    my sub foo (\$args) { $arglist = $args }
+    :
+    :    lives_ok { foo(1,2,3,4) }, &quot;arglists are first-class objects (1)&quot;, :todo&lt;feature&gt;;
+    :    ok $arglist,               &quot;arglists are first-class objects (2)&quot;, :todo&lt;feature&gt;;
+    :
+    :    my $old_arglist = $arglist;
+    :    lives_ok { foo(5,6,7,8) }, &quot;arglists are first-class objects (3)&quot;, :todo&lt;feature&gt;;
+    :    ok $arglist,               &quot;arglists are first-class objects (4)&quot;, :todo&lt;feature&gt;;
+    :    ok !($arglist === $old_arglist), &quot;arglists are first-class objects (5)&quot;, :todo&lt;feature&gt;;
+    :}
+    :
+    :{
+    :    my $arglist1;
+    :    my sub foo ($args) { $arglist1 = $args }
+    :
+    :    my $arglist2 = \(1,2,3);
+    :    try { foo $arglist2 };  # note: no *$args here
+    :
+    :    cmp_ok $arglist1, &amp;infix:&lt;===&gt;, $arglist2,
+    :        &quot;unflattened arglists can be passed to subs&quot;;
+    :}
+    :
+    :# Mixing ordinary args with arglists
+    :{
+    :    my $arglist = \(:foo&lt;bar&gt;, :baz&lt;grtz&gt;);
+    :    my sub foo ($a,$b, :$foo, :$baz) { &quot;$a!$b!$foo!$baz&quot; }
+    :
+    :    dies_ok { foo *$arglist },  # too few args
+    :        &quot;mixing ordinary args with arglists (1)&quot;;
+    :    is try { foo 1,2, *$arglist }, &quot;1!2!bar!grtz&quot;,
+    :        &quot;mixing ordinary args with arglists (2)&quot;, :todo&lt;feature&gt;;
+    :}
+    :
+    :# XXX sub foo (\@arglist)</pre>
+</div><pre>
+    sub bar ($a,$b,$c,:$mice) { say $mice }
+    sub foo (\$args) { say $args.perl; &amp;bar.call($args); }</pre>
+<p>The <code>.call</code> method of <code>Code</code> objects accepts a single <code>Capture</code>
+object, and calls it without introducing a <code>CALLER</code> frame.</p>
+<pre>
+    foo 1,2,3,:mice&lt;blind&gt;;     # says &quot;\(1,2,3,:mice&lt;blind&gt;)&quot; then &quot;blind&quot;</pre>
+<p>It is allowed to specify a return type:</p>
+<pre>
+    sub foo (\$args --&gt; Num) { ... }</pre>
+<p>Apart from that, no other parameters are allowed in the signature
+after the <code>Capture</code>.  Parameters before the <code>Capture</code> either do not show up in
+the <code>Capture</code> or are marked as already bound somehow.  In other words,
+parameters are bound normally up to the <code>Capture</code> parameter, and then
+<code>\$args</code> takes a snapshot of the remaining input without further
+attempts at binding.</p>
+<p>
+</p>
+<h2><a name="Flattening20argument20lists">Flattening argument lists</a></h2>
+<p>The reduce operator <code>[,]</code> casts each of its arguments to a <code>Capture</code>
+object, then splices each of those captures into the argument list
+it occurs in.</p>
+<p>Casting <code>Capture</code> to <code>Capture</code> is a no-op:</p>
+<pre>
+    [,](\(1, x=&gt;2));    # Capture, becomes \(1, x=&gt;2)</pre>
+<p><code>Pair</code> and <code>Hash</code> become named arguments:</p>
+<pre>
+    [,](x=&gt;1);          # Pair, becomes \(x=&gt;1)
+    [,]{x=&gt;1, y=&gt;2};    # Hash, becomes \(x=&gt;1, y=&gt;2)</pre>
+<p><code>List</code> (also <code>Seq</code>, <code>Range</code>, etc.) are simply turned into
+positional arguments:</p>
+<pre>
+    [,](1,2,3);         # Seq, becomes \(1,2,3)
+    [,](1..3);          # Range, becomes \(1,2,3)
+    [,](1..2, 3);       # List, becomes \(1,2,3)
+    [,]([x=&gt;1, x=&gt;2]);  # List (from an Array), becomes \((x=&gt;1), (x=&gt;2))</pre>
+<p>For example:</p>
+<pre>
+    sub foo($x, $y, $z) {...}    # expects three scalars
+    @onetothree = 1..3;          # array stores three scalars</pre>
+<pre>
+    foo(1,2,3);                  # okay:  three args found
+    foo(@onetothree);            # error: only one arg
+    foo([,]@onetothree);         # okay:  @onetothree flattened to three args</pre>
+<p>The <code>[,]</code> operator flattens lazily -- the array is flattened only if
+flattening is actually required within the subroutine. To flatten before
+the list is even passed into the subroutine, use the <code>eager</code> list
+operator:</p>
+<pre>
+    foo([,] eager @onetothree);          # array flattened before &amp;foo called</pre>
+<p>
+</p>
+<h2><a name="Multidimensional20argument20list20binding">Multidimensional argument list binding</a></h2>
+<a name="msg_11"></a>
+<a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
+<div ID=header_shown_11 style="display: none;">- Hide t/subroutines/multidimensional_arglists.t (line 7 ~ line 41) -
+</div>
+<div ID=header_hidden_11 style="display: block;">- Show t/subroutines/multidimensional_arglists.t (35 lines) -</div>
+</a>
+</p>
+<div ID=hide_11 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Multidimensional argument list binding&quot;&gt;
+    :
+    :sub get_multidim_arglist (*@;AoA) { @;AoA }
+    :
+    :{
+    :    my @array1 = &lt;a b c&gt;;
+    :    my @array2 = &lt;d e f&gt;;
+    :
+    :    my @AoA = try { get_multidim_arglist(@array1, @array2) };
+    :    is +@AoA,          2, &quot;basic multidim arglist binding (1)&quot;, :todo&lt;feature&gt;;
+    :    is ~@AoA[0], &quot;a b c&quot;, &quot;basic multidim arglist binding (2)&quot;, :todo&lt;feature&gt;;
+    :    is ~@AoA[1], &quot;d e f&quot;, &quot;basic multidim arglist binding (3)&quot;, :todo&lt;feature&gt;;
+    :}
+    :
+    :{
+    :    my @array1 = &lt;a b c&gt;;
+    :
+    :    my @AoA = try { get_multidim_arglist(@array1) };
+    :    is +@AoA,          1, &quot;multidim arglist binding with only one array (1)&quot;, :todo&lt;feature&gt;;
+    :    is ~@AoA[0], &quot;a b c&quot;, &quot;multidim arglist binding with only one array (2)&quot;, :todo&lt;feature&gt;;
+    :}
+    :
+    :{
+    :    dies_ok { get_multidim_arglist(1,2,3) },
+    :        &quot;three scalars are not compatible with a sub expecting a multidim arglist&quot;, :todo&lt;feature&gt;;
+    :}
+    :
+    :# Unspecced
+    :{
+    :    my $array1 = &lt;a b c&gt;;
+    :    my $array2 = &lt;d e f&gt;;
+    :
+    :    dies_ok { get_multidim_arglist($array1, $array2) },
+    :        &quot;two arrayrefs are not compatible with a sub expecting a multidim arglist&quot;, :todo&lt;feature&gt;;
+    :}</pre>
+</div><p>Some functions take more than one list of positional and/or named arguments,
+that they wish not to be flattened into one list.  For instance, <code>zip()</code> wants
+to iterate several lists in parallel, while array and hash subscripts want to
+process multidimensional slices.  The set of underlying argument lists may be
+bound to a single array parameter declared with a double <code>@@</code> sigil:</p>
+<pre>
+    sub foo (*@@slices) { ... }</pre>
+<p>Note that this is different from</p>
+<pre>
+    sub foo (\$slices) { ... }</pre>
+<p>insofar as <code>\$slices</code> is bound to a single argument-list object that
+makes no commitment to processing its structure (and maybe doesn't
+even know its own structure yet), while <code>*@@slices</code> has to create
+an array that binds the incoming dimensional lists to the array's
+dimensions, and make that commitment visible to the rest of the scope
+via the sigil so that constructs expecting multidimensional lists
+know that multidimensionality is the intention.</p>
+<p>It is allowed to specify a return type:</p>
+<pre>
+    sub foo (*@@slices --&gt; Num) { ... }</pre>
+<p>The invocant does not participate in multi-dimensional argument lists,
+so <code>self</code> is not present in the <code>@@slices</code> below:</p>
+<pre>
+    method foo (*@@slices) { ... }</pre>
+<p>The <code>@@</code> sigil is just a variant of the <code>@</code> sigil, so <code>@@slices</code>
+and <code>@slices</code> are really the same array.  In particular, <code>@@_</code> is
+really the good old <code>@_</code> array viewed as multidimensional.</p>
+<p>
+</p>
+<h2><a name="Zero2ddimensional20argument20list">Zero-dimensional argument list</a></h2>
+<p>If you call a function without parens and supply no arguments, the
+argument list becomes a zero-dimensional slice.  It differs from
+<code>\()</code> in several ways:</p>
+<pre>
+    sub foo (*@@slices) {...}
+    foo;        # +@@slices == 0
+    foo();      # +@@slices == 1</pre>
+<pre>
+    sub bar (\$args = \(1,2,3)) {...}
+    bar;        # $args === \(1,2,3)
+    bar();      # $args === \()</pre>
+<p>
+</p>
+<h2><a name="Feed20operators">Feed operators</a></h2>
+<a name="msg_8"></a>
+<a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
+<div ID=header_shown_8 style="display: none;">- Hide t/operators/pipe.t (line 11 ~ line 11) -
+</div>
+<div ID=header_hidden_8 style="display: block;">- Show t/operators/pipe.t (1 lines) -</div>
+</a>
+</p>
+<div ID=hide_8 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Feed operators&quot;&gt;</pre>
+</div><p>The variadic list of a subroutine call can be passed in separately
+from the normal argument list, by using either of the <em>feed</em> operators:
+<code>&lt;==</code> or <code>==&gt;</code>.</p>
+<p>Each operator expects to find a call to a variadic receiver on its
+``sharp'' end, and a list of values on its ``blunt'' end:</p>
+<pre>
+    grep { $_ % 2 } &lt;== @data;</pre>
+<pre>
+    @data ==&gt; grep { $_ % 2 };</pre>
+<p>It binds the (potentially lazy) list from the blunt end to the slurpy
+<code>parameter(s)</code> of the receiver on the sharp end.  In the case of a receiver
+that is a variadic function, the feed is received as part of its slurpy list.
+So both of the calls above are equivalent to:</p>
+<pre>
+    grep { $_ % 2 }, @data;</pre>
+<p>Note that all such feeds (and indeed all lazy argument lists) supply
+an implicit promise that the code producing the lists may execute
+in parallel with the code receiving the lists.  (Feeds, hyperops,
+and junctions all have this promise of parallelizability in common,
+but differ in interface.  Code which violates these promises is
+erroneous, and will produce undefined results when parallelized.)</p>
+<p>In particular, a chain of feeds may not begin and end with the same array.
+(You may, however, assign to an array that is used within a chain
+on the right side of the assignment, since list assignment will clear
+and copy as necessary to make it work.)  That is, this doesn't work:</p>
+<pre>
+    @data &lt;== grep { $_ % 2 } &lt;== @data;</pre>
+<p>but this does:</p>
+<pre>
+    @data = grep { $_ % 2 } &lt;== @data;</pre>
+<p>Leftward feeds are a convenient way of explicitly indicating the typical
+right-to-left flow of data through a chain of operations:</p>
+<pre>
+    @oddsquares = map { $_**2 }, sort grep { $_ % 2 }, @nums;</pre>
+<pre>
+    # more clearly written as...</pre>
+<pre>
+    @oddsquares = map { $_**2 } &lt;== sort &lt;== grep { $_ % 2 } &lt;== @nums;</pre>
+<p>Rightward feeds are a convenient way of reversing the normal data flow in a
+chain of operations, to make it read left-to-right:</p>
+<pre>
+    @oddsquares =
+            (@nums ==&gt; grep { $_ % 2 } ==&gt; sort ==&gt; map { $_**2 });</pre>
+<p>Note that the parens are necessary there due to precedence.</p>
+<p>If the operand on the sharp end of a feed is not a call to a variadic
+operation, it must be something else that can be interpreted as a
+list receiver.</p>
+<p>Any list operator is considered a variadic operation, so ordinarily
+a list operator adds any feed input to the end of its list.
+But sometimes you want to interpolate elsewhere, so the <code>***</code> term
+may be used to indicate the target of a feed without the use of a
+temporary array:</p>
+<pre>
+    foo() ==&gt; say ***, &quot; is what I meant&quot;;
+    bar() ==&gt; ***.baz();</pre>
+<p>Feeding into the <code>*</code> ``whatever'' term will extend the lexically
+following <code>***</code> term:</p>
+<pre>
+    0..*       ==&gt; *;
+    'a'..*     ==&gt; *;
+    pidigits() ==&gt; *;</pre>
+<pre>
+    # outputs &quot;(0, 'a', 3)\n&quot;...
+    for zip(***) { .perl.say }</pre>
+<p>You may use a variable (or variable declaration) as a receiver, in
+which case the list value is bound as the ``todo'' of the variable.
+Do not think of it as an assignment, nor as an ordinary binding.
+Think of it as iterator creation.  In the case of a scalar variable,
+that variable contains the newly created iterator itself.  In the case
+of an array, the new iterator is installed as the method for extending
+the array.  Unlike with assignment, no clobbering of the array is implied.
+It's therefore more like a push than an assignment.</p>
+<p>In general you can simply think of a receiver array as representing
+the results of the chain, so you can equivalently write any of:</p>
+<pre>
+    my @oddsquares &lt;== map { $_**2 } &lt;== sort &lt;== grep { $_ % 2 } &lt;== @nums;</pre>
+<pre>
+    my @oddsquares
+        &lt;== map { $_**2 }
+        &lt;== sort
+        &lt;== grep { $_ % 2 }
+        &lt;== @nums;</pre>
+<pre>
+    @nums ==&gt; grep { $_ % 2 } ==&gt; sort ==&gt; map { $_**2 } ==&gt; my @oddsquares;</pre>
+<pre>
+    @nums
+    ==&gt; grep { $_ % 2 }
+    ==&gt; sort
+    ==&gt; map { $_**2 }
+    ==&gt; my @oddsquares;</pre>
+<p>Since the feed iterator is bound into the final variable, the variable
+can be just as lazy as the feed that is producing the values.</p>
+<p>Because feeds are bound to arrays with ``push'' semantics, you can have
+a receiver for multiple feeds:</p>
+<pre>
+    my @foo;
+    0..2       ==&gt; @foo;
+    'a'..'c'   ==&gt; @foo;
+    say @foo;   # 0,1,2,'a','b','c'</pre>
+<p>Note how the feeds are concatenated in <code>@foo</code> so that <code>@foo</code>
+is a list of 6 elements.  This is the default behavior.  However,
+sometimes you want to capture the outputs as a list of two iterators,
+namely the two iterators that represent the two input feeds.  You can
+get at those two iterators by using the name <code>@@foo</code> instead, where
+the ``feed'' twigil marks a multidimensional array, that is, an
+array of slices.</p>
+<pre>
+    0..*       ==&gt; @@foo;
+    'a'..*     ==&gt; @@foo;
+    pidigits() ==&gt; @@foo;</pre>
+<pre>
+    for zip(@@foo) { say }</pre>
+<pre>
+        [0,'a',3]
+        [1,'b',1]
+        [2,'c',4]
+        [3,'d',1]
+        [4,'e',5]
+        [5,'f',9]
+        ...</pre>
+<p>Here <code>@@foo</code> is an array of three iterators, so</p>
+<pre>
+    zip(@@foo)</pre>
+<p>is equivalent to</p>
+<pre>
+    zip(@@foo[0]; @@foo[1]; @@foo[2])</pre>
+<p>A semicolon inside brackets is equivalent to stacked feeds.  The code above
+could be rewritten as:</p>
+<pre>
+    (0..*; 'a'..*; pidigits()) ==&gt; my @@foo;
+    for @@foo.zip { say }</pre>
+<p>which is in turn equivalent to</p>
+<pre>
+    for zip(0..*; 'a'..*; pidigits()) { say }</pre>
+<p>A named receiver array is useful when you wish to feed into an
+expression that is not an ordinary list operator, and you wish to be
+clear where the feed's destination is supposed to be:</p>
+<pre>
+    picklist() ==&gt; my @baz;
+    my @foo = @bar[@baz];</pre>
+<p>Various contexts may or may not be expecting multi-dimensional slices
+or feeds.  By default, ordinary arrays are flattened, that is, they
+have ``cat'' semantics.  If you say</p>
+<pre>
+    (0..2; 'a'..'c') ==&gt; my @tmp;
+    for @tmp { say }</pre>
+<p>then you get 0,1,2,'a','b','c'.  If you have a multidim array, you
+can ask for cat semantics explicitly with cat():</p>
+<pre>
+    (0..2; 'a'..'c') ==&gt; my @@tmp;
+    for @@tmp.cat { say }</pre>
+<p>As we saw earlier, ``zip'' produces little arrays by taking one element
+from each list in turn, so</p>
+<pre>
+    (0..2; 'a'..'c') ==&gt; my @@tmp;
+    for @@tmp.zip { say }</pre>
+<p>produces [0,'a'],[1,'b'],[2,'c'].  If you don't want the subarrays, then
+use <code>each()</code> instead:</p>
+<pre>
+    (0..2; 'a'..'c') ==&gt; my @@tmp;
+    for @@tmp.each { say }</pre>
+<p>and then you just get 0,'a',1,'b',2,'c'.  This is good for</p>
+<pre>
+    for @@tmp.each -&gt; $i, $a { say &quot;$i: $a&quot; }</pre>
+<p>In list context the <code>@@foo</code> notation is really a shorthand for <code>[;](@@foo)</code>.
+In particular, you can use <code>@@foo</code> to interpolate a multidimensional slice
+in an array or hash subscript.</p>
+<p>If <code>@@foo</code> is currently empty, then <code>for zip(@@foo) {...}</code> acts on a
+zero-dimensional slice (i.e. <code>for (zip) {...}</code>), and outputs nothing
+at all.</p>
+<p>Note that with the current definition, the order of feeds is preserved
+left to right in general regardless of the position of the receiver.</p>
+<p>So</p>
+<pre>
+    ('a'..*; 0..*) ==&gt; *;
+     for zip(*** &lt;== @foo) -&gt; [$a, $i, $x] { ... }</pre>
+<p>is the same as</p>
+<pre>
+    'a'..* ==&gt; *;
+     0..*  ==&gt; *;
+     for zip(*** &lt;== @foo) -&gt; [$a, $i, $x] { ... }</pre>
+<p>which is the same as</p>
+<pre>
+    for zip('a'..*; 0..*; @foo) -&gt; [$a, $i, $x] { ... }</pre>
+<p>Likewise,</p>
+<pre>
+    @foo ==&gt; *;
+    0..* ==&gt; *;
+    for each(***) -&gt; $x, $i { ... }</pre>
+<p>is the same as</p>
+<pre>
+    0..* ==&gt; *;
+    for each(@foo; ***) -&gt; $x, $i { ... }</pre>
+<p>and also</p>
+<pre>
+    for each(@foo; 0..*) -&gt; $x, $i { ... }</pre>
+<p>Note that the <code>each</code> method is also sensitive to multislicing, so you
+could also just write that as:</p>
+<pre>
+    (@foo; 0..*).each: -&gt; $x, $i { ... }</pre>
+<p>Also note that these come out to be identical for ordinary arrays:</p>
+<pre>
+    @foo.each
+    @foo.cat</pre>
+<p>The <code>@@($foo)</code> coercer can be used to pull a multidim out of some
+object that contains one, such as a <code>Capture</code> or <code>Match</code> object.  Like
+<code>@()</code>, <code>@@()</code> defaults to <code>@@($/)</code>, and returns a multidimensional
+view of any match that repeatedly applies itself with <code>:g</code> and
+the like.  In contrast, <code>@()</code> would flatten those into one list.</p>
+<p>
+</p>
+<h2><a name="Closure20parameters">Closure parameters</a></h2>
+<p>Parameters declared with the <code>&amp;</code> sigil take blocks, closures, or
+subroutines as their arguments. Closure parameters can be required,
+optional, named, or slurpy.</p>
+<pre>
+    sub limited_grep (Int $count, &amp;block, *@list) {...}</pre>
+<pre>
+    # and later...</pre>
+<pre>
+    @first_three = limited_grep 3, {$_&lt;10}, @data;</pre>
+<p>(The comma is required after the closure.)</p>
+<p>Within the subroutine, the closure parameter can be used like any other
+lexically scoped subroutine:</p>
+<pre>
+    sub limited_grep (Int $count, &amp;block, *@list) {
+        ...
+        if block($nextelem) {...}
+        ...
+    }</pre>
+<p>The closure parameter can have its own signature in a type specification written
+with <code>:(...)</code>:</p>
+<pre>
+    sub limited_Dog_grep ($count, &amp;block:(Dog), Dog *@list) {...}</pre>
+<p>and even a return type:</p>
+<pre>
+    sub limited_Dog_grep ($count, &amp;block:(Dog --&gt; Bool), Dog *@list) {...}</pre>
+<p>When an argument is passed to a closure parameter that has this kind of
+signature, the argument must be a <code>Code</code> object with a compatible
+parameter list and return type.</p>
+<p>
+</p>
+<h2><a name="Type20parameters">Type parameters</a></h2>
+<p>Unlike normal parameters, type parameters often come in piggybacked
+on the actual value as ``kind'', and you'd like a way to capture both
+the value and its kind at once.  (A ``kind'' is a class or type that
+an object is allowed to be.  An object is not officially allowed
+to take on a constrained or contravariant type.)  A type variable
+can be used anywhere a type name can, but instead of asserting that
+the value must conform to a particular type, it captures the
+actual ``kind'' of the object and also declares a package/type name
+by which you can refer to that kind later in the signature or body.
+For instance, if you wanted to match any two Dogs as long as they
+were of the same kind, you can say:</p>
+<pre>
+    sub matchedset (Dog ::T $fido, T $spot) {...}</pre>
+<p>(Note that <code>::T</code> is not required to contain <code>Dog</code>, only
+a type that is compatible with <code>Dog</code>.)</p>
+<p>The <code>::</code> sigil is short for ``subset'' in much the same way that <code>&amp;</code> is
+short for ``sub''.  Just as <code>&amp;</code> can be used to name any kind of code,
+so too <code>::</code> can be used to name any kind of type.  Both of them insert
+a bare identifier into the symbol table, though they fill different syntactic
+spots.</p>
+<p>Note that it is not required to capture the object associated with the
+class unless you want it.  The sub above could be written as</p>
+<pre>
+    sub matchedset (Dog ::T, T) {...}</pre>
+<p>if we're not interested in <code>$fido</code> or <code>$spot</code>.  Or just</p>
+<pre>
+    sub matchedset (::T, T) {...}</pre>
+<p>if we don't care about anything but the matching.</p>
+<p>
+</p>
+<h2><a name="Unpacking20array20parameters">Unpacking array parameters</a></h2>
+<a name="msg_10"></a>
+<a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
+<div ID=header_shown_10 style="display: none;">- Hide t/subroutines/subroutine.t (line 80 ~ line 98) -
+</div>
+<div ID=header_hidden_10 style="display: block;">- Show t/subroutines/subroutine.t (19 lines) -</div>
+</a>
+</p>
+<div ID=hide_10 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Unpacking array parameters&quot;&gt;
+    :
+    :=cut
+    :
+    :sub argShifter (@a is rw) {
+    :    my $first := shift @a;
+    :    return $first;
+    :}
+    :
+    :is argShifter([1]), 1,    &quot;use shift on an array argument&quot;;
+    :is argShifter([3..5]), 3, &quot;use shift on multiple array arguments&quot;;
+    :
+    :eval 'sub unpack_array ([$first, *@rest]) { return $first; }';
+    :
+    :my @array = 3..7;
+    :is(try { unpack_array(@array) }, 3, 'unpacking an array parameter', :todo&lt;feature&gt;);
+    :
+    :=pod
+    :</pre>
+</div><p>Instead of specifying an array parameter as an array:</p>
+<pre>
+    sub quicksort (@data, $reverse?, $inplace?) {
+        my $pivot := shift @data;
+        ...
+    }</pre>
+<p>it may be broken up into components in the signature, by
+specifying the parameter as if it were an anonymous array of
+parameters:</p>
+<pre>
+    sub quicksort ([$pivot, *@data], $reverse?, $inplace?) {
+        ...
+    }</pre>
+<p>This subroutine still expects an array as its first argument, just like
+the first version.</p>
+<p>
+</p>
+<h2><a name="Unpacking20a20single20list20argument">Unpacking a single list argument</a></h2>
+<p>To match the first element of the slurpy list, use a ``slurpy'' scalar:</p>
+<pre>
+    sub quicksort (:$reverse, :$inplace, *$pivot, *@data)</pre>
+<p>
+</p>
+<h2><a name="Unpacking20hash20parameters">Unpacking hash parameters</a></h2>
+<a name="msg_30"></a>
+<a href="?hide_quotes=no#msg_30" onclick="return tog_quote(30);">
+<div ID=header_shown_30 style="display: none;">- Hide t/subroutines/subroutine.t (line 99 ~ line 106) -
+</div>
+<div ID=header_hidden_30 style="display: block;">- Show t/subroutines/subroutine.t (8 lines) -</div>
+</a>
+</p>
+<div ID=hide_30 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Unpacking hash parameters&quot;&gt;
+    :
+    :=cut
+    :
+    :eval 'sub unpack_hash({:$yo, *%other}){ return $yo; }';
+    :
+    :my %params = yo =&gt; 3, nope =&gt; 4;
+    :is(try { unpack_hash(%params) }, 3, 'unpacking a hash parameter', :todo);</pre>
+</div><p>Likewise, a hash argument can be mapped to a hash of parameters, specified
+as named parameters within curlies.  Instead of saying:</p>
+<pre>
+    sub register (%guest_data, $room_num) {
+        my $name := delete %guest_data&lt;name&gt;;
+        my $addr := delete %guest_data&lt;addr&gt;;
+        ...
+    }</pre>
+<p>you can get the same effect with:</p>
+<pre>
+    sub register ({:$name, :$addr, *%guest_data}, $room_num) {
+        ...
+    }</pre>
+<p>
+</p>
+<h2><a name="Unpacking20tree20node20parameters">Unpacking tree node parameters</a></h2>
+<p>You can unpack tree nodes in various dwimmy ways by enclosing the bindings
+of child nodes and attributes in parentheses following the declaration of
+the node itself:</p>
+<pre>
+    sub traverse ( BinTree $top ( $left, $right ) ) {
+        traverse($left);
+        traverse($right);
+    }</pre>
+<p>In this, <code>$left</code> and <code>$right</code> are automatically bound to the left
+and right nodes of the tree.  If $top is an ordinary object, it binds
+the <code>$top.left</code> and <code>$top.right</code> attributes.  If it's a hash,
+it binds <code>$top&lt;left&gt;</code> and <code>$top&lt;right&gt;</code>.  If <code>BinTree</code> is a
+signature type and $top is a List (argument list) object, the child types
+of the signature are applied to the actual arguments in the argument
+list object.  (Signature types have the benefit that you can view
+them inside-out as constructors with positional arguments, such that
+the transformations can be reversible.)</p>
+<p>However, the full power of signatures can be applied to pattern match
+just about any argument or set of arguments, even though in some cases
+the reverse transformation is not derivable.  For instance, to bind to
+an array of children named <code>.kids</code> or <code>.&lt;kids&gt;</code>, use something
+like:</p>
+<pre>
+    sub traverse ( NAry $top ( :kids [$eldest, *@siblings] ) ) {
+        traverse($eldest);
+        traverse(@siblings);
+    }</pre>
+<p>Likewise, to bind to a hash element of the node and then bind to
+keys in that hash by name:</p>
+<pre>
+    sub traverse ( AttrNode $top ( :%attr{ :$vocalic, :$tense } ) {
+        say &quot;Has {+%attr} attributes, of which&quot;;
+        say &quot;vocalic = $vocalic&quot;;
+        say &quot;tense = $tense&quot;;
+    }</pre>
+<p>You may omit the top variable if you prefix the parentheses with a colon
+to indicate a signature.  Otherwise you must at least put the sigil of
+the variable, or we can't correctly differentiate:</p>
+<pre>
+    my Dog ($fido, $spot)   := twodogs();       # list of two dogs
+    my Dog $ ($fido, $spot) := twodogs();       # one twodog object
+    my Dog :($fido, $spot)  := twodogs();       # one twodog object</pre>
+<p>Sub signatures can be matched directly within regexes by using <code>:(...)</code>
+notation.</p>
+<pre>
+    push @a, &quot;foo&quot;;
+    push @a, \(1,2,3);
+    push @a, &quot;bar&quot;;
+    ...
+    my ($i, $j, $k);
+    @a ~~ rx/
+            &lt;,&gt;                         # match initial elem boundary
+            :(Int $i,Int $j,Int? $k)    # match lists with 2 or 3 ints
+            &lt;,&gt;                         # match final elem boundary
+          /;
+    say &quot;i = $&lt;i&gt;&quot;;
+    say &quot;j = $&lt;j&gt;&quot;;
+    say &quot;k = $&lt;k&gt;&quot; if defined $&lt;k&gt;;</pre>
+<p>If you want a parameter bound into <code>$/</code>, you have to say <code>$&lt;i&gt;</code>
+within the signature.  Otherwise it will try to bind an external <code>$i</code>
+instead, and fail if no such variable is declared.</p>
+<p>Note that unlike a sub declaration, a regex-embedded signature has no
+associated ``returns'' syntactic slot, so you have to use <code>--&gt;</code>
+within the signature to specify the <code>of</code> type of the signature, or match as
+an arglist:</p>
+<pre>
+    :(Num, Num --&gt; Coord)
+    :(\Coord(Num, Num))</pre>
+<p>A consequence of the latter form is that you can match the type of
+an object with <code>:(\Dog)</code> without actually breaking it into its components.
+Note, however, that it's not equivalent to say</p>
+<pre>
+    :(--&gt; Dog)</pre>
+<p>which would be equivalent to</p>
+<pre>
+    :(\Dog())</pre>
+<p>that is, match a nullary function of type <code>Dog</code>.  Nor is it equivalent to</p>
+<pre>
+    :(Dog)</pre>
+<p>which would be equivalent to</p>
+<pre>
+    :(\Any(Dog))</pre>
+<p>and match a function taking a single parameter of type Dog.</p>
+<p>Note also that bare <code>\(1,2,3)</code> is never legal in a regex since the
+first (escaped) paren would try to match literally.</p>
+<p>
+</p>
+<h2><a name="Attributive20parameters">Attributive parameters</a></h2>
+<p>If a submethod's parameter is declared with a <code>.</code> or <code>!</code> after the
+sigil (like an attribute):</p>
+<pre>
+    submethod initialize($.name, $!age) {}</pre>
+<p>then the argument is assigned directly to the object's attribute of the
+same name. This avoids the frequent need to write code like:</p>
+<pre>
+    submethod initialize($name, $age) {
+        $.name = $name;
+        $!age  = $age;
+    }</pre>
+<p>To rename an attribute parameter you can use the explicit pair form:</p>
+<pre>
+    submethod initialize(:moniker($.name), :youth($!age)) {}</pre>
+<p>The <code>:$name</code> shortcut may be combined with the <code>$.name</code> shortcut,
+but the twigil is ignored for the parameter name, so</p>
+<pre>
+    submethod initialize(:$.name, :$!age) {}</pre>
+<p>is the same as:</p>
+<pre>
+    submethod initialize(:name($.name), :age($!age)) {}</pre>
+<p>Note that <code>$!age</code> actually refers to the private ``<code>has</code>'' variable that
+can be referred to as either <code>$age</code> or <code>$!age</code>.</p>
+<p>
+</p>
+<h2><a name="Placeholder20variables">Placeholder variables</a></h2>
+<a name="msg_4"></a>
+<a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
+<div ID=header_shown_4 style="display: none;">- Hide t/builtins/ref.t (line 47 ~ line 76) -
+</div>
+<div ID=header_hidden_4 style="display: block;">- Show t/builtins/ref.t (30 lines) -</div>
+</a>
+</p>
+<div ID=hide_4 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Placeholder variables&quot;&gt;
+    :my $s2a = { $^a };
+    :isa_ok($s2a, 'Block', 'it is a Parametric type (bare block with placeholder parameters)');
+    :
+    :my $s3 = -&gt; {};
+    :isa_ok($s3, 'Block', 'it is a Block type (pointy block)');
+    :
+    :# ref() on different types of scalars
+    :
+    :my $int = 0;
+    :isa_ok($int, 'Int', 'it is an Int type');
+    :
+    :# the only way I can seem to get Num is to force numeric context
+    :my $num = '';
+    :isa_ok(+$num, 'Num', 'it is an Num type');
+    :
+    :my $float = 0.5;
+    :isa_ok($float, 'Rat', 'it is an Rat type');
+    :
+    :my $string = &quot;Hello World&quot;;
+    :isa_ok($string, 'Str', 'it is a Str type');
+    :
+    :my $bool = (0 == 0);
+    :isa_ok($bool, 'Bool', 'it is a Bool type');
+    :
+    :my $pair = (&quot;foo&quot; =&gt; &quot;bar&quot;);
+    :isa_ok($pair, 'Pair', 'it is a Pair type');
+    :
+    :my $rule = rx:perl5{^hello\sworld$};
+    :isa_ok($rule, 'Pugs::Internals::VRule', 'it is a Rule type');</pre>
+</div><p>Even though every bare block is a closure, bare blocks can't have
+explicit parameter lists. Instead, they use ``placeholder'' variables,
+marked by a caret (<code>^</code>) after their sigils.</p>
+<p>Using placeholders in a block defines an implicit parameter list. The
+signature is the list of distinct placeholder names, sorted in Unicode order.
+So:</p>
+<pre>
+    { $^y &lt; $^z &amp;&amp; $^x != 2 }</pre>
+<p>is a shorthand for:</p>
+<pre>
+    -&gt; $x,$y,$z { $y &lt; $z &amp;&amp; $x != 2 }</pre>
+<p>Note that placeholder variables syntactically cannot have type constraints.
+Also, it is illegal to use placeholder variables in a block that already
+has a signature, because the autogenerated signature would conflict with that.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Built2din20Types">Built-in Types</a></h1>
+<p>
+</p>
+<h2><a name="Native20types">Native types</a></h2>
+<p>[This stuff belongs in S02.]</p>
+<p>Values with these types autobox to their uppercase counterparts when
+you treat them as objects:</p>
+<pre>
+    bit         single native bit
+    int         native signed integer
+    uint        native unsigned integer (autoboxes to Int)
+    buf         native buffer (finite seq of native ints or uints, no Unicode)
+    num         native floating point
+    complex     native complex number
+    bool        native boolean</pre>
+<p>
+</p>
+<h2><a name="Undefined20types">Undefined types</a></h2>
+<p>These can behave as values or objects of any class, except that
+<code>defined</code> always returns false.  One can create them with the
+built-in <code>undef</code> and <code>fail</code> functions.  (See S02 for how failures
+are handled.)</p>
+<pre>
+    Undef       Undefined (can serve as a prototype object of any class)
+    Whatever    Wildcard (like undef, but subject to do-what-I-mean via MMD)
+    Failure     Failure (throws an exception if not handled properly)</pre>
+<p>
+</p>
+<h2><a name="Immutable20types">Immutable types</a></h2>
+<p>Objects with these types behave like values, i.e. <code>$x === $y</code> is true
+if and only if their types and contents are identical (that is, if
+<code>$x.SKID</code> eqv <code>$y.SKID</code>).</p>
+<pre>
+    Bit         Perl single bit (allows traits, aliasing, undef, etc.)
+    Int         Perl integer (allows Inf/NaN, arbitrary precision, etc.)
+    Str         Perl string (finite sequence of Unicode characters)
+    Num         Perl number
+    Complex     Perl complex number
+    Bool        Perl boolean
+    Exception   Perl exception
+    Code        Base class for all executable objects
+    Block       Executable objects that have lexical scopes
+    List        Lazy Perl list (composed of Seq and Range parts)
+    Seq         Completely evaluated (hence immutable) sequence
+    Range       Incrementally generated (hence lazy) sequence
+    Set         Unordered Seqs that allow no duplicates
+    Junction    Sets with additional behaviours
+    Pair        Seq of two elements that serves as a one-element Mapping</pre>
+<a name="msg_5"></a>
+<a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
+<div ID=header_shown_5 style="display: none;">- Hide t/data_types/pair.t (line 87 ~ line 303) -
+</div>
+<div ID=header_hidden_5 style="display: block;">- Show t/data_types/pair.t (217 lines) -</div>
+</a>
+</p>
+<div ID=hide_5 style="display:none; border:1px solid"><pre>
+    :    # L&lt;S06/Immutable types/Pair &quot;one-element Mapping&quot;&gt;
+    :    my $pair = :when&lt;now&gt;;
+    :    is ~(%$pair), &quot;when\tnow&quot;;
+    :    # hold back this one according to audreyt
+    :    #ok $pair.does(Hash), 'Pair does Hash';
+    :    ok (%$pair).does(Hash), '%() makes Pair to does Hash';
+    :}
+    :
+    :# lvalue Pair assignments from S06 and thread starting with
+    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/19425">http://www.nntp.perl.org/group/perl.perl6.language/19425</a>&quot;&gt;
+    :
+    :my $val;
+    :(&quot;foo&quot; =&gt; $val) = &quot;baz&quot;;
+    :is($val, &quot;baz&quot;, &quot;lvalue pairs&quot;);
+    :
+    :# illustrate a bug
+    :
+    :my $var   = 'foo' =&gt; 'bar';
+    :sub test1 (Any|Pair $pair) {
+    :    isa_ok($pair,'Pair');
+    :    my $testpair = $pair;
+    :    isa_ok($testpair,'Pair'); # new lvalue variable is also a Pair
+    :    my $boundpair := $pair;
+    :    isa_ok($boundpair,'Pair'); # bound variable is also a Pair
+    :    is($pair.key, 'foo', 'in sub test1 got the right $pair.key');
+    :    is($pair.value, 'bar', 'in sub test1 got the right $pair.value');
+    :
+    :}
+    :test1 $var;
+    :
+    :my %hash  = ('foo' =&gt; 'bar');
+    :for  %hash.pairs -&gt; $pair {
+    :    isa_ok($pair,'Pair') ; 
+    :    my $testpair = $pair;
+    :    isa_ok($testpair, 'Pair', :todo&lt;bug&gt;); # new lvalue variable is also a Pair
+    :    my $boundpair := $pair;
+    :    isa_ok($boundpair,'Pair'); # bound variable is also a Pair
+    :    is($pair.key, 'foo', 'in for loop got the right $pair.key');
+    :    is($pair.value, 'bar', 'in for loop got the right $pair.value');
+    :}
+    :
+    :sub test2 (Hash %h){
+    :    for %h.pairs -&gt; $pair {
+    :        isa_ok($pair,'Pair') ; 
+    :        is($pair.key, 'foo', 'in sub test2 got the right $pair.key');
+    :        is($pair.value, 'bar', 'in sub test2 got the right $pair.value');
+    :    }
+    :}
+    :test2 %hash;
+    :
+    :# See thread &quot;$pair[0]&quot; on p6l started by Ingo Blechschmidt:
+    :# L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/22593">http://www.nntp.perl.org/group/perl.perl6.language/22593</a>&quot;&gt;
+    :
+    :sub test3 (Hash %h){
+    :    for %h.pairs -&gt; $pair {
+    :        isa_ok($pair,'Pair');
+    :        dies_ok({$pair[0]}, 'sub test3: access by $pair[0] should not work', :todo&lt;bug&gt;);
+    :        dies_ok({$pair[1]}, 'sub test3: access by $pair[1] should not work', :todo&lt;bug&gt;);
+    :    }
+    :}
+    :test3 %hash;
+    :
+    :=begin p6l
+    :
+    :Hm, Hash::pair? Never heard of that.  --iblech
+    :
+    :sub test4 (Hash %h){
+    :    for %h.pair -&gt; $pair {
+    :        isa_ok($pair,'Pair',:todo&lt;bug&gt;) ; 
+    :        is($pair.key, 'foo', 'sub test4: access by unspecced &quot;pair&quot; got the right $pair.key');
+    :        is($pair.value, 'bar', 'sub test4: access by unspecced &quot;pair&quot; got the right $pair.value');
+    :
+    :    }
+    :}
+    :test4 %hash;
+    :
+    :=end p6l
+    :
+    :=cut
+    :
+    :my $should_be_a_pair = (a =&gt; 25/1);
+    :isa_ok $should_be_a_pair, &quot;Pair&quot;, &quot;=&gt; has correct precedence&quot;;
+    :
+    :=pod
+    :
+    :Stated by Larry on p6l in:
+    :L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/20122">http://www.nntp.perl.org/group/perl.perl6.language/20122</a>&quot;&gt;
+    :
+    : &quot;Oh, and we recently moved =&gt; to assignment precedence so it would
+    : more naturally be right associative, and to keep the non-chaining
+    : binaries consistently non-associative.  Also lets you say:
+    :
+    :   key =&gt; $x ?? $y !! $z;
+    :
+    : plus it moves it closer to the comma that it used to be in Perl 5.&quot;
+    :
+    :(iblech) XXX: this contradicts current S03 so I could be wrong.
+    :
+    :=cut
+    :
+    :{
+    :  # This should always work.
+    :  my %x = ( &quot;Zaphod&quot; =&gt; (0 ?? 1 !! 2), &quot;Ford&quot; =&gt; 42 );
+    :  is %x{&quot;Zaphod&quot;}, 2, &quot;Zaphod is 2&quot;;
+    :  is %x{&quot;Ford&quot;},  42, &quot;Ford is 42&quot;;
+    :
+    :  # This should work only if =&gt; is lower precedence than ?? !!
+    :  my %z = ( &quot;Zaphod&quot; =&gt; 0 ?? 1 !! 2, &quot;Ford&quot; =&gt; 42 );
+    :  is %z{&quot;Zaphod&quot;}, 2, &quot;Zaphod is still 2&quot;;
+    :  is %z{&quot;Ford&quot;},  42, &quot;Ford is still 42&quot;;
+    :}
+    :
+    :# This is per the pairs-behave-like-one-element-hashes-rule.
+    :# (I asked p6l once, but the &quot;thread&quot; got warnocked.  --iblech)
+    :# (I asked p6l again, now the thread did definitely not get warnocked:
+    :# L&lt;&quot;<a href="http://groups.google.de/group/perl.perl6.language/browse_thread/thread/e0e44be94bd31792/6de6667398a4d2c7?q=perl6.language+Stringification+pairs&amp;">http://groups.google.de/group/perl.perl6.language/browse_thread/thread/e0e44be94bd31792/6de6667398a4d2c7?q=perl6.language+Stringification+pairs&amp;</a>&quot;&gt;
+    :# Also see L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/23224">http://www.nntp.perl.org/group/perl.perl6.language/23224</a>&quot;&gt;
+    :{
+    :  my $pair = (a =&gt; 1);
+    :  is try { ~$pair  }, &quot;a\t1&quot;, &quot;pairs stringify correctly (1)&quot;;
+    :  is try { &quot;$pair&quot; }, &quot;a\t1&quot;, &quot;pairs stringify correctly (2)&quot;;
+    :}
+    :
+    :{
+    :  my $pair = (a =&gt; [1,2,3]);
+    :  is try { ~$pair  }, &quot;a\t1 2 3&quot;, &quot;pairs with arrayrefs as values stringify correctly (1)&quot;;
+    :  is try { &quot;$pair&quot; }, &quot;a\t1 2 3&quot;, &quot;pairs with arrayrefs as values stringify correctly (2)&quot;;
+    :}
+    :
+    :# Per Larry L&lt;&quot;<a href="http://www.nntp.perl.org/group/perl.perl6.language/23525">http://www.nntp.perl.org/group/perl.perl6.language/23525</a>&quot;&gt;:
+    :#   Actually, it looks like the bug is probably that =&gt; is forcing
+    :#   stringification on its left argument too agressively.  It should only do
+    :#   that for an identifier.
+    :{
+    :  my $arrayref = [&lt; a b c &gt;];
+    :  my $hashref  = { :d(1), :e(2) };
+    :
+    :  my $pair = ($arrayref =&gt; $hashref);
+    :  is ~$pair.key,   ~$arrayref, &quot;=&gt; should not stringify the key (1)&quot;;
+    :  is ~$pair.value, ~$hashref,  &quot;=&gt; should not stringify the key (2)&quot;;
+    :
+    :  push $pair.key, &quot;d&quot;;
+    :  $pair.value&lt;f&gt; = 3;
+    :  is ~$pair.key,   ~$arrayref, &quot;=&gt; should not stringify the key (3)&quot;;
+    :  is ~$pair.value, ~$hashref,  &quot;=&gt; should not stringify the key (4)&quot;;
+    :  is +$pair.key,            4, &quot;=&gt; should not stringify the key (5)&quot;;
+    :  is +$pair.value,          3, &quot;=&gt; should not stringify the key (6)&quot;;
+    :}
+    :
+    :{
+    :  my $arrayref = [&lt; a b c &gt;];
+    :  my $hashref  = { :d(1), :e(2) };
+    :
+    :  my $pair = ($arrayref =&gt; $hashref);
+    :  my sub pair_key (Pair $pair) { $pair.key }
+    :
+    :  is ~pair_key($pair), ~$arrayref,
+    :    &quot;the keys of pairs should not get auto-stringified when passed to a sub (1)&quot;;
+    :
+    :  push $pair.key, &quot;d&quot;;
+    :  is ~pair_key($pair), ~$arrayref,
+    :    &quot;the keys of pairs should not get auto-stringified when passed to a sub (2)&quot;;
+    :  is +pair_key($pair),          4,
+    :    &quot;the keys of pairs should not get auto-stringified when passed to a sub (3)&quot;;
+    :}
+    :
+    :# Per Larry: <a href="http://www.nntp.perl.org/group/perl.perl6.language/23984">http://www.nntp.perl.org/group/perl.perl6.language/23984</a>
+    :{
+    :  my ($key, $val) = &lt;key val&gt;;
+    :  my $pair        = ($key =&gt; $val);
+    :
+    :  lives_ok { $pair.key = &quot;KEY&quot; }, &quot;setting .key does not die&quot;, :todo&lt;bug&gt;;
+    :  is $pair.key,          &quot;KEY&quot;,   &quot;setting .key actually changes the key&quot;, :todo&lt;bug&gt;;
+    :  is $key,               &quot;key&quot;,   &quot;setting .key does not change the original var&quot;;
+    :
+    :  lives_ok { $pair.value = &quot;VAL&quot; }, &quot;setting .value does not die&quot;, :todo&lt;bug&gt;;
+    :  is $pair.value,          &quot;VAL&quot;,   &quot;setting .value actually changes the value&quot;, :todo&lt;bug&gt;;
+    :  is $val,                 &quot;val&quot;,   &quot;setting .value does not change the original var&quot;;
+    :}
+    :
+    :{
+    :  my ($key, $val) = &lt;key val&gt;;
+    :  my $pair        = ($key =&gt; $val);
+    :
+    :  lives_ok { $pair.key := &quot;KEY&quot; }, &quot;binding .key does not die&quot;, :todo&lt;bug&gt;;
+    :  is $pair.key,           &quot;KEY&quot;,   &quot;binding .key actually changes the key&quot;, :todo&lt;bug&gt;;
+    :  is $key,                &quot;key&quot;,   &quot;binding .key does not change the original var&quot;;
+    :  dies_ok { $pair.key = 42 },      &quot;the .key was really bound&quot;;  # (can't modify constant)
+    :
+    :  lives_ok { $pair.value := &quot;VAL&quot; }, &quot;binding .value does not die&quot;, :todo&lt;bug&gt;;
+    :  is $pair.value,           &quot;VAL&quot;,   &quot;binding .value actually changes the value&quot;, :todo&lt;bug&gt;;
+    :  is $val,                  &quot;val&quot;,   &quot;binding .value does not change the original var&quot;;
+    :  dies_ok { $pair.value = 42 },      &quot;the .value was really bound&quot;;  # (can't modify constant)
+    :}
+    :
+    :{
+    :  my ($key, $val) = &lt;key val&gt;;
+    :  my $pair        = (abc =&gt; &quot;def&quot;);
+    :
+    :  lives_ok { $pair.key := $key }, &quot;binding .key does not die&quot;, :todo&lt;bug&gt;;
+    :  is $pair.key,           &quot;key&quot;,  &quot;binding .key actually changes the key&quot;, :todo&lt;bug&gt;;
+    :  $key = &quot;KEY&quot;;
+    :  is $key,                &quot;KEY&quot;,  &quot;binding .key to a var works (1)&quot;;
+    :  is $pair.key,           &quot;KEY&quot;,  &quot;binding .key to a var works (2)&quot;, :todo&lt;bug&gt;;
+    :  try { $pair.key = &quot;new&quot; };
+    :  is $key,                &quot;new&quot;,  &quot;binding .key to a var works (3)&quot;, :todo&lt;bug&gt;;
+    :  is $pair.key,           &quot;new&quot;,  &quot;binding .key to a var works (4)&quot;, :todo&lt;bug&gt;;
+    :
+    :  lives_ok { $pair.value := $val }, &quot;binding .value does not die&quot;, :todo&lt;bug&gt;;
+    :  is $pair.value,           &quot;val&quot;,  &quot;binding .value actually changes the value&quot;, :todo&lt;bug&gt;;
+    :  $val = &quot;VAL&quot;;
+    :  is $val,                  &quot;VAL&quot;,  &quot;binding .value to a var works (1)&quot;;
+    :  is $pair.value,           &quot;VAL&quot;,  &quot;binding .value to a var works (2)&quot;, :todo&lt;bug&gt;;
+    :  try { $pair.value = &quot;new&quot; };
+    :  is $val,                  &quot;new&quot;,  &quot;binding .value to a var works (3)&quot;, :todo&lt;bug&gt;;
+    :  is $pair.value,           &quot;new&quot;,  &quot;binding .value to a var works (4)&quot;, :todo&lt;bug&gt;;
+    :}</pre>
+</div><pre>
+    Mapping     Pairs with no duplicate keys
+    Signature   Function parameters (left-hand side of a binding)
+    Capture     Function call arguments (right-hand side of a binding)
+    Blob        An undifferentiated mass of bits</pre>
+<p>
+</p>
+<h2><a name="Mutable20types">Mutable types</a></h2>
+<p>Objects with these types have distinct <code>.SKID</code> values that do not change
+even if the object's contents change.</p>
+<pre>
+    Array       Perl array
+    Hash        Perl hash
+    Scalar      Perl scalar
+    Buf         Perl buffer (a stringish array of memory locations)
+    IO          Perl filehandle
+    Routine     Base class for all wrappable executable objects
+    Sub         Perl subroutine
+    Method      Perl method
+    Submethod   Perl subroutine acting like a method
+    Macro       Perl compile-time subroutine
+    Regex       Perl pattern
+    Match       Perl match, usually produced by applying a pattern
+    Package     Perl 5 compatible namespace
+    Module      Perl 6 standard namespace
+    Class       Perl 6 standard class namespace
+    Role        Perl 6 standard generic interface/implementation
+    Object      Perl 6 object
+    Grammar     Perl 6 pattern matching namespace</pre>
+<p>
+</p>
+<h2><a name="Value20types">Value types</a></h2>
+<p>Explicit types are optional. Perl variables have two associated types:
+their ``value type'' and their ``implementation type''.  (More generally, any
+container has an implementation type, including subroutines and modules.)
+The value type is stored as its <code>of</code> property, while the implementation
+type of the container is just the object type of the container itself.</p>
+<p>The value type specifies what kinds of values may be stored in the
+variable. A value type is given as a prefix or with the <code>of</code> keyword:</p>
+<pre>
+    my Dog $spot;
+    my $spot of Dog;</pre>
+<p>In either case this sets the <code>of</code> property of the container to <code>Dog</code>.</p>
+<p>Subroutines have a variant of the <code>of</code> property, <code>returns</code>, that sets
+the <code>returns</code> property instead.  The <code>returns</code> property specifies a
+constraint (or perhaps coercion) to be enforced on the return value (either
+by explicit call to <code>return</code> or by implicit fall-off-the-end return).
+This constraint, unlike the <code>of</code> property, is not advertised as the
+type of the routine.  You can think of it as the implicit type signature of
+the (possibly implicit) return statement.  It's therefore available for
+type inferencing within the routine but not outside it.  If no inner type
+is declared, it is assumed to be the same as the <code>of</code> type, if declared.</p>
+<pre>
+    sub get_pet() of Animal {...}       # of type, obviously
+    our Animal sub get_pet() {...}      # of type
+    sub get_pet() returns Animal {...}  # inner type</pre>
+<p>A value type on an array or hash specifies the type stored by each element:</p>
+<pre>
+    my Dog @pound;  # each element of the array stores a Dog</pre>
+<pre>
+    my Rat %ship;   # the value of each entry stores a Rat</pre>
+<p>The key type of a hash may be specified as a shape trait--see S09.</p>
+<p>
+</p>
+<h2><a name="Implementation20types">Implementation types</a></h2>
+<p>The implementation type specifies how the variable itself is implemented. It is
+given as a trait of the variable:</p>
+<pre>
+    my $spot is Scalar;             # this is the default
+    my $spot is PersistentScalar;
+    my $spot is DataBase;</pre>
+<p>Defining an implementation type is the Perl 6 equivalent to tying
+a variable in Perl 5.  But Perl 6 variables are tied directly at
+declaration time, and for performance reasons may not be tied with a
+run-time <code>tie</code> statement unless the variable is explicitly declared
+with an implementation type that does the <code>Tieable</code> role.</p>
+<p>However, package variables are always considered <code>Tieable</code> by default.
+As a consequence, all named packages are also <code>Tieable</code> by default.
+Classes and modules may be viewed as differently tied packages.
+Looking at it from the other direction, classes and modules that
+wish to be bound to a global package name must be able to do the
+<code>Package</code> role.</p>
+<p>
+</p>
+<h2><a name="Hierarchical20types">Hierarchical types</a></h2>
+<p>A non-scalar type may be qualified, in order to specify what type of
+value each of its elements stores:</p>
+<pre>
+    my Egg $cup;                       # the value is an Egg
+    my Egg @carton;                    # each elem is an Egg
+    my Array of Egg @box;              # each elem is an array of Eggs
+    my Array of Array of Egg @crate;   # each elem is an array of arrays of Eggs
+    my Hash of Array of Recipe %book;  # each value is a hash of arrays of Recipes</pre>
+<p>Each successive <code>of</code> makes the type on its right a parameter of the
+type on its left. Parametric types are named using square brackets, so:</p>
+<pre>
+    my Hash of Array of Recipe %book;</pre>
+<p>actually means:</p>
+<pre>
+    my Hash[of =&gt; Array[of =&gt; Recipe]] %book;</pre>
+<p>Because the actual variable can be hard to find when complex types are
+specified, there is a postfix form as well:</p>
+<pre>
+    my Hash of Array of Recipe %book;           # HoHoAoRecipe
+    my %book of Hash of Array of Recipe;        # same thing</pre>
+<p>The <code>returns</code> form may be used in subroutines:</p>
+<pre>
+    my sub get_book ($key) returns Hash of Array of Recipe {...}</pre>
+<p>Alternately, the return type may be specified within the signature:</p>
+<pre>
+    my sub get_book ($key --&gt; Hash of Array of Recipe) {...}</pre>
+<p>There is a slight difference, insofar as the type inferencer will
+ignore a <code>returns</code> but pay attention to <code>--&gt;</code> or prefix type
+declarations, also known as the <code>of</code> type.  Only the inside of the
+subroutine pays attention to <code>returns</code>.</p>
+<p>You may also specify the <code>of</code> type as the <code>of</code> trait:</p>
+<pre>
+    my Hash of Array of Recipe sub get_book ($key) {...}
+    my sub get_book ($key) of Hash of Array of Recipe {...}</pre>
+<p>
+</p>
+<h2><a name="Polymorphic20types">Polymorphic types</a></h2>
+<p>Anywhere you can use a single type you can use a set of types, for convenience
+specifiable as if it were an ``or'' junction:</p>
+<pre>
+    my Int|Str $error = $val;              # can assign if $val~~Int or $val~~Str</pre>
+<p>Fancier type constraints may be expressed through a subtype:</p>
+<pre>
+    subset Shinola of Any where {.does(DessertWax) and .does(FloorTopping)};
+    if $shimmer ~~ Shinola {...}  # $shimmer must do both interfaces</pre>
+<p>Since the terms in a parameter could be viewed as a set of
+constraints that are implicitly ``anded'' together (the variable itself
+supplies type constraints, and <code>where</code> clauses or tree matching just
+add more constraints), we relax this to allow juxtaposition of
+types to act like an ``and'' junction:</p>
+<pre>
+    # Anything assigned to the variable $mitsy must conform
+    # to the type Fish and either the Cat or Dog type...
+    my Cat|Dog Fish $mitsy = new Fish but { int rand 2 ?? .does Cat
+                                                       !! .does Dog };</pre>
+<p>
+</p>
+<h2><a name="Parameter20types">Parameter types</a></h2>
+<p>Parameters may be given types, just like any other variable:</p>
+<pre>
+    sub max (int @array is rw) {...}
+    sub max (@array of int is rw) {...}</pre>
+<p>
+</p>
+<h2><a name="Generic20types">Generic types</a></h2>
+<p>Within a declaration, a class variable (either by itself or
+following an existing type name) declares a new type name and takes
+its parametric value from the actual type of the parameter it is
+associated with.  It declares the new type name in the same scope
+as the associated declaration.</p>
+<pre>
+    sub max (Num ::X @array) {
+        push @array, X.new();
+    }</pre>
+<p>The new type name is introduced immediately, so two such types in
+the same signature must unify compatibly if they have the same name:</p>
+<pre>
+    sub compare (Any ::T $x, T $y) {
+        return $x eqv $y;
+    }</pre>
+<p>
+</p>
+<h2><a name="Return20types">Return types</a></h2>
+<p>On a scoped subroutine, a return type can be specified before or after
+the name.  We call all return types ``return types'', but distinguish
+two kinds of return types, the <code>inner</code> type and the <code>of</code> type,
+because the <code>of</code> type is normally an ``official'' named type and
+declares the official interface to the routine, while the <code>inner</code>
+type is merely a constraint on what may be returned by the routine
+from the routine's point of view.</p>
+<pre>
+    our sub lay returns Egg {...}       # inner type
+    our Egg sub lay {...}               # of type
+    our sub lay of Egg {...}            # of type
+    our sub lay (--&gt; Egg) {...}         # of type</pre>
+<pre>
+    my sub hat returns Rabbit {...}     # inner type
+    my Rabbit sub hat {...}             # of type
+    my sub hat of Rabbit {...}          # of type
+    my sub hat (--&gt; Rabbit) {...}       # of type</pre>
+<p>If a subroutine is not explicitly scoped, it belongs to the current
+namespace (module, class, grammar, or package), as if it's scoped with
+the <code>our</code> scope modifier. Any return type must go after the name:</p>
+<pre>
+    sub lay returns Egg {...}           # inner type
+    sub lay of Egg {...}                # of type
+    sub lay (--&gt; Egg) {...}             # of type</pre>
+<p>On an anonymous subroutine, any return type can only go after the <code>sub</code>
+keyword:</p>
+<pre>
+    $lay = sub returns Egg {...};       # inner type
+    $lay = sub of Egg {...};            # of type
+    $lay = sub (--&gt; Egg) {...};         # of type</pre>
+<p>but you can use a scope modifier to introduce an <code>of</code> prefix type:</p>
+<pre>
+    $lay = my Egg sub {...};            # of type
+    $hat = my Rabbit sub {...};         # of type</pre>
+<p>Because they are anonymous, you can change the <code>my</code> modifier to <code>our</code>
+without affecting the meaning.</p>
+<p>The return type may also be specified after a <code>--&gt;</code> token within
+the signature.  This doesn't mean exactly the same thing as <code>returns</code>.
+The <code>of</code> type is the ``official'' return type, and may therefore be
+used to do type inferencing outside the sub.  The <code>inner</code> type only
+makes the return type available to the internals of the sub so that
+the <code>return</code> statement can know its context, but outside the sub we
+don't know anything about the return value, as if no return type had
+been declared.  The prefix form specifies the <code>of</code> type rather than
+the <code>inner</code> type, so the return type of</p>
+<pre>
+    my Fish sub wanda ($x) { ... }</pre>
+<p>is known to return an object of type Fish, as if you'd said:</p>
+<pre>
+    my sub wanda ($x --&gt; Fish) { ... }</pre>
+<p><em>not</em> as if you'd said</p>
+<pre>
+    my sub wanda ($x) returns Fish { ... }</pre>
+<p>It is possible for the <code>of</code> type to disagree with the <code>inner</code> type:</p>
+<pre>
+    my Squid sub wanda ($x) returns Fish { ... }</pre>
+<p>or equivalently,</p>
+<pre>
+    my sub wanda ($x --&gt; Squid) returns Fish { ... }</pre>
+<p>This is not lying to yourself--it's lying to the world.  Having a
+different inner type is useful if you wish to hold your routine to
+a stricter standard than you let on to the outside world, for instance.</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Properties20and20traits">Properties and traits</a></h1>
+<p>Compile-time properties are called ``traits''. The 
+<code>is NAME (DATA)</code> syntax defines traits on containers and
+subroutines, as part of their declaration:</p>
+<pre>
+    constant $pi is Approximated = 3;   # variable $pi has Approximated trait</pre>
+<pre>
+    my $key is Persistent(:file&lt;.key&gt;);</pre>
+<pre>
+    sub fib is cached {...}</pre>
+<p>The <code>will NAME BLOCK</code> syntax is a synonym for <code>is NAME (BLOCK)</code>:</p>
+<pre>
+    my $fh will undo { close $fh };    # Same as: my $fh is undo({ close $fh });</pre>
+<p>The <code>but NAME (DATA)</code> syntax specifies run-time properties on values:</p>
+<pre>
+    constant $pi = 3 but Inexact;       # value 3 has Inexact property</pre>
+<pre>
+    sub system {
+        ...
+        return $error but false if $error;
+        return 0 but True;
+    }</pre>
+<p>Properties are predeclared as roles and implemented as mixins--see S12.</p>
+<p>
+</p>
+<h2><a name="Subroutine20traits">Subroutine traits</a></h2>
+<p>These traits may be declared on the subroutine as a whole (individual
+parameters take other traits).</p>
+<dl>
+<dt><strong><a name="item_is_signature"><code>is signature</code></a></strong><br />
+</dt>
+<dd>
+The signature of a subroutine. Normally declared implicitly, by providing a
+parameter list and/or return type.
+</dd>
+<p></p>
+<dt><strong><a name="item_returns252Fis_returns"><code>returns</code>/<code>is returns</code></a></strong><br />
+</dt>
+<dd>
+The <code>inner</code> type constraint that a routine imposes on its return value.
+</dd>
+<p></p>
+<dt><strong><a name="item_of252Fis_of"><code>of</code>/<code>is of</code></a></strong><br />
+</dt>
+<dd>
+The <code>of</code> type that is the official return type of the routine.
+</dd>
+<p></p>
+<dt><strong><a name="item_will_do"><code>will do</code></a></strong><br />
+</dt>
+<dd>
+The block of code executed when the subroutine is called. Normally declared
+implicitly, by providing a block after the subroutine's signature definition.
+</dd>
+<p></p>
+<dt><strong><a name="item_is_rw"><code>is rw</code></a></strong><br />
+</dt>
+<dd>
+Marks a subroutine as returning an lvalue.
+</dd>
+<p></p>
+<dt><strong><a name="item_is_parsed"><code>is parsed</code></a></strong><br />
+</dt>
+<dd>
+Specifies the subrule by which a macro call is parsed.  The parse
+always starts after the macro token, but the token may be referred
+to within the subrule as <code>$&lt;KEY&gt;</code>.
+</dd>
+<p></p>
+<dt><strong><a name="item_is_cached"><code>is cached</code></a></strong><br />
+</dt>
+<dd>
+Marks a subroutine as being memoized.
+</dd>
+<p></p>
+<dt><strong><a name="item_is_inline"><code>is inline</code></a></strong><br />
+</dt>
+<dd>
+<em>Suggests</em> to the compiler that the subroutine is a candidate for
+optimization via inlining.
+</dd>
+<p></p>
+<dt><strong><a name="item_is_tighter252Fis_looser252Fis_equiv"><code>is tighter</code>/<code>is looser</code>/<code>is equiv</code></a></strong><br />
+</dt>
+<dd>
+Specifies the precedence of an operator relative to an existing
+operator.  <code>equiv</code> also specifies the default associativity to
+be the same as the operator to which the new operator is equivalent.
+<code>tighter</code> and <code>looser</code> operators default to being left associative.
+</dd>
+<p></p>
+<dt><strong><a name="item_is_assoc"><code>is assoc</code></a></strong><br />
+</dt>
+<dd>
+Specifies the associativity of an operator explicitly.  Valid values are:
+</dd>
+<dd>
+<pre>
+    Tag         Examples        Meaning of $a op $b op $c
+    ===         ========        =========================
+    left        + - * / x       ($a op $b) op $c
+    right       ** =            $a op ($b op $c)
+    non         cmp &lt;=&gt; ..      ILLEGAL
+    chain       == eq ~~        ($a op $b) and ($b op $c)
+    list        | &amp; ^ ¥                listop($a, $b, $c) or listop($a; $b; $c)</pre>
+</dd>
+<dd>
+<p>Note that operators ``<code>equiv</code>'' to relationals are automatically considered
+chaining operators.  When creating a new precedence level, the chaining
+is determined by the presence or absence of ``<code>is assoc('chain')</code>'',
+and other operators defined at that level are required to be the same.</p>
+</dd>
+<p></p>
+<dt><strong><a name="item_PRE252FPOST"><code>PRE</code>/<code>POST</code></a></strong><br />
+</dt>
+<dd>
+Mark blocks that are to be unconditionally executed before/after
+the subroutine's <code>do</code> block. These blocks must return a true value,
+otherwise an exception is thrown.
+</dd>
+<dd>
+<p>When applied to a method, a <code>PRE</code> block automatically also calls all
+<code>PRE</code> blocks on any method of the same long name in each parent class.
+The precondition is satisfied if either the method's own <code>PRE</code> block
+returns true, or <em>all</em> of its parents' <code>PRE</code> blocks return true. This
+``me-or-all-my-parents'' requirement applies recursively to each parent's
+<code>PRE</code> block as well.</p>
+</dd>
+<dd>
+<p>When applied to a method, a <code>POST</code> block automatically also calls all
+<code>POST</code> blocks on any method of the same long name in every ancestral
+class. The postcondition is satisfied only if the method's own <code>POST</code>
+block <em>and</em> every one of its ancestral <code>POST</code> blocks all return true.</p>
+</dd>
+<p></p>
+<dt><strong><a name="item_ENTER252FLEAVE252FKEEP252FUNDO252Fetc252E"><code>ENTER</code>/<code>LEAVE</code>/<code>KEEP</code>/<code>UNDO</code>/etc.</a></strong><br />
+</dt>
+<dd>
+These supply closures that are to be conditionally executed before or
+after the subroutine's <code>do</code> block (only if used at the outermost level
+within the subroutine; technically, these are block traits on the <code>do</code>
+block, not subroutine traits).  These blocks are generally used only
+for their side effects, since most return values will be ignored.
+</dd>
+<p></p></dl>
+<p>
+</p>
+<h2><a name="Parameter20traits">Parameter traits</a></h2>
+<a name="msg_7"></a>
+<a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
+<div ID=header_shown_7 style="display: none;">- Hide t/subroutines/sub_parameter_traits.t (line 11 ~ line 49) -
+</div>
+<div ID=header_hidden_7 style="display: block;">- Show t/subroutines/sub_parameter_traits.t (39 lines) -</div>
+</a>
+</p>
+<div ID=hide_7 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;Parameter traits&quot;&gt;
+    :
+    :=cut
+    :
+    :my $foo=1;
+    :sub mods_param ($x) { $x++; }
+    :dies_ok  { mods_param($foo) }, 'can\'t modify parameter, constant by default';
+    :
+    :# is readonly
+    :sub mods_param_constant ($x is readonly) { $x++; }
+    :dies_ok  { mods_param_constant($foo) }, 'can\'t modify constant parameter, constant by default';
+    :
+    :sub mods_param_rw ($x is rw) { $x++; }
+    :dies_ok  { mods_param_rw(1) }, 'can\'t modify constant even if we claim it\'s rw';
+    :sub mods_param_rw_does_nothing ($x is rw) { $x; }
+    :lives_ok { mods_param_rw_does_nothing(1) }, 'is rw with non-lvalue should autovivify';
+    :
+    :lives_ok  { mods_param_rw($foo) }, 'pass by reference doesn\'t die';
+    :is($foo, 2, 'pass by reference works');
+    :
+    :#icopy
+    :$foo=1;
+    :sub mods_param_copy ($x is copy) {$x++;}
+    :lives_ok { mods_param_copy($foo) }, 'is copy';
+    :is($foo, 1, 'pass by value works');
+    :
+    :# is ref
+    :$foo=1;
+    :sub mods_param_ref ($x is ref) { $x++;  }
+    :dies_ok { mods_param_ref(1); }, 'is ref with non-lvalue';
+    :lives_ok { mods_param_ref($foo); }, 'is ref with non-lvalue', :todo;
+    :is($foo, 2, 'is ref works', :todo);
+    :
+    :# is context
+    :# Doesn't even compile, which is lucky, because I don't understand it well
+    :# enough to write an actual test...
+    :eval_ok('sub my_format (*@data is context(Item)) { }; 1', &quot;is context - compile check&quot;);
+    :
+    :# To do - check that is context actually works</pre>
+</div><p>The following traits can be applied to many types of parameters.</p>
+<dl>
+<dt><strong><a name="item_is_readonly"><code>is readonly</code></a></strong><br />
+</dt>
+<dd>
+Specifies that the parameter cannot be modified (e.g. assigned to,
+incremented). It is the default for parameters.
+</dd>
+<p></p>
+<dt><strong><code>is rw</code></strong><br />
+</dt>
+<dd>
+Specifies that the parameter can be modified (assigned to, incremented,
+etc). Requires that the corresponding argument is an lvalue or can be
+converted to one.
+</dd>
+<dd>
+<p>When applied to a variadic parameter, the <code>rw</code> trait applies to each
+element of the list:</p>
+</dd>
+<dd>
+<pre>
+    sub incr (*@vars is rw) { $_++ for @vars }</pre>
+</dd>
+<dd>
+<p>(The variadic array as a whole is always modifiable, but such
+modifications have no effect on the original argument list.)</p>
+</dd>
+<p></p>
+<dt><strong><a name="item_is_ref"><code>is ref</code></a></strong><br />
+</dt>
+<dd>
+Specifies that the parameter is passed by reference. Unlike <a href="#item_is_rw"><code>is rw</code></a>, the
+corresponding argument must already be a suitable lvalue. No attempt at
+coercion or autovivification is made, so unsuitable values throw an
+exception when you try to modify them.
+</dd>
+<p></p>
+<dt><strong><a name="item_is_copy"><code>is copy</code></a></strong><br />
+</dt>
+<dd>
+Specifies that the parameter receives a distinct, read-writable copy of the
+original argument. This is commonly known as ``pass-by-value''.
+</dd>
+<dd>
+<pre>
+    sub reprint ($text, $count is copy) {
+        print $text while $count-- &gt; 0;
+    }</pre>
+</dd>
+<p></p>
+<dt><strong><a name="item_context"><code>is context(TYPE)</code></a></strong><br />
+</dt>
+<dd>
+Specifies the context that a parameter applies to its argument. Typically used
+to cause a final list parameter to apply a series of scalar contexts:
+</dd>
+<dd>
+<pre>
+    # &amp;format may have as many arguments as it likes,
+    # each of which is evaluated in scalar context</pre>
+</dd>
+<dd>
+<pre>
+    sub format(*@data is context(Scalar)) {...}</pre>
+</dd>
+<dd>
+<p>Note that the compiler may not be able to propagate such a scalar
+context to a function call used as an argument to a method or multisub
+whose signature is not visible until dispatch time.  Such function
+call arguments are called in list context by default, and must be
+coerced to scalar context explicitly if that is desired.</p>
+</dd>
+<p></p></dl>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Advanced20subroutine20features">Advanced subroutine features</a></h1>
+<p>
+</p>
+<h2><a name="The20return20function">The <code>return</code> function</a></h2>
+<p>The <code>return</code> function notionally throws a control exception that is caught
+by the current lexically enclosing <code>Routine</code> to force a return through
+the control logic code of any intermediate block constructs.  With normal
+blocks this can be optimized away to a ``goto''.  All <code>Routine</code> declarations
+have an explicit declarator such as <code>sub</code> or <code>method</code>; bare blocks and
+``pointy'' blocks are never considered to be routines in that sense.  To return
+from a block, use <code>leave</code> instead--see below.</p>
+<p>The <code>return</code> function preserves its argument list as a <code>Capture</code> object, and
+responds to the left-hand <code>Signature</code> in a binding.  This allows named return
+values if the caller expects one:</p>
+<pre>
+    sub f { return :x&lt;1&gt; }
+    sub g ($x) { print $x }</pre>
+<pre>
+    my $x := *f();  # binds 1 to $x, via a named argument
+    g(*f());        # prints 1, via a named argument</pre>
+<p>To return a literal <code>Pair</code> object, always put it in an additional set of
+parentheses:</p>
+<pre>
+    return( (:x&lt;1&gt;), (:y&lt;2&gt;) ); # two positional Pair objects</pre>
+<p>Note that the postfix parentheses on the function call don't count as
+being ``additional''.  However, as with any function, whitespace after the
+<code>return</code> keyword prevents that interpretation and turns it instead
+into a list operator:</p>
+<pre>
+    return :x&lt;1&gt;, :y&lt;2&gt;; # two named arguments (if caller uses *)
+    return ( :x&lt;1&gt;, :y&lt;2&gt; ); # two positional Pair objects</pre>
+<p>If the function ends with an expression without an explicit <code>return</code>,
+that expression is also taken to be a <code>Capture</code>, just as if the expression
+were the argument to a <code>return</code> list operator (with whitespace):</p>
+<pre>
+    sub f { :x&lt;1&gt; } # named-argument binding (if caller uses *)
+    sub f { (:x&lt;1&gt;) } # always just one positional Pair object</pre>
+<p>On the caller's end, the <code>Capture</code> is interpolated into any new argument list
+much like an array would be, that is, as a scalar in scalar context, and as a
+list in list context.  This is the default behavior, but as with an array, the
+caller may use <code>prefix:&lt;[,]&gt;</code> to inline the returned values as part of the
+new argument list.  The caller may also bind the returned <code>Capture</code> directly.</p>
+<p>
+</p>
+<h2><a name="The20caller20function">The <code>caller</code> function</a></h2>
+<a name="msg_32"></a>
+<a href="?hide_quotes=no#msg_32" onclick="return tog_quote(32);">
+<div ID=header_shown_32 style="display: none;">- Hide t/builtins/caller.t (line 7 ~ line 62) -
+</div>
+<div ID=header_hidden_32 style="display: block;">- Show t/builtins/caller.t (56 lines) -</div>
+</a>
+</p>
+<div ID=hide_32 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;The C&lt;caller&gt; function&quot;&gt;
+    :
+    :# caller.subname
+    :sub a_sub { b_sub() }
+    :sub b_sub { try { caller.subname } }
+    :is ~a_sub(), &quot;foo&quot;, &quot;caller.sub works&quot;, :todo;
+    :
+    :# caller.file
+    :ok index(~(try { caller.file }), &quot;caller&quot;) &gt;= 0, &quot;caller.file works&quot;, :todo;
+    :
+    :# caller.line (XXX: make sure to edit the expected line number!)
+    :is +(try { caller.line }), 19, &quot;caller.line works&quot;, :todo;
+    :
+    :# caller exposes a bug in the MMD mechanism where directy using autogenerated
+    :# accessors on an object returned by a factory, rather than storing the object
+    :# in an intermediate variable, works only when you chain methods with an
+    :# explicit () between them: caller().subname - ok; caller.subname - error.
+    :
+    :sub try_it {
+    :    my ($code, $expected, $desc) = @_;
+    :    is($code(), $expected, $desc);
+    :}
+    :sub try_it_caller { try_it(*@_) }                                # (line 30.)
+    :class A { method try_it_caller_A { &amp;main::try_it_caller(*@_) } }
+    :sub try_it_caller_caller { A.try_it_caller_A(*@_) }
+    :class B { method try_it_caller_B { &amp;main::try_it_caller_caller(*@_) } }
+    :sub chain { B.try_it_caller_B(*@_) }
+    :
+    :# must use parentheses after caller
+    :
+    :# basic tests of caller object
+    :chain({ ref caller() },     &quot;Control::Caller&quot;, &quot;caller object type&quot;);
+    :chain({ caller().package }, &quot;main&quot;, &quot;caller package&quot;);
+    :chain({ caller().file },    $?FILE, &quot;caller filename&quot;);
+    :chain({ caller().line },    &quot;30&quot;, &quot;caller line&quot;);
+    :chain({ caller().subname }, &quot;&amp;main::try_it_caller&quot;, &quot;caller subname&quot;);
+    :chain({ caller().subtype }, &quot;SubRoutine&quot;, &quot;caller subtype&quot;); # specme
+    :chain({ caller().sub },     &amp;try_it_caller, &quot;caller sub (code)&quot;);
+    :
+    :# select by code type
+    :chain({ caller(Any).subname },    &quot;&amp;main::try_it_caller&quot;, &quot;code type - Any&quot;);
+    :chain({ caller(&quot;Any&quot;).subname },  &quot;&amp;main::try_it_caller&quot;, &quot;code type - Any (string)&quot;);
+    :chain({ caller(Method).subname }, &quot;&amp;A::try_it_caller_A&quot;, &quot;code type - Method&quot;);
+    :chain({ caller(&quot;Moose&quot;) },         undef, &quot;code type - not found&quot;);
+    :
+    :# :skip
+    :chain({ caller(:skip&lt;1&gt;).subname }, &quot;&amp;A::try_it_caller_A&quot;, &quot;:skip&lt;1&gt;&quot;);
+    :chain({ caller(:skip&lt;128&gt;) },       undef, &quot;:skip&lt;128&gt; - not found&quot;);
+    :
+    :# type + :skip
+    :chain({ caller(Sub, :skip&lt;1&gt;).subname }, &quot;&amp;main::try_it_caller_caller&quot;, &quot;Sub, :skip&lt;1&gt;&quot;);
+    :chain({ caller(Sub, :skip&lt;2&gt;).subname }, &quot;&amp;main::chain&quot;, &quot;Sub, :skip&lt;2&gt;&quot;);
+    :chain({ caller(Method, :skip&lt;1&gt;).subname }, &quot;&amp;B::try_it_caller_B&quot;, &quot;Method, :skip&lt;1&gt;&quot;);
+    :
+    :# WRITEME: label tests
+    :</pre>
+</div><p>The <code>caller</code> function returns an object that describes a particular 
+``higher'' dynamic scope, from which the current scope was called.</p>
+<pre>
+    say &quot;In &quot;,           caller.sub,
+        &quot; called from &quot;, caller.file,
+        &quot; line &quot;,        caller.line;</pre>
+<p><code>caller</code> may be given arguments telling it what kind of higher scope to
+look for, and how many such scopes to skip over when looking:</p>
+<pre>
+    $caller = caller;                      # immediate caller
+    $caller = caller Method;               # nearest caller that is method
+    $caller = caller Bare;                 # nearest caller that is bare block
+    $caller = caller Sub, :skip(2);        # caller three levels up
+    $caller = caller Block, :label&lt;Foo&gt;;   # caller whose label is 'Foo'</pre>
+<p>
+</p>
+<h2><a name="The20want20function">The <code>want</code> function</a></h2>
+<p>The <code>want</code> function returns a <code>Signature</code> object that contains information
+about the context in which the current block, closure, or subroutine was
+called.</p>
+<p>As with normal function signatures, you can test the result of <code>want</code> with a
+smart match (<code>~~</code>) or a <code>when</code>:</p>
+<pre>
+   given want {
+        when :($)       {...}   # called in scalar context
+        when :(*@)      {...}   # called in list context
+        when :($ is rw) {...}   # expected to return an lvalue
+        when :($,$)     {...}   # expected to return two values
+        ...
+    }</pre>
+<p>Or use its shorthand methods to reduce line noise:</p>
+<pre>
+    if    want.item      {...}  # called in non-lvalue scalar context
+    elsif want.list      {...}  # called in list context
+    elsif want.void      {...}  # called in void context
+    elsif want.rw        {...}  # expected to return an lvalue</pre>
+<p>The <code>.arity</code> and <code>.count</code> methods also work here:</p>
+<pre>
+    if want.arity &gt; 2    {...}  # must return more than two values
+    if want.count &gt; 2    {...}  # can return more than two values</pre>
+<p>Their difference is that <code>.arity</code> considers only mandatory parts,
+while <code>.count</code> considers also optional ones, including <code>*$</code>:</p>
+<pre>
+    ($x, $y) = f();     # Within &amp;f, want === :(*$?, *$?, *@)
+                        #            want.arity === 0
+                        #            want.count === 2</pre>
+<p>
+</p>
+<h2><a name="The20leave20function">The <code>leave</code> function</a></h2>
+<a name="msg_6"></a>
+<a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
+<div ID=header_shown_6 style="display: none;">- Hide t/builtins/control_flow/leave.t (line 6 ~ line 84) -
+</div>
+<div ID=header_hidden_6 style="display: block;">- Show t/builtins/control_flow/leave.t (79 lines) -</div>
+</a>
+</p>
+<div ID=hide_6 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;The C&lt;leave&gt; function&quot;&gt;
+    :
+    :plan 5;
+    :
+    :flunk &quot;leave() not implemented in Pugs's interpreter core yet&quot;, :todo&lt;feature&gt;;
+    :skip_rest; exit;
+    :
+    :{
+    :  my $bare = { leave 42; 23 };
+    :
+    :  is $bare(), 42, &quot;basic leave() works&quot;;
+    :}
+    :
+    :{
+    :  my $sub = sub () {
+    :    my $bare = { leave 42; 23 };
+    :
+    :    my $ret = $bare();
+    :    return 1000 + $ret;
+    :  };
+    :
+    :  is $sub(), 1042, &quot;leave() works and leaves only the innermost block&quot;;
+    :}
+    :
+    :{
+    :  my $sub = sub () {
+    :    leave &amp;?ROUTINE, 42;
+    :    return 23;
+    :  };
+    :
+    :  is $sub(), 42, &quot;leave() works with &amp;?ROUTINE as parameter&quot;;
+    :}
+    :
+    :{
+    :  my $outer = sub () {
+    :    my $inner = sub () {
+    :      my $most_inner = sub () {
+    :        leave $outer, 42;
+    :        return 23;
+    :      };
+    :
+    :      $most_inner();
+    :      return 22;
+    :    };
+    :
+    :    $inner();
+    :    return 21;
+    :  }
+    :
+    :  is $outer(), 42, &quot;nested leave() works with a subref as parameter&quot;;
+    :}
+    :
+    :{
+    :  my $sub = sub () {
+    :    my $bare = sub () {
+    :      leave Block, 42;
+    :      return 23;
+    :    };
+    :
+    :    my $ret = $bare();
+    :    return 1000 + $ret;
+    :  };
+    :
+    :  is $sub(), 1042, &quot;leave() works with a Class (Block) as parameter&quot;;
+    :}
+    :
+    :{
+    :  my $sub = sub () {
+    :    my $bare = sub () {
+    :      leave Sub, 42;
+    :      return 23;
+    :    };
+    :
+    :    my $ret = $bare();
+    :    return 1000 + $ret;
+    :  };
+    :
+    :  is $sub(), 42, &quot;leave() works with a Class (Sub) as parameter&quot;;
+    :}</pre>
+</div><p>As mentioned above, a <code>return</code> call causes the innermost
+surrounding subroutine, method, rule, token, regex (as a keyword),
+macro, or multimethod to return.  Only declarations with an explicit
+keyword such as ``sub'' may be returned from.  You may not return from
+a quotelike operator such as <code>rx//</code>.</p>
+<p>To return from other types of code structures, the <code>leave</code> function
+is used.  The first argument, if supplied, specifies a <code>Selector</code>
+for the control structure to leave.  The <code>Selector</code> will be
+smart-matched against the dynamic scope objects from inner to outer.
+The first that matches is the scope that is left.</p>
+<p>The remainder of the arguments are taken to be a Capture holding the
+return values.</p>
+<pre>
+    leave;                      # return from innermost block of any kind
+    leave *;                    # same thing
+    leave Method;               # return from innermost calling method
+    leave &amp;?ROUTINE, 1,2,3;     # Return from current sub. Same as: return 1,2,3
+    leave &amp;?ROUTINE &lt;== 1,2,3;  # same thing, force return as feed
+    leave &amp;foo, 1,2,3;          # Return from innermost surrounding call to &amp;foo</pre>
+<p>Note that these are equivalent:</p>
+<pre>
+    leave Loop where { .label eq 'COUNT' };
+    last COUNT;</pre>
+<p>and, in fact, you can return a final loop value that way:</p>
+<pre>
+    last COUNT, 42;</pre>
+<p>
+</p>
+<h2><a name="Temporization">Temporization</a></h2>
+<p>The <code>temp</code> function temporarily replaces the value of an existing
+variable, subroutine, context of a function call, or other object in a given scope:</p>
+<pre>
+    {
+       temp $*foo = 'foo';      # Temporarily replace global $foo
+       temp &amp;bar := sub {...};  # Temporarily replace sub &amp;bar
+       ...
+    } # Old values of $*foo and &amp;bar reinstated at this point</pre>
+<p><code>temp</code> invokes its argument's <code>.TEMP</code> method. The method is expected
+to return a <code>Code</code> object that can later restore the current
+value of the object. At the end of the lexical scope in which the
+<code>temp</code> was applied, the subroutine returned by the <code>.TEMP</code> method is
+executed.</p>
+<a name="msg_27"></a>
+<a href="?hide_quotes=no#msg_27" onclick="return tog_quote(27);">
+<div ID=header_shown_27 style="display: none;">- Hide t/var/temp.t (line 151 ~ line 173) -
+</div>
+<div ID=header_hidden_27 style="display: block;">- Show t/var/temp.t (23 lines) -</div>
+</a>
+</p>
+<div ID=hide_27 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Temporization&quot; /temp invokes its argument's .TEMP method./&gt;
+    :{
+    :  my $was_in_own_temp_handler = 0;
+    :
+    :  class WierdTemp is Int {
+    :    method TEMP {
+    :      $was_in_own_temp_handler++;
+    :      return { $was_in_own_temp_handler++ };
+    :    }
+    :  }
+    :
+    :  my $a = WierdTemp.new();
+    :  ok defined($a), &quot;instantiating a WierdTemp worked&quot;;
+    :  is $was_in_own_temp_handler, 0, &quot;.TEMP method wasn't yet executed&quot;;
+    :
+    :  {
+    :    temp $a;
+    :    is $was_in_own_temp_handler, 1, &quot;.TEMP method was executed on temporization&quot;;
+    :  }
+    :  is $was_in_own_temp_handler, 2, &quot;.TEMP method was executed on restoration&quot;;
+    :}
+    :
+    :</pre>
+</div><p>The default <code>.TEMP</code> method for variables simply creates
+a closure that assigns the variable's pre-<code>temp</code> value 
+back to the variable.</p>
+<p>New kinds of temporization can be created by writing storage classes with
+their own <code>.TEMP</code> methods:</p>
+<pre>
+    class LoudArray is Array {
+        method TEMP {
+            print &quot;Replacing $.SKID() at {caller.location}\n&quot;;
+            my $restorer = $.SUPER::TEMP();
+            return { 
+                print &quot;Restoring $.SKID() at {caller.location}\n&quot;;
+                $restorer();
+            };
+        }
+    }</pre>
+<p>You can also modify the behaviour of temporized code structures, by
+giving them a <code>TEMP</code> block. As with <code>.TEMP</code> methods, this block is
+expected to return a closure, which will be executed at the end of
+the temporizing scope to restore the subroutine to its pre-<code>temp</code> state:</p>
+<a name="msg_26"></a>
+<a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
+<div ID=header_shown_26 style="display: none;">- Hide t/var/temp.t (line 108 ~ line 150) -
+</div>
+<div ID=header_hidden_26 style="display: block;">- Show t/var/temp.t (43 lines) -</div>
+</a>
+</p>
+<div ID=hide_26 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Temporization&quot; /You can also modify the behaviour of temporized code structures/&gt;
+    :# (Test is more or less directly from S06.)
+    :{
+    :  my $next    = 0;
+    :
+    :  # Here is the real implementation of &amp;advance.
+    :  sub advance() {
+    :    my $curr = $next++;
+    :    TEMP {{ $next = $curr }}  # TEMP block returns the closure { $next = $curr }
+    :    return $curr;
+    :  };
+    :
+    :  # and later...
+    :
+    :  is advance(), 0, &quot;TEMP{} block (1)&quot;;
+    :  is advance(), 1, &quot;TEMP{} block (2)&quot;;
+    :  is advance(), 2, &quot;TEMP{} block (3)&quot;;
+    :  is $next,     3, &quot;TEMP{} block (4)&quot;;
+    :
+    :  flunk &quot;TEMP{} block (5)&quot;, :todo&lt;feature&gt;;
+    :  flunk &quot;TEMP{} block (6)&quot;, :todo&lt;feature&gt;;
+    :  flunk &quot;TEMP{} block (7)&quot;, :todo&lt;feature&gt;;
+    :  flunk &quot;TEMP{} block (8)&quot;, :todo&lt;feature&gt;;
+    :
+    :  # Following does parse, but isn't executed (don't know why).
+    :  # If the &quot;{&quot; on the following line is changed to &quot;if 1 {&quot;, it is executed,
+    :  # too, but then it dies complaining about not finding a matching temp()
+    :  # function.  So, for now, we just comment the following block and add
+    :  # unconditional flunk()s.
+    :  #{
+    :  #  is temp(advance()), 3, &quot;TEMP{} block (5)&quot;, :todo&lt;feature&gt;;
+    :  #  is $next,           4, &quot;TEMP{} block (6)&quot;, :todo&lt;feature&gt;;
+    :  #  is temp(advance()), 4, &quot;TEMP{} block (7)&quot;, :todo&lt;feature&gt;;
+    :  #  is temp(advance()), 5, &quot;TEMP{} block (8)&quot;, :todo&lt;feature&gt;;
+    :  #}  # $next = 3
+    :
+    :  is $next,     3, &quot;TEMP{} block (9)&quot;;
+    :  is advance(), 3, &quot;TEMP{} block (10)&quot;;
+    :  is $next,     4, &quot;TEMP{} block (11)&quot;;
+    :}
+    :
+    :# Following are OO tests, but I think they fit better in var/temp.t than in
+    :# oo/.</pre>
+</div><pre>
+    my $next = 0;
+    sub next {
+        my $curr = $next++;
+        TEMP {{ $next = $curr }}  # TEMP block returns the closure { $next = $curr }
+        return $curr;
+    }</pre>
+<pre>
+    # and later...</pre>
+<pre>
+    say next();     # prints 0; $next == 1
+    say next();     # prints 1; $next == 2
+    say next();     # prints 2; $next == 3
+    if ($hiccough) {
+        say temp next();  # prints 3; closes $curr at 3; $next == 4
+        say next();       # prints 4; $next == 5
+        say next();       # prints 5; $next == 6
+    }                     # $next = 3
+    say next();     # prints 3; $next == 4
+    say next();     # prints 4; $next == 5</pre>
+<p>Hypothetical variables use the same mechanism, except that the restoring
+closure is called only on failure.</p>
+<p>Note that contextual variables may be a better solution than temporized
+globals in the face of multithreading.</p>
+<p>
+</p>
+<h2><a name="Wrapping">Wrapping</a></h2>
+<a name="msg_28"></a>
+<a href="?hide_quotes=no#msg_28" onclick="return tog_quote(28);">
+<div ID=header_shown_28 style="display: none;">- Hide t/subroutines/wrap.t (line 5 ~ line 99) -
+</div>
+<div ID=header_hidden_28 style="display: block;">- Show t/subroutines/wrap.t (95 lines) -</div>
+</a>
+</p>
+<div ID=hide_28 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/Wrapping&gt;
+    :
+    :# TODO
+    :# named wrapping/unwrapping
+    :# unwrap with no args pops the top most
+    :#
+    :# mutating wraps -- those should be &quot;deep&quot;, as in not touching coderefs
+    :# but actually mutating how the coderef works.
+    :#
+    :# of course, if we allow assigning into coderefs, then the wrap semantic
+    :# could become a simple reassignment; but that is unspecced.
+    :
+    :plan 20;
+    :
+    :my @log;
+    :
+    :sub foo {
+    :    push @log, &quot;foo&quot;;
+    :}
+    :
+    :sub wrapper {
+    :    push @log, &quot;wrapper before&quot;;
+    :    try { call };
+    :    push @log, &quot;wrapper after&quot;;
+    :}
+    :
+    :sub other_wrapper {
+    :    push @log, &quot;wrapper2&quot;;
+    :    try { call };
+    :}
+    :
+    :foo();
+    :is(+@log, 1, &quot;one event logged&quot;);
+    :is(@log[0], &quot;foo&quot;, &quot;it's foo&quot;);
+    :
+    :@log = ();
+    :
+    :wrapper();
+    :is(+@log, 2, &quot;two events logged&quot;);
+    :is(@log[0], &quot;wrapper before&quot;, &quot;wrapper before&quot;);
+    :is(@log[1], &quot;wrapper after&quot;, &quot;wrapper after&quot;);
+    :
+    :@log = ();
+    :
+    :my $wrapped;
+    :try {
+    :    $wrapped = &amp;foo.wrap(&amp;wrapper);
+    :};
+    :
+    :isa_ok($wrapped, &quot;Sub&quot;, :todo);
+    :
+    :$wrapped ||= -&gt; { };
+    :try { $wrapped.() };
+    :
+    :is(+@log, 3, &quot;three events logged&quot;, :todo);
+    :is(@log[0], &quot;wrapper before&quot;, &quot;wrapper before&quot;, :todo);
+    :is(@log[1], &quot;foo&quot;, &quot;the wrapped sub&quot;, :todo);
+    :is(@log[2], &quot;wrapper after&quot;, &quot;wrapper after&quot;, :todo);
+    :
+    :@log = ();
+    :
+    :my $doublywrapped;
+    :try {
+    :    $doublywrapped = $wrapped.wrap(&amp;other_wrapper);
+    :};
+    :
+    :isa_ok($doublywrapped, &quot;Sub&quot;, :todo);
+    :$doublywrapped ||= -&gt; { };
+    :try { $doublywrapped.() };
+    :
+    :is(+@log, 4, &quot;four events&quot;, :todo);
+    :is(@log[0], &quot;wrapper2&quot;, &quot;additional wrapping takes effect&quot;, :todo);
+    :is(@log[1], &quot;wrapper before&quot;, &quot;... on top of initial wrapping&quot;, :todo);
+    :
+    :@log = ();
+    :
+    :try { $wrapped.() };
+    :is(+@log, 3, &quot;old wrapped sub was not destroyed&quot;, :todo);
+    :is(@log[0], &quot;wrapper before&quot;, &quot;the original wrapper is still in effect&quot;, :todo);
+    :
+    :
+    :@log = ();
+    :
+    :my $unwrapped;
+    :try {
+    :    $unwrapped = $wrapped.unwrap(&amp;wrapper);
+    :};
+    :
+    :isa_ok($unwrapped, &quot;Sub&quot;, :todo);
+    :$unwrapped ||= -&gt; {};
+    :try { $unwrapped.() };
+    :
+    :is(+@log, 2, &quot;two events for unwrapped&quot;, :todo);
+    :is(@log[0], &quot;wrapper2&quot;, :todo);
+    :is(@log[1], &quot;foo&quot;, :todo);</pre>
+</div><p>Every <code>Routine</code> object has a <code>.wrap</code> method. This method expects a single
+<code>Code</code> argument. Within the code, the special <code>call</code> function will invoke
+the original routine, but does not introduce a <code>CALLER</code> frame:</p>
+<pre>
+    sub thermo ($t) {...}   # set temperature in Celsius, returns old value</pre>
+<pre>
+    # Add a wrapper to convert from Fahrenheit...
+    $handle = &amp;thermo.wrap( { call( ($^t-32)/1.8 ) } );</pre>
+<p>The call to <code>.wrap</code> replaces the original <code>Routine</code> with the <code>Code</code>
+argument, and arranges that the call to <code>call</code> invokes the previous
+version of the routine. In other words, the call to <code>.wrap</code> has more
+or less the same effect as:</p>
+<pre>
+    &amp;old_thermo := &amp;thermo;
+    &amp;thermo := sub ($t) { old_thermo( ($t-32)/1.8 ) }</pre>
+<p>Except that <code>&amp;thermo</code> is mutated in-place, so <code>&amp;thermo.SKID</code> stays the same
+after the <code>.wrap</code>.</p>
+<p>The call to <code>.wrap</code> returns a unique handle that can later be passed to
+the <code>.unwrap</code> method, to undo the wrapping:</p>
+<pre>
+    &amp;thermo.unwrap($handle);</pre>
+<p>This does not affect any other wrappings placed to the routine.</p>
+<p>A wrapping can also be restricted to a particular dynamic scope with
+temporization:</p>
+<pre>
+    # Add a wrapper to convert from Kelvin
+    # wrapper self-unwraps at end of current scope
+    temp &amp;thermo.wrap( { call($^t + 273.16) } );</pre>
+<p>The entire argument list may be captured by the <code>\$args</code> parameter.
+It can then be passed to <code>call</code> as <code>*$args</code>:</p>
+<pre>
+    # Double the return value for &amp;thermo
+    &amp;thermo.wrap( -&gt; \$args { call(*$args) * 2 } );</pre>
+<p>The wrapper is not required to call the original routine; it can call another
+<code>Code</code> object by passing the <code>Capture</code> to its <code>call</code> method:</p>
+<pre>
+    # Transparently redirect all calls to &amp;thermo to &amp;other_thermo
+    &amp;thermo.wrap( -&gt; \$args { &amp;other_thermo.call(*$args) } );</pre>
+<p>Outside a wrapper, <code>call</code> implicitly calls the next-most-likely method
+or multi-sub; see S12 for details.</p>
+<p>As with any return value, you may capture the returned <code>Capture</code> of <code>call</code>
+by binding:</p>
+<pre>
+    my \$retval := call(*$args);
+    ... # postprocessing
+    return *$retval;</pre>
+<p>
+</p>
+<h2><a name="The20263fROUTINE20object">The <code>&amp;?ROUTINE</code> object</a></h2>
+<a name="msg_24"></a>
+<a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
+<div ID=header_shown_24 style="display: none;">- Hide t/magicals/sub.t (line 15 ~ line 15) -
+</div>
+<div ID=header_hidden_24 style="display: block;">- Show t/magicals/sub.t (1 lines) -</div>
+</a>
+</p>
+<div ID=hide_24 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;The C&lt;&amp;?ROUTINE&gt; object&quot;&gt;</pre>
+</div><a name="msg_23"></a>
+<a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
+<div ID=header_shown_23 style="display: none;">- Hide t/magicals/sub.t (line 9 ~ line 14) -
+</div>
+<div ID=header_hidden_23 style="display: block;">- Show t/magicals/sub.t (6 lines) -</div>
+</a>
+</p>
+<div ID=hide_23 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;The C&lt;&amp;?ROUTINE&gt; object&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 3;
+    :</pre>
+</div><p><code>&amp;?ROUTINE</code> is always an alias for the lexically innermost <code>Routine</code>
+(which may be a <code>Sub</code>, <code>Method</code>, or <code>Submethod</code>), so you can specify
+tail-recursion on an anonymous sub:</p>
+<pre>
+    my $anonfactorial = sub (Int $n) {
+                            return 1 if $n&lt;2;
+                            return $n * &amp;?ROUTINE($n-1);
+                        };</pre>
+<p>You can get the current routine name by calling <code>&amp;?ROUTINE.name</code>.
+(The outermost routine at a file-scoped compilation unit is always
+named <code>&amp;MAIN</code> in the file's package.)</p>
+<a name="msg_25"></a>
+<a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
+<div ID=header_shown_25 style="display: none;">- Hide t/magicals/subname.t (line 8 ~ line 8) -
+</div>
+<div ID=header_hidden_25 style="display: block;">- Show t/magicals/subname.t (1 lines) -</div>
+</a>
+</p>
+<div ID=hide_25 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;The C&lt;&amp;?ROUTINE&gt; object&quot; /current routine name/&gt;</pre>
+</div><p>Note that <code>&amp;?ROUTINE</code> refers to the current single sub, even if it is
+declared ``multi''.  To redispatch to the entire suite under a given short
+name, just use the named form, since there are no anonymous multis.</p>
+<p>
+</p>
+<h2><a name="The20263fBLOCK20object">The <code>&amp;?BLOCK</code> object</a></h2>
+<a name="msg_19"></a>
+<a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
+<div ID=header_shown_19 style="display: none;">- Hide t/magicals/block.t (line 9 ~ line 14) -
+</div>
+<div ID=header_hidden_19 style="display: block;">- Show t/magicals/block.t (6 lines) -</div>
+</a>
+</p>
+<div ID=hide_19 style="display:none; border:1px solid"><pre>
+    :L&lt;S06/&quot;The C&lt;&amp;?BLOCK&gt; object&quot;&gt;
+    :
+    :=cut
+    :
+    :plan 1;
+    :</pre>
+</div><p><code>&amp;?BLOCK</code> is always an alias for the current block, so you can
+specify tail-recursion on an anonymous block:</p>
+<pre>
+    my $anonfactorial = -&gt; Int $n { $n &lt; 2
+                                        ?? 1
+                                        :: $n * &amp;?BLOCK($n-1)
+                                  };</pre>
+<p><code>&amp;?BLOCK.label</code> contains the label of the current block, if any.</p>
+<p>If the innermost lexical block happens to be the main block of a <code>Routine</code>,
+then <code>&amp;?BLOCK</code> just returns the <code>Block</code> object, not the <code>Routine</code> object
+that contains it.</p>
+<p>[Note: to refer to any <code>$?</code> or <code>&amp;?</code> variable at the time the sub or
+block is being compiled, use the <code>COMPILING::</code> pseudopackage.]</p>
+<p>
+</p>
+<h2><a name="Currying">Currying</a></h2>
+<p>Every <code>Code</code> object has a <code>.assuming</code> method. This method does a partial
+binding of a set of arguments to a signature and returns a new function
+that takes only the remaining arguments.</p>
+<pre>
+    &amp;textfrom := &amp;substr.assuming(str=&gt;$text, len=&gt;Inf);</pre>
+<p>or equivalently:</p>
+<pre>
+    &amp;textfrom := &amp;substr.assuming(:str($text) :len(Inf));</pre>
+<p>or even:</p>
+<pre>
+    &amp;textfrom := &amp;substr.assuming:str($text):len(Inf);</pre>
+<p>It returns a <code>Code</code> object that implements the same behaviour
+as the original subroutine, but has the values passed to <code>.assuming</code>
+already bound to the corresponding parameters:</p>
+<pre>
+    $all  = textfrom(0);   # same as: $all  = substr($text,0,Inf);
+    $some = textfrom(50);  # same as: $some = substr($text,50,Inf);
+    $last = textfrom(-1);  # same as: $last = substr($text,-1,Inf);</pre>
+<p>The result of a <code>use</code> statement is a (compile-time) object that also has
+a <code>.assuming</code> method, allowing the user to bind parameters in all the
+module's subroutines/methods/etc. simultaneously:</p>
+<a name="msg_9"></a>
+<a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
+<div ID=header_shown_9 style="display: none;">- Hide t/subroutines/currying.t (line 44 ~ line 71) -
+</div>
+<div ID=header_hidden_9 style="display: block;">- Show t/subroutines/currying.t (28 lines) -</div>
+</a>
+</p>
+<div ID=hide_9 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Currying&quot; /The result of a use statement/&gt;
+    :try {
+    :(eval('use t::packages::Test') // {}).assuming(arg1 =&gt; &quot;foo&quot;);
+    :}
+    :is try { dummy_sub_with_params(arg2 =&gt; &quot;bar&quot;) }, &quot;[foo] [bar]&quot;,
+    :  &quot;(use ...).assuming works&quot;, :todo&lt;feature&gt;;
+    :
+    :sub __hyper ($op?, Array @a, Array @b) {
+    :  my Array @ret;
+    :  for 0..(@a.end, @b.end).max -&gt; $i {
+    :    if $i &gt; @a.end {
+    :      push @ret, @b[$i];
+    :    }
+    :    elsif $i &gt; @b.end {
+    :      push @ret, @a[$i];
+    :    }
+    :    else {
+    :      push @ret, $op(@a[$i], @b[$i]);
+    :    }
+    :  }
+    :  return @ret;
+    :}
+    :
+    :my @x = (1,2,23);
+    :is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(@x, @x) },
+    :    (2,4,46), 'currying functions with array arguments' );
+    :is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(a =&gt; @x, b =&gt; @x) },
+    :    (2,4,46), 'currying functions with named array arguments' );</pre>
+</div><pre>
+    (use IO::Logging).assuming(logfile =&gt; &quot;.log&quot;);</pre>
+<p>This special form should generally be restricted to named parameters.</p>
+<p>To curry a particular multimethod it may be necessary to specify the type
+for one or more of its parameters:</p>
+<pre>
+    &amp;woof ::= &amp;bark:(Dog).assuming :pitch&lt;low&gt;;
+    &amp;pine ::= &amp;bark:(Tree).assuming :pitch&lt;yes&gt;;</pre>
+<p>
+</p>
+<h2><a name="Macros">Macros</a></h2>
+<p>Macros are functions or operators that are called by the compiler as
+soon as their arguments are parsed (if not sooner).  The syntactic
+effect of a macro declaration or importation is always lexically
+scoped, even if the name of the macro is visible elsewhere.  As with
+ordinary operators, macros may be classified by their grammatical
+category.  For a given grammatical category, a default parsing rule or
+set of rules is used, but those rules that have not yet been ``used''
+by the time the macro keyword or token is seen can be replaced by
+use of ``is parsed'' trait.  (This means, for instance, that an infix
+operator can change the parse rules for its right operand but not
+its left operand.)</p>
+<p>In the absence of a signature to the contrary, a macro is called as
+if it were a method on the current match object returned from the
+grammar rule being reduced; that is, all the current parse information
+is available by treating <code>self</code> as if it were a <code>$/</code> object.
+[Conjecture: alternate representations may be available if arguments
+are declared with particular AST types.]</p>
+<p>Macros may return either a string to be reparsed, or a syntax tree
+that needs no further parsing.  The textual form is handy, but the
+syntax tree form is generally preferred because it allows the parser
+and debugger to give better error messages.  Textual substitution
+on the other hand tends to yield error messages that are opaque to
+the user.  Syntax trees are also better in general because they are
+reversible, so things like syntax highlighters can get back to the
+original language and know which parts of the derived program come
+from which parts of the user's view of the program.  Nevertheless,
+it's difficult to return a syntax tree for an unbalanced construct,
+and in such cases a textual macro may be a clearer expression of the
+evil thing you're trying to do.</p>
+<p>If you call a macro at runtime, the result of the macro is automatically
+evaluated again, so the two calls below print the same thing:</p>
+<pre>
+    macro f { '1 + 1' }
+    say f();    # compile-time call to &amp;f
+    say &amp;f();   # runtime call to &amp;f</pre>
+<p>
+</p>
+<h2><a name="Quasiquoting">Quasiquoting</a></h2>
+<p>In aid of returning syntax tree, Perl provides a ``quasiquoting''
+mechanism using the quote <code>q:code</code>, followed by a block intended to
+represent an AST:</p>
+<pre>
+    return q:code { say &quot;foo&quot; };</pre>
+<p>Modifiers to the <code>:code</code> adverb can modify the operation:</p>
+<pre>
+    :ast(MyAst)         # Default :ast(AST)
+    :lang(Ruby)         # Default :lang($?PARSER)
+    :unquote&lt;[: :]&gt;     # Default &quot;triple rule&quot;</pre>
+<p>Within a quasiquote, variable and function names resolve according
+to the lexical scope of the macro definition.  Unrecognized symbols raise
+errors when the macro is being compiled, <em>not</em> when it's being used.</p>
+<p>To make a symbol resolve to the (partially compiled) scope of the macro
+call, use the <code>COMPILING::</code> pseudo-package:</p>
+<pre>
+    macro moose () { q:code { $COMPILING::x } }</pre>
+<pre>
+    moose(); # macro-call-time error
+    my $x;
+    moose(); # resolves to 'my $x'</pre>
+<p>If you want to mention symbols from the scope of the macro call, use the
+import syntax as modifiers to <code>:code</code>:</p>
+<pre>
+    :COMPILING&lt;$x&gt;      # $x always refers to $x in caller's scope
+    :COMPILING          # All free variables fallback to caller's scope</pre>
+<p>If those symbols do not exist in the scope of the compiling scope, a
+compile-time exception is thrown at macro call time.</p>
+<p>Similarly, in the macro body you may either refer to the <code>$x</code> declared in the
+scope of the macro call as <code>$COMPILING::x</code>, or bind to them explicitly:</p>
+<pre>
+    my $x := $COMPILING::x;</pre>
+<p>You may also use an import list to bind multiple symbols into the
+macro's lexical scope:</p>
+<pre>
+    require COMPILING &lt;$x $y $z&gt;;</pre>
+<p>Note that you need to use the run-time <code>:=</code> and <code>require</code> forms, not <code>::=</code>
+and <code>use</code>, because the macro caller's compile-time is the macro's runtime.</p>
+<p>
+</p>
+<h2><a name="Splicing">Splicing</a></h2>
+<p>Bare AST variables (such as the arguments to the macro) may not be
+spliced directly into a quasiquote because they would be taken as
+normal bindings.  Likewise, program text strings to be inserted need
+to be specially marked or they will be bound normally.  To insert a
+``unquoted'' expression of either type within a quasiquote, use the
+quasiquote delimiter tripled, typically a bracketing quote of some sort:</p>
+<pre>
+    return q:code { say $a + {{{ $ast }}} }
+    return q:code [ say $a + [[[ $ast ]]] ]
+    return q:code &lt; say $a + &lt;&lt;&lt; $ast &gt;&gt;&gt; &gt;
+    return q:code ( say $a + ((( $ast ))) )</pre>
+<p>The delimiters don't have to be bracketing quotes, but the following
+is probably to be construed as Bad Style:</p>
+<pre>
+    return q:code / say $a + /// $ast /// /</pre>
+<p>(Note to implementors: this must not be implemented by finding
+the final closing delimiter and preprocessing, or we'll violate our
+one-pass parsing rule.  Perl 6 parsing rules are parameterized to know
+their closing delimiter, so adding the opening delimiter should not
+be a hardship.  Alternately the opening delimiter can be deduced from
+the closing delimiter.  Writing a rule that looks for three opening
+delimiters in a row should not be a problem.  It has to be a special
+grammar rule, though, not a fixed token, since we need to be able to
+nest code blocks with different delimiters.  Likewise when parsing the
+inner expression, the inner parser subrule is parameterized to know that
+<code>}}}</code> or whatever is its closing delimiter.)</p>
+<p>Unquoted expressions are inserted appropriately depending on the
+type of the variable, which may be either a syntax tree or a string.
+(Again, syntax tree is preferred.)  The case is similar to that of a
+macro called from within the quasiquote, insofar as reparsing only
+happens with the string version of interpolation, except that such
+a reparse happens at macro call time rather than macro definition
+time, so its result cannot change the parser's expectations about
+what follows the interpolated variable.</p>
+<p>Hence, while the quasiquote itself is being parsed, the syntactic
+interpolation of a unquoted expression into the quasiquote always
+results in the expectation of an operator following the variable.
+(You must use a call to a submacro if you want to expect something
+else.)  Of course, the macro definition as a whole can expect
+whatever it likes afterwards, according to its syntactic category.
+(Generally, a term expects a following postfix or infix operator,
+and an operator expects a following term or prefix operator.  This
+does not matter for textual macros, however, since the reparse of
+the text determines subsequent expectations.)</p>
+<p>Quasiquotes default to hygienic lexical scoping, just like closures.
+The visibility of lexical variables is limited to the q:code expression
+by default.  A variable declaration can be made externally visible using 
+the <code>COMPILING::</code> pseudo-package.  Individual variables can be made visible,
+or all top-level variable declarations can be exposed using the
+<code>q:code(:COMPILING)</code> form.</p>
+<p>Both examples below will add <code>$new_variable</code> to the lexical scope of
+the macro call:</p>
+<pre>
+  q:code {  my $COMPILING::new_variable;   my $private_var; ... }
+  q:code(:COMPILING) { my $new_variable; { my $private_var; ... } }</pre>
+<p>(Note that <code>:COMPILING</code> has additional effects described in <a href="#Macros">the Macros manpage</a>.)</p>
+<p>
+<a href="#__index__"><small>Back to Top</small></a>
+</p>
+<hr />
+<h1><a name="Other20matters">Other matters</a></h1>
+<p>
+</p>
+<h2><a name="Anonymous20hashes20vs20blocks">Anonymous hashes vs blocks</a></h2>
+<p><code>{...}</code> is always a block.  However, if it is completely empty or
+consists of a single list, the first element of which is either a hash
+or a pair, it is executed immediately to compose a Hash object.</p>
+<p>The standard <code>pair</code> list operator is equivalent to:</p>
+<pre>
+    sub pair (*@LIST) {
+        my @pairs;
+        for @LIST -&gt; $key, $val {
+            push @pairs, $key =&gt; $val;
+        }
+        return @pairs;
+    }</pre>
+<p>or more succinctly (and lazily):</p>
+<pre>
+    sub pair (*@LIST) {
+        gather {
+            for @LIST -&gt; $key, $val {
+                take $key =&gt; $val;
+            }
+        }
+    }</pre>
+<p>The standard <code>hash</code> list operator is equivalent to:</p>
+<pre>
+    sub hash (*@LIST) {
+        return { pair @LIST };
+    }</pre>
+<p>So you may use <code>sub</code> or <code>hash</code> or <code>pair</code> to disambiguate:</p>
+<a name="msg_18"></a>
+<a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
+<div ID=header_shown_18 style="display: none;">- Hide t/data_types/hash_ref.t (line 74 ~ line 92) -
+</div>
+<div ID=header_hidden_18 style="display: block;">- Show t/data_types/hash_ref.t (19 lines) -</div>
+</a>
+</p>
+<div ID=hide_18 style="display:none; border:1px solid"><pre>
+    :# L&lt;S06/&quot;Anonymous hashes vs blocks&quot; /So you may use sub or hash or pair to disambiguate:/&gt;
+    :{
+    :  my $hash_a = { a =&gt; 1, b =&gt; 2 };              isa_ok $hash_a, &quot;Hash&quot;;
+    :  my $hash_b = { a =&gt; 1, &quot;b&quot;, 2 };              isa_ok $hash_b, &quot;Hash&quot;;
+    :  my $hash_c = hash('a', 1, &quot;b&quot;, 2);              isa_ok $hash_c, &quot;Hash&quot;;
+    :  my $hash_d = hash 'a', 1, &quot;b&quot;, 2;               isa_ok $hash_d, &quot;Hash&quot;;
+    :  my $hash_e = { pair &quot;a&quot;, 1, &quot;b&quot;, 2 };         isa_ok $hash_e, &quot;Hash&quot;;
+    :}
+    :
+    :# infinity HoHoHoH...
+    :{
+    :  my %hash = (val =&gt; 42);
+    :  %hash&lt;ref&gt; = \%hash;
+    :  isa_ok %hash,           &quot;Hash&quot;;
+    :  isa_ok %hash&lt;ref&gt;,      &quot;Hash&quot;;
+    :  isa_ok %hash&lt;ref&gt;&lt;ref&gt;, &quot;Hash&quot;;
+    :  is %hash&lt;ref&gt;&lt;val&gt;,      42, &quot;access to infinite HoHoHoH... (1)&quot;;
+    :  is %hash&lt;ref&gt;&lt;ref&gt;&lt;val&gt;, 42, &quot;access to infinite HoHoHoH... (2)&quot;;
+    :}</pre>
+</div><pre>
+    $ref =  sub { 1, 2, 3, 4, 5, 6 };   # Anonymous sub returning list
+    $ref =      { 1, 2, 3, 4, 5, 6 };   # Anonymous sub returning list
+    $ref =      { 1=&gt;2, 3=&gt;4, 5=&gt;6 };   # Anonymous hash
+    $ref =      { 1=&gt;2, 3, 4, 5, 6 };   # Anonymous hash
+    $ref =  hash( 1, 2, 3, 4, 5, 6 );   # Anonymous hash
+    $ref =  hash  1, 2, 3, 4, 5, 6  ;   # Anonymous hash
+    $ref = { pair 1, 2, 3, 4, 5, 6 };   # Anonymous hash</pre>
+<p>
+</p>
+<h2><a name="Pairs20as20lvalues">Pairs as lvalues</a></h2>
+<p>Pairs can be used as lvalues. The value of the pair is the recipient of
+the assignment:</p>
+<pre>
+    (key =&gt; $var) = &quot;value&quot;;</pre>
+<p>When binding pairs, names can be used to ``match up'' lvalues and rvalues,
+provided you write the left side as a signature using <code>:(...)</code> notation:</p>
+<pre>
+    :(:who($name), :why($reason)) := (why =&gt; $because, who =&gt; &quot;me&quot;);</pre>
+<p>(Otherwise the parser doesn't know it should parse the insides as a
+signature and not as an ordinary expression until it gets to the <code>:=</code>,
+and that would be bad.  Possibly we should require a ``<code>my</code>'' out front
+as well...)</p>
+<p>
+</p>
+<h2><a name="Out2dof2dscope20names">Out-of-scope names</a></h2>
+<p><code>GLOBAL::&lt;$varname&gt;</code> specifies the <code>$varname</code> declared in the <code>*</code>
+namespace.  Or maybe it's the other way around...</p>
+<p><code>CALLER::&lt;$varname&gt;</code> specifies the <code>$varname</code> visible in
+the dynamic scope from which the current block/closure/subroutine
+was called, provided that variable is declared with the ``<code>is context</code>''
+trait.  (Implicit lexicals such as <code>$_</code> are automatically
+assumed to be contextual.)</p>
+<p><code>CONTEXT::&lt;$varname&gt;</code> specifies the <code>$varname</code> visible in the
+innermost dynamic scope that declares the variable with the ``<code>is context</code>''
+trait.</p>
+<p><code>MY::&lt;$varname&gt;</code> specifies the lexical <code>$varname</code> declared in the current
+lexical scope.</p>
+<p><code>OUR::&lt;$varname&gt;</code> specifies the <code>$varname</code> declared in the current
+package's namespace.</p>
+<p><code>COMPILING::&lt;$varname&gt;</code> specifies the <code>$varname</code> declared (or about
+to be declared) in the lexical scope currently being compiled.</p>
+<p><code>OUTER::&lt;$varname&gt;</code> specifies the <code>$varname</code> declared in the lexical
+scope surrounding the current lexical scope (i.e. the scope in which
+the current block was defined).</p>
+<p>
+</p>
+<h2><a name="Declaring20a20MAIN20subroutine">Declaring a <code>MAIN</code> subroutine</a></h2>
+<p>Ordinarily a top-level Perl ``script'' just evaluates its anonymous
+mainline code and exits.  During the mainline code, the program's
+arguments are available in raw form from the <code>@ARGS</code> array.  At the end of
+the mainline code, however, a <code>MAIN</code> subroutine will be called with
+whatever command-line arguments remain in <code>@ARGS</code>.  This call is
+performed if and only if:</p>
+<dl>
+<dt><strong><a name="item_a2529">a)</a></strong><br />
+</dt>
+<dd>
+the compilation unit was directly invoked rather than
+by being required by another compilation unit, and
+</dd>
+<p></p>
+<dt><strong><a name="item_b2529">b)</a></strong><br />
+</dt>
+<dd>
+the compilation unit declares a <code>Routine</code> named ``<code>MAIN</code>'', and
+</dd>
+<p></p>
+<dt><strong><a name="item_c2529">c)</a></strong><br />
+</dt>
+<dd>
+the mainline code is not terminated prematurely, such as with an explicit call
+to <code>exit</code>, or an uncaught exception.
+</dd>
+<p></p></dl>
+<p>The command line arguments (or what's left of them after mainline
+processing) is magically converted into a <code>Capture</code> and passed to
+<code>MAIN</code> as its arguments, so switches may be bound as named args and
+other arguments to the program may be bound to positional parameters
+or the slurpy array:</p>
+<pre>
+    sub MAIN ($directory, :$verbose, *%other, *@filenames) {
+        for @filenames { ... }
+    }</pre>
+<p>If <code>MAIN</code> is declared as a set of multi subs, MMD dispatch is performed.</p>
+<p>As with module and class declarations, a sub declaration
+ending in semicolon is allowed at the outermost file scope if it is the
+first such declaration, in which case the rest of the file is the body:</p>
+<pre>
+    sub MAIN ($directory, :$verbose, *%other, *@filenames);
+    for @filenames { ... }</pre>
+<p>This form is allowed only for simple subs named <code>MAIN</code> that are intended
+to be run from the command line.
+Proto or multi definitions may not be written in semicolon form,
+nor may <code>MAIN</code> subs within a module or class.  (A <code>MAIN</code> routine
+is allowed in a module or class, but is not usually invoked unless
+the file is run directly (see a above).  This corresponds to the
+``unless caller'' idiom of Perl 5.)  In general, you may have only one
+semicolon-style declaration that controls the whole file.</p>
+<p>If the dispatch to <code>MAIN</code> fails the <code>USAGE</code> routine is called.
+If there is no such routine, a default message is printed.  This
+usage message is automatically generated from the signature (or
+signatures) of <code>MAIN</code>.  This message is generated at compile time,
+and hence is available at ``mainline'' time as the rw property
+<code>&amp;USAGE.text</code>.  You may also access it from your own <code>USAGE</code> routine.</p>
+<p>Common Unix command-line conventions are mapped onto the capture
+as follows:</p>
+<pre>
+     On command line...         $ARGS capture gets...</pre>
+<pre>
+    -name                      :name
+    -name=value                :name&lt;value&gt;
+    -name=&quot;spacy value&quot;        :name«'spacy value'»
+    -name='spacy value'        :name«'spacy value'»
+    -name=val1,'val 2', etc    :name«val1 'val 2' etc»</pre>
+<pre>
+    --name                     :name            # only if declared Bool
+    --name=value               :name&lt;value&gt;     # don't care
+    --name value               :name&lt;value&gt;     # only if not declared Bool</pre>
+<pre>
+    --name=&quot;spacy value&quot;       :name«'spacy value'»
+    --name &quot;spacy value&quot;       :name«'spacy value'»
+    --name='spacy value'       :name«'spacy value'»
+    --name 'spacy value'       :name«'spacy value'»
+    --name=val1,'val 2', etc   :name«val1 'val 2' etc»
+    --name val1 'val 2' etc    :name«val1 'val 2' etc» # only if declared @
+    --                                 # end named argument processing</pre>
+<pre>
+    +name                      :!name
+    +name=value                :name&lt;value&gt; but False
+    +name=&quot;spacy value&quot;        :name«'spacy value'» but False
+    +name='spacy value'        :name«'spacy value'» but False
+    +name=val1,'val 2', etc    :name«val1 'val 2' etc» but False</pre>
+<pre>
+    :name                      :name
+    :!name                     :!name   # potential conflict with ! histchar
+    :/name                     :!name   # potential workaround?
+    :name=value                :name&lt;value&gt;
+    :name=&quot;spacy value&quot;        :name«'spacy value'»
+    :name='spacy value'        :name«'spacy value'»
+    :name=val1,'val 2', etc    :name«val1 'val 2' etc»</pre>
+<p>Exact Perl 6 forms are okay if quoted from shell processing:</p>
+<pre>
+    ':name&lt;value&gt;'             :name&lt;value&gt;
+    ':name(42)'                :name(42)</pre>
+<p>For security reasons, only constants are allowed as arguments, however.</p>
+<p>The default <code>Capture</code> mapper pays attention to declaration of <code>MAIN</code>'s
+parameters to resolve certain ambiguities.  A <code>--foo</code> switch needs to
+know whether to treat the next word from the command line as an argument.
+(Allowing the spacey form gives the shell room to do various things to
+the argument.)  The short <code>-foo</code> form never assumes a separate argument,
+and you must use <code>=</code>.  For the <code>--foo</code> form, if there is a named parameter
+corresponding to the switch name, and it is of type <code>Bool</code>, then no argument
+is expected.  Otherwise an argument is expected.  If the parameter is of
+a non-slurpy array type, all subsequent words up to the next command-line
+switch (or the end of the list) are bound to that parameter.</p>
+<p>As usual, switches are assumed to be first, and everything after
+the first non-switch, or any switches after a <code>--</code>, are treated
+as positionals or go into the slurpy array (even if they look like
+switches).  Other policies may easily be introduced by calling <code>MAIN</code>
+explicitly.  For instance, you can parse your arguments with a grammar
+and pass the resulting <code>Match</code> object as a <code>Capture</code> to <code>MAIN</code>:</p>
+<pre>
+    @*ARGS ~~ /&lt;MyGrammar::top&gt;/;
+    MAIN([,] =$/);
+    exit;</pre>
+<pre>
+    sub MAIN ($frompart, $topart, *@rest) {
+        if $frompart&lt;foo&gt; { ... }
+        if $topart&lt;bar&gt;&lt;baz&gt; { ... }
+    }</pre>
+<p>This will conveniently bind top-level named matches to named
+parameters, but still give you access to nested matches through those
+parameters, just as any <code>Match</code> object would.  Of course, in this example,
+there's no particular reason the sub has to be named <code>MAIN</code>.</p>
+<p>To give both a long and a short switch name, you may use the pair
+notation.  The key will be considered the short switch name, while
+the variable name will be considered the long switch name.  So if
+the previous declaration had been:</p>
+<pre>
+    sub MAIN (:f($frompart), :t($topart), *@rest)</pre>
+<p>then you could invoke the program with either <code>-f</code> or <code>--frompart</code>
+to specify the first parameter.  Likewise you could use either <code>-t</code>
+or <code>--topart</code> for the second parameter.</p>
+<p>If a switch of the form <code>-abc</code> cannot be matched against any
+particular parameter, an attempt will be made to match it as if it
+had been written <code>-a -b -c</code>.</p>
+<p><a href="#__index__"><small>Back to Top</small></a></p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
