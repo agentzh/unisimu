@@ -527,14 +527,106 @@ with the <a href="#item_is_rw"><code>is rw</code></a> trait:</p>
 <a name="msg_29"></a>
 <a href="?hide_quotes=no#msg_29" onclick="return tog_quote(29);">
 <div ID=header_shown_29 style="display: none;">
-- Hide the snippet from t/data_types/anon_block.t (line 12 ~ line 12) -
+- Hide the snippet from t/data_types/anon_block.t (line 12 ~ line 104) -
 </div>
 <div ID=header_hidden_29 style="display: block;">
-- Show the snippet from t/data_types/anon_block.t (line 12 ~ line 12, 1 lines) -</div>
+- Show the snippet from t/data_types/anon_block.t (line 12 ~ line 104, 93 lines) -</div>
 </a>
 <div ID=hide_29 style="display:none; border:1px solid">
 <pre>
-L&lt;S06/"Blocks"&gt;</pre>
+L&lt;S06/"Blocks"&gt;
+L&lt;S04/"The Relationship of Blocks and Declarations"&gt;
+
+=cut
+
+plan 32;
+
+# anon blocks L&lt;S06/"Standard Subroutines"&gt;
+my $anon_sub = sub { 1 };
+isa_ok($anon_sub, 'Sub');
+is($anon_sub(), 1, 'sub { } works');
+
+my $anon_sub_w_arg = sub ($arg) { 1 + $arg };
+isa_ok($anon_sub_w_arg, 'Sub');
+is($anon_sub_w_arg(3), 4, 'sub ($arg) {} works');
+
+# anon blocks L&lt;S06/"Blocks"&gt;
+my $anon_block = { 1 };
+isa_ok($anon_block, 'Block');
+is($anon_block(), 1, '{} &lt;anon block&gt; works');
+
+# pointy subs L&lt;S06/"Pointy subs"&gt;
+my $pointy_block = -&gt; { 1 };
+isa_ok($pointy_block, 'Block');
+is($pointy_block(), 1, '-&gt; {} &lt;"pointy" block&gt; works');
+
+my $pointy_block_w_arg = -&gt; $arg { 1 + $arg };
+isa_ok($pointy_block_w_arg, 'Block');
+is($pointy_block_w_arg(3), 4, '-&gt; $arg {} &lt;"pointy" block w/args&gt; works');
+
+my $pointy_block_w_multiple_args = -&gt; $arg1, $arg2 { $arg1 + $arg2 };
+isa_ok($pointy_block_w_multiple_args, 'Block');
+is($pointy_block_w_multiple_args(3, 4), 7, '-&gt; $arg1, $arg2 {} &lt;"pointy" block w/multiple args&gt; works');
+
+my $pointy_block_nested = -&gt; $a { -&gt; $b { $a + $b }};
+isa_ok($pointy_block_nested, Block);
+isa_ok($pointy_block_nested(5), Block);
+is $pointy_block_nested(5)(6), 11, '-&gt; $a { -&gt; $b { $a+$b }} nested &lt;"pointy" block&gt; works';
+
+# bare blocks L&lt;S06/"Blocks"&gt;
+
+my $foo;
+{$foo = "blah"};
+is($foo, "blah", "lone block actually executes it's content");
+
+my $foo2;
+{$foo2 = "blah"};
+is($foo2, "blah", "lone block w/out a semicolon actually executes it's content");
+
+my $foo3;
+({$foo3 = "blah"});
+ok(!defined($foo3), "block enclosed by parentheses should not auto-execute (1)", :todo&lt;bug&gt;);
+
+my $foo4;
+({$foo4 = "blah"},);
+ok(!defined($foo4), "block enclosed by parentheses should not auto-execute (2)");
+
+my ($one, $two);
+# The try's here because it should die: $foo{...} should only work if $foo isa
+# Hash (or sth. which provides appropriate tieing/&amp;postcircumfix:&lt;{
+# }&gt;/whatever, but a Code should surely not support hash access).
+# Additionally, a smart compiler will detect thus errors at compile-time, so I
+# added an eval().  --iblech
+try { eval '{$one = 1}{$two = 2}' };
+is($one, undef, 'two blocks ({} {}) no semicolon after either,.. first block does not execute');
+is($two, 2, '... but second block does (parsed as hash subscript)');
+
+my ($one_a, $two_a);
+{$one_a = 1}; {$two_a = 2}
+is($one_a, 1, '... two blocks ({}; {}) semicolon after the first only,.. first block does execute');
+is($two_a, 2, '... and second block does too');
+
+my ($one_b, $two_b);
+{
+    $one_b = 1
+}
+{
+    $two_b = 2
+};
+is($one_b, 1, '... two stand-alone blocks ({\n...\n}\n{\n...\n}),.. first block does execute');
+is($two_b, 2, '... and second block does too');
+
+my ($one_c, $two_c);
+{$one_c = 1}; {$two_c = 2};
+is($one_c, 1, '... two blocks ({}; {};) semicolon after both,.. first block does execute');
+is($two_c, 2, '... and second block does too');
+
+sub f { { 3 } }
+is(f(), 3, 'bare blocks immediately runs even as the last statement');
+is((sub { { 3 } }).(), 3, 'ditto for anonymous subs');
+is((sub { { { 3 } } }).(), 3, 'ditto, even if nested');
+dies_ok({(sub { { $^x } }).()}, 'implicit params become errors');
+isnt((sub { -&gt; { 3 } }).(), 3, 'as are pointies');</pre>
 </div><p>Raw blocks are also executable code structures in Perl 6.</p>
 <p>Every block defines an object of type <code>Code</code>, which may either be
 executed immediately or passed on as a <code>Code</code> object.  A
@@ -1809,14 +1901,60 @@ argument list becomes a zero-dimensional slice.  It differs from
 <a name="msg_8"></a>
 <a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
 <div ID=header_shown_8 style="display: none;">
-- Hide the snippet from t/operators/pipe.t (line 11 ~ line 11) -
+- Hide the snippet from t/operators/pipe.t (line 11 ~ line 57) -
 </div>
 <div ID=header_hidden_8 style="display: block;">
-- Show the snippet from t/operators/pipe.t (line 11 ~ line 11, 1 lines) -</div>
+- Show the snippet from t/operators/pipe.t (line 11 ~ line 57, 47 lines) -</div>
 </a>
 <div ID=hide_8 style="display:none; border:1px solid">
 <pre>
-L&lt;S06/"Feed operators"&gt;</pre>
+L&lt;S06/"Feed operators"&gt;
+L&lt;S03/"Feed operators"&gt;
+
+=cut
+
+plan 7;
+
+{
+    my @a = (1, 2);
+    my (@b, @c);
+    
+    eval '@a ==&gt; @b';
+    #eval '@c &lt;== @a'; # this yields the error:
+    #Fail: cannot cast into a handle: VList [VInt 1,VInt 2]
+
+    is(~@b, ~@a, "ltr pipe as simple assignment", :todo);
+    is(~@c, ~@a, "rtl pipe as simple assignment", :todo);
+};
+
+{
+    my @a = (1 .. 5);
+    my @e = (2, 4);
+
+    my (@b, @c);
+    eval '@a ==&gt; grep { ($_ % 2) == 0 } ==&gt; @b';
+    #eval '@c &lt;== grep { ($_ % 2) == 0 } &lt;== @a';
+
+    is(~@b, ~@e, "array ==&gt; grep ==&gt; result", :todo);
+    is(~@c, ~@e, "result &lt;== grep &lt;== array", :todo);
+};
+
+{
+    my ($got_x, $got_y, @got_z);
+    sub foo ($x, $y?, *@z) {
+        $got_x = $x;
+        $got_y = $y;
+        @got_z = @z;
+    }
+
+    my @a = (1 .. 5);
+
+    eval '@a ==&gt; foo "x"';
+
+    is($got_x, "x", "x was passed as explicit param", :todo);
+    is($got_y, undef, "optional param y was not bound to piped list");
+    is(~@got_z, ~@a, '...slurpy array *@z got it', :todo);
+};</pre>
 </div><p>The variadic list of a subroutine call can be passed in separately
 from the normal argument list, by using either of the <em>feed</em> operators:
 <code>&lt;==</code> or <code>==&gt;</code>.</p>
@@ -3715,14 +3853,26 @@ by binding:</p>
 <a name="msg_24"></a>
 <a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
 <div ID=header_shown_24 style="display: none;">
-- Hide the snippet from t/magicals/sub.t (line 15 ~ line 15) -
+- Hide the snippet from t/magicals/sub.t (line 15 ~ line 27) -
 </div>
 <div ID=header_hidden_24 style="display: block;">
-- Show the snippet from t/magicals/sub.t (line 15 ~ line 15, 1 lines) -</div>
+- Show the snippet from t/magicals/sub.t (line 15 ~ line 27, 13 lines) -</div>
 </a>
 <div ID=hide_24 style="display:none; border:1px solid">
 <pre>
-# L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object"&gt;</pre>
+# L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object"&gt;
+# L&lt;S02/"Names" /Which sub am I in/&gt;
+sub factorial { @_[0] &lt; 2 ?? 1 !! @_[0] * &amp;?ROUTINE(@_[0] - 1) }
+
+my $result1 = factorial(3);
+is($result1, 6, 'the &amp;?ROUTINE magical works correctly');
+
+my $factorial = sub { @_[0] &lt; 2 ?? 1 !! @_[0] * &amp;?ROUTINE(@_[0] - 1) };
+my $result2 = $factorial(3);
+is($result2, 6, 'the &amp;?ROUTINE magical works correctly in anon-subs');
+
+my $baz = try { &amp;?ROUTINE };
+ok(!defined($baz), '&amp;?ROUTINE not defined outside of a sub');</pre>
 </div><a name="msg_23"></a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID=header_shown_23 style="display: none;">
@@ -3753,14 +3903,23 @@ named <code>&amp;MAIN</code> in the file's package.)</p>
 <a name="msg_25"></a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID=header_shown_25 style="display: none;">
-- Hide the snippet from t/magicals/subname.t (line 8 ~ line 8) -
+- Hide the snippet from t/magicals/subname.t (line 8 ~ line 17) -
 </div>
 <div ID=header_hidden_25 style="display: block;">
-- Show the snippet from t/magicals/subname.t (line 8 ~ line 8, 1 lines) -</div>
+- Show the snippet from t/magicals/subname.t (line 8 ~ line 17, 10 lines) -</div>
 </a>
 <div ID=hide_25 style="display:none; border:1px solid">
 <pre>
-# L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object" /current routine name/&gt;</pre>
+# L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object" /current routine name/&gt;
+# L&lt;S02/"Names" /Which routine am I in/&gt;
+sub foo { return &amp;?ROUTINE.name }
+is(foo(), '&amp;main::foo', 'got the right routine name');
+
+my $bar = sub { return &amp;?ROUTINE.name };
+is($bar(), '&lt;anon&gt;', 'got the right routine name (anon-block)');
+
+my $baz = try { &amp;?ROUTINE.name };
+ok(not(defined $baz), '&amp;?ROUTINE.name not defined outside of a routine');</pre>
 </div><p>Note that <code>&amp;?ROUTINE</code> refers to the current single sub, even if it is
 declared ``multi''.  To redispatch to the entire suite under a given short
 name, just use the named form, since there are no anonymous multis.</p>

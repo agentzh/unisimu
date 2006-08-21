@@ -6798,27 +6798,17 @@ BUILDALL routine for the current class, which initializes the object in
 least-derived to most-derived order. See <a href="#synopsis20123a20objects">Synopsis 12: Objects</a>
 for more detailed information on object creation.</p>
 </dd>
-<a name="msg_2"></a>
-<a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
-<div ID=header_shown_2 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11) -
-</div>
-<div ID=header_hidden_2 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11, 1 lines) -</div>
-</a>
-<div ID=hide_2 style="display:none; border:1px solid">
-<pre>
-# L&lt;S29/"Conversions" /ord/&gt;</pre>
-</div><a name="msg_8"></a>
+<a name="msg_8"></a>
 <a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
 <div ID=header_shown_8 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
 </div>
 <div ID=header_hidden_8 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_8 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -6946,16 +6936,152 @@ for 0..31 -&gt; $code {
 </pre>
 </div><dt><strong><a name="item_chr">chr</a></strong><br />
 </dt>
-<a name="msg_9"></a>
-<a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
-<div ID=header_shown_9 style="display: none;">
+<a name="msg_2"></a>
+<a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
+<div ID=header_shown_2 style="display: none;">
 - Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
 </div>
-<div ID=header_hidden_9 style="display: block;">
+<div ID=header_hidden_2 style="display: block;">
 - Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+</a>
+<div ID=hide_2 style="display:none; border:1px solid">
+<pre>
+# L&lt;S29/"Conversions" /chr/&gt;
+
+# What is the best way to test 0 through 31??
+my @maps = (
+  " ",    32,
+  "!",    33,
+  "\"",   34,
+  "#",    35,
+  "$",    36,
+  "%",    37,
+  "&amp;",    38,
+  "\'",   39,
+  "(",    40,
+  ")",    41,
+  "*",    42,
+  "+",    43,
+  ",",    44,
+  "-",    45,
+  ".",    46,
+  "/",    47,
+  "0",    48,
+  "1",    49,
+  "2",    50,
+  "3",    51,
+  "4",    52,
+  "5",    53,
+  "6",    54,
+  "7",    55,
+  "8",    56,
+  "9",    57,
+  ":",    58,
+  ";",    59,
+  "&lt;",    60,
+  "=",    61,
+  "&gt;",    62,
+  "?",    63,
+  "@",    64,
+  "A",    65,
+  "B",    66,
+  "C",    67,
+  "D",    68,
+  "E",    69,
+  "F",    70,
+  "G",    71,
+  "H",    72,
+  "I",    73,
+  "J",    74,
+  "K",    75,
+  "L",    76,
+  "M",    77,
+  "N",    78,
+  "O",    79,
+  "P",    80,
+  "Q",    81,
+  "R",    82,
+  "S",    83,
+  "T",    84,
+  "U",    85,
+  "V",    86,
+  "W",    87,
+  "X",    88,
+  "Y",    89,
+  "Z",    90,
+  "[",    91,
+  "\\",   92,
+  "]",    93,
+  "^",    94,
+  "_",    95,
+  "`",    96,
+  "a",    97,
+  "b",    98,
+  "c",    99,
+  "d",    100,
+  "e",    101,
+  "f",    102,
+  "g",    103,
+  "h",    104,
+  "i",    105,
+  "j",    106,
+  "k",    107,
+  "l",    108,
+  "m",    109,
+  "n",    110,
+  "o",    111,
+  "p",    112,
+  "q",    113,
+  "r",    114,
+  "s",    115,
+  "t",    116,
+  "u",    117,
+  "v",    118,
+  "w",    119,
+  "x",    120,
+  "y",    121,
+  "z",    122,
+  "|",    124,
+  "}",    125,
+  "~",    126,
+
+  # Unicode tests
+  "ä",    228,
+  "€",    8364,
+  "»",    187,
+  "«",    171,
+
+  # Special chars
+  "\o00", 0,
+  "\o01", 1,
+  "\o03", 3,
+);
+
+plan 32+@maps;
+
+for @maps -&gt; $char, $code {
+  my $descr = "\\{$code}{$code &gt;= 32 ?? " == '{$char}'" !! ""}";
+  is ord($char), $code, "ord() works for $descr";
+  is chr($code), $char, "chr() works for $descr";
+}
+
+for 0..31 -&gt; $code {
+  my $char = chr($code);
+  is ord($char), $code, "ord(chr($code)) is $code";
+}
+
+</pre>
+</div><a name="msg_9"></a>
+<a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
+<div ID=header_shown_9 style="display: none;">
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
+</div>
+<div ID=header_hidden_9 style="display: block;">
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_9 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -7083,27 +7209,17 @@ for 0..31 -&gt; $code {
 </pre>
 </div><dt><strong><a name="item_ord">ord</a></strong><br />
 </dt>
-<a name="msg_3"></a>
-<a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
-<div ID=header_shown_3 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11) -
-</div>
-<div ID=header_hidden_3 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11, 1 lines) -</div>
-</a>
-<div ID=hide_3 style="display:none; border:1px solid">
-<pre>
-# L&lt;S29/"Conversions" /ord/&gt;</pre>
-</div><a name="msg_10"></a>
+<a name="msg_10"></a>
 <a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
 <div ID=header_shown_10 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
 </div>
 <div ID=header_hidden_10 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_10 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -7231,16 +7347,152 @@ for 0..31 -&gt; $code {
 </pre>
 </div><pre>
  our Uni multi Str::chr( Uni $codepoint )</pre>
-<a name="msg_11"></a>
-<a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
-<div ID=header_shown_11 style="display: none;">
+<a name="msg_3"></a>
+<a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
+<div ID=header_shown_3 style="display: none;">
 - Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
 </div>
-<div ID=header_hidden_11 style="display: block;">
+<div ID=header_hidden_3 style="display: block;">
 - Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+</a>
+<div ID=hide_3 style="display:none; border:1px solid">
+<pre>
+# L&lt;S29/"Conversions" /chr/&gt;
+
+# What is the best way to test 0 through 31??
+my @maps = (
+  " ",    32,
+  "!",    33,
+  "\"",   34,
+  "#",    35,
+  "$",    36,
+  "%",    37,
+  "&amp;",    38,
+  "\'",   39,
+  "(",    40,
+  ")",    41,
+  "*",    42,
+  "+",    43,
+  ",",    44,
+  "-",    45,
+  ".",    46,
+  "/",    47,
+  "0",    48,
+  "1",    49,
+  "2",    50,
+  "3",    51,
+  "4",    52,
+  "5",    53,
+  "6",    54,
+  "7",    55,
+  "8",    56,
+  "9",    57,
+  ":",    58,
+  ";",    59,
+  "&lt;",    60,
+  "=",    61,
+  "&gt;",    62,
+  "?",    63,
+  "@",    64,
+  "A",    65,
+  "B",    66,
+  "C",    67,
+  "D",    68,
+  "E",    69,
+  "F",    70,
+  "G",    71,
+  "H",    72,
+  "I",    73,
+  "J",    74,
+  "K",    75,
+  "L",    76,
+  "M",    77,
+  "N",    78,
+  "O",    79,
+  "P",    80,
+  "Q",    81,
+  "R",    82,
+  "S",    83,
+  "T",    84,
+  "U",    85,
+  "V",    86,
+  "W",    87,
+  "X",    88,
+  "Y",    89,
+  "Z",    90,
+  "[",    91,
+  "\\",   92,
+  "]",    93,
+  "^",    94,
+  "_",    95,
+  "`",    96,
+  "a",    97,
+  "b",    98,
+  "c",    99,
+  "d",    100,
+  "e",    101,
+  "f",    102,
+  "g",    103,
+  "h",    104,
+  "i",    105,
+  "j",    106,
+  "k",    107,
+  "l",    108,
+  "m",    109,
+  "n",    110,
+  "o",    111,
+  "p",    112,
+  "q",    113,
+  "r",    114,
+  "s",    115,
+  "t",    116,
+  "u",    117,
+  "v",    118,
+  "w",    119,
+  "x",    120,
+  "y",    121,
+  "z",    122,
+  "|",    124,
+  "}",    125,
+  "~",    126,
+
+  # Unicode tests
+  "ä",    228,
+  "€",    8364,
+  "»",    187,
+  "«",    171,
+
+  # Special chars
+  "\o00", 0,
+  "\o01", 1,
+  "\o03", 3,
+);
+
+plan 32+@maps;
+
+for @maps -&gt; $char, $code {
+  my $descr = "\\{$code}{$code &gt;= 32 ?? " == '{$char}'" !! ""}";
+  is ord($char), $code, "ord() works for $descr";
+  is chr($code), $char, "chr() works for $descr";
+}
+
+for 0..31 -&gt; $code {
+  my $char = chr($code);
+  is ord($char), $code, "ord(chr($code)) is $code";
+}
+
+</pre>
+</div><a name="msg_11"></a>
+<a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
+<div ID=header_shown_11 style="display: none;">
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
+</div>
+<div ID=header_hidden_11 style="display: block;">
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_11 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -7368,27 +7620,17 @@ for 0..31 -&gt; $code {
 </pre>
 </div><pre>
  our Uni multi Str::ord( Uni $character )</pre>
-<a name="msg_4"></a>
-<a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
-<div ID=header_shown_4 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11) -
-</div>
-<div ID=header_hidden_4 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11, 1 lines) -</div>
-</a>
-<div ID=hide_4 style="display:none; border:1px solid">
-<pre>
-# L&lt;S29/"Conversions" /ord/&gt;</pre>
-</div><a name="msg_12"></a>
+<a name="msg_12"></a>
 <a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
 <div ID=header_shown_12 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
 </div>
 <div ID=header_hidden_12 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_12 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -7516,27 +7758,17 @@ for 0..31 -&gt; $code {
 </pre>
 </div><pre>
  multi Str::ord( Str $string )</pre>
-<a name="msg_5"></a>
-<a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
-<div ID=header_shown_5 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11) -
-</div>
-<div ID=header_hidden_5 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11, 1 lines) -</div>
-</a>
-<div ID=hide_5 style="display:none; border:1px solid">
-<pre>
-# L&lt;S29/"Conversions" /ord/&gt;</pre>
-</div><a name="msg_13"></a>
+<a name="msg_13"></a>
 <a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
 <div ID=header_shown_13 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
 </div>
 <div ID=header_hidden_13 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_13 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -7666,16 +7898,152 @@ for 0..31 -&gt; $code {
 <a href="#item_chr"><code>chr</code></a> takes a <a href="#item_Uni"><code>Uni</code></a> and returns the exact same value with no change.
 This is because, in Perl 6, a Uni is both an integer codepoint when
 numified and a single character when stringified. Thus, chr is just:</p>
-<a name="msg_14"></a>
-<a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
-<div ID=header_shown_14 style="display: none;">
+<a name="msg_4"></a>
+<a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
+<div ID=header_shown_4 style="display: none;">
 - Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
 </div>
-<div ID=header_hidden_14 style="display: block;">
+<div ID=header_hidden_4 style="display: block;">
 - Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+</a>
+<div ID=hide_4 style="display:none; border:1px solid">
+<pre>
+# L&lt;S29/"Conversions" /chr/&gt;
+
+# What is the best way to test 0 through 31??
+my @maps = (
+  " ",    32,
+  "!",    33,
+  "\"",   34,
+  "#",    35,
+  "$",    36,
+  "%",    37,
+  "&amp;",    38,
+  "\'",   39,
+  "(",    40,
+  ")",    41,
+  "*",    42,
+  "+",    43,
+  ",",    44,
+  "-",    45,
+  ".",    46,
+  "/",    47,
+  "0",    48,
+  "1",    49,
+  "2",    50,
+  "3",    51,
+  "4",    52,
+  "5",    53,
+  "6",    54,
+  "7",    55,
+  "8",    56,
+  "9",    57,
+  ":",    58,
+  ";",    59,
+  "&lt;",    60,
+  "=",    61,
+  "&gt;",    62,
+  "?",    63,
+  "@",    64,
+  "A",    65,
+  "B",    66,
+  "C",    67,
+  "D",    68,
+  "E",    69,
+  "F",    70,
+  "G",    71,
+  "H",    72,
+  "I",    73,
+  "J",    74,
+  "K",    75,
+  "L",    76,
+  "M",    77,
+  "N",    78,
+  "O",    79,
+  "P",    80,
+  "Q",    81,
+  "R",    82,
+  "S",    83,
+  "T",    84,
+  "U",    85,
+  "V",    86,
+  "W",    87,
+  "X",    88,
+  "Y",    89,
+  "Z",    90,
+  "[",    91,
+  "\\",   92,
+  "]",    93,
+  "^",    94,
+  "_",    95,
+  "`",    96,
+  "a",    97,
+  "b",    98,
+  "c",    99,
+  "d",    100,
+  "e",    101,
+  "f",    102,
+  "g",    103,
+  "h",    104,
+  "i",    105,
+  "j",    106,
+  "k",    107,
+  "l",    108,
+  "m",    109,
+  "n",    110,
+  "o",    111,
+  "p",    112,
+  "q",    113,
+  "r",    114,
+  "s",    115,
+  "t",    116,
+  "u",    117,
+  "v",    118,
+  "w",    119,
+  "x",    120,
+  "y",    121,
+  "z",    122,
+  "|",    124,
+  "}",    125,
+  "~",    126,
+
+  # Unicode tests
+  "ä",    228,
+  "€",    8364,
+  "»",    187,
+  "«",    171,
+
+  # Special chars
+  "\o00", 0,
+  "\o01", 1,
+  "\o03", 3,
+);
+
+plan 32+@maps;
+
+for @maps -&gt; $char, $code {
+  my $descr = "\\{$code}{$code &gt;= 32 ?? " == '{$char}'" !! ""}";
+  is ord($char), $code, "ord() works for $descr";
+  is chr($code), $char, "chr() works for $descr";
+}
+
+for 0..31 -&gt; $code {
+  my $char = chr($code);
+  is ord($char), $code, "ord(chr($code)) is $code";
+}
+
+</pre>
+</div><a name="msg_14"></a>
+<a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
+<div ID=header_shown_14 style="display: none;">
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
+</div>
+<div ID=header_hidden_14 style="display: block;">
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_14 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -7803,16 +8171,152 @@ for 0..31 -&gt; $code {
 </pre>
 </div><pre>
  our Uni multi Str::chr( Uni $codepoint) { $codepoint; }</pre>
-<a name="msg_15"></a>
-<a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
-<div ID=header_shown_15 style="display: none;">
+<a name="msg_5"></a>
+<a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
+<div ID=header_shown_5 style="display: none;">
 - Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
 </div>
-<div ID=header_hidden_15 style="display: block;">
+<div ID=header_hidden_5 style="display: block;">
 - Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+</a>
+<div ID=hide_5 style="display:none; border:1px solid">
+<pre>
+# L&lt;S29/"Conversions" /chr/&gt;
+
+# What is the best way to test 0 through 31??
+my @maps = (
+  " ",    32,
+  "!",    33,
+  "\"",   34,
+  "#",    35,
+  "$",    36,
+  "%",    37,
+  "&amp;",    38,
+  "\'",   39,
+  "(",    40,
+  ")",    41,
+  "*",    42,
+  "+",    43,
+  ",",    44,
+  "-",    45,
+  ".",    46,
+  "/",    47,
+  "0",    48,
+  "1",    49,
+  "2",    50,
+  "3",    51,
+  "4",    52,
+  "5",    53,
+  "6",    54,
+  "7",    55,
+  "8",    56,
+  "9",    57,
+  ":",    58,
+  ";",    59,
+  "&lt;",    60,
+  "=",    61,
+  "&gt;",    62,
+  "?",    63,
+  "@",    64,
+  "A",    65,
+  "B",    66,
+  "C",    67,
+  "D",    68,
+  "E",    69,
+  "F",    70,
+  "G",    71,
+  "H",    72,
+  "I",    73,
+  "J",    74,
+  "K",    75,
+  "L",    76,
+  "M",    77,
+  "N",    78,
+  "O",    79,
+  "P",    80,
+  "Q",    81,
+  "R",    82,
+  "S",    83,
+  "T",    84,
+  "U",    85,
+  "V",    86,
+  "W",    87,
+  "X",    88,
+  "Y",    89,
+  "Z",    90,
+  "[",    91,
+  "\\",   92,
+  "]",    93,
+  "^",    94,
+  "_",    95,
+  "`",    96,
+  "a",    97,
+  "b",    98,
+  "c",    99,
+  "d",    100,
+  "e",    101,
+  "f",    102,
+  "g",    103,
+  "h",    104,
+  "i",    105,
+  "j",    106,
+  "k",    107,
+  "l",    108,
+  "m",    109,
+  "n",    110,
+  "o",    111,
+  "p",    112,
+  "q",    113,
+  "r",    114,
+  "s",    115,
+  "t",    116,
+  "u",    117,
+  "v",    118,
+  "w",    119,
+  "x",    120,
+  "y",    121,
+  "z",    122,
+  "|",    124,
+  "}",    125,
+  "~",    126,
+
+  # Unicode tests
+  "ä",    228,
+  "€",    8364,
+  "»",    187,
+  "«",    171,
+
+  # Special chars
+  "\o00", 0,
+  "\o01", 1,
+  "\o03", 3,
+);
+
+plan 32+@maps;
+
+for @maps -&gt; $char, $code {
+  my $descr = "\\{$code}{$code &gt;= 32 ?? " == '{$char}'" !! ""}";
+  is ord($char), $code, "ord() works for $descr";
+  is chr($code), $char, "chr() works for $descr";
+}
+
+for 0..31 -&gt; $code {
+  my $char = chr($code);
+  is ord($char), $code, "ord(chr($code)) is $code";
+}
+
+</pre>
+</div><a name="msg_15"></a>
+<a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
+<div ID=header_shown_15 style="display: none;">
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
+</div>
+<div ID=header_hidden_15 style="display: block;">
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_15 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -7942,27 +8446,17 @@ for 0..31 -&gt; $code {
 In a scalar context, the return value is the <a href="#item_Uni"><code>Uni</code></a> representing
 the first codepoint in the string. In a list context, the return
 value is the list of <a href="#item_Uni"><code>Uni</code></a>s representing the entire string.</p>
-<a name="msg_6"></a>
-<a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
-<div ID=header_shown_6 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11) -
-</div>
-<div ID=header_hidden_6 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11, 1 lines) -</div>
-</a>
-<div ID=hide_6 style="display:none; border:1px solid">
-<pre>
-# L&lt;S29/"Conversions" /ord/&gt;</pre>
-</div><a name="msg_16"></a>
+<a name="msg_16"></a>
 <a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
 <div ID=header_shown_16 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
 </div>
 <div ID=header_hidden_16 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_16 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -8090,16 +8584,152 @@ for 0..31 -&gt; $code {
 </pre>
 </div><p>An integer can be passed to <a href="#item_chr"><code>chr</code></a>, but it will automatically
 be upgraded to a Uni (by interpreting it as a Unicode codepoint).</p>
-<a name="msg_17"></a>
-<a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
-<div ID=header_shown_17 style="display: none;">
+<a name="msg_6"></a>
+<a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
+<div ID=header_shown_6 style="display: none;">
 - Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
 </div>
-<div ID=header_hidden_17 style="display: block;">
+<div ID=header_hidden_6 style="display: block;">
 - Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+</a>
+<div ID=hide_6 style="display:none; border:1px solid">
+<pre>
+# L&lt;S29/"Conversions" /chr/&gt;
+
+# What is the best way to test 0 through 31??
+my @maps = (
+  " ",    32,
+  "!",    33,
+  "\"",   34,
+  "#",    35,
+  "$",    36,
+  "%",    37,
+  "&amp;",    38,
+  "\'",   39,
+  "(",    40,
+  ")",    41,
+  "*",    42,
+  "+",    43,
+  ",",    44,
+  "-",    45,
+  ".",    46,
+  "/",    47,
+  "0",    48,
+  "1",    49,
+  "2",    50,
+  "3",    51,
+  "4",    52,
+  "5",    53,
+  "6",    54,
+  "7",    55,
+  "8",    56,
+  "9",    57,
+  ":",    58,
+  ";",    59,
+  "&lt;",    60,
+  "=",    61,
+  "&gt;",    62,
+  "?",    63,
+  "@",    64,
+  "A",    65,
+  "B",    66,
+  "C",    67,
+  "D",    68,
+  "E",    69,
+  "F",    70,
+  "G",    71,
+  "H",    72,
+  "I",    73,
+  "J",    74,
+  "K",    75,
+  "L",    76,
+  "M",    77,
+  "N",    78,
+  "O",    79,
+  "P",    80,
+  "Q",    81,
+  "R",    82,
+  "S",    83,
+  "T",    84,
+  "U",    85,
+  "V",    86,
+  "W",    87,
+  "X",    88,
+  "Y",    89,
+  "Z",    90,
+  "[",    91,
+  "\\",   92,
+  "]",    93,
+  "^",    94,
+  "_",    95,
+  "`",    96,
+  "a",    97,
+  "b",    98,
+  "c",    99,
+  "d",    100,
+  "e",    101,
+  "f",    102,
+  "g",    103,
+  "h",    104,
+  "i",    105,
+  "j",    106,
+  "k",    107,
+  "l",    108,
+  "m",    109,
+  "n",    110,
+  "o",    111,
+  "p",    112,
+  "q",    113,
+  "r",    114,
+  "s",    115,
+  "t",    116,
+  "u",    117,
+  "v",    118,
+  "w",    119,
+  "x",    120,
+  "y",    121,
+  "z",    122,
+  "|",    124,
+  "}",    125,
+  "~",    126,
+
+  # Unicode tests
+  "ä",    228,
+  "€",    8364,
+  "»",    187,
+  "«",    171,
+
+  # Special chars
+  "\o00", 0,
+  "\o01", 1,
+  "\o03", 3,
+);
+
+plan 32+@maps;
+
+for @maps -&gt; $char, $code {
+  my $descr = "\\{$code}{$code &gt;= 32 ?? " == '{$char}'" !! ""}";
+  is ord($char), $code, "ord() works for $descr";
+  is chr($code), $char, "chr() works for $descr";
+}
+
+for 0..31 -&gt; $code {
+  my $char = chr($code);
+  is ord($char), $code, "ord(chr($code)) is $code";
+}
+
+</pre>
+</div><a name="msg_17"></a>
+<a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
+<div ID=header_shown_17 style="display: none;">
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
+</div>
+<div ID=header_hidden_17 style="display: block;">
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_17 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -8235,13 +8865,14 @@ undefined <a href="#item_Uni"><code>Uni</code></a>.</p>
 <a name="msg_18"></a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID=header_shown_18 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
 </div>
 <div ID=header_hidden_18 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_18 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -8370,24 +9001,149 @@ for 0..31 -&gt; $code {
 </div><a name="msg_7"></a>
 <a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
 <div ID=header_shown_7 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
 </div>
 <div ID=header_hidden_7 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 11, 1 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
 </a>
 <div ID=hide_7 style="display:none; border:1px solid">
 <pre>
-# L&lt;S29/"Conversions" /ord/&gt;</pre>
+# L&lt;S29/"Conversions" /chr/&gt;
+
+# What is the best way to test 0 through 31??
+my @maps = (
+  " ",    32,
+  "!",    33,
+  "\"",   34,
+  "#",    35,
+  "$",    36,
+  "%",    37,
+  "&amp;",    38,
+  "\'",   39,
+  "(",    40,
+  ")",    41,
+  "*",    42,
+  "+",    43,
+  ",",    44,
+  "-",    45,
+  ".",    46,
+  "/",    47,
+  "0",    48,
+  "1",    49,
+  "2",    50,
+  "3",    51,
+  "4",    52,
+  "5",    53,
+  "6",    54,
+  "7",    55,
+  "8",    56,
+  "9",    57,
+  ":",    58,
+  ";",    59,
+  "&lt;",    60,
+  "=",    61,
+  "&gt;",    62,
+  "?",    63,
+  "@",    64,
+  "A",    65,
+  "B",    66,
+  "C",    67,
+  "D",    68,
+  "E",    69,
+  "F",    70,
+  "G",    71,
+  "H",    72,
+  "I",    73,
+  "J",    74,
+  "K",    75,
+  "L",    76,
+  "M",    77,
+  "N",    78,
+  "O",    79,
+  "P",    80,
+  "Q",    81,
+  "R",    82,
+  "S",    83,
+  "T",    84,
+  "U",    85,
+  "V",    86,
+  "W",    87,
+  "X",    88,
+  "Y",    89,
+  "Z",    90,
+  "[",    91,
+  "\\",   92,
+  "]",    93,
+  "^",    94,
+  "_",    95,
+  "`",    96,
+  "a",    97,
+  "b",    98,
+  "c",    99,
+  "d",    100,
+  "e",    101,
+  "f",    102,
+  "g",    103,
+  "h",    104,
+  "i",    105,
+  "j",    106,
+  "k",    107,
+  "l",    108,
+  "m",    109,
+  "n",    110,
+  "o",    111,
+  "p",    112,
+  "q",    113,
+  "r",    114,
+  "s",    115,
+  "t",    116,
+  "u",    117,
+  "v",    118,
+  "w",    119,
+  "x",    120,
+  "y",    121,
+  "z",    122,
+  "|",    124,
+  "}",    125,
+  "~",    126,
+
+  # Unicode tests
+  "ä",    228,
+  "€",    8364,
+  "»",    187,
+  "«",    171,
+
+  # Special chars
+  "\o00", 0,
+  "\o01", 1,
+  "\o03", 3,
+);
+
+plan 32+@maps;
+
+for @maps -&gt; $char, $code {
+  my $descr = "\\{$code}{$code &gt;= 32 ?? " == '{$char}'" !! ""}";
+  is ord($char), $code, "ord() works for $descr";
+  is chr($code), $char, "chr() works for $descr";
+}
+
+for 0..31 -&gt; $code {
+  my $char = chr($code);
+  is ord($char), $code, "ord(chr($code)) is $code";
+}
+
+</pre>
 </div><a name="msg_19"></a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID=header_shown_19 style="display: none;">
-- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136) -
+- Hide the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136) -
 </div>
 <div ID=header_hidden_19 style="display: block;">
-- Show the snippet from t/builtins/strings/ord_and_chr.t (line 12 ~ line 136, 125 lines) -</div>
+- Show the snippet from t/builtins/strings/ord_and_chr.t (line 11 ~ line 136, 126 lines) -</div>
 </a>
 <div ID=hide_19 style="display:none; border:1px solid">
 <pre>
+# L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??

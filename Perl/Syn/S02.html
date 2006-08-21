@@ -2086,14 +2086,53 @@ Consent of the governed, and all that.
 <a name="msg_11"></a>
 <a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
 <div ID=header_shown_11 style="display: none;">
-- Hide the snippet from t/operators/listquote.t (line 37 ~ line 37) -
+- Hide the snippet from t/operators/listquote.t (line 37 ~ line 76) -
 </div>
 <div ID=header_hidden_11 style="display: block;">
-- Show the snippet from t/operators/listquote.t (line 37 ~ line 37, 1 lines) -</div>
+- Show the snippet from t/operators/listquote.t (line 37 ~ line 76, 40 lines) -</div>
 </a>
 <div ID=hide_11 style="display:none; border:1px solid">
 <pre>
-# L&lt;S02/"Literals"&gt;</pre>
+# L&lt;S02/"Literals"&gt;
+# L&lt;S03/"Chained comparisons"&gt;
+
+my $s = join 'a', &lt;x y z&gt;;
+is($s, "xayaz", 'list context &lt;list&gt;');
+
+my $s = join [,] &lt;a x y z&gt;;
+is($s, "xayaz", 'listop &lt;list&gt;');
+
+my $x = try { [1,2,3].join&lt;a b c&gt; };
+ok($!, '.join&lt;abc&gt; parses but semantic error');
+is($x, [1,2,3].join()&lt;a b c&gt;, '.join&lt;a b c&gt; not treated as argument');
+
+my @y = try { {:a&lt;1&gt;, :b(2)}&lt;a b c&gt; };
+is(@y, [1,2,undef], '{...}&lt;a b c&gt; is hash subscript');
+
+eval '{:a&lt;1&gt;, :b(2)} &lt;a b c&gt;';
+ok($!, '{...} &lt;...&gt; parsefail');
+
+ok((1 | 3) &lt; 3, '(...) &lt; 3 no parsefail');
+
+eval '(1 | 3)&lt;3';
+ok($!, '()&lt;3 parsefail');
+
+eval 'print &lt; 3';
+ok($!, 'print &lt; 3 parsefail');
+
+my $z = eval 'reverse&lt;1 2 3&gt;';
+ok($!, 'reverse&lt;1 2 3&gt; parsefail');
+
+eval ':foo &lt;1 2 3&gt;';
+ok($!, ':foo &lt;1 2 3&gt; parsefail');
+
+my $r = eval ':foo &lt;3';
+is($r, Bool::True, ':foo &lt;3 is comparison');
+
+my $p = eval ':foo&lt;1 2 3&gt;';
+is($p, 'foo' =&gt; (1,2,3), ':foo&lt;1 2 3&gt; is pair of list');
+
+=cut</pre>
 </div><ul>
 <li></li>
 A single underscore is allowed only between any two digits in a
@@ -2876,14 +2915,34 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
 <a name="msg_19"></a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID=header_shown_19 style="display: none;">
-- Hide the snippet from t/syntax/force_context.t (line 54 ~ line 54) -
+- Hide the snippet from t/syntax/force_context.t (line 54 ~ line 74) -
 </div>
 <div ID=header_hidden_19 style="display: block;">
-- Show the snippet from t/syntax/force_context.t (line 54 ~ line 54, 1 lines) -</div>
+- Show the snippet from t/syntax/force_context.t (line 54 ~ line 74, 21 lines) -</div>
 </a>
 <div ID=hide_19 style="display:none; border:1px solid">
 <pre>
-# L&lt;S02/Context/boolean "?"&gt;</pre>
+# L&lt;S02/Context/boolean "?"&gt;
+# L&lt;S03/Changes to Perl 5 operators/"?" imposes boolean context&gt;
+# boolean context
+{
+    my $a = '';
+    is(ref(?$a), 'Bool', 'it is forced into a Bool');
+    ok(!(?$a), 'it is forced into boolean context');
+
+    my $b = 'This will be true';
+    is(ref(?$b), 'Bool', 'it is forced into a Bool');
+    ok(?$b, 'it is forced into boolean context');
+
+    my $c = 0;
+    is(ref(?$c), 'Bool', 'it is forced into a Bool');
+    ok(!(?$c), 'it is forced into boolean context');
+
+    my $d = 1;
+    is(ref(?$d), 'Bool', 'it is forced into a Bool');
+    ok(?$d, 'it is forced into boolean context');
+}
+</pre>
 </div><pre>
     integer     int     Int     int
     numeric     num     Num     +</pre>
@@ -2914,14 +2973,30 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
 <a name="msg_18"></a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID=header_shown_18 style="display: none;">
-- Hide the snippet from t/syntax/force_context.t (line 37 ~ line 37) -
+- Hide the snippet from t/syntax/force_context.t (line 37 ~ line 53) -
 </div>
 <div ID=header_hidden_18 style="display: block;">
-- Show the snippet from t/syntax/force_context.t (line 37 ~ line 37, 1 lines) -</div>
+- Show the snippet from t/syntax/force_context.t (line 37 ~ line 53, 17 lines) -</div>
 </a>
 <div ID=hide_18 style="display:none; border:1px solid">
 <pre>
-# L&lt;S02/Context/string "~"&gt;</pre>
+# L&lt;S02/Context/string "~"&gt;
+# L&lt;S03/Changes to Perl 5 operators/Unary ~ string context&gt;
+# string context
+{
+    my $a = 10.500000;
+    is(ref(~$a), 'Str', 'it is forced into a Str');
+    is(~$a, '10.5', 'forced into string context');
+
+    my $b = -100;
+    is(ref(~$b), 'Str', 'it is forced into a Str');
+    is(~$b, '-100', 'forced into string context');
+
+    my $c = -100.1010;
+    is(ref(~$c), 'Str', 'it is forced into a Str');
+    is(~$c, '-100.101', 'forced into string context');
+}
+</pre>
 </div><p>There are also various container contexts that require particular kinds of
 containers.</p>
 <p></p>
