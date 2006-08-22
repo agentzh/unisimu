@@ -2490,7 +2490,7 @@ course some similarity is good.)</p>
 </p>
 <hr />
 <h1><a name="Transliteration">Transliteration</a></h1>
-<a name="msg_2">&nbsp;&nbsp;</a>
+<a name="msg_2"></a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID="header_shown_2" style="display: none;">
 - Hide the snippet from t/builtins/strings/trans.t (line 8 ~ line 67) -
@@ -2560,8 +2560,12 @@ eval_is('"abc".trans(&lt;== "a" =&gt; "A")', "Abc",
 # XXX should this work?
 #eval_is('"abc".trans &lt;== "a" =&gt; "A"', "Abc",
 #   "you're allowed to leave off the (...) named arg parens when you use &lt;==",
-#   :todo&lt;feature&gt;);</pre>
-</div><ul>
+#   :todo&lt;feature&gt;);
+
+</pre>
+</div>
+
+<ul>
 <li></li>
 The <code>tr///</code> quote-like operator now also has a method form called
 <code>trans()</code>.  Its argument is a list of pairs.  You can use anything that
@@ -2641,7 +2645,7 @@ indicates that <code>@foo[42]</code> was the first element <em>not</em> included
 </p>
 <hr />
 <h1><a name="Matching20against20non2dstrings">Matching against non-strings</a></h1>
-<a name="msg_1">&nbsp;&nbsp;</a>
+<a name="msg_1"></a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
 <div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/rules/nonstrings.t (line 9 ~ line 42) -
@@ -2685,8 +2689,12 @@ eval_ok('rule herbivore { &lt;.isa(Antelope)&gt; }; ! @array ~~ /&lt;herbivore&g
 
 my @names = ('zaphod', 'ford', 'arthur', 'slartibartfast');
 my $arrr = rule { ar };
-eval_is('@names&gt;&gt;.match($arrr)', 2, 'matching with hyper-operator', :todo&lt;feature&gt;);</pre>
-</div><ul>
+eval_is('@names&gt;&gt;.match($arrr)', 2, 'matching with hyper-operator', :todo&lt;feature&gt;);
+
+</pre>
+</div>
+
+<ul>
 <li></li>
 Anything that can be tied to a string can be matched against a
 regex. This feature is particularly useful with input streams:

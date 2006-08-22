@@ -148,38 +148,8 @@ Unary sigils impose the container context implied by their sigil.
 As with Perl 5, however, <code>$$foo[bar]</code> parses as <code>$($foo)[bar]</code>,
 so you need <code>$($foo[bar])</code> to mean the other way.</a></strong><br />
 </li>
-<a name="msg_26">&nbsp;&nbsp;</a>
-<a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
-<div ID="header_shown_26" style="display: none;">
-- Hide the snippet from t/syntax/force_context.t (line 55 ~ line 74) -
-</div>
-<div ID="header_hidden_26" style="display: block;">
-- Show the snippet from t/syntax/force_context.t (line 55 ~ line 74, 20 lines) -
-</div>
-</a>
-<div ID="hide_26" style="display:none; border:1px solid">
-<pre>
-# L&lt;S03/Changes to Perl 5 operators/"?" imposes boolean context&gt;
-# boolean context
-{
-    my $a = '';
-    is(ref(?$a), 'Bool', 'it is forced into a Bool');
-    ok(!(?$a), 'it is forced into boolean context');
-
-    my $b = 'This will be true';
-    is(ref(?$b), 'Bool', 'it is forced into a Bool');
-    ok(?$b, 'it is forced into boolean context');
-
-    my $c = 0;
-    is(ref(?$c), 'Bool', 'it is forced into a Bool');
-    ok(!(?$c), 'it is forced into boolean context');
-
-    my $d = 1;
-    is(ref(?$d), 'Bool', 'it is forced into a Bool');
-    ok(?$d, 'it is forced into boolean context');
-}
-</pre>
-</div><a name="msg_25">&nbsp;&nbsp;</a>
+_SMART_LINK_26
+<a name="msg_25"></a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID="header_shown_25" style="display: none;">
 - Hide the snippet from t/syntax/force_context.t (line 38 ~ line 53) -
@@ -205,8 +175,13 @@ so you need <code>$($foo[bar])</code> to mean the other way.</a></strong><br />
     is(ref(~$c), 'Str', 'it is forced into a Str');
     is(~$c, '-100.101', 'forced into string context');
 }
+
+
 </pre>
-</div><li><strong><a name="item_Bitwise_operators_get_a_data_type_prefix253A_252B252C">Bitwise operators get a data type prefix: <code>+</code>, <code>~</code>, or <code>?</code>.
+</div>
+
+<p></p>
+<li><strong><a name="item_Bitwise_operators_get_a_data_type_prefix253A_252B252C">Bitwise operators get a data type prefix: <code>+</code>, <code>~</code>, or <code>?</code>.
 For example, Perl 5's <code>|</code> becomes either <code>+|</code> or <code>~|</code> or <code>?|</code>,
 depending on whether the operands are to be treated as numbers,
 strings, or boolean values.  Perl 5's left shift <code> &lt;&lt; </code> becomes
@@ -305,7 +280,7 @@ plus the following forms:</p>
     qq/$x/      # single literal
     +TERM       # any single term coerced to numeric
     -TERM       # any single term coerced to numeric</pre>
-<a name="msg_24">&nbsp;&nbsp;</a>
+<a name="msg_24"></a>
 <a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
 <div ID="header_shown_24" style="display: none;">
 - Hide the snippet from t/syntax/force_context.t (line 25 ~ line 36) -
@@ -327,12 +302,16 @@ plus the following forms:</p>
     is(ref(-$b), 'Num', 'it is forced into a Num');
     is(-$b, 0, 'non numbers forced into numeric context are 0');
 }
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
     ~TERM       # any single term coerced to string
     ?TERM       # any single term coerced to boolean
     !TERM       # any single term coerced to boolean</pre>
-<a name="msg_27">&nbsp;&nbsp;</a>
+<a name="msg_27"></a>
 <a href="?hide_quotes=no#msg_27" onclick="return tog_quote(27);">
 <div ID="header_shown_27" style="display: none;">
 - Hide the snippet from t/syntax/force_context.t (line 75 ~ line 108) -
@@ -376,8 +355,12 @@ plus the following forms:</p>
     my $c = 1.21122111;
     is(ref(int($c)), 'Int', 'it is forced into a Int');
     is(int($c), 1, 'float numbers forced into integer context are 0');
-}</pre>
-</div><pre>
+}
+
+</pre>
+</div>
+
+<pre>
     (SIMPLE)    # any simple expression in circumfix parens</pre>
 <p>Note that circumfix parens are considered simple only when used as
 part of a subscript.  Putting parens around the entire lvalue still
@@ -555,7 +538,7 @@ arguments.)</a></strong><br />
 </p>
 <hr />
 <h1><a name="New20operators">New operators</a></h1>
-<a name="msg_7">&nbsp;&nbsp;</a>
+<a name="msg_7"></a>
 <a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
 <div ID="header_shown_7" style="display: none;">
 - Hide the snippet from t/operators/operator.t (line 8 ~ line 84) -
@@ -642,8 +625,12 @@ ok(42 &gt; 12 &amp; 20 &amp; 32, "test the all infix operator");
 # Hyper ops
 my @rv;
 @rv = (1,2,3,4) &gt;&gt;+&lt;&lt; (1,2,3,4);
-is("@rv[]", "2 4 6 8", 'hyper-add');</pre>
-</div><ul>
+is("@rv[]", "2 4 6 8", 'hyper-add');
+
+</pre>
+</div>
+
+<ul>
 <li><strong><a name="item_Binary_252F252F_is_just_like_257C257C252C_except_that_i">Binary <code>//</code> is just like <code>||</code>, except that it tests its left
 side for definedness instead of truth. There is a low-precedence form,
 too: <code>err</code>.</a></strong><br />
@@ -1054,7 +1041,7 @@ dispatch tables when they know they're likely to be used in hyperops.</p>
 <p>
 </p>
 <h2><a name="Reduction20operators">Reduction operators</a></h2>
-<a name="msg_9">&nbsp;&nbsp;</a>
+<a name="msg_9"></a>
 <a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
 <div ID="header_shown_9" style="display: none;">
 - Hide the snippet from t/subroutines/multi_sub.t (line 69 ~ line 86) -
@@ -1082,8 +1069,12 @@ is (moose 3), 4, "proto definition of prefix:&lt;moose&gt; works";
 
 proto prefix:&lt;elk&gt; ($arg) {...}
 multi prefix:&lt;elk&gt; ($arg) { $arg + 1 }
-is (elk 3), 4, "multi definition of prefix:&lt;elk&gt; works";</pre>
-</div><a name="msg_8">&nbsp;&nbsp;</a>
+is (elk 3), 4, "multi definition of prefix:&lt;elk&gt; works";
+
+</pre>
+</div>
+
+<a name="msg_8"></a>
 <a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
 <div ID="header_shown_8" style="display: none;">
 - Hide the snippet from t/operators/reduce_le1arg.t (line 6 ~ line 58) -
@@ -1146,8 +1137,12 @@ is (defined ([=] ())), Bool::False, "[=] () not defined";
 is ([,] ()), (), "[,] () eq ()";
 eval_is "[¥] ()", [], "[¥] () eq []";
 
-# need to add one elems list cases</pre>
-</div><p>The final metaoperator in Perl 6 is the reduction operator.  Any
+# need to add one elems list cases
+
+</pre>
+</div>
+
+<p>The final metaoperator in Perl 6 is the reduction operator.  Any
 infix operator (except for non-associating operators and assignment
 operators) can be surrounded by square brackets in term position to
 create a list operator that reduces using that operation:</p>
@@ -1331,7 +1326,7 @@ reduction of <code>infix:&lt;x&gt;</code>.  This is deemed to be an insignifican
 </p>
 <hr />
 <h1><a name="Junctive20operators">Junctive operators</a></h1>
-<a name="msg_12">&nbsp;&nbsp;</a>
+<a name="msg_12"></a>
 <a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
 <div ID="header_shown_12" style="display: none;">
 - Hide the snippet from t/junction/misc_junctions.t (line 145 ~ line 152) -
@@ -1349,8 +1344,12 @@ L&lt;S03/"Junctive operators"&gt;
 # Canonical stringification of a junction
 sub j (Junction $j) { return $j.perl }
 
-{</pre>
-</div><a name="msg_11">&nbsp;&nbsp;</a>
+{
+
+</pre>
+</div>
+
+<a name="msg_11"></a>
 <a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
 <div ID="header_shown_11" style="display: none;">
 - Hide the snippet from t/junction/misc_junctions.t (line 13 ~ line 144) -
@@ -1492,8 +1491,12 @@ Tests junction examples from Synopsis 03
 
 j() is used to convert a junction to canonical string form, currently
 just using .perl until a better approach presents itself.
+
+
 </pre>
-</div><a name="msg_10">&nbsp;&nbsp;</a>
+</div>
+
+<a name="msg_10"></a>
 <a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
 <div ID="header_shown_10" style="display: none;">
 - Hide the snippet from t/junction/associative.t (line 13 ~ line 40) -
@@ -1531,14 +1534,18 @@ L&lt;S03/"Junctive operators"&gt;
     is('1 2 3', ~none(none(1,2),3).values, "Left-associative none()");
     is('1 2 3', ~none(1,none(2,3)).values, "Right-associative none()");
 
-}</pre>
-</div><p><code>|</code>, <code>&amp;</code>, and <code>^</code> are no longer bitwise operators (see
+}
+
+</pre>
+</div>
+
+<p><code>|</code>, <code>&amp;</code>, and <code>^</code> are no longer bitwise operators (see
 <a href="#changes20to20perl20520operators">Changes to Perl 5 operators</a>) but now serve a much higher cause:
 they are now the junction constructors.</p>
 <p>A junction is a single value that is equivalent to multiple values. They
 thread through operations, returning another junction representing the
 result:</p>
-<a name="msg_17">&nbsp;&nbsp;</a>
+<a name="msg_17"></a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID="header_shown_17" style="display: none;">
 - Hide the snippet from t/junction/misc_junctions.t (line 215 ~ line 286) -
@@ -1620,8 +1627,12 @@ ok(!(?(0&amp;0) != ?(0&amp;&amp;0)), 'boolean context');
 ok(!(?(0&amp;1) != ?(0&amp;&amp;1)), 'boolean context');
 ok(!(?(1&amp;1) != ?(1&amp;&amp;1)), 'boolean context');
 ok(!(?(1&amp;0) != ?(1&amp;&amp;0)), 'boolean context');
+
+
 </pre>
-</div><a name="msg_13">&nbsp;&nbsp;</a>
+</div>
+
+<a name="msg_13"></a>
 <a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
 <div ID="header_shown_13" style="display: none;">
 - Hide the snippet from t/junction/misc_junctions.t (line 153 ~ line 162) -
@@ -1641,8 +1652,12 @@ ok(!(?(1&amp;0) != ?(1&amp;&amp;0)), 'boolean context');
     $got = ((1|2) + (3&amp;4));
     $want = ((4|5) &amp; (5|6));
     is( j($got), j($want), 'thread + returning junctive combination of results');
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
      (1|2|3) + 4;                            # 5|6|7
      (1|2) + (3&amp;4);                          # (4|5) &amp; (5|6)</pre>
 <p>Note how when two junctions are applied through an operator, the result
@@ -1650,7 +1665,7 @@ is a junction representing the operator applied to each combination of
 values.</p>
 <p>Junctions come with the functional variants <code>any</code>, <code>all</code>, <code>one</code>, and <code>none</code>.</p>
 <p>This opens doors for constructions like:</p>
-<a name="msg_14">&nbsp;&nbsp;</a>
+<a name="msg_14"></a>
 <a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
 <div ID="header_shown_14" style="display: none;">
 - Hide the snippet from t/junction/misc_junctions.t (line 163 ~ line 183) -
@@ -1681,13 +1696,17 @@ values.</p>
     if $roll == 1|2|3 { $note = "Low roll" }
     is($note, "Low roll", '| junction threading ==');
 
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
      unless $roll == any(1..6) { print &quot;Invalid roll&quot; }</pre>
 <pre>
      if $roll == 1|2|3 { print &quot;Low roll&quot; }</pre>
 <p>Junctions work through subscripting:</p>
-<a name="msg_15">&nbsp;&nbsp;</a>
+<a name="msg_15"></a>
 <a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
 <div ID="header_shown_15" style="display: none;">
 - Hide the snippet from t/junction/misc_junctions.t (line 184 ~ line 198) -
@@ -1712,11 +1731,15 @@ values.</p>
     $got ~= 'y' if try { @foo[any(1,2,3)] };
     is($got, '', "junctions work through subscripting, 3 matches");
 
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
     print if @foo[any(1,2,3)]</pre>
 <p>Junctions are specifically unordered.  So if you say</p>
-<a name="msg_16">&nbsp;&nbsp;</a>
+<a name="msg_16"></a>
 <a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
 <div ID="header_shown_16" style="display: none;">
 - Hide the snippet from t/junction/misc_junctions.t (line 199 ~ line 214) -
@@ -1742,8 +1765,12 @@ values.</p>
 =pod
 
 These are implemented but still awaiting clarification on p6l.
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
     for all(@foo) {...}</pre>
 <p>it indicates to the compiler that there is no coupling between loop
 iterations and they can be run in any order or even in parallel.</p>
@@ -1764,7 +1791,7 @@ Instead of writing</p>
 </p>
 <hr />
 <h1><a name="Chained20comparisons">Chained comparisons</a></h1>
-<a name="msg_23">&nbsp;&nbsp;</a>
+<a name="msg_23"></a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID="header_shown_23" style="display: none;">
 - Hide the snippet from t/operators/relational.t (line 103 ~ line 110) -
@@ -1782,8 +1809,12 @@ ok("3" lt "4" lt "5", "3 lt 4 gt 5 chained str comparison");
 ok(!("3" gt "4" lt "5"), "!(3 gt 4 lt 5) chained str comparison");
 ok("5" eq "5" gt "0", '"5" eq "5" gt "0" chained str comparison with equality');
 ok("5" le "5" gt "0", "5 le 5 gt 0 chained str comparison with le");
-ok("0" lt "5" ge "5", "0 lt 5 ge 5 chained comparison with ge");</pre>
-</div><a name="msg_22">&nbsp;&nbsp;</a>
+ok("0" lt "5" ge "5", "0 lt 5 ge 5 chained comparison with ge");
+
+</pre>
+</div>
+
+<a name="msg_22"></a>
 <a href="?hide_quotes=no#msg_22" onclick="return tog_quote(22);">
 <div ID="header_shown_22" style="display: none;">
 - Hide the snippet from t/operators/relational.t (line 93 ~ line 102) -
@@ -1803,8 +1834,12 @@ is('e' gt 'a' lt 'j', 'e' gt 'a' &amp;&amp; 'a' lt 'j', 'multi-way comp e gt a l
 # me think these are not implemented
 is('e' lt 'a' lt 'j', 'e' lt 'a' &amp;&amp; 'a' lt 'j', 'multi-way comp e lt a lt j works');
 
-## NOTE: these tests moved here from t/03operator.t</pre>
-</div><a name="msg_21">&nbsp;&nbsp;</a>
+## NOTE: these tests moved here from t/03operator.t 
+
+</pre>
+</div>
+
+<a name="msg_21"></a>
 <a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
 <div ID="header_shown_21" style="display: none;">
 - Hide the snippet from t/operators/relational.t (line 53 ~ line 92) -
@@ -1854,8 +1889,12 @@ is('a' cmp 'a', 0,  'a is equal to a');
 is('a' cmp 'b', -1, 'a is less than b');
 is('b' cmp 'a', 1,  'b is greater than a');
 
-## Multiway comparisons (RFC 025)</pre>
-</div><a name="msg_20">&nbsp;&nbsp;</a>
+## Multiway comparisons (RFC 025)
+
+</pre>
+</div>
+
+<a name="msg_20"></a>
 <a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
 <div ID="header_shown_20" style="display: none;">
 - Hide the snippet from t/operators/relational.t (line 43 ~ line 52) -
@@ -1875,8 +1914,12 @@ is(5 &gt; 1 &lt; 10, 5 &gt; 1 &amp;&amp; 1 &lt; 10, 'multi-way comp 5 &gt; 1 &lt
 # me think these are not implemented
 is(5 &lt; 1 &lt; 10, 5 &lt; 1 &amp;&amp; 1 &lt; 10, 'multi-way comp 5 &lt; 1 &lt; 10 works');
 
-## NOTE: these tests moved here from t/03operator.t</pre>
-</div><a name="msg_19">&nbsp;&nbsp;</a>
+## NOTE: these tests moved here from t/03operator.t 
+
+</pre>
+</div>
+
+<a name="msg_19"></a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID="header_shown_19" style="display: none;">
 - Hide the snippet from t/operators/listquote.t (line 38 ~ line 76) -
@@ -1925,8 +1968,12 @@ is($r, Bool::True, ':foo &lt;3 is comparison');
 my $p = eval ':foo&lt;1 2 3&gt;';
 is($p, 'foo' =&gt; (1,2,3), ':foo&lt;1 2 3&gt; is pair of list');
 
-=cut</pre>
-</div><p>Perl 6 supports the natural extension to the comparison operators,
+=cut
+
+</pre>
+</div>
+
+<p>Perl 6 supports the natural extension to the comparison operators,
 allowing multiple operands.</p>
 <pre>
     if 1 &lt; $a &lt; 100 { say &quot;Good, you picked a number *between* 1 and 100.&quot; }</pre>
@@ -1941,7 +1988,7 @@ in front of it, or it will be interpreted as a hash subscript instead.</p>
 </p>
 <hr />
 <h1><a name="Binding">Binding</a></h1>
-<a name="msg_6">&nbsp;&nbsp;</a>
+<a name="msg_6"></a>
 <a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
 <div ID="header_shown_6" style="display: none;">
 - Hide the snippet from t/operators/binding/subs.t (line 5 ~ line 85) -
@@ -2032,8 +2079,12 @@ constant?
 
     dies_ok/lives_ok { foo() := 23 },
         "using the constant return value of an 'is rw' sub as the LHS in a binding operation behaves correctly";
-}</pre>
-</div><a name="msg_4">&nbsp;&nbsp;</a>
+}
+
+</pre>
+</div>
+
+<a name="msg_4"></a>
 <a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
 <div ID="header_shown_4" style="display: none;">
 - Hide the snippet from t/operators/binding/scalars.t (line 9 ~ line 14) -
@@ -2049,8 +2100,12 @@ L&lt;S03/"Binding"&gt;
 =cut
 
 plan 28;
+
+
 </pre>
-</div><a name="msg_3">&nbsp;&nbsp;</a>
+</div>
+
+<a name="msg_3"></a>
 <a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
 <div ID="header_shown_3" style="display: none;">
 - Hide the snippet from t/operators/binding/nested.t (line 5 ~ line 340) -
@@ -2396,8 +2451,12 @@ plan 43;
     is $struct[1]&lt;key&gt;&lt;subkey&gt;[1], 44,
         "rebinding to some other value destroys the previous binding (5)";
 }
+
+
 </pre>
-</div><a name="msg_2">&nbsp;&nbsp;</a>
+</div>
+
+<a name="msg_2"></a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID="header_shown_2" style="display: none;">
 - Hide the snippet from t/operators/binding/hashes.t (line 5 ~ line 181) -
@@ -2584,8 +2643,12 @@ plan 37;
   %hash&lt;b&gt; = "c";
   is ~$hashref.values.sort, "a c", 'binding %hash := $hashref works (2)';
   is ~%hash\  .values.sort, "a c", 'binding %hash := $hashref works (3)';
-}</pre>
-</div><a name="msg_1">&nbsp;&nbsp;</a>
+}
+
+</pre>
+</div>
+
+<a name="msg_1"></a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
 <div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/operators/binding/arrays.t (line 5 ~ line 222) -
@@ -2813,12 +2876,16 @@ plan 46;
   @array[1] = "B";
   is ~$arrayref, "a B c", 'binding @array := $arrayref works (2)';
   is ~@array,    "a B c", 'binding @array := $arrayref works (3)';
-}</pre>
-</div><p>A new form of assignment is present in Perl 6, called <em>binding</em>, used in
+}
+
+</pre>
+</div>
+
+<p>A new form of assignment is present in Perl 6, called <em>binding</em>, used in
 place of typeglob assignment.  It is performed with the <code>:=</code> operator.
 Instead of replacing the value in a container like normal assignment, it
 replaces the container itself.  For instance:</p>
-<a name="msg_5">&nbsp;&nbsp;</a>
+<a name="msg_5"></a>
 <a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
 <div ID="header_shown_5" style="display: none;">
 - Hide the snippet from t/operators/binding/scalars.t (line 15 ~ line 124) -
@@ -2938,8 +3005,12 @@ replaces the container itself.  For instance:</p>
   my @tail;
   eval '($a, *@tail) := (1, 2, 3)';
   ok($a == 1 and ~@tail eq '2 3', 'bound slurpy', :todo);
-}</pre>
-</div><pre>
+}
+
+</pre>
+</div>
+
+<pre>
     my $x = 'Just Another';
     my $y := $x;
     $y = 'Perl Hacker';</pre>
@@ -3118,7 +3189,7 @@ into its scalar value.  The above is equivalent to:</p>
 </p>
 <hr />
 <h1><a name="Feed20operators">Feed operators</a></h1>
-<a name="msg_18">&nbsp;&nbsp;</a>
+<a name="msg_18"></a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID="header_shown_18" style="display: none;">
 - Hide the snippet from t/operators/pipe.t (line 12 ~ line 57) -
@@ -3174,8 +3245,12 @@ plan 7;
     is($got_x, "x", "x was passed as explicit param", :todo);
     is($got_y, undef, "optional param y was not bound to piped list");
     is(~@got_z, ~@a, '...slurpy array *@z got it', :todo);
-};</pre>
-</div><p>The new operators <code>==&gt;</code> and <code>&lt;==</code> are akin to UNIX pipes, but
+};
+
+</pre>
+</div>
+
+<p>The new operators <code>==&gt;</code> and <code>&lt;==</code> are akin to UNIX pipes, but
 work with functions that accept and return lists.  Since these lists are
 composed of discrete objects and not liquids, we call these <em>feed</em> operators
 rather than pipes.  For example,</p>
@@ -3229,7 +3304,7 @@ a separate token.  Therefore, under the longest-token rule,</p>
 </p>
 <hr />
 <h1><a name="Traversing20arrays20in20parallel">Traversing arrays in parallel</a></h1>
-<a name="msg_30">&nbsp;&nbsp;</a>
+<a name="msg_30"></a>
 <a href="?hide_quotes=no#msg_30" onclick="return tog_quote(30);">
 <div ID="header_shown_30" style="display: none;">
 - Hide the snippet from t/builtins/lists/zip.t (line 9 ~ line 78) -
@@ -3309,8 +3384,12 @@ plan 12;
     (@a ¥ @b) = (1, 2, 3, 4);
     is(@a, [1, 3], "first half of two zipped arrays as lvalues", :todo);
     is(@b, [2, 4], "second half of the lvalue zip", :todo);
-}</pre>
-</div><p>In order to support parallel iteration over multiple arrays, Perl 6 has
+}
+
+</pre>
+</div>
+
+<p>In order to support parallel iteration over multiple arrays, Perl 6 has
 a <code>zip</code> function that builds <code>Seq</code> objects from the elements of two or more
 arrays.</p>
 <pre>
@@ -3383,7 +3462,7 @@ function call instead.</p>
 </p>
 <hr />
 <h1><a name="Precedence">Precedence</a></h1>
-<a name="msg_29">&nbsp;&nbsp;</a>
+<a name="msg_29"></a>
 <a href="?hide_quotes=no#msg_29" onclick="return tog_quote(29);">
 <div ID="header_shown_29" style="display: none;">
 - Hide the snippet from t/operators/precedence.t (line 12 ~ line 165) -
@@ -3547,8 +3626,12 @@ is((1 &amp;&amp; 0 ?? 2 !! 3), 3, "&amp;&amp; binds tighter than ??");
 # opposed to Pugs parses it:
 #   $ perl -we 'print uc("a" eq "A")'
 #   $    (no output)
-ok (uc "a" eq "A"), "uc has the correct precedence in comparision to eq";</pre>
-</div><p>Perl 6 has 22 precedence levels (which is fewer than Perl 5):</p>
+ok (uc "a" eq "A"), "uc has the correct precedence in comparision to eq";
+
+</pre>
+</div>
+
+<p>Perl 6 has 22 precedence levels (which is fewer than Perl 5):</p>
 <pre>
     terms               42 3.14 &quot;eek&quot; qq[&quot;foo&quot;] [1,2,3] {...} \(@a,$b,%c)
                             $x @y %z /abc/ MyType @@multidim $^a
@@ -3587,7 +3670,7 @@ ok (uc "a" eq "A"), "uc has the correct precedence in comparision to eq";</pre>
                             (also = as list assignment)
     list infix          ¥ &lt;== ==&gt;
     loose and           and</pre>
-<a name="msg_28">&nbsp;&nbsp;</a>
+<a name="msg_28"></a>
 <a href="?hide_quotes=no#msg_28" onclick="return tog_quote(28);">
 <div ID="header_shown_28" style="display: none;">
 - Hide the snippet from t/operators/and_precedence.t (line 6 ~ line 14) -
@@ -3606,8 +3689,12 @@ sub isfive (*@args) {
 }
 
 isfive(5) and isfive(5);
-isfive 5  and isfive 5;</pre>
-</div><pre>
+isfive 5  and isfive 5;
+
+</pre>
+</div>
+
+<pre>
     loose or            or xor err
     expr terminator     ; {} as control block, statement modifiers
                             unmatched ), ], }, etc.</pre>

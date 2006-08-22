@@ -154,7 +154,7 @@ the key is not parsed for <code>::</code>.  It's just a hash lookup.</p>
 </p>
 <hr />
 <h1><a name="Autoloading">Autoloading</a></h1>
-<a name="msg_1">&nbsp;&nbsp;</a>
+<a name="msg_1"></a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
 <div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/builtins/undef.t (line 273 ~ line 315) -
@@ -207,8 +207,12 @@ is(1 + (undef), 1, '1 + undef');
 is((undef) * 2, 0, 'undef * 2');
 is(2 * (undef), 0, '2 * undef');
 is((undef) xx 2, [undef, undef], 'undef xx 2');
-is((undef) * (undef), 0, 'undef * undef');</pre>
-</div><p>A package (or any other similar namespace) can control autoloading.
+is((undef) * (undef), 0, 'undef * undef');
+
+</pre>
+</div>
+
+<p>A package (or any other similar namespace) can control autoloading.
 However, Perl 5's <code>AUTOLOAD</code> is being superseded by MMD autoloaders
 that distinguish declaration from definition, but are not restricted
 to declaring subs.  A run-time declarator multisub is declared as:</p>

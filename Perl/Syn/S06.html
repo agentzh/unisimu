@@ -186,7 +186,7 @@ new type system.</p>
 </p>
 <hr />
 <h1><a name="Subroutines20and20other20code20objects">Subroutines and other code objects</a></h1>
-<a name="msg_2">&nbsp;&nbsp;</a>
+<a name="msg_2"></a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID="header_shown_2" style="display: none;">
 - Hide the snippet from t/subroutines/sub_return_values.t (line 9 ~ line 223) -
@@ -411,8 +411,12 @@ lives_ok({ $keys = +(foo_hash_ref().keys) },
     "can call method on return value (hashref)");
 is($keys, 3, "got right result");
 lives_ok({ foo_hash_ref()&lt;foo&gt; },
-    "can hash de-ref return value (hashref)");</pre>
-</div><p><strong>Subroutines</strong> (keyword: <code>sub</code>) are non-inheritable routines with
+    "can hash de-ref return value (hashref)");
+
+</pre>
+</div>
+
+<p><strong>Subroutines</strong> (keyword: <code>sub</code>) are non-inheritable routines with
 parameter lists.</p>
 <p><strong>Methods</strong> (keyword: <code>method</code>) are inheritable routines which always
 have an associated object (known as their invocant) and belong to a
@@ -437,7 +441,7 @@ source code string or a parse-tree.</p>
 </p>
 <hr />
 <h1><a name="Routine20modifiers">Routine modifiers</a></h1>
-<a name="msg_14">&nbsp;&nbsp;</a>
+<a name="msg_14"></a>
 <a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
 <div ID="header_shown_14" style="display: none;">
 - Hide the snippet from t/subroutines/multi_sub.t (line 50 ~ line 68) -
@@ -466,8 +470,12 @@ is(mmd(1,2,3), 2, 'Slurpy MMD to listop via args');
 is(mmd(1..3), 2, 'Slurpy MMD to listop via list');
 
 # Test for proto definitions
+
+
 </pre>
-</div><p><strong>Multimethods</strong> (keyword: <code>multi</code>) are routines that can have multiple
+</div>
+
+<p><strong>Multimethods</strong> (keyword: <code>multi</code>) are routines that can have multiple
 variants that share the same name, selected by arity, types, or some
 other constraints.</p>
 <p><strong>Prototypes</strong> (keyword: <code>proto</code>) specify the commonalities (such
@@ -526,7 +534,7 @@ with the <a href="#item_is_rw"><code>is rw</code></a> trait:</p>
 <p>
 </p>
 <h2><a name="Blocks">Blocks</a></h2>
-<a name="msg_28">&nbsp;&nbsp;</a>
+<a name="msg_28"></a>
 <a href="?hide_quotes=no#msg_28" onclick="return tog_quote(28);">
 <div ID="header_shown_28" style="display: none;">
 - Hide the snippet from t/data_types/anon_block.t (line 12 ~ line 104) -
@@ -629,8 +637,12 @@ is(f(), 3, 'bare blocks immediately runs even as the last statement');
 is((sub { { 3 } }).(), 3, 'ditto for anonymous subs');
 is((sub { { { 3 } } }).(), 3, 'ditto, even if nested');
 dies_ok({(sub { { $^x } }).()}, 'implicit params become errors');
-isnt((sub { -&gt; { 3 } }).(), 3, 'as are pointies');</pre>
-</div><p>Raw blocks are also executable code structures in Perl 6.</p>
+isnt((sub { -&gt; { 3 } }).(), 3, 'as are pointies');
+
+</pre>
+</div>
+
+<p>Raw blocks are also executable code structures in Perl 6.</p>
 <p>Every block defines an object of type <code>Code</code>, which may either be
 executed immediately or passed on as a <code>Code</code> object.  A
 bare block where an operator is expected is bound to the current
@@ -641,7 +653,7 @@ by a comma or comma surrogate.</p>
 <p>
 </p>
 <h2><a name="22Pointy20blocks22">``Pointy blocks''</a></h2>
-<a name="msg_19">&nbsp;&nbsp;</a>
+<a name="msg_19"></a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID="header_shown_19" style="display: none;">
 - Hide the snippet from t/subroutines/pointy.t (line 11 ~ line 14) -
@@ -655,8 +667,12 @@ by a comma or comma surrogate.</p>
 L&lt;S06/""Pointy blocks""&gt;
 
 =cut
+
+
 </pre>
-</div><p>Semantically the arrow operator <code>-&gt;</code> is almost a synonym for
+</div>
+
+<p>Semantically the arrow operator <code>-&gt;</code> is almost a synonym for
 the anonymous <code>sub</code> keyword, except that the parameter list of a
 pointy block does not require parentheses, and a pointy block may not be
 given traits.  Syntactically, a pointy block is parsed exactly like a
@@ -673,7 +689,7 @@ bare block:</p>
 <code>return</code> from within a pointy block, it will return from the innermost
 enclosing <code>sub</code> or <code>method</code>, not the block itself.  It is referenced
 by <code>&amp;?BLOCK</code>, not <code>&amp;?ROUTINE</code>.</p>
-<a name="msg_21">&nbsp;&nbsp;</a>
+<a name="msg_21"></a>
 <a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
 <div ID="header_shown_21" style="display: none;">
 - Hide the snippet from t/subroutines/pointy.t (line 61 ~ line 81) -
@@ -704,8 +720,12 @@ is $str, 'inner', 'return in pointy returns from enclosing sub';
 
 # What about nested pointies -&gt; { ... -&gt; {} }?
 
+
+
 </pre>
-</div><a name="msg_20">&nbsp;&nbsp;</a>
+</div>
+
+<a name="msg_20"></a>
 <a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
 <div ID="header_shown_20" style="display: none;">
 - Hide the snippet from t/subroutines/pointy.t (line 50 ~ line 60) -
@@ -726,8 +746,12 @@ my $s = -&gt; {
 try { $s.() };
 is($!, undef, 'pointy with block control exceptions', :todo&lt;feature&gt;);
 is $n, 10, "pointy control exceptions ran", :todo&lt;feature&gt;;
+
+
 </pre>
-</div><p>
+</div>
+
+<p>
 </p>
 <h2><a name="Stub20declarations">Stub declarations</a></h2>
 <p>To predeclare a subroutine without actually defining it, use a ``stub block'':</p>
@@ -775,7 +799,7 @@ use ``<code>package GLOBAL {...}</code>'' around the declaration.</p>
 <p>
 </p>
 <h2><a name="Lvalue20subroutines">Lvalue subroutines</a></h2>
-<a name="msg_11">&nbsp;&nbsp;</a>
+<a name="msg_11"></a>
 <a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
 <div ID="header_shown_11" style="display: none;">
 - Hide the snippet from t/subroutines/lvalue_subroutines.t (line 11 ~ line 112) -
@@ -887,8 +911,12 @@ is try { proxyvar("PRE") }, 'PREfoo', 'proxy lvalue subroutine FETCH works', :to
 #   should do.
 is try { proxyvar("PRE") = "BAR" }, 'BAR',
     'proxy lvalue subroutine STORE works and returns the correct value', :todo&lt;feature&gt;;
-is $realvar, 'BAR', 'variable was modified', :todo&lt;feature&gt;;</pre>
-</div><p>Lvalue subroutines return a ``proxy'' object that can be assigned to.
+is $realvar, 'BAR', 'variable was modified', :todo&lt;feature&gt;;
+
+</pre>
+</div>
+
+<p>Lvalue subroutines return a ``proxy'' object that can be assigned to.
 It's known as a proxy because the object usually represents the
 purpose or outcome of the subroutine call.</p>
 <p>Subroutines are specified as being lvalue using the <a href="#item_is_rw"><code>is rw</code></a> trait.</p>
@@ -917,7 +945,7 @@ the value of the proxy.</p>
 <p>
 </p>
 <h2><a name="Operator20overloading">Operator overloading</a></h2>
-<a name="msg_13">&nbsp;&nbsp;</a>
+<a name="msg_13"></a>
 <a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
 <div ID="header_shown_13" style="display: none;">
 - Hide the snippet from t/oo/methods/overload.t (line 7 ~ line 76) -
@@ -997,8 +1025,12 @@ sub run_tests_with($class) {
       lives_ok { $res = ~[@foo »~« "!"] }, "stringification with hyperization didn't die", :todo&lt;feature&gt;;
       is $res, "pugs! pugs! pugs!", "stringification overloading was hyperized correctly", :todo&lt;feature&gt;;
     }
-}</pre>
-</div><a name="msg_12">&nbsp;&nbsp;</a>
+}
+
+</pre>
+</div>
+
+<a name="msg_12"></a>
 <a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
 <div ID="header_shown_12" style="display: none;">
 - Hide the snippet from t/operators/operator_overloading.t (line 11 ~ line 118) -
@@ -1116,8 +1148,12 @@ is("boobies"!, "BOOBIES!!!", "correct overloaded method called");
 #   http://colabti.de/irclogger/irclogger_log/perl6?date=2006-07-29,Sat&amp;sel=189#l299
 # so we won't test them here.
 
-# Overriding prefix:&lt;if&gt;</pre>
-</div><p>Operators are just subroutines with special names and scoping.
+# Overriding prefix:&lt;if&gt;
+
+</pre>
+</div>
+
+<p>Operators are just subroutines with special names and scoping.
 An operator name consists of a grammatical category name followed by
 a single colon followed by an operator name specified as if it were
 a hash subscript (but evaluated at compile time).  So any of these
@@ -1373,7 +1409,7 @@ list:</p>
     sub numcmp ($x, $y) { return $x &lt;=&gt; $y }</pre>
 <p>Required parameters may optionally be declared with a trailing <code>!</code>,
 though that's already the default for positional parameters:</p>
-<a name="msg_16">&nbsp;&nbsp;</a>
+<a name="msg_16"></a>
 <a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
 <div ID="header_shown_16" style="display: none;">
 - Hide the snippet from t/subroutines/sub_named_params.t (line 77 ~ line 170) -
@@ -1477,8 +1513,12 @@ is($ref[0], 1, "ref is the same as aref");
 Jesse Vincent &lt;jesse@bestpractical.com&gt;
 Carl Masak &lt;cmasak@gmail.com&gt;
 
-=cut</pre>
-</div><pre>
+=cut
+
+</pre>
+</div>
+
+<pre>
     sub numcmp ($x!, $y!) { return $x &lt;=&gt; $y }</pre>
 <p>The corresponding arguments are evaluated in scalar context and may be
 passed positionally or by name. To pass an argument by name,
@@ -1496,7 +1536,7 @@ is a fatal error.  Passing a named argument that cannot be bound to a normal
 subroutine is also a fatal error.  (Methods are different.)</p>
 <p>The number of required parameters a subroutine has can be determined by
 calling its <code>.arity</code> method:</p>
-<a name="msg_15">&nbsp;&nbsp;</a>
+<a name="msg_15"></a>
 <a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
 <div ID="header_shown_15" style="display: none;">
 - Hide the snippet from t/builtins/arity.t (line 7 ~ line 37) -
@@ -1537,8 +1577,12 @@ calling its <code>.arity</code> method:</p>
 # .arity. Also it's unclear what the result of &amp;multisub.arity is.
 # See the thread "&amp;multisub.arity?" on p6l started by Ingo Blechschmidt for
 # details:
-# L&lt;"http://thread.gmane.org/gmane.comp.lang.perl.perl6.language/4915"&gt;</pre>
-</div><pre>
+# L&lt;"http://thread.gmane.org/gmane.comp.lang.perl.perl6.language/4915"&gt;
+
+</pre>
+</div>
+
+<pre>
     $args_required = &amp;foo.arity;</pre>
 <p>
 </p>
@@ -1553,7 +1597,7 @@ The <code>=</code> sign introduces a default value:</p>
     sub my_substr ($str, $from = 0, $len = Inf) {...}</pre>
 <p>Default values can be calculated at run-time. They may even use the values of
 preceding parameters:</p>
-<a name="msg_30">&nbsp;&nbsp;</a>
+<a name="msg_30"></a>
 <a href="?hide_quotes=no#msg_30" onclick="return tog_quote(30);">
 <div ID="header_shown_30" style="display: none;">
 - Hide the snippet from t/subroutines/defaults.t (line 8 ~ line 33) -
@@ -1589,8 +1633,12 @@ sub val_v(Code :$func = &amp;double) is export {
 
 use Test;
 
-ok((MyPack::val_v), "default sub called in package namespace");</pre>
-</div><pre>
+ok((MyPack::val_v), "default sub called in package namespace");
+
+</pre>
+</div>
+
+<pre>
     sub xml_tag ($tag, $endtag = matching_tag($tag) ) {...}</pre>
 <p>Arguments that correspond to optional parameters are evaluated in
 scalar context. They can be omitted, passed positionally, or passed by
@@ -1704,7 +1752,7 @@ last if you want to force it to come in as the last argument.</p>
 <h2><a name="Argument20list20binding">Argument list binding</a></h2>
 <p>The underlying <code>Capture</code> object may be bound to a single scalar
 parameter marked with a <code>\</code>.</p>
-<a name="msg_1">&nbsp;&nbsp;</a>
+<a name="msg_1"></a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
 <div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/data_types/arglist.t (line 54 ~ line 107) -
@@ -1768,8 +1816,12 @@ parameter marked with a <code>\</code>.</p>
         "mixing ordinary args with arglists (2)", :todo&lt;feature&gt;;
 }
 
-# XXX sub foo (\@arglist)</pre>
-</div><pre>
+# XXX sub foo (\@arglist)
+
+</pre>
+</div>
+
+<pre>
     sub bar ($a,$b,$c,:$mice) { say $mice }
     sub foo (\$args) { say $args.perl; &amp;bar.call($args); }</pre>
 <p>The <code>.call</code> method of <code>Code</code> objects accepts a single <code>Capture</code>
@@ -1822,7 +1874,7 @@ operator:</p>
 <p>
 </p>
 <h2><a name="Multidimensional20argument20list20binding">Multidimensional argument list binding</a></h2>
-<a name="msg_10">&nbsp;&nbsp;</a>
+<a name="msg_10"></a>
 <a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
 <div ID="header_shown_10" style="display: none;">
 - Hide the snippet from t/subroutines/multidimensional_arglists.t (line 7 ~ line 41) -
@@ -1867,8 +1919,12 @@ sub get_multidim_arglist (*@;AoA) { @;AoA }
 
     dies_ok { get_multidim_arglist($array1, $array2) },
         "two arrayrefs are not compatible with a sub expecting a multidim arglist", :todo&lt;feature&gt;;
-}</pre>
-</div><p>Some functions take more than one list of positional and/or named arguments,
+}
+
+</pre>
+</div>
+
+<p>Some functions take more than one list of positional and/or named arguments,
 that they wish not to be flattened into one list.  For instance, <code>zip()</code> wants
 to iterate several lists in parallel, while array and hash subscripts want to
 process multidimensional slices.  The set of underlying argument lists may be
@@ -1912,7 +1968,7 @@ argument list becomes a zero-dimensional slice.  It differs from
 <p>
 </p>
 <h2><a name="Feed20operators">Feed operators</a></h2>
-<a name="msg_7">&nbsp;&nbsp;</a>
+<a name="msg_7"></a>
 <a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
 <div ID="header_shown_7" style="display: none;">
 - Hide the snippet from t/operators/pipe.t (line 11 ~ line 57) -
@@ -1969,8 +2025,12 @@ plan 7;
     is($got_x, "x", "x was passed as explicit param", :todo);
     is($got_y, undef, "optional param y was not bound to piped list");
     is(~@got_z, ~@a, '...slurpy array *@z got it', :todo);
-};</pre>
-</div><p>The variadic list of a subroutine call can be passed in separately
+};
+
+</pre>
+</div>
+
+<p>The variadic list of a subroutine call can be passed in separately
 from the normal argument list, by using either of the <em>feed</em> operators:
 <code>&lt;==</code> or <code>==&gt;</code>.</p>
 <p>Each operator expects to find a call to a variadic receiver on its
@@ -2244,7 +2304,7 @@ class unless you want it.  The sub above could be written as</p>
 <p>
 </p>
 <h2><a name="Unpacking20array20parameters">Unpacking array parameters</a></h2>
-<a name="msg_9">&nbsp;&nbsp;</a>
+<a name="msg_9"></a>
 <a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
 <div ID="header_shown_9" style="display: none;">
 - Hide the snippet from t/subroutines/subroutine.t (line 80 ~ line 98) -
@@ -2273,8 +2333,12 @@ my @array = 3..7;
 is(try { unpack_array(@array) }, 3, 'unpacking an array parameter', :todo&lt;feature&gt;);
 
 =pod
+
+
 </pre>
-</div><p>Instead of specifying an array parameter as an array:</p>
+</div>
+
+<p>Instead of specifying an array parameter as an array:</p>
 <pre>
     sub quicksort (@data, $reverse?, $inplace?) {
         my $pivot := shift @data;
@@ -2298,7 +2362,7 @@ the first version.</p>
 <p>
 </p>
 <h2><a name="Unpacking20hash20parameters">Unpacking hash parameters</a></h2>
-<a name="msg_29">&nbsp;&nbsp;</a>
+<a name="msg_29"></a>
 <a href="?hide_quotes=no#msg_29" onclick="return tog_quote(29);">
 <div ID="header_shown_29" style="display: none;">
 - Hide the snippet from t/subroutines/subroutine.t (line 99 ~ line 106) -
@@ -2316,8 +2380,12 @@ L&lt;S06/"Unpacking hash parameters"&gt;
 eval 'sub unpack_hash({:$yo, *%other}){ return $yo; }';
 
 my %params = yo =&gt; 3, nope =&gt; 4;
-is(try { unpack_hash(%params) }, 3, 'unpacking a hash parameter', :todo);</pre>
-</div><p>Likewise, a hash argument can be mapped to a hash of parameters, specified
+is(try { unpack_hash(%params) }, 3, 'unpacking a hash parameter', :todo);
+
+</pre>
+</div>
+
+<p>Likewise, a hash argument can be mapped to a hash of parameters, specified
 as named parameters within curlies.  Instead of saying:</p>
 <pre>
     sub register (%guest_data, $room_num) {
@@ -2447,7 +2515,7 @@ can be referred to as either <code>$age</code> or <code>$!age</code>.</p>
 <p>
 </p>
 <h2><a name="Placeholder20variables">Placeholder variables</a></h2>
-<a name="msg_3">&nbsp;&nbsp;</a>
+<a name="msg_3"></a>
 <a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
 <div ID="header_shown_3" style="display: none;">
 - Hide the snippet from t/builtins/ref.t (line 47 ~ line 76) -
@@ -2487,8 +2555,12 @@ my $pair = ("foo" =&gt; "bar");
 isa_ok($pair, 'Pair', 'it is a Pair type');
 
 my $rule = rx:perl5{^hello\sworld$};
-isa_ok($rule, 'Pugs::Internals::VRule', 'it is a Rule type');</pre>
-</div><p>Even though every bare block is a closure, bare blocks can't have
+isa_ok($rule, 'Pugs::Internals::VRule', 'it is a Rule type');
+
+</pre>
+</div>
+
+<p>Even though every bare block is a closure, bare blocks can't have
 explicit parameter lists. Instead, they use ``placeholder'' variables,
 marked by a caret (<code>^</code>) after their sigils.</p>
 <p>Using placeholders in a block defines an implicit parameter list. The
@@ -2554,7 +2626,7 @@ if and only if their types and contents are identical (that is, if
     Set         Unordered Seqs that allow no duplicates
     Junction    Sets with additional behaviours
     Pair        Seq of two elements that serves as a one-element Mapping</pre>
-<a name="msg_4">&nbsp;&nbsp;</a>
+<a name="msg_4"></a>
 <a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
 <div ID="header_shown_4" style="display: none;">
 - Hide the snippet from t/data_types/pair.t (line 87 ~ line 303) -
@@ -2781,8 +2853,12 @@ L&lt;"http://www.nntp.perl.org/group/perl.perl6.language/20122"&gt;
   try { $pair.value = "new" };
   is $val,                  "new",  "binding .value to a var works (3)", :todo&lt;bug&gt;;
   is $pair.value,           "new",  "binding .value to a var works (4)", :todo&lt;bug&gt;;
-}</pre>
-</div><pre>
+}
+
+</pre>
+</div>
+
+<pre>
     Mapping     Pairs with no duplicate keys
     Signature   Function parameters (left-hand side of a binding)
     Capture     Function call arguments (right-hand side of a binding)
@@ -3164,7 +3240,7 @@ for their side effects, since most return values will be ignored.
 <p>
 </p>
 <h2><a name="Parameter20traits">Parameter traits</a></h2>
-<a name="msg_6">&nbsp;&nbsp;</a>
+<a name="msg_6"></a>
 <a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
 <div ID="header_shown_6" style="display: none;">
 - Hide the snippet from t/subroutines/sub_parameter_traits.t (line 11 ~ line 49) -
@@ -3213,8 +3289,12 @@ is($foo, 2, 'is ref works', :todo);
 # enough to write an actual test...
 eval_ok('sub my_format (*@data is context(Item)) { }; 1', "is context - compile check");
 
-# To do - check that is context actually works</pre>
-</div><p>The following traits can be applied to many types of parameters.</p>
+# To do - check that is context actually works
+
+</pre>
+</div>
+
+<p>The following traits can be applied to many types of parameters.</p>
 <dl>
 <dt><strong><a name="item_is_readonly"><code>is readonly</code></a></strong><br />
 </dt>
@@ -3337,7 +3417,7 @@ new argument list.  The caller may also bind the returned <code>Capture</code> d
 <p>
 </p>
 <h2><a name="The20caller20function">The <code>caller</code> function</a></h2>
-<a name="msg_31">&nbsp;&nbsp;</a>
+<a name="msg_31"></a>
 <a href="?hide_quotes=no#msg_31" onclick="return tog_quote(31);">
 <div ID="header_shown_31" style="display: none;">
 - Hide the snippet from t/builtins/caller.t (line 7 ~ line 62) -
@@ -3403,8 +3483,12 @@ chain({ caller(Sub, :skip&lt;2&gt;).subname }, "&amp;main::chain", "Sub, :skip&l
 chain({ caller(Method, :skip&lt;1&gt;).subname }, "&amp;B::try_it_caller_B", "Method, :skip&lt;1&gt;");
 
 # WRITEME: label tests
+
+
 </pre>
-</div><p>The <code>caller</code> function returns an object that describes a particular 
+</div>
+
+<p>The <code>caller</code> function returns an object that describes a particular 
 ``higher'' dynamic scope, from which the current scope was called.</p>
 <pre>
     say &quot;In &quot;,           caller.sub,
@@ -3453,7 +3537,7 @@ while <code>.count</code> considers also optional ones, including <code>*$</code
 <p>
 </p>
 <h2><a name="The20leave20function">The <code>leave</code> function</a></h2>
-<a name="msg_5">&nbsp;&nbsp;</a>
+<a name="msg_5"></a>
 <a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
 <div ID="header_shown_5" style="display: none;">
 - Hide the snippet from t/builtins/control_flow/leave.t (line 6 ~ line 84) -
@@ -3542,8 +3626,12 @@ skip_rest; exit;
   };
 
   is $sub(), 42, "leave() works with a Class (Sub) as parameter";
-}</pre>
-</div><p>As mentioned above, a <code>return</code> call causes the innermost
+}
+
+</pre>
+</div>
+
+<p>As mentioned above, a <code>return</code> call causes the innermost
 surrounding subroutine, method, rule, token, regex (as a keyword),
 macro, or multimethod to return.  Only declarations with an explicit
 keyword such as ``sub'' may be returned from.  You may not return from
@@ -3585,7 +3673,7 @@ to return a <code>Code</code> object that can later restore the current
 value of the object. At the end of the lexical scope in which the
 <code>temp</code> was applied, the subroutine returned by the <code>.TEMP</code> method is
 executed.</p>
-<a name="msg_26">&nbsp;&nbsp;</a>
+<a name="msg_26"></a>
 <a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
 <div ID="header_shown_26" style="display: none;">
 - Hide the snippet from t/var/temp.t (line 151 ~ line 173) -
@@ -3618,8 +3706,12 @@ executed.</p>
   is $was_in_own_temp_handler, 2, ".TEMP method was executed on restoration";
 }
 
+
+
 </pre>
-</div><p>The default <code>.TEMP</code> method for variables simply creates
+</div>
+
+<p>The default <code>.TEMP</code> method for variables simply creates
 a closure that assigns the variable's pre-<code>temp</code> value 
 back to the variable.</p>
 <p>New kinds of temporization can be created by writing storage classes with
@@ -3639,7 +3731,7 @@ their own <code>.TEMP</code> methods:</p>
 giving them a <code>TEMP</code> block. As with <code>.TEMP</code> methods, this block is
 expected to return a closure, which will be executed at the end of
 the temporizing scope to restore the subroutine to its pre-<code>temp</code> state:</p>
-<a name="msg_25">&nbsp;&nbsp;</a>
+<a name="msg_25"></a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID="header_shown_25" style="display: none;">
 - Hide the snippet from t/var/temp.t (line 108 ~ line 150) -
@@ -3692,8 +3784,12 @@ the temporizing scope to restore the subroutine to its pre-<code>temp</code> sta
 }
 
 # Following are OO tests, but I think they fit better in var/temp.t than in
-# oo/.</pre>
-</div><pre>
+# oo/.
+
+</pre>
+</div>
+
+<pre>
     my $next = 0;
     sub next {
         my $curr = $next++;
@@ -3720,7 +3816,7 @@ globals in the face of multithreading.</p>
 <p>
 </p>
 <h2><a name="Wrapping">Wrapping</a></h2>
-<a name="msg_27">&nbsp;&nbsp;</a>
+<a name="msg_27"></a>
 <a href="?hide_quotes=no#msg_27" onclick="return tog_quote(27);">
 <div ID="header_shown_27" style="display: none;">
 - Hide the snippet from t/subroutines/wrap.t (line 5 ~ line 99) -
@@ -3825,8 +3921,12 @@ try { $unwrapped.() };
 
 is(+@log, 2, "two events for unwrapped", :todo);
 is(@log[0], "wrapper2", :todo);
-is(@log[1], "foo", :todo);</pre>
-</div><p>Every <code>Routine</code> object has a <code>.wrap</code> method. This method expects a single
+is(@log[1], "foo", :todo);
+
+</pre>
+</div>
+
+<p>Every <code>Routine</code> object has a <code>.wrap</code> method. This method expects a single
 <code>Code</code> argument. Within the code, the special <code>call</code> function will invoke
 the original routine, but does not introduce a <code>CALLER</code> frame:</p>
 <pre>
@@ -3875,7 +3975,7 @@ by binding:</p>
 <p>
 </p>
 <h2><a name="The20263fROUTINE20object">The <code>&amp;?ROUTINE</code> object</a></h2>
-<a name="msg_23">&nbsp;&nbsp;</a>
+<a name="msg_23"></a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID="header_shown_23" style="display: none;">
 - Hide the snippet from t/magicals/sub.t (line 15 ~ line 27) -
@@ -3898,8 +3998,12 @@ my $result2 = $factorial(3);
 is($result2, 6, 'the &amp;?ROUTINE magical works correctly in anon-subs');
 
 my $baz = try { &amp;?ROUTINE };
-ok(!defined($baz), '&amp;?ROUTINE not defined outside of a sub');</pre>
-</div><a name="msg_22">&nbsp;&nbsp;</a>
+ok(!defined($baz), '&amp;?ROUTINE not defined outside of a sub');
+
+</pre>
+</div>
+
+<a name="msg_22"></a>
 <a href="?hide_quotes=no#msg_22" onclick="return tog_quote(22);">
 <div ID="header_shown_22" style="display: none;">
 - Hide the snippet from t/magicals/sub.t (line 9 ~ line 14) -
@@ -3915,8 +4019,12 @@ L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object"&gt;
 =cut
 
 plan 3;
+
+
 </pre>
-</div><p><code>&amp;?ROUTINE</code> is always an alias for the lexically innermost <code>Routine</code>
+</div>
+
+<p><code>&amp;?ROUTINE</code> is always an alias for the lexically innermost <code>Routine</code>
 (which may be a <code>Sub</code>, <code>Method</code>, or <code>Submethod</code>), so you can specify
 tail-recursion on an anonymous sub:</p>
 <pre>
@@ -3927,7 +4035,7 @@ tail-recursion on an anonymous sub:</p>
 <p>You can get the current routine name by calling <code>&amp;?ROUTINE.name</code>.
 (The outermost routine at a file-scoped compilation unit is always
 named <code>&amp;MAIN</code> in the file's package.)</p>
-<a name="msg_24">&nbsp;&nbsp;</a>
+<a name="msg_24"></a>
 <a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
 <div ID="header_shown_24" style="display: none;">
 - Hide the snippet from t/magicals/subname.t (line 8 ~ line 17) -
@@ -3947,14 +4055,18 @@ my $bar = sub { return &amp;?ROUTINE.name };
 is($bar(), '&lt;anon&gt;', 'got the right routine name (anon-block)');
 
 my $baz = try { &amp;?ROUTINE.name };
-ok(not(defined $baz), '&amp;?ROUTINE.name not defined outside of a routine');</pre>
-</div><p>Note that <code>&amp;?ROUTINE</code> refers to the current single sub, even if it is
+ok(not(defined $baz), '&amp;?ROUTINE.name not defined outside of a routine');
+
+</pre>
+</div>
+
+<p>Note that <code>&amp;?ROUTINE</code> refers to the current single sub, even if it is
 declared ``multi''.  To redispatch to the entire suite under a given short
 name, just use the named form, since there are no anonymous multis.</p>
 <p>
 </p>
 <h2><a name="The20263fBLOCK20object">The <code>&amp;?BLOCK</code> object</a></h2>
-<a name="msg_18">&nbsp;&nbsp;</a>
+<a name="msg_18"></a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID="header_shown_18" style="display: none;">
 - Hide the snippet from t/magicals/block.t (line 9 ~ line 14) -
@@ -3970,8 +4082,12 @@ L&lt;S06/"The C&lt;&amp;?BLOCK&gt; object"&gt;
 =cut
 
 plan 1;
+
+
 </pre>
-</div><p><code>&amp;?BLOCK</code> is always an alias for the current block, so you can
+</div>
+
+<p><code>&amp;?BLOCK</code> is always an alias for the current block, so you can
 specify tail-recursion on an anonymous block:</p>
 <pre>
     my $anonfactorial = -&gt; Int $n { $n &lt; 2
@@ -4008,7 +4124,7 @@ already bound to the corresponding parameters:</p>
 <p>The result of a <code>use</code> statement is a (compile-time) object that also has
 a <code>.assuming</code> method, allowing the user to bind parameters in all the
 module's subroutines/methods/etc. simultaneously:</p>
-<a name="msg_8">&nbsp;&nbsp;</a>
+<a name="msg_8"></a>
 <a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
 <div ID="header_shown_8" style="display: none;">
 - Hide the snippet from t/subroutines/currying.t (line 44 ~ line 71) -
@@ -4046,8 +4162,12 @@ my @x = (1,2,23);
 is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(@x, @x) },
     (2,4,46), 'currying functions with array arguments' );
 is( try { &amp;__hyper.assuming(op =&gt; &amp;infix:&lt;+&gt;)(a =&gt; @x, b =&gt; @x) },
-    (2,4,46), 'currying functions with named array arguments' );</pre>
-</div><pre>
+    (2,4,46), 'currying functions with named array arguments' );
+
+</pre>
+</div>
+
+<pre>
     (use IO::Logging).assuming(logfile =&gt; &quot;.log&quot;);</pre>
 <p>This special form should generally be restricted to named parameters.</p>
 <p>To curry a particular multimethod it may be necessary to specify the type
@@ -4228,7 +4348,7 @@ or a pair, it is executed immediately to compose a Hash object.</p>
         return { pair @LIST };
     }</pre>
 <p>So you may use <code>sub</code> or <code>hash</code> or <code>pair</code> to disambiguate:</p>
-<a name="msg_17">&nbsp;&nbsp;</a>
+<a name="msg_17"></a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID="header_shown_17" style="display: none;">
 - Hide the snippet from t/data_types/hash_ref.t (line 74 ~ line 92) -
@@ -4257,8 +4377,12 @@ or a pair, it is executed immediately to compose a Hash object.</p>
   isa_ok %hash&lt;ref&gt;&lt;ref&gt;, "Hash";
   is %hash&lt;ref&gt;&lt;val&gt;,      42, "access to infinite HoHoHoH... (1)";
   is %hash&lt;ref&gt;&lt;ref&gt;&lt;val&gt;, 42, "access to infinite HoHoHoH... (2)";
-}</pre>
-</div><pre>
+}
+
+</pre>
+</div>
+
+<pre>
     $ref =  sub { 1, 2, 3, 4, 5, 6 };   # Anonymous sub returning list
     $ref =      { 1, 2, 3, 4, 5, 6 };   # Anonymous sub returning list
     $ref =      { 1=&gt;2, 3=&gt;4, 5=&gt;6 };   # Anonymous hash

@@ -117,7 +117,7 @@ statement syntax of Perl.</p>
 </p>
 <hr />
 <h1><a name="The20Relationship20of20Blocks20and20Declarations">The Relationship of Blocks and Declarations</a></h1>
-<a name="msg_7">&nbsp;&nbsp;</a>
+<a name="msg_7"></a>
 <a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
 <div ID="header_shown_7" style="display: none;">
 - Hide the snippet from t/var/var.t (line 13 ~ line 134) -
@@ -249,8 +249,12 @@ ok eval('state $x; state $x; 1'), 'it is legal to declare $x twice in the same s
   is rmbl(), 0, "var captured by sub is the right var (1)";
   $a++;
   is rmbl(), 2, "var captured by sub is the right var (2)";
-}</pre>
-</div><a name="msg_2">&nbsp;&nbsp;</a>
+}
+
+</pre>
+</div>
+
+<a name="msg_2"></a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID="header_shown_2" style="display: none;">
 - Hide the snippet from t/data_types/anon_block.t (line 13 ~ line 104) -
@@ -352,8 +356,12 @@ is(f(), 3, 'bare blocks immediately runs even as the last statement');
 is((sub { { 3 } }).(), 3, 'ditto for anonymous subs');
 is((sub { { { 3 } } }).(), 3, 'ditto, even if nested');
 dies_ok({(sub { { $^x } }).()}, 'implicit params become errors');
-isnt((sub { -&gt; { 3 } }).(), 3, 'as are pointies');</pre>
-</div><p>Every block is a closure.  (That is, in the abstract, they're all
+isnt((sub { -&gt; { 3 } }).(), 3, 'as are pointies');
+
+</pre>
+</div>
+
+<p>Every block is a closure.  (That is, in the abstract, they're all
 anonymous subroutines that take a snapshot of their lexical scope.)
 How a block is invoked and how its results are used are matters of
 context, but closures all work the same on the inside.</p>
@@ -404,7 +412,7 @@ the compiler is required to complain at that point.  If such use can't
 be detected because it is hidden in an eval, then it is erroneous, since
 the <code>eval()</code> compiler might bind to either <code>$OUTER::x</code> or the subsequently
 declared ``<code>my $x</code>''.</p>
-<a name="msg_1">&nbsp;&nbsp;</a>
+<a name="msg_1"></a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
 <div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/builtins/my.t (line 29 ~ line 99) -
@@ -485,8 +493,12 @@ is(eval('loop (my $x = 1, my $y = 2; $x &gt; 0; $x--) { last } $y'), 2, '2nd my 
     $f = 5;
     my $f;
     is($f, 5, "two lexicals declared in scope is noop");
-}</pre>
-</div><p>As in Perl 5, ``<code>our $foo</code>'' introduces a lexically scoped alias for
+}
+
+</pre>
+</div>
+
+<p>As in Perl 5, ``<code>our $foo</code>'' introduces a lexically scoped alias for
 a variable in the current package.</p>
 <p>The new <code>constant</code> declarator introduces a lexically scoped name
 for a compile-time constant, either a variable or a 0-ary sub, which
@@ -496,7 +508,7 @@ may be initialized with either a pseudo-assignment or a block:</p>
     constant Num PI { 3 }
     constant Num π  = atan(2,2) * 4;</pre>
 <p>In any case the initializing value is evaluated at BEGIN time.</p>
-<a name="msg_3">&nbsp;&nbsp;</a>
+<a name="msg_3"></a>
 <a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
 <div ID="header_shown_3" style="display: none;">
 - Hide the snippet from t/var/constant.t (line 181 ~ line 193) -
@@ -519,13 +531,17 @@ may be initialized with either a pseudo-assignment or a block:</p>
     ';
 
     ok $ok, "the initializing values for constants are evaluated at compile-time", :todo&lt;feature&gt;;
-}</pre>
-</div><p>There is a new <code>state</code> declarator that introduces a lexically scoped
+}
+
+</pre>
+</div>
+
+<p>There is a new <code>state</code> declarator that introduces a lexically scoped
 variable like <code>my</code> does, but with a lifetime that persists for the
 life of the closure, so that it keeps its value from the end of one
 call to the beginning of the next.  Separate clones of the closure
 get separate state variables.</p>
-<a name="msg_5">&nbsp;&nbsp;</a>
+<a name="msg_5"></a>
 <a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
 <div ID="header_shown_5" style="display: none;">
 - Hide the snippet from t/var/state.t (line 7 ~ line 158) -
@@ -687,8 +703,12 @@ get separate state variables.</p>
         is $code(), 43, "state was initialized properly ($_ time)";
         is $code(), 44, "state keeps its value across calls ($_ time)";
     }
-}</pre>
-</div><p>Perl 5's ``<code>local</code>'' function has been renamed to <code>temp</code> to better
+}
+
+</pre>
+</div>
+
+<p>Perl 5's ``<code>local</code>'' function has been renamed to <code>temp</code> to better
 reflect what it does.  There is also a <code>let</code> function that sets a
 hypothetical value.  It works exactly like <code>temp</code>, except that the
 value will be restored only if the current block exits unsuccessfully.
@@ -696,7 +716,7 @@ value will be restored only if the current block exits unsuccessfully.
 or hypotheticalize the value or the variable depending on whether you
 do assignment or binding.  One other difference from Perl 5 is that
 the default is not to undefine a variable.  So</p>
-<a name="msg_6">&nbsp;&nbsp;</a>
+<a name="msg_6"></a>
 <a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
 <div ID="header_shown_6" style="display: none;">
 - Hide the snippet from t/var/temp.t (line 7 ~ line 107) -
@@ -807,8 +827,12 @@ eval('
 "1 - delete this line when the parsefail eval() is removed";
 ') or skip(2, "parsefail: temp \$struct[1]&lt;key&gt;[1]");
 
-# Block TEMP{}</pre>
-</div><a name="msg_4">&nbsp;&nbsp;</a>
+# Block TEMP{}
+
+</pre>
+</div>
+
+<a name="msg_4"></a>
 <a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
 <div ID="header_shown_4" style="display: none;">
 - Hide the snippet from t/var/let.t (line 7 ~ line 70) -
@@ -882,8 +906,12 @@ eval('
   is @array[1], 1, "let() restored our array element";
 }
 "1 - delete this line when the parsefail eval() is removed";
-') or skip(2, "parsefail: let \@array[1]");</pre>
-</div><pre>
+') or skip(2, "parsefail: let \@array[1]");
+
+</pre>
+</div>
+
+<pre>
     temp $x;</pre>
 <p>causes <code>$x</code> to start with its current value.  Use</p>
 <pre>
@@ -928,7 +956,7 @@ this is now invalid:</p>
 </p>
 <hr />
 <h1><a name="Conditional20statements">Conditional statements</a></h1>
-<a name="msg_9">&nbsp;&nbsp;</a>
+<a name="msg_9"></a>
 <a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
 <div ID="header_shown_9" style="display: none;">
 - Hide the snippet from t/statements/if.t (line 9 ~ line 110) -
@@ -1040,8 +1068,12 @@ is $foo, 1, "die should stop execution immediately.";
 
 {
     isnt(eval('if 1; 2'), 2, 'test "if 1"');
-}</pre>
-</div><p>The <code>if</code> and <code>unless</code> statements work almost exactly as they do in
+}
+
+</pre>
+</div>
+
+<p>The <code>if</code> and <code>unless</code> statements work almost exactly as they do in
 Perl 5, except that you may omit the parentheses on the conditional:</p>
 <pre>
     if $foo == 123 {
@@ -1055,7 +1087,7 @@ Perl 5, except that you may omit the parentheses on the conditional:</p>
     }</pre>
 <p>Conditional statement modifiers work as in Perl 5.  So do the
 implicit conditionals implied by short-circuit operators.</p>
-<a name="msg_10">&nbsp;&nbsp;</a>
+<a name="msg_10"></a>
 <a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
 <div ID="header_shown_10" style="display: none;">
 - Hide the snippet from t/statements/values_in_bool_context.t (line 7 ~ line 89) -
@@ -1148,13 +1180,17 @@ implicit conditionals implied by short-circuit operators.</p>
     ok !$f, 'hash in bool context - stringified false value';
     ok !$g, 'hash in bool context - undef value';
     ok  $h, 'hash in bool context - hash as a whole';
-}</pre>
-</div><p>
+}
+
+</pre>
+</div>
+
+<p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
 <hr />
 <h1><a name="Loop20statements">Loop statements</a></h1>
-<a name="msg_17">&nbsp;&nbsp;</a>
+<a name="msg_17"></a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID="header_shown_17" style="display: none;">
 - Hide the snippet from t/statements/while.t (line 9 ~ line 77) -
@@ -1233,8 +1269,12 @@ plan 11;
   eval 'while shift @array -&gt; $x { $was_in_while++; push @new, $x }';
   ok $was_in_while,  'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
   is ~@new, ~@array, 'while ... -&gt; $x {...} worked (1)', :todo&lt;bug&gt;;
-}</pre>
-</div><a name="msg_14">&nbsp;&nbsp;</a>
+}
+
+</pre>
+</div>
+
+<a name="msg_14"></a>
 <a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
 <div ID="header_shown_14" style="display: none;">
 - Hide the snippet from t/statements/loop.t (line 72 ~ line 142) -
@@ -1315,10 +1355,14 @@ loop {
     is($loopvar, $loopvar, "bare loop iterates $loopvar");
     last if ++$loopvar == 3;
 }
-is($loopvar, 3, "bare loop exited after 3 iterations");</pre>
-</div><p>Looping statement modifiers are the same as in Perl 5.
+is($loopvar, 3, "bare loop exited after 3 iterations");
+
+</pre>
+</div>
+
+<p>Looping statement modifiers are the same as in Perl 5.
 Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also work as in Perl 5.</p>
-<a name="msg_16">&nbsp;&nbsp;</a>
+<a name="msg_16"></a>
 <a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
 <div ID="header_shown_16" style="display: none;">
 - Hide the snippet from t/statements/redo.t (line 4 ~ line 104) -
@@ -1429,8 +1473,12 @@ plan 10;
     if $i &gt; 0 { redo }
     }
     is($sum, 220, "test redo with while");
-}</pre>
-</div><a name="msg_15">&nbsp;&nbsp;</a>
+}
+
+</pre>
+</div>
+
+<a name="msg_15"></a>
 <a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
 <div ID="header_shown_15" style="display: none;">
 - Hide the snippet from t/statements/next.t (line 6 ~ line 151) -
@@ -1586,8 +1634,12 @@ Check that C&lt;next&gt; works on the correct loop/block
     }
     
     is($i, 3, '$i++ was not executed when next was called before it in loop {}');
-}</pre>
-</div><a name="msg_13">&nbsp;&nbsp;</a>
+}
+
+</pre>
+</div>
+
+<a name="msg_13"></a>
 <a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
 <div ID="header_shown_13" style="display: none;">
 - Hide the snippet from t/statements/last.t (line 6 ~ line 83) -
@@ -1675,8 +1727,12 @@ plan 7;
         "var is 0 because last before increment in nested loop",
         :todo(1)
     );
-}</pre>
-</div><p>There is no longer a <code>continue</code> block.  Instead, use a <code>NEXT</code> block
+}
+
+</pre>
+</div>
+
+<p>There is no longer a <code>continue</code> block.  Instead, use a <code>NEXT</code> block
 within the body of the loop.  See below.</p>
 <p>
 </p>
@@ -1736,7 +1792,7 @@ rules, the previous example may be rewritten into a very clear:</p>
 <p>
 </p>
 <h2><a name="The20general20loop20statement">The general loop statement</a></h2>
-<a name="msg_33">&nbsp;&nbsp;</a>
+<a name="msg_33"></a>
 <a href="?hide_quotes=no#msg_33" onclick="return tog_quote(33);">
 <div ID="header_shown_33" style="display: none;">
 - Hide the snippet from t/statements/loop.t (line 9 ~ line 71) -
@@ -1809,8 +1865,12 @@ is($count, 10, 'verify our ending condition');
 =kwid
 
 repeat { } while tests... i.e. loops without the () bits
+
+
 </pre>
-</div><p>The <code>loop</code> statement is the C-style <code>for</code> loop in disguise:</p>
+</div>
+
+<p>The <code>loop</code> statement is the C-style <code>for</code> loop in disguise:</p>
 <pre>
     loop ($i = 0; $i &lt; 10; $i++) {
         ...
@@ -1826,7 +1886,7 @@ That is,</p>
 <p>
 </p>
 <h2><a name="The20for20statement">The <code>for</code> statement</a></h2>
-<a name="msg_31">&nbsp;&nbsp;</a>
+<a name="msg_31"></a>
 <a href="?hide_quotes=no#msg_31" onclick="return tog_quote(31);">
 <div ID="header_shown_31" style="display: none;">
 - Hide the snippet from t/statements/for.t (line 12 ~ line 18) -
@@ -1843,14 +1903,18 @@ L&lt;S04/"The C&lt;for&gt; statement"&gt;
 
 plan 36;
 
-## for with plain old range operator w/out parens</pre>
-</div><p>There is no <code>foreach</code> statement any more. It's always spelled <code>for</code>
+## for with plain old range operator w/out parens
+
+</pre>
+</div>
+
+<p>There is no <code>foreach</code> statement any more. It's always spelled <code>for</code>
 in Perl 6, so it always takes a list as an argument:</p>
 <pre>
     for @foo { print }</pre>
 <p>As mentioned earlier, the loop variable is named by passing a parameter
 to the closure:</p>
-<a name="msg_32">&nbsp;&nbsp;</a>
+<a name="msg_32"></a>
 <a href="?hide_quotes=no#msg_32" onclick="return tog_quote(32);">
 <div ID="header_shown_32" style="display: none;">
 - Hide the snippet from t/statements/for.t (line 26 ~ line 275) -
@@ -2110,8 +2174,12 @@ is( %hash_kv.sort, %kv.sort, 'for %hash.kv -&gt; $key, $val is rw { $val++ }', :
    my $sum2 = @array2.map:{ $_.key };
    is( $sum1, $sum2, '$_.key = 1 for @array1;');
 
-}</pre>
-</div><pre>
+}
+
+</pre>
+</div>
+
+<pre>
     for @foo -&gt; $item { print $item }</pre>
 <p>Multiple parameters may be passed, in which case the list is traversed
 more than one element at a time:</p>
@@ -2172,7 +2240,7 @@ left side.  But it's what people expect of a pronoun like ``it''.)</p>
 the bare block is not a do-once.  Instead <code>do {...}</code> is the do-once
 loop (which is another reason you can't put a <code>while</code> or <code>until</code>
 modifier on it; use <code>repeat</code> for that).</p>
-<a name="msg_26">&nbsp;&nbsp;</a>
+<a name="msg_26"></a>
 <a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
 <div ID="header_shown_26" style="display: none;">
 - Hide the snippet from t/statements/do.t (line 7 ~ line 21) -
@@ -2197,8 +2265,12 @@ modifier on it; use <code>repeat</code> for that).</p>
         "'do' can't take the 'until' modifier";
     is $i, undef, 'the code never run';
 }
+
+
 </pre>
-</div><p>For any statement, prefixing with a <code>do</code> allows you to 
+</div>
+
+<p>For any statement, prefixing with a <code>do</code> allows you to 
 return the value of that statement and use it in an expression:</p>
 <pre>
     $x = do if $a { $b } else { $c };</pre>
@@ -2211,7 +2283,7 @@ as an unmatched left parenthesis, much like the <code>$</code> operator in
 Haskell.  That is, precedence decisions do not cross a <code>do</code> boundary.
 Conjectural: a <code>do</code> may be used within a subexpression, but only if
 terminated by an unmatched right bracket of some kind.</p>
-<a name="msg_27">&nbsp;&nbsp;</a>
+<a name="msg_27"></a>
 <a href="?hide_quotes=no#msg_27" onclick="return tog_quote(27);">
 <div ID="header_shown_27" style="display: none;">
 - Hide the snippet from t/statements/do.t (line 48 ~ line 56) -
@@ -2230,12 +2302,16 @@ terminated by an unmatched right bracket of some kind.</p>
     $ret = do 3 + 2;
     is($ret, 5, 'do EXPR should also work (simple + expr)');
 }
+
+
 </pre>
-</div><p>Since <code>do</code> is defined as going in front of a statement, it follows
+</div>
+
+<p>Since <code>do</code> is defined as going in front of a statement, it follows
 that it can always be followed by a statement label.  This is particularly
 useful for the do-once block, since it is offically a loop and can take
 therefore loop control statements.</p>
-<a name="msg_28">&nbsp;&nbsp;</a>
+<a name="msg_28"></a>
 <a href="?hide_quotes=no#msg_28" onclick="return tog_quote(28);">
 <div ID="header_shown_28" style="display: none;">
 - Hide the snippet from t/statements/do.t (line 57 ~ line 77) -
@@ -2266,8 +2342,12 @@ therefore loop control statements.</p>
     }
     is $i, 1, "'last' works in 'do' block";
 }
+
+
 </pre>
-</div><p>Although a bare block is no longer a do-once loop, it still executes
+</div>
+
+<p>Although a bare block is no longer a do-once loop, it still executes
 immediately as in Perl 5, as if it were immediately dereferenced with
 a <code>.()</code> postfix, so within such a block <code>CALLER::</code> refers to the
 scope surrounding the block.  If you wish to return a closure from a
@@ -2275,7 +2355,7 @@ function, you must use an explicit prefix such as <code>return</code> or <code>s
 or <code>-&gt;</code>.  (Use of a placeholder parameter is deemed insufficiently
 explicit because it's not out front where it can be seen.  You can, of
 course, use a placeholder parameter if you also use <code>return</code>.)</p>
-<a name="msg_29">&nbsp;&nbsp;</a>
+<a name="msg_29"></a>
 <a href="?hide_quotes=no#msg_29" onclick="return tog_quote(29);">
 <div ID="header_shown_29" style="display: none;">
 - Hide the snippet from t/statements/do.t (line 78 ~ line 89) -
@@ -2297,8 +2377,12 @@ course, use a placeholder parameter if you also use <code>return</code>.)</p>
     my $i;
     ok !eval('{ $i++; last; $i--; }'), "bare block can't take 'last'";
     is $i, undef, "the code snippet never run";
-}</pre>
-</div><p>
+}
+
+</pre>
+</div>
+
+<p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
 <hr />
@@ -2333,7 +2417,7 @@ directly to the first appropriate test that might possibly match.)</p>
 <pre>
     default {...}</pre>
 <p>is exactly equivalent to</p>
-<a name="msg_8">&nbsp;&nbsp;</a>
+<a name="msg_8"></a>
 <a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
 <div ID="header_shown_8" style="display: none;">
 - Hide the snippet from t/statements/given.t (line 211 ~ line 286) -
@@ -2419,8 +2503,12 @@ flunk("when true is parsefail", :todo&lt;feature&gt;) if $!;
     }
     is $x, 42, 'given tests 1-arg subs for truth';
 }
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
     when * {...}</pre>
 <p>Because <code>when</code> statements are executed in order, the default must
 come last.  You don't have to use an explicit default--you can just
@@ -2613,7 +2701,7 @@ block in the current (or caller's) scope.</p>
     use fatal;</pre>
 <p>The <code>fail</code> function responds to the caller's <code>use fatal</code> state.  It
 either returns an unthrown exception, or throws the exception.</p>
-<a name="msg_12">&nbsp;&nbsp;</a>
+<a name="msg_12"></a>
 <a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
 <div ID="header_shown_12" style="display: none;">
 - Hide the snippet from t/builtins/control_flow/fail.t (line 7 ~ line 34) -
@@ -2651,13 +2739,17 @@ either returns an unthrown exception, or throws the exception.</p>
 
   is $was_after_fail, 0, "fail() causes our sub to return (2)";
   is $was_after_sub,  0, "fail() causes our try{} to die";
-}</pre>
-</div><p>
+}
+
+</pre>
+</div>
+
+<p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
 <hr />
 <h1><a name="Closure20traits">Closure traits</a></h1>
-<a name="msg_20">&nbsp;&nbsp;</a>
+<a name="msg_20"></a>
 <a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
 <div ID="header_shown_20" style="display: none;">
 - Hide the snippet from t/closure_traits/in_loop.t (line 18 ~ line 70) -
@@ -2720,8 +2812,12 @@ either returns an unthrown exception, or throws the exception.</p>
                          "(3 E1)(3 E2)(3 a)" ~ "(3 N1)(3 N2)" ~  "(3 Leave1)(3 Leave2)" ~
                          "(4 E1)(4 E2)"  ~     "(4 Last1)(4 Last2)(4 Leave1)(4 Leave2)",
        'trait blocks work properly in for loop';
-}</pre>
-</div><p>A <code>CATCH</code> block is just a trait of the closure containing it.  Other
+}
+
+</pre>
+</div>
+
+<p>A <code>CATCH</code> block is just a trait of the closure containing it.  Other
 blocks can be installed as traits as well.  These other blocks are
 called at various times, and some of them respond to various control
 exceptions and exit values:</p>
@@ -2729,7 +2825,7 @@ exceptions and exit values:</p>
       BEGIN {...}*      at compile time, ASAP, only ever runs once
       CHECK {...}*      at compile time, ALAP, only ever runs once
        INIT {...}*      at run time, ASAP, only ever runs once</pre>
-<a name="msg_21">&nbsp;&nbsp;</a>
+<a name="msg_21"></a>
 <a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
 <div ID="header_shown_21" style="display: none;">
 - Hide the snippet from t/closure_traits/init.t (line 7 ~ line 68) -
@@ -2801,10 +2897,14 @@ my $str ~= 'o';  # Note that this is different from  "my $str = 'o';".
     INIT { $str ~= 'i' }
 }
 is $str, 'io', 'INIT {} always runs before the mainline code runs';
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
         END {...}       at run time, ALAP, only ever runs once</pre>
-<a name="msg_23">&nbsp;&nbsp;</a>
+<a name="msg_23"></a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID="header_shown_23" style="display: none;">
 - Hide the snippet from t/closure_traits/interpolate.t (line 11 ~ line 40) -
@@ -2844,8 +2944,12 @@ is "{ CHECK { $hist ~= 'C' } }", "BC",
     'CHECK {...} fired at compile-time, ALAP';
 
 is "{ BEGIN { $hist ~= 'B' } }", "B",
-    'BEGIN {...} fired at compile-time, ASAP';</pre>
-</div><a name="msg_19">&nbsp;&nbsp;</a>
+    'BEGIN {...} fired at compile-time, ASAP';
+
+</pre>
+</div>
+
+<a name="msg_19"></a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID="header_shown_19" style="display: none;">
 - Hide the snippet from t/closure_traits/descending_order.t (line 11 ~ line 53) -
@@ -2898,8 +3002,12 @@ is $var_at_check, undef, 'CHECK {...} ran at compile time';
 is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
 is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
 
-$eof_var = 29;</pre>
-</div><a name="msg_18">&nbsp;&nbsp;</a>
+$eof_var = 29;
+
+</pre>
+</div>
+
+<a name="msg_18"></a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID="header_shown_18" style="display: none;">
 - Hide the snippet from t/closure_traits/ascending_order.t (line 11 ~ line 59) -
@@ -2958,8 +3066,12 @@ is $var_at_init, undef, 'INIT {...} ran at runtime, but ASAP';
 is $var_at_enter, undef, 'ENTER {...} at runtime, but before the mainline body';
 is $var_at_start, 14, 'START {...} at runtime, just in time';
 
-$eof_var = 29;</pre>
-</div><pre>
+$eof_var = 29;
+
+</pre>
+</div>
+
+<pre>
       START {...}*      on first ever execution, once per closure clone</pre>
 <pre>
       ENTER {...}*      at every block entry time, repeats on loop blocks.
@@ -2977,7 +3089,7 @@ $eof_var = 29;</pre>
       CATCH {...}       catch exceptions, before LEAVE
     CONTROL {...}       catch control exceptions, before LEAVE</pre>
 <p>Those marked with a <code>*</code> can also be used within an expression:</p>
-<a name="msg_25">&nbsp;&nbsp;</a>
+<a name="msg_25"></a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID="header_shown_25" style="display: none;">
 - Hide the snippet from t/closure_traits/rvalue.t (line 10 ~ line 49) -
@@ -3027,8 +3139,12 @@ is $begin(), 'B', 'BEGIN {} runs only once';
 
 # Test END {} as rval:
 
-ok !eval 'my $end_val = END { 3 }', "END {} can't be used as a rvalue";</pre>
-</div><pre>
+ok !eval 'my $end_val = END { 3 }', "END {} can't be used as a rvalue";
+
+</pre>
+</div>
+
+<pre>
     my $compiletime = BEGIN { localtime };
     our $temphandle = START { maketemp() };</pre>
 <p>Code that is generated at run time can still fire off <code>CHECK</code>
@@ -3046,7 +3162,7 @@ really traits, exactly--they add themselves onto a list stored in the
 actual trait (except for <code>START</code>, which executes inline).  So if you
 examine the <code>ENTER</code> trait of a block, you'll find that it's really
 a list of closures rather than a single closure.</p>
-<a name="msg_24">&nbsp;&nbsp;</a>
+<a name="msg_24"></a>
 <a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
 <div ID="header_shown_24" style="display: none;">
 - Hide the snippet from t/closure_traits/multiple.t (line 11 ~ line 38) -
@@ -3084,12 +3200,16 @@ CHECK { $hist ~= 'c ' }
 BEGIN { $hist ~= 'B ' }
 BEGIN { $hist ~= 'b ' }
 
-is $hist, 'B b c C I i S s ', 'running order of multiple closure traits';</pre>
-</div><p>The semantics of <code>INIT</code> and <code>START</code> are not equivalent to each
+is $hist, 'B b c C I i S s ', 'running order of multiple closure traits';
+
+</pre>
+</div>
+
+<p>The semantics of <code>INIT</code> and <code>START</code> are not equivalent to each
 other in the case of cloned closures.  An <code>INIT</code> only runs once for
 all copies of a cloned closure.  A <code>START</code> runs separately for each
 clone, so separate clones can keep separate state variables:</p>
-<a name="msg_22">&nbsp;&nbsp;</a>
+<a name="msg_22"></a>
 <a href="?hide_quotes=no#msg_22" onclick="return tog_quote(22);">
 <div ID="header_shown_22" style="display: none;">
 - Hide the snippet from t/closure_traits/init.t (line 69 ~ line 76) -
@@ -3107,8 +3227,12 @@ clone, so separate clones can keep separate state variables:</p>
 		my $sub = { INIT { $var++ } };
 		is $var, 1, "INIT has run exactly once ($_ time)";
 	}
-}</pre>
-</div><pre>
+}
+
+</pre>
+</div>
+
+<pre>
     our $i = 0;
     ...
     $func = { state $x will start { $x = $i++ }; dostuff($i) };</pre>
@@ -3265,7 +3389,7 @@ declared in the statement syntactic group:</p>
 <p>Statement-level constructs may start only where the parser is expecting
 the start of a statement.  To embed a statement in an expression you
 must use something like <code>do {...}</code> or <code>try {...}</code>.</p>
-<a name="msg_11">&nbsp;&nbsp;</a>
+<a name="msg_11"></a>
 <a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
 <div ID="header_shown_11" style="display: none;">
 - Hide the snippet from t/builtins/control_flow/try.t (line 5 ~ line 174) -
@@ -3445,8 +3569,12 @@ unless (eval 'Exception.new') {
     ok(!$naughty, "did not get caught by wrong handler");
     is(eval('ref($!)'), Dandy, ".. of the right class", :todo&lt;bug&gt;);
 };
+
+
 </pre>
-</div><pre>
+</div>
+
+<pre>
     $x =  do { given $foo { when 1 {2} when 3 {4} }} + $bar;
     $x = try { given $foo { when 1 {2} when 3 {4} }} + $bar;</pre>
 <p>The existence of a <code>statement_control:&lt;BEGIN&gt;</code> does not preclude us from
@@ -3474,7 +3602,7 @@ In particular, a syntax error will be reported for C-isms such as these:</p>
 </p>
 <hr />
 <h1><a name="Definition20of20Success">Definition of Success</a></h1>
-<a name="msg_30">&nbsp;&nbsp;</a>
+<a name="msg_30"></a>
 <a href="?hide_quotes=no#msg_30" onclick="return tog_quote(30);">
 <div ID="header_shown_30" style="display: none;">
 - Hide the snippet from t/var/let.t (line 8 ~ line 70) -
@@ -3547,8 +3675,12 @@ eval('
   is @array[1], 1, "let() restored our array element";
 }
 "1 - delete this line when the parsefail eval() is removed";
-') or skip(2, "parsefail: let \@array[1]");</pre>
-</div><p>Hypothetical variables are somewhat transactional--they keep their
+') or skip(2, "parsefail: let \@array[1]");
+
+</pre>
+</div>
+
+<p>Hypothetical variables are somewhat transactional--they keep their
 new values only on successful exit of the current block, and otherwise
 are rolled back to their original values.</p>
 <p>It is, of course, a failure to leave the block by propagating an error
