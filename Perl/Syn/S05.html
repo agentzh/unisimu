@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <head>
 <title>S05</title>
 <link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8" />
 <link rev="made" href="mailto:" />
-<script language="javascript1.2"><!--
+<script type="text/javascript"><!--
 var agt = navigator.userAgent.toLowerCase();
 
 var is_opera = (agt.indexOf("opera") != -1);
@@ -136,9 +136,9 @@ Allison Randal &lt;<a href="mailto:al@shadowed.net">al@shadowed.net</a>&gt;</p>
    Maintainer: Patrick Michaud &lt;pmichaud@pobox.com&gt; and
                Larry Wall &lt;larry@wall.org&gt;
    Date: 24 Jun 2002
-   Last Modified: 16 Aug 2006
+   Last Modified: 21 Aug 2006
    Number: 5
-   Version: 32</pre>
+   Version: 33</pre>
 <p>This document summarizes Apocalypse 5, which is about the new regex
 syntax.  We now try to call them <em>regex</em> rather than ``regular
 expressions'' because they haven't been regular expressions for a
@@ -654,17 +654,19 @@ is that of a function or method call, so if the first character is
 a left parenthesis, it really is a call:</p>
 <pre>
     &lt;foo('bar')&gt;</pre>
-<p>If the first character is a colon, the rest of the text (following any
-whitespace) is passed as a string, so the previous may also be written as:</p>
-<pre>
-    &lt;foo: bar&gt;</pre>
-<p>If the first character is whitespace, the subsequent text is passed as regex,
-so:</p>
+<p>If the first character after the angle is whitespace, the
+subsequent text (following any whitespace) is passed as regex, so:</p>
 <pre>
     &lt;foo bar&gt;</pre>
 <p>is more or less equivalent to</p>
 <pre>
     &lt;foo(/bar/)&gt;</pre>
+<p>To pass a regex with leading whitespace you must use the parenthesized form.</p>
+<p>If the first character is a colon, the rest of the text (following any
+whitespace) is passed as a string, so the previous may also be written as:</p>
+<pre>
+    &lt;foo: bar&gt;</pre>
+<p>To pass a string with leading whitespace you must use the parenthesized form.</p>
 <p>If the first character is a plus or minus, the initial identifier is taken
 as a character class, so</p>
 <pre>
@@ -2490,13 +2492,14 @@ course some similarity is good.)</p>
 <h1><a name="Transliteration">Transliteration</a></h1>
 <a name="msg_2"></a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
-<div ID=header_shown_2 style="display: none;">
+<div ID="header_shown_2" style="display: none;">
 - Hide the snippet from t/builtins/strings/trans.t (line 8 ~ line 67) -
 </div>
-<div ID=header_hidden_2 style="display: block;">
-- Show the snippet from t/builtins/strings/trans.t (line 8 ~ line 67, 60 lines) -</div>
+<div ID="header_hidden_2" style="display: block;">
+- Show the snippet from t/builtins/strings/trans.t (line 8 ~ line 67, 60 lines) -
+</div>
 </a>
-<div ID=hide_2 style="display:none; border:1px solid">
+<div ID="hide_2" style="display:none; border:1px solid">
 <pre>
 L&lt;S05/Transliteration&gt;
 =cut
@@ -2640,13 +2643,14 @@ indicates that <code>@foo[42]</code> was the first element <em>not</em> included
 <h1><a name="Matching20against20non2dstrings">Matching against non-strings</a></h1>
 <a name="msg_1"></a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
-<div ID=header_shown_1 style="display: none;">
+<div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/rules/nonstrings.t (line 9 ~ line 42) -
 </div>
-<div ID=header_hidden_1 style="display: block;">
-- Show the snippet from t/rules/nonstrings.t (line 9 ~ line 42, 34 lines) -</div>
+<div ID="header_hidden_1" style="display: block;">
+- Show the snippet from t/rules/nonstrings.t (line 9 ~ line 42, 34 lines) -
+</div>
 </a>
-<div ID=hide_1 style="display:none; border:1px solid">
+<div ID="hide_1" style="display:none; border:1px solid">
 <pre>
 L&lt;S05/"Matching against non-strings"&gt;
 
