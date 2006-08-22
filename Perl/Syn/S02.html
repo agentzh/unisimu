@@ -114,7 +114,7 @@ Apocalypse, assume the Synopsis is correct.)</p>
 <li></li>
 In the abstract, Perl is written in Unicode, and has consistent Unicode
 semantics regardless of the underlying text representations.
-<a name="msg_27"></a>
+<a name="msg_27">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_27" onclick="return tog_quote(27);">
 <div ID="header_shown_27" style="display: none;">
 - Hide the snippet from t/syntax/unicode.t (line 7 ~ line 80) -
@@ -249,7 +249,7 @@ for <code>=cut</code>.  The format name does not have to be <code>comment</code>
 unrecognized format name will do to make it a comment.  (However,
 bare <code>=begin</code> and <code>=end</code> probably aren't good enough, because all
 comments in them will show up in the formatted output.)
-<a name="msg_25"></a>
+<a name="msg_25">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID="header_shown_25" style="display: none;">
 - Hide the snippet from t/syntax/POD.t (line 7 ~ line 53) -
@@ -318,7 +318,7 @@ counts as whitespace equivalent to a newline.</p>
 Embedded comments are supported as a variant on quoting syntax, introduced
 by <code>#</code> plus any user-selected bracket characters (as defined in
 <a href="#lexical20conventions">Lexical Conventions</a> above):
-<a name="msg_19"></a>
+<a name="msg_19">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID="header_shown_19" style="display: none;">
 - Hide the snippet from t/syntax/comments.t (line 10 ~ line 48) -
@@ -380,7 +380,7 @@ by <code>#</code> plus any user-selected bracket characters (as defined in
 <p>There must be no space between the <code>#</code> and the opening bracket character.
 (There may be the <em>visual appearance</em> of space for some double-wide
 characters, however, such as the corner quotes above.)</p>
-<a name="msg_20"></a>
+<a name="msg_20">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
 <div ID="header_shown_20" style="display: none;">
 - Hide the snippet from t/syntax/comments.t (line 49 ~ line 57) -
@@ -406,7 +406,7 @@ As a special case to facilitate commenting out sections of code with
 <code>s/^/#/</code>, <code>#</code> on the beginning of line is always considered a line-end
 comment rather than an embedded comment, even if followed by a bracketing
 character.
-<a name="msg_23"></a>
+<a name="msg_23">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID="header_shown_23" style="display: none;">
 - Hide the snippet from t/syntax/comments.t (line 94 ~ line 105) -
@@ -435,7 +435,7 @@ For all quoting constructs that use user-selected brackets, you can open
 with multiple identical bracket characters, which must by closed by the
 same number of closing brackets.  Counting of nested brackets applies only
 to pairs of brackets of the same length as the opening brackets:
-<a name="msg_22"></a>
+<a name="msg_22">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_22" onclick="return tog_quote(22);">
 <div ID="header_shown_22" style="display: none;">
 - Hide the snippet from t/syntax/comments.t (line 76 ~ line 93) -
@@ -464,7 +464,7 @@ to pairs of brackets of the same length as the opening brackets:
 }
 
 {</pre>
-</div><a name="msg_21"></a>
+</div><a name="msg_21">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
 <div ID="header_shown_21" style="display: none;">
 - Hide the snippet from t/syntax/comments.t (line 58 ~ line 75) -
@@ -566,7 +566,7 @@ so you can split excessively long heredoc intro lines like this:
 An unspace may contain a comment, but a comment may not contain an unspace.
 In particular, end-of-line comments do not treat backslash as significant.
 If you say:
-<a name="msg_24"></a>
+<a name="msg_24">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
 <div ID="header_shown_24" style="display: none;">
 - Hide the snippet from t/syntax/comments.t (line 106 ~ line 110) -
@@ -853,7 +853,7 @@ lexical scope, pragmas may specify the nature of temporary values,
 and how floating point is to behave under various circumstances.
 All IEEE modes must be lexically available via pragma except in cases
 where that would entail heroic efforts to bypass a braindead platform.
-<a name="msg_18"></a>
+<a name="msg_18">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID="header_shown_18" style="display: none;">
 - Hide the snippet from t/builtins/math/NaN.t (line 9 ~ line 18) -
@@ -1052,7 +1052,7 @@ To get a formatted representation of any scalar value, use the
 <p>To format an array value separated by commas, supply a second argument:
 <code>.fmt('%03d', ', ')</code>.  To format a hash value or list of pairs, include
 formats for both key and value in the first string: <code>.fmt('%s: %s', &quot;\n&quot;)</code>.</p>
-<a name="msg_3"></a>
+<a name="msg_3">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
 <div ID="header_shown_3" style="display: none;">
 - Hide the snippet from t/builtins/sprintf_and_as.t (line 25 ~ line 26) -
@@ -1065,7 +1065,7 @@ formats for both key and value in the first string: <code>.fmt('%s: %s', &quot;\
 <pre>
 # L&lt;S02/"Names and Variables" /or list of pairs/&gt;
 is (a =&gt; 1.3, b =&gt; 2.4).as("%s:%d", "_"), "a:1_b:2", "as() works with lists of pairs";</pre>
-</div><a name="msg_2"></a>
+</div><a name="msg_2">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID="header_shown_2" style="display: none;">
 - Hide the snippet from t/builtins/sprintf_and_as.t (line 22 ~ line 24) -
@@ -1079,7 +1079,7 @@ is (a =&gt; 1.3, b =&gt; 2.4).as("%s:%d", "_"), "a:1_b:2", "as() works with list
 # L&lt;S02/"Names and Variables" /To format a hash value/&gt;
 is hash((a =&gt; 1.3), (b =&gt; 2.4)).as("%s:%d", "_"), "a:1_b:2", "as() works with hashes";
 </pre>
-</div><a name="msg_1"></a>
+</div><a name="msg_1">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
 <div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/builtins/sprintf_and_as.t (line 19 ~ line 21) -
@@ -1217,7 +1217,7 @@ Each such slice is evaluated lazily.
 <li></li>
 To make a slice subscript return something other than values, append an
 appropriate adverb to the subscript.
-<a name="msg_4"></a>
+<a name="msg_4">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
 <div ID="header_shown_4" style="display: none;">
 - Hide the snippet from t/operators/subscript_adverbs.t (line 7 ~ line 197) -
@@ -1482,7 +1482,7 @@ alternate way to write this is:</p>
 <p></p>
 <li></li>
 The following pseudo-package names are reserved in the first position:
-<a name="msg_9"></a>
+<a name="msg_9">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
 <div ID="header_shown_9" style="display: none;">
 - Hide the snippet from t/var/var.t (line 7 ~ line 12) -
@@ -1613,7 +1613,7 @@ lexical variable must have the trait ``<code>is context</code>'' to be
 visible via <code>CALLER</code>.  (<code>$_</code>, <code>$!</code> and <code>$/</code> are always
 contextual.) If the variable is not visible in the caller, it returns
 failure.
-<a name="msg_8"></a>
+<a name="msg_8">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
 <div ID="header_shown_8" style="display: none;">
 - Hide the snippet from t/var/caller.t (line 51 ~ line 173) -
@@ -1770,7 +1770,7 @@ is automatically considered environmental.  Note also that <code>CONTEXT</code>
 and <code>$+</code> always skip the current scope, since you can always name
 the variable directly without the <code>CONTEXT</code> or <code>+</code> if it's been
 declared in the current lexical scope.
-<a name="msg_5"></a>
+<a name="msg_5">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
 <div ID="header_shown_5" style="display: none;">
 - Hide the snippet from t/magicals/env.t (line 6 ~ line 134) -
@@ -1974,7 +1974,7 @@ Instead of <code>$?OUTER::SUB</code> you probably want to write <code></code>OUT
     $?OSVER     Which operating system version am I compiled for?
     $?PERLVER   Which Perl version am I compiled for?
     $?FILE      Which file am I in?</pre>
-<a name="msg_6"></a>
+<a name="msg_6">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
 <div ID="header_shown_6" style="display: none;">
 - Hide the snippet from t/magicals/file_line.t (line 11 ~ line 16) -
@@ -2005,7 +2005,7 @@ ok($?FILE eq ('t/magicals/file_line.t' | 't\\magicals\\file_line.t'), '$?FILE wo
     @?GRAMMAR   Which nested grammars am I in?
     $?PARSER    Which Perl grammar was used to parse this statement?
     &amp;?ROUTINE   Which routine am I in?</pre>
-<a name="msg_7"></a>
+<a name="msg_7">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
 <div ID="header_shown_7" style="display: none;">
 - Hide the snippet from t/magicals/subname.t (line 9 ~ line 17) -
@@ -2101,7 +2101,7 @@ Consent of the governed, and all that.
 </p>
 <hr />
 <h1><a name="Literals">Literals</a></h1>
-<a name="msg_10"></a>
+<a name="msg_10">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
 <div ID="header_shown_10" style="display: none;">
 - Hide the snippet from t/operators/listquote.t (line 37 ~ line 76) -
@@ -2400,7 +2400,7 @@ built-in <code>&lt;...&gt;</code> is equivalent to <code>q:w/.../</code>.)</p>
 <p></p>
 <li></li>
 Whitespace is allowed between the ``q'' and its adverb: <code>q :w /.../</code>.
-<a name="msg_11"></a>
+<a name="msg_11">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
 <div ID="header_shown_11" style="display: none;">
 - Hide the snippet from t/operators/quoting.t (line 164 ~ line 173) -
@@ -2488,7 +2488,7 @@ with empty brackets:
 (Except that a space is not added if the element already ends in some kind
 of whitespace.  In particular, a list of pairs will interpolate with a
 tab between the key and value, and a newline after the pair.)</p>
-<a name="msg_12"></a>
+<a name="msg_12">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
 <div ID="header_shown_12" style="display: none;">
 - Hide the snippet from t/syntax/interpolation/arrays.t (line 5 ~ line 58) -
@@ -2577,7 +2577,7 @@ that list is interpolated as if it were an array in string context.)</p>
 In order to interpolate the result of a method call without arguments,
 it's necessary to include parentheses or extend the call with something
 ending in brackets:
-<a name="msg_13"></a>
+<a name="msg_13">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
 <div ID="header_shown_13" style="display: none;">
 - Hide the snippet from t/syntax/interpolation/strings.t (line 34 ~ line 63) -
@@ -2934,7 +2934,7 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
     Context     Type    OOtype  Operator
     -------     ----    ------  --------
     boolean     bit     Bit     ?</pre>
-<a name="msg_17"></a>
+<a name="msg_17">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID="header_shown_17" style="display: none;">
 - Hide the snippet from t/syntax/force_context.t (line 54 ~ line 74) -
@@ -2969,7 +2969,7 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
 </div><pre>
     integer     int     Int     int
     numeric     num     Num     +</pre>
-<a name="msg_15"></a>
+<a name="msg_15">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
 <div ID="header_shown_15" style="display: none;">
 - Hide the snippet from t/syntax/force_context.t (line 13 ~ line 24) -
@@ -2994,7 +2994,7 @@ In addition to undifferentiated scalars, we also have these scalar contexts:
 </pre>
 </div><pre>
     string      buf     Str     ~</pre>
-<a name="msg_16"></a>
+<a name="msg_16">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
 <div ID="header_shown_16" style="display: none;">
 - Hide the snippet from t/syntax/force_context.t (line 37 ~ line 53) -
@@ -3030,7 +3030,7 @@ Unlike in Perl 5, objects are no longer always considered true.
 It depends on the state of their <code>.bit</code> property.  Classes get to decide
 which of their values are true and which are false.  Individual objects
 can override the class definition:
-<a name="msg_14"></a>
+<a name="msg_14">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
 <div ID="header_shown_14" style="display: none;">
 - Hide the snippet from t/oo/syntax-but.t (line 62 ~ line 71) -
@@ -3154,7 +3154,7 @@ of
 <pre>
     while (&lt;HANDLE&gt;) {...}</pre>
 <p>you now write</p>
-<a name="msg_26"></a>
+<a name="msg_26">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
 <div ID="header_shown_26" style="display: none;">
 - Hide the snippet from t/builtins/io/io.t (line 53 ~ line 157) -

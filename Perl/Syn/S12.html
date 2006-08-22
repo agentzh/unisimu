@@ -125,7 +125,7 @@ programming.</p>
 </p>
 <hr />
 <h1><a name="Classes">Classes</a></h1>
-<a name="msg_32"></a>
+<a name="msg_32">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_32" onclick="return tog_quote(32);">
 <div ID="header_shown_32" style="display: none;">
 - Hide the snippet from t/oo/class/basic.t (line 13 ~ line 38) -
@@ -224,7 +224,7 @@ of the searched namespaces.</p>
 <pre>
     class MyStruct is rw {...}</pre>
 <p>An ``isa'' is just a trait that happens to be another class:</p>
-<a name="msg_33"></a>
+<a name="msg_33">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_33" onclick="return tog_quote(33);">
 <div ID="header_shown_33" style="display: none;">
 - Hide the snippet from t/oo/class/basic.t (line 39 ~ line 63) -
@@ -338,7 +338,7 @@ in fact called with a different syntax that uses <code>!</code> in place of the 
 character.  See below.)</p>
 <p>To call an ordinary method with ordinary method-dispatch semantics,
 use either the dot notation or indirect object notation:</p>
-<a name="msg_8"></a>
+<a name="msg_8">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_8" onclick="return tog_quote(8);">
 <div ID="header_shown_8" style="display: none;">
 - Hide the snippet from t/oo/methods/instance.t (line 13 ~ line 79) -
@@ -568,7 +568,7 @@ only when a method call is dispatched directly to the current class.</p>
 </p>
 <hr />
 <h1><a name="Attributes">Attributes</a></h1>
-<a name="msg_22"></a>
+<a name="msg_22">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_22" onclick="return tog_quote(22);">
 <div ID="header_shown_22" style="display: none;">
 - Hide the snippet from t/oo/attributes/instance.t (line 88 ~ line 128) -
@@ -620,7 +620,7 @@ class Foo5 {
     is($foo.get_brain, 2, "getting a private attribute (2)");
 }
 </pre>
-</div><a name="msg_16"></a>
+</div><a name="msg_16">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_16" onclick="return tog_quote(16);">
 <div ID="header_shown_16" style="display: none;">
 - Hide the snippet from t/oo/attributes/class.t (line 11 ~ line 29) -
@@ -665,7 +665,7 @@ ordinary variables.  Instead of <code>my</code>, use <code>has</code>:</p>
 the automatic generation of an accessor method of the same name.
 Private attributes use an exclamation to indicate that no public accessor is
 generated.</p>
-<a name="msg_19"></a>
+<a name="msg_19">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_19" onclick="return tog_quote(19);">
 <div ID="header_shown_19" style="display: none;">
 - Hide the snippet from t/oo/attributes/instance.t (line 17 ~ line 32) -
@@ -712,7 +712,7 @@ can be a private method call, but only for trusted classes).</p>
 <p>For public attributes, some traits are copied to the accessor method.
 The <code>rw</code> trait causes the generated accessor to be declared <code>rw</code>,
 making it an lvalue method.  The default is a read-only accessor.</p>
-<a name="msg_21"></a>
+<a name="msg_21">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_21" onclick="return tog_quote(21);">
 <div ID="header_shown_21" style="display: none;">
 - Hide the snippet from t/oo/attributes/instance.t (line 46 ~ line 68) -
@@ -748,7 +748,7 @@ class Foo3 { has $.bar is rw; };
 </pre>
 </div><p>If you declare the class as <code>rw</code>, then all the class's attributes
 default to <code>rw</code>, much like a C struct.</p>
-<a name="msg_23"></a>
+<a name="msg_23">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_23" onclick="return tog_quote(23);">
 <div ID="header_shown_23" style="display: none;">
 - Hide the snippet from t/oo/attributes/is_rw_on_class.t (line 7 ~ line 29) -
@@ -814,7 +814,7 @@ that closure will be executed later at object initialization time.
 (Use a double closure to initialize to a closure value.)  The topic
 of the closure will be the attribute being initialized, while ``self''
 refers to the entire object being initialized.</p>
-<a name="msg_20"></a>
+<a name="msg_20">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_20" onclick="return tog_quote(20);">
 <div ID="header_shown_20" style="display: none;">
 - Hide the snippet from t/oo/attributes/instance.t (line 33 ~ line 45) -
@@ -838,7 +838,7 @@ eval 'class Foo2 { has $.bar = "baz"; }';
     # what exactly will happen if we try to set bar()
 }
 </pre>
-</div><a name="msg_18"></a>
+</div><a name="msg_18">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_18" onclick="return tog_quote(18);">
 <div ID="header_shown_18" style="display: none;">
 - Hide the snippet from t/oo/attributes/defaults.t (line 22 ~ line 102) -
@@ -930,7 +930,7 @@ eval 'class Foo {
 
     is try { $foo.self_in_code }, "echo", "self is the object being initialized", :todo&lt;feature&gt;;
 }</pre>
-</div><a name="msg_17"></a>
+</div><a name="msg_17">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_17" onclick="return tog_quote(17);">
 <div ID="header_shown_17" style="display: none;">
 - Hide the snippet from t/oo/attributes/defaults.t (line 7 ~ line 21) -
@@ -969,7 +969,7 @@ is generated according to the secondary sigil:</p>
 </p>
 <hr />
 <h1><a name="Construction20and20Initialization">Construction and Initialization</a></h1>
-<a name="msg_35"></a>
+<a name="msg_35">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_35" onclick="return tog_quote(35);">
 <div ID="header_shown_35" style="display: none;">
 - Hide the snippet from t/oo/construction.t (line 7 ~ line 51) -
@@ -1073,7 +1073,7 @@ The argument to that closure will be the name of the class currently
 being initialized.)  In the absence of a class-labeled pair, all
 the arguments to <code>bless</code> are passed to the <code>BUILD</code>.</p>
 <p>You can clone an object, changing some of the attributes:</p>
-<a name="msg_34"></a>
+<a name="msg_34">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_34" onclick="return tog_quote(34);">
 <div ID="header_shown_34" style="display: none;">
 - Hide the snippet from t/oo/clone.t (line 7 ~ line 37) -
@@ -1120,7 +1120,7 @@ is($val, 42, '... cloned object has proper attr value');</pre>
 <p>You can write your own <code>BUILD</code> submethod to control initialization.
 If you name an attribute as a parameter, that attribute is initialized
 directly, so</p>
-<a name="msg_36"></a>
+<a name="msg_36">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_36" onclick="return tog_quote(36);">
 <div ID="header_shown_36" style="display: none;">
 - Hide the snippet from t/oo/attributes/instance.t (line 129 ~ line 303) -
@@ -1322,7 +1322,7 @@ that haven't otherwise been initialized.</p>
 </p>
 <hr />
 <h1><a name="Mutating20methods">Mutating methods</a></h1>
-<a name="msg_37"></a>
+<a name="msg_37">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_37" onclick="return tog_quote(37);">
 <div ID="header_shown_37" style="display: none;">
 - Hide the snippet from t/syntax/inplace.t (line 42 ~ line 45) -
@@ -1549,7 +1549,7 @@ multi method is defined in:</p>
 </p>
 <hr />
 <h1><a name="Roles">Roles</a></h1>
-<a name="msg_29"></a>
+<a name="msg_29">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_29" onclick="return tog_quote(29);">
 <div ID="header_shown_29" style="display: none;">
 - Hide the snippet from t/oo/roles/conflicts.t (line 13 ~ line 42) -
@@ -1590,7 +1590,7 @@ is $a.shake("pet"),    "B", "conflict resolution works (2-1)";
 is      $was_in_general_shake,  2, "conflict resolution works (2-2)";
 is      $was_in_sentry_shake,   1, "conflict resolution works (2-3)";
 is      $was_in_pet_shake,      1, "conflict resolution works (2-4)";</pre>
-</div><a name="msg_25"></a>
+</div><a name="msg_25">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_25" onclick="return tog_quote(25);">
 <div ID="header_shown_25" style="display: none;">
 - Hide the snippet from t/oo/roles/basic.t (line 13 ~ line 32) -
@@ -1621,7 +1621,7 @@ eval_ok '$baz does Foo',       'mixing in our Foo role into $baz worked', :todo&
 eval_ok '$baz.meta.does(Foo)', '.meta.does said our $baz now does Foo', :todo&lt;feature&gt;;
 eval_ok '$baz ~~ Baz',         'smartmatch said our $baz now does Foo', :todo&lt;feature&gt;;
 </pre>
-</div><a name="msg_24"></a>
+</div><a name="msg_24">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_24" onclick="return tog_quote(24);">
 <div ID="header_shown_24" style="display: none;">
 - Hide the snippet from t/oo/roles/anonymous.t (line 7 ~ line 42) -
@@ -1682,7 +1682,7 @@ methods are overridden by the new role silently.  In either case,
 a class is necessary for instantiation--a role may not be directly
 instantiated.</p>
 <p>A role is declared like a class, but with a <code>role</code> keyword:</p>
-<a name="msg_26"></a>
+<a name="msg_26">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_26" onclick="return tog_quote(26);">
 <div ID="header_shown_26" style="display: none;">
 - Hide the snippet from t/oo/roles/basic.t (line 33 ~ line 40) -
@@ -1729,7 +1729,7 @@ an anonymous class is generated that composes the role, which provides
 a way to force a role to test its crony composition for infelicities.)</p>
 <p>A role's main type is generic by default, but you can also parameterize
 other types explicitly using type parameters:</p>
-<a name="msg_31"></a>
+<a name="msg_31">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_31" onclick="return tog_quote(31);">
 <div ID="header_shown_31" style="display: none;">
 - Hide the snippet from t/oo/roles/parameterized.t (line 49 ~ line 101) -
@@ -1817,7 +1817,7 @@ allowed to assume that only currently declared superclass methods or
 non-wildcard methods are going to be available.  A stub can always
 be installed somewhere to ``supply'' a missing method's declaration.</p>
 <p>Roles may have attributes:</p>
-<a name="msg_27"></a>
+<a name="msg_27">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_27" onclick="return tog_quote(27);">
 <div ID="header_shown_27" style="display: none;">
 - Hide the snippet from t/oo/roles/basic.t (line 41 ~ line 47) -
@@ -1844,7 +1844,7 @@ eval_is '$b.attr = 23', 23, 'our $b "inherited" the $.attr attribute of B (2)', 
 <p>If you want to parameterize the initial value of a role attribute,
 be sure to put a semicolon if you don't want the parameter to be considered
 part of the long name:</p>
-<a name="msg_30"></a>
+<a name="msg_30">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_30" onclick="return tog_quote(30);">
 <div ID="header_shown_30" style="display: none;">
 - Hide the snippet from t/oo/roles/parameterized.t (line 13 ~ line 48) -
@@ -2024,7 +2024,7 @@ to the mixin class:</p>
     $line does taint($istainted);</pre>
 <p>The <code>but</code> operator creates a copy and works on that.  It also knows
 how to generalize a particular enumerated value to its role.  So</p>
-<a name="msg_28"></a>
+<a name="msg_28">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_28" onclick="return tog_quote(28);">
 <div ID="header_shown_28" style="display: none;">
 - Hide the snippet from t/oo/roles/basic.t (line 48 ~ line 54) -
@@ -2078,7 +2078,7 @@ property.  The above really means something like:</p>
 </p>
 <hr />
 <h1><a name="Traits">Traits</a></h1>
-<a name="msg_2"></a>
+<a name="msg_2">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_2" onclick="return tog_quote(2);">
 <div ID="header_shown_2" style="display: none;">
 - Hide the snippet from t/oo/traits/parameterized.t (line 13 ~ line 38) -
@@ -2115,7 +2115,7 @@ my $b = 23;
 is           $b, 23, "basic sanity (2)";
 eval_ok '$b does cool("hi")', "imperative does worked (2)", :todo&lt;feature&gt;;
 eval_is '$b.cool',      "hi", "attribute was set correctly (2)", :todo&lt;feature&gt;;</pre>
-</div><a name="msg_1"></a>
+</div><a name="msg_1">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_1" onclick="return tog_quote(1);">
 <div ID="header_shown_1" style="display: none;">
 - Hide the snippet from t/oo/traits/basic.t (line 13 ~ line 38) -
@@ -2218,7 +2218,7 @@ time like it would at compile time.</p>
 </p>
 <hr />
 <h1><a name="Delegation">Delegation</a></h1>
-<a name="msg_4"></a>
+<a name="msg_4">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_4" onclick="return tog_quote(4);">
 <div ID="header_shown_4" style="display: none;">
 - Hide the snippet from t/oo/delegation.t (line 13 ~ line 41) -
@@ -2269,7 +2269,7 @@ time, the following <code>.wag</code> method is autogenerated for you:</p>
 <pre>
     method wag (*@args is context(Lazy)) { $!tail.wag(*@args) }</pre>
 <p>You can specify multiple method names:</p>
-<a name="msg_7"></a>
+<a name="msg_7">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_7" onclick="return tog_quote(7);">
 <div ID="header_shown_7" style="display: none;">
 - Hide the snippet from t/oo/delegation.t (line 70 ~ line 100) -
@@ -2324,7 +2324,7 @@ The dispatch is still based on the <em>run-time</em> type of the object,
 not the declared type.</p>
 <p>Any other kind of argument to <code>handles</code> is considered to be a
 smartmatch selector for methods.  So you can say:</p>
-<a name="msg_5"></a>
+<a name="msg_5">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_5" onclick="return tog_quote(5);">
 <div ID="header_shown_5" style="display: none;">
 - Hide the snippet from t/oo/delegation.t (line 42 ~ line 55) -
@@ -2352,7 +2352,7 @@ ok ReFrontend.new, "class definition using a smartmatch handle worked";
 </div><pre>
     has $.fur is rw handles /^get_/;</pre>
 <p>If you say</p>
-<a name="msg_6"></a>
+<a name="msg_6">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
 <div ID="header_shown_6" style="display: none;">
 - Hide the snippet from t/oo/delegation.t (line 56 ~ line 69) -
@@ -2428,7 +2428,7 @@ automatically performed.</p>
 </p>
 <hr />
 <h1><a name="Types20and20Subtypes">Types and Subtypes</a></h1>
-<a name="msg_3"></a>
+<a name="msg_3">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_3" onclick="return tog_quote(3);">
 <div ID="header_shown_3" style="display: none;">
 - Hide the snippet from t/data_types/subtypes.t (line 15 ~ line 83) -
@@ -2584,7 +2584,7 @@ preferred.</p>
 </p>
 <hr />
 <h1><a name="Enums">Enums</a></h1>
-<a name="msg_9"></a>
+<a name="msg_9">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_9" onclick="return tog_quote(9);">
 <div ID="header_shown_9" style="display: none;">
 - Hide the snippet from t/data_types/enum.t (line 6 ~ line 92) -
@@ -2740,7 +2740,7 @@ while True is short for <code>bool::True</code>.</p>
 <p>Enum values may be used as a property on the right side
 of a <code>but</code>, and the enum type will be intuited from the value to make
 sure the object in question has the right semantics mixed in:</p>
-<a name="msg_10"></a>
+<a name="msg_10">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_10" onclick="return tog_quote(10);">
 <div ID="header_shown_10" style="display: none;">
 - Hide the snippet from t/oo/enums.t (line 34 ~ line 41) -
@@ -2762,7 +2762,7 @@ sure the object in question has the right semantics mixed in:</p>
 </div><pre>
     $x = &quot;Today&quot; but Tue;</pre>
 <p>is the same as</p>
-<a name="msg_12"></a>
+<a name="msg_12">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_12" onclick="return tog_quote(12);">
 <div ID="header_shown_12" style="display: none;">
 - Hide the snippet from t/oo/enums.t (line 50 ~ line 57) -
@@ -2784,7 +2784,7 @@ sure the object in question has the right semantics mixed in:</p>
 </div><pre>
     $x = &quot;Today&quot; but day::Tue;</pre>
 <p>or pseudo-hash form:</p>
-<a name="msg_11"></a>
+<a name="msg_11">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_11" onclick="return tog_quote(11);">
 <div ID="header_shown_11" style="display: none;">
 - Hide the snippet from t/oo/enums.t (line 42 ~ line 49) -
@@ -2806,7 +2806,7 @@ sure the object in question has the right semantics mixed in:</p>
 </div><pre>
     $x = &quot;Today&quot; but day&lt;Tue&gt;;</pre>
 <p>which is short for something like:</p>
-<a name="msg_13"></a>
+<a name="msg_13">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_13" onclick="return tog_quote(13);">
 <div ID="header_shown_13" style="display: none;">
 - Hide the snippet from t/oo/enums.t (line 58 ~ line 62) -
@@ -2945,7 +2945,7 @@ of the class:</p>
     $obj.META.getmethods();
     $obj.^getmethods();</pre>
 <p>Class traits may include:</p>
-<a name="msg_15"></a>
+<a name="msg_15">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_15" onclick="return tog_quote(15);">
 <div ID="header_shown_15" style="display: none;">
 - Hide the snippet from t/oo/meta_class.t (line 20 ~ line 25) -
@@ -2999,7 +2999,7 @@ that have traits like these:</p>
     readonly</pre>
 <p>Strictly speaking, metamethods like <code>.isa()</code>, <code>.does()</code>, and <code>.can()</code>
 should be called through the meta object:</p>
-<a name="msg_14"></a>
+<a name="msg_14">&nbsp;&nbsp;</a>
 <a href="?hide_quotes=no#msg_14" onclick="return tog_quote(14);">
 <div ID="header_shown_14" style="display: none;">
 - Hide the snippet from t/oo/meta_class.t (line 15 ~ line 19) -
