@@ -49,7 +49,7 @@ function tog_quote( idnum ) {
 <body>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
-<big><strong><span class="block">&nbsp;TITLE</span></strong></big>
+<big><strong>S09</strong></big>
 </td></tr>
 </table>
 
@@ -79,23 +79,23 @@ function tog_quote( idnum ) {
 </ul>
 <!-- INDEX END -->
 
-<hr />
+
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="TITLE">TITLE</a></h1>
 <p>Synopsis 9: Data Structures</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="AUTHOR">AUTHOR</a></h1>
 <p>Larry Wall &lt;<a href="mailto:larry@wall.org">larry@wall.org</a>&gt;</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="VERSION">VERSION</a></h1>
 <pre>
   Maintainer: Larry Wall &lt;larry@wall.org&gt;
@@ -106,7 +106,7 @@ function tog_quote( idnum ) {
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Overview">Overview</a></h1>
 <p>This synopsis summarizes the non-existent Apocalypse 9, which
 discussed in detail the design of Perl 6 data structures.  It was
@@ -115,7 +115,7 @@ to make it easier for the PDL folks to write numeric Perl.</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Lazy20lists">Lazy lists</a></h1>
 <p>All list contexts are lazy by default.  They still flatten eventually,
 but only when forced to.  You have to use the <code>eager</code> list operator to get a
@@ -123,7 +123,7 @@ non-lazy flattening list context (that is, to flatten immediately like Perl 5).<
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Sized20types">Sized types</a></h1>
 <p>Sized low-level types are named most generally by appending the number
 of bits to a generic low-level type name:</p>
@@ -176,7 +176,7 @@ a use for it...</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Compact20structs">Compact structs</a></h1>
 <p>A class whose attributes are all low-level types can behave as
 a struct.  (Access from outside the class is still only through
@@ -191,7 +191,7 @@ current uses of <code>pack</code>/<code>unpack</code>.)</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Compact20arrays">Compact arrays</a></h1>
 <p>In declarations of the form:</p>
 <pre>
@@ -228,7 +228,7 @@ but <code>substr()</code> returns a buffer of the same type.</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Multidimensional20arrays">Multidimensional arrays</a></h1>
 <p>The declarations above declare one-dimensional arrays of indeterminate
 length.  Such arrays are autoextending just like ordinary Perl arrays
@@ -368,7 +368,7 @@ subscript, so you can also write:</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="PDL20support">PDL support</a></h1>
 <p>An array <code>@array</code> can be tied to a PDL at declaration time:</p>
 <pre>
@@ -408,7 +408,7 @@ any object that doesn't conform to the variable's shape requirements.</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Subscript20and20slice20notation">Subscript and slice notation</a></h1>
 <p>A subscript indicates a ``slice'' of an array.  Each dimension
 of an array is sliced separately, so we say a subscript is a
@@ -428,7 +428,7 @@ index value to each slice list:</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="The20semicolon20operator">The semicolon operator</a></h1>
 <p>At the statement level, a semicolon terminates the current expression.
 Within any kind of bracketing construct, semicolon notionally
@@ -506,7 +506,7 @@ a binary operator really screws that up.  For instance,</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="PDL20signatures">PDL signatures</a></h1>
 <p>To rewrite a Perl 5 PDL definition like this:</p>
 <pre>
@@ -555,7 +555,7 @@ correctly.)</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Junctions">Junctions</a></h1>
 <a name="msg_6"></a>
 <a href="?hide_quotes=no#msg_6" onclick="return tog_quote(6);">
@@ -867,7 +867,7 @@ be preserved in the returned list.  In particular,</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Parallelized20parameters20and20autothreading">Parallelized parameters and autothreading</a></h1>
 <p>Within the scope of a <code>use autoindex</code> pragma (or equivalent, such as
 <code>use PDL</code> (maybe)), any closure that uses parameters as subscripts
@@ -928,7 +928,7 @@ proposed there is rather different).</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Hashes">Hashes</a></h1>
 <p>Everything we've said for arrays applies to hashes as well, except that
 if you're going to limit the keys of one dimension of a hash, you have
@@ -959,7 +959,7 @@ it.</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Autosorted20hashes">Autosorted hashes</a></h1>
 <p>The default hash iterator is a property called <code>.iterator</code> that can be
 user replaced.  When the hash itself needs an iterator for <code>.pairs</code>,
@@ -981,7 +981,7 @@ value.  Perhaps the associated value can also be bundled in somehow.]</p>
 <p>
 <a href="#__index__"><small>Back to Top</small></a>
 </p>
-<hr />
+
 <h1><a name="Autovivification">Autovivification</a></h1>
 <p>Autovivification will only happen if the vivifiable path is used as a
 container, by binding, assigning, or capturing into an argument list.
