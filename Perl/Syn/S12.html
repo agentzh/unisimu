@@ -16,7 +16,7 @@ function tog() {
   // tog: toggle the visibility of html elements (arguments[1..]) from none to
   // arguments[0].  Return what should be returned in a javascript onevent().
   display = arguments[0];
-  for( var i=1; i<arguments.length; i++ ) {    
+  for( var i=1; i<arguments.length; i++ ) {
     var x = document.getElementById(arguments[i]);
     if (!x) continue;
     if (x.style.display == "none" || x.style.display == "") {
@@ -24,7 +24,7 @@ function tog() {
     } else {
       x.style.display = "none";
     }
-  } 
+  }
 
   var e = is_ie ? window.event : this;
   if (e) {
@@ -40,7 +40,7 @@ function tog() {
 
 function tog_quote( idnum ) {
   return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
-	   'hide_' + idnum );
+       'hide_' + idnum );
 }
 
 //--></script>
@@ -135,7 +135,7 @@ programming.</p>
 </div>
 </a>
 <div ID="hide_32" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Classes"&gt;
 class Foo {}
 
@@ -238,7 +238,7 @@ of the searched namespaces.</p>
 </div>
 </a>
 <div ID="hide_33" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Classes" /An \"isa\" is just a trait that happens to be another class\:/&gt;
 class Bar is Foo {}
 
@@ -356,7 +356,7 @@ use either the dot notation or indirect object notation:</p>
 </div>
 </a>
 <div ID="hide_8" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Methods" /"either the dot notation or indirect object notation:"&gt;
 class Foo {
   method doit ($a, $b, $c) { $a + $b + $c }
@@ -590,7 +590,7 @@ only when a method call is dispatched directly to the current class.</p>
 </div>
 </a>
 <div ID="hide_22" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes"&gt;
 
 class Foo5 {
@@ -646,7 +646,7 @@ class Foo5 {
 </div>
 </a>
 <div ID="hide_16" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes"&gt;
 
 plan 8;
@@ -695,7 +695,7 @@ generated.</p>
 </div>
 </a>
 <div ID="hide_19" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes" /the automatic generation of an accessor method of the same name\./&gt;
 
 class Foo1 { has $.bar; };
@@ -746,7 +746,7 @@ making it an lvalue method.  The default is a read-only accessor.</p>
 </div>
 </a>
 <div ID="hide_21" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes" /making it an lvalue method/&gt;
 
 class Foo3 { has $.bar is rw; };
@@ -786,7 +786,7 @@ default to <code>rw</code>, much like a C struct.</p>
 </div>
 </a>
 <div ID="hide_23" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes" /If you declare the class as/&gt;
 
 class Foo {
@@ -856,7 +856,7 @@ refers to the entire object being initialized.</p>
 </div>
 </a>
 <div ID="hide_20" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes" /Pseudo-assignment to an attribute declaration specifies the default/&gt;
 
 eval 'class Foo2 { has $.bar = "baz"; }';
@@ -884,7 +884,7 @@ eval 'class Foo2 { has $.bar = "baz"; }';
 </div>
 </a>
 <div ID="hide_18" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes" /the attribute being initialized/&gt;
 
 my $set_by_code_attr;
@@ -980,7 +980,7 @@ eval 'class Foo {
 </div>
 </a>
 <div ID="hide_17" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Attributes" /The value on the right is evaluated at class composition/&gt;
 
 my $got_a_num;  sub get_a_num  { $got_a_num++;  42 }
@@ -1023,7 +1023,7 @@ is generated according to the secondary sigil:</p>
 </div>
 </a>
 <div ID="hide_35" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Construction and Initialization"&gt;
 
 my $in_own = 0;
@@ -1131,7 +1131,7 @@ the arguments to <code>bless</code> are passed to the <code>BUILD</code>.</p>
 </div>
 </a>
 <div ID="hide_34" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Construction and Initialization" /You can clone an object, changing some of the attributes:/&gt;
 class Foo { 
     has $.attr; 
@@ -1182,7 +1182,7 @@ directly, so</p>
 </div>
 </a>
 <div ID="hide_36" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Construction and Initialization" /If you name an attribute as a parameter, that attribute is initialized directly, so/&gt;
 
 class Foo6 {
@@ -1388,7 +1388,7 @@ that haven't otherwise been initialized.</p>
 </div>
 </a>
 <div ID="hide_37" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Mutating methods"&gt;
 my @b = &lt;z a b d e&gt;;
 @b .= sort;
@@ -1619,7 +1619,7 @@ multi method is defined in:</p>
 </div>
 </a>
 <div ID="hide_29" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles"&gt;
 my ($was_in_sentry_shake, $was_in_pet_shake, $was_in_general_shake) = (0) xx 3;
 role Sentry { method shake() { $was_in_sentry_shake++; "A" } }
@@ -1664,7 +1664,7 @@ is      $was_in_pet_shake,      1, "conflict resolution works (2-4)";
 </div>
 </a>
 <div ID="hide_25" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles"&gt;
 # Basic definition
 role Foo {}
@@ -1699,7 +1699,7 @@ eval_ok '$baz ~~ Baz',         'smartmatch said our $baz now does Foo', :todo&lt
 </div>
 </a>
 <div ID="hide_24" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles"&gt;
 {
   my $a = 3;
@@ -1764,7 +1764,7 @@ instantiated.</p>
 </div>
 </a>
 <div ID="hide_26" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles" /but with a role keyword:/&gt;
 # Roles may have methods
 eval_ok 'role A { method say_hello(Str $to) { "Hello, $to" } }',
@@ -1815,7 +1815,7 @@ other types explicitly using type parameters:</p>
 </div>
 </a>
 <div ID="hide_31" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles" /A role's main type is generic by default/&gt;
 eval_ok '
   role InitialAttribType[^vartype:] {
@@ -1907,7 +1907,7 @@ be installed somewhere to ``supply'' a missing method's declaration.</p>
 </div>
 </a>
 <div ID="hide_27" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles" /Roles may have attributes:/&gt;
 eval_ok 'role B { has $.attr = 42 is rw }',
   "definition of a role with an attribute worked", :todo&lt;feature&gt;;
@@ -1938,7 +1938,7 @@ part of the long name:</p>
 </div>
 </a>
 <div ID="hide_30" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles" /to be considered part of the long name:/&gt;
 # L&lt;A12/"Encapsulated Attributes" /to be considered part of the long name:/&gt;
 ok eval('
@@ -2122,7 +2122,7 @@ how to generalize a particular enumerated value to its role.  So</p>
 </div>
 </a>
 <div ID="hide_28" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Roles" /operator creates a copy and works on that./&gt;
 # As usual, ok instead of todo_ok to avoid unexpected succeedings.
 eval_ok 'my Foo $c .= new()',        'creating a Foo worked';
@@ -2180,7 +2180,7 @@ property.  The above really means something like:</p>
 </div>
 </a>
 <div ID="hide_2" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Traits"&gt;
 # Basic definition
 my $role_works;
@@ -2221,7 +2221,7 @@ eval_is '$b.cool',      "hi", "attribute was set correctly (2)", :todo&lt;featur
 </div>
 </a>
 <div ID="hide_1" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Traits"&gt;
 # Basic definition
 my $was_in_any_sub   = 0;
@@ -2328,7 +2328,7 @@ time like it would at compile time.</p>
 </div>
 </a>
 <div ID="hide_4" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Delegation"&gt;
 
 class Backend1 { method hi() { 42 } method cool() { 1337 } }
@@ -2383,7 +2383,7 @@ time, the following <code>.wag</code> method is autogenerated for you:</p>
 </div>
 </a>
 <div ID="hide_7" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Delegation" /You can specify multiple method names:/&gt;
 class MultiFrontend { has $.backend is rw handles &lt;hi cool&gt; }
 ok MultiFrontend.new, "class definition using multiple method names worked";
@@ -2442,7 +2442,7 @@ smartmatch selector for methods.  So you can say:</p>
 </div>
 </a>
 <div ID="hide_5" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Delegation" /Any other kind of argument to handles is considered to be a smartmatch selector for methods/&gt;
 class ReFrontend { has $.backend is rw handles /^hi/ };
 ok ReFrontend.new, "class definition using a smartmatch handle worked";
@@ -2474,7 +2474,7 @@ ok ReFrontend.new, "class definition using a smartmatch handle worked";
 </div>
 </a>
 <div ID="hide_6" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Delegation" /If you say/&gt;
 class ClassFrontend { has $.backend is rw handles Backend2 };
 ok ClassFrontend.new, "class definition using a Class handle worked";
@@ -2554,7 +2554,7 @@ automatically performed.</p>
 </div>
 </a>
 <div ID="hide_3" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S12/"Types and Subtypes"&gt;
 
 =cut
@@ -2714,7 +2714,7 @@ preferred.</p>
 </div>
 </a>
 <div ID="hide_9" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/Enums&gt;
 {
     my %hash; eval '%hash = enum «:Mon(1) Tue Wed Thu Fri Sat Sun»';
@@ -2874,7 +2874,7 @@ sure the object in question has the right semantics mixed in:</p>
 </div>
 </a>
 <div ID="hide_10" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
   # L&lt;S12/"Enums" /has the right semantics mixed in:/&gt;
   eval_ok '$x does Tue', "basic enum mixing worked (1-1)", :todo&lt;feature&gt;;
   test_stuff($x);
@@ -2900,7 +2900,7 @@ sure the object in question has the right semantics mixed in:</p>
 </div>
 </a>
 <div ID="hide_12" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
   # L&lt;S12/"Enums" /is the same as/&gt;
   eval_ok '$x does day::Tue', "basic enum mixing worked (3-1)", :todo&lt;feature&gt;;
   test_stuff($x);
@@ -2926,7 +2926,7 @@ sure the object in question has the right semantics mixed in:</p>
 </div>
 </a>
 <div ID="hide_11" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
   # L&lt;S12/"Enums" /or pseudo-hash form:/&gt;
   eval_ok '$x does day&lt;Tue&gt;', "basic enum mixing worked (2-1)", :todo&lt;feature&gt;;
   test_stuff($x);
@@ -2952,7 +2952,7 @@ sure the object in question has the right semantics mixed in:</p>
 </div>
 </a>
 <div ID="hide_13" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
   # L&lt;S12/"Enums" /which is short for something like:/&gt;
   eval_ok '$x does day',            "basic enum mixing worked (4-0)", :todo&lt;feature&gt;;
   eval_ok '$x.day = &amp;day::("Tue")', "basic enum mixing worked (4-1)", :todo&lt;feature&gt;;
@@ -3095,7 +3095,7 @@ of the class:</p>
 </div>
 </a>
 <div ID="hide_15" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Introspection" /Class traits may include\:/&gt;
 
 eval_ok("Foo.meta.name() eq 'Foo'", '... the name() property is Foo');
@@ -3153,7 +3153,7 @@ should be called through the meta object:</p>
 </div>
 </a>
 <div ID="hide_14" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S12/"Introspection" /should be called through the meta object\:/&gt;
 
 eval_ok("Foo.meta.can('bar')", '... Foo can bar', :todo&lt;feature&gt;);

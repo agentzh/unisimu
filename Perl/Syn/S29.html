@@ -16,7 +16,7 @@ function tog() {
   // tog: toggle the visibility of html elements (arguments[1..]) from none to
   // arguments[0].  Return what should be returned in a javascript onevent().
   display = arguments[0];
-  for( var i=1; i<arguments.length; i++ ) {    
+  for( var i=1; i<arguments.length; i++ ) {
     var x = document.getElementById(arguments[i]);
     if (!x) continue;
     if (x.style.display == "none" || x.style.display == "") {
@@ -24,7 +24,7 @@ function tog() {
     } else {
       x.style.display = "none";
     }
-  } 
+  }
 
   var e = is_ie ? window.event : this;
   if (e) {
@@ -40,7 +40,7 @@ function tog() {
 
 function tog_quote( idnum ) {
   return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
-	   'hide_' + idnum );
+       'hide_' + idnum );
 }
 
 //--></script>
@@ -312,7 +312,7 @@ _SMART_LINK_63
 </div>
 </a>
 <div ID="hide_64" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Math::Basic" /rand/&gt;
 
 ok(rand() &gt;= 0, 'rand() returns numbers greater than or equal to 0');
@@ -342,7 +342,7 @@ while <code>$x</code> is not.</p>
 </div>
 </a>
 <div ID="hide_65" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Math::Basic" /rand/&gt;
 
 ok(rand() &gt;= 0, 'rand() returns numbers greater than or equal to 0');
@@ -388,7 +388,7 @@ _SMART_LINK_66
 </div>
 </a>
 <div ID="hide_67" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Math::Basic" /rand/&gt;
 
 ok(rand() &gt;= 0, 'rand() returns numbers greater than or equal to 0');
@@ -421,7 +421,7 @@ you <em>must</em> call <a href="#item_srand"><code>srand()</code></a> yourself i
 </div>
 </a>
 <div ID="hide_68" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Math::Basic" /rand/&gt;
 
 ok(rand() &gt;= 0, 'rand() returns numbers greater than or equal to 0');
@@ -460,7 +460,7 @@ for 1 .. 10 {
 </div>
 </a>
 <div ID="hide_13" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Math::Trig"&gt;
 # -- sin, cos, tan
 # sin
@@ -1265,7 +1265,7 @@ _SMART_LINK_22
 </div>
 </a>
 <div ID="hide_14" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1311,7 +1311,7 @@ _SMART_LINK_22
 </div>
 </a>
 <div ID="hide_23" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1432,7 +1432,7 @@ _SMART_LINK_22
 </div>
 </a>
 <div ID="hide_15" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1478,7 +1478,7 @@ _SMART_LINK_22
 </div>
 </a>
 <div ID="hide_24" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1599,7 +1599,7 @@ _SMART_LINK_22
 </div>
 </a>
 <div ID="hide_16" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1651,7 +1651,7 @@ _SMART_LINK_25
 </div>
 </a>
 <div ID="hide_17" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1697,7 +1697,7 @@ _SMART_LINK_25
 </div>
 </a>
 <div ID="hide_26" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1818,7 +1818,7 @@ _SMART_LINK_25
 </div>
 </a>
 <div ID="hide_18" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1870,7 +1870,7 @@ as a property of the string.)  Otherwise a standard newline is removed.</p>
 </div>
 </a>
 <div ID="hide_27" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -1991,7 +1991,7 @@ as a property of the string.)  Otherwise a standard newline is removed.</p>
 </div>
 </a>
 <div ID="hide_19" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /chomp/&gt;
 # Also see L&lt;"http://use.perl.org/~autrijus/journal/25351"&gt;
 #   &amp;chomp and &amp;wrap are now nondestructive; chomp returns the chomped part,
@@ -2048,7 +2048,7 @@ this is a random string of two characters that matches the following pattern:</p
 </div>
 </a>
 <div ID="hide_50" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -2123,7 +2123,7 @@ _SMART_LINK_28
 </div>
 </a>
 <div ID="hide_29" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /lc/&gt;
 
 is(lc("Hello World"), "hello world", "simple lc test");
@@ -2168,7 +2168,7 @@ _SMART_LINK_34
 </div>
 </a>
 <div ID="hide_30" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /lc/&gt;
 
 is(lc("Hello World"), "hello world", "simple lc test");
@@ -2207,7 +2207,7 @@ is("ÁÉÍÖÜÓŰŐÚ".lc, "áéíöüóűőú", ".lc on Hungarian vowels");
 </div>
 </a>
 <div ID="hide_35" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /lcfirst/&gt;
 
 is lcfirst("HELLO WORLD"), "hELLO WORLD", "simple";
@@ -2242,7 +2242,7 @@ is $x, "hELLO WORLD", 'lcfirst uses $_ as default'
 </div>
 </a>
 <div ID="hide_31" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /lc/&gt;
 
 is(lc("Hello World"), "hello world", "simple lc test");
@@ -2280,7 +2280,7 @@ is("ÁÉÍÖÜÓŰŐÚ".lc, "áéíöüóűőú", ".lc on Hungarian vowels");
 </div>
 </a>
 <div ID="hide_32" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /lc/&gt;
 
 is(lc("Hello World"), "hello world", "simple lc test");
@@ -2325,7 +2325,7 @@ _SMART_LINK_51
 </div>
 </a>
 <div ID="hide_52" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -2376,7 +2376,7 @@ _SMART_LINK_60
 </div>
 </a>
 <div ID="hide_53" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -2420,7 +2420,7 @@ is("áéíöüóűőú".uc, "ÁÉÍÖÜÓŰŐÚ", ".uc on Hungarian vowels");
 </div>
 </a>
 <div ID="hide_61" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /ucfirst/&gt;
 
 is ucfirst("hello world"), "Hello world", "simple";
@@ -2443,7 +2443,7 @@ is ucfirst("óóóó"),        "Óóóó",        "accented chars";
 </div>
 </a>
 <div ID="hide_54" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -2496,7 +2496,7 @@ _SMART_LINK_20
 </div>
 </a>
 <div ID="hide_21" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /capitalize/&gt;
 
 is capitalize(""),             "",               "capitalize('') works";
@@ -2538,7 +2538,7 @@ is capitalize("äöü abcä"), "Äöü Abcä", "capitalize() works on non-ASCII 
 </div>
 </a>
 <div ID="hide_62" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /ucfirst/&gt;
 
 is ucfirst("hello world"), "Hello world", "simple";
@@ -2561,7 +2561,7 @@ is ucfirst("óóóó"),        "Óóóó",        "accented chars";
 </div>
 </a>
 <div ID="hide_55" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -2601,7 +2601,7 @@ is("áéíöüóűőú".uc, "ÁÉÍÖÜÓŰŐÚ", ".uc on Hungarian vowels");
 </div>
 </a>
 <div ID="hide_33" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /lc/&gt;
 
 is(lc("Hello World"), "hello world", "simple lc test");
@@ -2649,7 +2649,7 @@ This word is banned in Perl 6.  You must specify units.
 </div>
 </a>
 <div ID="hide_38" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -2789,7 +2789,7 @@ starting at <code>$pos</code>.</p>
 </div>
 </a>
 <div ID="hide_39" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -2930,7 +2930,7 @@ undef is returned.</p>
 </div>
 </a>
 <div ID="hide_40" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -3131,7 +3131,7 @@ _SMART_LINK_36
 </div>
 </a>
 <div ID="hide_37" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /quotemeta/&gt;
 
 is(quotemeta("HeLLo World-72_1"), "HeLLo\\ World\\-72_1", "simple lc test");
@@ -3264,7 +3264,7 @@ by a backslash in the returned string, regardless of any locale settings.</p>
 </div>
 </a>
 <div ID="hide_41" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -3405,7 +3405,7 @@ works backwards. See <a href="#item_index"><code>index</code></a> for more detai
 </div>
 </a>
 <div ID="hide_42" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -3557,7 +3557,7 @@ introduce a trimlist function of some sort.</p>
 </div>
 </a>
 <div ID="hide_56" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -3611,7 +3611,7 @@ format token. Format tokens have the following grammar:</p>
 </div>
 </a>
 <div ID="hide_57" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -3708,7 +3708,7 @@ passed is to be formatted into the string.</p>
 </div>
 </a>
 <div ID="hide_58" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -3752,7 +3752,7 @@ is("áéíöüóűőú".uc, "ÁÉÍÖÜÓŰŐÚ", ".uc on Hungarian vowels");
 </div>
 </a>
 <div ID="hide_59" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /uc/&gt;
 
 is(uc("Hello World"), "HELLO WORLD", "simple");
@@ -3821,7 +3821,7 @@ _SMART_LINK_43
 </div>
 </a>
 <div ID="hide_44" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -3961,7 +3961,7 @@ skip 4, "more discussion needed";
 </div>
 </a>
 <div ID="hide_45" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -4103,7 +4103,7 @@ as the start and length.</p>
 </div>
 </a>
 <div ID="hide_46" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -4246,7 +4246,7 @@ skip 4, "more discussion needed";
 </div>
 </a>
 <div ID="hide_47" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -4386,7 +4386,7 @@ like so:</p>
 </div>
 </a>
 <div ID="hide_48" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -4526,7 +4526,7 @@ skip 4, "more discussion needed";
 </div>
 </a>
 <div ID="hide_49" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Str" /substr/&gt;
 
 { # read only
@@ -4738,7 +4738,7 @@ _SMART_LINK_69
 </div>
 </a>
 <div ID="hide_70" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Control::Basic" /nothing/&gt;
 
 plan 2;
@@ -4769,7 +4769,7 @@ pass "nothing() works in while";
 </div>
 </a>
 <div ID="hide_71" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Control::Basic" /nothing/&gt;
 
 plan 2;
@@ -4885,7 +4885,7 @@ for more detailed information on object creation.</p>
 </div>
 </a>
 <div ID="hide_7" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
@@ -5043,7 +5043,7 @@ _SMART_LINK_8
 </div>
 </a>
 <div ID="hide_2" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -5189,7 +5189,7 @@ for 0..31 -&gt; $code {
 </div>
 </a>
 <div ID="hide_9" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
@@ -5336,7 +5336,7 @@ for 0..31 -&gt; $code {
 </div>
 </a>
 <div ID="hide_10" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
@@ -5485,7 +5485,7 @@ numified and a single character when stringified. Thus, chr is just:</p>
 </div>
 </a>
 <div ID="hide_3" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -5631,7 +5631,7 @@ for 0..31 -&gt; $code {
 </div>
 </a>
 <div ID="hide_4" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -5779,7 +5779,7 @@ value is the list of <a href="#item_Uni"><code>Uni</code></a>s representing the 
 </div>
 </a>
 <div ID="hide_11" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
@@ -5926,7 +5926,7 @@ be upgraded to a Uni (by interpreting it as a Unicode codepoint).</p>
 </div>
 </a>
 <div ID="hide_5" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??
@@ -6077,7 +6077,7 @@ undefined <a href="#item_Uni"><code>Uni</code></a>.</p>
 </div>
 </a>
 <div ID="hide_12" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /ord/&gt;
 # L&lt;S29/"Conversions" /chr/&gt;
 
@@ -6220,7 +6220,7 @@ for 0..31 -&gt; $code {
 </div>
 </a>
 <div ID="hide_6" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S29/"Conversions" /chr/&gt;
 
 # What is the best way to test 0 through 31??

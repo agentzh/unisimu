@@ -16,7 +16,7 @@ function tog() {
   // tog: toggle the visibility of html elements (arguments[1..]) from none to
   // arguments[0].  Return what should be returned in a javascript onevent().
   display = arguments[0];
-  for( var i=1; i<arguments.length; i++ ) {    
+  for( var i=1; i<arguments.length; i++ ) {
     var x = document.getElementById(arguments[i]);
     if (!x) continue;
     if (x.style.display == "none" || x.style.display == "") {
@@ -24,7 +24,7 @@ function tog() {
     } else {
       x.style.display = "none";
     }
-  } 
+  }
 
   var e = is_ie ? window.event : this;
   if (e) {
@@ -40,7 +40,7 @@ function tog() {
 
 function tog_quote( idnum ) {
   return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
-	   'hide_' + idnum );
+       'hide_' + idnum );
 }
 
 //--></script>
@@ -196,7 +196,7 @@ new type system.</p>
 </div>
 </a>
 <div ID="hide_2" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Subroutines and other code objects"&gt;
 
 =cut
@@ -451,7 +451,7 @@ source code string or a parse-tree.</p>
 </div>
 </a>
 <div ID="hide_14" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Routine modifiers"&gt;
 
 multi declared_wo_sub (Int $x) { 1 }
@@ -544,7 +544,7 @@ with the <a href="#item_is_rw"><code>is rw</code></a> trait:</p>
 </div>
 </a>
 <div ID="hide_28" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Blocks"&gt;
 L&lt;S04/"The Relationship of Blocks and Declarations"&gt;
 
@@ -663,7 +663,7 @@ by a comma or comma surrogate.</p>
 </div>
 </a>
 <div ID="hide_19" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/""Pointy blocks""&gt;
 
 =cut
@@ -699,7 +699,7 @@ by <code>&amp;?BLOCK</code>, not <code>&amp;?ROUTINE</code>.</p>
 </div>
 </a>
 <div ID="hide_21" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/""Pointy blocks"" /will return from the innermost enclosing sub or method&gt;
 my $str = '';
 
@@ -735,7 +735,7 @@ is $str, 'inner', 'return in pointy returns from enclosing sub';
 </div>
 </a>
 <div ID="hide_20" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/""Pointy blocks"" /behaves like a block with respect to control exceptions/&gt;
 my $n = 1;
 my $s = -&gt; { 
@@ -809,7 +809,7 @@ use ``<code>package GLOBAL {...}</code>'' around the declaration.</p>
 </div>
 </a>
 <div ID="hide_11" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Lvalue subroutines"&gt;
 
 =cut
@@ -955,7 +955,7 @@ the value of the proxy.</p>
 </div>
 </a>
 <div ID="hide_13" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Operator overloading"&gt;
 # Later, we want to run the same tests with two classes, Foo and Bar.
 # Foo overloads the operators by using multi methods, Bar by using multi subs.
@@ -1040,7 +1040,7 @@ sub run_tests_with($class) {
 </div>
 </a>
 <div ID="hide_12" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Operator overloading"&gt;
 
 =cut
@@ -1419,7 +1419,7 @@ though that's already the default for positional parameters:</p>
 </div>
 </a>
 <div ID="hide_16" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Required parameters" /declared with a trailing/&gt;
 sub mandatory (:$param!) {
     return $param;
@@ -1546,7 +1546,7 @@ calling its <code>.arity</code> method:</p>
 </div>
 </a>
 <div ID="hide_15" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Required parameters" /method:/&gt;
 {
     my sub foo () {}
@@ -1607,7 +1607,7 @@ preceding parameters:</p>
 </div>
 </a>
 <div ID="hide_30" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Optional parameters" /Default values can be calculated at run-time/&gt;
 =cut
 
@@ -1762,7 +1762,7 @@ parameter marked with a <code>\</code>.</p>
 </div>
 </a>
 <div ID="hide_1" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Argument list binding" /single scalar parameter marked/&gt;
 {
     my sub bar ($a, $b, $c) { "$a!$b!$c" }
@@ -1884,7 +1884,7 @@ operator:</p>
 </div>
 </a>
 <div ID="hide_10" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Multidimensional argument list binding"&gt;
 
 sub get_multidim_arglist (*@;AoA) { @;AoA }
@@ -1978,7 +1978,7 @@ argument list becomes a zero-dimensional slice.  It differs from
 </div>
 </a>
 <div ID="hide_7" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Feed operators"&gt;
 L&lt;S03/"Feed operators"&gt;
 
@@ -2314,7 +2314,7 @@ class unless you want it.  The sub above could be written as</p>
 </div>
 </a>
 <div ID="hide_9" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Unpacking array parameters"&gt;
 
 =cut
@@ -2372,7 +2372,7 @@ the first version.</p>
 </div>
 </a>
 <div ID="hide_29" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Unpacking hash parameters"&gt;
 
 =cut
@@ -2525,7 +2525,7 @@ can be referred to as either <code>$age</code> or <code>$!age</code>.</p>
 </div>
 </a>
 <div ID="hide_3" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Placeholder variables"&gt;
 my $s2a = { $^a };
 isa_ok($s2a, 'Block', 'it is a Parametric type (bare block with placeholder parameters)');
@@ -2636,7 +2636,7 @@ if and only if their types and contents are identical (that is, if
 </div>
 </a>
 <div ID="hide_4" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     # L&lt;S06/Immutable types/Pair "one-element Mapping"&gt;
     my $pair = :when&lt;now&gt;;
     is ~(%$pair), "when\tnow";
@@ -3250,7 +3250,7 @@ for their side effects, since most return values will be ignored.
 </div>
 </a>
 <div ID="hide_6" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"Parameter traits"&gt;
 
 =cut
@@ -3427,7 +3427,7 @@ new argument list.  The caller may also bind the returned <code>Capture</code> d
 </div>
 </a>
 <div ID="hide_31" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"The C&lt;caller&gt; function"&gt;
 
 # caller.subname
@@ -3547,7 +3547,7 @@ while <code>.count</code> considers also optional ones, including <code>*$</code
 </div>
 </a>
 <div ID="hide_5" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"The C&lt;leave&gt; function"&gt;
 
 plan 5;
@@ -3683,7 +3683,7 @@ executed.</p>
 </div>
 </a>
 <div ID="hide_26" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Temporization" /temp invokes its argument's .TEMP method./&gt;
 {
   my $was_in_own_temp_handler = 0;
@@ -3741,7 +3741,7 @@ the temporizing scope to restore the subroutine to its pre-<code>temp</code> sta
 </div>
 </a>
 <div ID="hide_25" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Temporization" /You can also modify the behaviour of temporized code structures/&gt;
 # (Test is more or less directly from S06.)
 {
@@ -3826,7 +3826,7 @@ globals in the face of multithreading.</p>
 </div>
 </a>
 <div ID="hide_27" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/Wrapping&gt;
 
 # TODO
@@ -3985,7 +3985,7 @@ by binding:</p>
 </div>
 </a>
 <div ID="hide_23" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object"&gt;
 # L&lt;S02/"Names" /Which sub am I in/&gt;
 sub factorial { @_[0] &lt; 2 ?? 1 !! @_[0] * &amp;?ROUTINE(@_[0] - 1) }
@@ -4013,7 +4013,7 @@ ok(!defined($baz), '&amp;?ROUTINE not defined outside of a sub');
 </div>
 </a>
 <div ID="hide_22" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object"&gt;
 
 =cut
@@ -4045,7 +4045,7 @@ named <code>&amp;MAIN</code> in the file's package.)</p>
 </div>
 </a>
 <div ID="hide_24" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"The C&lt;&amp;?ROUTINE&gt; object" /current routine name/&gt;
 # L&lt;S02/"Names" /Which routine am I in/&gt;
 sub foo { return &amp;?ROUTINE.name }
@@ -4076,7 +4076,7 @@ name, just use the named form, since there are no anonymous multis.</p>
 </div>
 </a>
 <div ID="hide_18" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S06/"The C&lt;&amp;?BLOCK&gt; object"&gt;
 
 =cut
@@ -4134,7 +4134,7 @@ module's subroutines/methods/etc. simultaneously:</p>
 </div>
 </a>
 <div ID="hide_8" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Currying" /The result of a use statement/&gt;
 try {
 (eval('use t::packages::Test') // {}).assuming(arg1 =&gt; "foo");
@@ -4358,7 +4358,7 @@ or a pair, it is executed immediately to compose a Hash object.</p>
 </div>
 </a>
 <div ID="hide_17" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S06/"Anonymous hashes vs blocks" /So you may use sub or hash or pair to disambiguate:/&gt;
 {
   my $hash_a = { a =&gt; 1, b =&gt; 2 };              isa_ok $hash_a, "Hash";

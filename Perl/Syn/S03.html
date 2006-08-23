@@ -16,7 +16,7 @@ function tog() {
   // tog: toggle the visibility of html elements (arguments[1..]) from none to
   // arguments[0].  Return what should be returned in a javascript onevent().
   display = arguments[0];
-  for( var i=1; i<arguments.length; i++ ) {    
+  for( var i=1; i<arguments.length; i++ ) {
     var x = document.getElementById(arguments[i]);
     if (!x) continue;
     if (x.style.display == "none" || x.style.display == "") {
@@ -24,7 +24,7 @@ function tog() {
     } else {
       x.style.display = "none";
     }
-  } 
+  }
 
   var e = is_ie ? window.event : this;
   if (e) {
@@ -40,7 +40,7 @@ function tog() {
 
 function tog_quote( idnum ) {
   return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
-	   'hide_' + idnum );
+       'hide_' + idnum );
 }
 
 //--></script>
@@ -159,7 +159,7 @@ _SMART_LINK_26
 </div>
 </a>
 <div ID="hide_25" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/Changes to Perl 5 operators/Unary ~ string context&gt;
 # string context
 {
@@ -290,7 +290,7 @@ plus the following forms:</p>
 </div>
 </a>
 <div ID="hide_24" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/Changes to Perl 5 operators/"-TERM" "coerced to numeric"&gt;
 # numeric (-) context
 {
@@ -321,7 +321,7 @@ plus the following forms:</p>
 </div>
 </a>
 <div ID="hide_27" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/Changes to Perl 5 operators/"!TERM" "coerced to boolean"&gt;
 # ! boolean context
 {
@@ -548,7 +548,7 @@ arguments.)</a></strong><br />
 </div>
 </a>
 <div ID="hide_7" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"New operators"&gt;
 =cut
 
@@ -1051,7 +1051,7 @@ dispatch tables when they know they're likely to be used in hyperops.</p>
 </div>
 </a>
 <div ID="hide_9" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Reduction operators"&gt;
 
 proto prefix:&lt;[+]&gt; (*@args) {
@@ -1084,7 +1084,7 @@ is (elk 3), 4, "multi definition of prefix:&lt;elk&gt; works";
 </div>
 </a>
 <div ID="hide_8" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Reduction operators"&gt;
 
 is ([**] ()), 1, "[**] () eq 1 (arguably nonsensical)";
@@ -1336,7 +1336,7 @@ reduction of <code>infix:&lt;x&gt;</code>.  This is deemed to be an insignifican
 </div>
 </a>
 <div ID="hide_12" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Junctive operators"&gt;
 
 =cut
@@ -1359,7 +1359,7 @@ sub j (Junction $j) { return $j.perl }
 </div>
 </a>
 <div ID="hide_11" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Junctive operators"&gt;
 
 =cut
@@ -1506,7 +1506,7 @@ just using .perl until a better approach presents itself.
 </div>
 </a>
 <div ID="hide_10" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Junctive operators"&gt;
 
 =cut
@@ -1555,7 +1555,7 @@ result:</p>
 </div>
 </a>
 <div ID="hide_17" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Junctive operators" /They thread through operations/&gt;
 
  On Fri, 2005-02-11 at 10:46 +1100, Damian Conway wrote:
@@ -1642,7 +1642,7 @@ ok(!(?(1&amp;0) != ?(1&amp;&amp;0)), 'boolean context');
 </div>
 </a>
 <div ID="hide_13" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     # L&lt;S03/"Junctive operators" /They thread through operations/&gt;
     my ($got, $want);
     $got = ((1|2|3)+4);
@@ -1675,7 +1675,7 @@ values.</p>
 </div>
 </a>
 <div ID="hide_14" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     # L&lt;S03/"Junctive operators" /This opens doors for constructions like/&gt;
     # unless $roll == any(1..6) { print "Invalid roll" }
     my ($roll, $note);
@@ -1716,7 +1716,7 @@ values.</p>
 </div>
 </a>
 <div ID="hide_15" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     # L&lt;S03/"Junctive operators" /Junctions work through subscripting/&gt;
     my ($got, @foo);
     $got = ''; @foo = ();
@@ -1749,7 +1749,7 @@ values.</p>
 </div>
 </a>
 <div ID="hide_16" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     # L&lt;S03/"Junctive operators" /Junctions are specifically unordered/&gt;
     # Compiler *can* reorder and parallelize but *may not* so don't test
     # for all(@foo) {...};  
@@ -1801,7 +1801,7 @@ Instead of writing</p>
 </div>
 </a>
 <div ID="hide_23" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Chained comparisons"&gt;
 
 ok("5" gt "4" gt "3", "5 gt 4 gt 3 chained str comparison");
@@ -1824,7 +1824,7 @@ ok("0" lt "5" ge "5", "0 lt 5 ge 5 chained comparison with ge");
 </div>
 </a>
 <div ID="hide_22" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Chained comparisons"&gt;
 
 # this works ...
@@ -1849,7 +1849,7 @@ is('e' lt 'a' lt 'j', 'e' lt 'a' &amp;&amp; 'a' lt 'j', 'multi-way comp e lt a l
 </div>
 </a>
 <div ID="hide_21" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Chained comparisons"&gt;
 
 ok(5 &gt; 4 &gt; 3, "chained comparison");
@@ -1904,7 +1904,7 @@ is('b' cmp 'a', 1,  'b is greater than a');
 </div>
 </a>
 <div ID="hide_20" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Chained comparisons"&gt;
 
 # this works ...
@@ -1929,7 +1929,7 @@ is(5 &lt; 1 &lt; 10, 5 &lt; 1 &amp;&amp; 1 &lt; 10, 'multi-way comp 5 &lt; 1 &lt
 </div>
 </a>
 <div ID="hide_19" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Chained comparisons"&gt;
 
 my $s = join 'a', &lt;x y z&gt;;
@@ -1998,7 +1998,7 @@ in front of it, or it will be interpreted as a hash subscript instead.</p>
 </div>
 </a>
 <div ID="hide_6" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Binding"&gt;
 
 # Tests for binding the return value of subroutines (both as RHS and LHS).
@@ -2094,7 +2094,7 @@ constant?
 </div>
 </a>
 <div ID="hide_4" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Binding"&gt;
 
 =cut
@@ -2115,7 +2115,7 @@ plan 28;
 </div>
 </a>
 <div ID="hide_3" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Binding"&gt;
 
 # Tests for binding multidimensional structures.
@@ -2466,7 +2466,7 @@ plan 43;
 </div>
 </a>
 <div ID="hide_2" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Binding"&gt;
 
 plan 37;
@@ -2658,7 +2658,7 @@ plan 37;
 </div>
 </a>
 <div ID="hide_1" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Binding"&gt;
 
 plan 46;
@@ -2895,7 +2895,7 @@ replaces the container itself.  For instance:</p>
 </div>
 </a>
 <div ID="hide_5" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/"Binding" /replaces the container itself\.  For instance:/&gt;
 # Basic scalar binding tests
 {
@@ -3199,7 +3199,7 @@ into its scalar value.  The above is equivalent to:</p>
 </div>
 </a>
 <div ID="hide_18" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Feed operators"&gt;
 
 =cut
@@ -3314,7 +3314,7 @@ a separate token.  Therefore, under the longest-token rule,</p>
 </div>
 </a>
 <div ID="hide_30" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Traversing arrays in parallel"&gt;
 
 =cut
@@ -3472,7 +3472,7 @@ function call instead.</p>
 </div>
 </a>
 <div ID="hide_29" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S03/"Precedence"&gt;
 
 =cut
@@ -3680,7 +3680,7 @@ ok (uc "a" eq "A"), "uc has the correct precedence in comparision to eq";
 </div>
 </a>
 <div ID="hide_28" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S03/Precedence /loose and/&gt;
 my $run = 1;
 

@@ -16,7 +16,7 @@ function tog() {
   // tog: toggle the visibility of html elements (arguments[1..]) from none to
   // arguments[0].  Return what should be returned in a javascript onevent().
   display = arguments[0];
-  for( var i=1; i<arguments.length; i++ ) {    
+  for( var i=1; i<arguments.length; i++ ) {
     var x = document.getElementById(arguments[i]);
     if (!x) continue;
     if (x.style.display == "none" || x.style.display == "") {
@@ -24,7 +24,7 @@ function tog() {
     } else {
       x.style.display = "none";
     }
-  } 
+  }
 
   var e = is_ie ? window.event : this;
   if (e) {
@@ -40,7 +40,7 @@ function tog() {
 
 function tog_quote( idnum ) {
   return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
-	   'hide_' + idnum );
+       'hide_' + idnum );
 }
 
 //--></script>
@@ -127,7 +127,7 @@ statement syntax of Perl.</p>
 </div>
 </a>
 <div ID="hide_7" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"The Relationship of Blocks and Declarations"&gt;
 ok eval('my $x; my $x; 1'),       'it is legal to declare $x twice in the same scope.';
 ok eval('state $x; state $x; 1'), 'it is legal to declare $x twice in the same scope.';
@@ -264,7 +264,7 @@ ok eval('state $x; state $x; 1'), 'it is legal to declare $x twice in the same s
 </div>
 </a>
 <div ID="hide_2" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"The Relationship of Blocks and Declarations"&gt;
 
 =cut
@@ -422,7 +422,7 @@ declared ``<code>my $x</code>''.</p>
 </div>
 </a>
 <div ID="hide_1" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"The Relationship of Blocks and Declarations" /prior to the first declaration/&gt;
 # "If you've referred to $x prior to the first declaration, and the
 #  compiler tentatively bound it to $OUTER::x, then it's an error to
@@ -518,7 +518,7 @@ may be initialized with either a pseudo-assignment or a block:</p>
 </div>
 </a>
 <div ID="hide_3" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"The Relationship of Blocks and Declarations" /In any case the initializing value is evaluated at BEGIN time./&gt;
 {
     my $ok;
@@ -551,7 +551,7 @@ get separate state variables.</p>
 </div>
 </a>
 <div ID="hide_5" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"The Relationship of Blocks and Declarations" /There is a new state declarator that introduces/&gt;
 
 # state() inside subs
@@ -726,7 +726,7 @@ the default is not to undefine a variable.  So</p>
 </div>
 </a>
 <div ID="hide_6" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"The Relationship of Blocks and Declarations" /function has been renamed/&gt;
 {
   my $a = 42;
@@ -842,7 +842,7 @@ eval('
 </div>
 </a>
 <div ID="hide_4" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"The Relationship of Blocks and Declarations" /There is also a let function/&gt;
 # L&lt;S04/"Definition of Success"&gt;
 # let() should not restore the variable if the block exited successfully
@@ -966,7 +966,7 @@ this is now invalid:</p>
 </div>
 </a>
 <div ID="hide_9" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"Conditional statements"&gt;
 
 =cut
@@ -1097,7 +1097,7 @@ implicit conditionals implied by short-circuit operators.</p>
 </div>
 </a>
 <div ID="hide_10" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/Conditional statements/Conditional statement
 #   modifiers work as in Perl 5&gt;
 
@@ -1200,7 +1200,7 @@ implicit conditionals implied by short-circuit operators.</p>
 </div>
 </a>
 <div ID="hide_17" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"Loop statements"&gt;
 
 =cut
@@ -1284,7 +1284,7 @@ plan 11;
 </div>
 </a>
 <div ID="hide_14" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"Loop statements"&gt;
 
 =cut
@@ -1372,7 +1372,7 @@ Loop modifiers <code>next</code>, <code>last</code>, and <code>redo</code> also 
 </div>
 </a>
 <div ID="hide_16" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
 plan 10;
 
@@ -1488,7 +1488,7 @@ plan 10;
 </div>
 </a>
 <div ID="hide_15" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
 next
 next if &lt;condition&gt;;
@@ -1649,7 +1649,7 @@ Check that C&lt;next&gt; works on the correct loop/block
 </div>
 </a>
 <div ID="hide_13" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"Loop statements" /work as in Perl 5/&gt;
 last
 last if &lt;condition&gt;;
@@ -1802,7 +1802,7 @@ rules, the previous example may be rewritten into a very clear:</p>
 </div>
 </a>
 <div ID="hide_33" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"The general loop statement"&gt;
 
 =cut
@@ -1896,7 +1896,7 @@ That is,</p>
 </div>
 </a>
 <div ID="hide_31" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S04/"The C&lt;for&gt; statement"&gt;
 
 =cut
@@ -1924,7 +1924,7 @@ to the closure:</p>
 </div>
 </a>
 <div ID="hide_32" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"The C&lt;for&gt; statement" /to the closure:/&gt;
 
 my $b;
@@ -2250,7 +2250,7 @@ modifier on it; use <code>repeat</code> for that).</p>
 </div>
 </a>
 <div ID="hide_26" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/The do-once loop/"can't" put while or until modifier&gt;
 {
     my $i;
@@ -2293,7 +2293,7 @@ terminated by an unmatched right bracket of some kind.</p>
 </div>
 </a>
 <div ID="hide_27" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/The do-once loop/"you may use" do "on an expression"&gt;
 {
     my $ret = do 42;
@@ -2321,7 +2321,7 @@ therefore loop control statements.</p>
 </div>
 </a>
 <div ID="hide_28" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/The do-once loop/"can take" "loop control statements"&gt;
 {
     my $i;
@@ -2365,7 +2365,7 @@ course, use a placeholder parameter if you also use <code>return</code>.)</p>
 </div>
 </a>
 <div ID="hide_29" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/The do-once loop/"bare block" "no longer a do-once loop"&gt;
 {
     my $i;
@@ -2427,7 +2427,7 @@ directly to the first appropriate test that might possibly match.)</p>
 </div>
 </a>
 <div ID="hide_8" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"Switch statements" /"is exactly equivalent to"&gt;
 eval '
     my @input = (0, 1);
@@ -2711,7 +2711,7 @@ either returns an unthrown exception, or throws the exception.</p>
 </div>
 </a>
 <div ID="hide_12" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"Exceptions" /The fail function/&gt;
 
 {
@@ -2759,7 +2759,7 @@ either returns an unthrown exception, or throws the exception.</p>
 </div>
 </a>
 <div ID="hide_20" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"Closure traits"&gt;
 
 {
@@ -2835,7 +2835,7 @@ exceptions and exit values:</p>
 </div>
 </a>
 <div ID="hide_21" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"Closure traits"/INIT "at run time" ASAP&gt;
 # INIT {...} blocks in "void" context
 {
@@ -2914,7 +2914,7 @@ is $str, 'io', 'INIT {} always runs before the mainline code runs';
 </div>
 </a>
 <div ID="hide_23" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/Closure traits/END "at run time" ALAP&gt;
 
 # IRC log:
@@ -2959,7 +2959,7 @@ is "{ BEGIN { $hist ~= 'B' } }", "B",
 </div>
 </a>
 <div ID="hide_19" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/Closure traits/END "at run time" ALAP&gt;
 
 my $var;
@@ -3017,7 +3017,7 @@ $eof_var = 29;
 </div>
 </a>
 <div ID="hide_18" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/Closure traits/END "at run time" ALAP&gt;
 
 my $var;
@@ -3099,7 +3099,7 @@ $eof_var = 29;
 </div>
 </a>
 <div ID="hide_25" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/Closure traits/"marked with a *" "used within" expression&gt;
 
 my $hist = '';
@@ -3172,7 +3172,7 @@ a list of closures rather than a single closure.</p>
 </div>
 </a>
 <div ID="hide_24" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/Closure traits/"occur multiple times"&gt;
 # IRC log:
 # [05:41] &lt;agentzh&gt; TimToady: S04 doesn't discuss the running order 
@@ -3219,7 +3219,7 @@ clone, so separate clones can keep separate state variables:</p>
 </div>
 </a>
 <div ID="hide_22" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/Closure traits/INIT "runs once for all copies of" "cloned closure"&gt;
 {
 	my $var;
@@ -3399,7 +3399,7 @@ must use something like <code>do {...}</code> or <code>try {...}</code>.</p>
 </div>
 </a>
 <div ID="hide_11" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"Statement parsing"/"or try {...}"&gt;
 
 plan 26;
@@ -3612,7 +3612,7 @@ In particular, a syntax error will be reported for C-isms such as these:</p>
 </div>
 </a>
 <div ID="hide_30" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S04/"Definition of Success"&gt;
 # let() should not restore the variable if the block exited successfully
 # (returned a true value).

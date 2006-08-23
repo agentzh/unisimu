@@ -16,7 +16,7 @@ function tog() {
   // tog: toggle the visibility of html elements (arguments[1..]) from none to
   // arguments[0].  Return what should be returned in a javascript onevent().
   display = arguments[0];
-  for( var i=1; i<arguments.length; i++ ) {    
+  for( var i=1; i<arguments.length; i++ ) {
     var x = document.getElementById(arguments[i]);
     if (!x) continue;
     if (x.style.display == "none" || x.style.display == "") {
@@ -24,7 +24,7 @@ function tog() {
     } else {
       x.style.display = "none";
     }
-  } 
+  }
 
   var e = is_ie ? window.event : this;
   if (e) {
@@ -40,7 +40,7 @@ function tog() {
 
 function tog_quote( idnum ) {
   return tog( 'block', 'header_shown_' + idnum, 'header_hidden_' + idnum,
-	   'hide_' + idnum );
+       'hide_' + idnum );
 }
 
 //--></script>
@@ -567,7 +567,7 @@ correctly.)</p>
 </div>
 </a>
 <div ID="hide_6" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S09/"Junctions"&gt;
 
 =cut
@@ -603,7 +603,7 @@ my $j = my_substr("camel", 0|1, 2&amp;3);
 </div>
 </a>
 <div ID="hide_5" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S09/"Junctions"&gt;
 
 
@@ -620,7 +620,7 @@ L&lt;S09/"Junctions"&gt;
 </div>
 </a>
 <div ID="hide_1" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 L&lt;S09/"Junctions"&gt;
 
 
@@ -684,7 +684,7 @@ until no more junctive arguments remain. That is:</p>
 </div>
 </a>
 <div ID="hide_7" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
 # L&lt;S09/"Junctions" /Each of the resulting set of calls is then recursively autothreaded/&gt;
 is($c, 4, "substr() called 4 times");
 
@@ -740,7 +740,7 @@ value will be a subset of the first <code>any</code> used in comparison:</p>
 </div>
 </a>
 <div ID="hide_3" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     #L&lt;S09/Junctions/"will be a subset"&gt;
     ok all(@results) eqv any(@expected_results),
         "junctions w/chained ops in list context return subset of C&lt;any&gt;";
@@ -758,7 +758,7 @@ value will be a subset of the first <code>any</code> used in comparison:</p>
 </div>
 </a>
 <div ID="hide_2" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     #L&lt;S09/Junctions/"used with chained operators"&gt;
     my @x = -1..10;
     my @y = 4..12;
@@ -792,7 +792,7 @@ be preserved in the returned list.  In particular,</p>
 </div>
 </a>
 <div ID="hide_4" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     #L&lt;S09/Junctions/"original ordering" "guaranteed" "preserved"&gt;
     ok @results eqv @expected_results,
         'junctions w/chained ops in list context preserve ordering';
@@ -815,7 +815,7 @@ be preserved in the returned list.  In particular,</p>
 </div>
 </a>
 <div ID="hide_8" style="display:none; border:1px solid">
-<pre>
+<pre style="margin-left: 6px">
     #L&lt;S09/"Junctions"/grep&gt;
     my @x = 1..20;
     my $code = -&gt; $x { $x % 2 };
