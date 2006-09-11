@@ -1,7 +1,6 @@
 -- RandStats.hs
 
 module Main where
-import System.Environment
 import System.Random
 
 main :: IO ()
