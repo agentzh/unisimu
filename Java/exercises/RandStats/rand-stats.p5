@@ -1,0 +1,16 @@
+#: rand-stats.pl
+
+use strict;
+use warnings;
+
+my ($max, $min, $nbig);
+
+for (1..100) {
+    my $e = rand 100;
+    $max = $e if !defined $max or $max < $e;
+    $min = $e if !defined $min or $min > $e;
+    $nbig++ if $e > 60;
+}
+print "Maximum is $max.\n";
+print "Minimum is $min.\n";
+print "Count of nums greater than 60 is $nbig.\n";
