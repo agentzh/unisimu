@@ -1,4 +1,3 @@
-#!perl
 #: f2c.pl
 
 use v6-alpha;
