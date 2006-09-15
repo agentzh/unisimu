@@ -14,7 +14,7 @@ main = do
 
 printRes :: [String] -> IO ()
 printRes list = do
-    putStrLn $ foldr (\a b -> a ++ " " ++ b) "\n" sortedList
+    putStrLn $ unwords sortedList
     where
         sortedList = sortBy (flip compare) list
 
