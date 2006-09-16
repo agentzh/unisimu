@@ -13,10 +13,7 @@ main = do
     if length args == 3 then printRes args else printUsage prog
 
 printRes :: [String] -> IO ()
-printRes list = do
-    putStrLn $ unwords sortedList
-    where
-        sortedList = sortBy (flip compare) list
+printRes = putStrLn . unwords . reverse . sort
 
 printUsage :: String -> IO ()
-printUsage s = hPutStrLn stderr $ "Usage: " ++ s ++ " <num> <num> <num>"
+printUsage s = fail $ "Usage: " ++ s ++ " <num> <num> <num>"
