@@ -8,7 +8,7 @@ for @*ARGS {
 }
 say ~@list;
 
-sub ord_insert (@list, $elem) {
+sub ord_insert(@list is rw, $elem) {
     my $i = 0;
     for @list {
         next if $_ < $elem;
