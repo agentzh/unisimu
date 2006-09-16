@@ -6,12 +6,12 @@ public class OrdInsert {
             System.err.println("Usage: java OrdInsert <int>+");
             System.exit(1);
         }
-        List ls = new LinkedList();
+        List<Integer> ls = new LinkedList<Integer>();
         for (int i = 0; i < args.length; i++)
             ordInsert(ls, Integer.parseInt(args[i]));
         System.out.println(join(" ", ls));
     }
-    private static void ordInsert(List ls, int elem) {
+    private static void ordInsert(List<Integer> ls, int elem) {
         int i = 0;
         for (Iterator<Integer> it = ls.iterator(); it.hasNext(); i++) {
             int curr = (Integer) it.next();
