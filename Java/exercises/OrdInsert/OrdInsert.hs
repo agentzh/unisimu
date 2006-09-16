@@ -24,4 +24,4 @@ ordInsert ls x = left ++ [x] ++ right
     where (left, right) = span (<x) ls
 
 help :: String -> IO ()
-help prog = hPutStrLn stderr $ "Usage: " ++ prog ++ " <a> <b> <c>"
+help prog = hPutStrLn stderr $ "Usage: " ++ prog ++ " <int>+"
