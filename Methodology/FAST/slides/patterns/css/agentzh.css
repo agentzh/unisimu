@@ -81,7 +81,8 @@
 .date {
         font-style: italic;
         text-decoration: underline;
-        font-size: 66%;
+        font-size: 40%;
+        color: #339933;
 }
 .i {
         font-style: italic;
