@@ -7,6 +7,8 @@ all: $(BIN_FILES)
 $(NAME).exe: $(NAME).hs
 	ghc -o $@ $<
 
+
+
 $(NAME).class: $(NAME).java
 	javac $<
 
