@@ -97,7 +97,7 @@ __DATA__
 [%- title = personal_info.nickname _ " - QZone " _ s.gb2utf -%]
 
 <title>[% title %]</title>
-<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
 </head>
 
 <body>
