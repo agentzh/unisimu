@@ -64,7 +64,7 @@ $home_url  =~ s/uin=##/uin=$qq_number/;
 
 #my $cache = WebCache->new;
 #my $agent = WWW::Mechanize::Cached->new( cache => $cache, autocheck => 1 );
-my $agent = WWW::Mechanize->new( autocheck => 1 );
+my $agent = WWW::Mechanize->new( autocheck => 0 );
 $agent->env_proxy();
 
 my $home_html = get_url($agent, $home_url);
