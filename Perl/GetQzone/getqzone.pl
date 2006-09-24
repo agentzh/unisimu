@@ -11,7 +11,7 @@ use getqzone;
 use Encode 'from_to';
 #use WWW::Mechanize::Cached;
 use WWW::Mechanize;
-use WebCache;
+#use WebCache;
 use YAML::Syck;
 #use Getopt::Std;
 
