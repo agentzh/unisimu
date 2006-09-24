@@ -79,6 +79,13 @@ if (!$ast) {
     die "error: no data loaded from $infile.\n";
 }
 
+
+my ($sec, $min, $hour, $mday, $mon, $year) = gmtime;
+$year += 1900; $mon += 1;
+my $time = sprintf "%04d-%02d-%02d %02d:%02d:%02d GMT",
+    $year, $mon, $mday, $hour, $min, $sec;
+$ast->{timestamp} = $time;
+
 my $tt = Template->new;
 
 $tt->process(\*DATA, $ast, $outfile)
@@ -113,13 +120,16 @@ __DATA__
 <!-- INDEX BEGIN -->
 
 <ul>
-[%- s = '个人信息';
+[%- s = '文档生成日期';
+    h0 = s.gb2utf;
+    s = '个人信息';
     h1 = s.gb2utf;
     s = '留言板';
     h2 = s.gb2utf;
     s = '所有文章';
     h3 = s.gb2utf
 %]
+    <li><a href="#h0">[% h0 %]</a></li>
     <li><a href="#h1">[% h1 %]</a></li>
     <li><a href="#h2">[% h2 %]</a></li>
     <li><a href="#h3">[% h3 %]</a></li>
@@ -144,7 +154,18 @@ __DATA__
 <!-- INDEX END -->
 
 <p />
+<hr />
 <p />
+
+[%- s = '文档生成日期' %]
+<h1><a id="h0">[% s.gb2utf %]</a></h1>
+
+&nbsp; &nbsp; &nbsp; [% timestamp %]
+
+<p />
+<hr />
+<p />
+
 <h1><a id="h1">[% h1 %]</a></h1>
 
 <ul>
@@ -200,7 +221,9 @@ __DATA__
 </ul>
 
 <p />
+<hr />
 <p />
+
 <h1><a id="h2">[% h2 %]</a></h1>
 
 [%- FOREACH msg = msg_board %]
@@ -220,7 +243,9 @@ __DATA__
 [%- END %]
 
 <p />
+<hr />
 <p />
+
 <h1><a id="h3">[% h3 %]</a></h1>
 
 [%- i = 1 %]
@@ -265,6 +290,7 @@ __DATA__
 [%- END %]
 
 <p />
+<hr />
 <p />
 
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
