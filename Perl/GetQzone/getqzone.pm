@@ -39,6 +39,7 @@ sub process_main {
 
     my $data = $in_ast->{_x_3}->{data};
     $data->{spacename} =~ s/\s*>\Z|^\s+//g;
+    $data->{spacename} =~ s/\&amp;/\&/g;
     #print Dumper($data);
     my $personal_info = {
         age       => $data->{age},

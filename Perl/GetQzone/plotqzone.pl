@@ -97,7 +97,7 @@ __DATA__
 [%- title = personal_info.nickname _ " - QZone " _ s.gb2utf -%]
 
 <title>[% title %]</title>
-<link rel="stylesheet" href="http://dev.perl.org/css/perl.css" type="text/css" />
+<link rel="stylesheet" href="qzone.css" type="text/css" />
 </head>
 
 <body>
@@ -144,7 +144,6 @@ __DATA__
 <!-- INDEX END -->
 
 <p />
-<hr>
 <p />
 <h1><a id="h1">[% h1 %]</a></h1>
 
@@ -201,13 +200,12 @@ __DATA__
 </ul>
 
 <p />
-<hr>
 <p />
 <h1><a id="h2">[% h2 %]</a></h1>
 
 [%- FOREACH msg = msg_board %]
 <ul>
-    <li></li>
+    <li>
     <b>[% msg.name %]</b>
     [%- s = 'uin=' _ msg.id %]
     <a target="_blank"
@@ -215,13 +213,13 @@ __DATA__
     &nbsp; - &nbsp;[%- msg.date %]
     <p />
     [%- msg.body.resolve_meta %]
+    </li>
     <br />
     <br />
 </ul>
 [%- END %]
 
 <p />
-<hr>
 <p />
 <h1><a id="h3">[% h3 %]</a></h1>
 
@@ -242,7 +240,7 @@ __DATA__
             <h4> Comments </h4>
             [%- FOREACH comment = blog.comments %]
               <ul>
-              <li></li>
+              <li>
               <b>[% comment.name %]</b>
                  [%- s = 'uin=' _ comment.id %]
                  <a target="_blank"
@@ -252,6 +250,7 @@ __DATA__
               &nbsp; - &nbsp;[%- comment.date %]
               <p />
               [%- comment.content.resolve_meta %]
+              </li>
             <br />
             <br />
             </ul>
@@ -266,7 +265,6 @@ __DATA__
 [%- END %]
 
 <p />
-<hr>
 <p />
 
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
