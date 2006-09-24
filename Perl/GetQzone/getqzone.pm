@@ -123,7 +123,7 @@ sub get_article {
         #write_file('title.xml', $content, "\n<!-- $url -->\n");
         process_title($content, $retval);
     }
-    warn $retval->{title}, "\n";
+    warn "Blog $i\n";
 
     ($url = $BodyUrl) =~ s/blogid=##/blogid=$i/;
     #warn $url;
