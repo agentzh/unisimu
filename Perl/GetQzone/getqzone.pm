@@ -20,6 +20,7 @@ sub gb2utf {
 sub process_main {
     my ($agent, $main_url, $out_ast) = @_;
     my $xml = get_url($agent, $main_url);
+    $xml =~ s/"gb2312"/"GB2312"/g;
     write_file('main.xml', $xml, "\n<!-- $main_url -->\n");
     my $in_ast = XMLin($xml, ForceArray => ['item']);
     my $msg_board = $in_ast->{_x_22}->{rss}->{channel}->{item} || [];
