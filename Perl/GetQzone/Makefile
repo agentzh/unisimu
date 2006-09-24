@@ -1,5 +1,5 @@
 CP_F = perl -MFile::Copy -e "File::Copy::cp(@ARGV)"
-YML_OPT = -d
+YML_OPT = -t 10
 GET_QZONE = perl getqzone.pl
 PLOT_QZONE = perl plotqzone.pl
 
@@ -29,7 +29,7 @@ yml:
 	$(GET_QZONE) $(YML_OPT) $(Yabi)
 	$(GET_QZONE) $(YML_OPT) $(QianWei)
 
-html:
+html: yml
 	$(PLOT_QZONE) $(Agent)
 	$(PLOT_QZONE) $(Cherry)
 	$(PLOT_QZONE) $(Clover)

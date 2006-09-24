@@ -9,10 +9,11 @@ use warnings;
 use getqzone;
 
 use Encode 'from_to';
-use WWW::Mechanize::Cached;
+#use WWW::Mechanize::Cached;
+use WWW::Mechanize;
 use WebCache;
 use YAML::Syck;
-use Getopt::Std;
+#use Getopt::Std;
 
 my $main_url =
     "http://u13.qzone.qq.com/cgi-bin/cgi_qqzone.cgi?uin=##&".
@@ -29,14 +30,14 @@ my $body_url =
 my $home_url =
     "http://u13.qzone.qq.com/cgi-bin/cgi_client_entry.cgi?uin=##";
 
-my %opts;
-getopts('t:da', \%opts);
+#my %opts;
+#getopts('t:da', \%opts);
 
-$WebCache::RefreshCache = !$opts{d};
+#$WebCache::RefreshCache = !$opts{d};
 
 my $qq_number = shift;
 if (!$qq_number || $qq_number !~ /^\d+$/) {
-    die "Usage: $0 [-d] [-t <number>] [-a] <qq-number>";
+    die "Usage: $0 <qq-number>";
 }
 
 #binmode STDERR, ':encoding(UTF-8)';
@@ -47,21 +48,23 @@ $title_url =~ s/uin=##/uin=$qq_number/;
 $body_url  =~ s/uin=##/uin=$qq_number/;
 $home_url  =~ s/uin=##/uin=$qq_number/;
 
-our $Top;
-if ($opts{t}) {
-    $Top = $opts{t};
-    $WebCache::RefreshCache = 1;
-} else {
-    $Top = 5;
-}
+#our $Top;
+#if ($opts{t}) {
+#    $Top = $opts{t};
+#    $WebCache::RefreshCache = 1;
+#} else {
+#    $Top = 5;
+#    $WebCache::RefreshCache = 1;
+#}
 
-if ($opts{a}) {
-    $WebCache::RefreshCache = 1;
-    $Top = 1000 * 1000; # maybe we need a better way to do this. :P
-}
+#if ($opts{a}) {
+#    $WebCache::RefreshCache = 1;
+#    $Top = 1000 * 1000; # maybe we need a better way to do this. :P
+#}
 
-my $cache = WebCache->new;
-my $agent = WWW::Mechanize::Cached->new( cache => $cache, autocheck => 1 );
+#my $cache = WebCache->new;
+#my $agent = WWW::Mechanize::Cached->new( cache => $cache, autocheck => 1 );
+my $agent = WWW::Mechanize->new( autocheck => 1 );
 $agent->env_proxy();
 
 my $home_html = get_url($agent, $home_url);

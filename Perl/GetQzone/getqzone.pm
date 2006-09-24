@@ -20,6 +20,7 @@ sub gb2utf {
 sub process_main {
     my ($agent, $main_url, $out_ast) = @_;
     my $xml = get_url($agent, $main_url);
+    write_file('main.xml', $xml, "\n<!-- $main_url -->\n");
     my $in_ast = XMLin($xml, ForceArray => ['item']);
     my $msg_board = $in_ast->{_x_22}->{rss}->{channel}->{item} || [];
     my @msgs;
@@ -90,9 +91,10 @@ sub process_articles {
     my $count = 0;
     my $i = $LastBlog;
     while ($i >= 0) {
-        if (++$count >= $::Top) {
-            undef $WebCache::RefreshCache;
-        }
+        $count++;
+        #if (++$count >= $::Top) {
+        #    $WebCache::RefreshCache = undef;
+        #}
         my $data = get_article($agent, $i--);
         next if !$data;
         my $category = $data->{category};
@@ -112,7 +114,7 @@ sub get_article {
     my $content = get_url($agent, $url);
     return undef if !$content;
     my $retval = { title_link => $url };
-    unlink 'title.xml';
+    #unlink 'title.xml';
     if ($content =~ /<error\b/) {
         $retval->{title} = "Blog $i",
         $retval->{category} = gb2utf("个人日记");
@@ -120,12 +122,13 @@ sub get_article {
         #write_file('title.xml', $content, "\n<!-- $url -->\n");
         process_title($content, $retval);
     }
+    warn $retval->{title}, "\n";
 
     ($url = $BodyUrl) =~ s/blogid=##/blogid=$i/;
     #warn $url;
     $content = get_url($agent, $url);
     #warn $content if $i == 4;
-    unlink 'body.xml';
+    #unlink 'body.xml';
     return undef if !$content;
     #write_file('body.xml', $content, "\n<!-- $url -->\n");
     process_body($content, $retval);
