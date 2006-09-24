@@ -289,10 +289,6 @@ __DATA__
   [%- i = i + 1 %]
 [%- END %]
 
-<p />
-<hr />
-<p />
-
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
 <big><strong><span class="block">&nbsp;[% title %]</span></strong></big>
