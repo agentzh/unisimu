@@ -109,7 +109,7 @@ __DATA__
 </table>
 <p />
 
-<p><a name="__index__"></a></p>
+<p><a id="__index__"></a></p>
 <!-- INDEX BEGIN -->
 
 <ul>
@@ -146,7 +146,7 @@ __DATA__
 <p />
 <hr>
 <p />
-<h1><a name="h1">[% h1 %]</a></h1>
+<h1><a id="h1">[% h1 %]</a></h1>
 
 <ul>
 <table border=0 cellspacing=2 cellpadding=7>
@@ -203,7 +203,7 @@ __DATA__
 <p />
 <hr>
 <p />
-<h1><a name="h2">[% h2 %]</a></h1>
+<h1><a id="h2">[% h2 %]</a></h1>
 
 [%- FOREACH msg = msg_board %]
 <ul>
@@ -223,15 +223,15 @@ __DATA__
 <p />
 <hr>
 <p />
-<h1><a name="h3">[% h3 %]</a></h1>
+<h1><a id="h3">[% h3 %]</a></h1>
 
 [%- i = 1 %]
 [%- FOREACH category = blogs.keys.sort %]
   [%- group = blogs.$category %]
-    <h2><a name="#cat_[% i %]">[% category %]</a></h2>
+    <h2><a id="cat_[% i %]">[% category %]</a></h2>
       [%- j = 1 %]
       [%- FOREACH blog = group %]
-          <h3><a name="#blog_[% i %]_[% j %]">[% blog.title %]</a></h3>
+          <h3><a id="blog_[% i %]_[% j %]">[% blog.title %]</a></h3>
 
             <p><I>[% blog.date.strtime %]</I></p>
 

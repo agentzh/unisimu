@@ -6,6 +6,7 @@ use warnings;
 
 use List::Util 'max';
 use XML::Simple;
+use File::Slurp;
 use Data::Dumper;
 
 our ($TitleUrl, $BodyUrl, $LastBlog);
@@ -17,11 +18,8 @@ sub gb2utf {
 }
 
 sub process_main {
-    my ($agent, $main_url, $main_url2, $out_ast) = @_;
+    my ($agent, $main_url, $out_ast) = @_;
     my $xml = get_url($agent, $main_url);
-    if (!$xml) {
-        $xml = get_url($agent, $main_url2);
-    }
     my $in_ast = XMLin($xml, ForceArray => ['item']);
     my $msg_board = $in_ast->{_x_22}->{rss}->{channel}->{item} || [];
     my @msgs;
@@ -114,10 +112,12 @@ sub get_article {
     my $content = get_url($agent, $url);
     return undef if !$content;
     my $retval = { title_link => $url };
+    unlink 'title.xml';
     if ($content =~ /<error\b/) {
         $retval->{title} = "Blog $i",
         $retval->{category} = gb2utf("个人日记");
     } else {
+        #write_file('title.xml', $content, "\n<!-- $url -->\n");
         process_title($content, $retval);
     }
 
@@ -125,7 +125,9 @@ sub get_article {
     #warn $url;
     $content = get_url($agent, $url);
     #warn $content if $i == 4;
+    unlink 'body.xml';
     return undef if !$content;
+    #write_file('body.xml', $content, "\n<!-- $url -->\n");
     process_body($content, $retval);
     #warn Dumper($retval) if $i == 4;
     return undef if !$retval->{body};
