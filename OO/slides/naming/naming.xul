@@ -69,15 +69,45 @@ of {{#x|irc.freenode.net}}...
 正如在 irc.freenode.net 上的 #perl6 通道里
 所看见的那样……
 ----
-    {{#v|&lt;Sal>}}      what is \"{{#x|JQL}}\"?
-    {{#v|&lt;clkao>}}    Jabberwocky Query Language?
-    {{#v|&lt;TimToady>}} Just Quack Loudly?
-    {{#v|&lt;audreyt>}}  Junctional Quantum Library?
+ {{#v|&lt;agentzh>}}  TimToady++  # JIT syn fixes
+ {{#v|&lt;TimToady>}} thanks
+ {{#v|&lt;TimToady>}} I looked at several hundred words
+              before picking START.
+   
+    
+ {{#v|&lt;章亦春>}}     (Larry Wall)++  # 即时 Perl 6 文档修改
+ {{#v|&lt;Larry Wall>}} 谢谢
+ {{#v|&lt;Larry Wall>}} 我在挑选出 START 这个名字之前查看了几百
+               个单词。
+----
+ {{#v|&lt;gaal>}} defer? slothlike
+ {{#v|&lt;audreyt>}} I like \"defer\"
+ {{#v|&lt;audreyt>}} gaal++
+ * audreyt deletes Data::Thunk and uploads Data::Defer
+ {{#v|&lt;audreyt>}} ...and it's now Scalar::Defer
+ {{#v|&lt;audreyt>}} {{#ci|naming}} takes {{#ci|more}} time than tests+doc+code
+   
   
-    {{#v|&lt;仲伟祥>}}      什么是“{{#x|JQL}}”？
-    {{#v|&lt;高嘉良>}}      废话查询语言？
-    {{#v|&lt;Larry Wall>}} 不过是高声吹嘘？
-    {{#v|&lt;唐凤>}}        联结性量子库？
+ {{#v|&lt;gaal>}} defer 怎么样? 有些惰性的味道
+ {{#v|&lt;唐凤>}} 我喜欢“defer”
+ {{#v|&lt;唐凤>}} gaal++
+ * 唐凤删除了 Data::Thunk 并上传了 Data::Defer
+ {{#v|&lt;唐凤>}} ……现在它叫做 Scalar::Defer 了
+ {{#v|&lt;唐凤>}} {{#ci|命名}}所花费的时间比测试 + 文档 + 实现代码{{#ci|还要多}}
+----
+{{img src="#" width="0" height="0"}}
+{{img src="images/audrey.jpg" width="480" height="360"}}
+----
+ {{#v|&lt;Sal>}}      what is \"{{#x|JQL}}\"?
+ {{#v|&lt;clkao>}}    Jabberwocky Query Language?
+ {{#v|&lt;TimToady>}} Just Quack Loudly?
+ {{#v|&lt;audreyt>}}  Junctional Quantum Library?
+  
+  
+ {{#v|&lt;仲伟祥>}}      什么是“{{#x|JQL}}”？
+ {{#v|&lt;高嘉良>}}      废话查询语言？
+ {{#v|&lt;Larry Wall>}} 不过是高声吹嘘？
+ {{#v|&lt;唐凤>}}        联结性量子库？
 ----
 
 
