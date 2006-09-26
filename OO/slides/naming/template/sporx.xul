@@ -1,0 +1,19 @@
+[%- DEFAULT css_location='css/sporx.css' -%]
+[%- DEFAULT javascript_runtime='lib/sporx.js' -%]
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="[% css_location %]" type="text/css"?>
+
+<page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="sporx" xmlns:html="http:/www.w3.org/1999/xhtml" orient="vertical" onkeypress="Sporx.onKeyPress(event);">
+
+<html:textarea id="builtinCode" style="visibility: collapse">
+[%- slides_content -%]
+</html:textarea>
+
+[% INCLUDE controls.xul %]
+
+<script src="[% javascript_runtime %]" type="application/x-javascript" />
+
+</page>
+
+[% INCLUDE $license_template %]
