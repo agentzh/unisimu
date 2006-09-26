@@ -100,6 +100,63 @@ of {{#x|irc.freenode.net}}...
 ----
 {{img src="images/audrey.jpg" width="480" height="403"}}
 ----
+☆ Follow the {{#x|naming convention}}
+of the language {{#ci|you}} are using.
+  
+遵循你所使用的语言
+的命名约定。
+----
+ // C++ STL naming style
+ {{#x|vector}}&lt;{{#x|string}}> list;
+ list.{{#ci|push_back}}(\"hello\");
+ while (!list.{{#ci|empty}}()) {...}
+----
+ // Java naming style
+ {{#x|List}} list = new {{#x|ArrayList}}();
+ list.{{#ci|add}}(\"hello\");
+ while (!list.{{#ci|isEmpty}}()) {...}
+----
+ // C# naming style
+ {{#x|ArrayList}} myAL = new {{#x|ArrayList}}();
+ myAL.{{#ci|Add}}(\"hello\");
+ Console.{{#ci|WriteLine}}(myAL.{{#ci|ToString}}());
+----
+☆ Use {{#ci|meaningful}} names
+  
+使用{{#ci|有意义}}的名字
+----
+ {{#ci|?}}  Button {{#x|button1}} = new Button(\"New\");
+ {{#ci|?}}  Button {{#x|button2}} = new Button(\"Open\");
+ {{#ci|?}}  Button {{#x|button3}} = new Button(\"Save\");
+   
++{{#x|☹}} This is {{#ci|bad}}.
+----
+ {{#ci|?}}  Button {{#x|button_New}}  = new Button(\"New\");
+ {{#ci|?}}  Button {{#x|button_Open}} = new Button(\"Open\");
+ {{#ci|?}}  Button {{#x|button_Save}} = new Button(\"Save\");
+   
++{{#x|☹}} This is {{#ci|ugly}}.
+----
+   Button {{#x|btnNew}}  = new Button(\"New\");
+   Button {{#x|btnOpen}} = new Button(\"Open\");
+   Button {{#x|btnSave}} = new Button(\"Save\");
+   
++{{#x|☹}} This is {{#ci|good}}.
+----
+The {{#x|Ugly}}, the {{#x|Bad}}, and the {{#x|Good}}
+  
+丑的，坏的，好的
+----
+☆ Choose {{#ci|nouns}} for
+your {{#x|class}} names
+  
+从名词中为你的类取名
+----
+☆ Choose active {{#ci|verbs}} for
+your {{#x|method}} names
+  
+从主动动词中为你的方法取名
+----
  {{#v|&lt;Sal>}}      what is \"{{#x|JQL}}\"?
  {{#v|&lt;clkao>}}    Jabberwocky Query Language?
  {{#v|&lt;TimToady>}} Just Quack Loudly?
