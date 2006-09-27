@@ -235,13 +235,23 @@ your {{#x|property}} names
  使用的运算符的名称应该比那些不经常使用的要短。
          -- {{#t|Larry Wall}} (Perl 6 启示录 3)
 ----
- {{#v|// Java code}}
- {{#x|System.out.println}}(\"Computing the sum...\");
- {{#kw|for}} ({{#kw|int}} i = 0; i &lt; n; i++) {
+{{img src="images/huffman.gif" width="510" height="470"}}
+----
+ {{#v|// The Java way:}}
+ {{#ci|System.out.println}}(\"Computing the sum...\");
+ {{#kw|for}} ({{#kw|int}} i = 1; i &lt;= n; i++) {
      sum += i;
-     {{#x|System.out.println}}(i);
+     {{#ci|System.out.println}}(i);
  }
- {{#x|System.out.println}}(\"Sum: \" + sum);
+ {{#ci|System.out.println}}(\"Sum: \" + sum);
+----
+     {{#v|# The Perl 6 way:}}
+     {{#ci|say}} \"Computing the sum...\";
+     {{#kw|for}} 1..$n -> $i {
+         $sum += $i;
+         {{#ci|say}} $i;
+     }
+     {{#ci|say}} \"Sum: $sum\";
 ----
 {{#tag|☆}} Improper {{#x|abbreviations}} can be
 {{#ci|very confusing}}.
