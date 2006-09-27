@@ -94,28 +94,28 @@ of {{#x|irc.freenode.net}}...
 ----
 {{img src="images/audrey.jpg" width="480" height="403"}}
 ----
-☆ Follow the {{#x|naming convention}}
+{{#tag|☆}} Follow the {{#x|naming convention}}
 of the language {{#ci|you}} are using.
   
 遵循你所使用的语言
 的命名约定。
 ----
- // C++ STL naming style
+ {{#v|// C++ STL naming style}}
  {{#x|vector}}<{{#x|string}}> list;
  list.{{#ci|push_back}}(\"hello\");
  while (!list.{{#ci|empty}}()) {...}
 ----
- // Java naming style
+ {{#v|// Java naming style}}
  {{#x|List}} list = new {{#x|ArrayList}}();
  list.{{#ci|add}}(\"hello\");
  while (!list.{{#ci|isEmpty}}()) {...}
 ----
- // C# naming style
+ {{#v|// C# naming style}}
  {{#x|ArrayList}} myAL = new {{#x|ArrayList}}();
  myAL.{{#ci|Add}}(\"hello\");
  Console.{{#ci|WriteLine}}(myAL.{{#ci|ToString}}());
 ----
-☆ Use {{#ci|meaningful}} names
+{{#tag|☆}} Use {{#ci|meaningful}} names
   
 使用{{#ci|有意义}}的名字
 ----
@@ -141,7 +141,7 @@ The {{#x|Ugly}}, the {{#x|Bad}}, and the {{#x|Good}}
   
 丑的，坏的，好的
 ----
-☆ Choose {{#ci|nouns}} for
+{{#tag|☆}} Choose {{#ci|nouns}} for
 your {{#x|class}} names
   
 从名词中为你的类取名
@@ -166,7 +166,7 @@ your {{#x|class}} names
  {{#kw|package}} Class::DBI::Sweet;
  {{#kw|package}} Test::Easy;
 ----
-☆ Choose active {{#ci|verbs}} for
+{{#tag|☆}} Choose active {{#ci|verbs}} for
 your {{#x|method}} names
   
 从主动动词中为你的方法取名
@@ -185,7 +185,7 @@ your {{#x|method}} names
    
 +{{#x|☹}} These are {{#ci|bad}}.
 ----
-☆ Choose {{#ci|nouns}} or {{#ci|adjectives}} for
+{{#tag|☆}} Choose {{#ci|nouns}} or {{#ci|adjectives}} for
 your {{#x|property}} names
   
 从名词或者形容词中为你的属性取名
@@ -193,11 +193,11 @@ your {{#x|property}} names
   @list.{{#x|length}}
   $persion.{{#x|name}}
   {{#kw|if}} $dbh.{{#x|available}} { ... }
-  die {{#kw|if}} $set.{{#x|is_empty}};
+  {{#die kw|if}} $set.{{#x|is_empty}};
   
 +{{#x|☺}} These are {{#ci|good}}.
 ----
-☆ Use {{#x|namespaces}} to split your
+{{#tag|☆}} Use {{#x|namespaces}} to split your
 {{#ci|verbose}} class names.
   
 使用命名空间来分割你冗长的类名。
@@ -216,7 +216,7 @@ your {{#x|property}} names
    
 +{{#x|☺}} This is {{#ci|good}}.
 ----
-☆ Use {{#x|short}} names for {{#ci|common}} things.
+{{#tag|☆}} Use {{#x|short}} names for {{#ci|common}} things.
   
 为常用的东西取短名字。
 ----
@@ -226,10 +226,10 @@ your {{#x|property}} names
           -- {{#t|Larry Wall}} (Perl 6 Apocalypse 3)
   
  对常见的操作应该进行“哈夫曼编码”。也就是说，频繁
- 使用的运算符的名称应该比不经常使用的那些要短。
+ 使用的运算符的名称应该比那些不经常使用的要短。
          -- {{#t|Larry Wall}} (Perl 6 启示录 3)
 ----
- {{#v|//java
+ {{#v|// Java code}}
  {{#x|System.out.println}}(\"Computing the sum...\");
  {{#kw|for}} ({{#kw|int}} i = 0; i < n; i++) {
      sum += i;
@@ -237,7 +237,7 @@ your {{#x|property}} names
  }
  {{#x|System.out.println}}(\"Sum: \" + sum);
 ----
-☆ Improper {{#x|abbreviations}} can be
+{{#tag|☆}} Improper {{#x|abbreviations}} can be
 {{#ci|very confusing}}.
   
 不恰当的缩写名可能会让人
