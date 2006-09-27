@@ -216,9 +216,26 @@ your {{#x|property}} names
    
 +{{#x|☺}} This is {{#ci|good}}.
 ----
-☆ Use short names for common things.
+☆ Use {{#x|short}} names for {{#ci|common}} things.
   
 为常用的东西取短名字。
+----
+ {{#ci|Common}} operations should be \"{{#x|Huffman coded}}\".
+ That is, frequently used operators should be
+ {{#ci|shorter}} than infrequently used ones.
+          -- {{#t|Larry Wall}} (Perl 6 Apocalypse 3)
+  
+ 对常见的操作应该进行“哈夫曼编码”。也就是说，频繁
+ 使用的运算符的名称应该比不经常使用的那些要短。
+         -- {{#t|Larry Wall}} (Perl 6 启示录 3)
+----
+ {{#v|//java
+ {{#x|System.out.println}}(\"Computing the sum...\");
+ {{#kw|for}} ({{#kw|int}} i = 0; i < n; i++) {
+     sum += i;
+     {{#x|System.out.println}}(i);
+ }
+ {{#x|System.out.println}}(\"Sum: \" + sum);
 ----
 ☆ Improper {{#x|abbreviations}} can be
 {{#ci|very confusing}}.
@@ -253,10 +270,6 @@ These slides are
 ----
  {{img src="images/grin.png" width="65" height="65"}}
 {{#ci|Takahashi}}{{#x|++}}
-----
-Most of the {{#x|images}} used here
-were {{#ci|dawn}} by
-+{{#i|StarUML}}
 ----
 {{#c|Thank you!}}
 ☺
