@@ -308,8 +308,12 @@ though a bit fuzzy.
 ----
  {{#ci|?}}  {{#kw|if}} ({{#x|check_even}}(num)) { ... }
   
-+Check if it {{#ci|is}} an even number?
-+Check if it {{#ci|is not}} an even number?
++{{#x|☹}} Check if it {{#ci|is}} an even number?
++{{#x|☹}}   Check if it {{#ci|is not}} an even number?
+----
+    {{#kw|if}} ({{#x|is_even}}(num)) { ... }
+  
++{{#x|☺}} Now it is {{#ci|good}}!
 ----
 {{#tag|☆}} Improper {{#x|abbreviations}} can be
 {{#ci|very confusing}}.
