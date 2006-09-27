@@ -152,6 +152,8 @@ your {{#x|class}} names
   
 从名词中为你的类取名
 ----
+{{img src="images/noun.gif" width="288" height="266"}}
+----
  class {{#x|Evaluator}} { ... }
  class {{#x|Solver}} { ... }
  class {{#x|Withdrawal}} { ... }
@@ -174,6 +176,8 @@ your {{#x|class}} names
 your {{#x|method}} names
   
 从主动动词中为你的方法取名
+----
+{{img src="images/verb.gif" width="437" height="224"}}
 ----
  $dbh = DBI.{{#x|connect}}('dbi:odbc:qqbase');
  $dbh.{{#x|commit}}();
@@ -217,6 +221,10 @@ your {{#x|property}} names
   {{#x|Makefile::Parser::AST::Element}} elem();
    
 +{{#x|☺}} This is {{#ci|good}}.
+----
+☆ Use short names for common things.
+  
+为常用的东西取短名字。
 ----
 ☆ Improper {{#x|abbreviations}} can be
 {{#ci|very confusing}}.
