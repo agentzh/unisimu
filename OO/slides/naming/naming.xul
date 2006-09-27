@@ -244,6 +244,8 @@ your {{#x|property}} names
      {{#ci|System.out.println}}(i);
  }
  {{#ci|System.out.println}}(\"Sum: \" + sum);
+   
++{{#x|☹}} This is {{#ci|ugly}}.
 ----
      {{#v|# The Perl 6 way:}}
      {{#ci|say}} \"Computing the sum...\";
@@ -252,6 +254,62 @@ your {{#x|property}} names
          {{#ci|say}} $i;
      }
      {{#ci|say}} \"Sum: $sum\";
+   
++{{#x|☺}} This is {{#ci|good}}.
+----
+{{#tag|☆}} Use {{#x|short}} names for {{#ci|locals}}.
+   
+为局部变量取短名字。
+----
+ {{#kw|int}} {{#ci|len}} = list.length;
+ {{#kw|for}} ({{#kw|int}} {{#ci|i}} = 0; {{#ci|i}} &lt; {{#ci|len}}; {{#ci|i}}++)
+     System.out.println(list[{{#ci|i}}]);
+   
++{{#x|☺}} This is {{#ci|good}}.
+----
+ {{#kw|int}} {{#ci|length}} = list.length;
+ {{#kw|for}} ({{#kw|int}} {{#ci|index}} = 0; {{#ci|index}} &lt; {{#ci|length}}; {{#ci|index}}++)
+     System.out.println(list[{{#ci|index}}]);
+   
++{{#x|☺}} This is {{#ci|ugly}}.
+----
+{{#tag|☆}} Don't {{#ci|repeat}} yourself.
+(The {{#x|DRY}} principle)
+   
+不要重复你自己
+（DRY 原则）
+----
+ {{#v|// The Java way:}}
+ {{#ci|double}} value = {{#ci|Double}}.parse{{#ci|Double}}(\"3.14\");
+   
++{{#x|☹}} This is {{#ci|ugly}}.
+----
+ {{#v|// The C# way:}}
+ {{#ci|double}} value = {{#ci|double}}.Parse(\"3.14\");
+  
++{{#x|☹}} Just a bit better.
+----
+     {{#v|// The Perl 6 way:}}
+     {{#kw|my}} {{#ci|Double}} $value = \"3.14\";
+   
++{{#x|☺}} This is {{#ci|good}}!
+----
+     {{#v|// The C/C++ way:}}
+     {{#ci|double}} value = atof(\"3.14\");
+   
++{{#x|☺}} This is {{#ci|good}} too,
+though a bit fuzzy.
+----
+{{#tag|☆}} Tell me {{#ci|more}}!
+(Don't be {{#x|handwaving}}.)
+  
+多告诉我一些！
+（不要遮遮掩掩。）
+----
+ {{#ci|?}}  {{#kw|if}} ({{#x|check_even}}(num)) { ... }
+  
++Check if it {{#ci|is}} an even number?
++Check if it {{#ci|is not}} an even number?
 ----
 {{#tag|☆}} Improper {{#x|abbreviations}} can be
 {{#ci|very confusing}}.
