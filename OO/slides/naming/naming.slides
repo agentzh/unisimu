@@ -3,7 +3,7 @@
 ----
 The Art of {{#x|Naming}}
 {{#x|命名}}的艺术
-☺{{#ci|Agent Zhang}}☺
+☺{{#author|Agent Zhang (章亦春)}}☺
 {{#date|2006.9}}
 ----
 Why naming {{#ci|matters}}?
@@ -267,6 +267,14 @@ your {{#x|property}} names
    
 +{{#x|☺}} This is {{#ci|ugly}}.
 ----
+{{#tag|☆}} Use {{#x|descriptive}} names for {{#ci|globals}}.
+(long names are okay.)
+   
+为全局结构取描述性的名字。
+（长名字也可以。）
+----
+XXX examples...
+----
 {{#tag|☆}} Don't {{#ci|repeat}} yourself.
 (The {{#x|DRY}} principle)
    
@@ -326,10 +334,42 @@ though a bit fuzzy.
  {{#v|<Larry Wall>}} 不过是高声吹嘘？
  {{#v|<唐凤>}}        联结性量子库？
 ----
-
-
-
-
+XXX common abbreviations
+----
+{{#tag|☆}} Chinese {{#x|Pinyin abbreviations}} can be 
+{{#ci|extremely}} hateful.
+  
+汉语拼音缩写会非常令人讨厌。
+----
+http://.../{{#x|xs}}_main.aspx?{{#x|xh}}=3030602110#
+http://.../{{#x|xscj}}_{{#x|gc}}.aspx?{{#x|xh}}=3030602110&{{#x|xm}}=章亦春
+http://.../{{#x|xscxbm}}.aspx?{{#x|xh}}=3030602110&{{#x|xm}}=章亦春
+   
++{{#ci|xs}} == 学生 (student) ?
++{{#ci|xh}} == 学号 (student id) ?
++{{#ci|xm}} == 姓名 (name) ?
++{{#ci|xscj}} == 学生成绩 (student grades) ?
++{{#ci|xscxbm}} == 学生重修报名 (XXX) ?
++{{#ci|gc}} == {{#x|???}}
+----
+I'm a {{#x|Chinese}},
+but I still find it {{#ci|hard}} to understand.
+  
+我是中国人，
+但我发现理解它们仍然很困难。
+----
+{{#tag|☆}} Avoid potential {{#ci|ambiguity}} and {{#ci|confusion}}.
+   
+避免可能的歧义和混淆。
+----
+XXX elems, chars, and length
+----
+{{#tag|☆}} DWIM? Do what {{#ci|you}} mean!
+   
+言行一致！
+----
+XXX init
+XXX side-effects behind the curtain
 ----
 Get the {{#x|slides}} today!
 {{#c|♨}}

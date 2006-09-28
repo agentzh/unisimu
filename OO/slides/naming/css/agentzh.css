@@ -148,6 +148,16 @@
                      "Bitstream Vera Serif"
                      serif;
 }
+.author {
+        color: #C39;
+        margin: 0px;
+        font-style: italic;
+        font-family: "Constantia"
+                     "Times New Roman"
+                     "Bitstream Vera Serif"
+                     serif;
+        font-size: 70%;
+}
 .cu {
         color: #C39;
         margin: 0px;

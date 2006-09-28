@@ -9,7 +9,7 @@
 ----
 The Art of {{#x|Naming}}
 {{#x|命名}}的艺术
-☺{{#ci|Agent Zhang}}☺
+☺{{#author|Agent Zhang (章亦春)}}☺
 {{#date|2006.9}}
 ----
 Why naming {{#ci|matters}}?
@@ -331,6 +331,28 @@ though a bit fuzzy.
  {{#v|&lt;高嘉良>}}      废话查询语言？
  {{#v|&lt;Larry Wall>}} 不过是高声吹嘘？
  {{#v|&lt;唐凤>}}        联结性量子库？
+----
+{{#tag|☆}} Chinese {{#x|Pinyin abbreviations}} can be 
+{{#ci|extremely}} hateful.
+  
+汉语拼音缩写会非常令人讨厌。
+----
+http://.../{{#x|xs}}_main.aspx?{{#x|xh}}=3030602110#
+http://.../{{#x|xscj}}_{{#x|gc}}.aspx?{{#x|xh}}=3030602110&amp;{{#x|xm}}=章亦春
+http://.../{{#x|xscxbm}}.aspx?{{#x|xh}}=3030602110&amp;{{#x|xm}}=章亦春
+   
++{{#ci|xs}} == 学生 (student) ?
++{{#ci|xh}} == 学号 (student id) ?
++{{#ci|xm}} == 姓名 (name) ?
++{{#ci|xscj}} == 学生成绩 (student grades) ?
++{{#ci|xscxbm}} == 学生重修报名 (XXX) ?
++{{#ci|gc}} == {{#x|???}}
+----
+I'm a {{#x|Chinese}},
+but I still find it {{#ci|hard}} to understand.
+  
+我是中国人，
+但我发现理解它们仍然很困难。
 ----
 
 
