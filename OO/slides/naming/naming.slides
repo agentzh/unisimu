@@ -100,10 +100,10 @@ of the language {{#ci|you}} are using.
 遵循你所使用的语言
 的命名约定。
 ----
- {{#v|// C++ STL naming style}}
- {{#x|vector}}<{{#x|string}}> list;
- list.{{#ci|push_back}}(\"hello\");
- while (!list.{{#ci|empty}}()) {...}
+     {{#v|// C++ STL naming style}}
+     {{#x|vector}}<{{#x|string}}> list;
+     list.{{#ci|push_back}}(\"hello\");
+     while (!list.{{#ci|empty}}()) {...}
 ----
  {{#v|// Java naming style}}
  {{#x|List}} list = new {{#x|ArrayList}}();
@@ -362,26 +362,57 @@ but I still find it {{#ci|hard}} to understand.
    
 避免可能的歧义和混淆。
 ----
-XXX elems, chars, and length
+    To get the number of elements in an array,
+    use the {{#ci|.elems}} method. You can also ask for
+    the total string length of an array's elements,
+    in bytes, codepoints or graphemes, using these
+    methods {{#ci|.bytes}}, {{#ci|.codes}} or {{#ci|.graphs}} respectively
+    on the array. The same methods apply to strings
+    as well.
+  
+    There is no {{#ci|.length}} method for either arrays or
+    strings, because length does {{#ci|not}} specify a {{#x|unit}}.
+     
+                -- {{#i|Larry Wall}} (The Perl 6 Synopsis 2)
+----
+    想得到数组中的元素数目，可以使用 {{#ci|.elems}} 方法。
+    你也可以利用 {{#ci|.bytes}}、 {{#ci|.codes}} 或者 {{#ci|.graphs}} 分别
+    以字节、编码点、或者字形为单位来查询数组元素
+    的总长度。字符串也拥有这些方法。
+  
+    对数组和字符串而言，都不再有 {{#ci|.length}} 方法了，
+    因为 length 并{{#ci|没有}}指明{{#x|长度单位}}。
+   
+                -- {{#i|Larry Wall}} (Perl 6 纲要 2)
 ----
 {{#tag|☆}} DWIM? Do what {{#ci|you}} mean!
    
 言行一致！
 ----
-XXX init
-XXX side-effects behind the curtain
+ {{#ci|?}}  {{#kw|class}} Array {
+ {{#ci|?}}      {{#cm|// print out the contents:}}
+ {{#ci|?}}      {{#kw|public void}} {{#x|init}}() {
+ {{#ci|?}}          {{#kw|for}} ({{#kw|int}} i = 0; i < this.length; i++)
+ {{#ci|?}}              System.out.println(this.get(i));
+ {{#ci|?}}      }
+ {{#ci|?}}  }
+  
++{{#x|init}}? {{#x|emit}}?
 ----
 Get the {{#x|slides}} today!
 {{#c|♨}}
     
 {{http://perlcabal.org/agent/slides/naming/naming.xul}}
+  
+You need {{#x|Firefox}} to access the link above.
 ----
-These slides are
-{{#ci|powered}} by
-+{{#x|Sporx}} and...
+{{#x|Contact}} me on the {{#ci|web}}!
+{{#c|♨}}
+  
+{{agentzh@gmail.com}}
 ----
- {{img src="images/grin.png" width="65" height="65"}}
-{{#ci|Takahashi}}{{#x|++}}
+These slides are {{#ci|powered}} by
+{{#x|Sporx}} and {{img src="images/grin.png" width="41" height="41"}}{{#ci|Takahashi}}{{#x|++}}
 ----
 {{#c|Thank you!}}
 ☺
