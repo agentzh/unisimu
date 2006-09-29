@@ -115,10 +115,21 @@ of {{#x|irc.freenode.net}}...
  {{#v|&lt;唐凤>}} {{#ci|命名}}所花费的时间比测试 + 文档 + 实现代码{{#ci|还要多}}
 ----
 {{#tag|☆}} Follow the {{#x|naming convention}}
-of the language {{#ci|you}} are using.
+of the language {{#ci|you}} are using
+and try to be consistent.
   
-遵循你所使用的语言
-的命名约定。
+遵循你所使用的语言的命名约定，
+并努力保持一致性。
+----
+    The problem with being {{#x|consistent}} is
+    that there are {{#ci|lots}} of ways to be 
+    consistent, and they're all {{#x|inconsistent}}
+    with each other.
+               -- {{#t|Larry Wall}}
+  
+   保持一致性的困难在于存在许许多多种不同方式
+   来实现一致性，而且它们彼此之间都是不一致的。
+               -- {{#t|Larry Wall}}
 ----
      {{#v|// C++ STL naming style}}
      {{#x|vector}}&lt;{{#x|string}}> list;
@@ -160,6 +171,8 @@ of the language {{#ci|you}} are using.
 The {{#x|Ugly}}, the {{#x|Bad}}, and the {{#x|Good}}
   
 丑的，坏的，好的
+----
+{{#tag|☆}} 
 ----
 {{#tag|☆}} Choose {{#ci|nouns}} for
 your {{#x|class}} names
