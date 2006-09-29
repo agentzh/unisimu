@@ -30,7 +30,21 @@ Pugs 的 Main.hs 中的英文诗歌  {{#tag|⇒}}
     To gleam thereon by Elbereth
     {{#ci|Herself}} was set, who thither came...
 ----
-XXX 中文译文
+  
+   
+众人为彼造新舟，
+铸以秘银精灵璃。
+船首闪耀何需桨，
+银桅未有风帆系。
+  
+无双宝钻作灯炬，
+旗帜辉煌展生焰。
+映照燃星雅碧绿，
+神祇乘梭下九天。
+  
+     -- {{#t|唐凤}}
+   
+  
 ----
 Perl 6 {{#ci|translation}} ⇒
   
@@ -41,9 +55,9 @@ Perl 6 {{#ci|translation}} ⇒
         {{#kw|our}} Ship {{#v|$pugs}} .= {{#kw|new}}(:of{{#x|<mithril elven-glass>}});
         {{#kw|given}} {{#v|$pugs}} {
             {{#v|$.prow}} {{#kw|does}} Shine;
-            Silver {{#v|$.mast}} {{#kw|but}} none(Oar::Shaven, Sail);
-            Light  {{#v|$.lantern}} := {{#v|$*Silmaril}};
-            Bright {{#v|$.banner}}  := Flame.bless:{};
+             Silver {{#v|$.mast}} {{#kw|but}} none(Oar::Shaven, Sail);
+             Light  {{#v|$.lantern}} := {{#v|$*Silmaril}};
+             Bright {{#v|$.banner}}  := Flame.bless:{};
             {{#kw|when}} {{#v|$*Elbereth}}.gleam {
                 .sail(...);
             }
@@ -63,6 +77,9 @@ of {{#x|irc.freenode.net}}...
 正如在 irc.freenode.net 上的 #perl6 通道里
 所看见的那样……
 ----
+{{img src="#" width="0" height="0"}}
+{{img src="images/larry.jpg" width="240" height="392"}}
+----
  {{#v|<agentzh>}}  TimToady++  # JIT syn fixes
  {{#v|<TimToady>}} thanks
  {{#v|<TimToady>}} I looked at {{#ci|several hundred}} words
@@ -74,8 +91,7 @@ of {{#x|irc.freenode.net}}...
  {{#v|<Larry Wall>}} 我在挑选出 START 这个名字之前查看了
                {{#ci|几百个}}单词。
 ----
-{{img src="#" width="0" height="0"}}
-{{img src="images/larry.jpg" width="240" height="392"}}
+{{img src="images/audrey.jpg" width="480" height="403"}}
 ----
  {{#v|<gaal>}} defer? slothlike
  {{#v|<audreyt>}} I like \"defer\"
@@ -91,8 +107,6 @@ of {{#x|irc.freenode.net}}...
  * 唐凤删除了 Data::Thunk 并上传了 Data::Defer
  {{#v|<唐凤>}} ……现在它叫做 Scalar::Defer 了
  {{#v|<唐凤>}} {{#ci|命名}}所花费的时间比测试 + 文档 + 实现代码{{#ci|还要多}}
-----
-{{img src="images/audrey.jpg" width="480" height="403"}}
 ----
 {{#tag|☆}} Follow the {{#x|naming convention}}
 of the language {{#ci|you}} are using.
@@ -273,7 +287,15 @@ your {{#x|property}} names
 为全局结构取描述性的名字。
 （长名字也可以。）
 ----
-XXX examples...
+  {{#ci|?}}  {{#cm|# Globals in smartlinks.pl:}}
+  {{#ci|?}}  {{#kw|my}} (${{#x|count}}, ${{#x|broken_count}});
+   
++{{#x|☹}} This is {{#ci|bad}}.
+----
+    {{#cm|# Globals in smartlinks.pl:}}
+    {{#kw|my}} (${{#x|link_count}}, ${{#x|broken_link_count}});
+   
++{{#x|☺}} This is {{#ci|better}}.
 ----
 {{#tag|☆}} Don't {{#ci|repeat}} yourself.
 (The {{#x|DRY}} principle)
@@ -281,26 +303,44 @@ XXX examples...
 不要重复你自己
 （DRY 原则）
 ----
- {{#v|// The Java way:}}
- {{#ci|double}} value = {{#ci|Double}}.parse{{#ci|Double}}(\"3.14\");
+  {{#ci|?}}  {{#v|// The Java way:}}
+  {{#ci|?}}  {{#x|double}} value = {{#x|Double}}.parse{{#x|Double}}(\"3.14\");
    
 +{{#x|☹}} This is {{#ci|ugly}}.
 ----
- {{#v|// The C# way:}}
- {{#ci|double}} value = {{#ci|double}}.Parse(\"3.14\");
+     {{#v|// The C# way:}}
+     {{#x|double}} value = {{#x|double}}.Parse(\"3.14\");
   
 +{{#x|☹}} Just a bit better.
 ----
      {{#v|// The Perl 6 way:}}
-     {{#kw|my}} {{#ci|Double}} $value = \"3.14\";
+     {{#kw|my}} {{#x|Double}} $value = \"3.14\";
    
 +{{#x|☺}} This is {{#ci|good}}!
 ----
      {{#v|// The C/C++ way:}}
-     {{#ci|double}} value = atof(\"3.14\");
+     {{#x|double}} value = atof(\"3.14\");
    
 +{{#x|☺}} This is {{#ci|good}} too,
 though a bit fuzzy.
+----
+ {{#ci|?}}  {{#kw|class}} User{{#x|Queue}} {
+ {{#ci|?}}      {{#kw|int}} noOfItemsIn{{#x|Q}};
+ {{#ci|?}}      {{#kw|int}} frontOfThe{{#x|Queue}};
+ {{#ci|?}}      {{#kw|int}} {{#x|queue}}Capacity;
+ {{#ci|?}}      {{#kw|public int}} noOfUsersIn{{#x|Queue}}() { ... }
+ {{#ci|?}}  }
+   
++{{#x|☹}} This is {{#ci|ugly}}.
+----
+    {{#kw|class}} User{{#x|Queue}} {
+        {{#kw|int}} nitems;
+        {{#kw|int}} front;
+        {{#kw|int}} capacity;
+        {{#kw|public int}} nusers() { ... }
+    }
+   
++{{#x|☺}} This is {{#ci|good}}!
 ----
 {{#tag|☆}} Tell me {{#ci|more}}!
 (Don't be {{#x|handwaving}}.)
@@ -334,7 +374,22 @@ though a bit fuzzy.
  {{#v|<Larry Wall>}} 不过是高声吹嘘？
  {{#v|<唐凤>}}        联结性量子库？
 ----
-XXX common abbreviations
+{{#tag|☆}} {{#ci|Widely-used}} abbreviations are recommended.
+  
+提倡选择广泛使用的缩写。
+----
+    {{#x|var}}  ←  variable
+    {{#x|val}}  ←  value
+    {{#x|init}} ←  initialize / initialization
+    {{#x|elem}} ←  element
+    {{#x|id}}   ←  identifier
+    {{#x|len}}  ←  length
+    {{#x|eval}} ←  evaluate / evaluation
+    {{#x|func}} ←  function
+    {{#x|sub}}  ←  subroutine
+    {{#x|ret}}  ←  ret
+    {{#x|AST}}  ←  Abstract Syntax Tree
+    ...{{#t|and many more}}
 ----
 {{#tag|☆}} Chinese {{#x|Pinyin abbreviations}} can be 
 {{#ci|extremely}} hateful.
