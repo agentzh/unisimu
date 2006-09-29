@@ -101,9 +101,9 @@ of {{#x|irc.freenode.net}}...
  {{#v|<audreyt>}} {{#ci|naming}} takes {{#ci|more}} time than tests+doc+code
    
   
- {{#v|<gaal>}} defer 怎么样? 有些惰性的味道
+ {{#v|<高浪>}} defer 怎么样? 有些惰性的味道
  {{#v|<唐凤>}} 我喜欢“defer”
- {{#v|<唐凤>}} gaal++
+ {{#v|<唐凤>}} 高浪++
  * 唐凤删除了 Data::Thunk 并上传了 Data::Defer
  {{#v|<唐凤>}} ……现在它叫做 Scalar::Defer 了
  {{#v|<唐凤>}} {{#ci|命名}}所花费的时间比测试 + 文档 + 实现代码{{#ci|还要多}}
