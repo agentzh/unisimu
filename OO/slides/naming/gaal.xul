@@ -5,7 +5,7 @@
 <page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="sporx" xmlns:html="http:/www.w3.org/1999/xhtml" orient="vertical" onkeypress="Sporx.onKeyPress(event);">
 
 <html:textarea id="builtinCode" style="visibility: collapse">----
-{{#x|葛兴浪}}
+{{#x|葛惊浪}}
 </html:textarea>
 
 <deck flex="1" id="deck">
