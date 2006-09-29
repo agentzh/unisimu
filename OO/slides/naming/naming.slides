@@ -50,12 +50,12 @@ Perl 6 {{#ci|translation}} ⇒
   
 {{#ci|翻译}}到 Perl 6 编程语言 ⇒
 ----
-    {{#kw|use}} v6;
+    {{#kw|use v6}};
     {{#kw|for}} {{#v|$*Larry}} {
         {{#kw|our}} Ship {{#v|$pugs}} .= {{#kw|new}}(:of{{#x|<mithril elven-glass>}});
         {{#kw|given}} {{#v|$pugs}} {
             {{#v|$.prow}} {{#kw|does}} Shine;
-             Silver {{#v|$.mast}} {{#kw|but}} none(Oar::Shaven, Sail);
+             Silver {{#v|$.mast}} {{#kw|but none}}(Oar::Shaven, Sail);
              Light  {{#v|$.lantern}} := {{#v|$*Silmaril}};
              Bright {{#v|$.banner}}  := Flame.bless:{};
             {{#kw|when}} {{#v|$*Elbereth}}.gleam {
