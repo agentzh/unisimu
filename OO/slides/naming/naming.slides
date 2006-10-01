@@ -130,15 +130,15 @@ and try to be consistent.
      list.{{#ci|push_back}}(\"hello\");
      while (!list.{{#ci|empty}}()) {...}
 ----
- {{#v|// Java naming style}}
- {{#x|List}} list = new {{#x|ArrayList}}();
- list.{{#ci|add}}(\"hello\");
- while (!list.{{#ci|isEmpty}}()) {...}
+    {{#v|// Java naming style}}
+    {{#x|List}} list = new {{#x|ArrayList}}();
+    list.{{#ci|add}}(\"hello\");
+    while (!list.{{#ci|isEmpty}}()) {...}
 ----
- {{#v|// C# naming style}}
- {{#x|ArrayList}} myAL = new {{#x|ArrayList}}();
- myAL.{{#ci|Add}}(\"hello\");
- Console.{{#ci|WriteLine}}(myAL.{{#ci|ToString}}());
+    {{#v|// C# naming style}}
+    {{#x|ArrayList}} myAL = new {{#x|ArrayList}}();
+    myAL.{{#ci|Add}}(\"hello\");
+    Console.{{#ci|WriteLine}}(myAL.{{#ci|ToString}}());
 ----
 {{#tag|☆}} Use {{#ci|meaningful}} names
   
@@ -173,23 +173,24 @@ your {{#x|class}} names
 ----
 {{img src="images/noun.gif" width="288" height="266"}}
 ----
- class {{#x|Evaluator}} { ... }
- class {{#x|Solver}} { ... }
- class {{#x|Withdrawal}} { ... }
+     class {{#x|Evaluator}} { ... }
+     class {{#x|Solver}} { ... }
+     class {{#x|Withdrawal}} { ... }
    
 +{{#x|☺}} These are {{#ci|good}}.
 ----
- {{#ci|?}}  class {{#x|Evaluate}} { ... }
- {{#ci|?}}  class {{#x|Solve}} { ... }
- {{#ci|?}}  class {{#x|Withdraw}} { ... }
+     {{#ci|?}}  class {{#x|Evaluate}} { ... }
+     {{#ci|?}}  class {{#x|Solve}} { ... }
+     {{#ci|?}}  class {{#x|Withdraw}} { ... }
    
 +{{#x|☹}} These are {{#ci|bad}}.
 ----
- {{#v|# The following class/module names are also good:}}
- {{#kw|package}} CGI::Simple;
- {{#kw|package}} XML::Smart;
- {{#kw|package}} Class::DBI::Sweet;
- {{#kw|package}} Test::Easy;
+     {{#v|# The following class/module names are}}
+     {{#v|# also good:}}
+     {{#kw|package}} CGI::Simple;
+     {{#kw|package}} XML::Smart;
+     {{#kw|package}} Class::DBI::Sweet;
+     {{#kw|package}} Test::Easy;
 ----
 {{#tag|☆}} Choose active {{#ci|verbs}} for
 your {{#x|method}} names
@@ -256,13 +257,13 @@ your {{#x|property}} names
 ----
 {{img src="images/huffman.gif" width="510" height="470"}}
 ----
- {{#v|// The Java way:}}
- {{#ci|System.out.println}}(\"Computing the sum...\");
- {{#kw|for}} ({{#kw|int}} i = 1; i <= n; i++) {
-     sum += i;
-     {{#ci|System.out.println}}(i);
- }
- {{#ci|System.out.println}}(\"Sum: \" + sum);
+   {{#v|// The Java way:}}
+   {{#ci|System.out.println}}(\"Computing the sum...\");
+   {{#kw|for}} ({{#kw|int}} i = 1; i <= n; i++) {
+       sum += i;
+       {{#ci|System.out.println}}(i);
+   }
+   {{#ci|System.out.println}}(\"Sum: \" + sum);
    
 +{{#x|☹}} This is {{#ci|ugly}}.
 ----
@@ -385,10 +386,13 @@ though a bit fuzzy.
  {{#v|<Larry Wall>}} 不过是高声吹嘘？
  {{#v|<唐凤>}}        联结性量子库？
 ----
-{{#tag|☆}} {{#ci|Widely-used}} abbreviations are recommended.
+{{#tag|☆}} {{#ci|Widely-used}} abbreviations
+are recommended.
   
-提倡选择广泛使用的缩写。
+提倡选择
+广泛使用的缩写。
 ----
+   
     {{#x|var}}  ←  variable
     {{#x|val}}  ←  value
     {{#x|init}} ←  initialize / initialization
@@ -398,9 +402,9 @@ though a bit fuzzy.
     {{#x|eval}} ←  evaluate / evaluation
     {{#x|func}} ←  function
     {{#x|sub}}  ←  subroutine
-    {{#x|ret}}  ←  ret
     {{#x|AST}}  ←  Abstract Syntax Tree
     ...{{#t|and many more}}
+  
 ----
 {{#tag|☆}} Chinese {{#x|Pinyin abbreviations}} can be 
 {{#ci|extremely}} hateful.
