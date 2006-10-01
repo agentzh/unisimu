@@ -48,7 +48,7 @@ Pugs 的 Main.hs 中的英文诗歌  {{#tag|⇒}}
 ----
 Perl 6 {{#ci|translation}} ⇒
   
-{{#ci|翻译}}到 Perl 6 编程语言 ⇒
+{{#x|翻译}}到 Perl 6 编程语言 ⇒
 ----
     {{#kw|use v6}};
     {{#kw|for}} {{#v|$*Larry}} {
