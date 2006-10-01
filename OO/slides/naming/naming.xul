@@ -479,8 +479,10 @@ Get the {{#x|slides}} today!
 {{#c|♨}}
     
 {{http://perlcabal.org/agent/slides/naming/naming.xul}}
+{{http://perlcabal.org/agent/slides/naming/naming.ppt}}
+{{http://perlcabal.org/agent/slides/naming/naming.pdf}}
   
-You need {{#x|Firefox}} to access the link above.
+You need {{#x|Firefox}} to access the .xul link above.
 ----
 {{#x|Contact}} me on the {{#ci|web}}!
 {{#c|♨}}
