@@ -4,9 +4,14 @@ use Win32;
 use Getopt::Std;
 
 my %opts;
-getopts('a', \%opts);
+getopts('ah', \%opts);
 
 my $me = $ENV{COMPUTERNAME};
+
+if ($opts{h}) {
+    die "usage: abortsh       # abort the shutdown process (if any)\n".
+        "       abortsh -a 30 # shut down the local machine in 30 sec\n";
+}
 
 my $delay = shift || 30;
 
@@ -19,7 +24,7 @@ sub shut_down {
     );
 }
 
-if (!$opts{a}) {
+if ($opts{a}) {
     shut_down('good bye~~~');
 } else {
     my $retval = Win32::AbortSystemShutdown($me);
