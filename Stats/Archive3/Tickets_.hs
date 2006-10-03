@@ -6,12 +6,12 @@ module Main where
 import System.Environment
 import System.Random
 
-experiment :: Int -> IO [Int]
-experiment count = sequence $ take count ls'
-    where ls' = rollDie : ls'
+seed :: Int
+seed = 60
 
-rollDie :: IO Int
-rollDie = randomRIO (1::Int, 100)
+experiment :: Int -> [Int]
+experiment count = take count randList
+    where randList = randomRs (1, 100) (mkStdGen seed)
 
 hits :: [Int] -> [Int]
 hits outcomes = [ x | x <- outcomes, perfectSquare x ]
@@ -27,15 +27,14 @@ prob hits outcomes = (len hits) / (len outcomes)
 main :: IO ()
 main = do
     args <- getArgs
-    let count = initCount args
-    outcomes <- experiment count
+    let outcomes = experiment $ initCount args
     -- putStrLn $ show outcomes
     -- putStrLn $ show $ hits outcomes
     putStrLn $ "the probability is " ++
         (show $ prob (hits outcomes) outcomes) ++
         " (1/10 expected)"
     where
-        initCount [] = 10000
+        initCount [] = 100000
         initCount (x:xs) = read x
 
 {- __END__
