@@ -23,6 +23,7 @@ sub process_main {
     $xml =~ s/"gb2312"/"GB2312"/g;
     write_file('main.xml', $xml, "\n<!-- $main_url -->\n");
     my $in_ast = XMLin($xml, ForceArray => ['item']);
+    #DumpFile('main.yml', $in_ast);
     my $msg_board = $in_ast->{_x_22}->{rss}->{channel}->{item} || [];
     my @msgs;
     for my $msg (@$msg_board) {
