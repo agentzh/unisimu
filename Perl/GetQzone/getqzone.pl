@@ -68,10 +68,15 @@ $agent->env_proxy();
 
 my $home_html = get_url($agent, $home_url);
 my $property_id;
-if ($home_html =~ /g_Property\s*=\s*"(\w+)";/) {
-    $property_id = $1;
-    warn "Property ID: $property_id\n";
-} else {
+for (1..3) {
+    if ($home_html =~ /g_Property\s*=\s*"(\w+)";/) {
+        $property_id = $1;
+        warn "Property ID: $property_id\n";
+        last;
+    }
+    $home_html = get_url($agent, $home_url);
+}
+if (!defined $property_id) {
     die "Can't get property ID from the homepage: $home_url";
 }
 $body_url =~ s/property=##/property=$property_id/;
