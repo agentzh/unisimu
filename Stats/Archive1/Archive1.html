@@ -28,7 +28,23 @@
 		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
 	</ul>
 
+	<li><a href="#balls_hs">balls.hs</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
 	<li><a href="#balls_pl">balls.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#balls2_hs">balls2.hs</a></li>
 	<ul>
 
 		<li><a href="#problem">PROBLEM</a></li>
@@ -276,8 +292,61 @@ the answer produced by incorrectly adding probabilities.</p>
 </p>
 <h2><a name="selected_output">SELECTED OUTPUT</a></h2>
 <pre>
-    500 acts of intercourse lead to a 0.6334 (0.6325 expected)
+    500 acts of intercourse lead to a 0.6339 (0.6325 expected)
       probability of infection.</pre>
+<p>
+</p>
+<hr />
+<h1><a name="balls_hs">balls.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example A</strong></p>
+<p>An urn contains three red balls and one blue ball. Two
+balls are selected without replacement. What is the
+probability that they are both red?</p>
+<p>Let R1 and R2 denote the events that a red ball is drawn
+on the first trial and on the second trial, respectively.
+From the multiplication law,</p>
+<pre>
+    P(R1 กษ R2) = P(R1) P(R2 | R1)</pre>
+<p><code>P(R1)</code> is clearly 3/4, and if a red ball has been removed
+on the first trial, there are two red balls and one blue
+ball left. Therefore, P(R2 | R1) = 2/3. Thus, P(R1 กษ R2)
+= 1/2.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- balls.hs</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    import Data.List</pre>
+<pre>
+    data Color = Red | Blue
+        deriving (Show, Eq, Ord)</pre>
+<pre>
+    urn :: [Color]
+    urn = [Red, Red, Red, Blue]</pre>
+<pre>
+    outcomes, hits :: [(Color, Color)]</pre>
+<pre>
+    outcomes = [ (x, y) | x &lt;- urn, y &lt;- delete x urn ]
+    hits = [ (x, y) | (x, y) &lt;- outcomes, x == Red &amp;&amp; y == Red ]</pre>
+<pre>
+    prob :: Float
+    prob = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = putStrLn $ &quot;the probability is &quot; ++ show prob ++
+        &quot; (1/2 expected)&quot;</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    the probability is 0.5 (1/2 expected)</pre>
 <p>
 </p>
 <hr />
@@ -349,7 +418,63 @@ ball left. Therefore, P(R2 | R1) = 2/3. Thus, P(R1 กษ R2)
 <h2><a name="selected_output">SELECTED OUTPUT</a></h2>
 <pre>
     The probability that they are both red is
-      0.5002 (0.5 expected)</pre>
+      0.4999 (0.5 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="balls2_hs">balls2.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example C</strong></p>
+<p>Referring to Example A, what is the probability that a
+red ball is selected on the second draw?</p>
+<p>The answer may or may not be intuitively obvious--that
+depends on your intuition. On the one hand, you could
+argue that it is ``clear from symmetry'' that <code>P(R2)</code> =
+<code>P(R1)</code> = 3/4. On the other hand, you could say that it
+is obvious that a red ball is likely to be selected on
+the first draw, leaving fewer red balls for the second
+draw, so that <code>P(R2)</code> &lt; P(R1). The answer can be derived
+easily by using the law of total probability:</p>
+<pre>
+    P(R2) = P(R2 | R1)P(R1) + P(R2 | B1)P(B1)
+          = 2/3 x 3/4 + 1 x 1/4 = 3/4</pre>
+<p>where B1 denotes the event that a blue ball is drawn
+on the first trial.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- balls.hs</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    import Data.List</pre>
+<pre>
+    data Color = Red | Blue
+        deriving (Show, Eq, Ord)</pre>
+<pre>
+    urn :: [Color]
+    urn = [Red, Red, Red, Blue]</pre>
+<pre>
+    outcomes, hits :: [(Color, Color)]</pre>
+<pre>
+    outcomes = [ (x, y) | x &lt;- urn, y &lt;- delete x urn ]
+    hits = [ (x, y) | (x, y) &lt;- outcomes, y == Red ]</pre>
+<pre>
+    prob :: Float
+    prob = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = putStrLn $ &quot;the probability is &quot; ++ show prob ++
+        &quot; (3/4 expected)&quot;</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    the probability is 0.75 (3/4 expected)</pre>
 <p>
 </p>
 <hr />
@@ -426,7 +551,7 @@ on the first trial.</p>
 <h2><a name="selected_output">SELECTED OUTPUT</a></h2>
 <pre>
     The probability that a red ball is selected on
-      the second draw is 0.7497 (0.75 expected)</pre>
+      the second draw is 0.7495 (0.75 expected)</pre>
 <p>
 </p>
 <hr />
@@ -633,10 +758,10 @@ second toss,</p>
 </p>
 <h2><a name="selected_output">SELECTED OUTPUT</a></h2>
 <pre>
-    P(A) = 0.4995 (0.5 expected)
-    P(B) = 0.5030 (0.5 expected)
-    P(C) = 0.7529 (0.75 expected) !=
-      1.0025 (1 expected) = P(A) + P(B)</pre>
+    P(A) = 0.4990 (0.5 expected)
+    P(B) = 0.4990 (0.5 expected)
+    P(C) = 0.7494 (0.75 expected) !=
+      0.998 (1 expected) = P(A) + P(B)</pre>
 <p>
 </p>
 <hr />
@@ -723,10 +848,10 @@ second toss,</p>
 </p>
 <h2><a name="selected_output">SELECTED OUTPUT</a></h2>
 <pre>
-    P(A) = 0.5011 (0.5 expected)
-    P(B) = 0.5027 (0.5 expected)
-    P(C) = 0.7522 (0.75 expected) !=
-      1.0038 (1 expected) = P(A) + P(B)</pre>
+    P(A) = 0.5012 (0.5 expected)
+    P(B) = 0.5012 (0.5 expected)
+    P(C) = 0.7510 (0.75 expected) !=
+      1.0024 (1 expected) = P(A) + P(B)</pre>
 <p>
 </p>
 <hr />
@@ -790,7 +915,7 @@ the event that at least one head is thrown. Then A =
 </p>
 <h2><a name="selected_output">SELECTED OUTPUT</a></h2>
 <pre>
-    P(A) = 0.7494 (0.75 expected)</pre>
+    P(A) = 0.7521 (0.75 expected)</pre>
 <p>
 </p>
 <hr />
@@ -1228,7 +1353,7 @@ and the letters A, G, and C):</p>
 </p>
 <h2><a name="selected_output">SELECTED OUTPUT</a></h2>
 <pre>
-    The probability is 0.1027 (0.1037 expected).</pre>
+    The probability is 0.1044 (0.1037 expected).</pre>
 <p>
 </p>
 <hr />
