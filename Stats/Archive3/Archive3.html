@@ -1,0 +1,498 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Archive3 - Perl/Haskell Simulation for Mathematical Statistics</title>
+<link rel="stylesheet" href="../Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Archive3 - Perl/Haskell Simulation for Mathematical Statistics</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#fairdie_hs">FairDie.hs</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#tickets_hs">Tickets.hs</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#tickets2_hs">Tickets2.hs</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#tickets3_hs">Tickets3.hs</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#tickets__hs">Tickets_.hs</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#twodice_hs">TwoDice.hs</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#pocker_pl">pocker.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#copyright">COPYRIGHT</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Archive3 - Perl/Haskell Simulation for Mathematical Statistics</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>For each problem, there is a tiny perl script or Haskell program corresponding
+to it, which verify the answers to the problem or algorithms associated
+with it. Some of the scripts require additional CPAN module, such
+as Math::Combinatorics and Math::Random, to run successfully. Hence,
+if you don't have them installed in your perl distribution, please
+download these modules from <a href="http://www.cpan.org">http://www.cpan.org</a> (or use PPM
+directly for the ActivePerl users).</p>
+<p>
+</p>
+<hr />
+<h1><a name="fairdie_hs">FairDie.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>A fair die is rolled in an honest manner. Determine the
+probability that the number of spots that shows is more than
+two but less than five.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- FairDie.hs
+    -- Problem 1.1</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    outcomes, hits :: [Int]</pre>
+<pre>
+    outcomes = [1..6]
+    hits = [ x | x &lt;- outcomes, x &gt; 2 &amp;&amp; x &lt; 5 ]</pre>
+<pre>
+    prob :: Float
+    prob = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = putStrLn $ &quot;the probability is &quot; ++ show prob ++ &quot; (1/3 expected)&quot;</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    the probability is 0.33333334 (1/3 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="tickets_hs">Tickets.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>A box has 100 tickets, labeld from 1 to 100. A ticket
+is selected at random from the box. Determine the 
+probability that the label of the ticket is a perfect
+square (1, 4, 9, 16, ...).</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- Tickets.hs
+    -- Problem 1.5</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    outcomes, hits :: [Int]</pre>
+<pre>
+    outcomes = [1..100]
+    hits = [ x | x &lt;- outcomes, perfectSquare x ]</pre>
+<pre>
+    perfectSquare :: Int -&gt; Bool
+    perfectSquare x = root^2 == x
+        where root = round $ sqrt $ fromIntegral x</pre>
+<pre>
+    prob :: Float
+    prob = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = putStrLn $ &quot;the probability is &quot; ++ show prob ++ &quot; (1/10 expected)&quot;</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    the probability is 0.1 (1/10 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="tickets2_hs">Tickets2.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>A box has three tickets, labeled from 1 to 3. A ticket
+is selected at random from the box and then returned
+to the box, after which a second ticket is selected
+at random from the box. Assume that all 3^2 = 9
+possible outcome pairs have probability 1/9. Determine
+the probability that the ticket having label 1 is
+not selected on either trial.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- Tickets2.hs
+    -- Problem 1.5</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    outcomes, hits :: [(Int, Int)]</pre>
+<pre>
+    outcomes = [ (x, y) | x &lt;- [1..3], y &lt;- [1..3] ]
+    hits = [ (x, y) | (x, y) &lt;- outcomes, x /= 1 &amp;&amp; y /= 1 ]</pre>
+<pre>
+    prob :: Float
+    prob = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = putStrLn $ &quot;the probability is &quot; ++ show prob ++ &quot; (4/9 expected)&quot;</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    the probability is 0.44444445 (4/9 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="tickets3_hs">Tickets3.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>A box has three tickets, labeled from 1 to 3. A
+ticket is selected at random from the box. Assume
+that all 3 * 2 = 6 possible outcome pairs have
+probability 1/6. Determine the probability that
+the ticket having label 1 is not selected on
+either trial.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- Tickets3.hs
+    -- Problem 1.6</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    import Data.List</pre>
+<pre>
+    outcomes, hits :: [(Int, Int)]</pre>
+<pre>
+    outcomes = [ (x, y) | x &lt;- [1..3], y &lt;- delete x [1..3] ]
+    hits = [ (x, y) | (x, y) &lt;- outcomes, x /= 1 &amp;&amp; y /= 1 ]</pre>
+<pre>
+    prob :: Float
+    prob = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = putStrLn $ &quot;the probability is &quot; ++ show prob ++ &quot; (1/3 expected)&quot;</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    the probability is 0.33333334 (1/3 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="tickets__hs">Tickets_.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>A box has 100 tickets, labeld from 1 to 100. A ticket
+is selected at random from the box. Determine the 
+probability that the label of the ticket is a perfect
+square (1, 4, 9, 16, ...).</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- Tickets.hs
+    -- Problem 1.5</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    import System.Environment
+    import System.Random</pre>
+<pre>
+    experiment :: Int -&gt; IO [Int]
+    experiment count = sequence $ take count ls'
+        where ls' = rollDie : ls'</pre>
+<pre>
+    rollDie :: IO Int
+    rollDie = randomRIO (1::Int, 100)</pre>
+<pre>
+    hits :: [Int] -&gt; [Int]
+    hits outcomes = [ x | x &lt;- outcomes, perfectSquare x ]</pre>
+<pre>
+    perfectSquare :: Int -&gt; Bool
+    perfectSquare x = root^2 == x
+        where root = round $ sqrt $ fromIntegral x</pre>
+<pre>
+    prob :: [Int] -&gt; [Int] -&gt; Float
+    prob hits outcomes = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = do
+        args &lt;- getArgs
+        let count = initCount args
+        outcomes &lt;- experiment count
+        -- putStrLn $ show outcomes
+        -- putStrLn $ show $ hits outcomes
+        putStrLn $ &quot;the probability is &quot; ++
+            (show $ prob (hits outcomes) outcomes) ++
+            &quot; (1/10 expected)&quot;
+        where
+            initCount [] = 10000
+            initCount (x:xs) = read x</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    the probability is 0.1013 (1/10 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="twodice_hs">TwoDice.hs</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>Consider two fair dice that are distinguishable; we
+label them as die 1 and die 2. Let these dice be rolled
+in an honest manner. Assume that all 6^2 = 36
+possible outcome pairs have probability 1/36.
+Determine the probability that the total number of
+spots showing on the two dice (a) equals 7; (b)
+is an even number. (c) Determine the probability that
+the number of spots showing on the two dice coincide.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    -- TwoDice.hs
+    -- Problems 1.2 and 1.3</pre>
+<pre>
+    module Main where</pre>
+<pre>
+    outcomes, hitsA, hitsB, hitsC :: [(Int, Int)]</pre>
+<pre>
+    outcomes = [ (x, y) | x &lt;- [1..6], y &lt;- [1..6] ]</pre>
+<pre>
+    hitsA = [ (x, y) | (x, y) &lt;- outcomes, x + y == 7 ]
+    hitsB = [ (x, y) | (x, y) &lt;- outcomes, even $ x + y ]
+    hitsC = [ (x, y) | (x, y) &lt;- outcomes, x == y ]</pre>
+<pre>
+    prob :: [(Int, Int)] -&gt; Float
+    prob hits = (len hits) / (len outcomes)
+        where len = fromIntegral . length</pre>
+<pre>
+    main :: IO ()
+    main = do
+        putStrLn $ &quot;(a) &quot; ++ (show $ prob hitsA) ++ &quot; (1/6 expected)&quot;
+        putStrLn $ &quot;(b) &quot; ++ (show $ prob hitsB) ++ &quot; (1/2 expected)&quot;
+        putStrLn $ &quot;(c) &quot; ++ (show $ prob hitsC) ++ &quot; (1/6 expected)&quot;</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    (a) 0.16666667 (1/6 expected)
+    (b) 0.5 (1/2 expected)
+    (c) 0.16666667 (1/6 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="pocker_pl">pocker.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>从一副扑克牌中（52 张）任取出 5 张牌，求其中黑桃张数的分布律。</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: pocker.pl</span>
+    <span class="comment">#: 《概率论》作业 Page 60, 习题5</span>
+    <span class="comment">#: 随机试验法</span>
+    <span class="comment">#：zx_agent. All rights reserved.</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-28 2005-04-01</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Random</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">100_000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@sorts</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">@freqs</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">12</span><span class="operator">)</span> <span class="operator">{</span><span class="variable">$sorts</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'spade'</span><span class="operator">;</span> <span class="operator">}</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">12</span><span class="operator">)</span> <span class="operator">{</span><span class="variable">$sorts</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'club'</span><span class="operator">;</span> <span class="operator">}</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">12</span><span class="operator">)</span> <span class="operator">{</span><span class="variable">$sorts</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'heart'</span><span class="operator">;</span> <span class="operator">}</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">12</span><span class="operator">)</span> <span class="operator">{</span><span class="variable">$sorts</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'diamond'</span><span class="operator">;</span> <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">map</span><span class="operator">{</span>
+        <span class="variable">$_</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="operator">}</span> <span class="variable">@freqs</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">foreach</span>  <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">@perm</span> <span class="operator">=</span> <span class="variable">random_permutation</span><span class="operator">(</span><span class="variable">@sorts</span><span class="operator">);</span>
+        <span class="variable">@perm</span> <span class="operator">=</span> <span class="keyword">splice</span><span class="operator">(</span><span class="variable">@perm</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">5</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$spadecount</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+        <span class="keyword">map</span><span class="operator">{</span>
+                <span class="operator">++</span><span class="variable">$spadecount</span> <span class="keyword">if</span> <span class="variable">$_</span> <span class="keyword">eq</span> <span class="string">'spade'</span><span class="operator">;</span>
+        <span class="operator">}</span> <span class="variable">@perm</span><span class="operator">;</span>
+        <span class="operator">++</span><span class="variable">$freqs</span><span class="operator">[</span><span class="variable">$spadecount</span><span class="operator">]</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability of drawing no spades is "</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span><span class="string">" ("</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">C</span><span class="operator">(</span><span class="number">39</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)</span> <span class="operator">/</span> <span class="variable">C</span><span class="operator">(</span><span class="number">52</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)),</span><span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability of drawing one spade is "</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">[</span><span class="number">1</span><span class="operator">]</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span><span class="string">" ("</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">C</span><span class="operator">(</span><span class="number">39</span><span class="operator">,</span> <span class="number">4</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">13</span><span class="operator">,</span> <span class="number">1</span><span class="operator">)</span> <span class="operator">/</span> <span class="variable">C</span><span class="operator">(</span><span class="number">52</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)),</span><span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability of drawing two spades is "</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">[</span><span class="number">2</span><span class="operator">]</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span><span class="string">" ("</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">C</span><span class="operator">(</span><span class="number">39</span><span class="operator">,</span> <span class="number">3</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">13</span><span class="operator">,</span> <span class="number">2</span><span class="operator">)</span> <span class="operator">/</span> <span class="variable">C</span><span class="operator">(</span><span class="number">52</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)),</span><span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability of drawing three spades is "</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">[</span><span class="number">3</span><span class="operator">]</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span><span class="string">" ("</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">C</span><span class="operator">(</span><span class="number">39</span><span class="operator">,</span> <span class="number">2</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">13</span><span class="operator">,</span> <span class="number">3</span><span class="operator">)</span> <span class="operator">/</span> <span class="variable">C</span><span class="operator">(</span><span class="number">52</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)),</span><span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability of drawing four spades is "</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">[</span><span class="number">4</span><span class="operator">]</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span><span class="string">" ("</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">C</span><span class="operator">(</span><span class="number">39</span><span class="operator">,</span> <span class="number">1</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">13</span><span class="operator">,</span> <span class="number">4</span><span class="operator">)</span> <span class="operator">/</span> <span class="variable">C</span><span class="operator">(</span><span class="number">52</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)),</span><span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability of drawing five spades is "</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">[</span><span class="number">5</span><span class="operator">]</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span><span class="string">" ("</span><span class="operator">,</span>
+          <span class="variable">trim</span><span class="operator">(</span><span class="variable">C</span><span class="operator">(</span><span class="number">13</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)</span> <span class="operator">/</span> <span class="variable">C</span><span class="operator">(</span><span class="number">52</span><span class="operator">,</span> <span class="number">5</span><span class="operator">)),</span><span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> C </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$n</span><span class="operator">,</span> <span class="variable">$m</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="variable">fac</span><span class="operator">(</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">/</span> <span class="operator">(</span><span class="variable">fac</span><span class="operator">(</span><span class="variable">$m</span><span class="operator">)</span> <span class="variable">*fac</span><span class="operator">(</span><span class="variable">$n</span> <span class="operator">-</span> <span class="variable">$m</span><span class="operator">));</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> fac </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$n</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> <span class="variable">$n</span> <span class="operator">==</span> <span class="number">0</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$res</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">;</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">(</span><span class="number">2</span><span class="operator">..</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">{</span>
+                <span class="variable">$res</span> <span class="operator">*=</span> <span class="variable">$i</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">return</span> <span class="variable">$res</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    The probability of drawing no spades is 0.2216 (0.2215 expected).
+    The probability of drawing one spade is 0.4129 (0.4114 expected).
+    The probability of drawing two spades is 0.2745 (0.2743 expected).
+    The probability of drawing three spades is 0.0805 (0.0815 expected).
+    The probability of drawing four spades is 0.0101 (0.0107 expected).
+    The probability of drawing five spades is 0.0005 (0.0005 expected).</pre>
+<p>
+</p>
+<hr />
+<h1><a name="copyright">COPYRIGHT</a></h1>
+<p>Copyright 2005 Agent Zhang. All rights reserved.</p>
+<p>This software and its documents are free; you can redistribute it and/or modify
+it under the same terms as Perl.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Agent Zhang (章亦春) &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Archive3 - Perl/Haskell Simulation for Mathematical Statistics</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

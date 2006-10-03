@@ -1,0 +1,1710 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Archive1 - Perl/Haskell Simulation for Mathematical Statistics</title>
+<link rel="stylesheet" href="../Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Archive1 - Perl/Haskell Simulation for Mathematical Statistics</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#aids_pl">AIDS.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#balls_pl">balls.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#balls2_pl">balls2.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#bits_pl">bits.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#cloudy_pl">cloudy.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#coin_pl">coin.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#coin2_pl">coin2.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#coin3_pl">coin3.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#groups_pl">groups.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#groups2_pl">groups2.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#groups3_pl">groups3.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#paint_pl">paint.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#paint2_pl">paint2.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#pair_pl">pair.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#pair2_pl">pair2.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#traffic_pl">traffic.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#traffic2_pl">traffic2.pl</a></li>
+	<ul>
+
+		<li><a href="#problem">PROBLEM</a></li>
+		<li><a href="#program_source">PROGRAM SOURCE</a></li>
+		<li><a href="#selected_output">SELECTED OUTPUT</a></li>
+	</ul>
+
+	<li><a href="#copyright">COPYRIGHT</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Archive1 - Perl/Haskell Simulation for Mathematical Statistics</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>For each problem, there is a tiny perl script or Haskell program corresponding
+to it, which verify the answers to the problem or algorithms associated
+with it. Some of the scripts require additional CPAN module, such
+as Math::Combinatorics and Math::Random, to run successfully. Hence,
+if you don't have them installed in your perl distribution, please
+download these modules from <a href="http://www.cpan.org">http://www.cpan.org</a> (or use PPM
+directly for the ActivePerl users).</p>
+<p>
+</p>
+<hr />
+<h1><a name="aids_pl">AIDS.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example B</strong></p>
+<p>An article in the Los Angeles Times (August 24, 1984) discussed
+the statistical risks of AIDS infection:</p>
+<pre>
+    Several studies of sexual partners of people infected with
+    the virus show that a single act of unprotected vaginal
+    intercourse has a surprisingly low risk of infecting the
+    uninfected partner--perhaps one in 100 to one in 1000. For
+    an average, consider the risk to be one in 500. If there
+    are 100 acts of intercourse with an infected partner, the
+    odds of infection increase to one in five.
+        Statistically, 500 acts of intercourse with one infected
+    partner or 100 acts with five partners lead to a 100%
+    probability of infection (statistically, not necessarily in
+    reality).</pre>
+<p>Following this reasoning, 1000 acts of intercourse with one
+infected partner would lead to a probability of infection equal
+to 2 (statistically, not necessarily in reality). To see the
+flaw in the reasoning that leads to this conclusion, consider
+two acts of intercourse. Let A1 denote the event that infection
+occurs one the first act and let A2 denote the event that
+infection occurs on the second act. Then the event that infection
+occurs is B = A1 ∪ A2 and</p>
+<pre>
+    P(B) = P(A1) + P(A2) - P(A1 ∩ A2) &lt;= P(A1) + P(A2) = 2/500</pre>
+<p><strong>Example D</strong></p>
+<p>We return to Example B of Section 1.3 (infectivity of AIDS).
+Suppose that virus transmissions in 500 acts of intercourse
+are mutually independent events and that the probability of
+transmission in any one act is 1/500. Under this model, what
+is the probability of infection? It is easier to first find
+the probability of the complement of this event. Let C1, C2,
+..., C500 denote the events that that virus transmission
+does not occur during encounters 1, 2, ..., 500. Then the
+probability of no infection is</p>
+<pre>
+    P(C1 ∩ C2 ∩ ... ∩ C500) = (1 - 1/500)^500 = .37</pre>
+<p>so the probability of infection is 1 - .37 = .63, not 1,
+the answer produced by incorrectly adding probabilities.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: AIDS.pl</span>
+    <span class="comment">#: Example B of Section 1.3, Page 6.</span>
+    <span class="comment">#: Example D of Section 1.6, Page 23.</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-09 2005-03-13</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">20_000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$nacts</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$nacts</span> <span class="operator">=</span> <span class="number">500</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nacts</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$prob</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">/</span><span class="number">500</span><span class="operator">;</span> <span class="comment"># probability of transmisson in any one act</span>
+    <span class="keyword">my</span> <span class="variable">$freq</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span> <span class="comment"># frequency of transmission</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nacts</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">if</span> <span class="operator">(</span><span class="variable">gen_event</span><span class="operator">(</span><span class="variable">$prob</span><span class="operator">))</span> <span class="operator">{</span>
+                <span class="keyword">warn</span> <span class="string">"Infected after $i act(s).\n"</span><span class="operator">;</span>
+                <span class="operator">++</span><span class="variable">$freq</span><span class="operator">;</span>
+                <span class="keyword">last</span><span class="operator">;</span>
+            <span class="operator">}</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+    <span class="keyword">warn</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"$nacts acts of intercourse lead to a "</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freq</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span> <span class="string">" ("</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="number">1</span><span class="operator">-(</span><span class="number">1</span><span class="operator">-</span><span class="variable">$prob</span><span class="operator">)**</span><span class="variable">$nacts</span><span class="operator">),</span>
+        <span class="string">" expected)\n  probability of infection.\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> gen_event </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$prob</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="keyword">rand</span><span class="operator">(</span><span class="number">1</span><span class="operator">)</span> <span class="operator">&lt;</span> <span class="variable">$prob</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    500 acts of intercourse lead to a 0.6334 (0.6325 expected)
+      probability of infection.</pre>
+<p>
+</p>
+<hr />
+<h1><a name="balls_pl">balls.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example A</strong></p>
+<p>An urn contains three red balls and one blue ball. Two
+balls are selected without replacement. What is the
+probability that they are both red?</p>
+<p>Let R1 and R2 denote the events that a red ball is drawn
+on the first trial and on the second trial, respectively.
+From the multiplication law,</p>
+<pre>
+    P(R1 ∩ R2) = P(R1) P(R2 | R1)</pre>
+<p><code>P(R1)</code> is clearly 3/4, and if a red ball has been removed
+on the first trial, there are two red balls and one blue
+ball left. Therefore, P(R2 | R1) = 2/3. Thus, P(R1 ∩ R2)
+= 1/2.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: balls.pl</span>
+    <span class="comment">#: Example A of Section 1.5, Page 17.</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 2005, 2006 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-09 2006-10-13</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">100_000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@colors</span> <span class="operator">=</span> <span class="string">qw(Red Red Red Blue)</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$freq</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">for</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="comment"># First trial:</span>
+        <span class="keyword">my</span> <span class="variable">$ball</span> <span class="operator">=</span> <span class="keyword">int</span><span class="operator">(</span><span class="keyword">rand</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@colors</span><span class="operator">));</span>
+        <span class="keyword">next</span> <span class="keyword">unless</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$ball</span><span class="operator">]</span> <span class="keyword">eq</span> <span class="string">'Red'</span><span class="operator">;</span>
+</pre>
+<pre>
+        <span class="keyword">my</span> <span class="variable">@saved_colors</span> <span class="operator">=</span> <span class="variable">@colors</span><span class="operator">;</span>
+        <span class="keyword">splice</span> <span class="variable">@colors</span><span class="operator">,</span> <span class="variable">$ball</span><span class="operator">,</span> <span class="number">1</span><span class="operator">;</span>
+</pre>
+<pre>
+        <span class="comment">#Second trial:</span>
+        <span class="variable">$ball</span> <span class="operator">=</span> <span class="keyword">int</span><span class="operator">(</span><span class="keyword">rand</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@colors</span><span class="operator">));</span>
+        <span class="operator">++</span><span class="variable">$freq</span> <span class="keyword">if</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$ball</span><span class="operator">]</span> <span class="keyword">eq</span> <span class="string">'Red'</span><span class="operator">;</span>
+        <span class="variable">@colors</span> <span class="operator">=</span> <span class="variable">@saved_colors</span><span class="operator">;</span>
+            <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability that they are both red is\n  "</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freq</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span> <span class="string">" (0.5 expected)\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    The probability that they are both red is
+      0.5002 (0.5 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="balls2_pl">balls2.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example C</strong></p>
+<p>Referring to Example A, what is the probability that a
+red ball is selected on the second draw?</p>
+<p>The answer may or may not be intuitively obvious--that
+depends on your intuition. On the one hand, you could
+argue that it is ``clear from symmetry'' that <code>P(R2)</code> =
+<code>P(R1)</code> = 3/4. On the other hand, you could say that it
+is obvious that a red ball is likely to be selected on
+the first draw, leaving fewer red balls for the second
+draw, so that <code>P(R2)</code> &lt; P(R1). The answer can be derived
+easily by using the law of total probability:</p>
+<pre>
+    P(R2) = P(R2 | R1)P(R1) + P(R2 | B1)P(B1)
+          = 2/3 x 3/4 + 1 x 1/4 = 3/4</pre>
+<p>where B1 denotes the event that a blue ball is drawn
+on the first trial.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: balls2.pl</span>
+    <span class="comment">#: Example C of Section 1.5, Page 18.</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-09 2005-03-30</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">400_000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@colors</span> <span class="operator">=</span> <span class="string">qw(Red Red Red Blue)</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$freq</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="comment"># First trial</span>
+        <span class="keyword">my</span> <span class="variable">$ball</span> <span class="operator">=</span> <span class="keyword">int</span><span class="operator">(</span><span class="keyword">rand</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@colors</span><span class="operator">));</span>
+</pre>
+<pre>
+        <span class="keyword">my</span> <span class="variable">@saved_colors</span> <span class="operator">=</span> <span class="variable">@colors</span><span class="operator">;</span>
+        <span class="keyword">splice</span> <span class="variable">@colors</span><span class="operator">,</span> <span class="variable">$ball</span><span class="operator">,</span> <span class="number">1</span><span class="operator">;</span>
+</pre>
+<pre>
+        <span class="comment">#Second trial:</span>
+        <span class="variable">$ball</span> <span class="operator">=</span> <span class="keyword">int</span><span class="operator">(</span><span class="keyword">rand</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@colors</span><span class="operator">));</span>
+        <span class="operator">++</span><span class="variable">$freq</span> <span class="keyword">if</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$ball</span><span class="operator">]</span> <span class="keyword">eq</span> <span class="string">'Red'</span><span class="operator">;</span>
+        <span class="variable">@colors</span> <span class="operator">=</span> <span class="variable">@saved_colors</span><span class="operator">;</span>
+            <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability that a red ball is "</span><span class="operator">,</span>
+        <span class="string">"selected on\n  the second draw is "</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freq</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span> <span class="string">" (0.75 expected)\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    The probability that a red ball is selected on
+      the second draw is 0.7497 (0.75 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="bits_pl">bits.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example C</strong></p>
+<p>An 8-bit binary word is a sequence of 8 digits, of which
+each may be either a 0 or a 1. How many different 8-bit
+words are thee?</p>
+<p>There are two choices for the first bit, two for the
+second, etc., and thus there are</p>
+<pre>
+    2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 = 2^8 = 256</pre>
+<p>such words.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: bits.pl</span>
+    <span class="comment">#: Example C of Section 1.4.1, Page 9.</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-09 2005-03-13</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$NELEMS</span> <span class="operator">=</span> <span class="number">8</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$buf</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$buf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$buf</span> <span class="operator">=</span> <span class="string">''</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="keyword">length</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">)</span> <span class="operator">==</span> <span class="variable">$NELEMS</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">;</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="variable">genres</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">.</span><span class="string">'0'</span><span class="operator">);</span>
+        <span class="variable">genres</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">.</span><span class="string">'1'</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="operator">{</span>
+        <span class="keyword">local</span> <span class="variable">$"</span> <span class="operator">=</span> <span class="string">"\n"</span><span class="operator">;</span>
+        <span class="keyword">warn</span> <span class="string">"@Res\n"</span><span class="operator">;</span>
+        <span class="keyword">print</span> <span class="string">"\nThere are "</span><span class="operator">,</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@Res</span><span class="operator">),</span>
+            <span class="string">" different 8-bit words\n"</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    There are 256 different 8-bit words</pre>
+<p>
+</p>
+<hr />
+<h1><a name="cloudy_pl">cloudy.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example B</strong></p>
+<p>Suppose that if it is cloudy (B), the probability that
+it is raining (A) is .3, and that the probability that
+it is cloudy is <code>P(B)</code> = .2. The probability that it is
+cloudy and raining is</p>
+<pre>
+    P(A ∩ B) = P(A | B) P(B) = .3 x .2 = .06</pre>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: cloudy.pl</span>
+    <span class="comment">#: Example B of Section 1.5, Page 17.</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-09 2005-03-30</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">400_000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$freq</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$cloudy</span> <span class="operator">=</span> <span class="variable">gen_event</span><span class="operator">(</span><span class="number">0</span><span class="operator">.</span><span class="number">2</span><span class="operator">);</span>
+        <span class="keyword">next</span> <span class="keyword">unless</span> <span class="variable">$cloudy</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$raining</span> <span class="operator">=</span> <span class="variable">gen_event</span><span class="operator">(</span><span class="number">0</span><span class="operator">.</span><span class="number">3</span><span class="operator">);</span>
+        <span class="operator">++</span><span class="variable">$freq</span> <span class="keyword">if</span> <span class="variable">$raining</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probablity that it is coudy and raining is\n  "</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freq</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span> <span class="string">" (0.06 expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> gen_event </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$prob</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="keyword">rand</span><span class="operator">(</span><span class="number">1</span><span class="operator">)</span> <span class="operator">&lt;</span> <span class="variable">$prob</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    The probablity that it is coudy and raining is
+      0.0596 (0.06 expected).</pre>
+<p>
+</p>
+<hr />
+<h1><a name="coin_pl">coin.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example A</strong></p>
+<p>Suppose that a fair coin is thrown twice. Let A denote the
+event of heads on the first toss and B, the event of heads
+on the second toss. The sample space is</p>
+<pre>
+    <span class="variable">Omega</span> <span class="operator">=</span> <span class="operator">{</span><span class="variable">hh</span><span class="operator">,</span> <span class="variable">ht</span><span class="operator">,</span> <span class="variable">th</span><span class="operator">,</span> <span class="variable">tt</span><span class="operator">}</span>
+</pre>
+<p>We assume that each elementary outcome in Omega is equally
+likely and has probability 1/4. C = A ∪ B is the event
+that heads comes up on the first toss or on the second toss.
+Clearly, <code>P(C)</code> &lt;&gt; <code>P(A)</code> + <code>P(B)</code> = 1. Rather, since A ∩ B is the
+event that heads comes up on the first toss and on the
+second toss,</p>
+<pre>
+    P(C) = P(A) + P(B) - P(A ∩ B) = .5 + .5 - .25 = .75</pre>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: coin.pl</span>
+    <span class="comment">#: Example A of Section 1.3, Page 6.</span>
+    <span class="comment">#: Use Perl built-in function rand</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-08 2005-03-30</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>  <span class="comment"># Number of experiments</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">100000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$seed</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$seed</span> <span class="operator">=</span> <span class="keyword">time</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$seed</span><span class="operator">;</span>
+    <span class="keyword">srand</span> <span class="variable">$seed</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@Omega</span> <span class="operator">=</span> <span class="string">qw(hh ht th tt)</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">%freqs</span> <span class="operator">=</span> <span class="operator">(</span><span class="string">A</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">,</span> <span class="string">B</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">,</span> <span class="string">C</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">);</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$index</span> <span class="operator">=</span> <span class="keyword">int</span><span class="operator">(</span><span class="keyword">rand</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@Omega</span><span class="operator">));</span>
+        <span class="keyword">my</span> <span class="variable">$outcome</span> <span class="operator">=</span> <span class="variable">$Omega</span><span class="operator">[</span><span class="variable">$index</span><span class="operator">]</span><span class="operator">;</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$outcome</span> <span class="operator">=~</span> <span class="regex">m/^h/</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freqs</span><span class="operator">{</span><span class="string">A</span><span class="operator">}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$outcome</span> <span class="operator">=~</span> <span class="regex">m/^.h/</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freqs</span><span class="operator">{</span><span class="string">B</span><span class="operator">}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$outcome</span> <span class="operator">=~</span> <span class="regex">m/^h|^.h/</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freqs</span><span class="operator">{</span><span class="string">C</span><span class="operator">}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">%probs</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$event</span> <span class="operator">(</span><span class="keyword">keys</span> <span class="variable">%freqs</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="variable">$probs</span><span class="operator">{</span><span class="variable">$event</span><span class="operator">}</span> <span class="operator">=</span> <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">{</span><span class="variable">$event</span><span class="operator">}</span> <span class="operator">/</span> <span class="variable">$nexps</span><span class="operator">);</span>
+    <span class="operator">}</span>
+    <span class="keyword">print</span> <span class="string">"P(A) = "</span><span class="operator">,</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">A</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (0.5 expected)\n"</span><span class="operator">,</span>
+          <span class="string">"P(B) = "</span><span class="operator">,</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">B</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (0.5 expected)\n"</span><span class="operator">,</span>
+          <span class="string">"P(C) = "</span><span class="operator">,</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">C</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (0.75 expected) !=\n  "</span><span class="operator">,</span>
+            <span class="variable">$probs</span><span class="operator">{</span><span class="string">A</span><span class="operator">}</span> <span class="operator">+</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">B</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (1 expected) = P(A) + P(B)\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    P(A) = 0.4995 (0.5 expected)
+    P(B) = 0.5030 (0.5 expected)
+    P(C) = 0.7529 (0.75 expected) !=
+      1.0025 (1 expected) = P(A) + P(B)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="coin2_pl">coin2.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example A</strong></p>
+<p>Suppose that a fair coin is thrown twice. Let A denote the
+event of heads on the first toss and B, the event of heads
+on the second toss. The sample space is</p>
+<pre>
+    <span class="variable">Omega</span> <span class="operator">=</span> <span class="operator">{</span><span class="variable">hh</span><span class="operator">,</span> <span class="variable">ht</span><span class="operator">,</span> <span class="variable">th</span><span class="operator">,</span> <span class="variable">tt</span><span class="operator">}</span>
+</pre>
+<p>We assume that each elementary outcome in Omega is equally
+likely and has probability 1/4. C = A ∪ B is the event
+that heads comes up on the first toss or on the second toss.
+Clearly, <code>P(C)</code> &lt;&gt; <code>P(A)</code> + <code>P(B)</code> = 1. Rather, since A ∩ B is the
+event that heads comes up on the first toss and on the
+second toss,</p>
+<pre>
+    P(C) = P(A) + P(B) - P(A ∩ B) = .5 + .5 - .25 = .75</pre>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: coin2.pl</span>
+    <span class="comment">#: Example A of Section 1.3, Page 6.</span>
+    <span class="comment">#: Use CPAN Module Math::Random</span>
+    <span class="comment">#: Require:</span>
+    <span class="comment">#:     Math::Random</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-08 2005-03-30</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Random</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>  <span class="comment"># Number of experiments</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">100000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$seed</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="keyword">if</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$seed</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="variable">random_set_seed_from_phrase</span><span class="operator">(</span><span class="variable">$seed</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@Omega</span> <span class="operator">=</span> <span class="string">qw(hh ht th tt)</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">%freqs</span> <span class="operator">=</span> <span class="operator">(</span><span class="string">A</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">,</span> <span class="string">B</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">,</span> <span class="string">C</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">);</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$index</span> <span class="operator">=</span> <span class="variable">random_uniform_integer</span><span class="operator">(</span><span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="variable">@Omega</span><span class="operator">-</span><span class="number">1</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$outcome</span> <span class="operator">=</span> <span class="variable">$Omega</span><span class="operator">[</span><span class="variable">$index</span><span class="operator">]</span><span class="operator">;</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$outcome</span> <span class="operator">=~</span> <span class="regex">m/^h/</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freqs</span><span class="operator">{</span><span class="string">A</span><span class="operator">}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$outcome</span> <span class="operator">=~</span> <span class="regex">m/^.h/</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freqs</span><span class="operator">{</span><span class="string">B</span><span class="operator">}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$outcome</span> <span class="operator">=~</span> <span class="regex">m/^h|^.h/</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freqs</span><span class="operator">{</span><span class="string">C</span><span class="operator">}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">%probs</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$event</span> <span class="operator">(</span><span class="keyword">keys</span> <span class="variable">%freqs</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="variable">$probs</span><span class="operator">{</span><span class="variable">$event</span><span class="operator">}</span> <span class="operator">=</span> <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freqs</span><span class="operator">{</span><span class="variable">$event</span><span class="operator">}</span> <span class="operator">/</span> <span class="variable">$nexps</span><span class="operator">);</span>
+    <span class="operator">}</span>
+    <span class="keyword">print</span> <span class="string">"P(A) = "</span><span class="operator">,</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">A</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (0.5 expected)\n"</span><span class="operator">,</span>
+          <span class="string">"P(B) = "</span><span class="operator">,</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">B</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (0.5 expected)\n"</span><span class="operator">,</span>
+          <span class="string">"P(C) = "</span><span class="operator">,</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">C</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (0.75 expected) !=\n  "</span><span class="operator">,</span>
+            <span class="variable">$probs</span><span class="operator">{</span><span class="string">A</span><span class="operator">}</span> <span class="operator">+</span> <span class="variable">$probs</span><span class="operator">{</span><span class="string">B</span><span class="operator">}</span><span class="operator">,</span> <span class="string">" (1 expected) = P(A) + P(B)\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    P(A) = 0.5011 (0.5 expected)
+    P(B) = 0.5027 (0.5 expected)
+    P(C) = 0.7522 (0.75 expected) !=
+      1.0038 (1 expected) = P(A) + P(B)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="coin3_pl">coin3.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example A</strong></p>
+<p>Suppose that a fair coin is thrown twice and the sequence
+of heads and tails is recorded. The sample space is</p>
+<pre>
+    <span class="variable">Omega</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">hh</span><span class="operator">,</span> <span class="variable">ht</span><span class="operator">,</span> <span class="variable">th</span><span class="operator">,</span> <span class="variable">tt</span> <span class="operator">}</span>
+</pre>
+<p>As in Example A of the previous section, we assume that
+each outcome in Omega has probability .25. Let A denote
+the event that at least one head is thrown. Then A = 
+{hh, ht, th}, and <code>P(A)</code> = .75.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: coin3.pl</span>
+    <span class="comment">#: Example A of Section 1.4, Page 7.</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-09 2005-03-30</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$NEXPS</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>  <span class="comment"># Number of experiments</span>
+    <span class="variable">$NEXPS</span> <span class="operator">=</span> <span class="number">100000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$NEXPS</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$seed</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$seed</span> <span class="operator">=</span> <span class="keyword">time</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$seed</span><span class="operator">;</span>
+    <span class="keyword">srand</span> <span class="variable">$seed</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@Omega</span> <span class="operator">=</span> <span class="string">qw(hh ht th tt)</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$freq_A</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$NEXPS</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$index</span> <span class="operator">=</span> <span class="keyword">int</span><span class="operator">(</span><span class="keyword">rand</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@Omega</span><span class="operator">));</span>
+        <span class="keyword">my</span> <span class="variable">$outcome</span> <span class="operator">=</span> <span class="variable">$Omega</span><span class="operator">[</span><span class="variable">$index</span><span class="operator">]</span><span class="operator">;</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$outcome</span> <span class="operator">=~</span> <span class="regex">m/h/</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freq_A</span><span class="operator">;</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"P(A) = "</span><span class="operator">,</span> <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freq_A</span> <span class="operator">/</span> <span class="variable">$NEXPS</span><span class="operator">),</span> <span class="string">" (0.75 expected)\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    P(A) = 0.7494 (0.75 expected)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="groups_pl">groups.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example J</strong></p>
+<p>A committee of seven members is to be divided into three
+subcommittees  of size three, two, and two. This can be
+done in</p>
+<pre>
+      7
+  (        ) = 7! / (3! 2! 2!) = 210
+    3 2 2</pre>
+<p>ways.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: groups.pl</span>
+    <span class="comment">#: Example J of Section 1.4, Page 14</span>
+    <span class="comment">#: Require:</span>
+    <span class="comment">#:   Set::Scalar</span>
+    <span class="comment">#:   Math::Combinatorics</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-07 2005-03-13</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">Set::Scalar</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Combinatorics</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="variable">$rclasses</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$rbuf</span> <span class="operator">=</span> <span class="operator">[]</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">@classes</span> <span class="operator">=</span> <span class="variable">@$rclasses</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$class</span> <span class="operator">=</span> <span class="keyword">shift</span> <span class="variable">@classes</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$class</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">;</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">$combinat</span> <span class="operator">=</span> <span class="variable">Math::Combinatorics</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span>
+            <span class="string">count</span> <span class="operator">=&gt;</span> <span class="variable">$class</span><span class="operator">,</span>
+            <span class="string">data</span>  <span class="operator">=&gt;</span> <span class="variable">$relems</span><span class="operator">,</span>
+        <span class="operator">);</span>
+        <span class="keyword">while</span> <span class="operator">(</span><span class="keyword">my</span> <span class="variable">@comb</span> <span class="operator">=</span> <span class="variable">$combinat</span><span class="operator">-&gt;</span><span class="variable">next_combination</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">genres</span><span class="operator">(</span>
+                <span class="operator">[</span><span class="variable">subtract</span><span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="operator">\</span><span class="variable">@comb</span><span class="operator">)</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@classes</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@$rbuf</span><span class="operator">,</span> <span class="operator">[</span><span class="variable">@comb</span><span class="operator">]]</span><span class="operator">,</span>
+            <span class="operator">);</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">genres</span> <span class="operator">[</span><span class="string">qw(A B C D E F G)</span><span class="operator">]</span><span class="operator">,</span> <span class="operator">[</span><span class="number">3</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">2</span><span class="operator">]</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$sol</span> <span class="operator">(</span><span class="variable">@Res</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">@groups</span> <span class="operator">=</span> <span class="variable">@$sol</span><span class="operator">;</span>
+        <span class="variable">@groups</span> <span class="operator">=</span> <span class="keyword">map</span> <span class="operator">{</span> <span class="string">'{'</span><span class="operator">.</span><span class="keyword">join</span><span class="operator">(</span><span class="string">', '</span><span class="operator">,</span> <span class="variable">@$_</span><span class="operator">).</span><span class="string">'}'</span> <span class="operator">}</span> <span class="variable">@groups</span><span class="operator">;</span>
+        <span class="keyword">warn</span> <span class="keyword">join</span><span class="operator">(</span><span class="string">' '</span><span class="operator">,</span> <span class="variable">@groups</span><span class="operator">),</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="operator">}</span>
+    <span class="keyword">warn</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"This can be done in "</span><span class="operator">,</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@Res</span><span class="operator">),</span> <span class="string">" ways.\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> subtract </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$rA</span><span class="operator">,</span> <span class="variable">$rB</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$A</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rA</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$B</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rB</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$C</span> <span class="operator">=</span> <span class="variable">$A</span> <span class="operator">-</span> <span class="variable">$B</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="variable">$C</span><span class="operator">-&gt;</span><span class="variable">elements</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    This can be done in 210 ways.</pre>
+<p>
+</p>
+<hr />
+<h1><a name="groups2_pl">groups2.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example K</strong></p>
+<p>In how many ways can the set of nucleotides</p>
+<pre>
+    <span class="operator">{</span> <span class="variable">A</span><span class="operator">,</span> <span class="variable">A</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">C</span><span class="operator">,</span> <span class="variable">C</span><span class="operator">,</span> <span class="variable">C</span> <span class="operator">}</span>
+</pre>
+<p>be arranged in a sequence of nine letters? Proposition C can be
+applied by realizing that this problem can be cast as determining
+the number of ways that the nine positions in the sequence can be
+divided into subgroups of sizes two, four, and three (the locations
+and the letters A, G, and C):</p>
+<pre>
+        9
+    (       ) = 9! / (2! 4! 3!) = 1260
+      2 4 3</pre>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: groups2.pl</span>
+    <span class="comment">#: Example K of Section 1.4, Page 14</span>
+    <span class="comment">#: Require:</span>
+    <span class="comment">#:   Set::Scalar</span>
+    <span class="comment">#:   Math::Combinatorics</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-07 2005-03-30</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">Set::Scalar</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Combinatorics</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="variable">$rclasses</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$rbuf</span> <span class="operator">=</span> <span class="operator">[]</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">@classes</span> <span class="operator">=</span> <span class="variable">@$rclasses</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$class</span> <span class="operator">=</span> <span class="keyword">shift</span> <span class="variable">@classes</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$class</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">;</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">$combinat</span> <span class="operator">=</span> <span class="variable">Math::Combinatorics</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span>
+            <span class="string">count</span> <span class="operator">=&gt;</span> <span class="variable">$class</span><span class="operator">,</span>
+            <span class="string">data</span>  <span class="operator">=&gt;</span> <span class="variable">$relems</span><span class="operator">,</span>
+        <span class="operator">);</span>
+        <span class="keyword">while</span> <span class="operator">(</span><span class="keyword">my</span> <span class="variable">@comb</span> <span class="operator">=</span> <span class="variable">$combinat</span><span class="operator">-&gt;</span><span class="variable">next_combination</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">genres</span><span class="operator">(</span>
+                <span class="operator">[</span><span class="variable">subtract</span><span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="operator">\</span><span class="variable">@comb</span><span class="operator">)</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@classes</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@$rbuf</span><span class="operator">,</span> <span class="operator">[</span><span class="variable">@comb</span><span class="operator">]]</span><span class="operator">,</span>
+            <span class="operator">);</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> subtract </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$rA</span><span class="operator">,</span> <span class="variable">$rB</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$A</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rA</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$B</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rB</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$C</span> <span class="operator">=</span> <span class="variable">$A</span> <span class="operator">-</span> <span class="variable">$B</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="variable">$C</span><span class="operator">-&gt;</span><span class="variable">elements</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">genres</span> <span class="operator">[</span><span class="number">0</span><span class="operator">..</span><span class="number">8</span><span class="operator">]</span><span class="operator">,</span> <span class="operator">[</span><span class="number">2</span><span class="operator">,</span> <span class="number">4</span><span class="operator">,</span> <span class="number">3</span><span class="operator">]</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@tags</span> <span class="operator">=</span> <span class="string">qw(A G C)</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$sol</span> <span class="operator">(</span><span class="variable">@Res</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">@seq</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">@groups</span> <span class="operator">=</span> <span class="variable">@$sol</span><span class="operator">;</span>
+        <span class="keyword">for</span> <span class="operator">(</span><span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span> <span class="variable">$i</span> <span class="operator">&lt;</span> <span class="variable">@groups</span><span class="operator">;</span> <span class="variable">$i</span><span class="operator">++)</span> <span class="operator">{</span>
+            <span class="keyword">my</span> <span class="variable">$tag</span> <span class="operator">=</span> <span class="variable">$tags</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">]</span><span class="operator">;</span>
+            <span class="keyword">map</span> <span class="operator">{</span> <span class="variable">$seq</span><span class="operator">[</span><span class="variable">$_</span><span class="operator">]</span> <span class="operator">=</span> <span class="variable">$tag</span> <span class="operator">}</span> <span class="variable">@</span><span class="operator">{</span><span class="variable">$groups</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">]}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">warn</span> <span class="variable">@seq</span><span class="operator">,</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="operator">}</span>
+    <span class="keyword">warn</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"There are total "</span><span class="operator">,</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@Res</span><span class="operator">),</span> <span class="string">" solutions\n"</span><span class="operator">;</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    There are total 1260 solutions</pre>
+<p>
+</p>
+<hr />
+<h1><a name="groups3_pl">groups3.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example K</strong></p>
+<p>In how many ways can the set of nucleotides</p>
+<pre>
+    <span class="operator">{</span> <span class="variable">A</span><span class="operator">,</span> <span class="variable">A</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">G</span><span class="operator">,</span> <span class="variable">C</span><span class="operator">,</span> <span class="variable">C</span><span class="operator">,</span> <span class="variable">C</span> <span class="operator">}</span>
+</pre>
+<p>be arranged in a sequence of nine letters? Proposition C can be
+applied by realizing that this problem can be cast as determining
+the number of ways that the nine positions in the sequence can be
+divided into subgroups of sizes two, four, and three (the locations
+and the letters A, G, and C):</p>
+<pre>
+        9
+    (       ) = 9! / (2! 4! 3!) = 1260
+      2 4 3</pre>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: groups3.pl</span>
+    <span class="comment">#: Example K of Section 1.4, Page 14</span>
+    <span class="comment">#: Another more natural method for this problem</span>
+    <span class="comment">#: StatSim v0.04</span>
+    <span class="comment">#: Copyright 1984-2005 Agent Zhang.</span>
+    <span class="comment">#: 2005-03-07 2005-03-30</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$NELEMS</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$rsrc</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">%src</span> <span class="operator">=</span> <span class="variable">%$rsrc</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$buf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$buf</span> <span class="operator">=</span> <span class="string">''</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="keyword">length</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">)</span> <span class="operator">==</span> <span class="variable">$NELEMS</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">;</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$tag</span> <span class="operator">(</span><span class="keyword">keys</span> <span class="variable">%src</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">next</span> <span class="keyword">unless</span> <span class="variable">$src</span><span class="operator">{</span><span class="variable">$tag</span><span class="operator">}</span> <span class="operator">&gt;</span> <span class="number">0</span><span class="operator">;</span>
+            <span class="operator">--</span><span class="variable">$src</span><span class="operator">{</span><span class="variable">$tag</span><span class="operator">}</span><span class="operator">;</span>
+            <span class="variable">genres</span><span class="operator">(\</span><span class="variable">%src</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">.</span><span class="variable">$tag</span><span class="operator">);</span>
+            <span class="operator">++</span><span class="variable">$src</span><span class="operator">{</span><span class="variable">$tag</span><span class="operator">}</span><span class="operator">;</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">$NELEMS</span> <span class="operator">=</span> <span class="number">9</span><span class="operator">;</span>
+    <span class="variable">genres</span> <span class="operator">{</span><span class="string">A</span> <span class="operator">=&gt;</span> <span class="number">2</span><span class="operator">,</span> <span class="string">G</span> <span class="operator">=&gt;</span> <span class="number">4</span><span class="operator">,</span> <span class="string">C</span> <span class="operator">=&gt;</span> <span class="number">3</span><span class="operator">};</span>
+    <span class="variable">$"</span> <span class="operator">=</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="keyword">warn</span> <span class="string">"@Res\n\n"</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"There are total "</span><span class="operator">,</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@Res</span><span class="operator">),</span> <span class="string">" solutions\n"</span><span class="operator">;</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    There are total 1260 solutions</pre>
+<p>
+</p>
+<hr />
+<h1><a name="paint_pl">paint.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>21. 某油漆公司发出 17 桶，其中白漆 10 桶，黑漆 4 桶，红漆 3 桶， 在搬
+运中所有标签脱落，交货人随意将这些油漆发给顾客，问一定货 4 桶白漆，
+3 桶黑漆和 2 桶红漆的顾客，能按所定颜色如数得到定货的概率是多少？</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: paint.pl</span>
+    <span class="comment">#: 《概率论》第47页，习题一，第21题</span>
+    <span class="comment">#: 组合计数法</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-09 2005-03-10</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Combinatorics</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@colors</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">10</span><span class="operator">)</span> <span class="operator">{</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'White'</span><span class="operator">;</span> <span class="operator">}</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">4</span><span class="operator">)</span>  <span class="operator">{</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'Black'</span><span class="operator">;</span> <span class="operator">}</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">3</span><span class="operator">)</span>  <span class="operator">{</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'Red'</span><span class="operator">;</span>   <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$combinat</span> <span class="operator">=</span> <span class="variable">Math::Combinatorics</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span>
+        <span class="string">count</span> <span class="operator">=&gt;</span> <span class="number">4</span> <span class="operator">+</span> <span class="number">3</span> <span class="operator">+</span> <span class="number">2</span><span class="operator">,</span>
+        <span class="string">data</span>  <span class="operator">=&gt;</span> <span class="operator">[</span><span class="number">0</span><span class="operator">..</span><span class="variable">@colors</span><span class="operator">-</span><span class="number">1</span><span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">);</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$freq</span>  <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$total</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">while</span> <span class="operator">(</span><span class="keyword">my</span> <span class="variable">@comb</span> <span class="operator">=</span> <span class="variable">$combinat</span><span class="operator">-&gt;</span><span class="variable">next_combination</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="operator">++</span><span class="variable">$total</span><span class="operator">;</span>
+        <span class="keyword">map</span> <span class="operator">{</span> <span class="variable">$_</span> <span class="operator">=</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$_</span><span class="operator">]</span> <span class="operator">}</span> <span class="variable">@comb</span><span class="operator">;</span>
+</pre>
+<pre>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$wcount</span><span class="operator">,</span> <span class="variable">$bcount</span><span class="operator">,</span> <span class="variable">$rcount</span><span class="operator">)</span> <span class="operator">=</span> <span class="operator">(</span><span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">);</span>
+        <span class="keyword">map</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$wcount</span> <span class="keyword">if</span> <span class="variable">$_</span> <span class="keyword">eq</span> <span class="string">'White'</span><span class="operator">;</span>
+            <span class="operator">++</span><span class="variable">$bcount</span> <span class="keyword">if</span> <span class="variable">$_</span> <span class="keyword">eq</span> <span class="string">'Black'</span><span class="operator">;</span>
+            <span class="operator">++</span><span class="variable">$rcount</span> <span class="keyword">if</span> <span class="variable">$_</span> <span class="keyword">eq</span> <span class="string">'Red'</span><span class="operator">;</span>
+        <span class="operator">}</span> <span class="variable">@comb</span><span class="operator">;</span>
+</pre>
+<pre>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$wcount</span> <span class="operator">==</span> <span class="number">4</span> <span class="keyword">and</span> <span class="variable">$bcount</span> <span class="operator">==</span> <span class="number">3</span> <span class="keyword">and</span> <span class="variable">$rcount</span> <span class="operator">==</span> <span class="number">2</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freq</span><span class="operator">;</span>
+        <span class="operator">}</span>
+            <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability is $freq/$total = "</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freq</span><span class="operator">/</span><span class="variable">$total</span><span class="operator">),</span>
+        <span class="string">" ("</span><span class="operator">,</span> <span class="variable">C</span><span class="operator">(</span><span class="number">10</span><span class="operator">,</span><span class="number">4</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">4</span><span class="operator">,</span><span class="number">3</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">3</span><span class="operator">,</span><span class="number">2</span><span class="operator">),</span> <span class="string">"/"</span><span class="operator">,</span>
+        <span class="variable">C</span><span class="operator">(</span><span class="number">17</span><span class="operator">,</span> <span class="number">4</span><span class="operator">+</span><span class="number">3</span><span class="operator">+</span><span class="number">2</span><span class="operator">),</span> <span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> C </span><span class="operator">{</span> <span class="comment"># Compute the combination number</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$n</span><span class="operator">,</span> <span class="variable">$m</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="variable">fac</span><span class="operator">(</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">/</span> <span class="operator">(</span><span class="variable">fac</span><span class="operator">(</span><span class="variable">$m</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">fac</span><span class="operator">(</span><span class="variable">$n</span> <span class="operator">-</span> <span class="variable">$m</span><span class="operator">));</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> fac </span><span class="operator">{</span> <span class="comment"># Compute the factorial of n, say, n!</span>
+        <span class="keyword">my</span> <span class="variable">$n</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> <span class="variable">$n</span> <span class="operator">==</span> <span class="number">0</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$res</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">;</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">(</span><span class="number">2</span><span class="operator">..</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$res</span> <span class="operator">*=</span> <span class="variable">$i</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">return</span> <span class="variable">$res</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    The probability is 2520/24310 = 0.1037 (2520/24310 expected).</pre>
+<p>
+</p>
+<hr />
+<h1><a name="paint2_pl">paint2.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>21. 某油漆公司发出 17 桶，其中白漆 10 桶，黑漆 4 桶，红漆 3 桶， 在搬
+运中所有标签脱落，交货人随意将这些油漆发给顾客，问一定货 4 桶白漆，
+3 桶黑漆和 2 桶红漆的顾客，能按所定颜色如数得到定货的概率是多少？</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: paint2.pl</span>
+    <span class="comment">#: 《概率论》第47页，习题一，第21题</span>
+    <span class="comment">#: 随机试验法</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-10 2005-03-12</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Random</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$nexps</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$nexps</span> <span class="operator">=</span> <span class="number">100_000</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$nexps</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@colors</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">10</span><span class="operator">)</span> <span class="operator">{</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'White'</span><span class="operator">;</span> <span class="operator">}</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">4</span><span class="operator">)</span>  <span class="operator">{</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'Black'</span><span class="operator">;</span> <span class="operator">}</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="number">3</span><span class="operator">)</span>  <span class="operator">{</span> <span class="variable">$colors</span><span class="operator">[</span><span class="variable">$i</span><span class="operator">++</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">'Red'</span><span class="operator">;</span>   <span class="operator">}</span>
+    <span class="comment">#die "@colors\n";</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$freq</span> <span class="operator">=</span> <span class="number">0</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$nexps</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">@perm</span> <span class="operator">=</span> <span class="variable">random_permutation</span><span class="operator">(</span><span class="variable">@colors</span><span class="operator">);</span>
+        <span class="variable">@perm</span> <span class="operator">=</span> <span class="keyword">splice</span><span class="operator">(</span><span class="variable">@perm</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">4</span><span class="operator">+</span><span class="number">3</span><span class="operator">+</span><span class="number">2</span><span class="operator">);</span>
+        <span class="comment">#die "@perm\n";</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$wcount</span><span class="operator">,</span> <span class="variable">$bcount</span><span class="operator">,</span> <span class="variable">$rcount</span><span class="operator">)</span> <span class="operator">=</span> <span class="operator">(</span><span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">);</span>
+        <span class="keyword">map</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$wcount</span> <span class="keyword">if</span> <span class="variable">$_</span> <span class="keyword">eq</span> <span class="string">'White'</span><span class="operator">;</span>
+            <span class="operator">++</span><span class="variable">$bcount</span> <span class="keyword">if</span> <span class="variable">$_</span> <span class="keyword">eq</span> <span class="string">'Black'</span><span class="operator">;</span>
+            <span class="operator">++</span><span class="variable">$rcount</span> <span class="keyword">if</span> <span class="variable">$_</span> <span class="keyword">eq</span> <span class="string">'Red'</span><span class="operator">;</span>
+        <span class="operator">}</span> <span class="variable">@perm</span><span class="operator">;</span>
+</pre>
+<pre>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="variable">$wcount</span> <span class="operator">==</span> <span class="number">4</span> <span class="keyword">and</span> <span class="variable">$bcount</span> <span class="operator">==</span> <span class="number">3</span> <span class="keyword">and</span> <span class="variable">$rcount</span> <span class="operator">==</span> <span class="number">2</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="operator">++</span><span class="variable">$freq</span><span class="operator">;</span>
+        <span class="operator">}</span>
+            <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">print</span> <span class="string">"The probability is "</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="variable">$freq</span><span class="operator">/</span><span class="variable">$nexps</span><span class="operator">),</span> <span class="string">" ("</span><span class="operator">,</span>
+        <span class="variable">trim</span><span class="operator">(</span><span class="variable">C</span><span class="operator">(</span><span class="number">10</span><span class="operator">,</span> <span class="number">4</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">4</span><span class="operator">,</span> <span class="number">3</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">C</span><span class="operator">(</span><span class="number">3</span><span class="operator">,</span> <span class="number">2</span><span class="operator">)</span> <span class="operator">/</span> <span class="variable">C</span><span class="operator">(</span><span class="number">17</span><span class="operator">,</span> <span class="number">4</span><span class="operator">+</span><span class="number">3</span><span class="operator">+</span><span class="number">2</span><span class="operator">)),</span>
+        <span class="string">" expected).\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> C </span><span class="operator">{</span> <span class="comment"># Compute the combination number</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$n</span><span class="operator">,</span> <span class="variable">$m</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="variable">fac</span><span class="operator">(</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">/</span> <span class="operator">(</span><span class="variable">fac</span><span class="operator">(</span><span class="variable">$m</span><span class="operator">)</span> <span class="operator">*</span> <span class="variable">fac</span><span class="operator">(</span><span class="variable">$n</span> <span class="operator">-</span> <span class="variable">$m</span><span class="operator">));</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> fac </span><span class="operator">{</span> <span class="comment"># Compute the factorial of n, say, n!</span>
+        <span class="keyword">my</span> <span class="variable">$n</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> <span class="variable">$n</span> <span class="operator">==</span> <span class="number">0</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$res</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">;</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">(</span><span class="number">2</span><span class="operator">..</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$res</span> <span class="operator">*=</span> <span class="variable">$i</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">return</span> <span class="variable">$res</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> trim </span><span class="operator">{</span>
+        <span class="keyword">return</span> <span class="keyword">sprintf</span><span class="operator">(</span><span class="string">"%.4f"</span><span class="operator">,</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    The probability is 0.1027 (0.1037 expected).</pre>
+<p>
+</p>
+<hr />
+<h1><a name="pair_pl">pair.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example L</strong></p>
+<p>In how many ways can n = 2m people be paired and assigned to m courts
+for the first round of a tennis tournament?</p>
+<p>In this problem, n_i = 2, i = 1, ..., m, and, according to Proposition
+C, there are</p>
+<pre>
+    (2m)! / 2^m</pre>
+<p>assignments.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: pair.pl</span>
+    <span class="comment">#: Example L of Section 1.4, Page 14-15</span>
+    <span class="comment">#: Assigning pairs to courts.</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-07 2005-03-08</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">Set::Scalar</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Combinatorics</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="variable">$rclasses</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$rbuf</span> <span class="operator">=</span> <span class="operator">[]</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">@classes</span> <span class="operator">=</span> <span class="variable">@$rclasses</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$class</span> <span class="operator">=</span> <span class="keyword">shift</span> <span class="variable">@classes</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$class</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">;</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">$combinat</span> <span class="operator">=</span> <span class="variable">Math::Combinatorics</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span>
+            <span class="string">count</span> <span class="operator">=&gt;</span> <span class="variable">$class</span><span class="operator">,</span>
+            <span class="string">data</span>  <span class="operator">=&gt;</span> <span class="variable">$relems</span><span class="operator">,</span>
+        <span class="operator">);</span>
+        <span class="keyword">while</span> <span class="operator">(</span><span class="keyword">my</span> <span class="variable">@comb</span> <span class="operator">=</span> <span class="variable">$combinat</span><span class="operator">-&gt;</span><span class="variable">next_combination</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">genres</span><span class="operator">(</span>
+                <span class="operator">[</span><span class="variable">subtract</span><span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="operator">\</span><span class="variable">@comb</span><span class="operator">)</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@classes</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@$rbuf</span><span class="operator">,</span> <span class="operator">[</span><span class="variable">@comb</span><span class="operator">]]</span><span class="operator">,</span>
+            <span class="operator">);</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> subtract </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$rA</span><span class="operator">,</span> <span class="variable">$rB</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$A</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rA</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$B</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rB</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$C</span> <span class="operator">=</span> <span class="variable">$A</span> <span class="operator">-</span> <span class="variable">$B</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="variable">$C</span><span class="operator">-&gt;</span><span class="variable">elements</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$m</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$m</span> <span class="operator">=</span> <span class="number">3</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$m</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$n</span> <span class="operator">=</span> <span class="number">2</span> <span class="operator">*</span> <span class="variable">$m</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@classes</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$m</span><span class="operator">)</span> <span class="operator">{</span> <span class="keyword">push</span> <span class="variable">@classes</span><span class="operator">,</span> <span class="number">2</span><span class="operator">;</span> <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">genres</span> <span class="operator">[</span><span class="number">1</span><span class="operator">..</span><span class="variable">$n</span><span class="operator">]</span><span class="operator">,</span> <span class="operator">\</span><span class="variable">@classes</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$sol</span> <span class="operator">(</span><span class="variable">@Res</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">@pairs</span> <span class="operator">=</span> <span class="variable">@$sol</span><span class="operator">;</span>
+        <span class="variable">@pairs</span> <span class="operator">=</span> <span class="keyword">map</span> <span class="operator">{</span> <span class="string">'('</span><span class="operator">.</span><span class="variable">$_</span><span class="operator">-&gt;</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">.</span><span class="string">', '</span><span class="operator">.</span><span class="variable">$_</span><span class="operator">-&gt;</span><span class="operator">[</span><span class="number">1</span><span class="operator">]</span><span class="operator">.</span><span class="string">')'</span> <span class="operator">}</span> <span class="variable">@pairs</span><span class="operator">;</span>
+        <span class="keyword">warn</span> <span class="keyword">join</span><span class="operator">(</span><span class="string">' '</span><span class="operator">,</span> <span class="variable">@pairs</span><span class="operator">),</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="operator">}</span>
+    <span class="keyword">warn</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"There are "</span><span class="operator">,</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@Res</span><span class="operator">),</span> <span class="string">" assignments and the result "</span><span class="operator">,</span>
+        <span class="variable">fac</span><span class="operator">(</span><span class="number">2</span><span class="operator">*</span><span class="variable">$m</span><span class="operator">)/</span><span class="number">2</span><span class="operator">**</span><span class="variable">$m</span><span class="operator">,</span> <span class="string">" is expected.\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> fac </span><span class="operator">{</span> <span class="comment"># Compute the factorial of n, say, n!</span>
+        <span class="keyword">my</span> <span class="variable">$n</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> <span class="variable">$n</span> <span class="operator">==</span> <span class="number">0</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$res</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">;</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">(</span><span class="number">2</span><span class="operator">..</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$res</span> <span class="operator">*=</span> <span class="variable">$i</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">return</span> <span class="variable">$res</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    There are 90 assignments and the result 90 is expected.</pre>
+<p>
+</p>
+<hr />
+<h1><a name="pair2_pl">pair2.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example L</strong></p>
+<p>In how many ways can n = 2m people be paired and assigned to m courts
+for the first round of a tennis tournament?</p>
+<p>In this problem, n_i = 2, i = 1, ..., m, and, according to Proposition
+C, there are</p>
+<pre>
+    (2m)! / 2^m</pre>
+<p>assignments.</p>
+<p>One has to be careful with problems such as this one. Suppose it were
+asked how many ways 2m people could be arranged in pairs without
+assigning the pairs to courts. Since there are m! ways to assign the m
+pairs to m courts, the preceding result should be divided by m!, giving</p>
+<pre>
+    (2m)! / (m! 2^m)</pre>
+<p>pairs in all.</p>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: pair.pl</span>
+    <span class="comment">#: Example L of Section 1.4, Page 14-15</span>
+    <span class="comment">#: Without assigning pairs to courts.</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-07 2005-03-08</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">Set::Scalar</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Math::Combinatorics</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="variable">$rclasses</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="variable">$rbuf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$rbuf</span> <span class="operator">=</span> <span class="operator">[]</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">@classes</span> <span class="operator">=</span> <span class="variable">@$rclasses</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$class</span> <span class="operator">=</span> <span class="keyword">shift</span> <span class="variable">@classes</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$class</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$rbuf</span><span class="operator">;</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">my</span> <span class="variable">$combinat</span> <span class="operator">=</span> <span class="variable">Math::Combinatorics</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span>
+            <span class="string">count</span> <span class="operator">=&gt;</span> <span class="variable">$class</span><span class="operator">,</span>
+            <span class="string">data</span>  <span class="operator">=&gt;</span> <span class="variable">$relems</span><span class="operator">,</span>
+        <span class="operator">);</span>
+        <span class="keyword">while</span> <span class="operator">(</span><span class="keyword">my</span> <span class="variable">@comb</span> <span class="operator">=</span> <span class="variable">$combinat</span><span class="operator">-&gt;</span><span class="variable">next_combination</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">genres</span><span class="operator">(</span>
+                <span class="operator">[</span><span class="variable">subtract</span><span class="operator">(</span><span class="variable">$relems</span><span class="operator">,</span> <span class="operator">\</span><span class="variable">@comb</span><span class="operator">)</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@classes</span><span class="operator">]</span><span class="operator">,</span>
+                <span class="operator">[</span><span class="variable">@$rbuf</span><span class="operator">,</span> <span class="operator">[</span><span class="variable">@comb</span><span class="operator">]]</span><span class="operator">,</span>
+            <span class="operator">);</span>
+        <span class="operator">}</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> subtract </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$rA</span><span class="operator">,</span> <span class="variable">$rB</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$A</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rA</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$B</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@$rB</span><span class="operator">);</span>
+        <span class="keyword">my</span> <span class="variable">$C</span> <span class="operator">=</span> <span class="variable">$A</span> <span class="operator">-</span> <span class="variable">$B</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="variable">$C</span><span class="operator">-&gt;</span><span class="variable">elements</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$m</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+    <span class="variable">$m</span> <span class="operator">=</span> <span class="number">3</span> <span class="keyword">unless</span> <span class="keyword">defined</span> <span class="variable">$m</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$n</span> <span class="operator">=</span> <span class="number">2</span> <span class="operator">*</span> <span class="variable">$m</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@classes</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="operator">(</span><span class="number">1</span><span class="operator">..</span><span class="variable">$m</span><span class="operator">)</span> <span class="operator">{</span> <span class="keyword">push</span> <span class="variable">@classes</span><span class="operator">,</span> <span class="number">2</span><span class="operator">;</span> <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">genres</span> <span class="operator">[</span><span class="number">1</span><span class="operator">..</span><span class="variable">$n</span><span class="operator">]</span><span class="operator">,</span> <span class="operator">\</span><span class="variable">@classes</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">@FinalRes</span><span class="operator">;</span>
+    <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$sol</span> <span class="operator">(</span><span class="variable">@Res</span><span class="operator">)</span> <span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">@pairs</span> <span class="operator">=</span> <span class="variable">@$sol</span><span class="operator">;</span>
+        <span class="variable">@pairs</span> <span class="operator">=</span> <span class="keyword">map</span> <span class="operator">{</span>
+            <span class="variable">@$_</span> <span class="operator">=</span> <span class="keyword">sort</span> <span class="variable">@$_</span><span class="operator">;</span>
+            <span class="string">'('</span><span class="operator">.</span><span class="variable">$_</span><span class="operator">-&gt;</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">.</span><span class="string">', '</span><span class="operator">.</span><span class="variable">$_</span><span class="operator">-&gt;</span><span class="operator">[</span><span class="number">1</span><span class="operator">]</span><span class="operator">.</span><span class="string">')'</span><span class="operator">;</span>
+        <span class="operator">}</span> <span class="variable">@pairs</span><span class="operator">;</span>
+        <span class="variable">@pairs</span> <span class="operator">=</span> <span class="keyword">sort</span> <span class="variable">@pairs</span><span class="operator">;</span>
+        <span class="keyword">push</span> <span class="variable">@FinalRes</span><span class="operator">,</span> <span class="keyword">join</span><span class="operator">(</span><span class="string">' '</span><span class="operator">,</span> <span class="variable">@pairs</span><span class="operator">);</span>
+    <span class="operator">}</span>
+    <span class="variable">@FinalRes</span> <span class="operator">=</span> <span class="variable">unique</span><span class="operator">(</span><span class="variable">@FinalRes</span><span class="operator">);</span>
+</pre>
+<pre>
+    <span class="variable">$"</span> <span class="operator">=</span> <span class="string">"\n"</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"@FinalRes\n"</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"\nThere are "</span><span class="operator">,</span> <span class="keyword">scalar</span><span class="operator">(</span><span class="variable">@FinalRes</span><span class="operator">),</span> <span class="string">" assignments and the result "</span><span class="operator">,</span>
+        <span class="variable">fac</span><span class="operator">(</span><span class="number">2</span><span class="operator">*</span><span class="variable">$m</span><span class="operator">)/(</span><span class="variable">fac</span><span class="operator">(</span><span class="variable">$m</span><span class="operator">)</span> <span class="operator">*</span> <span class="operator">(</span><span class="number">2</span><span class="operator">**</span><span class="variable">$m</span><span class="operator">)),</span> <span class="string">" is expected.\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> fac </span><span class="operator">{</span> <span class="comment"># Compute the factorial of n, say, n!</span>
+        <span class="keyword">my</span> <span class="variable">$n</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> <span class="variable">$n</span> <span class="operator">==</span> <span class="number">0</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="variable">$res</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">;</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$i</span> <span class="operator">(</span><span class="number">2</span><span class="operator">..</span><span class="variable">$n</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$res</span> <span class="operator">*=</span> <span class="variable">$i</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">return</span> <span class="variable">$res</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="keyword">sub</span><span class="variable"> unique </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">@list</span> <span class="operator">=</span> <span class="keyword">sort</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">@retval</span><span class="operator">,</span> <span class="variable">$prev</span><span class="operator">);</span>
+        <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$elem</span> <span class="operator">(</span><span class="variable">@list</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">next</span> <span class="keyword">if</span> <span class="variable">$prev</span> <span class="keyword">and</span> <span class="variable">$elem</span> <span class="keyword">eq</span> <span class="variable">$prev</span><span class="operator">;</span>
+            <span class="keyword">push</span> <span class="variable">@retval</span><span class="operator">,</span> <span class="variable">$elem</span><span class="operator">;</span>
+            <span class="variable">$prev</span> <span class="operator">=</span> <span class="variable">$elem</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="keyword">return</span> <span class="variable">@retval</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    (1, 2) (3, 4) (5, 6)
+    (1, 2) (3, 5) (4, 6)
+    (1, 2) (3, 6) (4, 5)
+    (1, 3) (2, 4) (5, 6)
+    (1, 3) (2, 5) (4, 6)
+    (1, 3) (2, 6) (4, 5)
+    (1, 4) (2, 3) (5, 6)
+    (1, 4) (2, 5) (3, 6)
+    (1, 4) (2, 6) (3, 5)
+    (1, 5) (2, 3) (4, 6)
+    (1, 5) (2, 4) (3, 6)
+    (1, 5) (2, 6) (3, 4)
+    (1, 6) (2, 3) (4, 5)
+    (1, 6) (2, 4) (3, 5)
+    (1, 6) (2, 5) (3, 4)</pre>
+<pre>
+    There are 15 assignments and the result 15 is expected.</pre>
+<p>
+</p>
+<hr />
+<h1><a name="traffic_pl">traffic.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p><strong>Example A</strong></p>
+<p>Driving to work, a commuter passes through a sequence of three 
+intersections with traffic lights. At each light, she either 
+stops, s, or continues, c. The sample space is the set of all 
+possible outcomes:</p>
+<pre>
+    <span class="variable">Omega</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">ccc</span><span class="operator">,</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">csc</span><span class="operator">,</span> <span class="variable">sss</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">scs</span> <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: traffic.pl</span>
+    <span class="comment">#: Example A of Section 1.2, Page 2</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-06 2005-03-07</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$NELEMS</span> <span class="operator">=</span> <span class="number">3</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="variable">$buf</span> <span class="operator">=</span> <span class="keyword">shift</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$buf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$buf</span> <span class="operator">=</span> <span class="string">''</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="keyword">length</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">)</span> <span class="operator">==</span> <span class="variable">$NELEMS</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">;</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="variable">genres</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">.</span><span class="string">'c'</span><span class="operator">);</span>
+        <span class="variable">genres</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">.</span><span class="string">'s'</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="operator">{</span>
+        <span class="keyword">local</span> <span class="variable">$"</span> <span class="operator">=</span> <span class="string">', '</span><span class="operator">;</span>
+        <span class="keyword">print</span> <span class="string">"Omega = { @Res }\n"</span><span class="operator">;</span>
+    <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    <span class="variable">Omega</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">ccc</span><span class="operator">,</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">csc</span><span class="operator">,</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">sss</span> <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<hr />
+<h1><a name="traffic2_pl">traffic2.pl</a></h1>
+<p>
+</p>
+<h2><a name="problem">PROBLEM</a></h2>
+<p>We are often interested in particular subsets of Omega, which
+in probability language are called events. In Example A(see
+traffic.pl), the event that the commuter stops at the first
+light is the subset of Omega denoted by</p>
+<pre>
+    <span class="variable">A</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">sss</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">scs</span> <span class="operator">}</span>
+</pre>
+<p>The union of two events, A and B, is the event C that either
+A occurs or B occurs or both occur: C = A ∪ B. For example,
+if A is the event that the commuter stops at the first light
+(listed before) and if B is the event that she stops at the
+third light,</p>
+<pre>
+    <span class="variable">B</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">sss</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">css</span> <span class="operator">}</span>
+</pre>
+<p>then C is the event that she stops at the first light or stops
+at the third light and consists of the outcomes that are in A
+or in B or in both:</p>
+<pre>
+    <span class="variable">C</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">sss</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">css</span> <span class="operator">}</span>
+</pre>
+<p>The intersection of two events, C = A ∩ B, is the event that
+both A and B occur. If A and B are as listed previous, then C
+is the event that the commuter stops at the first light and
+stops at the third light and thus consists of those outcomes
+that are common to both A and B:</p>
+<pre>
+    <span class="variable">C</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">sss</span><span class="operator">,</span> <span class="variable">scs</span> <span class="operator">}</span>
+</pre>
+<p>The complement of an event, A^c, is the event that A does not
+occur and thus consists of all those elements in the sample
+space that are not in A. The complement of the event that the
+commuter stops at the first light is the event that she continues
+at the first light:</p>
+<pre>
+    <span class="variable">A</span><span class="operator">^</span><span class="variable">c</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">ccc</span><span class="operator">,</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">csc</span> <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<h2><a name="program_source">PROGRAM SOURCE</a></h2>
+<pre>
+    <span class="comment">#: traffic2.pl</span>
+    <span class="comment">#: Example A of Section 1.2, Page 2-3</span>
+    <span class="comment">#: Require:</span>
+    <span class="comment">#:   Set::Scalar</span>
+    <span class="comment">#: Agent2002. All rights reserved.</span>
+    <span class="comment">#: 2005-03-06 2005-03-07</span>
+</pre>
+<pre>
+    <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">warnings</span><span class="operator">;</span>
+    <span class="keyword">use</span> <span class="variable">Set::Scalar</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$NELEMS</span> <span class="operator">=</span> <span class="number">3</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">sub</span><span class="variable"> genres </span><span class="operator">{</span>
+        <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$pred</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">@_</span><span class="operator">;</span>
+        <span class="keyword">unless</span> <span class="operator">(</span><span class="keyword">defined</span> <span class="variable">$buf</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="variable">$buf</span> <span class="operator">=</span> <span class="string">''</span><span class="operator">;</span>
+            <span class="variable">@Res</span> <span class="operator">=</span> <span class="operator">();</span>
+        <span class="operator">}</span>
+        <span class="keyword">if</span> <span class="operator">(</span><span class="keyword">length</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">)</span> <span class="operator">==</span> <span class="variable">$NELEMS</span><span class="operator">)</span> <span class="operator">{</span>
+            <span class="keyword">push</span> <span class="variable">@Res</span><span class="operator">,</span> <span class="variable">$buf</span>
+                <span class="keyword">if</span> <span class="operator">(!</span><span class="variable">$pred</span> <span class="keyword">or</span> <span class="operator">&amp;</span><span class="variable">$pred</span><span class="operator">(</span><span class="variable">$buf</span><span class="operator">));</span>
+            <span class="keyword">return</span><span class="operator">;</span>
+        <span class="operator">}</span>
+        <span class="variable">genres</span><span class="operator">(</span><span class="variable">$pred</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">.</span><span class="string">'c'</span><span class="operator">);</span>
+        <span class="variable">genres</span><span class="operator">(</span><span class="variable">$pred</span><span class="operator">,</span> <span class="variable">$buf</span><span class="operator">.</span><span class="string">'s'</span><span class="operator">);</span>
+    <span class="operator">}</span>
+</pre>
+<pre>
+    <span class="variable">$"</span> <span class="operator">=</span> <span class="string">', '</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">@Omega</span> <span class="operator">=</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$Omega</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@Omega</span><span class="operator">);</span>
+    <span class="keyword">print</span> <span class="string">"Omega = { @Omega }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">(</span> <span class="keyword">sub</span><span class="variable"> </span><span class="operator">{</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span> <span class="operator">=~</span> <span class="regex">m/^s/</span> <span class="operator">}</span> <span class="operator">);</span>
+    <span class="keyword">my</span> <span class="variable">@A</span> <span class="operator">=</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$A</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@A</span><span class="operator">);</span>
+    <span class="keyword">print</span> <span class="string">"A = { @A }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">(</span> <span class="keyword">sub</span><span class="variable"> </span><span class="operator">{</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span> <span class="operator">=~</span> <span class="regex">m/^..s/</span> <span class="operator">}</span> <span class="operator">);</span>
+    <span class="keyword">my</span> <span class="variable">@B</span> <span class="operator">=</span> <span class="variable">@Res</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">$B</span> <span class="operator">=</span> <span class="variable">Set::Scalar</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="variable">@B</span><span class="operator">);</span>
+    <span class="keyword">print</span> <span class="string">"B = { @B }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">(</span> <span class="keyword">sub</span><span class="variable"> </span><span class="operator">{</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span> <span class="operator">=~</span> <span class="regex">m/^s|^..s/</span> <span class="operator">}</span> <span class="operator">);</span>
+    <span class="keyword">print</span> <span class="string">"Union: C = { @Res }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$C</span> <span class="operator">=</span> <span class="variable">$A</span> <span class="operator">+</span> <span class="variable">$B</span><span class="operator">;</span>
+    <span class="keyword">my</span> <span class="variable">@C</span> <span class="operator">=</span> <span class="variable">$C</span><span class="operator">-&gt;</span><span class="variable">elements</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"Union: C = { @C }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">(</span> <span class="keyword">sub</span><span class="variable"> </span><span class="operator">{</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span> <span class="operator">=~</span> <span class="regex">m/^s.s/</span> <span class="operator">}</span> <span class="operator">);</span>
+    <span class="keyword">print</span> <span class="string">"Intersection: C = { @Res }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">$C</span> <span class="operator">=</span> <span class="variable">$A</span> <span class="operator">*</span> <span class="variable">$B</span><span class="operator">;</span>
+    <span class="variable">@C</span> <span class="operator">=</span> <span class="variable">$C</span><span class="operator">-&gt;</span><span class="variable">elements</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"Intersection: C = { @C }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">genres</span><span class="operator">(</span> <span class="keyword">sub</span><span class="variable"> </span><span class="operator">{</span> <span class="variable">$_</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span> <span class="operator">!~</span> <span class="regex">m/^s/</span> <span class="operator">}</span> <span class="operator">);</span>
+    <span class="keyword">print</span> <span class="string">"Complement of A: { @Res }\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="variable">$C</span> <span class="operator">=</span> <span class="variable">$Omega</span> <span class="operator">-</span> <span class="variable">$A</span><span class="operator">;</span>
+    <span class="variable">@C</span> <span class="operator">=</span> <span class="variable">$C</span><span class="operator">-&gt;</span><span class="variable">elements</span><span class="operator">;</span>
+    <span class="keyword">print</span> <span class="string">"Complement of A: { @C }\n"</span><span class="operator">;</span>
+</pre>
+<p>
+</p>
+<h2><a name="selected_output">SELECTED OUTPUT</a></h2>
+<pre>
+    <span class="variable">Omega</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">ccc</span><span class="operator">,</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">csc</span><span class="operator">,</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">sss</span> <span class="operator">}</span>
+    <span class="variable">A</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">sss</span> <span class="operator">}</span>
+    <span class="variable">B</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">sss</span> <span class="operator">}</span>
+    <span class="variable">Union</span><span class="operator">:</span> <span class="variable">C</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">sss</span> <span class="operator">}</span>
+    <span class="variable">Union</span><span class="operator">:</span> <span class="variable">C</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">ssc</span><span class="operator">,</span> <span class="variable">sss</span><span class="operator">,</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">scc</span><span class="operator">,</span> <span class="variable">ccs</span> <span class="operator">}</span>
+    <span class="variable">Intersection</span><span class="operator">:</span> <span class="variable">C</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">scs</span><span class="operator">,</span> <span class="variable">sss</span> <span class="operator">}</span>
+    <span class="variable">Intersection</span><span class="operator">:</span> <span class="variable">C</span> <span class="operator">=</span> <span class="operator">{</span> <span class="variable">sss</span><span class="operator">,</span> <span class="variable">scs</span> <span class="operator">}</span>
+    <span class="variable">Complement</span> <span class="variable">of</span> <span class="variable">A</span><span class="operator">:</span> <span class="operator">{</span> <span class="variable">ccc</span><span class="operator">,</span> <span class="variable">ccs</span><span class="operator">,</span> <span class="variable">csc</span><span class="operator">,</span> <span class="variable">css</span> <span class="operator">}</span>
+    <span class="variable">Complement</span> <span class="variable">of</span> <span class="variable">A</span><span class="operator">:</span> <span class="operator">{</span> <span class="variable">css</span><span class="operator">,</span> <span class="variable">csc</span><span class="operator">,</span> <span class="variable">ccc</span><span class="operator">,</span> <span class="variable">ccs</span> <span class="operator">}</span>
+</pre>
+<p>
+</p>
+<hr />
+<h1><a name="copyright">COPYRIGHT</a></h1>
+<p>Copyright 2005 Agent Zhang. All rights reserved.</p>
+<p>This software and its documents are free; you can redistribute it and/or modify
+it under the same terms as Perl.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Agent Zhang (章亦春) &lt;<a href="mailto:agent2002@126.com">agent2002@126.com</a>&gt;</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Archive1 - Perl/Haskell Simulation for Mathematical Statistics</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
