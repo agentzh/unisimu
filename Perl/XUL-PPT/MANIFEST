@@ -1,0 +1,8 @@
+script/xul2img.pl
+script/img2ppt.pl
+lib/XUL/Image.pm
+lib/XUL/Image/PPT.pm
+Makefile.PL
+t/XUL-Image.t
+test.pl
+MANIFEST
