@@ -39,9 +39,23 @@ $log->autoflush(1);
 my $proxy = My::HTTP::Proxy->new(
     logmask => STATUS,
     logfh => $log,
+    engine => 'Legacy',
 );
-
 $proxy->max_clients(100);
+
+{
+    package FilterAudio;
+    use base qw( HTTP::Proxy::HeaderFilter );
+
+    sub filter {
+        my ( $self, $headers, $req) = @_;
+        #warn "hello!!! ", $req->uri;
+        if ($req->uri =~ /(?:\.jpg|\.png|\.gif|\.bmp)$/i) {
+            warn "REJECT ", $req->uri, "\n";
+            $req->uri('http://blank');
+        }
+    }
+}
 
 #my $agent = LWP::UserAgent->new(
 #    env_proxy  => 1,
@@ -51,6 +65,8 @@ $proxy->max_clients(100);
 #$proxy->agent($agent);
 $proxy->host(undef);
 $proxy->port(3128);
+
+$proxy->push_filter( request => FilterAudio->new() );
 
 print "Starting the proxy...\n";
 $proxy->start();
