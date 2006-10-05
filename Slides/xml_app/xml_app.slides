@@ -55,7 +55,7 @@ Now let's turn to the {{#ci|latest}} Pugs blog posts
 in {{#x|Google Reader}}...
   
 现在让我们在 Google Reader
-中转向新 Pugs 博客文章……
+中转向新的 Pugs 博客文章……
 ----
 {{img src="images/reader_pugs.png" width="870" height="583"}}
 ----
@@ -63,7 +63,7 @@ The {{#ci|original}} post I published
 onto the {{#x|pugs.blogs.com}} site...
   
 我最初发布在
-use.perl.org 站点上的贴子……
+use.perl.org 站点上的帖子……
 ----
 {{img src="images/pugs.png" width="815" height="591"}}
 ----
@@ -92,6 +92,89 @@ RSS 反馈……
 ♡ {{#x|AJAX}}, our {{#ci|good}} friends!
   
 AJAX，我们的好朋友！
+----
+☺ Let's open {{#ci|Cherry}}'s {{#x|Qzone blogs}}...
+  
+让我们打开 Cherry 的 Qzone 博客……
+----
+{{img src="images/cherry_home.png" width="799" height="569"}}
+----
+☺ {{#ci|Click}} one of the articles and {{#x|enter}} it...
+  
+点击其中的一篇文章进入……
+----
+{{img src="images/cherry_post.png" width="800" height="569"}}
+----
+What happened {{#ci|behind the curtain}}
+when we're performing these {{#x|actions}}?
+  
+在我们执行这些动作的时候，
+幕后都发生了哪些事情？
+----
+Here is the underlying {{#x|HTTP traffic}}
+between the {{#ci|Qzone site}} and my {{#ci|IE browser}}
+recorded by {{#x|HTTP::Proxy}}...
+  
+这里有 HTTP::Proxy 模块记录下的
+Qzone 站点与我的 IE 浏览器之间
+的底层 HTTP 通信……
+----
+  {{#cm|[16:04:56]}} GET http://u13.qzone.qq.com/cgi-bin/cgi_client_entry.cgi?uin=11854905
+  {{#cm|[16:05:40]}} GET http://u13.qzone.qq.com/proxy.html
+   ...
+  {{#cm|[16:09:37]}} GET {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/blog_signature.cgi?uin=11854905}}
+  {{#cm|[16:10:00]}} GET {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/blog_get_category.cgi?}}
+                   {{#kw|uin=11854905}}
+  {{#cm|[16:10:00]}} GET http://imgcache.qq.com/qzone/proxy.vbs
+  {{#cm|[16:10:02]}} GET {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?}}
+                   {{#kw|uin=11854905&blogid=39&flag=0}}
+  {{#cm|[16:10:04]}} GET {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?}}
+                   {{#kw|uin=11854905&blogid=39&archive=-2}}
+   ...
+----
+{{#x|XML data}} for Cherry's {{#ci|signature}}
+  
+Cherry 的个性签名所对应的 XML 数据
+  
+➥ {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/}}
+{{#kw|blog_signature.cgi?uin=11854905}}
+----
+{{img src="images/signature.png" width="829" height="212"}}
+----
+{{#x|XML data}} for Cherry's article {{#ci|category}} list
+  
+Cherry 的文章类别列表所对应的 XML 数据
+  
+➥ {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/}}
+{{#kw|blog_get_category.cgi?uin=11854905}}
+----
+{{img src="images/category.png" width="599" height="387"}}
+----
+{{#x|XML data}} for the {{#ci|title}} of
+Cherry's 40th post (with ID 39)
+  
+Cherry 的第 40 篇帖子(标识为 39）的{{#x|标题}}
+所对应的 XML 数据
+  
+➥ {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?}}
+{{#kw|uin=11854905&blogid=39&flag=0}}
+----
+{{img src="images/title.png" width="695" height="394"}}
+----
+{{#x|XML data}} for the {{#ci|body and comments}} of
+Cherry's 40th post (with ID 39)
+  
+Cherry 的第 40 篇帖子(标识为 39）的{{#x|正文及评论}}
+所对应的 XML 数据
+  
+➥ {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?}}
+{{#kw|uin=11854905&blogid=39&archive=-2}}
+----
+{{img src="images/body.png" width="733" height="544"}}
+----
+By doing this,
+we can {{#ci|directly}} access Qzone's database,
+completely bypassing the HTML site interface.
 ----
 {{#c|Thank you!}}
 ☺
