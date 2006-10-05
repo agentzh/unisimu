@@ -178,6 +178,36 @@ Cherry 的第 40 篇帖子(标识为 39）的{{#x|正文及评论}}
 ----
 {{img src="images/body.png" width="733" height="544"}}
 ----
+Our {{#x|web browser}} renders these {{#x|XML data}} files
+using {{#x|HTML templates}} sent by the Qzone server,
+and generates the final {{#x|HTML source}}.
+   
+我们的网络浏览器根据 Qzone 服务器
+传过来的 HTML 模板对这些 XML 数据进行渲染,
+生成最终的 HTML 源码。
+----
+{{#x|XML data}} + {{#kw|HTML templates}} = {{#cm|final HTML source}}
+   
+XML 数据 + HTML 模板 = 最终的 HTML 源码
+----
+The {{#ci|whole}} process happens
+in our {{#x|web browser}}.
+   
+整个过程都发生在我们的浏览器内部。
+----
+But {{#ci|where}} are
+the {{#x|HTML templates}}?
+  
+但是 HTML 模板究竟在哪里呢？
+----
+Let's check the {{#ci|raw}} HTML source
+sent from the Qzone {{#x|server}}
+  
+让我们来看看 Qzone 服务器
+传过来的原始 HTML 源码
+----
+{{img src="images/check_html.png" width="761" height="564"}}
+----
 We can obtain the {{#x|data}}
 for {{#x|all}} of Cherry's articles
 by simply changing the {{#x|URL}}!
