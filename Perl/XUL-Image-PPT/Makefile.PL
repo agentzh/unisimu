@@ -1,7 +1,7 @@
 use strict;
 use inc::Module::Install;
 
-name            ('XUL-PPT');
+name            ('XUL-Image-PPT');
 all_from        ('lib/XUL/Image.pm');
 license         ('perl');
 install_script  ('script/xul2img.pl');
