@@ -172,9 +172,36 @@ Cherry 的第 40 篇帖子(标识为 39）的{{#x|正文及评论}}
 ----
 {{img src="images/body.png" width="733" height="544"}}
 ----
-By doing this,
-we can {{#ci|directly}} access Qzone's database,
-completely bypassing the HTML site interface.
+We can obtain the {{#x|data}}
+for {{#x|all}} of Cherry's articles
+by simply changing the {{#x|URL}}!
+  
+我们可以通过简单地修改网址
+得到的有文章的数据！
+----
+http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=11854905&{{#x|blogid=39}}&flag=0
++http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=11854905&{{#x|blogid=38}}&flag=0
++http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=11854905&{{#x|blogid=37}}&flag=0
++http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=11854905&{{#x|blogid=36}}&flag=0
++http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=11854905&{{#x|blogid=35}}&flag=0
++...
+http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=11854905&{{#x|blogid=0}}&flag=0
+----
+http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=11854905&{{#x|blogid=39}}&archive=-2
++http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=11854905&{{#x|blogid=38}}&archive=-2
++http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=11854905&{{#x|blogid=37}}&archive=-2
++http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=11854905&{{#x|blogid=36}}&archive=-2
++http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=11854905&{{#x|blogid=35}}&archive=-2
++...
+http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=11854905&{{#x|blogid=0}}&archive=-2
+----
+It means that...
+now we can {{#ci|directly}} access Qzone's {{#x|database}},
+completely {{#ci|bypassing}} its cumbersome HTML interface!
+  
+这意味着……
+现在我们可以直接访问 Qzone 的数据库
+完全绕过它那笨重的 HTML 界面！
 ----
 {{#c|Thank you!}}
 ☺
