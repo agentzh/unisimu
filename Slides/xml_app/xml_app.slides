@@ -1,0 +1,98 @@
+----
+XML in the real world
+----
+{{#x|XML}} in the {{#ci|real}} world
+真实世界中的{{#x|XML}}
+☺{{#author|Agent Zhang}}☺
+{{#author|(章亦春)}}
+{{#date|2006.10}}
+----
+♡ {{#x|RSS}} is {{#ci|cool}}!
+  
+RSS 很酷哦！
+----
+RSS
+➥ {{#x|R}}eally {{#x|S}}imple {{#x|S}}yndication
+----
+{{#ci|Tired}} of {{#x|checking}} your favorite
+news and blogs sites everyday?
+  
+厌倦了每天去查看你最喜爱的
+那些新闻和博客网站了吧？
+----
+Let me tell you 
+how {{#x|RSS}} can {{#ci|save}} you.
+  
+让我来告诉你 RSS
+如何可以拯救你。
+----
+Open {{#x|Google Reader}}:
+the {{#ci|first}} thing that I do everyday.
+  
+打开 Google Reader：
+我每天做的第一件事情。
+----
+{{img src="#" width="0" height="0"}}
+{{img src="images/reader.png" width="834" height="595"}}
+----
+Let's read chromatic's {{#ci|latest}} journals
+in {{#x|Google Reader}}...
+  
+让我们在 Google Reader 中阅读 chromatic
+最近的日记……
+----
+{{img src="images/reader_c.png" width="808" height="498"}}
+----
+Let's take a look at the {{#ci|original}} journal item
+on the {{#x|use.perl.org}} site...
+  
+让我们来看看
+use.perl.org 站点上的原始日记……
+----
+{{img src="images/useperl_c.png" width="806" height="559"}}
+----
+Now let's turn to the {{#ci|latest}} Pugs blog posts
+in {{#x|Google Reader}}...
+  
+现在让我们在 Google Reader
+中转向新 Pugs 博客文章……
+----
+{{img src="images/reader_pugs.png" width="870" height="583"}}
+----
+The {{#ci|original}} post I published
+onto the {{#x|pugs.blogs.com}} site...
+  
+我最初发布在
+use.perl.org 站点上的贴子……
+----
+{{img src="images/pugs.png" width="815" height="591"}}
+----
+The {{#x|XML}} magic
+{{#ci|behind}} the curtain...
+   
+幕后的 XML 魔法……
+----
+{{img src="images/subs_list.png" width="776" height="508"}}
+----
+{{#x|RSS feed}} for {{#ci|chromatic}}'s journals...
+   
+chromatic 的日记的
+RSS 反馈……
+----
+{{img src="images/useperl_rss.png" width="748" height="527"}}
+----
+{{#x|RSS}} feed for 
+our {{#ci|Pugs}} blog site...
+  
+Pugs 博客站点的
+RSS 反馈……
+----
+{{img src="images/pugs_rss.png" width="775" height="575"}}
+----
+♡ {{#x|AJAX}}, our {{#ci|good}} friends!
+  
+AJAX，我们的好朋友！
+----
+{{#c|Thank you!}}
+☺
+----
