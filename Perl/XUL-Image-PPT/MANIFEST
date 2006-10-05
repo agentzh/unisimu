@@ -4,5 +4,4 @@ lib/XUL/Image.pm
 lib/XUL/Image/PPT.pm
 Makefile.PL
 t/XUL-Image.t
-test.pl
 MANIFEST
