@@ -18,21 +18,25 @@ sub go {
         $app = Win32::OLE->new('PowerPoint.Application')
             or die Win32::OLE->LastError;
         $app->{Visible} = 1;
-        $app->Presentations->Add;
-    }
-    $show = $app->ActivePresentation;
-    if (!$show) {
-        $app->Presentations->Add;
+        $show = $app->Presentations->Add;
+    } else {
+        $app->{Visible} = 1;
         $show = $app->ActivePresentation;
-    }        
+    }
+    if (!$show) {
+        $show = $app->Presentations->Add;
+    }
+    if (!$show) { die "Can't create a new presentation"; }
     
     my $const = Win32::OLE::Const->Load($app);
-    my $slides = $show->Slides;
+    my $slides = $show->Slides();
 
     my $listing = File::Spec->catfile($self->indir, 'listing.txt');
     open my $in, $listing
         or die "Cannot open $listing for reading: $!\n";
     my $i = $self->from;
+    my $slide_w = $show->PageSetup->SlideWidth;
+    my $slide_h = $show->PageSetup->SlideHeight;
     while (<$in>) {
         chomp;
         next if /^\s*$/;
@@ -48,6 +52,9 @@ sub go {
             $msoTrue,                      # SaveWithDocument
             0, 0,                          # Left and Top
         ) or die "error: Failed to insert picture $fname.\n";
+        $pic->{Left} = ($slide_w - $pic->Width)  / 2;
+        $pic->{Top}  = ($slide_h - $pic->Height) / 3;
+
         #$pic->Scaleheight(1, $msoTrue);
         #$pic->Scalewidth (1, $msoTrue);
     }

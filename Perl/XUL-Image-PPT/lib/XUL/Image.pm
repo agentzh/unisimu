@@ -46,16 +46,12 @@ sub go {
     for (1..$self->count) {
         SendKeys("{PRTSCR}{DOWN}");
         sleep($self->delay);
-        my $fbase = sprintf("%03d", $_) . ".bmp";
+        my $fbase = sprintf("%03d", $_) . ".png";
         push @files, $fbase;
-        my $fname = File::Spec->catfile($self->outdir, $fbase);
-        open my $fh, "> $fname"
-            or die "Cannot open $fname for writing: $!\n";
-        binmode $fh;
-        warn "$fname generated.\n";
-        print $fh Clipboard->paste;
-        close $fh;
-        $self->crop_img($fname);
+        my $outfile = File::Spec->catfile($self->outdir, $fbase);
+        warn "generating $outfile...\n";
+        my $imdata = Clipboard->paste;
+        $self->crop_img($imdata, $outfile);
     }
     my $listing = File::Spec->catfile($self->outdir, 'listing.txt');
     open my $fh, "> $listing"
@@ -67,12 +63,14 @@ sub go {
 }
 
 sub crop_img {
-    my ($self, $fname) = @_;
+    my ($self, $imdata, $outfile) = @_;
     my $image = Image::Magick->new;
-    $image->Read($fname);
+    $image->BlobToImage($imdata);
     my $ret = $image->Crop( geometry => '+0+33' );
     warn $ret if $ret;
-    $ret = $image->Write($fname);
+    $ret = $image->Trim;
+    warn $ret if $ret;
+    $ret = $image->Write($outfile);
     warn $ret if $ret;
 }
 
