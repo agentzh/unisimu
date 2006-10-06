@@ -1,4 +1,4 @@
-all: xml_app.xul
+all: xmlapp.xul
 
 %.xul: %.slides template/*
 	perl bin/render-template $< $@
