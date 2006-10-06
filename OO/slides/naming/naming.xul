@@ -225,7 +225,7 @@ your {{#x|property}} names
   @list.{{#x|length}}
   $persion.{{#x|name}}
   {{#kw|if}} $dbh.{{#x|available}} { ... }
-  {{#die kw|if}} $set.{{#x|is_empty}};
+  {{#kw|die if}} $set.{{#x|is_empty}};
   
 +{{#x|☺}} These are {{#ci|good}}.
 ----
