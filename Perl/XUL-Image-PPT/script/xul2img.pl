@@ -18,13 +18,8 @@ GetOptions (
 
 help(0) if $help;
 
-$outdir ||= './xul_img';
 if (!$count) {
     die "You must specify the slide count via the --count option.\n";
-}
-
-if (!$title) {
-    die "You must specify the slide title via the --title option.\n";
 }
 
 my $conv = XUL::Image->new(

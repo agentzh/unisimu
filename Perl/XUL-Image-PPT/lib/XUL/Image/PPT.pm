@@ -40,7 +40,7 @@ sub go {
         my $fbase = $_;
         my $fname = File::Spec->catfile($self->indir, $fbase);
         my $slide = $slides->Add($i++, $const->{ppLayoutBlank});
-        warn "inserting $fname...";
+        warn "inserting $fname...\n";
         $slide->Shapes->AddPicture(File::Spec->rel2abs($fname), 0, -1, -23, -5);
     }
 }

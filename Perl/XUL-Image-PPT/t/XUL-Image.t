@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 15;
+use Test::More tests => 21;
 use Test::Exception;
 
 BEGIN { use_ok('XUL::Image'); }
@@ -42,3 +42,12 @@ lives_ok {
     $conv->outdir('tmp');
 } 'outdir is writable';
 is $conv->outdir, 'tmp', 'outdir updated';
+
+is $conv->title, 'Mozilla', 'title defaults to Mozilla';
+
+$conv = XUL::Image->new(count => 12, outdir => 'tmp', delay => undef);
+ok $conv;
+isa_ok $conv, 'XUL::Image';
+is $conv->count, 12, 'count ok';
+is $conv->outdir, 'tmp', 'outdir ok';
+is $conv->delay, 1, 'undef delay defaults to 1 (sec)';

@@ -15,9 +15,6 @@ GetOptions (
 
 help(0) if $help;
 
-$indir ||= './xul_img';
-$from  ||= 1;
-
 my $conv = XUL::Image::PPT->new(
     indir => $indir,
     from  => $from,
