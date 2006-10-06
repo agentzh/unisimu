@@ -1,0 +1,12 @@
+INSTALLATION
+
+    perl Makefile.PL
+    nmake
+    nmake test
+    nmake install
+
+SYNOPSIS
+
+    C:\> firefox http://perlcabal.org/agent/slides/naming/naming.xul
+    C:\> xul2img --count 108 --title "The Art of Naming"
+    C:\> img2ppt
