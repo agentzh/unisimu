@@ -8,5 +8,5 @@ INSTALLATION
 SYNOPSIS
 
     C:\> firefox http://perlcabal.org/agent/slides/naming/naming.xul
-    C:\> xul2img --count 108 --title "The Art of Naming"
+    C:\> xul2img --count 108 --title "The Art of Naming" --delay 2
     C:\> img2ppt
