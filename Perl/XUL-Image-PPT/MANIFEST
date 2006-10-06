@@ -4,6 +4,7 @@ lib/XUL/Image.pm
 lib/XUL/Image/PPT.pm
 Makefile.PL
 t/XUL-Image.t
+t/XUL-Image-PPT.t
 README
 MANIFEST
 inc/Module/Install.pm
