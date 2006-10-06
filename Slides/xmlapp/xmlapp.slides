@@ -23,8 +23,8 @@ news and blogs sites everyday?
 Let me tell you 
 how {{#x|RSS}} can {{#ci|save}} you.
   
-让我来告诉你 RSS
-如何可以拯救你。
+让我来告诉你
+如何让 RSS 拯救你。
 ----
 Open {{#x|Google Reader}}:
 the {{#ci|first}} thing that I do everyday.
@@ -93,6 +93,9 @@ RSS 反馈……
   
 AJAX，我们的好朋友！
 ----
+AJAX
+➥ {{#x|A}}synchronous {{#x|JA}}vaScript and {{#x|X}}ML
+----
 ☺ Let's open {{#ci|Cherry}}'s {{#x|Qzone blogs}}...
   
 让我们打开 Cherry 的 Qzone 博客……
@@ -131,6 +134,20 @@ Qzone 站点与我的 IE 浏览器之间
   {{#cm|[16:10:04]}} GET {{#kw|http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?}}
                    {{#kw|uin=11854905&blogid=39&archive=-2}}
    ...
+----
+{{#ci|Most}} of the {{#x|HTTP requests}} were initiated
+by the {{#x|JavaScript}} code 
+running in your {{#ci|web browser}}.
+  
+这些 HTTP 请求中的大部分是由
+运行在你的网络浏览器中的
+JavaScript 代码发起的。
+----
+Let's {{#ci|check}} some of 
+the {{#x|HTTP requests}} by hand...
+   
+让我们来手工查看一下
+其中的几个 HTTP 请求……
 ----
 {{#x|XML data}} for Cherry's {{#ci|signature}}
   
@@ -202,11 +219,52 @@ sent from the Qzone {{#x|server}}
 ----
 {{img src="images/check_html.png" width="761" height="564"}}
 ----
-We can obtain the {{#x|data}}
+    ...
+    <!-- 日志//-->
+    <div id=\"tpl_blog_b\" class=\"mode_table\" style=\"display:none\">...
+     <table cellSpacing=\"0\" cellpadding=\"0\" width=\"100%\" class= ...
+        {{#x|[%repeat_0 match="/rss/channel/item" repeat_num="10"%]}}
+        <tr><td class=\"index_blog_btd\">
+        [<a href=\"#\"  onclick=\"openCategory(\'{{#x|[%=@type%]}}\');return false\" 
+        ...title=\"点击进入分类\">{{#x|[%=@category%]}}</a>]
+        <a href=\"#\" title=\"{{#x|[%=@title%]}} -- 发表于 {{#x|[%=@pubTimeString%]}}\" 
+        onClick=\"openBlog(\'{{#x|[%=@archive%]}}\',\'{{#x|[%=@id%]}}\');return false\">
+        ... </a></td>
+        <td class=\"info\">评论(<span class=\"hit\">{{#x|[%=@comment%]}}</span>)</td>
+        {{#x|[%_repeat_0%]}}
+     </table>
+    </div>
+    ...
+----
+You see,
+it's a {{#ci|client}}-side HTML {{#x|template}}!
+  
+{{#kw|☼}}
+  
+你看，
+这是一个客户端的 HTML 模板！
+----
+It's the {{#x|JavaScrip code}} that {{#ci|grabs}} the
+{{#x|XML data}} from the web and fills it into
+the {{#x|HTML templates}} automatically,
+resulting in the final appearance we
+see in the browser.
+  
+所以是 JavaScript 代码自动从网上获取
+XML 数据并将之填入到 HTML 模板中，最
+终得到我们在浏览器中看到的效果。
+----
+Then {{#x|why can't}} we do XML data
+grabbing {{#ci|ourselves}}?
+  
+那么为什么我们就不可以自己去
+攫取 XML 数据呢？
+----
+For example, we can obtain the {{#x|data}}
 for {{#x|all}} of Cherry's articles
 by simply changing the {{#x|URL}}!
   
-我们可以通过简单地修改网址
+比如，我们可以通过简单地修改网址
 得到的有文章的数据！
 ----
 http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=11854905&{{#x|blogid=39}}&flag=0
@@ -232,6 +290,51 @@ completely {{#ci|bypassing}} its cumbersome HTML interface!
 这意味着……
 现在我们可以直接访问 Qzone 的数据库
 完全绕过它那笨重的 HTML 界面！
+----
+Let's write a tiny {{#x|Perl}}
+{{#ci|script}} to do {{#ci|all}} these tricks
+for us!
+  
+让我们来编写一个小小的 Perl
+脚本来为我们实现所有这些把戏。
+----
+{{img src="images/getqzone.png" width="667" height="334"}}
+----
+One {{#x|sample output}} of the program
+for {{#ci|Cherry}}'s Blogs
+  
+➥  {{http://perlcabal.org/agent/cherry.html}}
+  
+该程序针对 Cherry 的博客的一次典型输出
+----
+{{img src="images/qzone_html.png" width="802" height="593"}}
+----
+{{img src="images/qzone_html2.png" width="802" height="593"}}
+----
+This program uses {{#x|LWP::UserAgent}} to {{#ci|get}}
+the XML data directly from the web and uses
+{{#x|XML::Simple}} to {{#ci|parse}} it.
+   
+该程序使用 LWP::UserAgent 模块
+直接从网上获取 XML 数据，并利用
+XML::Simple 解析之。
+----
+{{#ci|No}} need for Audrey's {{#x|Template::Extract}}
+to {{#ci|extract}} data from the HTML source.
+That is the {{#ci|power}} of {{#x|AJAX}} and {{#x|XML}}!
+   
+不再需要唐凤的 Template::Extract 模块来
+从 HTML 源码中提取数据。
+这就是 AJAX 和 XML 的威力！
+----
+Get the {{#x|slides}} today!
+{{#c|♨}}
+    
+{{http://perlcabal.org/agent/slides/xmlapp/xmlapp.xul}}
+{{http://perlcabal.org/agent/slides/xmlapp/xmlapp.ppt}}
+{{http://perlcabal.org/agent/slides/xmlapp/xmlapp.pdf}}
+   
+You need {{#x|Firefox}} to access the .xul link above.
 ----
 {{#c|Thank you!}}
 ☺
