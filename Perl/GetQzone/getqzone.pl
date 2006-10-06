@@ -21,10 +21,10 @@ my $main_url =
     "http://u13.qzone.qq.com/cgi-bin/cgi_qqzone_static.cgi?uin=##&flag=-1";
 
 my $title_url =
-    "http://b1.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=##&blogid=##&flag=0";
+    "http://b6.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=##&blogid=##&flag=0";
 
 my $body_url =
-    "http://b1.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=##&blogid=##&property=##&archive=-2";
+    "http://b6.qzone.qq.com/cgi-bin/blog/blog_commentlist.cgi?uin=##&blogid=##&property=##&archive=-2";
 
 my $home_url =
     "http://u13.qzone.qq.com/cgi-bin/cgi_client_entry.cgi?uin=##";
