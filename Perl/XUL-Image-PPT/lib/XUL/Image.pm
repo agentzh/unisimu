@@ -81,6 +81,47 @@ __END__
 
 XUL::Image - Converting XUL slides to Images
 
+=head1 DESCRIPTION
+	
+	use XUL::Image;
+
+	$obj = XUL::Image->new(count => 32);
+	
+	$obj->go;
+
+=head1 METHODS
+
+=head2 new(%option)
+
+=over
+
+=item * title => $title
+
+This  option gives the window title of Mozilla FireFox and 'Mozilla' is default
+
+=item * count => $count
+
+This option gives number of slides to be shooted, which is required
+
+=item * delay => $delay
+
+This option gives the delay  between each mechanical operation, and 1 second is default
+
+=item * out_dir => $out_dir
+
+This option gives a directory under which all the intermediate image files will be saved. and 'xul_img' is default
+
+=back
+
+=head2 go()
+
+invoke this method to start converting xul slides into images, before excuting make sure xul files has been opened by 
+Mozilla FireFox, not in full screen mode or minimized.
+
+=head1 SEE ALSO
+
+L<XUL::Image::PPT>
+
 =head1 AUTHOR
 
 Agent Zhang E<lt>agentzh@gmail.comE<gt>

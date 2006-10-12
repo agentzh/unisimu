@@ -62,3 +62,56 @@ sub go {
 
 1;
 __END__
+
+
+=head1 NAME
+
+XUL::Image::PPT - insert images into a ppt 
+
+=head1 SYNOPSIS
+
+use XUL::Image::PPT;
+
+$obj = XUL::Image::PPT->new();
+
+$obj->go;
+
+This module provides interface to get ppt by inseting it images
+
+=head1 METHODS 
+
+=head2 new(%option)
+
+=over 
+
+=item * from => $from
+
+This option gives the index from which the rest images will be inserted into a ppt and 1 is default
+
+=item * indir => $indir
+
+This option gives the directory, under which images are saved and 'xul_img' is default
+
+=back
+
+=head2 go()
+
+invoke this method to start inserting images to get a ppt
+
+=SEE ALSO
+
+L<XUL::Image>
+
+=head1 AUTHOR
+
+Agent Zhang E<lt>agentzh@gmail.comE<gt>
+Sal Zhong E<lt>zhongxiang721@gmail.comE<gt>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 Agent Zhang. All rights reserved.
+Copyright (c) 2006 Sal Zhong. All rights reserved.
+
+This library is free software; you can redistribute it
+and/or modify it under the same terms as perl itself.
+
