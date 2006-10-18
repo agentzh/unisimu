@@ -1,13 +1,14 @@
 NAME = OrdInsert
 RM_F = perl -MExtUtils::Command -e rm_f
-BIN_FILES = $(NAME).exe $(NAME).class
+BIN_FILES = $(NAME).exe $(NAME).class QuickSort.exe
 
 all: $(BIN_FILES)
 
 $(NAME).exe: $(NAME).hs
 	ghc -o $@ $<
 
-
+QuickSort.exe: QuickSort.hs
+	ghc -o $@ $<
 
 $(NAME).class: $(NAME).java
 	javac $<
