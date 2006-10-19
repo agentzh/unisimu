@@ -1,0 +1,82 @@
+----
+{{#t|Recap for The Art of Naming}}
+----
+{{#ci|Recap}} for
+The Art of {{#x|Naming}}
+“{{#x|命名}}”课回顾
+☺{{#author|Agent Zhang (章亦春)}}☺
+{{#date|2006.10}}
+----
+To {{#ci|simplify}} a class interface,
+use of {{#x|inheritance}} is {{#ci|deprecated}}.
+   
+若想简化类的接口，
+则不应使用继承。
+----
+A {{#ci|bad}} example in {{#c|perl 5}} ⇒
+----
+{{img src="#" width="0" height="0"}}
+{{img src="images/gd.png" width="357" height="623"}}
+----
+  {{#cm|# This works:}}
+  {{#kw|use}} GD::Simple;
+    
+  {{#kw|my}} {{#v|$img}} = {{#kw|new}} GD::Simple(40, 50);
+  {{#v|$img}}->bgcolor({{#x|'white'}});
+  {{#v|$img}}->fgcolor({{#x|'red'}});
+  {{#v|$img}}->rectangle(10, 10, 50, 50);
+----
+  {{#cm|# But this doesn't work, since}}
+  {{#cm|# setPixel is a method derived}}
+  {{#cm|# directly from GD::Image}}
+  {{#kw|use}} GD::Simple;
+    
+  {{#kw|my}} {{#v|$img}} = {{#kw|new}} GD::Simple(40, 50);
+  {{#v|$img}}->bgcolor({{#x|'white'}});
+  {{#v|$img}}->fgcolor({{#x|'red'}});
+  {{#v|$img}}->setPixel(10, 10, {{#x|'red'}});
+----
+  {{#cm|# We have to degrade to the harder way:}}
+  {{#kw|use}} GD::Simple;
+    
+  {{#kw|my}} {{#v|$img}} = {{#kw|new}} GD::Simple(40, 50);
+  {{#kw|my}} {{#v|$red}} = {{#v|$img}}->{{#x|colorAllocate}}(255, 0, 0);
+  {{#v|$img}}->setPixel(10, 10, {{#x|$red}});
+----
+     {{#cm|# The Perl 5 way:}}
+     {{#x|print}} \"hello, world!\\n\";
+   
++{{#ci|5}} characters
+----
+     {{#cm|# The Perl 6 way:}}
+     {{#x|say}} \"hello, world!\";
+   
++{{#ci|3}} characters
+----
+{{#ci|☺}} That's the {{#x|Huffman}} coding {{#ci|principle}}
+  
+这正是哈夫曼编码原理。
+----
+{{#x|Broad}} background knowledge is {{#ci|very}} important
+to {{#ci|good}} programmers.
+   
+宽广的背景知识对于好的程序员来说
+是非常重要的。
+----
+{{img src="images/eiffel.jpg" width="176" height="350"}}    {{img src="images/pyramid.jpg" width="446" height="351"}}
+----
+   {{#cm|<agentzh>}} yeah
+   {{#cm|<agentzh>}} audreyt++ # you seem to know {{#ci|everything}}.
+   {{#cm|<audreyt>}} nah, not really :)
+   {{#cm|<agentzh>}} hehe
+   {{#cm|<audreyt>}} that's what you get from spending far too
+                  much time on {{#x|wikipedia}}...
+   {{#cm|<agentzh>}} ah, {{#x|wikipedia}}++
+   
+   <章亦春>   是
+   <章亦春>   唐凤++ # 你似乎知道所有的事情
+   <唐凤>     才不是呢 :)
+   <章亦春>   呵呵
+   <唐凤>     这是在 wikipedia 网站上花费了很多时间的结果……
+   <章亦春>   啊，wikipedia++
+----
