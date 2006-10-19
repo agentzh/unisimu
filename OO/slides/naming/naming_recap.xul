@@ -86,6 +86,46 @@ to {{#ci|good}} programmers.
    &lt;唐凤>     这是在 wikipedia 网站上花费了很多时间的结果……
    &lt;章亦春>   啊，wikipedia++
 ----
+The {{#ci|top}} 3 {{#x|jumps}} in my programming 
+learning {{#ci|curve}} {{#cm|⇒}}
+  
+我的编程学习曲线中的三次飞跃 {{#cm|⇒}}
+----
+ {{#tag|☆}} {{#ci|OOP}} (Object-Oriented Programming)
+ {{#bdate|2001.2}}  {{#t|C++, Java, C#, encapsulation}}
+   
++ {{#tag|☆}} {{#ci|Dynamic}} Programming
+ {{#bdate|2002.9}}  {{#t|Perl, Awk, regexes, the UNIX culture}}
+   
++ {{#tag|☆}} {{#ci|TDD}} (Test-Driven Development)
+ {{#bdate|2004.4}}  {{#t|C# NUnit, Perl's Test::More, Pugs}}
+----
+The {{#t|potential}} {{#x|4th}} jump at present:
+  
++ {{#tag|☆}} {{#ci|Functional}} Programming
+ {{#bdate|2006.?}}  {{#t|Haskell, CPS, Perl 6}}
+----
+{{#tag|☺}} Understanding the {{#ci|culture}}
+behind the technology is very {{#x|important}}.
+   
+理解技术背后的文化是很重要的。
+----
+The {{#ci|culture}} of {{#x|Windows}} feels like...
+  
+{{#tag|♨}}
+    
+Windows 的文化就感觉像……
+----
+{{img src="images/fashion.jpg" width="288" height="423"}}
+----
+While the {{#ci|culture}} of {{#x|UNIX}} feels like...
+  
+{{#tag|♨}}
+    
+而 UNIX 的文化就感觉像……
+----
+{{img src="images/wizard.jpg" width="351" height="419"}}
+----
 </html:textarea>
 
 <deck flex="1" id="deck">

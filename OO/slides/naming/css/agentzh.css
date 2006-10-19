@@ -86,6 +86,12 @@
         font-size: 40%;
         color: #339933;
 }
+.bdate {
+        font-style: italic;
+        text-decoration: underline;
+        font-size: 90%;
+        color: #339933;
+}
 .i {
         font-style: italic;
         font-family: "Cambria"
@@ -97,7 +103,7 @@
         font-style: italic;
 }
 .tag {
-        color: #339933;
+        color: #998833;
 }
 .v {
         color: #998833;
