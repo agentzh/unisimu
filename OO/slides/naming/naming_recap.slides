@@ -57,6 +57,14 @@ A {{#ci|bad}} example in {{#c|perl 5}} ⇒
   
 这正是哈夫曼编码原理。
 ----
+✓ {{#x|Rant}} on the software vendors and show them
+where the {{#x|technology}} {{#ci|really}} wants to go!
+   
+向那些软件商怒吼，
+并向他们指出技术真正想去的地方！
+----
+{{img src="images/rant.jpg" width="198" height="190"}}
+----
 {{#x|Broad}} background knowledge is {{#ci|very}} important
 to {{#ci|good}} programmers.
    
@@ -80,25 +88,6 @@ to {{#ci|good}} programmers.
    <唐凤>     这是在 wikipedia 网站上花费了很多时间的结果……
    <章亦春>   啊，wikipedia++
 ----
-The {{#ci|top}} 3 {{#x|jumps}} in my programming 
-learning {{#ci|curve}} {{#cm|⇒}}
-  
-我的编程学习曲线中的三次飞跃 {{#cm|⇒}}
-----
- {{#tag|☆}} {{#ci|OOP}} (Object-Oriented Programming)
- {{#bdate|2001.2}}  {{#t|C++, Java, C#, encapsulation}}
-   
-+ {{#tag|☆}} {{#ci|Dynamic}} Programming
- {{#bdate|2002.9}}  {{#t|Perl, Awk, regexes, the UNIX culture}}
-   
-+ {{#tag|☆}} {{#ci|TDD}} (Test-Driven Development)
- {{#bdate|2004.4}}  {{#t|C# NUnit, Perl's Test::More, Pugs}}
-----
-The {{#t|potential}} {{#x|4th}} jump at present:
-  
-+ {{#tag|☆}} {{#ci|Functional}} Programming
- {{#bdate|2006.?}}  {{#t|Haskell, CPS, Perl 6}}
-----
 {{#tag|☺}} Understanding the {{#ci|culture}}
 behind the technology is very {{#x|important}}.
    
@@ -119,4 +108,147 @@ While the {{#ci|culture}} of {{#x|UNIX}} feels like...
 而 UNIX 的文化就感觉像……
 ----
 {{img src="images/wizard.jpg" width="351" height="419"}}
+----
+The {{#ci|top}} 3 {{#x|jumps}} in my programming 
+learning {{#ci|curve}} {{#cm|⇒}}
+  
+我的编程学习曲线中的三次飞跃 {{#cm|⇒}}
+----
+ {{#tag|☆}} {{#ci|OOP}} (Object-Oriented Programming)
+ {{#bdate|2001.2}}  {{#t|C++, Java, C#, encapsulation}}
+   
++ {{#tag|☆}} {{#ci|Dynamic}} Programming
+ {{#bdate|2002.9}}  {{#t|Perl, Awk, regexes, the UNIX culture}}
+   
++ {{#tag|☆}} {{#ci|TDD}} (Test-Driven Development)
+ {{#bdate|2004.4}}  {{#t|C# NUnit, Perl's Test::More, Pugs}}
+----
+The {{#t|potential}} {{#x|4th}} jump at present:
+  
++ {{#tag|☆}} {{#ci|Functional}} Programming
+ {{#bdate|2006.?}}  {{#t|Haskell, CPS, Perl 6}}
+----
+{{#tag|☺}} A small {{#ci|perlish}} {{#x|TDD}} example
+in C/C++ {{#cm|⇒}}
+  
+C/C++ 中的一个 perl 风味的
+测试驱动的示例 {{#cm|⇒}}
+----
+      {{#cm|/* adder.h */}}
+      {{#kw|#ifndef}} _ADDER_H_
+      {{#kw|#define}} _ADDER_H_
+      
+      {{#kw|int}} add({{#kw|int}} a, {{#kw|int}} b);
+        
+      {{#kw|#endif}}
+----
+      {{#cm|/* adder.cpp */}}
+      {{#kw|#include}} \"adder.h\"
+     
+      {{#kw|int}} add({{#kw|int}} a, {{#kw|int}} b) {
+          {{#cm|// doesn't do anything useful right now:}}
+          {{#x|return 0;}}
+      }
+----
+    {{#cm|/* test_adder.cpp #/}}
+    {{#kw|#include}} \"{{#x|adder.h}}\"
+    {{#kw|#include}} \"{{#x|cpptest.h}}\"
+     
+    {{#kw|int}} main() {
+         {{#x|plan}}(3);
+         {{#x|is_}}(add(1, 2),  3, \"1 + 2 == 3\");
+         {{#x|is_}}(add(-2,1), -1, \"-2 + 1 == -1\");
+         {{#x|is_}}(add(3,-3),  0, \"3 + (-3) == 0\");
+         {{#x|summary}}();
+         {{#kw|return}} 0;
+     }
+----
+{{img src="images/test_adder.png" width="469" height="443"}}
+----
+{{img src="images/tdd1.png" width="668" height="351"}}
+----
+   
+    {{#tag|D:\\projects>}}test_adder
+    {{#x|1..3}}
+    {{#x|not ok 1}} - 1 + 2 == 3
+    #     Failed test (test_adder.cpp at {{#ci|line 6}})
+    #     '{{#ci|0}}'
+    #         ne
+    #     '3'
+    {{#x|not ok 2}} - -2 + 1 == -1
+    #     Failed test (test_adder.cpp at {{#ci|line 7}})
+    #     '{{#ci|0}}'
+    #         ne
+    #     '-1'
+    {{#x|ok 3}} - 3 + (-3) == {{#ci|0}}
+    # Looks like you failed 2 tests of 3.
+      
+        
+----
+{{#tag|☺}} The first 2 tests failed {{#ci|as expected}}~~~
+   
+前 2 个测试如期失败~~~
+----
+{{#tag|☺}} Now it's time to {{#ci|actually}} implement
+the {{#x|add}} function.
+  
+现在是真正给出 add 函数的实现的时候了。
+----
+      {{#cm|/* adder.cpp */}}
+      {{#kw|#include}} \"adder.h\"
+     
+      {{#kw|int}} add({{#kw|int}} a, {{#kw|int}} b) {
+          {{#cm|// now we add the functionality:}}
+          {{#x|return a + b;}}
+      }
+----
+{{#tag|☺}} Now let's {{#x|rebuild}} the project
+and {{#ci|rerun}} the tests...
+  
+现在让我们来重新生成项目
+并再次运行测试……
+----
+{{img src="images/tdd2.png" width="668" height="351"}}
+----
+      
+     
+    {{#tag|D:\\projects>}}test_adder
+    {{#x|1..3}}
+    {{#x|ok 1}} - 1 + 2 == 3
+    {{#x|ok 2}} - -2 + 1 == -1
+    {{#x|ok 3}} - 3 + (-3) == 0
+     
+       
+----
+   
+    Write {{#x|test}}...
+    ...watch test {{#x|fail}}.
+    Write {{#cm|code}}...
+    ...watch test {{#cm|pass}}.
+    {{#cm|Refactor}}...
+    ...watch test {{#cm|pass}}.
+    Write {{#x|test}}...
+    ...watch test {{#x|fail}}.
+    Write {{#cm|code}}...
+    ...watch test {{#cm|pass}}.
+    {{#cm|Refactor}}...
+    ...watch test {{#cm|pass}}.
+    ...
+       
+----
+   
+    编写{{#x|测试}}……
+    ……观察测试{{#x|失败}}。
+    编写{{#cm|代码}}……
+    ……观察测试{{#cm|通过}}。
+    {{#cm|重构}}……
+    ……观察测试{{#cm|通过}}。
+    编写{{#x|测试}}……
+    ……观察测试{{#x|失败}}。
+    编写{{#cm|代码}}……
+    ……观察测试{{#cm|通过}}.
+    {{#cm|重构}}……
+    ……观察测试{{#cm|通过}}。
+    ……
+       
 ----
