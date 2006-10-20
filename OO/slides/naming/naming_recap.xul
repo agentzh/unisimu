@@ -274,10 +274,21 @@ and {{#ci|rerun}} the tests...
     ……
        
 ----
-Get my slides when you're in
+{{#ci|Get}} my {{#x|slides}} when you're in
 our university:
    
 {{http://yxy.ujs.edu.cn/images/index.html}}
+----
+{{#x|Contact}} me on the {{#ci|web}}!
+{{#c|♨}}
+  
+{{agentzh@gmail.com}}
+----
+These slides are {{#ci|powered}} by
+{{#x|Sporx}} and {{img src="images/grin.png" width="41" height="41"}}{{#ci|Takahashi}}{{#x|++}}
+----
+{{#c|Thank you!}}
+☺
 ----
 </html:textarea>
 
