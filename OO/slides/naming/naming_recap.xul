@@ -115,6 +115,22 @@ While the {{#ci|culture}} of {{#x|UNIX}} feels like...
 ----
 {{img src="images/wizard.jpg" width="351" height="419"}}
 ----
+{{#x|Java}} gives me the {{#ci|feeling}} like...
+  
+{{#tag|♨}}
+    
+Java 给我的感觉就像是……
+----
+{{img src="images/java.jpg" width="294" height="339"}}
+----
+{{#x|Perl}} gives me the {{#ci|feeling}} like...
+  
+{{#tag|♨}}
+    
+Perl 给我的感觉就像是……
+----
+{{img src="images/perl.jpg" width="243" height="312"}}
+----
 The {{#ci|top}} 3 {{#x|jumps}} in my programming 
 learning {{#ci|curve}} {{#cm|⇒}}
   
@@ -257,6 +273,11 @@ and {{#ci|rerun}} the tests...
     ……观察测试{{#cm|通过}}。
     ……
        
+----
+Get my slides when you're in
+our university:
+   
+{{http://yxy.ujs.edu.cn/images/index.html}}
 ----
 </html:textarea>
 
