@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Getopt::Std;
-use UML_Class_GraphViz;
+use UML_Class_Graphviz;
 #use Data::Dump::Streamer;
 
 my %opts;
