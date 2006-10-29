@@ -17,8 +17,13 @@ use WWW::Mechanize;
 use YAML::Syck;
 #use Getopt::Std;
 
-my $main_url =
-    "http://u13.qzone.qq.com/cgi-bin/cgi_qqzone_static.cgi?uin=##&flag=-1";
+#my $main_url =
+#    "http://u13.qzone.qq.com/cgi-bin/cgi_qqzone_static.cgi?uin=##&flag=-1";
+
+my $main_url = 
+    "http://u13.qzone.qq.com/cgi-bin/cgi_qqzone.cgi?uin=##&flag=-1758952704&".
+    "maindomain=user113.qzone.qq.com&blog=b1.qzone.qq.com&msgboard=m1.qzone.qq.com".
+    "&music=qzone-music.qq.com&photo=d2.photo.qq.com";
 
 my $title_url =
     "http://b6.qzone.qq.com/cgi-bin/blog/blog_one_title.cgi?uin=##&blogid=##&flag=0";
