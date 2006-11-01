@@ -255,6 +255,56 @@ or even specify a pattern (in perl regex) to filter out the packages you want to
 
 Quite handy, isn't it? ;-)
 
+=head1 IMPORTANT ISSUES
+
+Never feed plain module names to F<umlclass.pl>, for intance,
+
+  $ umlclass.pl Scalar::Defer
+
+will lead you to the following error message:
+
+  error: input file Scalar::Defer not found.
+
+Use C<-M> and C<-p> options to achieve your goals:
+
+  $ umlclass.pl -M Scalar::Defer -p "Scalar::Defer"
+
+In this example, I must warn you that you may miss the
+packages which belong to Scalar::Defer but don't have "Scalar::Defer"
+in their names. I'm sorry for that. F<umlclass.pl> is not I<that>
+smart.
+
+The safest ways to do this are
+
+=over
+
+=item 1.
+
+Don't specify the C<-p regex> option and generate a large image which shows
+every classes including CORE modules, figure out the appropriate class
+name pattern yourself, and rerun C<umlclass.pl> with the right regex pattern.
+
+=item 2.
+
+Grab the Scalar::Defer's tarball, and do something like this:
+
+   $ umlclass.pl -r Scalar-Defer-0.07/lib
+
+=back
+
+It's worth mentioning that when .pl or .pm files are passing as the command line
+arguments, I<only> the classes I<defined> in these files will be drawn. This is
+a feature. :)
+
+For F<.pm> files on your disk, simply pass them as the command line
+arguments. For instance:
+
+   $ umlclass.pl -o bar.gif lib/Bar.pm lib/*/*.pm
+
+or tell F<umlclass.pl> to iterate through the directories for you:
+
+   $ umlclass.pl -o blah.png -r ./lib
+
 =head1 OPTIONS
 
 =over
@@ -298,6 +348,8 @@ A typical usage is as follows:
 
 You see, F<umlclass.pl> allows you to control the behaviors at several different
 levels. I really like this freedom, since tools can't always do exactly what I want.
+
+If no C<-o> option was specified, F<a.png> will be assumed.
 
 =item -p regex
 

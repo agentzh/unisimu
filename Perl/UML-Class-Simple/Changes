@@ -1,7 +1,9 @@
 = version 0.04 (Nov 1, 2006)
 * fixed the PPI->strerr bug reported by christopher.
   it should have been PPI::Document->strerr in the source.
-* added a simple SYNOPSIS to script/umlclass.pl
+* added a simple SYNOPSIS to script/umlclass.pl's POD
+* added more guide to script/umlclass.pl's POD
+  (thanks christopher's questions)
 
 = version 0.03 (Oct 31, 2006)
 * fixed the node_color bug.

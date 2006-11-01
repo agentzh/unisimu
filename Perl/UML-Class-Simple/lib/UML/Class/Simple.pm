@@ -16,7 +16,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(classes_from_runtime classes_from_files);
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 my $tt = Template->new;
 my $dot_template;
@@ -364,7 +364,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.03 released by Oct 31, 2006.
+This document describes C<UML::Class::Simple> 0.04 released by Nov 1, 2006.
 
 =head1 SYNOPSIS
 
