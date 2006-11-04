@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Template-Plugin-Perl.t
+lib/Template/Plugin/Perl.pm

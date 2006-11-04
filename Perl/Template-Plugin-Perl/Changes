@@ -1,0 +1,8 @@
+Revision history for Perl extension Template::Plugin::Perl.
+
+0.01  Mon Jul 11 13:49:29 2005
+	- original version; created by h2xs 1.23 with options
+		-XO -b 5.8.1 Template::Plugin::Perl
+
+0.02  2005-07-20
+        - fixed the URL problem in the POD doc
