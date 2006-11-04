@@ -51,7 +51,7 @@
 +  {{#v|$elem}} = {{#v|@item}}.shift();
 +  {{#v|$elem}} = {{#v|@item}}.shift;
 +  {{#v|$elem}} = shift {{#v|@item}};
-+   say {{#x|'length of the queue: "}}, {{#v|@elem}}.elems;
++   say {{#x|"length of the queue: "}}, {{#v|@elem}}.elems;
 ----
   Make {{#x|simple}} things {{#ci|easy}} and
   {{#x|hard}} things {{#ci|possible}}.
@@ -112,9 +112,9 @@ be a {{#ci|simple}} task, however...
           {{#kw|or}} die {{#x|"Can't print to file: $!"}};
       close {{#v|$fh}};
 ----
-{{#tag|☆}} {{#i|output arguments}} {{#cm|&lt;=>}} {{#i|return values}}
+{{#tag|☆}} {{#ci|output arguments}} &lt;=> {{#ci|return values}}
    
-输出参数 &lt;=> 返回值
+输出参数 {{#cm|&lt;=>}} 返回值
 ----
       {{#cm|/* pass results via return values */}}
       {{#kw|int}} add({{#kw|int}} a, {{#kw|int}} b) {
@@ -170,16 +170,6 @@ be a {{#ci|simple}} task, however...
    
 记法的威力
 ----
-  The problem is that many developers choose the 
-  solution {{#ci|before}} defining the problem. It's {{#x|not}}
-  the case that any programming language is
-  {{#x|"one size fits all"}}.
-   
-                            -- Ovid
-     
-  问题就在于许多开发人员在定义问题之前就选定了解
-  决方案。并不存在一种编程语言能做到“一劳永逸”。
-----
  {{#ci|Inventing}} a language doesn't necessarily mean
  building the successor to Java; often a thorny
  problem can be {{#ci|cleared}} up by a change of
@@ -190,7 +180,7 @@ be a {{#ci|simple}} task, however...
  常一个很棘手的问题可以通过记法上的改变而获得澄清。
         -- 《程序设计实践》
 ----
-{{#cm|Case #1}}: Formated output
+{{#cm|Case #1}}: {{#x|Formated}} output
    
 案例 #1: 格式化输出
 ----
@@ -205,6 +195,16 @@ be a {{#ci|simple}} task, however...
            i, j, elems[i][j]);
    
 +{{#x|☺}} This is {{#ci|much better}}.
+----
+  The problem is that many developers choose the 
+  solution {{#ci|before}} defining the problem. It's 
+  {{#x|not}} the case that any programming language
+  is {{#x|"one size fits all"}}.
+   
+                            -- Ovid
+     
+  问题就在于许多开发人员在定义问题之前就选定了解
+  决方案。并不存在一种编程语言能做到“一劳永逸”。
 ----
 {{#cm|Case #2}}: A simple-minded {{#x|CSV}} file {{#ci|parser}}
 in {{#x|Perl 6}}
@@ -223,13 +223,14 @@ in {{#x|Perl 6}}
    
 {{#cm|♨}} 
 ----
-  In {{#x|large}} applications covering problem domains suitable
-  for {{#ci|both}} Perl and Java, the Java programmer can't hold 
-  a candle to me.
+  In {{#x|large}} applications covering problem
+  domains suitable for {{#ci|both}} {{#x|Perl}} and
+  {{#x|Java}}, the Java programmer {{#ci|can't}} hold a 
+  candle to me.
                            -- Ovid
    
-  对于 Perl 和 Java 都适合的大型应用，Java 程序员
-  根本无法赶上我的编程效率。
+  对于 Perl 和 Java 都适合的大型应用，
+  Java 程序员根本无法赶上我的编程效率。
 ----
 {{#tag|☆}} {{#ci|Higher}} order functions ({{#x|λ}} calculus)
   
