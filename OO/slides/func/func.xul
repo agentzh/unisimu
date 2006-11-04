@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="css/agentzh.css" type="text/css"?>
+
+<page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="sporx" xmlns:html="http:/www.w3.org/1999/xhtml" orient="vertical" onkeypress="Sporx.onKeyPress(event);">
+
+<html:textarea id="builtinCode" style="visibility: collapse">----
+{{#t|Functions and Methods}}
+----
+{{#x|Functions}} and {{#x|Methods}}
+函数和方法
+☺{{#author|Agent Zhang (章亦春)}}☺
+{{#date|2006.10}}
+----
+{{#tag|☆}} {{#ci|Consistent}} interface, {{#ci|Simple}} interface, {{#ci|rich}} interface
+   
+一致的接口，简单的接口，丰富的接口
+----
+    C# seems to have {{#ci|hundreds}} of {{#ci|different}}
+    collection classes, used {{#x|inconsistently}} 
+    in the .NET libraries.
+    
+                    -- Ned Batchelder
+   
+    C# 似乎拥有成百上千个不同的集合类，它
+    们在 .NET 类库中的使用是如此的不一致。
+----
+{{#x|Perl 6}}'s {{#ci|array}}
+➥ {{#ci|Simple}} interface with {{#ci|rich}} functionalities
+   
+  Perl 6 数组：简单的接口，丰富的功能。
+----
+  {{#cm|# use it as an ordinary array:}}
++  {{#v|@item}} = {{#x|'dog'}}, {{#x|'cat'}}, {{#x|'mouse'}}, {{#x|'tiger'}};
++  {{#v|@item}}[0].say;      {{#cm|# prints 'dog'}}
++   say ~{{#v|@item}}[1..-1];  {{#cm|# prints 'cat mouse tiger'}}
++  {{#v|@item}}[2] = {{#x|'human'}};
++  {{#v|@item}}.push({{#x|'camel'}}, {{#x|'moose'}}); {{#cm|# append elements}}
++  {{#v|@item}} = ({{#v|@item}}, {{#x|'camel'}}, {{#x|'moose'}});  {{#cm|# just the same}}
+----
+  {{#cm|# use it as a stack (FILO):}}
++  {{#v|@item}}.push({{#x|'moose'}});
++   push {{#v|@item}}, {{#x|'elk'}};  {{#cm|# just another way}}
++  {{#v|$top}} = {{#v|@item}}[-1];
++  {{#v|$top}} = {{#v|@item}}.pop();
++  {{#v|$top}} = {{#v|@item}}.pop;  {{#cm|# ditto}}
+----
+  {{#cm|# use it as a queue (FIFO):}}
+  {{#v|@item}}.unshift({{#x|256}});
++   unshift {{#v|@item}}, {{#x|128}}, {{#x|'hello'}};
++  {{#v|$elem}} = {{#v|@item}}.shift();
++  {{#v|$elem}} = {{#v|@item}}.shift;
++  {{#v|$elem}} = shift {{#v|@item}};
++   say {{#x|'length of the queue: "}}, {{#v|@elem}}.elems;
+----
+  Make {{#x|simple}} things {{#ci|easy}} and
+  {{#x|hard}} things {{#ci|possible}}.
+   
+              -- Larry Wall
+  
+让简单的事情很容易办到，
+让困难的事情有可能办到。
+----
+Writing a string to a {{#x|file}} should
+be a {{#ci|simple}} task, however...
+   
+向一个文件写入一个字符串本该是
+一件很简单的任务，可是……
+----
+  
+ {{#cm|# The Java way:}}
+ {{#kw|import}} java.io.*;
+ {{#kw|class}} WriteFile {
+     {{#kw|public static void}} main(String args[]) {
+         FileOutputStream foStream;
+         PrintStream pStream;
+        {{#kw|try}} {
+             foStream = {{#kw|new}} FileOutputStream({{#x|"somefile.txt"}});
+             pStream  = {{#kw|new}} PrintStream( foStream );
+             pStream.println ({{#x|"This is written to a file"}});
+             pStream.close();
+         }
+         {{#kw|catch}} (Exception e) {
+             System.err.println ({{#x|"Error writing to file "}} + e);
+         }
+     }
+ }
+   
+----
+   
+  {{#cm|/* The C way: */}}
+  {{#kw|#include}} &lt;stdio.h>
+  {{#kw|#include}} &lt;stdlib.h>
+   
+  {{#kw|int}} main() {
+      FILE* fh;
+      {{#kw|if}} ((fh = fopen({{#x|"somefile.txt"}}, {{#x|"w"}}) == NULL) {
+          fprintf(stderr, {{#x|"Can't open file: %s"}},
+              strerror(errno));
+          return 1;
+      }
+      fprintf(fh, {{#x|"This is written to a file\\n"}});
+      fclose(fh);
+      return {{#x|0}};
+  }
+    
+----
+      {{#cm|# The Perl 5 way:}}
+      open {{#kw|my}} {{#v|$fh}}, {{#x|"> somefile.txt"}}
+          {{#kw|or}} die {{#x|"Can't open file: $!"}};
+      print {{#v|$fh}} {{#x|"This is written to a file\\n"}}
+          {{#kw|or}} die {{#x|"Can't print to file: $!"}};
+      close {{#v|$fh}};
+----
+{{#tag|☆}} {{#i|output arguments}} {{#cm|&lt;=>}} {{#i|return values}}
+   
+输出参数 &lt;=> 返回值
+----
+      {{#cm|/* pass results via return values */}}
+      {{#kw|int}} add({{#kw|int}} a, {{#kw|int}} b) {
+          {{#kw|return}} a + b;
+      }
+      ...
+      {{#kw|if}} (add({{#x|1}}, {{#x|2}}) == {{#x|3}}) {
+          printf({{#x|"ok"}});
+      }
+      printf({{#x|"%d"}}, add({{#x|5}}, {{#x|6}}));
+----
+      {{#cm|/* pass results via output arguments */}}
+      {{#kw|void}} add({{#kw|int}} a, {{#kw|int}} b, {{#kw|int}}&amp; c) {
+          c = a + b;
+      }
+      ...
+      {{#kw|int}} temp;
+      add({{#x|1}}, {{#x|2}}, temp);
+      {{#kw|if}} (temp == {{#x|3}}) {
+          printf({{#x|"ok"}});
+       }
+      add({{#x|5}}, {{#x|6}}, temp);
+      printf({{#x|"%d"}}, temp);
+----
+{{#tag|☆}} {{#ci|Multiple}} return values
+   
+多重返回值
+----
+  {{#cm|# The Perl 6 way:}}
+  {{#kw|sub}} div ({{#v|$a}}, {{#v|$b}}) {
+       {{#kw|return}} ({{#v|$a}}/{{#v|$b}}, {{#v|$a}}%{{#v|$b}});
+   }
+   ...
+  {{#kw|my}} ({{#v|$quo}}, {{#v|$rem}}) = div({{#x|5}}, {{#x|2}});
+----
+   {{#cm|/* The C way: */}}
+   {{#kw|void}} div ({{#kw|int}} a, {{#kw|int}} b, {{#kw|int}}* ptr_quo, {{#kw|int}}* ptr_rem) {
+       *ptr_quo = a / b, *ptr_rem = a % b;
+   }
+   ...
+   {{#kw|int}} quo, rem;
+   div(5, 2, &amp;quo, &amp;rem);
+----
+  {{#cm|// The C++ way:}}
+  {{#kw|void}} div ({{#kw|int}} a, {{#kw|int}} b, {{#kw|int}}&amp; quo, {{#kw|int}}&amp; rem) {
+      quo = a / b; rem = a % b;
+  }
+  ...
+  {{#kw|int}} quo, rem;
+  div(5, 2, quo, rem);
+----
+{{#tag|☆}} The {{#ci|power}} of {{#x|notation}}
+   
+记法的威力
+----
+  The problem is that many developers choose the 
+  solution {{#ci|before}} defining the problem. It's {{#x|not}}
+  the case that any programming language is
+  {{#x|"one size fits all"}}.
+   
+                            -- Ovid
+     
+  问题就在于许多开发人员在定义问题之前就选定了解
+  决方案。并不存在一种编程语言能做到“一劳永逸”。
+----
+ {{#ci|Inventing}} a language doesn't necessarily mean
+ building the successor to Java; often a thorny
+ problem can be {{#ci|cleared}} up by a change of
+ {{#x|notation}}...
+        -- \"The Practice of Programming\"
+    
+ 发明一种语言并不一定意味着创建 Java 的继承者；通
+ 常一个很棘手的问题可以通过记法上的改变而获得澄清。
+        -- 《程序设计实践》
+----
+{{#cm|Case #1}}: Formated output
+   
+案例 #1: 格式化输出
+----
+    {{#cm|// The C++ style:}}
+    cout &lt;&lt; {{#x|"{ list["}} &lt;&lt; i &lt;&lt; {{#x|"]["}} &lt;&lt; j
+         &lt;&lt; {{#x|"] = "}} &lt;&lt; elems[i][j] &lt;&lt; {{#x|" }\\n"}};
+   
++{{#x|☹}} This is {{#ci|ugly}}.
+----
+    {{#cm|// The C style:}}
+    printf({{#x|"{ list[%d][%d] = %f }\\n"}},
+           i, j, elems[i][j]);
+   
++{{#x|☺}} This is {{#ci|much better}}.
+----
+{{#cm|Case #2}}: A simple-minded {{#x|CSV}} file {{#ci|parser}}
+in {{#x|Perl 6}}
+   
+案例 #2: 一个简单的逗号分隔(CSV)文件的解析器
+（使用 Perl 6）
+----
+  {{#kw|my}} {{#v|$csv_src}} = slurp {{#v|$csv_file}};
+  {{#kw|my}} {{#v|@lines}} = split {{#x|/[\\n\\s]+/}}, {{#v|$csv_src}};
+  {{#kw|for}} {{#v|@lines}} -> {{#v|$line}} {
+      {{#kw|my}} {{#v|@fields}} = split {{#x|/\\s*,\\s*/}}, {{#v|$line}};
+      {{#cm|# process the fields here...}}
+   }
+----
+{{#x|☺}} Job {{#ci|done}}!
+   
+{{#cm|♨}} 
+----
+  In {{#x|large}} applications covering problem domains suitable
+  for {{#ci|both}} Perl and Java, the Java programmer can't hold 
+  a candle to me.
+                           -- Ovid
+   
+  对于 Perl 和 Java 都适合的大型应用，Java 程序员
+  根本无法赶上我的编程效率。
+----
+{{#tag|☆}} {{#ci|Higher}} order functions ({{#x|λ}} calculus)
+  
+高阶函数（λ 演算）
+----
+ C# {{#x|3.0}} (“C# Orcas”) introduces several language extensions that 
+ build on C# 2.0 to support the creation and use of {{#ci|higher order}},
+ {{#x|functional}} style class libraries. The extensions enable construction
+ of {{#ci|compositional}} APIs that have equal {{#ci|expressive power}} of query
+ languages in domains such as relational databases and XML.
+   
+                            -- C# Version 3.0 Specification
+----
+Closures
+➥ A piece of {{#x|code}} {{#ci|manipulable}} in {{#ci|arbitrary}} contexts
+----
+    {{#kw|my}} {{#v|$foo}} = { say {{#x|1}} + {{#x|2}} };
+    {{#kw|my}} {{#v|$bar}} = {{#v|$foo}};
+    {{#v|$bar}}.();  {{#cm|# prints 3}}
+    {{#v|$foo}}.();  {{#cm|# ditto }}
+----
+{{#x|☺}} Closures can {{#ci|remember}} the {{#x|context}}
+in which it was created.
+----
+    {{#kw|sub}} factory({{#v|$seed}}) {
+        {{#kw|return}} { say {{#v|$seed}} };
+    }
+    {{#kw|my}} {{#v|$foo}} = factory({{#x|7}});
+    {{#v|$foo}}.();  {{#cm|# prints 7}}
+    {{#kw|my}} {{#v|$bar}} = factory({{#x|100}});
+    {{#v|$bar}}.();  {{#cm|# prints 100}}
+    {{#v|$foo}}.();  {{#cm|# still prints 7}}
+----
+{{#x|Higher order}} functions
+➥ 0 {{#ci|loops}}
+  
+高阶函数
+➥ 0 循环
+----
+{{#cm|Case #1}}: We want to print out {{#ci|all}} the elements
+contained in an {{#x|array}} of {{#x|arrays}}.
+   
+案例 #1： 我们想打印出一个
+数组的数组里的所有元素。
+----
+    {{#cm|// The C# way (using loops):}}
+    {{#kw|int}}[][] elems = {{#kw|new int}}[][] {
+        {{#kw|new int}}[] {1,2}, {{#kw|new int}}[] {3,4,5}
+    };
+    {{#kw|for}} ({{#kw|int}} i = 0; i &lt; elems.length; i++)
+        {{#kw|for}} ({{#kw|int}} j = 0; j &lt; elems[i].length; j++)
+            Console.WriteLine(elems[i][j]);
+----
+    {{#cm|# The Perl 6 way:}}
+    {{#kw|my}} {{#v|@elems}} = [1,2], [3,4,5];
+    map { map { .say }, {{#v|$\_}} }, {{#v|@elems}};
+----
+    {{#cm|# Anyway, we can still use loops in Perl 6:}}
+    {{#kw|my}} {{#v|@elems}} = [1,2], [3,4,5];
+    {{#kw|for}} {{#v|@elems}} { {{#kw|for}} {{#v|\@\$\_}} { .say } }
+----
+{{#cm|Case #2}}: We want to {{#ci|filter}} out customers with
+{{#x|income}} higher than $ 5000.
+   
+案例 #2: 我们想到筛选出所有收入在 5000 美
+元以上的客户
+----
+  
+  {{#cm|# Traditional way in Perl 6 (using loops):}}
+  {{#kw|my}} {{#v|@res}};
+  {{#kw|for}} {{#v|@customers}} -> {{#v|$customer}} {
+      {{#kw|if}} {{#v|$customer}}.income() > {{#x|5000}} {
+          push {{#v|@res}}, {{#v|$customer}};
+      }
+  }
+   
+----
+   
+      {{#cm|# As before, but more concise:}}
+      {{#kw|my}} {{#v|@res}};
+      {{#kw|for}} {{#v|@customers}} {
+          {{#kw|if}} .income > {{#x|5000}} {
+              push {{#v|@res}}, {{#v|$\_}};
+          }
+      }
+  
+----
+ 
+     {{#cm|# A functional-style solution:}}
+     {{#kw|my}} {{#v|@res}} =
+          grep { .income > {{#x|5000}} }, {{#v|@customers}};
+  
+----
+{{#x|Higher order}} functions
+➥ As {{#ci|expressive}} as SQL
+  
+高阶函数
+➥ 拥有和 SQL 一样的表达力
+----
+{{#cm|Case #1}}: Customer {{#x|filtering}} and {{#x|sorting}}
+  
+案例 #1: 客户筛选与排序
+----
+   {{#kw|select}} *
+   {{#kw|from}} customers
+   {{#kw|where}} income > 5000 {{#kw|and}} gender = {{#x|'female'}}
+   {{#kw|order by}} name
+----
+ {{#kw|my}} {{#v|@res}} =
+    sort { {{#v|$^a}}.name {{#kw|cmp}} {{#v|$^b}}.name },
+       grep { .income > {{#x|5000}} {{#kw|and}} .gender {{#kw|eq}} {{#x|'female'}} },
+            {{#v|@customers}};
+----
+{{#cm|Case #2}}: Boy student {{#ci|statistics}}
+  
+案例 #2: 男生统计信息
+----
+  
+  {{#kw|select}} class_id, {{#kw|count}}(*) {{#kw|as}} count
+  {{#kw|from}} students
+  {{#kw|where}} gender = {{#x|'male'}}
+  {{#kw|group by}} class_id
+  {{#kw|order by}} count {{#kw|desc}}
+    
+----
+   {{#kw|my}} {{#v|%class}};
+    map { {{#v|%class}}{.class_id}++ },
+        grep { .gender {{#kw|eq}} {{#x|'male'}} }, {{#v|@student}};
+   {{#kw|my}} {{#v|@res}} =
+        reverse sort { {{#v|$^a}}.value {{#kw|&lt;=>}} {{#v|$^b}}.value },
+                     {{#v|%class}}.pairs;
+----
+    {{#x|JIT}} slide making...
+   
+    即时幻灯片制做……
+----
+{{img src="#" width="0" height="0"}}
+{{img src="images/lastminute.png" width="361" height="455"}}
+----
+{{#c|Thank you!}}
+☺
+</html:textarea>
+
+<deck flex="1" id="deck">
+ <vbox flex="1" onmousemove="Sporx.onMouseMoveOnCanvas(event);">
+  <toolbox id="canvasToolbar">
+   <toolbar>
+    <toolbarbutton oncommand="Sporx.home()" label="|&lt;&lt;" observes="canBack"/>
+    <toolbarbutton oncommand="Sporx.back()" label="&lt;" observes="canBack"/>
+    <toolbarbutton oncommand="Sporx.forward()" label="&gt;" observes="canForward"/>
+    <toolbarbutton oncommand="Sporx.end()" label="&gt;&gt;|" observes="canForward"/>
+    <toolbarseparator/>
+    <hbox align="center">
+     <textbox id="current_page" size="4" oninput="if (this.value) Sporx.showPage(parseInt(this.value)-1);"/>
+     <description value="/"/>
+     <description id="max_page"/>
+    </hbox>
+    <toolbarseparator/>
+    <vbox flex="2">
+     <spacer flex="1"/>
+     <scrollbar id="scroller" align="center" orient="horizontal" oncommand="Sporx.showPage(parseInt(event.target.getAttribute('curpos')));" onclick="Sporx.showPage(parseInt(event.target.getAttribute('curpos')));" onmousedown="Sporx.onScrollerDragStart();" onmousemove="Sporx.onScrollerDragMove();" onmouseup="Sporx.onScrollerDragDrop();"/>
+     <spacer flex="1"/>
+    </vbox>
+    <toolbarseparator/>
+    <spacer flex="1"/>
+    <toolbarseparator/>
+    <toolbarbutton id="toggleEva" label="Eva" type="checkbox" autoCheck="false" oncommand="Sporx.toggleEvaMode();"/>
+    <toolbarseparator/>
+    <toolbarbutton label="Edit" oncommand="Sporx.toggleEditMode();"/>
+    <toolbarbutton oncommand="Sporx.reload();" label="Reload"/>
+   </toolbar>
+  </toolbox>
+  <vbox flex="1" id="canvas" onclick="Sporx.onPresentationClick(event);">
+   <spacer flex="1"/>
+   <hbox flex="1">
+    <spacer flex="1"/>
+    <vbox id="content"/>
+    <spacer flex="1"/>
+   </hbox>
+   <spacer flex="1"/>
+  </vbox>
+ </vbox>
+ <vbox flex="1" id="edit">
+  <toolbox>
+   <toolbar>
+    <toolbarbutton label="New Page" oncommand="Sporx.addPage()"/>
+    <spacer flex="1"/>
+    <toolbarseparator/>
+    <toolbarbutton label="View" oncommand="Sporx.toggleEditMode();"/>
+    <toolbarbutton oncommand="Sporx.reload();" label="Reload"/>
+   </toolbar>
+  </toolbox>
+  <textbox id="textField" flex="1" multiline="true" oninput="Sporx.onEdit()"/>
+  <hbox collapsed="true">
+   <iframe id="dataLoader" onload="if (window.Sporx) Sporx.onDataLoad();"/>
+  </hbox>
+ </vbox>
+</deck>
+
+<broadcasterset>
+ <broadcaster id="canBack"/>
+ <broadcaster id="canForward"/>
+</broadcasterset>
+
+<commandset>
+ <command id="cmd_forward" oncommand="if (Sporx.isPresentationMode) Sporx.forward();"/>
+ <command id="cmd_back" oncommand="if (Sporx.isPresentationMode) Sporx.back();"/>
+ <command id="cmd_home" oncommand="if (Sporx.isPresentationMode) Sporx.home();"/>
+ <command id="cmd_end" oncommand="if (Sporx.isPresentationMode) Sporx.end();"/>
+</commandset>
+
+<keyset>
+ <key key=" "                   command="cmd_forward"/>
+ <key keycode="VK_ENTER"        command="cmd_forward"/>
+ <key keycode="VK_RETURN"       command="cmd_forward"/>
+ <key keycode="VK_PAGE_DOWN"    command="cmd_forward"/>
+ <key keycode="VK_RIGHT"        command="cmd_forward"/>
+ <key keycode="VK_DOWN"         command="cmd_forward"/>
+ <!--key keycode="VK_BACK_SPACE"   command="cmd_back"/-->
+ <key keycode="VK_UP"           command="cmd_back"/>
+ <key keycode="VK_PAGE_UP"      command="cmd_back"/>
+ <!--<key keycode="VK_BACK_UP"    command="cmd_back"/>-->
+ <!--<key keycode="VK_BACK_LEFT"  command="cmd_back"/>-->
+ <key keycode="VK_HOME"         command="cmd_home"/>
+ <!--<key keycode="VK_END"        command="cmd_end"/>-->
+
+ <key key="n" modifiers="accel" oncommand="Sporx.addPage();"/>
+ <key key="r" modifiers="accel" oncommand="window.location.reload();"/>
+ <key key="e" modifiers="accel" oncommand="Sporx.toggleEditMode();"/>
+ <key key="a" modifiers="accel" oncommand="Sporx.toggleEvaMode();"/>
+</keyset>
+
+
+<script src="lib/sporx.js" type="application/x-javascript" />
+
+</page>
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is the Takahashi-Method-based Presentation Tool in XUL.
+   -
+   - The Initial Developer of the Original Code is SHIMODA Hiroshi.
+   - Portions created by the Initial Developer are Copyright (C) 2005
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s): SHIMODA Hiroshi <piro@p.club.ne.jp>
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
