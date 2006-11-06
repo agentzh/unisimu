@@ -26,4 +26,4 @@ test: all
 	prove *.t
 
 clean:
-	$(rm_f) *.pro 0*.xpro 0*.xclp 0*.clp vectorize.clp vector-eval.clp preprocess.clp
+	$(rm_f) *.pro 0*.xpro 0*.xclp *.clp CLIPSx.pm
