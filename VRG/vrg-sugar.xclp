@@ -13,3 +13,6 @@ infix:<!A>   "nonoblique".
 
 infix:<on>   "on".
 infix:<!on>  "not_on".
+
+infix_prefix:<%>  "space-relation".
+infix_prefix:<@>  "vector-relation".

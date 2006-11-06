@@ -47,6 +47,11 @@ sub match_infix {
     return match($_[0], \@keys);
 }
 
+sub match_infix_prefix {
+    my @keys = sort { -($a cmp $b) } keys %::infix_prefix;
+    return match($_[0], \@keys);
+}
+
 sub match {
     $_[0] =~ s/^\s+//;
     my $rkeys = pop;

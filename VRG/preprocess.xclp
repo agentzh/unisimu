@@ -2,7 +2,7 @@
 
 include "vrg-sugar.xclp".
 
-module vectorize.
+module Vectorize.
 
 #?A, #?B, meet(?A, ?B, ?l) => ?A %!// ?B, ?l %on ?A, ?l %on ?B.
 

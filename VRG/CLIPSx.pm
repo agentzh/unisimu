@@ -841,6 +841,164 @@ sub Parse::RecDescent::CLIPSx::string
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
+sub Parse::RecDescent::CLIPSx::ws
+{
+	my $thisparser = $_[0];
+	use vars q{$tracelevel};
+	local $tracelevel = ($tracelevel||0)+1;
+	$ERRORS = 0;
+	my $thisrule = $thisparser->{"rules"}{"ws"};
+	
+	Parse::RecDescent::_trace(q{Trying rule: [ws]},
+				  Parse::RecDescent::_tracefirst($_[1]),
+				  q{ws},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+
+	
+	my $err_at = @{$thisparser->{errors}};
+
+	my $score;
+	my $score_return;
+	my $_tok;
+	my $return = undef;
+	my $_matched=0;
+	my $commit=0;
+	my @item = ();
+	my %item = ();
+	my $repeating =  defined($_[2]) && $_[2];
+	my $_noactions = defined($_[3]) && $_[3];
+ 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
+	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
+	my $text;
+	my $lastsep="";
+	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
+	$expectation->at($_[1]);
+	
+	my $thisoffset;
+	tie $thisoffset, q{Parse::RecDescent::OffsetCounter}, \$text, $thisparser;
+	
+	my $prevoffset;
+	tie $prevoffset, q{Parse::RecDescent::OffsetCounter}, \$text, $thisparser, 1;
+	
+	my $thiscolumn;
+	tie $thiscolumn, q{Parse::RecDescent::ColCounter}, \$text, $thisparser;
+	
+	my $prevcolumn;
+	tie $prevcolumn, q{Parse::RecDescent::ColCounter}, \$text, $thisparser, 1;
+	
+	my $prevline;
+	tie $prevline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser, 1;
+	
+	my $thisline;
+	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+
+	
+
+	while (!$_matched && !$commit)
+	{
+		
+		Parse::RecDescent::_trace(q{Trying production: [/[\\n\\s]*/]},
+					  Parse::RecDescent::_tracefirst($_[1]),
+					  q{ws},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		my $thisprod = $thisrule->{"prods"}[0];
+		$text = $_[1];
+		my $_savetext;
+		@item = (q{ws});
+		%item = (__RULE__ => q{ws});
+		my $repcount = 0;
+
+		my @itempos = ({});
+
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying terminal: [/[\\n\\s]*/]}, Parse::RecDescent::_tracefirst($text),
+					  q{ws},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$lastsep = "";
+		$expectation->is(q{})->at($text);
+		
+
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
+		$itempos[$#itempos]{'offset'}{'from'} += length($1);
+		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
+		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
+	 1} and   $text =~ s/\A(?:[\n\s]*)//)
+		{
+			
+			$expectation->failed();
+			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+						  Parse::RecDescent::_tracefirst($text))
+					if defined $::RD_TRACE;
+
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+						. $& . q{])},
+						  Parse::RecDescent::_tracefirst($text))
+					if defined $::RD_TRACE;
+		push @item, $item{__PATTERN1__}=$&;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+
+		Parse::RecDescent::_trace(q{>>Matched production: [/[\\n\\s]*/]<<},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{ws},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$_matched = 1;
+		last;
+	}
+
+
+        unless ( $_matched || defined($return) || defined($score) )
+	{
+		
+
+		$_[1] = $text;	# NOT SURE THIS IS NEEDED
+		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+					 Parse::RecDescent::_tracefirst($_[1]),
+					 q{ws},
+					 $tracelevel)
+					if defined $::RD_TRACE;
+		return undef;
+	}
+	if (!defined($return) && defined($score))
+	{
+		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+					  q{ws},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$return = $score_return;
+	}
+	splice @{$thisparser->{errors}}, $err_at;
+	$return = $item[$#item] unless defined $return;
+	if (defined $::RD_TRACE)
+	{
+		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+					  $return . q{])}, "",
+					  q{ws},
+					  $tracelevel);
+		Parse::RecDescent::_trace(q{(consumed: [} .
+					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+					  Parse::RecDescent::_tracefirst($text),
+					  , q{ws},
+					  $tracelevel)
+	}
+	$_[1] = $text;
+	return $return;
+}
+
+# ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
 sub Parse::RecDescent::CLIPSx::rule
 {
 	my $thisparser = $_[0];
@@ -898,7 +1056,7 @@ sub Parse::RecDescent::CLIPSx::rule
 	while (!$_matched && !$commit)
 	{
 		
-		Parse::RecDescent::_trace(q{Trying production: [disjunction '=>' <commit> new_facts '.' /[\\n\\s]*/]},
+		Parse::RecDescent::_trace(q{Trying production: [disjunction '=>' <commit> new_facts '.' ws]},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{rule},
 					  $tracelevel)
@@ -1100,34 +1258,35 @@ sub Parse::RecDescent::CLIPSx::rule
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
 	
-		Parse::RecDescent::_trace(q{Trying terminal: [/[\\n\\s]*/]}, Parse::RecDescent::_tracefirst($text),
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{rule},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{rule},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
 					  q{rule},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/[\\n\\s]*/})->at($text);
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
 		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A(?:[\n\s]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
 
 		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
 		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
@@ -1169,7 +1328,7 @@ sub Parse::RecDescent::CLIPSx::rule
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
 
-		Parse::RecDescent::_trace(q{>>Matched production: [disjunction '=>' <commit> new_facts '.' /[\\n\\s]*/]<<},
+		Parse::RecDescent::_trace(q{>>Matched production: [disjunction '=>' <commit> new_facts '.' ws]<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{rule},
 					  $tracelevel)
@@ -2459,7 +2618,7 @@ sub Parse::RecDescent::CLIPSx::statement
 	while (!$_matched && !$commit)
 	{
 		
-		Parse::RecDescent::_trace(q{Trying production: [facts '.' /[\\n\\s]*/]},
+		Parse::RecDescent::_trace(q{Trying production: [facts '.' ws]},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{statement},
 					  $tracelevel)
@@ -2552,34 +2711,35 @@ sub Parse::RecDescent::CLIPSx::statement
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
 	
-		Parse::RecDescent::_trace(q{Trying terminal: [/[\\n\\s]*/]}, Parse::RecDescent::_tracefirst($text),
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{statement},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{statement},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
 					  q{statement},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/[\\n\\s]*/})->at($text);
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
 		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A(?:[\n\s]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
 
 		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
 		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
@@ -2616,7 +2776,7 @@ sub Parse::RecDescent::CLIPSx::statement
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
 
-		Parse::RecDescent::_trace(q{>>Matched production: [facts '.' /[\\n\\s]*/]<<},
+		Parse::RecDescent::_trace(q{>>Matched production: [facts '.' ws]<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{statement},
 					  $tracelevel)
@@ -4742,7 +4902,7 @@ sub Parse::RecDescent::CLIPSx::infix_prefix
 	while (!$_matched && !$commit)
 	{
 		
-		Parse::RecDescent::_trace(q{Trying production: ['@']},
+		Parse::RecDescent::_trace(q{Trying production: []},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{infix_prefix},
 					  $tracelevel)
@@ -4760,43 +4920,6 @@ sub Parse::RecDescent::CLIPSx::infix_prefix
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
 	
-		Parse::RecDescent::_trace(q{Trying terminal: ['@']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{infix_prefix},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A\@//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
-		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
-		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
-	
-		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
-				'line'   => {'from'=>$thisline,   'to'=>undef},
-				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
-	
 		Parse::RecDescent::_trace(q{Trying action},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{infix_prefix},
@@ -4804,7 +4927,7 @@ sub Parse::RecDescent::CLIPSx::infix_prefix
 						if defined $::RD_TRACE;
 		
 
-		$_tok = ($_noactions) ? 0 : do { 'vector-relation' };
+		$_tok = ($_noactions) ? 0 : do { ::match_infix_prefix($text) };
 		unless (defined $_tok)
 		{
 			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
@@ -4823,71 +4946,6 @@ sub Parse::RecDescent::CLIPSx::infix_prefix
 		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
-
-		Parse::RecDescent::_trace(q{>>Matched production: ['@']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{infix_prefix},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
-
-
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['%']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{infix_prefix},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{infix_prefix});
-		%item = (__RULE__ => q{infix_prefix});
-		my $repcount = 0;
-
-		my @itempos = ({});
-
-		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
-				'line'   => {'from'=>$thisline,   'to'=>undef},
-				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
-	
-		Parse::RecDescent::_trace(q{Trying terminal: ['%']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{infix_prefix},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A\%//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
-		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
-		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
-	
 		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
@@ -4899,7 +4957,7 @@ sub Parse::RecDescent::CLIPSx::infix_prefix
 						if defined $::RD_TRACE;
 		
 
-		$_tok = ($_noactions) ? 0 : do { 'space-relation' };
+		$_tok = ($_noactions) ? 0 : do { $::infix_prefix{$item[1]} };
 		unless (defined $_tok)
 		{
 			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
@@ -4911,7 +4969,7 @@ sub Parse::RecDescent::CLIPSx::infix_prefix
 					  Parse::RecDescent::_tracefirst($text))
 						if defined $::RD_TRACE;
 		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
+		$item{__ACTION2__}=$_tok;
 		
 
 		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
@@ -4919,7 +4977,7 @@ sub Parse::RecDescent::CLIPSx::infix_prefix
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['%']<<},
+		Parse::RecDescent::_trace(q{>>Matched production: []<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{infix_prefix},
 					  $tracelevel)
@@ -8188,7 +8246,7 @@ sub Parse::RecDescent::CLIPSx::directive
 	while (!$_matched && !$commit)
 	{
 		
-		Parse::RecDescent::_trace(q{Trying production: ['module' <commit> identifier '.' /[\\n\\s]*/]},
+		Parse::RecDescent::_trace(q{Trying production: ['module' <commit> identifier '.' ws]},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{directive},
 					  $tracelevel)
@@ -8352,34 +8410,35 @@ sub Parse::RecDescent::CLIPSx::directive
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
 	
-		Parse::RecDescent::_trace(q{Trying terminal: [/[\\n\\s]*/]}, Parse::RecDescent::_tracefirst($text),
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/[\\n\\s]*/})->at($text);
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
 		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A(?:[\n\s]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
 
 		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
 		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
@@ -8396,7 +8455,7 @@ sub Parse::RecDescent::CLIPSx::directive
 						if defined $::RD_TRACE;
 		
 
-		$_tok = ($_noactions) ? 0 : do { $::module = uc($item{identifier}) . '::'; '' };
+		$_tok = ($_noactions) ? 0 : do { $::module = $item{identifier} . '::'; '' };
 		unless (defined $_tok)
 		{
 			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
@@ -8416,7 +8475,7 @@ sub Parse::RecDescent::CLIPSx::directive
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['module' <commit> identifier '.' /[\\n\\s]*/]<<},
+		Parse::RecDescent::_trace(q{>>Matched production: ['module' <commit> identifier '.' ws]<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
@@ -8429,7 +8488,7 @@ sub Parse::RecDescent::CLIPSx::directive
 	while (!$_matched && !$commit)
 	{
 		
-		Parse::RecDescent::_trace(q{Trying production: ['include' <commit> string '.' /[\\n\\s]*/]},
+		Parse::RecDescent::_trace(q{Trying production: ['include' <commit> string '.' ws]},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{directive},
 					  $tracelevel)
@@ -8593,34 +8652,35 @@ sub Parse::RecDescent::CLIPSx::directive
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
 	
-		Parse::RecDescent::_trace(q{Trying terminal: [/[\\n\\s]*/]}, Parse::RecDescent::_tracefirst($text),
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/[\\n\\s]*/})->at($text);
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
 		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A(?:[\n\s]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
 
 		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
 		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
@@ -8657,7 +8717,249 @@ sub Parse::RecDescent::CLIPSx::directive
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['include' <commit> string '.' /[\\n\\s]*/]<<},
+		Parse::RecDescent::_trace(q{>>Matched production: ['include' <commit> string '.' ws]<<},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$_matched = 1;
+		last;
+	}
+
+
+	while (!$_matched && !$commit)
+	{
+		
+		Parse::RecDescent::_trace(q{Trying production: ['define' <commit> predicate '.' ws]},
+					  Parse::RecDescent::_tracefirst($_[1]),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		my $thisprod = $thisrule->{"prods"}[2];
+		$text = $_[1];
+		my $_savetext;
+		@item = (q{directive});
+		%item = (__RULE__ => q{directive});
+		my $repcount = 0;
+
+		my @itempos = ({});
+
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying terminal: ['define']},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$lastsep = "";
+		$expectation->is(q{})->at($text);
+		
+
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
+		$itempos[$#itempos]{'offset'}{'from'} += length($1);
+		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
+		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
+	 1} and   $text =~ s/\Adefine//)
+		{
+			
+			$expectation->failed();
+			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+						. $& . q{])},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		push @item, $item{__STRING1__}=$&;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		
+
+		Parse::RecDescent::_trace(q{Trying directive: [<commit>]},
+					Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE; 
+		$_tok = do { $commit = 1 };
+		if (defined($_tok))
+		{
+			Parse::RecDescent::_trace(q{>>Matched directive<< (return value: [}
+						. $_tok . q{])},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		else
+		{
+			Parse::RecDescent::_trace(q{<<Didn't match directive>>},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		
+		last unless defined $_tok;
+		push @item, $item{__DIRECTIVE1__}=$_tok;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying subrule: [predicate]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{predicate})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::predicate($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [predicate]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [predicate]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$item{q{predicate}} = $_tok;
+		push @item, $_tok;
+		
+		}
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying terminal: ['.']},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$lastsep = "";
+		$expectation->is(q{'.'})->at($text);
+		
+
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
+		$itempos[$#itempos]{'offset'}{'from'} += length($1);
+		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
+		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
+	 1} and   $text =~ s/\A\.//)
+		{
+			
+			$expectation->failed();
+			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+						. $& . q{])},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		push @item, $item{__STRING2__}=$&;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
+		
+		}
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying action},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		
+
+		$_tok = ($_noactions) ? 0 : do { $item{predicate} };
+		unless (defined $_tok)
+		{
+			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+					if defined $::RD_TRACE;
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+					  . $_tok . q{])},
+					  Parse::RecDescent::_tracefirst($text))
+						if defined $::RD_TRACE;
+		push @item, $_tok;
+		$item{__ACTION1__}=$_tok;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+
+		Parse::RecDescent::_trace(q{>>Matched production: ['define' <commit> predicate '.' ws]<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
@@ -8670,12 +8972,12 @@ sub Parse::RecDescent::CLIPSx::directive
 	while (!$_matched && !$commit)
 	{
 		local $skip = defined($skip) ? $skip : $Parse::RecDescent::skip;
-		Parse::RecDescent::_trace(q{Trying production: ['prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\\n\\s]*/]},
+		Parse::RecDescent::_trace(q{Trying production: ['prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws]},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{directive},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[2];
+		my $thisprod = $thisrule->{"prods"}[3];
 		$text = $_[1];
 		my $_savetext;
 		@item = (q{directive});
@@ -8977,34 +9279,35 @@ sub Parse::RecDescent::CLIPSx::directive
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
 	
-		Parse::RecDescent::_trace(q{Trying terminal: [/[\\n\\s]*/]}, Parse::RecDescent::_tracefirst($text),
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/[\\n\\s]*/})->at($text);
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
 		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A(?:[\n\s]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
 
 		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
 		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
@@ -9041,7 +9344,7 @@ sub Parse::RecDescent::CLIPSx::directive
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\\n\\s]*/]<<},
+		Parse::RecDescent::_trace(q{>>Matched production: ['prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws]<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
@@ -9054,12 +9357,12 @@ sub Parse::RecDescent::CLIPSx::directive
 	while (!$_matched && !$commit)
 	{
 		local $skip = defined($skip) ? $skip : $Parse::RecDescent::skip;
-		Parse::RecDescent::_trace(q{Trying production: ['infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\\n\\s]*/]},
+		Parse::RecDescent::_trace(q{Trying production: ['infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws]},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{directive},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[3];
+		my $thisprod = $thisrule->{"prods"}[4];
 		$text = $_[1];
 		my $_savetext;
 		@item = (q{directive});
@@ -9361,34 +9664,35 @@ sub Parse::RecDescent::CLIPSx::directive
 				'line'   => {'from'=>$thisline,   'to'=>undef},
 				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
 	
-		Parse::RecDescent::_trace(q{Trying terminal: [/[\\n\\s]*/]}, Parse::RecDescent::_tracefirst($text),
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/[\\n\\s]*/})->at($text);
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
 		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
-		$itempos[$#itempos]{'offset'}{'from'} += length($1);
-		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
-		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
-	 1} and   $text =~ s/\A(?:[\n\s]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
 
 		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
 		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
@@ -9425,7 +9729,392 @@ sub Parse::RecDescent::CLIPSx::directive
 		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
 	
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\\n\\s]*/]<<},
+		Parse::RecDescent::_trace(q{>>Matched production: ['infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws]<<},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$_matched = 1;
+		last;
+	}
+
+
+	while (!$_matched && !$commit)
+	{
+		local $skip = defined($skip) ? $skip : $Parse::RecDescent::skip;
+		Parse::RecDescent::_trace(q{Trying production: ['infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws]},
+					  Parse::RecDescent::_tracefirst($_[1]),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		my $thisprod = $thisrule->{"prods"}[5];
+		$text = $_[1];
+		my $_savetext;
+		@item = (q{directive});
+		%item = (__RULE__ => q{directive});
+		my $repcount = 0;
+
+		my @itempos = ({});
+
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying terminal: ['infix_prefix:<']},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$lastsep = "";
+		$expectation->is(q{})->at($text);
+		
+
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
+		$itempos[$#itempos]{'offset'}{'from'} += length($1);
+		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
+		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
+	 1} and   $text =~ s/\Ainfix_prefix\:\<//)
+		{
+			
+			$expectation->failed();
+			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+						. $& . q{])},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		push @item, $item{__STRING1__}=$&;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		
+
+		Parse::RecDescent::_trace(q{Trying directive: [<commit>]},
+					Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE; 
+		$_tok = do { $commit = 1 };
+		if (defined($_tok))
+		{
+			Parse::RecDescent::_trace(q{>>Matched directive<< (return value: [}
+						. $_tok . q{])},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		else
+		{
+			Parse::RecDescent::_trace(q{<<Didn't match directive>>},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		
+		last unless defined $_tok;
+		push @item, $item{__DIRECTIVE1__}=$_tok;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		
+
+		Parse::RecDescent::_trace(q{Trying directive: [<skip:''>]},
+					Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE; 
+		$_tok = do { my $oldskip = $skip; $skip=''; $oldskip };
+		if (defined($_tok))
+		{
+			Parse::RecDescent::_trace(q{>>Matched directive<< (return value: [}
+						. $_tok . q{])},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		else
+		{
+			Parse::RecDescent::_trace(q{<<Didn't match directive>>},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		
+		last unless defined $_tok;
+		push @item, $item{__DIRECTIVE2__}=$_tok;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying subrule: [pattern]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{pattern})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::pattern($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [pattern]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [pattern]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$item{q{pattern}} = $_tok;
+		push @item, $_tok;
+		
+		}
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying terminal: ['>']},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$lastsep = "";
+		$expectation->is(q{'>'})->at($text);
+		
+
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
+		$itempos[$#itempos]{'offset'}{'from'} += length($1);
+		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
+		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
+	 1} and   $text =~ s/\A\>//)
+		{
+			
+			$expectation->failed();
+			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+						. $& . q{])},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		push @item, $item{__STRING2__}=$&;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		
+
+		Parse::RecDescent::_trace(q{Trying directive: [<skip:'\s*'>]},
+					Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE; 
+		$_tok = do { my $oldskip = $skip; $skip='\s*'; $oldskip };
+		if (defined($_tok))
+		{
+			Parse::RecDescent::_trace(q{>>Matched directive<< (return value: [}
+						. $_tok . q{])},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		else
+		{
+			Parse::RecDescent::_trace(q{<<Didn't match directive>>},
+						Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		}
+		
+		last unless defined $_tok;
+		push @item, $item{__DIRECTIVE3__}=$_tok;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying subrule: [string]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{string})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::string($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [string]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [string]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$item{q{string}} = $_tok;
+		push @item, $_tok;
+		
+		}
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying terminal: ['.']},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$lastsep = "";
+		$expectation->is(q{'.'})->at($text);
+		
+
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and do {
+		$itempos[$#itempos]{'offset'}{'from'} += length($1);
+		$itempos[$#itempos]{'line'}{'from'}   = $thisline;
+		$itempos[$#itempos]{'column'}{'from'} = $thiscolumn;
+	 1} and   $text =~ s/\A\.//)
+		{
+			
+			$expectation->failed();
+			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+						. $& . q{])},
+						  Parse::RecDescent::_tracefirst($text))
+							if defined $::RD_TRACE;
+		push @item, $item{__STRING3__}=$&;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying subrule: [ws]},
+				  Parse::RecDescent::_tracefirst($text),
+				  q{directive},
+				  $tracelevel)
+					if defined $::RD_TRACE;
+		if (1) { no strict qw{refs};
+		$expectation->is(q{ws})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::CLIPSx::ws($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		{
+			
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ws]>>},
+						  Parse::RecDescent::_tracefirst($text),
+						  q{directive},
+						  $tracelevel)
+							if defined $::RD_TRACE;
+			$expectation->failed();
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [ws]<< (return value: [}
+					. $_tok . q{]},
+					  
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$item{q{ws}} = $_tok;
+		push @item, $_tok;
+		
+		}
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+		push @itempos, {'offset' => {'from'=>$thisoffset, 'to'=>undef},
+				'line'   => {'from'=>$thisline,   'to'=>undef},
+				'column' => {'from'=>$thiscolumn, 'to'=>undef} };
+	
+		Parse::RecDescent::_trace(q{Trying action},
+					  Parse::RecDescent::_tracefirst($text),
+					  q{directive},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		
+
+		$_tok = ($_noactions) ? 0 : do { $::infix_prefix{$item{pattern}} = eval $item{string}; '' };
+		unless (defined $_tok)
+		{
+			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+					if defined $::RD_TRACE;
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+					  . $_tok . q{])},
+					  Parse::RecDescent::_tracefirst($text))
+						if defined $::RD_TRACE;
+		push @item, $_tok;
+		$item{__ACTION1__}=$_tok;
+		
+
+		$itempos[$#itempos]{'offset'}{'to'} = $prevoffset;
+		$itempos[$#itempos]{'line'}{'to'}   = $prevline;
+		$itempos[$#itempos]{'column'}{'to'} = $prevcolumn;
+	
+
+		Parse::RecDescent::_trace(q{>>Matched production: ['infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws]<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{directive},
 					  $tracelevel)
@@ -9443,7 +10132,7 @@ sub Parse::RecDescent::CLIPSx::directive
 					  q{directive},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[4];
+		my $thisprod = $thisrule->{"prods"}[6];
 		
 		my $_savetext;
 		@item = (q{directive});
@@ -9777,7 +10466,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                'description' => '/\\\\d+(?:\\\\.\\\\d*)?/',
                                                                                                'lookahead' => 0,
                                                                                                'rdelim' => '/',
-                                                                                               'line' => 115,
+                                                                                               'line' => 124,
                                                                                                'mod' => '',
                                                                                                'ldelim' => '/'
                                                                                              }, 'Parse::RecDescent::Token' )
@@ -9799,17 +10488,17 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                'description' => '/\\\\.\\\\d+/',
                                                                                                'lookahead' => 0,
                                                                                                'rdelim' => '/',
-                                                                                               'line' => 116,
+                                                                                               'line' => 125,
                                                                                                'mod' => '',
                                                                                                'ldelim' => '/'
                                                                                              }, 'Parse::RecDescent::Token' )
                                                                                     ],
-                                                                         'line' => 116
+                                                                         'line' => 125
                                                                        }, 'Parse::RecDescent::Production' )
                                                               ],
                                                    'name' => 'number',
                                                    'vars' => '',
-                                                   'line' => 115
+                                                   'line' => 124
                                                  }, 'Parse::RecDescent::Rule' ),
                               'variable' => bless( {
                                                      'impcount' => 0,
@@ -9832,14 +10521,14 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                  'description' => '/\\\\?[A-Za-z_]([-\\\\w])*/',
                                                                                                  'lookahead' => 0,
                                                                                                  'rdelim' => '/',
-                                                                                                 'line' => 106,
+                                                                                                 'line' => 115,
                                                                                                  'mod' => '',
                                                                                                  'ldelim' => '/'
                                                                                                }, 'Parse::RecDescent::Token' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 106,
+                                                                                                 'line' => 115,
                                                                                                  'code' => '{ $item[1] . $item{identifier} }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
@@ -9859,15 +10548,15 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                  'hashname' => '__STRING1__',
                                                                                                  'description' => '\'?\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 107
+                                                                                                 'line' => 116
                                                                                                }, 'Parse::RecDescent::Literal' )
                                                                                       ],
-                                                                           'line' => 107
+                                                                           'line' => 116
                                                                          }, 'Parse::RecDescent::Production' )
                                                                 ],
                                                      'name' => 'variable',
                                                      'vars' => '',
-                                                     'line' => 106
+                                                     'line' => 115
                                                    }, 'Parse::RecDescent::Rule' ),
                               'fact' => bless( {
                                                  'impcount' => 0,
@@ -9928,7 +10617,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 118,
+                                                                                               'line' => 127,
                                                                                                'code' => '{ extract_delimited($text, \'"\') }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
@@ -9937,13 +10626,47 @@ package CLIPSx; sub new { my $self = bless( {
                                                               ],
                                                    'name' => 'string',
                                                    'vars' => '',
-                                                   'line' => 118
+                                                   'line' => 127
                                                  }, 'Parse::RecDescent::Rule' ),
+                              'ws' => bless( {
+                                               'impcount' => 0,
+                                               'calls' => [],
+                                               'changed' => 0,
+                                               'opcount' => 0,
+                                               'prods' => [
+                                                            bless( {
+                                                                     'number' => '0',
+                                                                     'strcount' => 0,
+                                                                     'dircount' => 0,
+                                                                     'uncommit' => undef,
+                                                                     'error' => undef,
+                                                                     'patcount' => 1,
+                                                                     'actcount' => 0,
+                                                                     'items' => [
+                                                                                  bless( {
+                                                                                           'pattern' => '[\\n\\s]*',
+                                                                                           'hashname' => '__PATTERN1__',
+                                                                                           'description' => '/[\\\\n\\\\s]*/',
+                                                                                           'lookahead' => 0,
+                                                                                           'rdelim' => '/',
+                                                                                           'line' => 70,
+                                                                                           'mod' => '',
+                                                                                           'ldelim' => '/'
+                                                                                         }, 'Parse::RecDescent::Token' )
+                                                                                ],
+                                                                     'line' => undef
+                                                                   }, 'Parse::RecDescent::Production' )
+                                                          ],
+                                               'name' => 'ws',
+                                               'vars' => '',
+                                               'line' => 70
+                                             }, 'Parse::RecDescent::Rule' ),
                               'rule' => bless( {
                                                  'impcount' => 0,
                                                  'calls' => [
                                                               'disjunction',
-                                                              'new_facts'
+                                                              'new_facts',
+                                                              'ws'
                                                             ],
                                                  'changed' => 0,
                                                  'opcount' => 0,
@@ -9954,7 +10677,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                        'dircount' => 1,
                                                                        'uncommit' => undef,
                                                                        'error' => undef,
-                                                                       'patcount' => 1,
+                                                                       'patcount' => 0,
                                                                        'actcount' => 1,
                                                                        'items' => [
                                                                                     bless( {
@@ -9995,15 +10718,13 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                              'line' => 6
                                                                                            }, 'Parse::RecDescent::Literal' ),
                                                                                     bless( {
-                                                                                             'pattern' => '[\\n\\s]*',
-                                                                                             'hashname' => '__PATTERN1__',
-                                                                                             'description' => '/[\\\\n\\\\s]*/',
+                                                                                             'subrule' => 'ws',
+                                                                                             'matchrule' => 0,
+                                                                                             'implicit' => undef,
+                                                                                             'argcode' => undef,
                                                                                              'lookahead' => 0,
-                                                                                             'rdelim' => '/',
-                                                                                             'line' => 6,
-                                                                                             'mod' => '',
-                                                                                             'ldelim' => '/'
-                                                                                           }, 'Parse::RecDescent::Token' ),
+                                                                                             'line' => 6
+                                                                                           }, 'Parse::RecDescent::Subrule' ),
                                                                                     bless( {
                                                                                              'hashname' => '__ACTION1__',
                                                                                              'lookahead' => 0,
@@ -10138,7 +10859,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                 'hashname' => '__STRING1__',
                                                                                                 'description' => '\'postfix\'',
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 126
+                                                                                                'line' => 134
                                                                                               }, 'Parse::RecDescent::Literal' )
                                                                                      ],
                                                                           'line' => undef
@@ -10146,7 +10867,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                ],
                                                     'name' => 'postfix',
                                                     'vars' => '',
-                                                    'line' => 126
+                                                    'line' => 134
                                                   }, 'Parse::RecDescent::Rule' ),
                               'literal' => bless( {
                                                     'impcount' => 0,
@@ -10173,7 +10894,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                 'implicit' => undef,
                                                                                                 'argcode' => undef,
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 109
+                                                                                                'line' => 118
                                                                                               }, 'Parse::RecDescent::Subrule' )
                                                                                      ],
                                                                           'line' => undef
@@ -10193,10 +10914,10 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                 'implicit' => undef,
                                                                                                 'argcode' => undef,
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 110
+                                                                                                'line' => 119
                                                                                               }, 'Parse::RecDescent::Subrule' )
                                                                                      ],
-                                                                          'line' => 110
+                                                                          'line' => 119
                                                                         }, 'Parse::RecDescent::Production' ),
                                                                  bless( {
                                                                           'number' => '2',
@@ -10213,15 +10934,15 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                 'implicit' => undef,
                                                                                                 'argcode' => undef,
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 111
+                                                                                                'line' => 120
                                                                                               }, 'Parse::RecDescent::Subrule' )
                                                                                      ],
-                                                                          'line' => 111
+                                                                          'line' => 120
                                                                         }, 'Parse::RecDescent::Production' )
                                                                ],
                                                     'name' => 'literal',
                                                     'vars' => '',
-                                                    'line' => 109
+                                                    'line' => 118
                                                   }, 'Parse::RecDescent::Rule' ),
                               'identifier' => bless( {
                                                        'impcount' => 0,
@@ -10244,7 +10965,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                    'description' => '/[A-Za-z_]([-\\\\w])*/',
                                                                                                    'lookahead' => 0,
                                                                                                    'rdelim' => '/',
-                                                                                                   'line' => 113,
+                                                                                                   'line' => 122,
                                                                                                    'mod' => '',
                                                                                                    'ldelim' => '/'
                                                                                                  }, 'Parse::RecDescent::Token' )
@@ -10254,7 +10975,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                   ],
                                                        'name' => 'identifier',
                                                        'vars' => '',
-                                                       'line' => 113
+                                                       'line' => 122
                                                      }, 'Parse::RecDescent::Rule' ),
                               'statement' => bless( {
                                                       'impcount' => 0,
@@ -10262,7 +10983,8 @@ package CLIPSx; sub new { my $self = bless( {
                                                                    'comment',
                                                                    'directive',
                                                                    'rule',
-                                                                   'facts'
+                                                                   'facts',
+                                                                   'ws'
                                                                  ],
                                                       'changed' => 0,
                                                       'opcount' => 0,
@@ -10333,7 +11055,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                             'dircount' => 0,
                                                                             'uncommit' => undef,
                                                                             'error' => undef,
-                                                                            'patcount' => 1,
+                                                                            'patcount' => 0,
                                                                             'actcount' => 1,
                                                                             'items' => [
                                                                                          bless( {
@@ -10352,15 +11074,13 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'line' => 60
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
-                                                                                                  'pattern' => '[\\n\\s]*',
-                                                                                                  'hashname' => '__PATTERN1__',
-                                                                                                  'description' => '/[\\\\n\\\\s]*/',
+                                                                                                  'subrule' => 'ws',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'rdelim' => '/',
-                                                                                                  'line' => 60,
-                                                                                                  'mod' => '',
-                                                                                                  'ldelim' => '/'
-                                                                                                }, 'Parse::RecDescent::Token' ),
+                                                                                                  'line' => 60
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
@@ -10669,20 +11389,20 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 91
+                                                                                                  'line' => 100
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'pattern' => ',',
                                                                                                   'hashname' => '__STRING1__',
                                                                                                   'description' => '\',\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 91
+                                                                                                  'line' => 100
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'name' => '<commit>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 91,
+                                                                                                  'line' => 100,
                                                                                                   'code' => '$commit = 1'
                                                                                                 }, 'Parse::RecDescent::Directive' ),
                                                                                          bless( {
@@ -10691,12 +11411,12 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 91
+                                                                                                  'line' => 100
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 93,
+                                                                                                  'line' => 102,
                                                                                                   'code' => '{ "    (assert $item{clause})\\n" . $item{new_facts} }'
                                                                                                 }, 'Parse::RecDescent::Action' )
                                                                                        ],
@@ -10717,16 +11437,16 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 95
+                                                                                                  'line' => 104
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 95,
+                                                                                                  'line' => 104,
                                                                                                   'code' => '{ "    (assert $item{clause})\\n" }'
                                                                                                 }, 'Parse::RecDescent::Action' )
                                                                                        ],
-                                                                            'line' => 95
+                                                                            'line' => 104
                                                                           }, 'Parse::RecDescent::Production' ),
                                                                    bless( {
                                                                             'number' => '2',
@@ -10742,21 +11462,21 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'commitonly' => '?',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 96
+                                                                                                  'line' => 105
                                                                                                 }, 'Parse::RecDescent::Error' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE2__',
                                                                                                   'name' => '<reject>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 96
+                                                                                                  'line' => 105
                                                                                                 }, 'Parse::RecDescent::UncondReject' )
                                                                                        ],
-                                                                            'line' => 96
+                                                                            'line' => 105
                                                                           }, 'Parse::RecDescent::Production' )
                                                                  ],
                                                       'name' => 'new_facts',
                                                       'vars' => '',
-                                                      'line' => 91
+                                                      'line' => 100
                                                     }, 'Parse::RecDescent::Rule' ),
                               'eofile' => bless( {
                                                    'impcount' => 0,
@@ -10814,7 +11534,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                               'implicit' => undef,
                                                                                               'argcode' => undef,
                                                                                               'lookahead' => 0,
-                                                                                              'line' => 123
+                                                                                              'line' => 131
                                                                                             }, 'Parse::RecDescent::Subrule' )
                                                                                    ],
                                                                         'line' => undef
@@ -10831,22 +11551,22 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                      bless( {
                                                                                               'hashname' => '__ACTION1__',
                                                                                               'lookahead' => 0,
-                                                                                              'line' => 124,
+                                                                                              'line' => 132,
                                                                                               'code' => '{ ::match_infix($text) }'
                                                                                             }, 'Parse::RecDescent::Action' ),
                                                                                      bless( {
                                                                                               'hashname' => '__ACTION2__',
                                                                                               'lookahead' => 0,
-                                                                                              'line' => 124,
+                                                                                              'line' => 132,
                                                                                               'code' => '{ $::infix{$item[1]} }'
                                                                                             }, 'Parse::RecDescent::Action' )
                                                                                    ],
-                                                                        'line' => 124
+                                                                        'line' => 132
                                                                       }, 'Parse::RecDescent::Production' )
                                                              ],
                                                   'name' => 'infix',
                                                   'vars' => '',
-                                                  'line' => 123
+                                                  'line' => 131
                                                 }, 'Parse::RecDescent::Rule' ),
                               'infix_prefix' => bless( {
                                                          'impcount' => 0,
@@ -10856,58 +11576,32 @@ package CLIPSx; sub new { my $self = bless( {
                                                          'prods' => [
                                                                       bless( {
                                                                                'number' => '0',
-                                                                               'strcount' => 1,
+                                                                               'strcount' => 0,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
                                                                                'error' => undef,
                                                                                'patcount' => 0,
-                                                                               'actcount' => 1,
+                                                                               'actcount' => 2,
                                                                                'items' => [
-                                                                                            bless( {
-                                                                                                     'pattern' => '@',
-                                                                                                     'hashname' => '__STRING1__',
-                                                                                                     'description' => '\'@\'',
-                                                                                                     'lookahead' => 0,
-                                                                                                     'line' => 120
-                                                                                                   }, 'Parse::RecDescent::Literal' ),
                                                                                             bless( {
                                                                                                      'hashname' => '__ACTION1__',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 120,
-                                                                                                     'code' => '{ \'vector-relation\' }'
+                                                                                                     'line' => 129,
+                                                                                                     'code' => '{ ::match_infix_prefix($text) }'
+                                                                                                   }, 'Parse::RecDescent::Action' ),
+                                                                                            bless( {
+                                                                                                     'hashname' => '__ACTION2__',
+                                                                                                     'lookahead' => 0,
+                                                                                                     'line' => 129,
+                                                                                                     'code' => '{ $::infix_prefix{$item[1]} }'
                                                                                                    }, 'Parse::RecDescent::Action' )
                                                                                           ],
                                                                                'line' => undef
-                                                                             }, 'Parse::RecDescent::Production' ),
-                                                                      bless( {
-                                                                               'number' => '1',
-                                                                               'strcount' => 1,
-                                                                               'dircount' => 0,
-                                                                               'uncommit' => undef,
-                                                                               'error' => undef,
-                                                                               'patcount' => 0,
-                                                                               'actcount' => 1,
-                                                                               'items' => [
-                                                                                            bless( {
-                                                                                                     'pattern' => '%',
-                                                                                                     'hashname' => '__STRING1__',
-                                                                                                     'description' => '\'%\'',
-                                                                                                     'lookahead' => 0,
-                                                                                                     'line' => 121
-                                                                                                   }, 'Parse::RecDescent::Literal' ),
-                                                                                            bless( {
-                                                                                                     'hashname' => '__ACTION1__',
-                                                                                                     'lookahead' => 0,
-                                                                                                     'line' => 121,
-                                                                                                     'code' => '{ \'space-relation\' }'
-                                                                                                   }, 'Parse::RecDescent::Action' )
-                                                                                          ],
-                                                                               'line' => 121
                                                                              }, 'Parse::RecDescent::Production' )
                                                                     ],
                                                          'name' => 'infix_prefix',
                                                          'vars' => '',
-                                                         'line' => 120
+                                                         'line' => 129
                                                        }, 'Parse::RecDescent::Rule' ),
                               'conjunction' => bless( {
                                                         'impcount' => 0,
@@ -11045,7 +11739,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                                        'implicit' => undef,
                                                                                                                        'argcode' => undef,
                                                                                                                        'lookahead' => 0,
-                                                                                                                       'line' => 128
+                                                                                                                       'line' => 136
                                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                                  'rightarg' => bless( {
                                                                                                                         'subrule' => 'clause',
@@ -11053,7 +11747,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                                         'implicit' => undef,
                                                                                                                         'argcode' => undef,
                                                                                                                         'lookahead' => 0,
-                                                                                                                        'line' => 128
+                                                                                                                        'line' => 136
                                                                                                                       }, 'Parse::RecDescent::Subrule' ),
                                                                                                  'hashname' => '__DIRECTIVE1__',
                                                                                                  'type' => 'leftop',
@@ -11063,7 +11757,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                                   'description' => '/([;,])/',
                                                                                                                   'lookahead' => 0,
                                                                                                                   'rdelim' => '/',
-                                                                                                                  'line' => 128,
+                                                                                                                  'line' => 136,
                                                                                                                   'mod' => '',
                                                                                                                   'ldelim' => '/'
                                                                                                                 }, 'Parse::RecDescent::Token' )
@@ -11071,7 +11765,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 130,
+                                                                                                 'line' => 138,
                                                                                                  'code' => '{ "\\n    " . join "", (map { m/^[;,]$/ ? "$_\\n    " : $_ } @{ $item[1] }); }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
@@ -11080,7 +11774,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                 ],
                                                      'name' => 'compound',
                                                      'vars' => '',
-                                                     'line' => 128
+                                                     'line' => 136
                                                    }, 'Parse::RecDescent::Rule' ),
                               'disjunction' => bless( {
                                                         'impcount' => 0,
@@ -11213,13 +11907,13 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                       'implicit' => undef,
                                                                                                       'argcode' => undef,
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 100
+                                                                                                      'line' => 109
                                                                                                     }, 'Parse::RecDescent::Subrule' ),
                                                                                              bless( {
                                                                                                       'hashname' => '__DIRECTIVE1__',
                                                                                                       'name' => '<commit>',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 100,
+                                                                                                      'line' => 109,
                                                                                                       'code' => '$commit = 1'
                                                                                                     }, 'Parse::RecDescent::Directive' ),
                                                                                              bless( {
@@ -11228,12 +11922,12 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                       'implicit' => undef,
                                                                                                       'argcode' => undef,
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 100
+                                                                                                      'line' => 109
                                                                                                     }, 'Parse::RecDescent::Subrule' ),
                                                                                              bless( {
                                                                                                       'hashname' => '__ACTION1__',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 100,
+                                                                                                      'line' => 109,
                                                                                                       'code' => '{ "$item{infix_prefix} $item{infix}" }'
                                                                                                     }, 'Parse::RecDescent::Action' )
                                                                                            ],
@@ -11254,10 +11948,10 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                       'implicit' => undef,
                                                                                                       'argcode' => undef,
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 101
+                                                                                                      'line' => 110
                                                                                                     }, 'Parse::RecDescent::Subrule' )
                                                                                            ],
-                                                                                'line' => 101
+                                                                                'line' => 110
                                                                               }, 'Parse::RecDescent::Production' ),
                                                                        bless( {
                                                                                 'number' => '2',
@@ -11273,21 +11967,21 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                       'hashname' => '__DIRECTIVE1__',
                                                                                                       'commitonly' => '?',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 102
+                                                                                                      'line' => 111
                                                                                                     }, 'Parse::RecDescent::Error' ),
                                                                                              bless( {
                                                                                                       'hashname' => '__DIRECTIVE2__',
                                                                                                       'name' => '<reject>',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 102
+                                                                                                      'line' => 111
                                                                                                     }, 'Parse::RecDescent::UncondReject' )
                                                                                            ],
-                                                                                'line' => 102
+                                                                                'line' => 111
                                                                               }, 'Parse::RecDescent::Production' )
                                                                      ],
                                                           'name' => 'general_infix',
                                                           'vars' => '',
-                                                          'line' => 100
+                                                          'line' => 109
                                                         }, 'Parse::RecDescent::Rule' ),
                               'pattern' => bless( {
                                                     'impcount' => 0,
@@ -11310,7 +12004,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                 'description' => '/\\\\S+(?=>)/',
                                                                                                 'lookahead' => 0,
                                                                                                 'rdelim' => '/',
-                                                                                                'line' => 89,
+                                                                                                'line' => 98,
                                                                                                 'mod' => '',
                                                                                                 'ldelim' => '/'
                                                                                               }, 'Parse::RecDescent::Token' )
@@ -11320,7 +12014,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                ],
                                                     'name' => 'pattern',
                                                     'vars' => '',
-                                                    'line' => 89
+                                                    'line' => 98
                                                   }, 'Parse::RecDescent::Rule' ),
                               'comment' => bless( {
                                                     'impcount' => 0,
@@ -11606,7 +12300,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                                         'implicit' => undef,
                                                                                                                         'argcode' => undef,
                                                                                                                         'lookahead' => 0,
-                                                                                                                        'line' => 104
+                                                                                                                        'line' => 113
                                                                                                                       }, 'Parse::RecDescent::Subrule' ),
                                                                                                   'rightarg' => bless( {
                                                                                                                          'subrule' => 'clause',
@@ -11614,7 +12308,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                                          'implicit' => undef,
                                                                                                                          'argcode' => undef,
                                                                                                                          'lookahead' => 0,
-                                                                                                                         'line' => 104
+                                                                                                                         'line' => 113
                                                                                                                        }, 'Parse::RecDescent::Subrule' ),
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'type' => 'leftop',
@@ -11623,13 +12317,13 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                                    'hashname' => '__STRING1__',
                                                                                                                    'description' => '\',\'',
                                                                                                                    'lookahead' => 0,
-                                                                                                                   'line' => 104
+                                                                                                                   'line' => 113
                                                                                                                  }, 'Parse::RecDescent::Literal' )
                                                                                                 }, 'Parse::RecDescent::Operator' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 104,
+                                                                                                  'line' => 113,
                                                                                                   'code' => '{ join \' \', @{ $item[1] } }'
                                                                                                 }, 'Parse::RecDescent::Action' )
                                                                                        ],
@@ -11638,13 +12332,15 @@ package CLIPSx; sub new { my $self = bless( {
                                                                  ],
                                                       'name' => 'arguments',
                                                       'vars' => '',
-                                                      'line' => 104
+                                                      'line' => 113
                                                     }, 'Parse::RecDescent::Rule' ),
                               'directive' => bless( {
                                                       'impcount' => 0,
                                                       'calls' => [
                                                                    'identifier',
+                                                                   'ws',
                                                                    'string',
+                                                                   'predicate',
                                                                    'pattern'
                                                                  ],
                                                       'changed' => 0,
@@ -11656,7 +12352,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                             'dircount' => 1,
                                                                             'uncommit' => undef,
                                                                             'error' => undef,
-                                                                            'patcount' => 1,
+                                                                            'patcount' => 0,
                                                                             'actcount' => 1,
                                                                             'items' => [
                                                                                          bless( {
@@ -11664,13 +12360,13 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'hashname' => '__STRING1__',
                                                                                                   'description' => '\'module\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 71
+                                                                                                  'line' => 72
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'name' => '<commit>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 71,
+                                                                                                  'line' => 72,
                                                                                                   'code' => '$commit = 1'
                                                                                                 }, 'Parse::RecDescent::Directive' ),
                                                                                          bless( {
@@ -11679,30 +12375,28 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 71
+                                                                                                  'line' => 72
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'pattern' => '.',
                                                                                                   'hashname' => '__STRING2__',
                                                                                                   'description' => '\'.\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 71
+                                                                                                  'line' => 72
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
-                                                                                                  'pattern' => '[\\n\\s]*',
-                                                                                                  'hashname' => '__PATTERN1__',
-                                                                                                  'description' => '/[\\\\n\\\\s]*/',
+                                                                                                  'subrule' => 'ws',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'rdelim' => '/',
-                                                                                                  'line' => 71,
-                                                                                                  'mod' => '',
-                                                                                                  'ldelim' => '/'
-                                                                                                }, 'Parse::RecDescent::Token' ),
+                                                                                                  'line' => 72
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 73,
-                                                                                                  'code' => '{ $::module = uc($item{identifier}) . \'::\'; \'\' }'
+                                                                                                  'line' => 74,
+                                                                                                  'code' => '{ $::module = $item{identifier} . \'::\'; \'\' }'
                                                                                                 }, 'Parse::RecDescent::Action' )
                                                                                        ],
                                                                             'line' => undef
@@ -11713,7 +12407,7 @@ package CLIPSx; sub new { my $self = bless( {
                                                                             'dircount' => 1,
                                                                             'uncommit' => undef,
                                                                             'error' => undef,
-                                                                            'patcount' => 1,
+                                                                            'patcount' => 0,
                                                                             'actcount' => 1,
                                                                             'items' => [
                                                                                          bless( {
@@ -11721,13 +12415,13 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'hashname' => '__STRING1__',
                                                                                                   'description' => '\'include\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 75
+                                                                                                  'line' => 76
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'name' => '<commit>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 75,
+                                                                                                  'line' => 76,
                                                                                                   'code' => '$commit = 1'
                                                                                                 }, 'Parse::RecDescent::Directive' ),
                                                                                          bless( {
@@ -11736,119 +12430,86 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 75
+                                                                                                  'line' => 76
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'pattern' => '.',
                                                                                                   'hashname' => '__STRING2__',
                                                                                                   'description' => '\'.\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 75
+                                                                                                  'line' => 76
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
-                                                                                                  'pattern' => '[\\n\\s]*',
-                                                                                                  'hashname' => '__PATTERN1__',
-                                                                                                  'description' => '/[\\\\n\\\\s]*/',
+                                                                                                  'subrule' => 'ws',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'rdelim' => '/',
-                                                                                                  'line' => 75,
-                                                                                                  'mod' => '',
-                                                                                                  'ldelim' => '/'
-                                                                                                }, 'Parse::RecDescent::Token' ),
+                                                                                                  'line' => 76
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 77,
+                                                                                                  'line' => 78,
                                                                                                   'code' => '{ my $res = ::process_include(eval $item{string}, $itempos[1]{line}{from}) }'
                                                                                                 }, 'Parse::RecDescent::Action' )
                                                                                        ],
-                                                                            'line' => 75
+                                                                            'line' => 76
                                                                           }, 'Parse::RecDescent::Production' ),
                                                                    bless( {
                                                                             'number' => '2',
-                                                                            'strcount' => 3,
-                                                                            'dircount' => 3,
+                                                                            'strcount' => 2,
+                                                                            'dircount' => 1,
                                                                             'uncommit' => undef,
                                                                             'error' => undef,
-                                                                            'patcount' => 1,
+                                                                            'patcount' => 0,
                                                                             'actcount' => 1,
                                                                             'items' => [
                                                                                          bless( {
-                                                                                                  'pattern' => 'prefix:<',
+                                                                                                  'pattern' => 'define',
                                                                                                   'hashname' => '__STRING1__',
-                                                                                                  'description' => '\'prefix:<\'',
+                                                                                                  'description' => '\'define\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 79
+                                                                                                  'line' => 80
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'name' => '<commit>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 79,
+                                                                                                  'line' => 80,
                                                                                                   'code' => '$commit = 1'
                                                                                                 }, 'Parse::RecDescent::Directive' ),
                                                                                          bless( {
-                                                                                                  'hashname' => '__DIRECTIVE2__',
-                                                                                                  'name' => '<skip:\'\'>',
-                                                                                                  'lookahead' => 0,
-                                                                                                  'line' => 79,
-                                                                                                  'code' => 'my $oldskip = $skip; $skip=\'\'; $oldskip'
-                                                                                                }, 'Parse::RecDescent::Directive' ),
-                                                                                         bless( {
-                                                                                                  'subrule' => 'pattern',
+                                                                                                  'subrule' => 'predicate',
                                                                                                   'matchrule' => 0,
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 79
-                                                                                                }, 'Parse::RecDescent::Subrule' ),
-                                                                                         bless( {
-                                                                                                  'pattern' => '>',
-                                                                                                  'hashname' => '__STRING2__',
-                                                                                                  'description' => '\'>\'',
-                                                                                                  'lookahead' => 0,
-                                                                                                  'line' => 79
-                                                                                                }, 'Parse::RecDescent::Literal' ),
-                                                                                         bless( {
-                                                                                                  'hashname' => '__DIRECTIVE3__',
-                                                                                                  'name' => '<skip:\'\\s*\'>',
-                                                                                                  'lookahead' => 0,
-                                                                                                  'line' => 79,
-                                                                                                  'code' => 'my $oldskip = $skip; $skip=\'\\s*\'; $oldskip'
-                                                                                                }, 'Parse::RecDescent::Directive' ),
-                                                                                         bless( {
-                                                                                                  'subrule' => 'string',
-                                                                                                  'matchrule' => 0,
-                                                                                                  'implicit' => undef,
-                                                                                                  'argcode' => undef,
-                                                                                                  'lookahead' => 0,
-                                                                                                  'line' => 79
+                                                                                                  'line' => 80
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'pattern' => '.',
-                                                                                                  'hashname' => '__STRING3__',
+                                                                                                  'hashname' => '__STRING2__',
                                                                                                   'description' => '\'.\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 79
+                                                                                                  'line' => 80
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
-                                                                                                  'pattern' => '[\\n\\s]*',
-                                                                                                  'hashname' => '__PATTERN1__',
-                                                                                                  'description' => '/[\\\\n\\\\s]*/',
+                                                                                                  'subrule' => 'ws',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'rdelim' => '/',
-                                                                                                  'line' => 79,
-                                                                                                  'mod' => '',
-                                                                                                  'ldelim' => '/'
-                                                                                                }, 'Parse::RecDescent::Token' ),
+                                                                                                  'line' => 80
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 81,
-                                                                                                  'code' => '{ $::prefix{$item{pattern}} = eval $item{string}; \'\' }'
+                                                                                                  'line' => 82,
+                                                                                                  'code' => '{ $item{predicate} }'
                                                                                                 }, 'Parse::RecDescent::Action' )
                                                                                        ],
-                                                                            'line' => 79
+                                                                            'line' => 80
                                                                           }, 'Parse::RecDescent::Production' ),
                                                                    bless( {
                                                                             'number' => '3',
@@ -11856,28 +12517,28 @@ package CLIPSx; sub new { my $self = bless( {
                                                                             'dircount' => 3,
                                                                             'uncommit' => undef,
                                                                             'error' => undef,
-                                                                            'patcount' => 1,
+                                                                            'patcount' => 0,
                                                                             'actcount' => 1,
                                                                             'items' => [
                                                                                          bless( {
-                                                                                                  'pattern' => 'infix:<',
+                                                                                                  'pattern' => 'prefix:<',
                                                                                                   'hashname' => '__STRING1__',
-                                                                                                  'description' => '\'infix:<\'',
+                                                                                                  'description' => '\'prefix:<\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83
+                                                                                                  'line' => 84
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'name' => '<commit>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83,
+                                                                                                  'line' => 84,
                                                                                                   'code' => '$commit = 1'
                                                                                                 }, 'Parse::RecDescent::Directive' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE2__',
                                                                                                   'name' => '<skip:\'\'>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83,
+                                                                                                  'line' => 84,
                                                                                                   'code' => 'my $oldskip = $skip; $skip=\'\'; $oldskip'
                                                                                                 }, 'Parse::RecDescent::Directive' ),
                                                                                          bless( {
@@ -11886,20 +12547,20 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83
+                                                                                                  'line' => 84
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'pattern' => '>',
                                                                                                   'hashname' => '__STRING2__',
                                                                                                   'description' => '\'>\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83
+                                                                                                  'line' => 84
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE3__',
                                                                                                   'name' => '<skip:\'\\s*\'>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83,
+                                                                                                  'line' => 84,
                                                                                                   'code' => 'my $oldskip = $skip; $skip=\'\\s*\'; $oldskip'
                                                                                                 }, 'Parse::RecDescent::Directive' ),
                                                                                          bless( {
@@ -11908,36 +12569,202 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'implicit' => undef,
                                                                                                   'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83
+                                                                                                  'line' => 84
                                                                                                 }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'pattern' => '.',
                                                                                                   'hashname' => '__STRING3__',
                                                                                                   'description' => '\'.\'',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 83
+                                                                                                  'line' => 84
                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                          bless( {
-                                                                                                  'pattern' => '[\\n\\s]*',
-                                                                                                  'hashname' => '__PATTERN1__',
-                                                                                                  'description' => '/[\\\\n\\\\s]*/',
+                                                                                                  'subrule' => 'ws',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
                                                                                                   'lookahead' => 0,
-                                                                                                  'rdelim' => '/',
-                                                                                                  'line' => 83,
-                                                                                                  'mod' => '',
-                                                                                                  'ldelim' => '/'
-                                                                                                }, 'Parse::RecDescent::Token' ),
+                                                                                                  'line' => 84
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__ACTION1__',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 85,
-                                                                                                  'code' => '{ $::infix{$item{pattern}} = eval $item{string}; \'\' }'
+                                                                                                  'line' => 86,
+                                                                                                  'code' => '{ $::prefix{$item{pattern}} = eval $item{string}; \'\' }'
                                                                                                 }, 'Parse::RecDescent::Action' )
                                                                                        ],
-                                                                            'line' => 83
+                                                                            'line' => 84
                                                                           }, 'Parse::RecDescent::Production' ),
                                                                    bless( {
                                                                             'number' => '4',
+                                                                            'strcount' => 3,
+                                                                            'dircount' => 3,
+                                                                            'uncommit' => undef,
+                                                                            'error' => undef,
+                                                                            'patcount' => 0,
+                                                                            'actcount' => 1,
+                                                                            'items' => [
+                                                                                         bless( {
+                                                                                                  'pattern' => 'infix:<',
+                                                                                                  'hashname' => '__STRING1__',
+                                                                                                  'description' => '\'infix:<\'',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88
+                                                                                                }, 'Parse::RecDescent::Literal' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__DIRECTIVE1__',
+                                                                                                  'name' => '<commit>',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88,
+                                                                                                  'code' => '$commit = 1'
+                                                                                                }, 'Parse::RecDescent::Directive' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__DIRECTIVE2__',
+                                                                                                  'name' => '<skip:\'\'>',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88,
+                                                                                                  'code' => 'my $oldskip = $skip; $skip=\'\'; $oldskip'
+                                                                                                }, 'Parse::RecDescent::Directive' ),
+                                                                                         bless( {
+                                                                                                  'subrule' => 'pattern',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
+                                                                                         bless( {
+                                                                                                  'pattern' => '>',
+                                                                                                  'hashname' => '__STRING2__',
+                                                                                                  'description' => '\'>\'',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88
+                                                                                                }, 'Parse::RecDescent::Literal' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__DIRECTIVE3__',
+                                                                                                  'name' => '<skip:\'\\s*\'>',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88,
+                                                                                                  'code' => 'my $oldskip = $skip; $skip=\'\\s*\'; $oldskip'
+                                                                                                }, 'Parse::RecDescent::Directive' ),
+                                                                                         bless( {
+                                                                                                  'subrule' => 'string',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
+                                                                                         bless( {
+                                                                                                  'pattern' => '.',
+                                                                                                  'hashname' => '__STRING3__',
+                                                                                                  'description' => '\'.\'',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88
+                                                                                                }, 'Parse::RecDescent::Literal' ),
+                                                                                         bless( {
+                                                                                                  'subrule' => 'ws',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 88
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__ACTION1__',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 90,
+                                                                                                  'code' => '{ $::infix{$item{pattern}} = eval $item{string}; \'\' }'
+                                                                                                }, 'Parse::RecDescent::Action' )
+                                                                                       ],
+                                                                            'line' => 88
+                                                                          }, 'Parse::RecDescent::Production' ),
+                                                                   bless( {
+                                                                            'number' => '5',
+                                                                            'strcount' => 3,
+                                                                            'dircount' => 3,
+                                                                            'uncommit' => undef,
+                                                                            'error' => undef,
+                                                                            'patcount' => 0,
+                                                                            'actcount' => 1,
+                                                                            'items' => [
+                                                                                         bless( {
+                                                                                                  'pattern' => 'infix_prefix:<',
+                                                                                                  'hashname' => '__STRING1__',
+                                                                                                  'description' => '\'infix_prefix:<\'',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92
+                                                                                                }, 'Parse::RecDescent::Literal' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__DIRECTIVE1__',
+                                                                                                  'name' => '<commit>',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92,
+                                                                                                  'code' => '$commit = 1'
+                                                                                                }, 'Parse::RecDescent::Directive' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__DIRECTIVE2__',
+                                                                                                  'name' => '<skip:\'\'>',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92,
+                                                                                                  'code' => 'my $oldskip = $skip; $skip=\'\'; $oldskip'
+                                                                                                }, 'Parse::RecDescent::Directive' ),
+                                                                                         bless( {
+                                                                                                  'subrule' => 'pattern',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
+                                                                                         bless( {
+                                                                                                  'pattern' => '>',
+                                                                                                  'hashname' => '__STRING2__',
+                                                                                                  'description' => '\'>\'',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92
+                                                                                                }, 'Parse::RecDescent::Literal' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__DIRECTIVE3__',
+                                                                                                  'name' => '<skip:\'\\s*\'>',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92,
+                                                                                                  'code' => 'my $oldskip = $skip; $skip=\'\\s*\'; $oldskip'
+                                                                                                }, 'Parse::RecDescent::Directive' ),
+                                                                                         bless( {
+                                                                                                  'subrule' => 'string',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
+                                                                                         bless( {
+                                                                                                  'pattern' => '.',
+                                                                                                  'hashname' => '__STRING3__',
+                                                                                                  'description' => '\'.\'',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92
+                                                                                                }, 'Parse::RecDescent::Literal' ),
+                                                                                         bless( {
+                                                                                                  'subrule' => 'ws',
+                                                                                                  'matchrule' => 0,
+                                                                                                  'implicit' => undef,
+                                                                                                  'argcode' => undef,
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 92
+                                                                                                }, 'Parse::RecDescent::Subrule' ),
+                                                                                         bless( {
+                                                                                                  'hashname' => '__ACTION1__',
+                                                                                                  'lookahead' => 0,
+                                                                                                  'line' => 94,
+                                                                                                  'code' => '{ $::infix_prefix{$item{pattern}} = eval $item{string}; \'\' }'
+                                                                                                }, 'Parse::RecDescent::Action' )
+                                                                                       ],
+                                                                            'line' => 92
+                                                                          }, 'Parse::RecDescent::Production' ),
+                                                                   bless( {
+                                                                            'number' => '6',
                                                                             'strcount' => 0,
                                                                             'dircount' => 2,
                                                                             'uncommit' => 0,
@@ -11950,21 +12777,21 @@ package CLIPSx; sub new { my $self = bless( {
                                                                                                   'hashname' => '__DIRECTIVE1__',
                                                                                                   'commitonly' => '?',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 87
+                                                                                                  'line' => 96
                                                                                                 }, 'Parse::RecDescent::Error' ),
                                                                                          bless( {
                                                                                                   'hashname' => '__DIRECTIVE2__',
                                                                                                   'name' => '<reject>',
                                                                                                   'lookahead' => 0,
-                                                                                                  'line' => 87
+                                                                                                  'line' => 96
                                                                                                 }, 'Parse::RecDescent::UncondReject' )
                                                                                        ],
-                                                                            'line' => 87
+                                                                            'line' => 96
                                                                           }, 'Parse::RecDescent::Production' )
                                                                  ],
                                                       'name' => 'directive',
                                                       'vars' => '',
-                                                      'line' => 71
+                                                      'line' => 72
                                                     }, 'Parse::RecDescent::Rule' ),
                               'prefix' => bless( {
                                                    'impcount' => 0,

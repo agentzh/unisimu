@@ -3,7 +3,7 @@ program : statement(s) eofile { join "\n\n", grep $_, @{ $item[1] } }
 
 comment : /\/\*(.*?)\*\//s  { my $cmt = "; $1"; $cmt =~ s/\n(?=.)/;/g; $cmt }
 
-rule : disjunction '=>' <commit> new_facts '.' /[\n\s]*/
+rule : disjunction '=>' <commit> new_facts '.' ws
 
         { $::count++;
           "; $::infile (line $itempos[1]{line}{from} ~ $itempos[5]{line}{to})\n".
@@ -57,7 +57,7 @@ eofile : /^\Z/
 statement : comment
           | directive
           | rule
-          | facts '.' /[\n\s]*/  { '' }
+          | facts '.' ws  { '' }
 
 facts : fact ',' <commit> facts
       | fact
@@ -67,22 +67,31 @@ fact : clause   { push @::facts, "; $::infile (line $itempos[1]{line}{from} ~ ".
                     "$itempos[1]{line}{to})",
                     "$item{clause}\n"; '' }
 
+ws: /[\n\s]*/
 
-directive : 'module' <commit> identifier '.' /[\n\s]*/
+directive : 'module' <commit> identifier '.' ws
 
-        { $::module = uc($item{identifier}) . '::'; '' }
+        { $::module = $item{identifier} . '::'; '' }
 
-          | 'include' <commit> string '.' /[\n\s]*/
+          | 'include' <commit> string '.' ws
 
         { my $res = ::process_include(eval $item{string}, $itempos[1]{line}{from}) }
 
-          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\n\s]*/
+          | 'define' <commit> predicate '.' ws
+
+        { $item{predicate} }
+
+          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws
           
-            { $::prefix{$item{pattern}} = eval $item{string}; '' }
+        { $::prefix{$item{pattern}} = eval $item{string}; '' }
 
-          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\n\s]*/
+          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws
 
-            { $::infix{$item{pattern}} = eval $item{string}; '' }
+        { $::infix{$item{pattern}} = eval $item{string}; '' }
+
+          | 'infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws
+
+        { $::infix_prefix{$item{pattern}} = eval $item{string}; '' }
 
           | <error?> <reject>
 
@@ -117,8 +126,7 @@ number : /\d+(?:\.\d*)?/
 
 string : { extract_delimited($text, '"') }
 
-infix_prefix : '@'  { 'vector-relation' }
-             | '%'  { 'space-relation' }
+infix_prefix : { ::match_infix_prefix($text) } { $::infix_prefix{$item[1]} }
 
 infix : variable
       | { ::match_infix($text) } { $::infix{$item[1]} }

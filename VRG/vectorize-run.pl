@@ -11,17 +11,17 @@ getopts('v', \%opts) or help();
 $CLIPS::Verbose = $opts{v};
 
 my $infile = shift or help();;
-my $clips = CLIPS->new('defs.clp', 'preprocess.clp', 'vectorize.clp', $infile, 'defs2.clp');
+my $clips = CLIPS->new('vectorize.clp', $infile, 'defs2.clp');
 $clips->watch('rules');
 $clips->watch('facts');
 $clips->reset;
-$clips->focus('VECTORIZE');
+$clips->focus('Vectorize');
 $clips->rules if $opts{v};
 $clips->facts;
 $clips->get_current_module;
 $clips->agenda;
 $clips->run;
-$clips->facts('EVAL', \my $facts);
+$clips->facts('Eval', \my $facts);
 $clips->eof;
 #warn "FACTS: ", $facts;
 while ($facts =~ /\(vector-relation ([^\)]+)\)/g) {

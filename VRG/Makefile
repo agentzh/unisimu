@@ -19,7 +19,7 @@ CLIPSx.pm: xclp.grammar
 %.pro: %.xpro xpro.pl
 	$(xpro) $<
 
-%.clp: %.xclp xclp.pl
+%.clp: %.xclp xclp.pl CLIPSx.pm
 	$(xclp) $<
 
 test: all
