@@ -1,0 +1,11 @@
+include "vrg-sugar.xclp".
+
+X // Y, Y // Z => X // Z.
+
+X // Y, Y T Z => X T Z.
+
+X // Y, X A Z => X A Z.
+
+X T Y; X A Y => X !// Y.
+
+A T B, B T C, C T D, D T A, A !// C => B // D.

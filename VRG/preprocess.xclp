@@ -1,0 +1,13 @@
+/* preprocessing rules for vectorization */
+
+include "vrg-sugar.xclp".
+
+module vectorize.
+
+#?A, #?B, meet(?A, ?B, ?l) => ?A %!// ?B, ?l %on ?A, ?l %on ?B.
+
+\?a, \?b, meet(?a, ?b, ?) => ?a %!// ?b.
+
+\?a, #?A, meet(?a, ?A, ?) => ?a %!// ?A, ?a %!on ?A.
+
+/* project(\?a, #?A, \?b) => ?a */

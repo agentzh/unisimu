@@ -1,0 +1,15 @@
+/* syntax sugar definitions for the VRG engine */
+
+prefix:<\>   "line".
+prefix:<#>   "plane".
+
+infix:<//>   "parallel".
+infix:<T>    "orthogonal".
+infix:<A>    "oblique".
+
+infix:<!//>  "unparallel".
+infix:<!T>   "nonorthogonal".
+infix:<!A>   "nonoblique".
+
+infix:<on>   "on".
+infix:<!on>  "not_on".

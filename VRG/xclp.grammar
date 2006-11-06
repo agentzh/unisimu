@@ -1,0 +1,130 @@
+program : statement(s) eofile { join "\n\n", grep $_, @{ $item[1] } }
+        | <error>
+
+comment : /\/\*(.*?)\*\//s  { my $cmt = "; $1"; $cmt =~ s/\n(?=.)/;/g; $cmt }
+
+rule : disjunction '=>' <commit> new_facts '.' /[\n\s]*/
+
+        { $::count++;
+          "; $::infile (line $itempos[1]{line}{from} ~ $itempos[5]{line}{to})\n".
+          "(defrule $::module$::base-$::count\n".
+          "    $item[1]\n".
+          "    =>\n".
+          "$item[4])" }
+
+     | <error?> <reject>
+
+disjunction : conjunction ';' <commit> disjunction
+
+    { "(or $item{conjunction} $item{disjunction})" }
+    
+            | conjunction
+            | <error?> <reject>
+
+conjunction : clause ',' <commit> conjunction
+
+    { "(and $item{clause} $item{conjunction})" }
+
+            | clause
+            | <error?> <reject>
+
+clause : prefix <skip:''> <commit> atom
+
+            { "($item{prefix} $item{atom})" }
+
+       | atom <skip:''> /\s+/ general_infix <skip:'\s*'> atom
+       
+            { "($item{general_infix} $item[1] $item[6])" }
+       
+       | atom <skip:''> postfix
+
+            { "($item{postfix} $item{atom})" }
+
+       | atom
+       | <error?> <reject>
+
+prefix : { ::match_prefix($text) } { $::prefix{$item[1]} }
+
+atom : predicate
+     | variable
+     | literal
+
+predicate : identifier '(' <commit> arguments ')'  { "($item[1] $item{arguments})" }
+          | <error?> <reject>
+
+eofile : /^\Z/
+
+statement : comment
+          | directive
+          | rule
+          | facts '.' /[\n\s]*/  { '' }
+
+facts : fact ',' <commit> facts
+      | fact
+      | <error?> <reject>
+
+fact : clause   { push @::facts, "; $::infile (line $itempos[1]{line}{from} ~ ".
+                    "$itempos[1]{line}{to})",
+                    "$item{clause}\n"; '' }
+
+
+directive : 'module' <commit> identifier '.' /[\n\s]*/
+
+        { $::module = uc($item{identifier}) . '::'; '' }
+
+          | 'include' <commit> string '.' /[\n\s]*/
+
+        { my $res = ::process_include(eval $item{string}, $itempos[1]{line}{from}) }
+
+          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\n\s]*/
+          
+            { $::prefix{$item{pattern}} = eval $item{string}; '' }
+
+          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' /[\n\s]*/
+
+            { $::infix{$item{pattern}} = eval $item{string}; '' }
+
+          | <error?> <reject>
+
+pattern : /\S+(?=>)/
+
+new_facts : clause ',' <commit> new_facts
+
+    { "    (assert $item{clause})\n" . $item{new_facts} }
+
+      | clause  { "    (assert $item{clause})\n" }
+      | <error?> <reject>
+
+
+
+general_infix : infix_prefix <commit> infix  { "$item{infix_prefix} $item{infix}" }
+              | infix
+              | <error?> <reject>
+
+arguments : <leftop: clause ',' clause>  { join ' ', @{ $item[1] } }
+
+variable : /\?[A-Za-z_]([-\w])*/  { $item[1] . $item{identifier} }
+         | '?'
+
+literal : identifier
+        | number
+        | string
+
+identifier : /[A-Za-z_]([-\w])*/
+
+number : /\d+(?:\.\d*)?/
+       | /\.\d+/
+
+string : { extract_delimited($text, '"') }
+
+infix_prefix : '@'  { 'vector-relation' }
+             | '%'  { 'space-relation' }
+
+infix : variable
+      | { ::match_infix($text) } { $::infix{$item[1]} }
+
+postfix : 'postfix'
+
+compound: <leftop: clause /([;,])/ clause>
+
+    { "\n    " . join "", (map { m/^[;,]$/ ? "$_\n    " : $_ } @{ $item[1] }); }
