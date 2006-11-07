@@ -60,7 +60,7 @@ if ($opts{d}) {
     $painter->draw(
         outfile     => "a.png",
         fact_filter => \&format_fact,
-        trim => 0,
+        trim => 1,
     );
 }
 

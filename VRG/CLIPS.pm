@@ -3,10 +3,11 @@ package CLIPS;
 use strict;
 use warnings;
 
+use File::Spec;
+use File::Temp qw/ :mktemp  /;
 use File::Slurp;
 use vars qw( $AUTOLOAD );
 
-our $TempFile = 'out.tmp';
 our $Verbose = 0;
 
 sub new {
@@ -43,8 +44,8 @@ sub eof {
     my @plan = $self->_plans;
     my @callbacks = $self->_callbacks;
     my $opts = $self->{opts};
-    unlink $TempFile if -f $TempFile;
-    my $cmd = "clips $opts > $TempFile 2>&1";
+    my $tempfile = mktemp("clips_cache_XXXXXXX");
+    my $cmd = "clips $opts > $tempfile 2>&1";
     #warn "$cmd";
     open my $out, "| $cmd" or
         die "can't spawn clips: $!";
@@ -55,7 +56,8 @@ sub eof {
     print $out "(exit)\n";
     close $out;
 
-    my $output = read_file($TempFile);
+    my $output = read_file($tempfile);
+    unlink $tempfile if -f $tempfile;
     my @out = split /CLIPS> /, $output;
     my $header = shift @out;
     warn $header if $Verbose or $header =~ /error/i;
@@ -105,10 +107,6 @@ sub AUTOLOAD {
     } else {
         $self->_add_plan("($method)\n");
     }
-}
-
-END {
-    unlink $TempFile if -f $TempFile;
 }
 
 1;
