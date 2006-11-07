@@ -5,7 +5,7 @@ prefix:<#>   "plane "
 
 infix:<//>   "parallel "
 infix:<T>    "orthogonal "
-infix:<X>    "oblique "
+infix:<X>    "cross "
 infix:<on>   "on "
 
 infix_prefix:<~>       "not_"

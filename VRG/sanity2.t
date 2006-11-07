@@ -37,7 +37,179 @@ sub sort_list {
 
 __DATA__
 
-=== TEST 1: 两个平面平行的判定定理
+=== TEST 1: 平行公理
+--- vrg
+
+line a, b, c;
+a // b, c // b => a// c;
+
+--- xclp
+include "vrg-sugar.xclp"
+
+\ a, \ b, \ c.
+a [//] b, c [//] b.
+--- vectorized
+parallel a b
+parallel c b
+
+
+
+=== TEST 2: 直线和平面平行的判定定理
+--- vrg
+
+line a, b;
+plan alpha;
+a ~on alpha, b on alpha, a // b => a // alpha;
+
+--- xclp
+include "vrg-sugar.xclp"
+
+\ a, \ b.
+# alpha.
+a [~on] alpha, b [on] alpha, a [//] b.
+
+--- vectorized
+not_orthogonal a alpha
+orthogonal b alpha
+parallel a b
+
+
+
+=== TEST 3: 直线和平面平行的性质定理
+--- vrg
+
+line a, b;
+plane alpha, beta;
+a // alpha, a on beta, meet(alpha, beta, b) => a // b;
+
+--- xclp
+include "vrg-sugar.xclp"
+
+\ a, \ b.
+# alpha, # beta.
+a [//] alpha, a [on] beta, meet(alpha, beta, b).
+
+--- vectorized
+orthogonal a alpha
+orthogonal a beta
+orthogonal b alpha
+orthogonal b beta
+not_parallel alpha beta
+
+
+
+=== TEST 4: 直线和平面垂直的判定定理
+--- vrg
+
+line m, n, l;
+point B;
+plane alpha;
+
+m on alpha, n on alpha, meet(m, n, B), l T m, l T n => l T alpha;
+
+--- xclp
+include "vrg-sugar.xclp"
+
+\m, \n, \l.
+#alpha.
+
+m [on] alpha, n [on] alpha, meet(m, n, B), l [T] m, l [T] n.
+--- vectorized
+orthogonal m alpha
+orthogonal n alpha
+not_parallel m n
+orthogonal m gen1
+orthogonal n gen1
+orthogonal l m
+orthogonal l n
+
+
+
+=== TEST 5: 直线和平面垂直的判定定理 II
+--- vrg
+
+line a, b;
+plane alpha;
+a // b, a T alpha => b T alpha;
+
+--- xclp
+
+include "vrg-sugar.xclp"
+
+\ a, \ b.
+# alpha.
+a [//] b, a [T] alpha.
+
+--- vectorized
+parallel a b
+parallel a alpha
+
+
+
+=== TEST 6: 直线和平面垂直的性质定理
+--- vrg
+
+line a, b;
+plane alpha;
+
+a [T] alpha, b [T] alpha => a // b;
+
+--- xclp
+
+include "vrg-sugar.xclp"
+
+\a, \b.
+#alpha.
+
+a [T] alpha, b [T] alpha.
+
+--- vectorized
+parallel a alpha
+parallel b alpha
+
+
+
+=== TEST 7: 平行线组定理 (1)
+--- vrg
+
+line a, b, c, d;
+a // b, c // d, a T c => b T d;
+
+--- xclp
+
+include "vrg-sugar.xclp"
+
+\a, \b, \c, \d.
+a [//] b, c [//] d, a [T] c.
+
+--- vectorized
+parallel a b
+parallel c d
+orthogonal a c
+
+
+
+=== TEST 8: 平行线组定理 (2)
+--- vrg
+
+line a, b, c, d;
+a // b, c // d, a X c => a X c;
+
+--- xclp
+
+include "vrg-sugar.xclp"
+
+\a, \b, \c, \d.
+a [//] b, c [//] d, a [X] c.
+
+--- vectorized
+parallel a b
+parallel c d
+cross a c
+
+
+
+=== TEST 9: 两个平面平行的判定定理
 --- vrg
 
 line a, b;
@@ -47,10 +219,10 @@ meet(a, b, P), a on beta, b on beta, a // alpha, b // alpha
 => alpha // beta
 
 --- xclp
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
-\a, \b.
-#alpha, #beta.
+\ a, \ b.
+# alpha, # beta.
 meet(a, b, P), a [on] beta, b [on] beta, a [//] alpha, b [//] alpha.
 
 --- vectorized
@@ -59,10 +231,12 @@ orthogonal b alpha
 orthogonal a beta
 orthogonal b beta
 not_parallel a b
+orthogonal a gen1
+orthogonal b gen1
 
 
 
-=== TEST 2: 两个平面平行的性质定理
+=== TEST 10: 两个平面平行的性质定理
 --- vrg
 
 plane alpha, beta, theta;
@@ -71,7 +245,7 @@ alpha // beta, meet(alpha, theta, a), meet(beta, theta, b)
 => a // b;
 
 --- xclp
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 #alpha, #beta, #theta.
 \a, \b.
@@ -88,16 +262,16 @@ not_parallel beta theta
 
 
 
-=== TEST 3: 两个平面平行的性质定理 2
+=== TEST 11: 两个平面平行的性质定理 2
 --- vrg
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 plane alpha, beta;
 line l;
 alpha // beta, l on alpha => l // beta.
 
 --- xclp
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 #alpha, #beta.
 \l.
@@ -109,16 +283,16 @@ parallel alpha beta
 
 
 
-=== TEST 4: 两个平面平行的性质定理 3
+=== TEST 12: 两个平面平行的性质定理 3
 --- vrg
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 plane alpha, beta;
 line l;
 alpha // beta, l T alpha => l T beta
 
 --- xclp
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 #alpha, #beta.
 \l.
@@ -130,16 +304,16 @@ parallel alpha beta
 
 
 
-=== TEST 5: 直线和平面垂直的性质定理 2
+=== TEST 13: 直线和平面垂直的性质定理 2
 --- vrg
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 line l1, l2;
 plane alpha;
 l1 T alpha, l2 on alpha => l1 T l2;
 
 --- xclp
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 \l1, \l2.
 #alpha.
@@ -151,7 +325,7 @@ parallel l1 alpha
 
 
 
-=== TEST 6: 两个平面垂直的性质定理
+=== TEST 14: 两个平面垂直的性质定理
 --- vrg
 
 plane alpha, beta;
@@ -160,7 +334,7 @@ alpha T beta, meet(alpha, beta, l1), l2 on alpha, l2 T l1
 => l2 T beta;
 
 --- xclp
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 #alpha, #beta.
 \l1, \l2.
@@ -176,11 +350,11 @@ not_parallel alpha beta
 
 
 
-=== TEST 7: 三垂线定理
+=== TEST 15: 三垂线定理
 PA、PO 分别是平面 alpha 的垂线、斜线，AO 是 PO 在平面 alpha 内的射影，
 且 a 在 alpha 上，a 垂直于 AO，则 a 垂直于 PQ.
 --- vrg
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 line a;
 line b; # line PA
@@ -192,7 +366,7 @@ project(c, alpha, d), a on alpha, a T d
 a T c;
 
 --- xclp
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 #alpha.
 \a.
@@ -209,5 +383,5 @@ orthogonal d alpha
 orthogonal d gen1
 not_parallel gen1 alpha
 orthogonal c gen1
-oblique c alpha
+cross c alpha
 parallel b alpha
