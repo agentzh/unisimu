@@ -2,7 +2,7 @@ use Test::Base;
 use IPC::Run3;
 use File::Slurp;
 
-plan tests => 4 * blocks();
+plan tests => 5 * blocks();
 my $count = 0;
 
 my $xclips = "$^X xclips.pl";
@@ -24,7 +24,7 @@ run {
         ),
         "$name - vrg-run.pl ok";
     warn $stderr if $stderr;
-    my ($vectorize, $eval) = ($stdout =~ /(.*)---\n(.*)/s);
+    my ($vectorize, $eval, $final) = ($stdout =~ /(.*)---\n(.*)---\n(.*)/s);
     my $got = sort_list($vectorize);
     my $expected = sort_list($block->vectorize);
     is $got, $expected, "$name - vectorization ok";
@@ -32,7 +32,14 @@ run {
         my @rels = split /\n/, $block->eval;
         for my $rel (@rels) {
             my $pat = quotemeta($rel);
-            like $eval, qr/\b$pat\n/ms, "$rel appeared";
+            like $eval, qr/\b$pat\n/ms, "vectorizie -- $rel appeared";
+        }
+    }
+    if ($block->final) {
+        my @rels = split /\n/, $block->final;
+        for my $rel (@rels) {
+            my $pat = quotemeta($rel);
+            like $final, qr/\b$pat\n/ms, "final -- $rel appeard";
         }
     }
 };
@@ -61,6 +68,8 @@ a <//> b
 c <//> b
 --- eval
 a <//> c
+--- final
+a [//] c
 
 
 
@@ -79,11 +88,12 @@ include "vrg-sugar.xclp"
 a [~on] alpha, b [on] alpha, a [//] b.
 
 --- vectorize
-a <~T> alpha
 b <T> alpha
 a <//> b
 --- eval
 a <T> alpha
+--- final
+a [//] alpha
 
 
 
@@ -109,6 +119,8 @@ b <T> beta
 alpha <~//> beta
 --- eval
 a <//> b
+--- final
+a [//] b
 
 
 
@@ -138,6 +150,8 @@ l <T> m
 l <T> n
 --- eval
 l <//> alpha
+--- final
+l [T] alpha
 
 
 
@@ -161,6 +175,8 @@ a <//> b
 a <//> alpha
 --- eval
 b <//> alpha
+--- final
+b [T] alpha
 
 
 
@@ -186,6 +202,8 @@ a <//> alpha
 b <//> alpha
 --- eval
 a <//> b
+--- final
+a [//] b
 
 
 
@@ -208,6 +226,8 @@ c <//> d
 a <T> c
 --- eval
 b <T> d
+--- final
+b [T] d
 
 
 
@@ -230,6 +250,8 @@ c <//> d
 a <X> c
 --- eval
 a <X> c
+--- final
+a [X] c
 
 
 
@@ -259,6 +281,8 @@ a <T> gen1
 b <T> gen1
 --- eval
 alpha <//> beta
+--- final
+alpha [//] beta
 
 
 
@@ -287,6 +311,8 @@ alpha <~//> theta
 beta <~//> theta
 --- eval
 a <//> b
+--- final
+a [//] b
 
 
 
@@ -310,6 +336,8 @@ l <T> alpha
 alpha <//> beta
 --- eval
 l <T> beta
+--- final
+l [//] beta
 
 
 
@@ -333,6 +361,8 @@ l <//> alpha
 alpha <//> beta
 --- eval
 l <//> beta
+--- final
+l [T] beta
 
 
 
@@ -356,6 +386,8 @@ l2 <T> alpha
 l1 <//> alpha
 --- eval
 l1 <T> l2
+--- final
+l1 [T] l2
 
 
 
@@ -383,6 +415,8 @@ alpha <T> beta
 alpha <~//> beta
 --- eval
 l2 <//> beta
+--- final
+l2 [T] beta
 
 
 
@@ -423,3 +457,5 @@ c <X> alpha
 b <//> alpha
 --- eval
 a <T> c
+--- final
+a [T] c

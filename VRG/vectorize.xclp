@@ -1,6 +1,6 @@
 define defmodule(Vectorize,
-    export(deftemplate, vector-relation),
-    export(deftemplate, space-relation))
+    export(deftemplate, ?ALL)
+)
 
 include "preprocess.xclp"
 
@@ -24,7 +24,6 @@ module Vectorize.
 \?a, #?b, ?a [~T] ?b  => ?a <~//> ?b.
 \?a, #?b, ?a [~//] ?b => ?a <~T> ?b.
 \?a, #?b, ?a [~X] ?b  => ?a <~X> ?b.
-\?a, #?b, ?a [~on] ?b => ?a <~T> ?b.
 
 /* plane-plane relationships */
 

@@ -28,7 +28,7 @@ die "File $infile not found" if !-f $infile;
 
 my $goal = shift;
 
-my $clips = CLIPS->new('vectorize.clp', $infile, 'vector-eval.clp');
+my $clips = CLIPS->new('vectorize.clp', $infile, 'anti-vectorize.clp', 'vector-eval.clp');
 
 $clips->watch('rules') if $opts{v} or $opts{d};
 $clips->watch('facts') if $opts{v} or $opts{d};;
@@ -37,16 +37,21 @@ $clips->reset;
 
 $clips->focus('Vectorize');
 
-$clips->rules if $opts{v};
+$clips->rules('*') if $opts{v};
 #$clips->facts('*', \my $init_facts);
 
 $clips->run(\my $run_log);
 $clips->facts('Eval', \my $vectorize_facts);
 
 $clips->focus('Eval');
-$clips->facts('*', \my $init_facts);
-$clips->run(\$run_log);
+$clips->facts('*', \my $eval_init_facts);
+$clips->run(\my $eval_run_log);
 $clips->facts('Eval', \my $eval_facts);
+
+$clips->focus('AntiVectorize');
+$clips->facts('*', \my $final_init_facts);
+$clips->run(\my $final_run_log);
+$clips->facts(\my $anti_vec_facts);
 
 $clips->eof;
 #warn "FACTS: ", $facts;
@@ -61,10 +66,23 @@ while ($eval_facts =~ /\(vector-relation ([^\)]+)\)/g) {
     print format_fact($&), "\n";
 }
 
+print "---\n";
+
+while ($anti_vec_facts =~ /\(space-relation ([^\)]+)\)/g) {
+    print format_fact($&), "\n";
+}
+
 if ($opts{d}) {
-    my $painter = CLIPS::Visualize->new($init_facts, $run_log);
+    my $painter = CLIPS::Visualize->new($eval_init_facts, $eval_run_log);
     $painter->draw(
-        outfile     => "a.png",
+        outfile     => "eval.png",
+        fact_filter => \&format_fact,
+        trim => 1,
+        goal => $goal,
+    );
+    $painter = CLIPS::Visualize->new($final_init_facts, $final_run_log);
+    $painter->draw(
+        outfile     => "final.png",
         fact_filter => \&format_fact,
         trim => 1,
         goal => $goal,

@@ -8,8 +8,8 @@ rm_f = perl -MExtUtils::Command -e rm_f
 xpro_files := $(wildcard *.xpro)
 pro_files  := $(patsubst %.xpro,%.pro, $(xpro_files))
 
-xclp_files := vectorize.xclp preprocess.xclp vector-eval.xclp vrg-sugar.xclp
-clp_files  := vectorize.clp vector-eval.clp
+xclp_files := vectorize.xclp anti-vectorize.xclp preprocess.xclp vector-eval.xclp vrg-sugar.xclp
+clp_files  := vectorize.clp vector-eval.clp anti-vectorize.clp
 
 all: clips_all
 
