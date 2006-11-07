@@ -19,6 +19,10 @@ CLIPSx.pm: xclips.grammar
 %.pro: %.xpro xpro.pl
 	$(xpro) $<
 
+%.xclp: vrg-sugar.xclp
+
+vectorize.xclp: preprocess.xclp
+
 %.clp: %.xclp xclips.pl CLIPSx.pm
 	$(xclp) $<
 

@@ -51,7 +51,7 @@ include "vrg-sugar.xclp".
 
 \a, \b.
 #alpha, #beta.
-meet(a, b, P), a %on beta, b %on beta, a %// alpha, b %// alpha.
+meet(a, b, P), a [on] beta, b [on] beta, a [//] alpha, b [//] alpha.
 
 --- vectorized
 orthogonal a alpha
@@ -75,7 +75,7 @@ include "vrg-sugar.xclp".
 
 #alpha, #beta, #theta.
 \a, \b.
-alpha %// beta, meet(alpha, theta, a), meet(beta, theta, b).
+alpha [//] beta, meet(alpha, theta, a), meet(beta, theta, b).
 
 --- vectorized
 orthogonal a alpha
@@ -101,7 +101,7 @@ include "vrg-sugar.xclp".
 
 #alpha, #beta.
 \l.
-alpha %// beta, l %on alpha.
+alpha [//] beta, l [on] alpha.
 
 --- vectorized
 orthogonal l alpha
@@ -122,7 +122,7 @@ include "vrg-sugar.xclp".
 
 #alpha, #beta.
 \l.
-alpha %// beta, l %T alpha.
+alpha [//] beta, l [T] alpha.
 
 --- vectorized
 parallel l alpha
@@ -143,7 +143,7 @@ include "vrg-sugar.xclp".
 
 \l1, \l2.
 #alpha.
-l1 %T alpha, l2 %on alpha.
+l1 [T] alpha, l2 [on] alpha.
 
 --- vectorized
 orthogonal l2 alpha
@@ -164,7 +164,7 @@ include "vrg-sugar.xclp".
 
 #alpha, #beta.
 \l1, \l2.
-alpha %T beta, meet(alpha, beta, l1), l2 %on alpha, l2 %T l1.
+alpha [T] beta, meet(alpha, beta, l1), l2 [on] alpha, l2 [T] l1.
 
 --- vectorized
 orthogonal l2 l1
@@ -173,7 +173,7 @@ orthogonal l1 beta
 orthogonal l2 alpha
 orthogonal alpha beta
 unparallel alpha beta
---- LAST
+
 
 
 === TEST 7: 三垂线定理
@@ -194,19 +194,16 @@ a T c;
 --- xclp
 include "vrg-sugar.xclp".
 
-\c A #alpha.
-\c on #theta.
-meet(#theta, #alpha, \d).
-#theta T #alpha.
-\a on #alpha.
-\a T \d.
+#alpha.
+\a.
+\b. /* line PA */
+\d. /* line AO */
+\c. /* line PO */
+b [T] alpha, project(c, alpha, d), a [on] alpha, a [T] d.
 
 --- vectorized
-orthogonal a d
-orthogonal d theta
-orthogonal d alpha
-orthogonal c theta
-orthogonal a alpha
-orthogonal theta alpha
 oblique c alpha
-unparallel theta alpha
+orthogonal a alpha
+orthogonal a d
+parallel b alpha
+--- ONLY

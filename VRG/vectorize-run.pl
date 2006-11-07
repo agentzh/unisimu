@@ -11,7 +11,7 @@ getopts('v', \%opts) or help();
 $CLIPS::Verbose = $opts{v};
 
 my $infile = shift or help();;
-my $clips = CLIPS->new('vectorize.clp', $infile, 'defs2.clp');
+my $clips = CLIPS->new('vectorize.clp', $infile, 'vector-eval.clp');
 $clips->watch('rules');
 $clips->watch('facts');
 $clips->reset;

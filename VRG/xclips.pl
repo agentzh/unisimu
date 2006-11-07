@@ -12,7 +12,7 @@ our $infile = shift or
 (my $outfile = $infile) =~ s/\.xclp$/.clp/i;
 $outfile .= '.clp' if $outfile !~ /\.clp$/i;
 
-our ($base) = ($outfile =~ /^([\w-]+)/);
+our ($base) = ($outfile =~ /([\w-]+)\.\w+$/);
 $base = "f$base" if $base !~ /^[A-Za-z_]/;
 
 my $source = read_file($infile);
@@ -91,6 +91,13 @@ sub process_include {
     my $src = read_file($fname);
     my $saved_infile = $::infile;
     local $::infile = $fname;
+
+    my ($base) = ($fname =~ /([\w-]+)\.\w+$/);
+    $base = "f$base" if $base !~ /^[A-Za-z_]/;
+    local $::base = $base;
+
+    local $::count = 0;
+
     my $parser = CLIPSx->new;
     my $data = $parser->program($src);
     if (!defined $data) {
