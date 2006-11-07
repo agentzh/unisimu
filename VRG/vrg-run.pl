@@ -6,7 +6,7 @@ use Getopt::Std;
 use CLIPS;
 
 my %opts;
-getopts('v', \%opts) or help();
+getopts('dv', \%opts) or help();
 $CLIPS::Verbose = $opts{v};
 
 my %infix = (
@@ -39,13 +39,14 @@ $clips->run(\$run_log);
 $clips->eof;
 #warn "FACTS: ", $facts;
 while ($facts =~ /\(vector-relation ([^\)]+)\)/g) {
-    print "$1\n";
+    print format_fact($&), "\n";
 }
+print "---\n";
 
-if ($opts{v}) {
+if ($opts{d}) {
     my $painter = CLIPS::Visualize->new($init_facts, $run_log);
     $painter->draw(
-        outfile     => "a.png",
+        outfile     => "infile.png",
         fact_filter => \&format_fact,
         trim => 1,
     );

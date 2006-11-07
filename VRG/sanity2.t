@@ -24,8 +24,9 @@ run {
         ),
         "$name - vrg-run.pl ok";
     warn $stderr if $stderr;
-    my $got = sort_list($stdout);
-    my $expected = sort_list($block->vectorized);
+    my ($vectorize, $eval) = ($stdout =~ /(.*)---\n(.*)/s);
+    my $got = sort_list($vectorize);
+    my $expected = sort_list($block->vectorize);
     is $got, $expected, "$name - vectorization ok";
 };
 
@@ -48,9 +49,9 @@ include "vrg-sugar.xclp"
 
 \ a, \ b, \ c.
 a [//] b, c [//] b.
---- vectorized
-parallel a b
-parallel c b
+--- vectorize
+a <//> b
+c <//> b
 
 
 
@@ -68,10 +69,10 @@ include "vrg-sugar.xclp"
 # alpha.
 a [~on] alpha, b [on] alpha, a [//] b.
 
---- vectorized
-not_orthogonal a alpha
-orthogonal b alpha
-parallel a b
+--- vectorize
+a <~T> alpha
+b <T> alpha
+a <//> b
 
 
 
@@ -89,12 +90,12 @@ include "vrg-sugar.xclp"
 # alpha, # beta.
 a [//] alpha, a [on] beta, meet(alpha, beta, b).
 
---- vectorized
-orthogonal a alpha
-orthogonal a beta
-orthogonal b alpha
-orthogonal b beta
-not_parallel alpha beta
+--- vectorize
+a <T> alpha
+a <T> beta
+b <T> alpha
+b <T> beta
+alpha <~//> beta
 
 
 
@@ -114,14 +115,14 @@ include "vrg-sugar.xclp"
 #alpha.
 
 m [on] alpha, n [on] alpha, meet(m, n, B), l [T] m, l [T] n.
---- vectorized
-orthogonal m alpha
-orthogonal n alpha
-not_parallel m n
-orthogonal m gen1
-orthogonal n gen1
-orthogonal l m
-orthogonal l n
+--- vectorize
+m <T> alpha
+n <T> alpha
+m <~//> n
+m <T> gen1
+n <T> gen1
+l <T> m
+l <T> n
 
 
 
@@ -140,9 +141,9 @@ include "vrg-sugar.xclp"
 # alpha.
 a [//] b, a [T] alpha.
 
---- vectorized
-parallel a b
-parallel a alpha
+--- vectorize
+a <//> b
+a <//> alpha
 
 
 
@@ -163,9 +164,9 @@ include "vrg-sugar.xclp"
 
 a [T] alpha, b [T] alpha.
 
---- vectorized
-parallel a alpha
-parallel b alpha
+--- vectorize
+a <//> alpha
+b <//> alpha
 
 
 
@@ -182,10 +183,10 @@ include "vrg-sugar.xclp"
 \a, \b, \c, \d.
 a [//] b, c [//] d, a [T] c.
 
---- vectorized
-parallel a b
-parallel c d
-orthogonal a c
+--- vectorize
+a <//> b
+c <//> d
+a <T> c
 
 
 
@@ -202,10 +203,10 @@ include "vrg-sugar.xclp"
 \a, \b, \c, \d.
 a [//] b, c [//] d, a [X] c.
 
---- vectorized
-parallel a b
-parallel c d
-cross a c
+--- vectorize
+a <//> b
+c <//> d
+a <X> c
 
 
 
@@ -225,14 +226,14 @@ include "vrg-sugar.xclp"
 # alpha, # beta.
 meet(a, b, P), a [on] beta, b [on] beta, a [//] alpha, b [//] alpha.
 
---- vectorized
-orthogonal a alpha
-orthogonal b alpha
-orthogonal a beta
-orthogonal b beta
-not_parallel a b
-orthogonal a gen1
-orthogonal b gen1
+--- vectorize
+a <T> alpha
+b <T> alpha
+a <T> beta
+b <T> beta
+a <~//> b
+a <T> gen1
+b <T> gen1
 
 
 
@@ -251,14 +252,14 @@ include "vrg-sugar.xclp"
 \a, \b.
 alpha [//] beta, meet(alpha, theta, a), meet(beta, theta, b).
 
---- vectorized
-orthogonal a alpha
-orthogonal b beta
-orthogonal a theta
-orthogonal b theta
-parallel alpha beta
-not_parallel alpha theta
-not_parallel beta theta
+--- vectorize
+a <T> alpha
+b <T> beta
+a <T> theta
+b <T> theta
+alpha <//> beta
+alpha <~//> theta
+beta <~//> theta
 
 
 
@@ -277,9 +278,9 @@ include "vrg-sugar.xclp"
 \l.
 alpha [//] beta, l [on] alpha.
 
---- vectorized
-orthogonal l alpha
-parallel alpha beta
+--- vectorize
+l <T> alpha
+alpha <//> beta
 
 
 
@@ -298,9 +299,9 @@ include "vrg-sugar.xclp"
 \l.
 alpha [//] beta, l [T] alpha.
 
---- vectorized
-parallel l alpha
-parallel alpha beta
+--- vectorize
+l <//> alpha
+alpha <//> beta
 
 
 
@@ -319,9 +320,9 @@ include "vrg-sugar.xclp"
 #alpha.
 l1 [T] alpha, l2 [on] alpha.
 
---- vectorized
-orthogonal l2 alpha
-parallel l1 alpha
+--- vectorize
+l2 <T> alpha
+l1 <//> alpha
 
 
 
@@ -340,13 +341,13 @@ include "vrg-sugar.xclp"
 \l1, \l2.
 alpha [T] beta, meet(alpha, beta, l1), l2 [on] alpha, l2 [T] l1.
 
---- vectorized
-orthogonal l2 l1
-orthogonal l1 alpha
-orthogonal l1 beta
-orthogonal l2 alpha
-orthogonal alpha beta
-not_parallel alpha beta
+--- vectorize
+l2 <T> l1
+l1 <T> alpha
+l1 <T> beta
+l2 <T> alpha
+alpha <T> beta
+alpha <~//> beta
 
 
 
@@ -375,13 +376,13 @@ include "vrg-sugar.xclp"
 \c. /* line PO */
 b [T] alpha, project(c, alpha, d), a [on] alpha, a [T] d.
 
---- vectorized
-orthogonal a d
-orthogonal a alpha
-orthogonal gen1 alpha
-orthogonal d alpha
-orthogonal d gen1
-not_parallel gen1 alpha
-orthogonal c gen1
-cross c alpha
-parallel b alpha
+--- vectorize
+a <T> d
+a <T> alpha
+gen1 <T> alpha
+d <T> alpha
+d <T> gen1
+gen1 <~//> alpha
+c <T> gen1
+c <X> alpha
+b <//> alpha

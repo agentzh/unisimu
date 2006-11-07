@@ -25,8 +25,8 @@ our $module;
 our (%prefix, %infix, %infix_prefix, %infix_circumfix, %infix_circum_close);
 
 %infix = (
-    'neq'  => "test (neq ",
-    'eq'   => "test (eq ",
+    '\='  => "test (neq ",
+    '=='  => "test (eq ",
     ':='  => "bind ",
 );
 
