@@ -5,6 +5,8 @@ use File::Slurp;
 plan tests => 3 * blocks();
 my $count = 0;
 
+my $xclips = "$^X xclips.pl";
+
 #no_diff;
 
 run {
@@ -12,7 +14,7 @@ run {
     my $name = $block->name;
     my $id = sprintf("%03d", ++$count);
     write_file("$id.xclp", "/* $name */\n\n", $block->xclp);
-    ok system($^X, "xclp.pl", "$id.xclp") == 0, "$name - xclp.pl ok";
+    ok system(split(/\s+/, $xclips), "$id.xclp") == 0, "$name - invoking $xclips ok";
     my ($stdout, $stderr);
     ok run3(
             [$^X, 'vectorize-run.pl', "$id.clp"],

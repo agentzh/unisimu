@@ -1,11 +1,19 @@
+/* rules for vector space evaluation */
+
+define defmodule(
+    Eval,
+    import(Vectorize, deftemplate, vector-relation)
+).
+
+module Eval.
+
 include "vrg-sugar.xclp".
 
-X // Y, Y // Z => X // Z.
+?a <//> ?b, ?a <?R> ?b => ?a <//> ?b.
 
-X // Y, Y T Z => X T Z.
+?a <T> ?b; ?a <X> ?b => ?a <~//> ?b.
 
-X // Y, X A Z => X A Z.
+?a <T> ?b, ?b <T> ?c, ?c <T> ?d, ?d <T> ?a, ?a <~//> ?c
+=> ?b <//> ?d.
 
-X T Y; X A Y => X !// Y.
-
-A T B, B T C, C T D, D T A, A !// C => B // D.
+?a <?R> ?b => ?b <?R> ?a.

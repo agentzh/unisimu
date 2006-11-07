@@ -1,7 +1,7 @@
 SHELL = cmd
 
 xpro = perl xpro.pl
-xclp = perl xclp.pl
+xclp = perl xclips.pl
 
 rm_f = perl -MExtUtils::Command -e rm_f
 
@@ -13,13 +13,13 @@ clp_files  = $(patsubst %.xclp,%.clp, $(xclp_files))
 
 all: CLIPSx.pm $(pro_files) $(clp_files)
 
-CLIPSx.pm: xclp.grammar
+CLIPSx.pm: xclips.grammar
 	perl -s -MParse::RecDescent - -RD_HINT $< CLIPSx
 
 %.pro: %.xpro xpro.pl
 	$(xpro) $<
 
-%.clp: %.xclp xclp.pl CLIPSx.pm
+%.clp: %.xclp xclips.pl CLIPSx.pm
 	$(xclp) $<
 
 test: all

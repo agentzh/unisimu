@@ -98,7 +98,7 @@ directive : 'module' <commit> identifier '.' ws
 		    <skip:'\s*'> string '.' ws
 
         {   my $pattern = $item{circum_pattern};
-		    warn "~~~ @$pattern\n";
+		    #warn "~~~ @$pattern\n";
 			$::infix_circumfix{$pattern->[0]} = eval $item{string};
 			$::infix_circum_close{$pattern->[0]} = $pattern->[1]; '' }
 

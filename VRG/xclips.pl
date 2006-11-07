@@ -37,11 +37,11 @@ if (@facts) {
 }
 $data .= "\n" if $data and $data !~ /\n$/s;
 
-my @elems = %infix_circumfix;
-warn "\%infix_circumfix: @elems\n";
+#my @elems = %infix_circumfix;
+#warn "\%infix_circumfix: @elems\n";
 
-@elems = %infix_circum_close;
-warn "\%infix_circum_close: @elems\n";
+#@elems = %infix_circum_close;
+#warn "\%infix_circum_close: @elems\n";
 
 sub match_prefix {
     my @keys = sort { -($a cmp $b) } keys %::prefix;
@@ -60,14 +60,14 @@ sub match_infix_prefix {
 
 sub match_infix_circum_open {
     my @keys = sort { -($a cmp $b) } keys %::infix_circumfix;
-    warn "infix_circum_open: @keys\n";
+    #warn "infix_circum_open: @keys\n";
     return match($_[0], \@keys);
 }
 
 sub match_infix_circum_close {
     my $open = pop @_;
     my $close = $::infix_circum_close{$open};
-    warn "infix_circum_close: $close\n";
+    #warn "infix_circum_close: $close\n";
     return match($_[0], [$close]);
 }
 
@@ -78,7 +78,7 @@ sub match {
         #warn "$key => ", $::prefix{$key}, "\n";
         my $len = length($key);
         if (substr($_[0], 0, $len) eq $key) {
-            warn "!!! matched operator \"$key\"\n";
+            #warn "!!! matched operator \"$key\"\n";
             $_[0] = substr($_[0], $len);
             return $key;
         }

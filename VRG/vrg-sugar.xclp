@@ -5,11 +5,11 @@ prefix:<#>   "plane".
 
 infix:<//>   "parallel".
 infix:<T>    "orthogonal".
-infix:<A>    "oblique".
+infix:<X>    "oblique".
 
 infix:<~//>  "unparallel".
 infix:<~T>   "nonorthogonal".
-infix:<~A>   "nonoblique".
+infix:<~X>   "nonoblique".
 
 infix:<on>   "on".
 infix:<~on>  "not_on".
