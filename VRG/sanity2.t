@@ -2,7 +2,7 @@ use Test::Base;
 use IPC::Run3;
 use File::Slurp;
 
-plan tests => 3 * blocks();
+plan tests => 4 * blocks();
 my $count = 0;
 
 my $xclips = "$^X xclips.pl";
@@ -28,6 +28,13 @@ run {
     my $got = sort_list($vectorize);
     my $expected = sort_list($block->vectorize);
     is $got, $expected, "$name - vectorization ok";
+    if ($block->eval) {
+        my @rels = split /\n/, $block->eval;
+        for my $rel (@rels) {
+            my $pat = quotemeta($rel);
+            like $eval, qr/\b$pat\n/ms, "$rel appeared";
+        }
+    }
 };
 
 sub sort_list {
@@ -42,7 +49,7 @@ __DATA__
 --- vrg
 
 line a, b, c;
-a // b, c // b => a// c;
+a // b, c // b => a // c;
 
 --- xclp
 include "vrg-sugar.xclp"
@@ -52,6 +59,8 @@ a [//] b, c [//] b.
 --- vectorize
 a <//> b
 c <//> b
+--- eval
+a <//> c
 
 
 
@@ -73,6 +82,8 @@ a [~on] alpha, b [on] alpha, a [//] b.
 a <~T> alpha
 b <T> alpha
 a <//> b
+--- eval
+a <T> alpha
 
 
 
@@ -96,6 +107,8 @@ a <T> beta
 b <T> alpha
 b <T> beta
 alpha <~//> beta
+--- eval
+a <//> b
 
 
 
@@ -123,6 +136,8 @@ m <T> gen1
 n <T> gen1
 l <T> m
 l <T> n
+--- eval
+l <//> alpha
 
 
 
@@ -144,6 +159,8 @@ a [//] b, a [T] alpha.
 --- vectorize
 a <//> b
 a <//> alpha
+--- eval
+b <//> alpha
 
 
 
@@ -167,6 +184,8 @@ a [T] alpha, b [T] alpha.
 --- vectorize
 a <//> alpha
 b <//> alpha
+--- eval
+a <//> b
 
 
 
@@ -187,6 +206,8 @@ a [//] b, c [//] d, a [T] c.
 a <//> b
 c <//> d
 a <T> c
+--- eval
+b <T> d
 
 
 
@@ -206,6 +227,8 @@ a [//] b, c [//] d, a [X] c.
 --- vectorize
 a <//> b
 c <//> d
+a <X> c
+--- eval
 a <X> c
 
 
@@ -234,6 +257,8 @@ b <T> beta
 a <~//> b
 a <T> gen1
 b <T> gen1
+--- eval
+alpha <//> beta
 
 
 
@@ -260,6 +285,8 @@ b <T> theta
 alpha <//> beta
 alpha <~//> theta
 beta <~//> theta
+--- eval
+a <//> b
 
 
 
@@ -281,6 +308,8 @@ alpha [//] beta, l [on] alpha.
 --- vectorize
 l <T> alpha
 alpha <//> beta
+--- eval
+l <T> beta
 
 
 
@@ -302,6 +331,8 @@ alpha [//] beta, l [T] alpha.
 --- vectorize
 l <//> alpha
 alpha <//> beta
+--- eval
+l <//> beta
 
 
 
@@ -323,6 +354,8 @@ l1 [T] alpha, l2 [on] alpha.
 --- vectorize
 l2 <T> alpha
 l1 <//> alpha
+--- eval
+l1 <T> l2
 
 
 
@@ -348,6 +381,8 @@ l1 <T> beta
 l2 <T> alpha
 alpha <T> beta
 alpha <~//> beta
+--- eval
+l2 <//> beta
 
 
 
@@ -386,3 +421,5 @@ gen1 <~//> alpha
 c <T> gen1
 c <X> alpha
 b <//> alpha
+--- eval
+a <T> c

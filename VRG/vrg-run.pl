@@ -23,37 +23,49 @@ my %prefix = (
 
 my $infile = shift or help();;
 my $clips = CLIPS->new('vectorize.clp', $infile, 'vector-eval.clp');
+
 $clips->watch('rules');
 $clips->watch('facts');
+
 $clips->reset;
+
 $clips->focus('Vectorize');
+
 $clips->rules if $opts{v};
-$clips->facts('*', \my $init_facts);
-$clips->get_current_module;
-$clips->agenda;
+#$clips->facts('*', \my $init_facts);
+
 $clips->run(\my $run_log);
-$clips->facts('Eval', \my $facts);
+$clips->facts('Eval', \my $vectorize_facts);
+
 $clips->focus('Eval');
-$clips->facts('*', \$init_facts);
+$clips->facts('*', \my $init_facts);
 $clips->run(\$run_log);
+$clips->facts('Eval', \my $eval_facts);
+
 $clips->eof;
 #warn "FACTS: ", $facts;
-while ($facts =~ /\(vector-relation ([^\)]+)\)/g) {
+
+while ($vectorize_facts =~ /\(vector-relation ([^\)]+)\)/g) {
     print format_fact($&), "\n";
 }
+
 print "---\n";
+
+while ($eval_facts =~ /\(vector-relation ([^\)]+)\)/g) {
+    print format_fact($&), "\n";
+}
 
 if ($opts{d}) {
     my $painter = CLIPS::Visualize->new($init_facts, $run_log);
     $painter->draw(
-        outfile     => "infile.png",
+        outfile     => "a.png",
         fact_filter => \&format_fact,
-        trim => 1,
+        trim => 0,
     );
 }
 
 sub help {
-    die "usage: $0 [-v] infile\n";
+    die "usage: $0 [-vd] infile\n";
 }
 
 sub format_fact {
