@@ -1,9 +1,11 @@
 use strict;
 use warnings;
 
-use CLIPS_Visualize;
-use Getopt::Std;
 use CLIPS;
+use CLIPS_Visualize;
+use CLIPSx_Compiler;
+use File::Slurp;
+use Getopt::Std;
 
 my %opts;
 getopts('dv', \%opts) or help();
@@ -21,11 +23,15 @@ my %prefix = (
     'plane' => '\\#',
 );
 
-my $infile = shift or help();;
+my $infile = shift or help();
+die "File $infile not found" if !-f $infile;
+
+my $goal = shift;
+
 my $clips = CLIPS->new('vectorize.clp', $infile, 'vector-eval.clp');
 
-$clips->watch('rules');
-$clips->watch('facts');
+$clips->watch('rules') if $opts{v} or $opts{d};
+$clips->watch('facts') if $opts{v} or $opts{d};;
 
 $clips->reset;
 
@@ -61,6 +67,7 @@ if ($opts{d}) {
         outfile     => "a.png",
         fact_filter => \&format_fact,
         trim => 1,
+        goal => $goal,
     );
 }
 

@@ -155,6 +155,7 @@ number : /\d+(?:\.\d*)?/
        | /\.\d+/
 
 string : { extract_delimited($text, '"') }
+       | { extract_delimited($text, "'") }
 
 infix_prefix : { ::match_infix_prefix($text) } { $::infix_prefix{$item[1]} }
 

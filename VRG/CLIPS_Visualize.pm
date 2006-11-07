@@ -2,6 +2,8 @@ package CLIPS::Visualize;
 
 use strict;
 use warnings;
+
+use List::MoreUtils qw(any first_index);
 use GraphViz;
 use Data::Dump::Streamer;
 
@@ -74,21 +76,33 @@ sub draw($$$) {
     my $fname = $opts{outfile} || 'a.png';
     my $fact_filter = $opts{fact_filter} || sub { $_[0] };
     my $rule_filter = $opts{rule_filter} || sub { "$_[0]\n#$_[1]" };
+    my $goal = $opts{goal};
     my $trim = 1;
     if (exists $opts{trim}) { $trim = $opts{trim} }
     #Dump($self)->Out;
-    my @facts = @{ $self->{facts} };
-    my @fires = @{ $self->{fires} };
+
+    my (@facts, @fires);
+    @facts = @{ $self->{facts} };
+    if ($goal) {
+        my $i = first_index { $_ eq $goal } @facts;
+        if ($i < 0) { die "goal $goal not found in the facts" }
+        $self->get_facts($i, \@facts, \@fires);
+    } else {
+        @fires = @{ $self->{fires} };
+    }
+    warn scalar(@facts);
     my $gv = GraphViz->new(%InitArgs);
     my @fact_refs = ();
     for (0..$#fires) {
         next if $trim and @{ $fires[$_][2] } == 0;
         $gv->add_node($_, label => $rule_filter->($fires[$_][0], $_));
         for my $old_fact (@{ $fires[$_][1] }) {
+            next if !defined $facts[$old_fact];
             $fact_refs[$old_fact] = 1 if $trim;
             $gv->add_edge("f-$old_fact" => $_);
         }
         for my $new_fact (@{ $fires[$_][2] }) {
+            next if !defined $facts[$new_fact];
             $fact_refs[$new_fact] = 1 if $trim;
             $gv->add_edge($_ => "f-$new_fact");
         }
@@ -98,6 +112,22 @@ sub draw($$$) {
         $gv->add_node("f-$_", label => $fact_filter->($facts[$_]), %FactStyle);
     }
     $gv->as_png($fname);
+}
+
+sub get_facts ($$$$) {
+    my ($self, $goal, $res_facts, $res_fires) = @_;
+    my @facts = @{ $self->{facts} };
+    $res_facts->[$goal] = $facts[$goal];
+
+    my @fires = @{ $self->{fires} };
+    for my $fire (@fires) {
+        if (any { $_ eq $goal } @{ $fire->[2] }) {
+            push @$res_fires, $fire;
+            for my $parent (@{ $fire->[1] }) {
+                $self->get_facts($parent, $res_facts, $res_fires);
+            }
+        }
+    }
 }
 
 1;
