@@ -24,6 +24,12 @@ our $module;
 
 our (%prefix, %infix, %infix_prefix, %infix_circumfix, %infix_circum_close);
 
+%infix = (
+    'neq'  => "test (neq ",
+    'eq'   => "test (eq ",
+    ':='  => "bind ",
+);
+
 $::RD_HINT = 1;
 #$::RD_TRACE = 1;
 our $parser = CLIPSx->new;

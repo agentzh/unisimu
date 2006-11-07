@@ -17,12 +17,12 @@ run {
     ok system(split(/\s+/, $xclips), "$id.xclp") == 0, "$name - invoking $xclips ok";
     my ($stdout, $stderr);
     ok run3(
-            [$^X, 'vectorize-run.pl', "$id.clp"],
+            [$^X, 'vrg-run.pl', "$id.clp"],
             \undef,
             \$stdout,
             \$stderr,
         ),
-        "$name - vectorize-run.pl ok";
+        "$name - vrg-run.pl ok";
     warn $stderr if $stderr;
     my $got = sort_list($stdout);
     my $expected = sort_list($block->vectorized);

@@ -8,7 +8,7 @@ module Vectorize.
 
 \?a, \?b, meet(?a, ?b, ?)
 =>
-    bind(?A, gensym()), #?A,
+    ?A := gensym(), #?A,
     ?a [on] ?A, ?b [on] ?A,
     ?a [~//] ?b.
 
@@ -16,7 +16,7 @@ module Vectorize.
 
 \?a, #?alpha, \?b, project(?a, ?alpha, ?b)
 =>
-    bind(?theta, gensym()), #?theta,
+    ?theta := gensym(), #?theta,
     ?a [X] ?alpha, ?a [on] ?theta,
     meet(?theta, ?alpha, ?b),
     ?theta [T] ?alpha.

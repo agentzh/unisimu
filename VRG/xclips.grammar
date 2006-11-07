@@ -30,11 +30,21 @@ conjunction : clause ',' <commit> conjunction
 
 clause : prefix <commit> atom
 
-            { "($item{prefix}$item{atom})" }
+            { my $s = $item{prefix};
+              my ($open, $close) = (0, 0);
+              $open++ while $s =~ /\(/g;
+              $close++ while $s =~ /\)/g;
+              "($s$item{atom})" . (')' x ($open - $close))
+            }
 
-       | atom <skip:''> /\s+/ general_infix <commit> <skip:'\s*'> atom
+       | atom <skip:''> /\s+/ general_infix /\s+/ <commit> <skip:'\s*'> atom
 
-            { "($item{general_infix}$item[1] $item[7])" }
+            { my $s = $item{general_infix};
+              my ($open, $close) = (0, 0);
+              $open++ while $s =~ /\(/g;
+              $close++ while $s =~ /\)/g;
+              "($s$item[1] $item[8])" . (')' x ($open - $close))
+            }
 
        | atom <skip:''> postfix
 
