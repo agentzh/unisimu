@@ -28,17 +28,17 @@ conjunction : clause ',' <commit> conjunction
             | clause
             | <error?> <reject>
 
-clause : prefix <skip:''> <commit> atom
+clause : prefix <commit> atom
 
-            { "($item{prefix} $item{atom})" }
+            { "($item{prefix}$item{atom})" }
 
-       | atom <skip:''> /\s+/ general_infix <skip:'\s*'> atom
-       
-            { "($item{general_infix} $item[1] $item[6])" }
-       
+       | atom <skip:''> /\s+/ general_infix <commit> <skip:'\s*'> atom
+
+            { "($item{general_infix}$item[1] $item[7])" }
+
        | atom <skip:''> postfix
 
-            { "($item{postfix} $item{atom})" }
+            { "($item{postfix}$item{atom})" }
 
        | atom
        | <error?> <reject>
@@ -74,28 +74,28 @@ directive : 'module' <commit> identifier '.' ws
 
         { $::module = $item{identifier} . '::'; '' }
 
-          | 'include' <commit> string '.' ws
+          | 'include' <commit> string /\.?/ ws
 
         { my $res = ::process_include(eval $item{string}, $itempos[1]{line}{from}) }
 
-          | 'define' <commit> predicate '.' ws
+          | 'define' <commit> predicate /\.?/ ws
 
         { $item{predicate} }
 
-          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws
+          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
           
         { $::prefix{$item{pattern}} = eval $item{string}; '' }
 
-          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws
+          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
 
         { $::infix{$item{pattern}} = eval $item{string}; '' }
 
-          | 'infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string '.' ws
+          | 'infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
 
         { $::infix_prefix{$item{pattern}} = eval $item{string}; '' }
 
           | 'infix_circumfix:<' <commit> <skip:''> circum_pattern '>'
-		    <skip:'\s*'> string '.' ws
+		    <skip:'\s*'> string /\.?/ ws
 
         {   my $pattern = $item{circum_pattern};
 		    #warn "~~~ @$pattern\n";
@@ -119,12 +119,12 @@ new_fact : clause
 
     { $item[1] =~ /^\(bind\b/ ? "    $item[1]\n" : "    (assert $item[1])\n" }
 
-general_infix : infix_circum_open <commit> infix
+general_infix : infix_circum_open <commit> general_infix
                 { ::match_infix_circum_close($text, $item[1]) }
 
-			{ $::infix_circumfix{$item[1]} . " " . $item{infix} }
+			{ $::infix_circumfix{$item[1]} . $item{general_infix} }
 
-			  | infix_prefix <commit> infix  { "$item{infix_prefix} $item{infix}" }
+			  | infix_prefix <commit> general_infix  { $item{infix_prefix} . $item{general_infix} }
               | infix
               | <error?> <reject>
 
@@ -148,7 +148,7 @@ string : { extract_delimited($text, '"') }
 
 infix_prefix : { ::match_infix_prefix($text) } { $::infix_prefix{$item[1]} }
 
-infix : variable
+infix : variable  { $item[1] . " " }
       | { ::match_infix($text) } { $::infix{$item[1]} }
 
 postfix : 'postfix'

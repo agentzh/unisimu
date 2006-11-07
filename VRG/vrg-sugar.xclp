@@ -1,18 +1,13 @@
 /* syntax sugar definitions for the VRG engine */
 
-prefix:<\>   "line".
-prefix:<#>   "plane".
+prefix:<\>   "line "
+prefix:<#>   "plane "
 
-infix:<//>   "parallel".
-infix:<T>    "orthogonal".
-infix:<X>    "oblique".
+infix:<//>   "parallel "
+infix:<T>    "orthogonal "
+infix:<X>    "oblique "
+infix:<on>   "on "
 
-infix:<~//>  "unparallel".
-infix:<~T>   "nonorthogonal".
-infix:<~X>   "nonoblique".
-
-infix:<on>   "on".
-infix:<~on>  "not_on".
-
-infix_circumfix:<[ ]>  "space-relation".
-infix_circumfix:<< >>  "vector-relation".
+infix_prefix:<~>       "not_"
+infix_circumfix:<[ ]>  "space-relation "
+infix_circumfix:<< >>  "vector-relation "

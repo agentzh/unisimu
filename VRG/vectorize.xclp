@@ -1,12 +1,12 @@
 define defmodule(Vectorize,
     export(deftemplate, vector-relation),
-    export(deftemplate, space-relation)).
+    export(deftemplate, space-relation))
 
-include "preprocess.xclp".
+include "preprocess.xclp"
 
 /* vectorization rules */
 
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 module Vectorize.
 

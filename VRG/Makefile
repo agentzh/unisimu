@@ -5,11 +5,12 @@ xclp = perl xclips.pl
 
 rm_f = perl -MExtUtils::Command -e rm_f
 
-xpro_files = $(wildcard *.xpro)
-pro_files  = $(patsubst %.xpro,%.pro, $(xpro_files))
+xpro_files := $(wildcard *.xpro)
+pro_files  := $(patsubst %.xpro,%.pro, $(xpro_files))
 
-xclp_files = $(wildcard *.xclp)
-clp_files  = $(patsubst %.xclp,%.clp, $(xclp_files))
+xclp_files := $(wildcard *.xclp)
+temp_files := $(filter 0%,$(xclp_files))
+clp_files  := $(patsubst %.xclp,%.clp, $(xclp_files))
 
 all: CLIPSx.pm $(pro_files) $(clp_files)
 
@@ -19,15 +20,16 @@ CLIPSx.pm: xclips.grammar
 %.pro: %.xpro xpro.pl
 	$(xpro) $<
 
-%.xclp: vrg-sugar.xclp
+vectorize.clp: preprocess.xclp
 
-vectorize.xclp: preprocess.xclp
-
-%.clp: %.xclp xclips.pl CLIPSx.pm
+%.clp: %.xclp xclips.pl CLIPSx.pm vrg-sugar.xclp
 	$(xclp) $<
 
-test: all
+testall: all
 	prove *.t
+
+test: all
+	prove sanity2.t
 
 clean:
 	$(rm_f) *.pro 0*.xpro 0*.xclp *.clp CLIPSx.pm

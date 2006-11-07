@@ -1,6 +1,6 @@
 /* preprocessing rules for vectorization */
 
-include "vrg-sugar.xclp".
+include "vrg-sugar.xclp"
 
 module Vectorize.
 
@@ -13,7 +13,7 @@ module Vectorize.
 \?a, #?A, meet(?a, ?A, ?) => ?a [~//] ?A, ?a [~on] ?A.
 
 \?a, #?alpha, \?b, project(?a, ?alpha, ?b)
-=> bind(?theta, gensym()),
+=> bind(?theta, gensym()), #?theta,
    ?a [X] ?alpha, ?a [on] ?theta,
    meet(?theta, ?alpha, ?b),
    ?theta [T] ?alpha.

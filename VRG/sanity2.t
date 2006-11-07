@@ -58,7 +58,7 @@ orthogonal a alpha
 orthogonal b alpha
 orthogonal a beta
 orthogonal b beta
-unparallel a b
+not_parallel a b
 
 
 
@@ -83,8 +83,8 @@ orthogonal b beta
 orthogonal a theta
 orthogonal b theta
 parallel alpha beta
-unparallel alpha theta
-unparallel beta theta
+not_parallel alpha theta
+not_parallel beta theta
 
 
 
@@ -172,7 +172,7 @@ orthogonal l1 alpha
 orthogonal l1 beta
 orthogonal l2 alpha
 orthogonal alpha beta
-unparallel alpha beta
+not_parallel alpha beta
 
 
 
@@ -187,7 +187,7 @@ line b; # line PA
 line d; # line AO
 line c; # line PO
 point P, A, O;
-b T alpha, project(c, alpha, d), a on alpha, a T d
+project(c, alpha, d), a on alpha, a T d
 =>
 a T c;
 
@@ -202,8 +202,12 @@ include "vrg-sugar.xclp".
 b [T] alpha, project(c, alpha, d), a [on] alpha, a [T] d.
 
 --- vectorized
-oblique c alpha
-orthogonal a alpha
 orthogonal a d
+orthogonal a alpha
+orthogonal gen1 alpha
+orthogonal d alpha
+orthogonal d gen1
+not_parallel gen1 alpha
+orthogonal c gen1
+oblique c alpha
 parallel b alpha
---- ONLY
