@@ -49,7 +49,8 @@ atom : predicate
      | variable
      | literal
 
-predicate : identifier '(' <commit> arguments ')'  { "($item[1] $item{arguments})" }
+predicate : identifier '(' ')' { "($item{identifier})" }
+		  | identifier '(' <commit> arguments ')'  { "($item[1] $item{arguments})" }
           | <error?> <reject>
 
 eofile : /^\Z/
@@ -93,22 +94,41 @@ directive : 'module' <commit> identifier '.' ws
 
         { $::infix_prefix{$item{pattern}} = eval $item{string}; '' }
 
+          | 'infix_circumfix:<' <commit> <skip:''> circum_pattern '>'
+		    <skip:'\s*'> string '.' ws
+
+        {   my $pattern = $item{circum_pattern};
+		    warn "~~~ @$pattern\n";
+			$::infix_circumfix{$pattern->[0]} = eval $item{string};
+			$::infix_circum_close{$pattern->[0]} = $pattern->[1]; '' }
+
           | <error?> <reject>
 
 pattern : /\S+(?=>)/
 
-new_facts : clause ',' <commit> new_facts
+circum_pattern : /(\S+) (\S+)(?=>)/ { [$1, $2] }
 
-    { "    (assert $item{clause})\n" . $item{new_facts} }
+new_facts : new_fact ',' <commit> new_facts
 
-      | clause  { "    (assert $item{clause})\n" }
-      | <error?> <reject>
+              { $item{new_fact} . $item{new_facts} }
 
+          | new_fact
+          | <error?> <reject>
 
+new_fact : clause
 
-general_infix : infix_prefix <commit> infix  { "$item{infix_prefix} $item{infix}" }
+    { $item[1] =~ /^\(bind\b/ ? "    $item[1]\n" : "    (assert $item[1])\n" }
+
+general_infix : infix_circum_open <commit> infix
+                { ::match_infix_circum_close($text, $item[1]) }
+
+			{ $::infix_circumfix{$item[1]} . " " . $item{infix} }
+
+			  | infix_prefix <commit> infix  { "$item{infix_prefix} $item{infix}" }
               | infix
               | <error?> <reject>
+
+infix_circum_open : { ::match_infix_circum_open($text) }
 
 arguments : <leftop: clause ',' clause>  { join ' ', @{ $item[1] } }
 

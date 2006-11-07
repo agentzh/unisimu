@@ -7,12 +7,12 @@ infix:<//>   "parallel".
 infix:<T>    "orthogonal".
 infix:<A>    "oblique".
 
-infix:<!//>  "unparallel".
-infix:<!T>   "nonorthogonal".
-infix:<!A>   "nonoblique".
+infix:<~//>  "unparallel".
+infix:<~T>   "nonorthogonal".
+infix:<~A>   "nonoblique".
 
 infix:<on>   "on".
-infix:<!on>  "not_on".
+infix:<~on>  "not_on".
 
-infix_prefix:<%>  "space-relation".
-infix_prefix:<@>  "vector-relation".
+infix_circumfix:<[ ]>  "space-relation".
+infix_circumfix:<< >>  "vector-relation".
