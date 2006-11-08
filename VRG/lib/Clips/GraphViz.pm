@@ -1,4 +1,4 @@
-package CLIPS::Visualize;
+package Clips::GraphViz;
 
 use strict;
 use warnings;

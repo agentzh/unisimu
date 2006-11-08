@@ -3,7 +3,9 @@
 use strict;
 use warnings;
 
-use VRG_Script_Compiler;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use VRG::Compiler;
 use List::MoreUtils 'uniq';
 use File::Slurp;
 #use Data::Dump::Streamer;
@@ -18,7 +20,7 @@ my $source = read_file($infile);
 
 #$::RD_HINT = 1;
 #$::RD_TRACE = 1;
-our $parser = VRG::Script::Compiler->new;
+our $parser = VRG::Compiler->new;
 my $data = $parser->program($source);
 if (!defined $data) {
     die "abort.\n";

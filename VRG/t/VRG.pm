@@ -8,7 +8,7 @@ our @EXPORT = qw(run_tests);
 
 my $count = 0;
 
-my $xclips = "$^X xclips.pl";
+my $xclips = "$^X script/xclips.pl -I knowledge ";
 
 #no_diff;
 
@@ -34,7 +34,7 @@ sub run_test () {
 
     write_file($vrg_file, $vrg_src);
     ok run3(
-        [$^X, 'vrgs.pl', $vrg_file],
+        [$^X, 'script/vrgs.pl', $vrg_file],
         \undef,
         \$stdout,
         \$stderr,
@@ -50,7 +50,7 @@ sub run_test () {
 
     my $clp_file = "$id.clp";
     ok run3(
-            [$^X, 'vrg-run.pl', $clp_file],
+            [$^X, 'script/vrg-run.pl', $clp_file],
             \undef,
             \$stdout,
             \$stderr,

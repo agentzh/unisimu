@@ -1,0 +1,34 @@
+:- include(preprocess).
+
+@X T @Y :-
+	\X T  \Y;
+    \X // #Y;
+    \X on #Y;
+    #X T  #Y.
+
+@X // @Y :-
+    \X // \Y;
+    \X T  #Y;
+    #X // #Y.
+
+@X A @Y :-
+    \X A \Y;
+    \X A #Y;
+    #X A #Y.
+
+@X T @Y :-
+	\X !T  \Y;
+    \X !// #Y;
+    #X !T  #Y.
+
+@X !// @Y :-
+    \X !// \Y;
+    #X !// #Y.
+
+@X A @Y :-
+    \X !A \Y;
+    \X !A #Y;
+    #X !A #Y.
+
+go :- relation(@X, @Y, Z), format("~a ~a ~a~n", [Z,X,Y]), fail.
+go.

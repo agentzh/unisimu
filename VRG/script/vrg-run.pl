@@ -1,15 +1,17 @@
 use strict;
 use warnings;
 
-use CLIPS;
-use CLIPS_Visualize;
-use CLIPSx_Compiler;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Clips::Batch;
+use Clips::GraphViz;
+use XClips::Compiler;
 use File::Slurp;
 use Getopt::Std;
 
 my %opts;
 getopts('dv', \%opts) or help();
-$CLIPS::Verbose = $opts{v};
+$Clips::Batch::Verbose = $opts{v};
 
 my %infix = (
     'parallel'   => '//',
@@ -28,7 +30,12 @@ die "File $infile not found" if !-f $infile;
 
 my $goal = shift;
 
-my $clips = CLIPS->new('vectorize.clp', $infile, 'anti-vectorize.clp', 'vector-eval.clp');
+my $clips = Clips::Batch->new(
+    'knowledge/vectorize.clp',
+    $infile,
+    'knowledge/anti-vectorize.clp',
+    'knowledge/vector-eval.clp'
+);
 
 $clips->watch('rules') if $opts{v} or $opts{d};
 $clips->watch('facts') if $opts{v} or $opts{d};;
@@ -73,14 +80,14 @@ while ($anti_vec_facts =~ /\(space-relation ([^\)]+)\)/g) {
 }
 
 if ($opts{d}) {
-    my $painter = CLIPS::Visualize->new($eval_init_facts, $eval_run_log);
+    my $painter = Clips::GraphViz->new($eval_init_facts, $eval_run_log);
     $painter->draw(
         outfile     => "eval.png",
         fact_filter => \&format_fact,
         trim => 1,
         goal => $goal,
     );
-    $painter = CLIPS::Visualize->new($final_init_facts, $final_run_log);
+    $painter = Clips::GraphViz->new($final_init_facts, $final_run_log);
     $painter->draw(
         outfile     => "final.png",
         fact_filter => \&format_fact,

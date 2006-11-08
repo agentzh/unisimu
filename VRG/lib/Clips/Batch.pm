@@ -1,4 +1,4 @@
-package CLIPS;
+package Clips::Batch;
 
 use strict;
 use warnings;

@@ -1,9 +1,10 @@
-package CLIPSx::Compiler;
+package XClips::Compiler;
 
 use strict;
 use warnings;
+use File::Spec;
 
-use base 'CLIPSx';
+use base 'XClips::Compiler::Base';
 
 #warn "Hi!!!";
 
@@ -16,6 +17,7 @@ our $count;
 our @facts;
 our $rel_type;
 our $module;
+our @Include = '.';
 
 our (%prefix, %infix, %infix_prefix, %infix_circumfix, %infix_circum_close);
 
@@ -70,6 +72,20 @@ sub match {
 
 sub process_include {
     my ($fname, $linno) = @_;
+    my $done;
+    for my $dir (@Include) {
+        my $file = File::Spec->catfile($dir, $fname);
+        if (-f $file) {
+            $fname = $file;
+            $done = 1;
+            last;
+        }
+    }
+    if (!$done) {
+        die "error: $::infile (line $linno): Can't find include file $fname ",
+            "in \@INC.\n\t(\@INC contains: @Include)\n";
+    }
+    #warn "including file $fname...";
     my $src = read_file($fname);
     my $saved_infile = $::infile;
     local $::infile = $fname;
@@ -80,7 +96,7 @@ sub process_include {
 
     local $::count = 0;
 
-    my $parser = CLIPSx->new;
+    my $parser = XClips::Compiler->new;
     my $data = $parser->program($src);
     if (!defined $data) {
         die "error: $saved_infile (line $linno): can't include file $fname.\n";

@@ -1,13 +1,24 @@
 use strict;
 use warnings;
 
-use CLIPSx_Compiler;
+use Getopt::Long;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use XClips::Compiler;
 use List::MoreUtils 'uniq';
 use File::Slurp;
 use Data::Dump::Streamer;
 
-our $infile = shift or
-    die "usage: $0 infile\n";
+GetOptions(
+    'I=s' => \@::Include,
+) or help();
+
+our $infile = shift or help();
+
+sub help {
+    die "usage: $0 [-I dir] infile\n";
+}
+
 (my $outfile = $infile) =~ s/\.xclp$/.clp/i;
 $outfile .= '.clp' if $outfile !~ /\.clp$/i;
 
@@ -18,7 +29,7 @@ my $source = read_file($infile);
 
 $::RD_HINT = 1;
 #$::RD_TRACE = 1;
-our $parser = CLIPSx::Compiler->new;
+our $parser = XClips::Compiler->new;
 my $data = $parser->program($source);
 if (!defined $data) {
     die "abort.\n";
