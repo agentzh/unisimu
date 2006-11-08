@@ -13,10 +13,12 @@ clp_files  := $(patsubst %,knowledge/%,vectorize.clp vector-eval.clp anti-vector
 
 vpath %.xclp knowledge
 vpath %.grammar grammar
+vpath %.pl script xprolog
 
 all: clips_all
 
-clips_all: lib/VRG/Compiler.pm lib/CLIPS/Batch.pm $(clp_files)
+clips_all: lib/XClips/Compiler.pm lib/XClips/Compiler/Base.pm lib/VRG/Compiler.pm \
+	lib/CLIPS/Batch.pm $(clp_files)
 
 prolog_all: $(pro_files)
 
@@ -47,5 +49,7 @@ test: clips_all
 
 clean:
 	$(rm_f) xprolog/*.pro xprolog/0*.xpro 0*.xclp *.clp *.vrg \
-		lib/XClips/Compiler/Base.pm lib/VRG/Compiler.pm \
+
+veryclean: clean
+	$(rm_f) lib/XClips/Compiler/Base.pm lib/VRG/Compiler.pm \
 		knowledge/*.clp
