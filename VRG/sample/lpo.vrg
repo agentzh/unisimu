@@ -1,0 +1,7 @@
+# 直线和平面垂直的判定定理
+
+line m, n, l;
+point B;
+plane alpha;
+
+m on alpha, n on alpha, meet(m, n, B), l T m, l T n => l T alpha;
