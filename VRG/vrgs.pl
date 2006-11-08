@@ -16,14 +16,14 @@ $outfile .= '.xclp' if $outfile !~ /\.xclp$/i;
 
 my $source = read_file($infile);
 
-$::RD_HINT = 1;
+#$::RD_HINT = 1;
 #$::RD_TRACE = 1;
 our $parser = VRG::Script::Compiler->new;
 my $data = $parser->program($source);
 if (!defined $data) {
     die "abort.\n";
 }
-warn $data;
+#warn $data;
 
 if ($data) {
     write_file($outfile, $data);

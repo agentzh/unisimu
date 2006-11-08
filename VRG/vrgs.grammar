@@ -1,26 +1,30 @@
 program : item(s) proposition eofile
 
-    { "include \"vrg-sugar.h\"\n\n" . join "", @{ $item[1] }, $item[2] }
+    { "include \"vrg-sugar.xclp\"\n\n" . join "", @{ $item[1] }, $item[2] }
 
 eofile : /^\Z/
 
-item : declaration
-     | comment
+item : comment
+     | declaration
 
-comment : '#' /([^\n]+)/  { "/* $item[2] */\n" }
+comment : '#' <commit> /[^\n]+/  { "/* $item[3] */\n" }
 
 declaration : declarator <commit> variable_list ';' ws
 
               { my $prefix = $item{declarator};
-                (join ", ", map { $prefix . $_ } @{ $item{variable_list} })
-                    . ".\n";
+                if ($prefix ne '') {
+                    $return = join(", ", map { $prefix . $_ } @{ $item{variable_list} })
+                        . ".\n"
+                } else {
+                    $return = '';
+                }
               }
 
             | <error?> <reject>
 
 declarator : 'line'   { '\\' }
            | 'plane'  { '#'  }
-           | 'point'
+           | 'point'  { ''   }
            | <error>
 
 variable_list : <leftop: variable ',' variable>
@@ -30,7 +34,12 @@ variable : /[A-Za-z]\w*/
 
 ws: /[\n\s]*/
 
-proposition : facts '=>' <commit> goal /;?/  { "$item{facts}.\ngoal($item{goal}).\n" }
+proposition : facts '=>' <commit> goal /;?/ ws
+
+    { my $goal = $item{goal};
+      $goal =~ s/ \[/ \*\[/g;
+      "$item{facts}.\n$goal.\n" }
+
             | <error?> <reject>
 
 facts : <leftop: fact ',' fact>  { join ", ", @{ $item[1] }; }
@@ -61,4 +70,4 @@ predicate : predicate_name <commit> '(' variable_list ')'
 
 predicate_name : 'meet'
                | 'project'
-               | /\w+/ <error: "known predicate $item[1]">
+               | <error>
