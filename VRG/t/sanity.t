@@ -385,7 +385,33 @@ l1 [T] l2
 
 
 
-=== TEST 14: 两个平面垂直的性质定理
+=== TEST 14: 两个平面垂直的判定定理
+--- vrg
+
+plane alpha, beta; line l;
+l T alpha, l on beta => alpha T beta;
+
+--- xclp
+include "vrg-sugar.xclp"
+
+#alpha, #beta.
+\l.
+l [T] alpha, l [on] beta.
+alpha *[T] beta.
+
+--- vectorize
+l <//> alpha
+l <T> beta
+
+--- eval
+alpha <T> beta
+
+--- final
+alpha [T] beta
+
+
+
+=== TEST 15: 两个平面垂直的性质定理
 --- vrg
 
 plane alpha, beta;
@@ -417,7 +443,7 @@ l2 [T] beta
 
 
 
-=== TEST 15: 三垂线定理
+=== TEST 16: 三垂线定理
 PA、PO 分别是平面 alpha 的垂线、斜线，AO 是 PO 在平面 alpha 内的射影，
 且 a 在 alpha 上，a 垂直于 AO，则 a 垂直于 PQ.
 --- vrg
@@ -461,3 +487,37 @@ a <T> c
 
 --- final
 a [T] c
+
+
+
+=== TEST 17: 三垂线定理逆定理
+--- vrg
+
+plane alpha;
+line d, c, a;
+
+project(c, alpha, d), a on alpha, a T c => a T d;
+
+--- xclp
+include "vrg-sugar.xclp"
+
+#alpha.
+\d, \c, \a.
+project(c, alpha, d), a [on] alpha, a [T] c.
+a *[T] d.
+
+--- vectorize
+c <X> alpha
+c <T> gen1
+d <T> gen1
+d <T> alpha
+gen1 <~//> alpha
+gen1 <T> alpha
+a <T> alpha
+a <T> c
+
+--- eval
+a <T> d
+
+--- final
+a [T] d
