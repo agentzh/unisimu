@@ -33,10 +33,10 @@ vectorize.clp: preprocess.xclp
 	$(xclp) $<
 
 testall: clips_all prolog_all
-	prove *.t
+	prove t/*.t
 
 test: clips_all
-	prove sanity2.t
+	prove t/sanity2.t
 
 clean:
-	$(rm_f) *.pro 0*.xpro 0*.xclp *.clp CLIPSx.pm
+	$(rm_f) *.pro 0*.xpro 0*.xclp *.clp CLIPSx.pm *.vrg

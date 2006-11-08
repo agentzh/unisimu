@@ -1,54 +1,8 @@
-use Test::Base;
-use IPC::Run3;
-use File::Slurp;
+use t::VRG;
 
 plan tests => 5 * blocks();
-my $count = 0;
 
-my $xclips = "$^X xclips.pl";
-
-#no_diff;
-
-run {
-    my $block = shift;
-    my $name = $block->name;
-    my $id = sprintf("%03d", ++$count);
-    write_file("$id.xclp", "/* $name */\n\n", $block->xclp);
-    ok system(split(/\s+/, $xclips), "$id.xclp") == 0, "$name - invoking $xclips ok";
-    my ($stdout, $stderr);
-    ok run3(
-            [$^X, 'vrg-run.pl', "$id.clp"],
-            \undef,
-            \$stdout,
-            \$stderr,
-        ),
-        "$name - vrg-run.pl ok";
-    warn $stderr if $stderr;
-    my ($vectorize, $eval, $final) = ($stdout =~ /(.*)---\n(.*)---\n(.*)/s);
-    my $got = sort_list($vectorize);
-    my $expected = sort_list($block->vectorize);
-    is $got, $expected, "$name - vectorization ok";
-    if ($block->eval) {
-        my @rels = split /\n/, $block->eval;
-        for my $rel (@rels) {
-            my $pat = quotemeta($rel);
-            like $eval, qr/\b$pat\n/ms, "vectorizie -- $rel appeared";
-        }
-    }
-    if ($block->final) {
-        my @rels = split /\n/, $block->final;
-        for my $rel (@rels) {
-            my $pat = quotemeta($rel);
-            like $final, qr/\b$pat\n/ms, "final -- $rel appeard";
-        }
-    }
-};
-
-sub sort_list {
-    my $s = shift;
-    my @ln = split /\n/, $s;
-    join( "\n", sort @ln )."\n";
-}
+run_tests();
 
 __DATA__
 

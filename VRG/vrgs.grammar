@@ -1,11 +1,19 @@
-program : declaration(s) proposition eofile
+program : item(s) proposition eofile
+
+    { "include \"vrg-sugar.h\"\n\n" . join "", @{ $item[1] }, $item[2] }
 
 eofile : /^\Z/
+
+item : declaration
+     | comment
+
+comment : '#' /([^\n]+)/  { "/* $item[2] */\n" }
 
 declaration : declarator <commit> variable_list ';' ws
 
               { my $prefix = $item{declarator};
-                join ", ", map { $prefix . $_ } @{ $item{variable_list} };
+                (join ", ", map { $prefix . $_ } @{ $item{variable_list} })
+                    . ".\n";
               }
 
             | <error?> <reject>
@@ -22,13 +30,13 @@ variable : /[A-Za-z]\w*/
 
 ws: /[\n\s]*/
 
-proposition : facts '=>' <commit> goal /;?/
+proposition : facts '=>' <commit> goal /;?/  { "$item{facts}.\ngoal($item{goal}).\n" }
             | <error?> <reject>
 
-facts : <leftop: fact ',' fact>
+facts : <leftop: fact ',' fact>  { join ", ", @{ $item[1] }; }
       | <error>
 
-fact : variable infix <commit> variable
+fact : variable infix <commit> variable  { "$item[1] [$item{infix}] $item[4]" }
      | predicate
      | <error?> <reject>
 
