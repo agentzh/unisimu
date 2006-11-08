@@ -1,0 +1,7 @@
+meet(#X, #Y, \Z) => #X !// #Y, \Z on #X, \Z on #Y.
+
+meet(\X, \Y, _) => \X !// \Y.
+
+meet(\X, #Y, _) => \X !// #Y, \X !on #Y.
+
+meet(_, _, _) :- fail.

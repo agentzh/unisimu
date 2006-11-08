@@ -7,6 +7,8 @@ my $prolog = "$^X pro.pl";
 plan tests => 3 * blocks();
 my $count = 0;
 
+chdir 'xprolog' or die;
+
 run {
     my $block = shift;
     my $name = $block->name;

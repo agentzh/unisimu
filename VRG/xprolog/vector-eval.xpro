@@ -1,0 +1,7 @@
+X // Z :- X \== Y, X // Y, Y // Z.
+
+X T  Z :- X \== Y, X T  Z, X // Y.
+X A  Z :- X \== Y, X A  Z, X // Y.
+
+go :- relation(X, Y, R), format("~a ~a ~a", [R, X, Y]), fail.
+go.
