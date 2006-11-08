@@ -1,4 +1,4 @@
-/* syntax sugar definitions for the VRG engine */
+/* syntax sugar definitions for the VRG knowledge base */
 
 prefix:<\>   "line "
 prefix:<#>   "plane "
