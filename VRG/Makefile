@@ -39,4 +39,5 @@ test: clips_all
 	prove t/sanity2.t
 
 clean:
-	$(rm_f) *.pro 0*.xpro 0*.xclp *.clp CLIPSx.pm *.vrg
+	$(rm_f) *.pro 0*.xpro 0*.xclp *.clp CLIPSx.pm *.vrg \
+		VRG_Script_Compiler.pm Compiler.pm
