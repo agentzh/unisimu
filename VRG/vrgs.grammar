@@ -1,0 +1,56 @@
+program : declaration(s) proposition eofile
+
+eofile : /^\Z/
+
+declaration : declarator <commit> variable_list ';' ws
+
+              { my $prefix = $item{declarator};
+                join ", ", map { $prefix . $_ } @{ $item{variable_list} };
+              }
+
+            | <error?> <reject>
+
+declarator : 'line'   { '\\' }
+           | 'plane'  { '#'  }
+           | 'point'
+           | <error>
+
+variable_list : <leftop: variable ',' variable>
+              | <error>
+
+variable : /[A-Za-z]\w*/
+
+ws: /[\n\s]*/
+
+proposition : facts '=>' <commit> goal /;?/
+            | <error?> <reject>
+
+facts : <leftop: fact ',' fact>
+      | <error>
+
+fact : variable infix <commit> variable
+     | predicate
+     | <error?> <reject>
+
+goal : fact
+
+infix : '//'
+      | 'T'
+      | 'X'
+      | 'on'
+      | '~//'
+      | '~T'
+      | '~X'
+      | '~on'
+      | <error>
+
+predicate : predicate_name <commit> '(' variable_list ')'
+
+            { "$item{predicate_name}(" .
+              join(", ", @{ $item{variable_list} }) . ")" }
+    
+          | <error?> <reject>
+
+predicate_name : 'meet'
+               | 'project'
+               | /\w+/ <error: "known predicate $item[1]">

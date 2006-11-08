@@ -69,6 +69,7 @@ statement : comment
           | directive
           | rule
           | facts '.' ws  { '' }
+          | <error>
 
 facts : fact ',' <commit> facts
       | fact
@@ -148,6 +149,7 @@ variable : /\?[A-Za-z_]([-\w])*/  { $item[1] . $item{identifier} }
 literal : identifier
         | number
         | string
+        | <error>
 
 identifier : /[A-Za-z_]([-\w])*/
 
@@ -156,6 +158,7 @@ number : /\d+(?:\.\d*)?/
 
 string : { extract_delimited($text, '"') }
        | { extract_delimited($text, "'") }
+       | <error>
 
 infix_prefix : { ::match_infix_prefix($text) } { $::infix_prefix{$item[1]} }
 
@@ -167,3 +170,5 @@ postfix : 'postfix'
 compound: <leftop: clause /([;,])/ clause>
 
     { "\n    " . join "", (map { m/^[;,]$/ ? "$_\n    " : $_ } @{ $item[1] }); }
+
+        | <error>

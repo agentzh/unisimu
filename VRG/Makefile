@@ -13,12 +13,16 @@ clp_files  := vectorize.clp vector-eval.clp anti-vectorize.clp
 
 all: clips_all
 
-clips_all: CLIPSx.pm $(clp_files)
+clips_all: VRG_Script_Compiler.pm CLIPSx.pm $(clp_files)
 
 prolog_all: $(pro_files)
 
 CLIPSx.pm: xclips.grammar
 	perl -s -MParse::RecDescent - -RD_HINT $< CLIPSx
+
+VRG_Script_Compiler.pm: vrgs.grammar
+	perl -s -MParse::RecDescent - -RD_HINT $< VRG::Script::Compiler
+	cp Compiler.pm VRG_Script_Compiler.pm
 
 %.pro: %.xpro xpro.pl
 	$(xpro) $<
