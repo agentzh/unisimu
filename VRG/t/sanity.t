@@ -1,6 +1,6 @@
 use t::VRG;
 
-plan tests => 8 * blocks();
+plan tests => 9 * blocks();
 
 run_tests();
 
@@ -116,6 +116,7 @@ l <T> n
 
 --- eval
 l <//> alpha
+
 --- final
 l [T] alpha
 

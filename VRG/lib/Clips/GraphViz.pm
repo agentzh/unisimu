@@ -90,7 +90,7 @@ sub draw($$$) {
     } else {
         @fires = @{ $self->{fires} };
     }
-    warn scalar(@facts);
+    #warn scalar(@facts);
     my $gv = GraphViz->new(%InitArgs);
     my @fact_refs = ();
     for (0..$#fires) {

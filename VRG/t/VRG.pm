@@ -50,7 +50,7 @@ sub run_test () {
 
     my $clp_file = "$id.clp";
     ok run3(
-            [$^X, 'script/vrg-run.pl', $clp_file],
+            [$^X, 'script/vrg-run.pl', '-t', $clp_file],
             \undef,
             \$stdout,
             \$stderr,
@@ -58,6 +58,9 @@ sub run_test () {
         "$name - vrg-run.pl ok";
     warn $stderr if $stderr;
     #warn $stdout;
+    $stdout =~ s/^(YES|NO)\n//;
+    is $1, 'YES', "$name - proof found";
+
     my ($vectorize, $eval, $final) = ($stdout =~ /(.*)---\n(.*)---\n(.*)/s);
     my $got = sort_list($vectorize);
     #warn "!!!!", $vectorize, "!!!!", $block->vectorize, "!!!!";

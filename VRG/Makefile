@@ -49,6 +49,7 @@ test: clips_all
 
 clean:
 	$(rm_f) xprolog/*.pro xprolog/0*.xpro 0*.xclp *.clp *.vrg \
+		sample/*.clp sample/*.xclp
 
 veryclean: clean
 	$(rm_f) lib/XClips/Compiler/Base.pm lib/VRG/Compiler.pm \

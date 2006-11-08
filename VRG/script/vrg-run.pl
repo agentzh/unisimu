@@ -10,7 +10,7 @@ use File::Slurp;
 use Getopt::Std;
 
 my %opts;
-getopts('dv', \%opts) or help();
+getopts('tv', \%opts) or help();
 $Clips::Batch::Verbose = $opts{v};
 
 my %infix = (
@@ -28,7 +28,27 @@ my %prefix = (
 my $infile = shift or help();
 die "File $infile not found" if !-f $infile;
 
-my $goal = shift;
+my $ext;
+if ($infile =~ /\.(\w+)$/) { $ext = lc($1); }
+
+if ($ext eq 'vrg') {
+    if (system("$^X script/vrgs.pl $infile") != 0) {
+        die "Can't compile $infile down to XClips code";
+    }
+    $infile =~ s/\.vrg/.xclp/i;
+    $ext = 'xclp';
+}
+if ($ext eq 'xclp') {
+    if (system("$^X script/xclips.pl -I knowledge $infile") != 0) {
+        die "Can't compile $infile down to CLIPS code";
+    }
+    $infile =~ s/\.xclp/.clp/i;
+    $ext = 'clp';
+}
+if ($ext ne 'clp') {
+    die "error: unknown output file format: $ext\n";
+}
+#warn $infile;
 
 my $clips = Clips::Batch->new(
     'knowledge/vectorize.clp',
@@ -37,67 +57,115 @@ my $clips = Clips::Batch->new(
     'knowledge/vector-eval.clp'
 );
 
-$clips->watch('rules') if $opts{v} or $opts{d};
-$clips->watch('facts') if $opts{v} or $opts{d};;
+$clips->watch('rules') if !$opts{t};
+$clips->watch('facts') if !$opts{t};
 
 $clips->reset;
 
 $clips->focus('Vectorize');
+$clips->facts('*', \my $vect_init_facts) if !$opts{t};
 
-$clips->rules('*') if $opts{v};
+$clips->rules('*') if !$opts{t};
 #$clips->facts('*', \my $init_facts);
 
-$clips->run(\my $run_log);
-$clips->facts('Eval', \my $vectorize_facts);
+$clips->run(\my $vect_run_log);
+$clips->facts('Eval', \my $vect_facts);
 
 $clips->focus('Eval');
-$clips->facts('*', \my $eval_init_facts);
+$clips->facts('*', \my $eval_init_facts) if !$opts{t};
 $clips->run(\my $eval_run_log);
 $clips->facts('Eval', \my $eval_facts);
 
 $clips->focus('AntiVectorize');
-$clips->facts('*', \my $final_init_facts);
-$clips->run(\my $final_run_log);
+$clips->facts('*', \my $anti_init_facts);
+$clips->run(\my $anti_run_log);
 $clips->facts(\my $anti_vec_facts);
 
 $clips->eof;
 #warn "FACTS: ", $facts;
 
-while ($vectorize_facts =~ /\(vector-relation ([^\)]+)\)/g) {
-    print format_fact($&), "\n";
+#warn "GOAL!!! $goal_res\n";
+
+my $goal;
+if ($anti_vec_facts =~ /\(goal ([^\)]+)\)/) {
+    $goal = "($1)";
+    #warn "goal: $1\n";
+    my $pat = quotemeta($goal);
+    if ($anti_vec_facts =~ /\s+$pat\s*\n/s) {
+        print "YES\n";
+    } else {
+        print "No\n";
+    }
+} else {
+    warn "no goal found.\n";
 }
 
-print "---\n";
+if ($opts{t}) {
+    while ($vect_facts =~ /\(vector-relation ([^\)]+)\)/g) {
+        print format_fact($&), "\n";
+    }
 
-while ($eval_facts =~ /\(vector-relation ([^\)]+)\)/g) {
-    print format_fact($&), "\n";
-}
+    print "---\n";
 
-print "---\n";
+    while ($eval_facts =~ /\(vector-relation ([^\)]+)\)/g) {
+        print format_fact($&), "\n";
+    }
 
-while ($anti_vec_facts =~ /\(space-relation ([^\)]+)\)/g) {
-    print format_fact($&), "\n";
-}
+    print "---\n";
 
-if ($opts{d}) {
-    my $painter = Clips::GraphViz->new($eval_init_facts, $eval_run_log);
+    while ($anti_vec_facts =~ /\(space-relation ([^\)]+)\)/g) {
+        print format_fact($&), "\n";
+    }
+} else {
+    my $fname = "vectorize.png";
+    my $painter = Clips::GraphViz->new($vect_init_facts, $vect_run_log);
     $painter->draw(
-        outfile     => "eval.png",
+        outfile     => $fname,
+        fact_filter => \&format_fact,
+        trim => 1,
+    );
+    warn "generating $fname...\n";
+
+    $fname = "vector-eval.png";
+    $painter = Clips::GraphViz->new($eval_init_facts, $eval_run_log);
+    $painter->draw(
+        outfile     => $fname,
+        fact_filter => \&format_fact,
+        trim => 1,
+    );
+    warn "generating $fname...\n";
+
+    $fname = "anti-vectorize.png";
+    $painter = Clips::GraphViz->new($anti_init_facts, $anti_run_log);
+    $painter->draw(
+        outfile     => $fname,
+        fact_filter => \&format_fact,
+        trim => 1,
+    );
+    warn "generating $fname...\n";
+
+    $infile =~ s/\.clp//i;
+    $fname = "$infile.png";
+    $painter = Clips::GraphViz->new(
+        $vect_init_facts,
+        $vect_run_log . $eval_run_log . $anti_run_log);
+    $painter->draw(
+        outfile     => $fname,
         fact_filter => \&format_fact,
         trim => 1,
         goal => $goal,
     );
-    $painter = Clips::GraphViz->new($final_init_facts, $final_run_log);
-    $painter->draw(
-        outfile     => "final.png",
-        fact_filter => \&format_fact,
-        trim => 1,
-        goal => $goal,
-    );
+    warn "generating $fname...\n";
 }
 
 sub help {
-    die "usage: $0 [-vd] infile\n";
+    die <<"_EOC_";
+Usage: $0 [-vt] infile
+Options:
+    -v    verbose mode (prints out CLIPS sessions)
+    -t    test mode (for unit testing only)
+
+_EOC_
 }
 
 sub format_fact {
