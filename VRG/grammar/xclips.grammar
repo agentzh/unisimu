@@ -1,16 +1,16 @@
 program : statement(s) eofile { join "\n\n", grep $_, @{ $item[1] } }
         | <error>
 
-comment : /\/\*(.*?)\*\//s  { my $cmt = "; $1"; $cmt =~ s/\n(?=.)/;/g; $cmt }
+comment : /\/\*(.*?)\*\//s ws  { my $cmt = "; $1"; $cmt =~ s/\n(?=.)/;/g; $cmt }
 
-rule : disjunction '=>' <commit> new_facts '.' ws
+rule : disjunction '=>' <commit> new_facts '.'
 
         { $::count++;
-          "; $::infile (line $itempos[1]{line}{from} ~ $itempos[5]{line}{to})\n".
+          "; $::infile (line $thisline)\n".
           "(defrule $::module$::base-$::count\n".
           "    $item[1]\n".
           "    =>\n".
-          "$item[4])" }
+          "$item[4])" } ws { $item[6] }
 
      | <error?> <reject>
 
@@ -53,13 +53,13 @@ clause : prefix <commit> atom
        | atom
        | <error?> <reject>
 
-prefix : { ::match_prefix($text) } { $::prefix{$item[1]} }
+prefix : { ::match_prefix($text) } <commit> { $::prefix{$item[1]} }
 
 atom : predicate
      | variable
      | literal
 
-predicate : identifier '(' ')' { "($item{identifier})" }
+predicate : identifier /\(\s*\)/ <commit> { "($item{identifier})" }
 		  | identifier '(' <commit> arguments ')'  { "($item[1] $item{arguments})" }
           | <error?> <reject>
 
@@ -68,15 +68,14 @@ eofile : /^\Z/
 statement : comment
           | directive
           | rule
-          | facts '.' ws  { '' }
+          | facts '.' <commit> ws  { '' }
           | <error>
 
 facts : fact ',' <commit> facts
       | fact
       | <error?> <reject>
 
-fact : clause   { push @::facts, "; $::infile (line $itempos[1]{line}{from} ~ ".
-                    "$itempos[1]{line}{to})",
+fact : clause   { push @::facts, "; $::infile (line $thisline)",
                     "$item{clause}\n"; '' }
 
 ws: /[\n\s]*/
@@ -87,7 +86,7 @@ directive : 'module' <commit> identifier '.' ws
 
           | 'include' <commit> string /\.?/ ws
 
-        { my $res = ::process_include(eval $item{string}, $itempos[1]{line}{from}) }
+        { my $res = ::process_include(eval $item{string}, $thisline) }
 
           | 'define' <commit> predicate /\.?/ ws
 
@@ -95,15 +94,18 @@ directive : 'module' <commit> identifier '.' ws
 
           | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
           
-        { $::prefix{$item{pattern}} = eval $item{string}; '' }
+        { $::prefix{$item{pattern}} = eval $item{string};
+          @::prefix = sort { -($a cmp $b) } keys %::prefix; '' }
 
           | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
 
-        { $::infix{$item{pattern}} = eval $item{string}; '' }
+        { $::infix{$item{pattern}} = eval $item{string};
+          @::infix = sort { -($a cmp $b) } keys %::infix; '' }
 
           | 'infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
 
-        { $::infix_prefix{$item{pattern}} = eval $item{string}; '' }
+        { $::infix_prefix{$item{pattern}} = eval $item{string};
+          @::infix_prefix = sort { -($a cmp $b) } keys %::infix_prefix; '' }
 
           | 'infix_circumfix:<' <commit> <skip:''> circum_pattern '>'
 		    <skip:'\s*'> string /\.?/ ws
@@ -111,13 +113,14 @@ directive : 'module' <commit> identifier '.' ws
         {   my $pattern = $item{circum_pattern};
 		    #warn "~~~ @$pattern\n";
 			$::infix_circumfix{$pattern->[0]} = eval $item{string};
-			$::infix_circum_close{$pattern->[0]} = $pattern->[1]; '' }
+			$::infix_circum_close{$pattern->[0]} = $pattern->[1];
+            @::infix_circumfix = sort { -($a cmp $b) } keys %::infix_circumfix; '' }
 
           | <error?> <reject>
 
 pattern : /\S+(?=>)/
 
-circum_pattern : /(\S+) (\S+)(?=>)/ { [$1, $2] }
+circum_pattern : /(\S+) (\S+)(?=>)/ <commit> { [$1, $2] }
 
 new_facts : new_fact ',' <commit> new_facts
 
@@ -141,9 +144,9 @@ general_infix : infix_circum_open <commit> general_infix
 
 infix_circum_open : { ::match_infix_circum_open($text) }
 
-arguments : <leftop: clause ',' clause>  { join ' ', @{ $item[1] } }
+arguments : <leftop: clause ',' clause>  <commit> { join ' ', @{ $item[1] } }
 
-variable : /\?[A-Za-z_]([-\w])*/  { $item[1] . $item{identifier} }
+variable : /\?[A-Za-z_]([-\w])*/ <commit> { $item[1] . $item{identifier} }
          | '?'
 
 literal : identifier
@@ -160,10 +163,10 @@ string : { extract_delimited($text, '"') }
        | { extract_delimited($text, "'") }
        | <error>
 
-infix_prefix : { ::match_infix_prefix($text) } { $::infix_prefix{$item[1]} }
+infix_prefix : { ::match_infix_prefix($text) } <commit> { $::infix_prefix{$item[1]} }
 
-infix : variable  { $item[1] . " " }
-      | { ::match_infix($text) } { $::infix{$item[1]} }
+infix : variable <commit> { $item[1] . " " }
+      | { ::match_infix($text) } <commit> { $::infix{$item[1]} }
 
 postfix : 'postfix'
 

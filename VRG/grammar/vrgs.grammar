@@ -11,14 +11,14 @@ item : comment
 
 comment : '#' <commit> /[^\n]+/  { "/* $item[3] */\n" }
 
-declaration : declarator <commit> variable_list ';' ws
+declaration : declarator <commit> variable_list
 
               { my $prefix = $item{declarator};
                 my $vars   = $item{variable_list};
                 for my $var (@$vars) {
                     if (my $data = $::symtab{$var}) {
                         my ($type, $lineno) = @$data;
-                        die "error: line $itempos[1]{line}{from}: variable \"$var\" ",
+                        die "error: line $thisline: variable \"$var\" ",
                             "defined twice. see the original version (type \"$type\") ",
                             "at line $lineno.\n";
                     }
@@ -29,7 +29,7 @@ declaration : declarator <commit> variable_list ';' ws
                 } else {
                     '';
                 }
-              }
+              } ';' ws { $item[4] }
 
             | <error?> <reject>
 
@@ -68,7 +68,7 @@ variable_ref : variable
     { my $var = $item[1];
       my $data = $::symtab{$var};
       if (!$data) {
-          die "error: line $itempos[1]{line}{from}: variable \"$var\" undefined.\n";
+          die "error: line $thisline: variable \"$var\" undefined.\n";
       }
       $var;
     }

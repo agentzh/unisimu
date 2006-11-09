@@ -20,6 +20,7 @@ our $module;
 our @Include = '.';
 
 our (%prefix, %infix, %infix_prefix, %infix_circumfix, %infix_circum_close);
+our (@prefix, @infix, @infix_prefix, @infix_circumfix);
 
 %infix = (
     '\='  => "test (neq ",
@@ -28,22 +29,22 @@ our (%prefix, %infix, %infix_prefix, %infix_circumfix, %infix_circum_close);
 );
 
 sub match_prefix {
-    my @keys = sort { -($a cmp $b) } keys %::prefix;
+    my @keys = @prefix;
     return match($_[0], \@keys);
 }
 
 sub match_infix {
-    my @keys = sort { -($a cmp $b) } keys %::infix;
+    my @keys = @infix;
     return match($_[0], \@keys);
 }
 
 sub match_infix_prefix {
-    my @keys = sort { -($a cmp $b) } keys %::infix_prefix;
+    my @keys = @infix_prefix;
     return match($_[0], \@keys);
 }
 
 sub match_infix_circum_open {
-    my @keys = sort { -($a cmp $b) } keys %::infix_circumfix;
+    my @keys = @infix_circumfix;
     #warn "infix_circum_open: @keys\n";
     return match($_[0], \@keys);
 }
