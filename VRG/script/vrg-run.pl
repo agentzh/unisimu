@@ -92,9 +92,9 @@ if ($anti_vec_facts =~ /\(goal ([^\)]+)\)/) {
     #warn "goal: $1\n";
     my $pat = quotemeta($goal);
     if ($anti_vec_facts =~ /\s+$pat\s*\n/s) {
-        print "YES\n";
+        print "Yes.\n";
     } else {
-        print "No\n";
+        print "No.\n";
     }
 } else {
     warn "no goal found.\n";

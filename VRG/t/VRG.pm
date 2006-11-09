@@ -43,8 +43,10 @@ sub run_test () {
     ok !$stderr, 'no stderr';
     warn $stderr if $stderr;
 
-    my $xclp_src = read_file($xclp_file) if -f $xclp_file;
-    is $xclp_src, $block->xclp, "$name - XClips source ok";
+    if ($block->xclp) {
+        my $xclp_src = read_file($xclp_file) if -f $xclp_file;
+        is $xclp_src, $block->xclp, "$name - XClips source ok";
+    }
 
     #write_file($xclp_file, $block->xclp);
     ok system(split(/\s+/, $xclips), $xclp_file) == 0, "$name - invoking $xclips ok";
@@ -59,27 +61,35 @@ sub run_test () {
         "$name - vrg-run.pl ok";
     warn $stderr if $stderr;
     #warn $stdout;
-    $stdout =~ s/^(YES|NO)\n//;
-    is $1, 'YES', "$name - proof found";
+
+    $stdout =~ s/^(?:Yes|No)\.\n//i;
+    my $ans_got = $&;
 
     my ($vectorize, $eval, $final) = ($stdout =~ /(.*)---\n(.*)---\n(.*)/s);
     my $got = sort_list($vectorize);
     #warn "!!!!", $vectorize, "!!!!", $block->vectorize, "!!!!";
     my $expected = sort_list($block->vectorize);
-    is $got, $expected, "$name - vectorization ok";
+    is $got, $expected, "$name - vectorize ok";
     if ($block->eval) {
         my @rels = split /\n/, $block->eval;
         for my $rel (@rels) {
             my $pat = quotemeta($rel);
-            like $eval, qr/\b$pat\n/ms, "$name -- vectorizie -- $rel appeared";
+            like $eval, qr/\b$pat\n/ms, "$name -- vector-eval ok -- $rel appeared";
         }
     }
-    if ($block->final) {
-        my @rels = split /\n/, $block->final;
+    if ($block->antivec) {
+        my @rels = split /\n/, $block->antivec;
         for my $rel (@rels) {
             my $pat = quotemeta($rel);
-            like $final, qr/\b$pat\n/ms, "$name -- final -- $rel appeard";
+            like $final, qr/\b$pat\n/ms, "$name -- anti-vectorize ok -- $rel appeard";
         }
+    }
+
+    my $ans = $block->ans;
+    if ($ans) {
+        is $ans_got, $ans, "$name - ans ok";
+    } else {
+        is $ans_got, "Yes.\n", "$name - ans ok";
     }
 };
 

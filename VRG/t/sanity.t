@@ -6,7 +6,7 @@ run_tests();
 
 __DATA__
 
-=== TEST 1: Æ½ĞĞ¹«Àí
+=== TEST 1: å¹³è¡Œå…¬ç†
 --- vrg
 
 line a, b, c;
@@ -26,12 +26,12 @@ c <//> b
 --- eval
 a <//> c
 
---- final
+--- antivec
 a [//] c
 
 
 
-=== TEST 2: Ö±ÏßºÍÆ½ÃæÆ½ĞĞµÄÅĞ¶¨¶¨Àí
+=== TEST 2: ç›´çº¿å’Œå¹³é¢å¹³è¡Œçš„åˆ¤å®šå®šç†
 --- vrg
 
 line a, b;
@@ -53,12 +53,12 @@ a <//> b
 --- eval
 a <T> alpha
 
---- final
+--- antivec
 a [//] alpha
 
 
 
-=== TEST 3: Ö±ÏßºÍÆ½ÃæÆ½ĞĞµÄĞÔÖÊ¶¨Àí
+=== TEST 3: ç›´çº¿å’Œå¹³é¢å¹³è¡Œçš„æ€§è´¨å®šç†
 --- vrg
 
 line a, b;
@@ -83,12 +83,12 @@ alpha <~//> beta
 --- eval
 a <//> b
 
---- final
+--- antivec
 a [//] b
 
 
 
-=== TEST 4: Ö±ÏßºÍÆ½Ãæ´¹Ö±µÄÅĞ¶¨¶¨Àí
+=== TEST 4: ç›´çº¿å’Œå¹³é¢å‚ç›´çš„åˆ¤å®šå®šç†
 --- vrg
 
 line m, n, l;
@@ -117,12 +117,12 @@ l <T> n
 --- eval
 l <//> alpha
 
---- final
+--- antivec
 l [T] alpha
 
 
 
-=== TEST 5: Ö±ÏßºÍÆ½Ãæ´¹Ö±µÄÅĞ¶¨¶¨Àí II
+=== TEST 5: ç›´çº¿å’Œå¹³é¢å‚ç›´çš„åˆ¤å®šå®šç† II
 --- vrg
 
 line a, b;
@@ -145,12 +145,12 @@ a <//> alpha
 --- eval
 b <//> alpha
 
---- final
+--- antivec
 b [T] alpha
 
 
 
-=== TEST 6: Ö±ÏßºÍÆ½Ãæ´¹Ö±µÄĞÔÖÊ¶¨Àí
+=== TEST 6: ç›´çº¿å’Œå¹³é¢å‚ç›´çš„æ€§è´¨å®šç†
 --- vrg
 
 line a, b;
@@ -177,12 +177,12 @@ b <//> alpha
 --- eval
 a <//> b
 
---- final
+--- antivec
 a [//] b
 
 
 
-=== TEST 7: Æ½ĞĞÏß×é¶¨Àí (1)
+=== TEST 7: å¹³è¡Œçº¿ç»„å®šç† (1)
 --- vrg
 
 line a, b, c, d;
@@ -204,12 +204,12 @@ a <T> c
 --- eval
 b <T> d
 
---- final
+--- antivec
 b [T] d
 
 
 
-=== TEST 8: Æ½ĞĞÏß×é¶¨Àí (2)
+=== TEST 8: å¹³è¡Œçº¿ç»„å®šç† (2)
 --- vrg
 
 line a, b, c, d;
@@ -231,12 +231,12 @@ a <X> c
 --- eval
 a <X> c
 
---- final
+--- antivec
 a [X] c
 
 
 
-=== TEST 9: Á½¸öÆ½ÃæÆ½ĞĞµÄÅĞ¶¨¶¨Àí
+=== TEST 9: ä¸¤ä¸ªå¹³é¢å¹³è¡Œçš„åˆ¤å®šå®šç†
 --- vrg
 
 line a, b;
@@ -266,12 +266,12 @@ b <T> gen1
 --- eval
 alpha <//> beta
 
---- final
+--- antivec
 alpha [//] beta
 
 
 
-=== TEST 10: Á½¸öÆ½ÃæÆ½ĞĞµÄĞÔÖÊ¶¨Àí
+=== TEST 10: ä¸¤ä¸ªå¹³é¢å¹³è¡Œçš„æ€§è´¨å®šç†
 --- vrg
 
 plane alpha, beta, theta;
@@ -299,12 +299,12 @@ beta <~//> theta
 --- eval
 a <//> b
 
---- final
+--- antivec
 a [//] b
 
 
 
-=== TEST 11: Á½¸öÆ½ÃæÆ½ĞĞµÄĞÔÖÊ¶¨Àí 2
+=== TEST 11: ä¸¤ä¸ªå¹³é¢å¹³è¡Œçš„æ€§è´¨å®šç† 2
 --- vrg
 
 plane alpha, beta;
@@ -326,12 +326,12 @@ alpha <//> beta
 --- eval
 l <T> beta
 
---- final
+--- antivec
 l [//] beta
 
 
 
-=== TEST 12: Á½¸öÆ½ÃæÆ½ĞĞµÄĞÔÖÊ¶¨Àí 3
+=== TEST 12: ä¸¤ä¸ªå¹³é¢å¹³è¡Œçš„æ€§è´¨å®šç† 3
 --- vrg
 
 plane alpha, beta;
@@ -353,12 +353,12 @@ alpha <//> beta
 --- eval
 l <//> beta
 
---- final
+--- antivec
 l [T] beta
 
 
 
-=== TEST 13: Ö±ÏßºÍÆ½Ãæ´¹Ö±µÄĞÔÖÊ¶¨Àí 2
+=== TEST 13: ç›´çº¿å’Œå¹³é¢å‚ç›´çš„æ€§è´¨å®šç† 2
 --- vrg
 
 line l1, l2;
@@ -380,12 +380,12 @@ l1 <//> alpha
 --- eval
 l1 <T> l2
 
---- final
+--- antivec
 l1 [T] l2
 
 
 
-=== TEST 14: Á½¸öÆ½Ãæ´¹Ö±µÄÅĞ¶¨¶¨Àí
+=== TEST 14: ä¸¤ä¸ªå¹³é¢å‚ç›´çš„åˆ¤å®šå®šç†
 --- vrg
 
 plane alpha, beta; line l;
@@ -406,12 +406,12 @@ l <T> beta
 --- eval
 alpha <T> beta
 
---- final
+--- antivec
 alpha [T] beta
 
 
 
-=== TEST 15: Á½¸öÆ½Ãæ´¹Ö±µÄĞÔÖÊ¶¨Àí
+=== TEST 15: ä¸¤ä¸ªå¹³é¢å‚ç›´çš„æ€§è´¨å®šç†
 --- vrg
 
 plane alpha, beta;
@@ -438,14 +438,14 @@ alpha <~//> beta
 --- eval
 l2 <//> beta
 
---- final
+--- antivec
 l2 [T] beta
 
 
 
-=== TEST 16: Èı´¹Ïß¶¨Àí
-PA¡¢PO ·Ö±ğÊÇÆ½Ãæ alpha µÄ´¹Ïß¡¢Ğ±Ïß£¬AO ÊÇ PO ÔÚÆ½Ãæ alpha ÄÚµÄÉäÓ°£¬
-ÇÒ a ÔÚ alpha ÉÏ£¬a ´¹Ö±ÓÚ AO£¬Ôò a ´¹Ö±ÓÚ PQ.
+=== TEST 16: ä¸‰å‚çº¿å®šç†
+PAã€PO åˆ†åˆ«æ˜¯å¹³é¢ alpha çš„å‚çº¿ã€æ–œçº¿ï¼ŒAO æ˜¯ PO åœ¨å¹³é¢ alpha å†…çš„å°„å½±ï¼Œ
+ä¸” a åœ¨ alpha ä¸Šï¼Œa å‚ç›´äº AOï¼Œåˆ™ a å‚ç›´äº PQ.
 --- vrg
 
 plane alpha;
@@ -485,12 +485,12 @@ b <//> alpha
 --- eval
 a <T> c
 
---- final
+--- antivec
 a [T] c
 
 
 
-=== TEST 17: Èı´¹Ïß¶¨ÀíÄæ¶¨Àí
+=== TEST 17: ä¸‰å‚çº¿å®šç†é€†å®šç†
 --- vrg
 
 plane alpha;
@@ -519,5 +519,5 @@ a <T> c
 --- eval
 a <T> d
 
---- final
+--- antivec
 a [T] d
