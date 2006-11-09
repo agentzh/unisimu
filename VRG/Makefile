@@ -1,7 +1,11 @@
 SHELL := cmd
 
+sample_vrg_files := $(wildcard sample/*.vrg)
+sample_png_files := $(patsubst %.vrg,%.png,$(sample_vrg_files))
+
 xpro := perl xprolog/xpro.pl
 xclp := perl -Ilib script/xclips.pl -I knowledge
+vrg_run := perl -Ilib script/vrg-run.pl
 
 rm_f = perl -MExtUtils::Command -e rm_f
 mv_f = perl -MExtUtils::Command -e mv
@@ -54,3 +58,8 @@ clean:
 veryclean: clean
 	$(rm_f) lib/XClips/Compiler/Base.pm lib/VRG/Compiler.pm \
 		knowledge/*.clp
+
+sample: $(sample_png_files)
+
+sample/%.png: sample/%.vrg clips_all
+	$(vrg_run) $<

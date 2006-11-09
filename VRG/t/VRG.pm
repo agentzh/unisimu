@@ -33,12 +33,13 @@ sub run_test () {
     unlink $xclp_file if -f $xclp_file;
 
     write_file($vrg_file, $vrg_src);
-    ok run3(
+    run3(
         [$^X, 'script/vrgs.pl', $vrg_file],
         \undef,
         \$stdout,
         \$stderr,
-    ), 'invoking vrgs.pl ok';
+    );
+    is $?, 0, 'invoking vrgs.pl ok';
     ok !$stderr, 'no stderr';
     warn $stderr if $stderr;
 

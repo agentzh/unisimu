@@ -1,3 +1,5 @@
+{ %::symtab = (); }
+
 program : item(s) proposition eofile
 
     { "include \"vrg-sugar.xclp\"\n\n" . join "", @{ $item[1] }, $item[2] }
@@ -12,23 +14,35 @@ comment : '#' <commit> /[^\n]+/  { "/* $item[3] */\n" }
 declaration : declarator <commit> variable_list ';' ws
 
               { my $prefix = $item{declarator};
-                if ($prefix ne '') {
-                    $return = join(", ", map { $prefix . $_ } @{ $item{variable_list} })
-                        . ".\n"
+                my $vars   = $item{variable_list};
+                for my $var (@$vars) {
+                    if (my $data = $::symtab{$var}) {
+                        my ($type, $lineno) = @$data;
+                        die "error: line $itempos[1]{line}{from}: variable \"$var\" ",
+                            "defined twice. see the original version (type \"$type\") ",
+                            "at line $lineno.\n";
+                    }
+                    $::symtab{$var} = [$prefix->[0], $itempos[1]{line}{from}];
+                }
+                if ($prefix->[1] ne '') {
+                    join(", ", map { $prefix->[1] . $_ } @$vars) . ".\n"
                 } else {
-                    $return = '';
+                    '';
                 }
               }
 
             | <error?> <reject>
 
-declarator : 'line'   { '\\' }
-           | 'plane'  { '#'  }
-           | 'point'  { ''   }
+declarator : 'line'   { [$item[1], '\\'] }
+           | 'plane'  { [$item[1], '#']  }
+           | 'point'  { [$item[1], '']   }
            | <error>
 
 variable_list : <leftop: variable ',' variable>
               | <error>
+
+variable_ref_list : <leftop: variable_ref ',' variable_ref>
+                  | <error>
 
 variable : /[A-Za-z]\w*/
 
@@ -45,9 +59,19 @@ proposition : facts '=>' <commit> goal /;?/ ws
 facts : <leftop: fact ',' fact>  { join ", ", @{ $item[1] }; }
       | <error>
 
-fact : variable infix <commit> variable  { "$item[1] [$item{infix}] $item[4]" }
-     | predicate
+fact : predicate
+     | variable_ref infix <commit> variable_ref  { "$item[1] [$item{infix}] $item[4]" }
      | <error?> <reject>
+
+variable_ref : variable
+
+    { my $var = $item[1];
+      my $data = $::symtab{$var};
+      if (!$data) {
+          die "error: line $itempos[1]{line}{from}: variable \"$var\" undefined.\n";
+      }
+      $var;
+    }
 
 goal : fact
 
@@ -61,10 +85,21 @@ infix : '//'
       | '~on'
       | <error>
 
-predicate : predicate_name <commit> '(' variable_list ')'
+predicate : predicate_name <commit> '(' variable_ref_list ')'
 
-            { "$item{predicate_name}(" .
-              join(", ", @{ $item{variable_list} }) . ")" }
+            { my @args = @{ $item{variable_ref_list} };
+              my $pred = $item{predicate_name};
+              if ($pred eq 'meet' or $pred eq 'project') {
+                  if (@args > 3) {
+                      die "error: line $itempos[1]{line}{from}: ",
+                          "too many arguments for $pred/3.\n";
+                  } elsif (@args < 3) {
+                      die "error: line $itempos[1]{line}{from}: ",
+                          "too few arguments for $pred/3.\n";
+                  }
+              }
+              "$pred(" . join(", ", @args) . ")"
+            }
     
           | <error?> <reject>
 
