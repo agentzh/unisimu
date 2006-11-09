@@ -1,0 +1,6 @@
+# 三垂线定理逆定理
+
+plane alpha;
+line d, c, a;
+
+project(c, alpha, d), a on alpha, a T c => a T d;

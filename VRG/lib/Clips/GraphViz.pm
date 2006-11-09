@@ -83,18 +83,22 @@ sub draw($$$) {
 
     my (@facts, @fires);
     @facts = @{ $self->{facts} };
+    #warn "!!!~~~";
+    my $goal_id;
     if ($goal) {
-        my $i = first_index { $_ eq $goal } @facts;
-        if ($i < 0) { die "goal $goal not found in the facts" }
-        $self->get_facts($i, \@facts, \@fires);
+        $goal_id = first_index { $_ eq $goal } @facts;
+        if ($goal_id < 0) { die "goal $goal not found in the facts" }
+        #warn '???';
+        $self->get_facts($goal_id, \@facts, \@fires);
     } else {
         @fires = @{ $self->{fires} };
     }
     #warn scalar(@facts);
+    #warn scalar(@fires);
     my $gv = GraphViz->new(%InitArgs);
     my @fact_refs = ();
     for (0..$#fires) {
-        next if $trim and @{ $fires[$_][2] } == 0;
+        next if !defined $fires[$_] or ($trim and @{ $fires[$_][2] } == 0);
         $gv->add_node($_, label => $rule_filter->($fires[$_][0], $_));
         for my $old_fact (@{ $fires[$_][1] }) {
             next if !defined $facts[$old_fact];
@@ -111,6 +115,10 @@ sub draw($$$) {
         next if !$facts[$_] or ($trim and !defined $fact_refs[$_]);
         $gv->add_node("f-$_", label => $fact_filter->($facts[$_]), %FactStyle);
     }
+    if (@fires == 0 and $goal) {
+        # this is a special case that the goal is actually a given fact:
+        $gv->add_node("f-$goal_id", label => $fact_filter->($goal), %FactStyle);
+    }
     $gv->as_png($fname);
 }
 
@@ -120,13 +128,17 @@ sub get_facts ($$$$) {
     $res_facts->[$goal] = $facts[$goal];
 
     my @fires = @{ $self->{fires} };
+    my $i = 0;
+    #warn "GOAL: $goal  ", $facts[$goal], "\n";
     for my $fire (@fires) {
         if (any { $_ eq $goal } @{ $fire->[2] }) {
-            push @$res_fires, $fire;
+            #warn "!!!";
+            $res_fires->[$i] = $fire;
             for my $parent (@{ $fire->[1] }) {
                 $self->get_facts($parent, $res_facts, $res_fires);
             }
         }
+        $i++;
     }
 }
 

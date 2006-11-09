@@ -1,0 +1,9 @@
+# this is a nonsense since the goal appears among the known facts
+
+plane alpha;
+
+line a, b, d, c;
+
+    b T alpha, project(c, alpha, d), a on alpha, a T d
+=>
+    a T d;
