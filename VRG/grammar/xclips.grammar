@@ -131,7 +131,9 @@ new_facts : new_fact ',' <commit> new_facts
 
 new_fact : clause
 
-    { $item[1] =~ /^\(bind\b/ ? "    $item[1]\n" : "    (assert $item[1])\n" }
+    { $item[1] =~
+        /(?x) ^ \( (?:bind|halt|printout|assert|format|open|read|close|exit) \b/ ?
+        "    $item[1]\n" : "    (assert $item[1])\n" }
 
 general_infix : infix_circum_open <commit> general_infix
                 { ::match_infix_circum_close($text, $item[1]) }

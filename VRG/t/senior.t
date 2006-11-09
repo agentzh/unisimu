@@ -1,6 +1,6 @@
 use t::VRG;
 
-plan tests => 9 * blocks() - 8;
+plan tests => 85;
 
 run_tests();
 
@@ -170,3 +170,101 @@ a [//] alpha
 
 --- ans
 Yes.
+
+
+
+=== TEST 8:
+垂直于同一条直线的两个平面平行吗？
+
+--- vrg
+plane alpha, beta;
+line l;
+alpha T l, beta T l => alpha // beta;
+
+--- vectorize
+l <//> alpha
+l <//> beta
+
+--- eval
+beta <//> alpha
+
+--- antivec
+alpha [//] beta
+
+--- ans
+Yes.
+
+
+
+=== TEST 9: a <T> b, b <T> c =\=> a ?R c
+平行于同一条直线的两个平面平行吗？
+
+--- vrg
+plane alpha, beta;
+line l;
+
+alpha // l, beta // l => alpha // beta;
+
+--- vectorize
+l <T> alpha
+l <T> beta
+
+--- ans
+No.
+
+
+
+=== TEST 10:
+平行于同一个平面的两个平面平行
+
+--- vrg
+plane alpha, beta, theta;
+alpha // theta, beta // theta => alpha // beta
+
+--- vectorize
+alpha <//> theta
+beta <//> theta
+
+--- eval
+alpha <//> beta
+
+--- antivec
+alpha [//] beta
+
+--- ans
+Yes.
+
+
+
+=== TEST 11:
+一个平面内的两相交直线与另一个平面内的两条相交直线分别平行，
+则这两个平面平行吗？
+
+--- vrg
+line l1, l2, l3, l4;
+plane alpha, beta;
+point P, Q;
+
+l1 on alpha, l2 on alpha, meet(l1, l2, Q),
+l3 on beta, l4 on beta, meet(l3, l4, Q),
+l1 // l3, l2 // l4 => alpha // beta
+
+--- vectorize
+l1 <~//> l2
+l1 <T> alpha
+l2 <T> alpha
+l1 <T> gen2
+l2 <T> gen2
+l3 <T> beta
+l4 <T> beta
+l3 <T> gen1
+l4 <T> gen1
+l3 <~//> l4
+l2 <//> l4
+l1 <//> l3
+
+--- eval
+alpha <//> beta
+
+--- antivec
+alpha [//] beta

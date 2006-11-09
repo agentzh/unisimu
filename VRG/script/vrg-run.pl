@@ -87,7 +87,10 @@ $clips->eof;
 #warn "GOAL!!! $goal_res\n";
 
 my $goal;
-if ($anti_vec_facts =~ /\(goal ([^\)]+)\)/) {
+
+if ($anti_init_facts =~ /\(contradiction (\S+) (\S+)\)/) {
+    print "Contradiction detected. (Check the relationships between $1 and $2.)\n";
+} elsif ($anti_vec_facts =~ /\(goal ([^\)]+)\)/) {
     $goal = "($1)";
     #warn "goal: $1\n";
     my $pat = quotemeta($goal);
