@@ -32,6 +32,9 @@ my %FactStyle =
     fillcolor => '#c7f77c',
 );
 
+my %InitFactStyle = %FactStyle;
+$InitFactStyle{shape} = 'doubleoctagon';
+
 sub new ($$$@) {
     my $class = ref $_[0] ? ref shift : shift;
     my ($init_facts, $run_log) = @_;
@@ -70,6 +73,10 @@ sub new ($$$@) {
     }, $class;
 }
 
+sub init_fact {
+    return $_[0]->{init_facts}->[$_[1]];
+}
+
 sub draw($$$) {
     my $self = shift;
     my %opts = @_;
@@ -87,9 +94,14 @@ sub draw($$$) {
     my $goal_id;
     if ($goal) {
         $goal_id = first_index { $_ eq $goal } @facts;
-        if ($goal_id < 0) { die "goal $goal not found in the facts" }
+        if ($goal_id < 0) { 
+            warn "warning: goal $goal not found in the facts.\n";
+            @fires = @{ $self->{fires} };
+        } else {
         #warn '???';
-        $self->get_facts($goal_id, \@facts, \@fires);
+            @facts = ();
+            $self->get_facts($goal_id, \@facts, \@fires);
+        }
     } else {
         @fires = @{ $self->{fires} };
     }
@@ -113,11 +125,13 @@ sub draw($$$) {
     }
     for (0..$#facts) {
         next if !$facts[$_] or ($trim and !defined $fact_refs[$_]);
-        $gv->add_node("f-$_", label => $fact_filter->($facts[$_]), %FactStyle);
+        $gv->add_node("f-$_", label => $fact_filter->($facts[$_]), 
+            $self->init_fact($_) ? %InitFactStyle : %FactStyle);
     }
     if (@fires == 0 and $goal) {
         # this is a special case that the goal is actually a given fact:
-        $gv->add_node("f-$goal_id", label => $fact_filter->($goal), %FactStyle);
+        $gv->add_node("f-$goal_id", label => $fact_filter->($goal),
+            $self->init_fact($_) ? %InitFactStyle : %FactStyle);
     }
     $gv->as_png($fname);
 }
