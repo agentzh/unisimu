@@ -9,4 +9,4 @@ line c; # line PO
 
     b T alpha, project(c, alpha, d), a on alpha, a T d
 =>
-    a T d;
+    a T c;

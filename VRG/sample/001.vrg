@@ -1,0 +1,5 @@
+# 苦直线 l // 平面 alpha, 则 l 是否平行于 alpha 内的所有直线？
+
+line l, a;
+plane alpha;
+l // alpha, a on alpha => l // a;
