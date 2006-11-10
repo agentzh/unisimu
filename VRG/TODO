@@ -1,0 +1,5 @@
+* prevent xclp file to be included recursively or more than once.
+* multiple goals support in the VRG script.
+* user-defined predicates support in VRG script.
+* generate VRG images.
+* abstract away the defmodule CLIPS directives in XClips
