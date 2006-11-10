@@ -62,22 +62,24 @@ sub run_test () {
     warn $stderr if $stderr;
     #warn $stdout;
 
-    $stdout =~ s/^(?:Yes|No)\.\n//i;
+    $stdout =~ s/^[^\n]*\n//i;
     my $ans_got = $&;
 
     my ($vectorize, $eval, $final) = ($stdout =~ /(.*)---\n(.*)---\n(.*)/s);
-    my $got = sort_list($vectorize);
-    #warn "!!!!", $vectorize, "!!!!", $block->vectorize, "!!!!";
-    my $expected = sort_list($block->vectorize);
-    is $got, $expected, "$name - vectorize ok";
-    if ($block->eval) {
+    if (defined $block->vectorize) {
+        my $got = sort_list($vectorize);
+        #warn "!!!!", $vectorize, "!!!!", $block->vectorize, "!!!!";
+        my $expected = sort_list($block->vectorize);
+        is $got, $expected, "$name - vectorize ok";
+    }
+    if (defined $block->eval) {
         my @rels = split /\n/, $block->eval;
         for my $rel (@rels) {
             my $pat = quotemeta($rel);
             like $eval, qr/\b$pat\n/ms, "$name -- vector-eval ok -- $rel appeared";
         }
     }
-    if ($block->antivec) {
+    if (defined $block->antivec) {
         my @rels = split /\n/, $block->antivec;
         for my $rel (@rels) {
             my $pat = quotemeta($rel);
@@ -86,7 +88,7 @@ sub run_test () {
     }
 
     my $ans = $block->ans;
-    if ($ans) {
+    if (defined $ans) {
         is $ans_got, $ans, "$name - ans ok";
     } else {
         is $ans_got, "Yes.\n", "$name - ans ok";

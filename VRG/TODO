@@ -3,3 +3,5 @@
 * user-defined predicates support in VRG script.
 * generate VRG images.
 * abstract away the defmodule CLIPS directives in XClips
+* add space relations == and \= to solve the deep bug found by the
+  (now-commented-out) assertion in anti-vectorize.xclp

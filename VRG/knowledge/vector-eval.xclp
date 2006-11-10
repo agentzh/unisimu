@@ -2,7 +2,8 @@
 
 define defmodule(
     Eval,
-    import(Vectorize, deftemplate, vector-relation)
+    import(Vectorize, deftemplate, vector-relation),
+    import(Vectorize, deftemplate, contradiction)
 )
 
 module Eval.
@@ -20,6 +21,7 @@ include "vrg-sugar.xclp".
 ?a <?R> ?b => ?b <?R> ?a.
 
 /* assertions */
-?a <//> ?b, ?a <~//> ?b => contradiction(?a, ?b), halt().
-?a <T> ?b, ?a <~T> ?b => contradiction(?a, ?b), halt().
-?a <X> ?b, ?a <~X> ?b => contradiction(?a, ?b), halt().
+?a <//> ?b, ?a <~//> ?b => contradiction(?a, ?b).
+?a <T> ?b, ?a <~T> ?b => contradiction(?a, ?b).
+?a <X> ?b, ?a <~X> ?b => contradiction(?a, ?b).
+contradiction(?, ?) => halt().

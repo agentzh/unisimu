@@ -88,7 +88,7 @@ $clips->eof;
 
 my $goal;
 
-if ($anti_init_facts =~ /\(contradiction (\S+) (\S+)\)/) {
+if (($anti_init_facts . $anti_vec_facts) =~ /\(contradiction (\S+) (\S+)\)/) {
     print "Contradiction detected. (Check the relationships between $1 and $2.)\n";
 } elsif ($anti_vec_facts =~ /\(goal ([^\)]+)\)/) {
     $goal = "($1)";
@@ -125,7 +125,7 @@ if ($opts{t}) {
     $painter->draw(
         outfile     => $fname,
         fact_filter => \&format_fact,
-        trim => 1,
+        trim => 0,
     );
     warn "generating $fname...\n";
 

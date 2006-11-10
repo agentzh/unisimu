@@ -28,3 +28,6 @@ module Vectorize.
 /* plane-plane relationships */
 
 #?alpha, #?beta, ?alpha [?R] ?beta => ?alpha <?R> ?beta.
+
+/* control rules */
+contradiction(?, ?) => halt().

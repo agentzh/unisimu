@@ -28,3 +28,8 @@ module AntiVectorize.
 /* plane-plane relationships */
 
 #?alpha, #?beta, ?alpha <?R> ?beta => ?alpha [?R] ?beta.
+
+/* assertions */
+/* \?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha => contradiction(?l, ?alpha). */
+
+contradiction(?, ?) => halt().
