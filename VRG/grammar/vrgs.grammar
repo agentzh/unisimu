@@ -8,6 +8,7 @@ eofile : /^\Z/
 
 item : comment
      | declaration
+     | <error>
 
 comment : '#' <commit> /[^\n]+/  { "/* $item[3] */\n" }
 
@@ -48,9 +49,9 @@ variable : /[A-Za-z]\w*/
 
 ws: /[\n\s]*/
 
-proposition : facts '=>' <commit> goal /;?/ ws
+proposition : facts '=>' <commit> goals /;?/ ws
 
-    { my $goal = $item{goal};
+    { my $goal = $item{goals};
       $goal =~ s/ \[/ \*\[/g;
       "$item{facts}.\n$goal.\n" }
 
@@ -60,8 +61,12 @@ facts : <leftop: fact ',' fact>  { join ", ", @{ $item[1] }; }
       | <error>
 
 fact : predicate
-     | variable_ref infix <commit> variable_ref  { "$item[1] [$item{infix}] $item[4]" }
+     | relation
      | <error?> <reject>
+
+relation : variable_ref infix <commit> variable_ref
+
+    { "$item[1] [$item{infix}] $item[4]" }
 
 variable_ref : variable
 
@@ -73,7 +78,7 @@ variable_ref : variable
       $var;
     }
 
-goal : fact
+goals : <leftop: relation ',' relation>  { join ", ", @{ $item[1] }; }
 
 infix : '//'
       | 'T'

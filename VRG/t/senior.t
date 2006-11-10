@@ -1,6 +1,6 @@
 use t::VRG;
 
-plan tests => 85;
+plan tests => 118;
 
 run_tests();
 
@@ -268,3 +268,128 @@ alpha <//> beta
 
 --- antivec
 alpha [//] beta
+
+
+
+=== TEST 12:
+两个平面分别与第三个平面相交所得的两条交线平行，则这两个平面平行
+
+--- vrg
+plane alpha, beta, theta;
+line l, m;
+
+meet(alpha, theta, l), meet(beta, theta, m), l // m => alpha // beta;
+
+--- vectorize
+l <T> alpha
+l <T> theta
+alpha <~//> theta
+m <T> beta
+m <T> theta
+beta <~//> theta
+l <//> m
+
+--- ans
+No.
+
+
+
+=== TEST 13:
+若平面 alpha T 平面 beta, 直线 n 在 alpha 上，直线 m 在 beta 上，
+m T n, 则有 n T beta 吗？
+--- vrg
+
+plane alpha, beta;
+line m, n;
+
+alpha T beta, n on alpha, m on beta, m T n => n T beta;
+
+--- vectorize
+alpha <T> beta
+n <T> alpha
+m <T> beta
+m <T> n
+
+--- ans
+No.
+
+
+
+=== TEST 14:
+若平面 alpha T 平面 beta, 直线 n 在 alpha 上，直线 m 在 beta 上，
+m T n, 则有 m T alpha 吗？
+--- vrg
+
+plane alpha, beta;
+line m, n;
+
+alpha T beta, n on alpha, m on beta, m T n => m T alpha;
+
+--- vectorize
+alpha <T> beta
+n <T> alpha
+m <T> beta
+m <T> n
+
+--- ans
+No.
+
+
+
+=== TEST 15:
+若平面 alpha T 平面 beta, 直线 n 在 alpha 上，直线 m 在 beta 上，
+m T n, 则同时有 n T beta 和 m T alpha 成立吗？
+
+--- vrg
+
+plane alpha, beta;
+line m, n;
+
+alpha T beta, n on alpha, m on beta, m T n => n T beta, m T alpha;
+
+--- ans
+No.
+
+
+
+=== TEST 15:
+若平面 alpha T 平面 beta, 直线 n 在 alpha 上，直线 m 在 beta 上，
+m T n, 则 n T beta 和 m T alpha 当中至少有一个成立，对吗？
+
+--- vrg
+
+plane alpha, beta;
+line m, n;
+
+alpha T beta, n on alpha, m on beta, m T n => n ~T beta, m ~T alpha;
+
+--- ans
+No.
+
+
+
+=== TEST 16: multiple goals
+--- vrg
+
+plane alpha, beta;
+line m, n;
+
+alpha T beta, n on alpha, m on beta, m T n => beta T alpha, m T n
+
+--- ans
+Yes.
+
+
+
+=== TEST 17: multiple goals
+multiple goals is yet not (really) supported.
+--- vrg
+
+plane alpha, beta;
+line m, n;
+
+alpha T beta, n on alpha, m on beta, m T n => beta T alpha, m // n
+
+--- ans
+No.
+--- SKIP
