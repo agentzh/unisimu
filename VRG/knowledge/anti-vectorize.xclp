@@ -1,5 +1,6 @@
 define defmodule(AntiVectorize,
-    import(Vectorize, deftemplate, ?ALL)
+    import(Vectorize, deftemplate, ?ALL),
+    import(MAIN, deftemplate, initial-fact)
 )
 
 /* vectorization rules */
@@ -27,7 +28,9 @@ module AntiVectorize.
 
 /* plane-plane relationships */
 
-#?alpha, #?beta, ?alpha <?R> ?beta => ?alpha [?R] ?beta.
+#?alpha, #?beta,
+~temp(?alpha), ~temp(?beta),
+?alpha <?R> ?beta => ?alpha [?R] ?beta.
 
 /* assertions */
 /* \?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha => contradiction(?l, ?alpha). */

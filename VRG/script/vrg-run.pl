@@ -125,7 +125,7 @@ if ($opts{t}) {
     $painter->draw(
         outfile     => $fname,
         fact_filter => \&format_fact,
-        trim => 0,
+        trim => 1,
     );
     warn "generating $fname...\n";
 

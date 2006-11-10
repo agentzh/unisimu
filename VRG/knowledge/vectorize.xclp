@@ -1,3 +1,7 @@
+define defmodule(MAIN,
+    export(deftemplate, initial-fact)
+)
+
 define defmodule(Vectorize,
     export(deftemplate, ?ALL)
 )

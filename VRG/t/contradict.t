@@ -42,4 +42,3 @@ l on alpha, l // alpha => l // alpha
 --- ans
 Contradiction detected. (Check the relationships between l and alpha.)
 --- SKIP
-

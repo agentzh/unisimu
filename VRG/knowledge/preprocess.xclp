@@ -9,7 +9,7 @@ module Vectorize.
 
 \?l, \?m, meet(?l, ?m, ?)
 =>
-    ?alpha := gensym(), #?alpha,
+    ?alpha := gensym(), #?alpha, temp(?alpha),
     ?l [on] ?alpha, ?m [on] ?alpha,
     ?l [~//] ?m.
 
@@ -17,7 +17,7 @@ module Vectorize.
 
 \?l, #?alpha, \?m, project(?l, ?alpha, ?m)
 =>
-    ?theta := gensym(), #?theta,
+    ?theta := gensym(), #?theta, temp(?theta),
     ?l [X] ?alpha, ?l [on] ?theta,
     meet(?theta, ?alpha, ?m),
     ?theta [T] ?alpha.

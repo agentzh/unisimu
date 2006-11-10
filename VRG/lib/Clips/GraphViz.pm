@@ -113,6 +113,7 @@ sub draw($$$) {
         next if !defined $fires[$_] or ($trim and @{ $fires[$_][2] } == 0);
         $gv->add_node($_, label => $rule_filter->($fires[$_][0], $_));
         for my $old_fact (@{ $fires[$_][1] }) {
+            next if !$old_fact;
             next if !defined $facts[$old_fact];
             $fact_refs[$old_fact] = 1 if $trim;
             $gv->add_edge("f-$old_fact" => $_);
