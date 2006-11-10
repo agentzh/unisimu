@@ -33,6 +33,9 @@ module AntiVectorize.
 ?alpha <?R> ?beta => ?alpha [?R] ?beta.
 
 /* assertions */
-/* \?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha => contradiction(?l, ?alpha). */
+\?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha => contradiction(?l, ?alpha).
+\?l, #?alpha, ?l [on] ?alpha, ?l [//] ?alpha => contradiction(?l, ?alpha).
+\?l, #?alpha, ?l [on] ?alpha, ?l [T] ?alpha => contradiction(?l, ?alpha).
+\?l, #?alpha, ?l [on] ?alpha, ?l [X] ?alpha => contradiction(?l, ?alpha).
 
 contradiction(?, ?) => halt().

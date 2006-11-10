@@ -41,4 +41,28 @@ l on alpha, l // alpha => l // alpha
 
 --- ans
 Contradiction detected. (Check the relationships between l and alpha.)
---- SKIP
+
+
+
+=== TEST 4:
+--- vrg
+
+plane a, b;
+
+a T b, a // b => a T b
+
+--- ans
+Contradiction detected. (Check the relationships between a and b.)
+
+
+
+=== TEST 5:
+--- vrg
+
+line l;
+plane alpha;
+
+l // alpha, l X alpha => l // alpha
+
+--- ans
+Contradiction detected. (Check the relationships between l and alpha.)
