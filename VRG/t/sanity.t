@@ -450,9 +450,9 @@ PA、PO 分别是平面 alpha 的垂线、斜线，AO 是 PO 在平面 alpha 内
 
 plane alpha;
 line a;
-line b; # line PA
-line d; # line AO
-line c; # line PO
+line b; -- line PA
+line d; -- line AO
+line c; -- line PO
 b T alpha, project(c, alpha, d), a on alpha, a T d
 =>
 a T c;
