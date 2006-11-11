@@ -1,6 +1,6 @@
 use t::VRG;
 
-plan tests => 144;
+plan tests => 149;
 
 run_tests();
 
@@ -348,11 +348,11 @@ line m, n;
 alpha T beta, n on alpha, m on beta, m T n => n T beta, m T alpha;
 
 --- ans
-No.
+No. (pending: n [T] beta, m [T] alpha)
 
 
 
-=== TEST 15:
+=== TEST 16:
 若平面 alpha T 平面 beta, 直线 n 在 alpha 上，直线 m 在 beta 上，
 m T n, 则 n T beta 和 m T alpha 当中至少有一个成立，对吗？
 
@@ -364,11 +364,11 @@ line m, n;
 alpha T beta, n on alpha, m on beta, m T n => n ~T beta, m ~T alpha;
 
 --- ans
-No.
+No. (pending: n [~T] beta, m [~T] alpha)
 
 
 
-=== TEST 16: multiple goals
+=== TEST 17: multiple goals
 --- vrg
 
 plane alpha, beta;
@@ -381,7 +381,7 @@ Yes.
 
 
 
-=== TEST 17: multiple goals
+=== TEST 18: multiple goals
 multiple goals is yet not (really) supported.
 --- vrg
 
@@ -391,12 +391,11 @@ line m, n;
 alpha T beta, n on alpha, m on beta, m T n => beta T alpha, m // n
 
 --- ans
-No.
---- SKIP
+No. (pending: m [//] n)
 
 
 
-=== TEST 18: (常规方法中，处理面面垂直问题多半是要作出交线的垂线的。）
+=== TEST 19: (常规方法中，处理面面垂直问题多半是要作出交线的垂线的。）
 已知平面 alpha, beta 都垂直于面 gama, 交线分别为 a, b,
 若 a // b, 求证：alpha // beta.
 
@@ -426,7 +425,7 @@ Yes.
 
 
 
-=== TEST 19:
+=== TEST 20:
 已知 a, b, c 是直线，alpha、beta 是平面，
 则由 a T b, a T c, b 在 alpha 上，
 c 在 alpha 上能否得出直线 a T 平面 alpha？
@@ -442,7 +441,7 @@ No.
 
 
 
-=== TEST 20:
+=== TEST 21:
 已知 a, b, c 是直线，alpha、beta 是平面，
 则由 a T b, b // alpha 能否得出直线 a T 平面 alpha？
 --- vrg
@@ -456,7 +455,7 @@ No.
 
 
 
-=== TEST 21:
+=== TEST 22:
 已知 a, b, c 是直线，alpha、beta 是平面，则
 由 alpha T beta, b // beta 能否得出直线 a T 平面 alpha？
 
@@ -471,7 +470,7 @@ No.
 
 
 
-=== TEST 22:
+=== TEST 23:
 已知 a, b, c 是直线，alpha、beta 是平面，
 则由 a // b, b T alpha 能否得出直线 a T 平面 alpha？
 

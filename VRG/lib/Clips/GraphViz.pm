@@ -140,6 +140,7 @@ sub draw($$$) {
 sub get_facts ($$$$) {
     my ($self, $goal, $res_facts, $res_fires) = @_;
     my @facts = @{ $self->{facts} };
+    return if !$goal;
     $res_facts->[$goal] = $facts[$goal];
 
     my @fires = @{ $self->{fires} };

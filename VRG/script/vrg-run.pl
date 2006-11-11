@@ -86,21 +86,35 @@ $clips->eof;
 
 #warn "GOAL!!! $goal_res\n";
 
-my $goal;
+my @goal;
 
 if (($anti_init_facts . $anti_vec_facts) =~ /\(contradiction (\S+) (\S+)\)/) {
     print "Contradiction detected. (Check the relationships between $1 and $2.)\n";
-} elsif ($anti_vec_facts =~ /\(goal ([^\)]+)\)/) {
-    $goal = "($1)";
-    #warn "goal: $1\n";
-    my $pat = quotemeta($goal);
-    if ($anti_vec_facts =~ /\s+$pat\s*\n/s) {
-        print "Yes.\n";
-    } else {
-        print "No.\n";
-    }
 } else {
-    warn "no goal found.\n";
+    while ($anti_vec_facts =~ /\(goal ([^\)]+)\)/g) {
+        push @goal, "($1)";
+    }
+    if (@goal == 0) {
+        warn "no goal found.\n";
+    } else {
+        my @missed;
+        for my $goal (@goal) {
+            my $pat = quotemeta($goal);
+            if ($anti_vec_facts !~ /\s+$pat\s*\n/s) {
+                push @missed, $goal;
+            }
+        }
+        if (@missed) {
+            if (@goal == 1) {
+                print "No.\n";
+            } else {
+                print "No. (pending: ", 
+                    (join ', ', map { format_fact($_) } @missed), ")\n";
+            }
+        } else {
+            print "Yes.\n";
+        }
+    }
 }
 
 if ($opts{t}) {
@@ -156,7 +170,7 @@ if ($opts{t}) {
         outfile     => $fname,
         fact_filter => \&format_fact,
         trim => 1,
-        goal => $goal,
+        goal => \@goal,
     );
     warn "generating $fname...\n";
 }
