@@ -10,7 +10,7 @@ item : comment
      | declaration
      | <error>
 
-comment : '#' <commit> /[^\n]+/  { "/* $item[3] */\n" }
+comment : '--' <commit> /[^\n]+/  { "/* $item[3] */\n" }
 
 declaration : declarator <commit> variable_list
 

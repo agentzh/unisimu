@@ -1,4 +1,4 @@
-# 三垂线定理逆定理
+-- 三垂线定理逆定理
 
 plane alpha;
 line d, c, a;
