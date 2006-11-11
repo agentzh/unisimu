@@ -35,6 +35,9 @@ my %FactStyle =
 my %InitFactStyle = %FactStyle;
 $InitFactStyle{shape} = 'doubleoctagon';
 
+my %GoalStyle = %FactStyle;
+$GoalStyle{fillcolor} = '#f1e1f4';
+
 sub new ($$$@) {
     my $class = ref $_[0] ? ref shift : shift;
     my ($init_facts, $run_log) = @_;
@@ -83,28 +86,30 @@ sub draw($$$) {
     my $fname = $opts{outfile} || 'a.png';
     my $fact_filter = $opts{fact_filter} || sub { $_[0] };
     my $rule_filter = $opts{rule_filter} || sub { "$_[0]\n#$_[1]" };
-    my $goal = $opts{goal};
+    my $goals = $opts{goals};
     my $trim = 1;
     if (exists $opts{trim}) { $trim = $opts{trim} }
     #Dump($self)->Out;
 
-    my (@facts, @fires);
-    @facts = @{ $self->{facts} };
+    my (@facts, @fires, %is_goals);
     #warn "!!!~~~";
-    my $goal_id;
-    if ($goal) {
-        $goal_id = first_index { $_ eq $goal } @facts;
-        if ($goal_id < 0) { 
-            warn "warning: goal $goal not found in the facts.\n";
-            @fires = @{ $self->{fires} };
-        } else {
-        #warn '???';
-            @facts = ();
-            $self->get_facts($goal_id, \@facts, \@fires);
+    my @all_facts = @{ $self->{facts} } if !@facts;
+    if ($goals) {
+        for my $goal (@$goals) {
+            my $goal_id = first_index { $_ eq $goal } @all_facts;
+            if ($goal_id < 0) { 
+                warn "warning: goal $goal not found in the facts.\n";
+                push @fires, @{ $self->{fires} };
+            } else {
+            #warn '???';
+                $is_goals{$goal_id} = 1;
+                $self->get_facts($goal_id, \@facts, \@fires);
+            }
         }
     } else {
         @fires = @{ $self->{fires} };
     }
+    @facts = @all_facts if !@facts;
     #warn scalar(@facts);
     #warn scalar(@fires);
     my $gv = GraphViz->new(%InitArgs);
@@ -126,13 +131,23 @@ sub draw($$$) {
     }
     for (0..$#facts) {
         next if !$facts[$_] or ($trim and !defined $fact_refs[$_]);
-        $gv->add_node("f-$_", label => $fact_filter->($facts[$_]), 
-            $self->init_fact($_) ? %InitFactStyle : %FactStyle);
+        my $style;
+        if ($is_goals{$_}) {
+            $style = \%GoalStyle;
+        } elsif ($self->init_fact($_)) {
+            $style = \%InitFactStyle;
+        } else {
+            $style = \%FactStyle;
+        }
+        $gv->add_node("f-$_", label => $fact_filter->($facts[$_]), %$style);
     }
-    if (@fires == 0 and $goal) {
-        # this is a special case that the goal is actually a given fact:
-        $gv->add_node("f-$goal_id", label => $fact_filter->($goal),
-            $self->init_fact($_) ? %InitFactStyle : %FactStyle);
+    if (@fires == 0 and $goals) {
+        # this is a special case that the goals are actually given facts:
+        for my $goal (@$goals) {
+            my $goal_id = first_index { $_ eq $goal } @all_facts;
+            $gv->add_node("f-$goal_id", label => $fact_filter->($goal),
+                $self->init_fact($_) ? %InitFactStyle : %FactStyle);
+        }
     }
     $gv->as_png($fname);
 }

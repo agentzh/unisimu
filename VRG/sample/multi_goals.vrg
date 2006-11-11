@@ -1,0 +1,10 @@
+-- 已知平面 alpha, beta 都垂直于面 gama, 交线分别为 a, b,
+-- 若 a // b, 求证：alpha // beta.
+
+plane alpha, beta, gama;
+line a, b;
+
+alpha T gama, beta T gama,
+meet(alpha, gama, a),
+meet(beta, gama, b),
+a // b => alpha // beta, b on beta;

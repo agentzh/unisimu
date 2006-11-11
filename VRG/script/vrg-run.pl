@@ -170,7 +170,7 @@ if ($opts{t}) {
         outfile     => $fname,
         fact_filter => \&format_fact,
         trim => 1,
-        goal => \@goal,
+        goals => \@goal,
     );
     warn "generating $fname...\n";
 }
