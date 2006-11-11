@@ -1,6 +1,6 @@
 use t::VRG;
 
-plan tests => 118;
+plan tests => 144;
 
 run_tests();
 
@@ -393,3 +393,94 @@ alpha T beta, n on alpha, m on beta, m T n => beta T alpha, m // n
 --- ans
 No.
 --- SKIP
+
+
+
+=== TEST 18: (常规方法中，处理面面垂直问题多半是要作出交线的垂线的。）
+已知平面 alpha, beta 都垂直于面 gama, 交线分别为 a, b,
+若 a // b, 求证：alpha // beta.
+
+--- vrg
+
+plane alpha, beta, gama;
+line a, b;
+
+alpha T gama, beta T gama,
+meet(alpha, gama, a),
+meet(beta, gama, b),
+a // b => alpha // beta;
+
+--- vectorize
+alpha <T> gama
+beta <T> gama
+alpha <~//> gama
+a <T> alpha
+a <T> gama
+beta <~//> gama
+b <T> beta
+b <T> gama
+a <//> b
+
+--- ans
+Yes.
+
+
+
+=== TEST 19:
+已知 a, b, c 是直线，alpha、beta 是平面，
+则由 a T b, a T c, b 在 alpha 上，
+c 在 alpha 上能否得出直线 a T 平面 alpha？
+
+--- vrg
+
+line a, b, c;
+plane alpha, beta;
+a T b, a T c, b on alpha, c on alpha => a T alpha;
+
+--- ans
+No.
+
+
+
+=== TEST 20:
+已知 a, b, c 是直线，alpha、beta 是平面，
+则由 a T b, b // alpha 能否得出直线 a T 平面 alpha？
+--- vrg
+
+line a, b, c;
+plane alpha, beta;
+a T b, b // alpha => a T alpha;
+
+--- ans
+No.
+
+
+
+=== TEST 21:
+已知 a, b, c 是直线，alpha、beta 是平面，则
+由 alpha T beta, b // beta 能否得出直线 a T 平面 alpha？
+
+--- vrg
+line a, b, c;
+plane alpha, beta;
+
+alpha T beta, a // beta => a T alpha;
+
+--- ans
+No.
+
+
+
+=== TEST 22:
+已知 a, b, c 是直线，alpha、beta 是平面，
+则由 a // b, b T alpha 能否得出直线 a T 平面 alpha？
+
+--- vrg
+line a, b, c;
+plane alpha, beta;
+
+a // b, b T alpha => a T alpha;
+
+--- ans
+Yes.
+
