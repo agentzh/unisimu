@@ -1,0 +1,19 @@
+define defmodule(GoalMatch,
+    import(Vectorize, deftemplate, space-relation, goal, contradiction),
+    import(MAIN, deftemplate, initial-fact)
+)
+
+/* goal matching rules */
+
+include "vrg-sugar.xclp"
+
+module GoalMatch.
+
+?a *[?R] ?b, ?a [?R] ?b
+=> solved(space-relation, ?R, ?a, ?b).
+
+?a *[?R] ?b, ~exists(?a [?R] ?b)
+=> pending(space-relation, ?R, ?a, ?b).
+
+pending(space-relation, ?, ?a, ?b), ?a [?R] ?b
+=> hint(space-relation, ?R, ?a, ?b).

@@ -7,7 +7,7 @@ rule : disjunction '=>' <commit> new_facts '.'
 
         { $::count++;
           "; $::infile (line $thisline)\n".
-          "(defrule $::module$::base-$::count\n".
+          "(defrule $::module$::base-$thisline\n".
           "    $item[1]\n".
           "    =>\n".
           "$item[4])" } ws { $item[6] }

@@ -3,6 +3,7 @@ use warnings;
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
+use VRG::GraphViz;
 use Clips::Batch;
 use Clips::GraphViz;
 use XClips::Compiler;
@@ -12,6 +13,8 @@ use Getopt::Std;
 my %opts;
 getopts('tv', \%opts) or help();
 $Clips::Batch::Verbose = $opts{v};
+
+my $cover_test = $ENV{VRG_COVER};
 
 my %infix = (
     'parallel'   => '//',
@@ -28,8 +31,8 @@ my %prefix = (
 my $infile = shift or help();
 die "File $infile not found" if !-f $infile;
 
-my $ext;
-if ($infile =~ /\.(\w+)$/) { $ext = lc($1); }
+my ($base, $ext);
+if ($infile =~ /([-\w]+)\.(\w+)$/) { $base = $1; $ext = lc($2); }
 
 if ($ext eq 'vrg') {
     if (system("$^X script/vrgs.pl $infile") != 0) {
@@ -54,18 +57,19 @@ my $clips = Clips::Batch->new(
     'knowledge/vectorize.clp',
     $infile,
     'knowledge/anti-vectorize.clp',
-    'knowledge/vector-eval.clp'
+    'knowledge/vector-eval.clp',
+    'knowledge/goal-match.clp',
 );
 
-$clips->watch('rules') if !$opts{t};
-$clips->watch('facts') if !$opts{t};
+$clips->watch('rules') if !$opts{t} or $cover_test;
+$clips->watch('facts') if !$opts{t} or $cover_test;
 
 $clips->reset;
 
 $clips->focus('Vectorize');
 $clips->facts('*', \my $vect_init_facts) if !$opts{t};
 
-$clips->rules('*') if !$opts{t};
+$clips->rules('*', \my $rule_list) if !$opts{t} or $cover_test;
 #$clips->facts('*', \my $init_facts);
 
 $clips->run(\my $vect_run_log);
@@ -81,6 +85,10 @@ $clips->facts('*', \my $anti_init_facts);
 $clips->run(\my $anti_run_log);
 $clips->facts(\my $anti_vec_facts);
 
+$clips->focus('GoalMatch');
+$clips->run;
+$clips->facts('GoalMatch', \my $goal_match_facts);
+
 $clips->eof;
 #warn "FACTS: ", $facts;
 
@@ -88,7 +96,9 @@ $clips->eof;
 
 my @goal;
 
-if (($anti_init_facts . $anti_vec_facts) =~ /\(contradiction (\S+) (\S+)\)/) {
+#warn $goal_match_facts;
+
+if ($goal_match_facts =~ /\(contradiction (\S+) (\S+)\)/) {
     print "Contradiction detected. (Check the relationships between $1 and $2.)\n";
 } else {
     while ($anti_vec_facts =~ /\(goal ([^\)]+)\)/g) {
@@ -116,6 +126,8 @@ if (($anti_init_facts . $anti_vec_facts) =~ /\(contradiction (\S+) (\S+)\)/) {
         }
     }
 }
+
+my $run_log = $vect_run_log . $eval_run_log . $anti_run_log;
 
 if ($opts{t}) {
     while ($vect_facts =~ /\(vector-relation ([^\)]+)\)/g) {
@@ -165,7 +177,7 @@ if ($opts{t}) {
     $fname = "$infile.png";
     $painter = Clips::GraphViz->new(
         $vect_init_facts,
-        $vect_run_log . $eval_run_log . $anti_run_log);
+        $run_log);
     $painter->draw(
         outfile     => $fname,
         fact_filter => \&format_fact,
@@ -173,6 +185,28 @@ if ($opts{t}) {
         goals => \@goal,
     );
     warn "generating $fname...\n";
+
+    $fname = "$infile.vrg1.png";
+    $painter = VRG::GraphViz->new($vect_facts);
+    $painter->as_png($fname);
+    warn "generating $fname...\n";
+
+    $fname = "$infile.vrg2.png";
+    $painter = VRG::GraphViz->new($eval_facts);
+    $painter->as_png($fname);
+    warn "generating $fname...\n";
+}
+
+if ($cover_test) {
+    require YAML::Syck;
+    my $db_dir = 'clips_cover_db';
+    mkdir $db_dir if !-d $db_dir;
+    my $fname;
+    while (my $rand = int rand 1000000) {
+        $fname = "$db_dir/$base-$rand.yml";
+        last if !-e $fname;
+    }
+    YAML::Syck::DumpFile($fname, [$rule_list, $run_log]);
 }
 
 sub help {

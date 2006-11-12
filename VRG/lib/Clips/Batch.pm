@@ -45,7 +45,7 @@ sub eof {
     my @callbacks = $self->_callbacks;
     my $opts = $self->{opts};
     my $tempfile = mktemp("clips_cache_XXXXXXX");
-    my $cmd = "clips $opts > $tempfile 2>&1";
+    my $cmd = "clips $opts > $tempfile";
     #warn "$cmd";
     open my $out, "| $cmd" or
         die "can't spawn clips: $!";

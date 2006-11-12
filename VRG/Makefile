@@ -13,7 +13,8 @@ mv_f = perl -MExtUtils::Command -e mv
 xpro_files := $(wildcard xprolog/*.xpro)
 pro_files  := $(patsubst %.xpro,%.pro, $(xpro_files))
 
-clp_files  := $(patsubst %,knowledge/%,vectorize.clp vector-eval.clp anti-vectorize.clp)
+clp_files  := $(patsubst %,knowledge/%,vectorize.clp vector-eval.clp \
+	anti-vectorize.clp goal-match.clp)
 
 vpath %.xclp knowledge
 vpath %.grammar grammar
@@ -54,6 +55,7 @@ test: clips_all
 clean:
 	$(rm_f) xprolog/*.pro xprolog/0*.xpro 0*.xclp *.clp *.vrg \
 		sample/*.clp sample/*.xclp *.png
+	perl script/clips-cover.pl -d
 
 veryclean: clean
 	$(rm_f) lib/XClips/Compiler/Base.pm lib/VRG/Compiler.pm \

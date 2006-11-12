@@ -18,6 +18,7 @@ our @facts;
 our $rel_type;
 our $module;
 our @Include = '.';
+our %Include;
 
 our (%prefix, %infix, %infix_prefix, %infix_circumfix, %infix_circum_close);
 our (@prefix, @infix, @infix_prefix, @infix_circumfix);
@@ -84,8 +85,12 @@ sub process_include {
     }
     if (!$done) {
         die "error: $::infile (line $linno): Can't find include file $fname ",
-            "in \@INC.\n\t(\@INC contains: @Include)\n";
+            "in \@Include.\n\t(\@Include contains: @Include)\n";
     }
+
+    my $path = File::Spec->rel2abs($fname);
+    return "" if $Include{$path};
+    $Include{$path} = 1;
     #warn "including file $fname...";
     my $src = read_file($fname);
     my $saved_infile = $::infile;

@@ -1,7 +1,6 @@
-* prevent xclp file to be included recursively or more than once.
-* multiple goals support in the VRG script.
 * user-defined predicates support in VRG script.
-* generate VRG images.
 * abstract away the defmodule CLIPS directives in XClips
-* add space relations == and \= to solve the deep bug found by the
-  (now-commented-out) assertion in anti-vectorize.xclp
+* more detailed info in contradiction report
+* total coverage info by clips-cover.pl
+* more detailed info in vrg-run.pl's outputs
+
