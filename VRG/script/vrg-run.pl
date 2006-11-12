@@ -11,10 +11,11 @@ use File::Slurp;
 use Getopt::Std;
 
 my %opts;
-getopts('tv', \%opts) or help();
+getopts('tvf', \%opts) or help();
 $Clips::Batch::Verbose = $opts{v};
 
 my $cover_test = $ENV{VRG_COVER};
+my $no_trim = $opts{f};
 
 my %infix = (
     'parallel'   => '//',
@@ -86,7 +87,7 @@ $clips->run(\my $anti_run_log);
 $clips->facts(\my $anti_vec_facts);
 
 $clips->focus('GoalMatch');
-$clips->run;
+$clips->run(\my $match_run_log);
 $clips->facts('GoalMatch', \my $goal_match_facts);
 
 $clips->eof;
@@ -94,36 +95,52 @@ $clips->eof;
 
 #warn "GOAL!!! $goal_res\n";
 
-my @goal;
+my (@solved, @pending, @hint);
 
 #warn $goal_match_facts;
 
-if ($goal_match_facts =~ /\(contradiction (\S+) (\S+)\)/) {
-    print "Contradiction detected. (Check the relationships between $1 and $2.)\n";
+if ($goal_match_facts =~ /\(contradiction (.+)\)/) {
+    my $info = $1;
+    my @item = split ' ', $info;
+    map { s/\"//g } @item;
+    print "Contradiction detected: ",
+        "$item[2] $item[0] $item[3], $item[2] $item[1] $item[3].\n\n";
 } else {
-    while ($anti_vec_facts =~ /\(goal ([^\)]+)\)/g) {
-        push @goal, "($1)";
+    open my $in, '<', \$goal_match_facts or die;
+    while (<$in>) {
+        if (/\(solved (.+)\)$/g) {
+            push @solved, "($1)";
+            #warn "adding solved ($1)";
+        }
+        elsif (/\(pending (.+)\)$/g) {
+            push @pending, "($1)";
+            #warn "adding pending ($1)";
+        }
+        elsif (/\(hint (.+)\)$/g) {
+            push @hint, "($1)";
+            #warn "adding hint ($1)";
+        }
     }
-    if (@goal == 0) {
-        warn "no goal found.\n";
-    } else {
-        my @missed;
-        for my $goal (@goal) {
-            my $pat = quotemeta($goal);
-            if ($anti_vec_facts !~ /\s+$pat\s*\n/s) {
-                push @missed, $goal;
-            }
-        }
-        if (@missed) {
-            if (@goal == 1) {
-                print "No.\n";
-            } else {
-                print "No. (pending: ", 
-                    (join ', ', map { format_fact($_) } @missed), ")\n";
-            }
+    close $in;
+
+    my @fmt_pending = map { format_fact($_) } @pending;
+    my @fmt_hint    = map { format_fact($_) } @hint;
+    if (@pending == 0) {
+        if (@solved == 0) {
+            print "No goal found.\n\n";
         } else {
-            print "Yes.\n";
+            print "Yes.\n\n";
         }
+    } else {
+        if (@solved + @pending == 1) {
+            print "No.\n";
+        } else {
+            print "No.\nPending: ", join(', ', @fmt_pending), "\n";
+        }
+        if (@hint) {
+            print "Hint: ", join(', ', @fmt_hint), "\n";
+        }
+        print "\n";
     }
 }
 
@@ -151,7 +168,7 @@ if ($opts{t}) {
     $painter->draw(
         outfile     => $fname,
         fact_filter => \&format_fact,
-        trim => 1,
+        trim => $no_trim ? 0 : 1,
     );
     warn "generating $fname...\n";
 
@@ -160,7 +177,7 @@ if ($opts{t}) {
     $painter->draw(
         outfile     => $fname,
         fact_filter => \&format_fact,
-        trim => 1,
+        trim => $no_trim ? 0 : 1,
     );
     warn "generating $fname...\n";
 
@@ -169,7 +186,7 @@ if ($opts{t}) {
     $painter->draw(
         outfile     => $fname,
         fact_filter => \&format_fact,
-        trim => 1,
+        trim => $no_trim ? 0 : 1,
     );
     warn "generating $fname...\n";
 
@@ -181,8 +198,8 @@ if ($opts{t}) {
     $painter->draw(
         outfile     => $fname,
         fact_filter => \&format_fact,
-        trim => 1,
-        goals => \@goal,
+        trim => $no_trim ? 0 : 1,
+        goals => (@pending == 0 ? \@solved : undef),
     );
     warn "generating $fname...\n";
 
@@ -206,7 +223,7 @@ if ($cover_test) {
         $fname = "$db_dir/$base-$rand.yml";
         last if !-e $fname;
     }
-    YAML::Syck::DumpFile($fname, [$rule_list, $run_log]);
+    YAML::Syck::DumpFile($fname, [$rule_list, $run_log . $match_run_log]);
 }
 
 sub help {

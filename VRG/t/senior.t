@@ -91,6 +91,7 @@ a [~X] alpha
 
 --- ans
 No.
+Hint: a [~X] alpha, a [~T] alpha
 
 
 
@@ -119,6 +120,7 @@ a [~X] alpha
 
 --- ans
 No.
+Hint: a [~X] alpha, a [~T] alpha
 
 
 
@@ -145,6 +147,7 @@ a [~T] alpha
 
 --- ans
 No.
+Hint: a [~X] alpha, a [~T] alpha
 
 
 
@@ -348,7 +351,8 @@ line m, n;
 alpha T beta, n on alpha, m on beta, m T n => n T beta, m T alpha;
 
 --- ans
-No. (pending: n [T] beta, m [T] alpha)
+No.
+Pending: m [T] alpha, n [T] beta
 
 
 
@@ -364,7 +368,8 @@ line m, n;
 alpha T beta, n on alpha, m on beta, m T n => n ~T beta, m ~T alpha;
 
 --- ans
-No. (pending: n [~T] beta, m [~T] alpha)
+No.
+Pending: m [~T] alpha, n [~T] beta
 
 
 
@@ -391,8 +396,9 @@ line m, n;
 alpha T beta, n on alpha, m on beta, m T n => beta T alpha, m // n
 
 --- ans
-No. (pending: m [//] n)
-
+No.
+Pending: m [//] n
+Hint: m [~//] n, m [T] n
 
 
 === TEST 19: (常规方法中，处理面面垂直问题多半是要作出交线的垂线的。）

@@ -25,6 +25,7 @@ conjunction : clause ',' <commit> conjunction
 
     { "(and $item{clause} $item{conjunction})" }
 
+            | '(' <commit> disjunction ')'  { $item{disjunction} }
             | clause
             | <error?> <reject>
 
@@ -148,8 +149,8 @@ infix_circum_open : { ::match_infix_circum_open($text) }
 
 arguments : <leftop: clause ',' clause>  <commit> { join ' ', @{ $item[1] } }
 
-variable : /\?[A-Za-z_]([-\w])*/ <commit> { $item[1] . $item{identifier} }
-         | '?'
+variable : /\$?\?[A-Za-z_]([-\w])*/ <commit> { $item[1] . $item{identifier} }
+         | /\$?\?/
 
 literal : identifier
         | number

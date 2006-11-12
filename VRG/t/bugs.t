@@ -15,3 +15,4 @@ a on alpha, b on alpha, meet(a, b, P) => a // alpha
 
 --- ans
 No.
+Hint: a [~X] alpha, a [~T] alpha, a [on] alpha

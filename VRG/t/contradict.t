@@ -14,7 +14,7 @@ line a, b;
 a T b, a//b => a//b
 
 --- ans
-Contradiction detected. (Check the relationships between a and b.)
+Contradiction detected: a <//> b, a <~//> b.
 
 
 
@@ -26,7 +26,7 @@ line a, b, c, d;
 a T b, b // c, c // a => a // c
 
 --- ans
-Contradiction detected. (Check the relationships between b and c.)
+Contradiction detected: b <//> c, b <~//> c.
 
 
 
@@ -40,7 +40,7 @@ line l; plane alpha;
 l on alpha, l // alpha => l // alpha
 
 --- ans
-Contradiction detected. (Check the relationships between l and alpha.)
+Contradiction detected: l [on] alpha, l [~on] alpha.
 
 
 
@@ -52,7 +52,7 @@ plane a, b;
 a T b, a // b => a T b
 
 --- ans
-Contradiction detected. (Check the relationships between a and b.)
+Contradiction detected: a <//> b, a <~//> b.
 
 
 
@@ -65,4 +65,4 @@ plane alpha;
 l // alpha, l X alpha => l // alpha
 
 --- ans
-Contradiction detected. (Check the relationships between l and alpha.)
+Contradiction detected: l <T> alpha, l <X> alpha.

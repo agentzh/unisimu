@@ -34,4 +34,4 @@ module Vectorize.
 #?alpha, #?beta, ?alpha [?R] ?beta => ?alpha <?R> ?beta.
 
 /* control rules */
-contradiction(?, ?) => halt().
+contradiction($?) => halt().

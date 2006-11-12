@@ -37,10 +37,11 @@ while (my $entry = readdir($dh)) {
 }
 closedir $dh;
 
+my $hit;
 my @stats;
 while (my ($rule_name, $count) = each %rules) {
-    my $ratio = sprintf("%.02f%%", "$count.0"/$total_fires*100);
-    push @stats, [$rule_name, $count, $ratio];
+    push @stats, [$rule_name, $count];
+    $hit++ if $count > 0;
 }
 @stats = sort {
     my $res = $a->[1] <=> $b->[1];
@@ -48,7 +49,7 @@ while (my ($rule_name, $count) = each %rules) {
 } @stats;
 
 my $tb = Text::Table->new(
-        "Rule", "Count", "Ratio"
+        "Rule", "Count"
 );
 
 $tb->load(@stats);
@@ -56,6 +57,8 @@ print $tb->rule( '-' );
 print $tb->title;
 print $tb->rule( '-' );
 print $tb->body;
+printf("\nFor total %.02f%% of the rules have been fired.\n",
+    "$hit.0"/scalar(keys %rules)*100);
 
 sub parse_rule_list {
     my $log = shift;

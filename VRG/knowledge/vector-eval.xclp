@@ -20,8 +20,8 @@ include "vrg-sugar.xclp".
 ?a <?R> ?b => ?b <?R> ?a.
 
 /* assertions */
-?a <//> ?b, ?a <~//> ?b => contradiction(?a, ?b).
-?a <T> ?b, ?a <~T> ?b => contradiction(?a, ?b).
-?a <T> ?b, ?a <X> ?b => contradiction(?a, ?b).
-?a <X> ?b, ?a <~X> ?b => contradiction(?a, ?b).
-contradiction(?, ?) => halt().
+?a <//> ?b, ?a <~//> ?b => contradiction("<//>", "<~//>", ?a, ?b).
+?a <T> ?b, ?a <~T> ?b => contradiction("<T>", "<~T>", ?a, ?b).
+?a <T> ?b, ?a <X> ?b => contradiction("<T>", "<X>", ?a, ?b).
+?a <X> ?b, ?a <~X> ?b => contradiction("<X>", "<~X>", ?a, ?b).
+contradiction($?) => halt().

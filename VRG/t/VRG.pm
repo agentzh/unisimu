@@ -62,8 +62,8 @@ sub run_test () {
     warn $stderr if $stderr;
     #warn $stdout;
 
-    $stdout =~ s/^[^\n]*\n//i;
-    my $ans_got = $&;
+    $stdout =~ s/^(.*?\n)\n//s;
+    my $ans_got = $1;
 
     my ($vectorize, $eval, $final) = ($stdout =~ /(.*)---\n(.*)---\n(.*)/s);
     if (defined $block->vectorize) {

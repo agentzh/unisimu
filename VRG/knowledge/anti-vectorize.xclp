@@ -26,6 +26,8 @@ module AntiVectorize.
 \?l, #?alpha, #?beta, ?l [on] ?alpha, ?alpha [//] ?beta => ?l [~on] ?beta.
 \?l, #?alpha, ?l [~T] ?alpha, ?l [~X] ?alpha, ?l [~on] ?alpha => ?l [//] ?alpha.
 
+\?l, #?alpha, (?l [//] ?alpha; ?l [T] ?alpha; ?l [X] ?alpha) => ?l [~on] ?alpha.
+
 /* plane-plane relationships */
 
 #?alpha, #?beta,
@@ -33,9 +35,6 @@ module AntiVectorize.
 ?alpha <?R> ?beta => ?alpha [?R] ?beta.
 
 /* assertions */
-\?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha => contradiction(?l, ?alpha).
-\?l, #?alpha, ?l [on] ?alpha, ?l [//] ?alpha => contradiction(?l, ?alpha).
-\?l, #?alpha, ?l [on] ?alpha, ?l [T] ?alpha => contradiction(?l, ?alpha).
-\?l, #?alpha, ?l [on] ?alpha, ?l [X] ?alpha => contradiction(?l, ?alpha).
+\?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha => contradiction("[on]", "[~on]", ?l, ?alpha).
 
-contradiction(?, ?) => halt().
+contradiction($?) => halt().
