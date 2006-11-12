@@ -1,6 +1,2 @@
 * user-defined predicates support in VRG script.
 * abstract away the defmodule CLIPS directives in XClips
-* more detailed info in contradiction report
-* total coverage info by clips-cover.pl
-* more detailed info in vrg-run.pl's outputs
-
