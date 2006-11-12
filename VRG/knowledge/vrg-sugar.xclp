@@ -1,15 +1,15 @@
 /* syntax sugar definitions for the VRG knowledge base */
 
-prefix:<~>   "not "
-prefix:<\>   "line "
-prefix:<#>   "plane "
+prefix:<~>   not
+prefix:<\>   line
+prefix:<#>   plane
 
-infix:<//>   "parallel "
-infix:<T>    "orthogonal "
-infix:<X>    "cross "
-infix:<on>   "on "
+infix:<//>   parallel
+infix:<T>    orthogonal
+infix:<X>    cross
+infix:<on>   on
 
-infix_prefix:<*>       "goal "
-infix_prefix:<~>       "not_"
-infix_circumfix:<[ ]>  "space-relation "
-infix_circumfix:<< >>  "vector-relation "
+infix_prefix:<*>       goal
+infix_prefix:<~>       not_ &
+infix_circumfix:<[ ]>  space-relation
+infix_circumfix:<< >>  vector-relation

@@ -93,31 +93,34 @@ directive : 'module' <commit> identifier '.' ws
 
         { $item{predicate} }
 
-          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
+          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> target /\.?/ ws
           
-        { $::prefix{$item{pattern}} = eval $item{string};
+        { $::prefix{$item{pattern}} = eval $item{target};
           @::prefix = sort { -($a cmp $b) } keys %::prefix; '' }
 
-          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
+          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> target /\.?/ ws
 
-        { $::infix{$item{pattern}} = eval $item{string};
+        { $::infix{$item{pattern}} = eval $item{target};
           @::infix = sort { -($a cmp $b) } keys %::infix; '' }
 
-          | 'infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> string /\.?/ ws
+          | 'infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> target /\.?/ ws
 
-        { $::infix_prefix{$item{pattern}} = eval $item{string};
+        { $::infix_prefix{$item{pattern}} = eval $item{target};
           @::infix_prefix = sort { -($a cmp $b) } keys %::infix_prefix; '' }
 
           | 'infix_circumfix:<' <commit> <skip:''> circum_pattern '>'
-		    <skip:'\s*'> string /\.?/ ws
+		    <skip:'\s*'> target /\.?/ ws
 
         {   my $pattern = $item{circum_pattern};
 		    #warn "~~~ @$pattern\n";
-			$::infix_circumfix{$pattern->[0]} = eval $item{string};
+			$::infix_circumfix{$pattern->[0]} = eval $item{target};
 			$::infix_circum_close{$pattern->[0]} = $pattern->[1];
             @::infix_circumfix = sort { -($a cmp $b) } keys %::infix_circumfix; '' }
 
           | <error?> <reject>
+
+target : identifier /\&?/ { $item[2] ? "'$item[1]'" : "'$item[1] '" }
+       | string
 
 pattern : /\S+(?=>)/
 
