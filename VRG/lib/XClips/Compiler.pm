@@ -23,6 +23,10 @@ our %Include;
 our (%prefix, %infix, %infix_prefix, %infix_circumfix, %infix_circum_close);
 our (@prefix, @infix, @infix_prefix, @infix_circumfix);
 
+%prefix = (
+    '~'  => 'not ',
+);
+
 %infix = (
     '\='  => 'test (neq ',
     '=='  => 'test (eq ',

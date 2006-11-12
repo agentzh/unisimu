@@ -1,6 +1,5 @@
 /* syntax sugar definitions for the VRG knowledge base */
 
-prefix:<~>   not
 prefix:<\>   line
 prefix:<#>   plane
 
