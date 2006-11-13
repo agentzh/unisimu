@@ -1,14 +1,17 @@
 SHELL := cmd
+PERL_BIN := E:/perl/bin
+PERL_LIB := E:/perl/site/lib
 
 sample_vrg_files := $(wildcard sample/*.vrg)
 sample_png_files := $(patsubst %.vrg,%.png,$(sample_vrg_files))
 
 xpro := perl xprolog/xpro.pl
-xclp := perl -Ilib script/xclips.pl -I knowledge
+xclp := perl -Ilib script/xclips.pl -I knowledge -c
 vrg_run := perl -Ilib script/vrg-run.pl
 
 rm_f = perl -MExtUtils::Command -e rm_f
 mv_f = perl -MExtUtils::Command -e mv
+cp_f = perl -MExtUtils::Command -e cp
 
 xpro_files := $(wildcard xprolog/*.xpro)
 pro_files  := $(patsubst %.xpro,%.pro, $(xpro_files))
@@ -65,3 +68,11 @@ sample: $(sample_png_files)
 
 sample/%.png: sample/%.vrg clips_all
 	$(vrg_run) $<
+
+install:
+	pl2bat script/xclips.pl
+	$(cp_f) script/xclips.bat $(PERL_BIN)
+	$(cp_f) lib/Clips/Batch.pm $(PERL_LIB)/Clips
+	$(cp_f) lib/Clips/GraphViz.pm $(PERL_LIB)/Clips
+	$(cp_f) lib/XClips/Compiler.pm $(PERL_LIB)/XClips
+	$(cp_f) lib/XClips/Compiler/Base.pm $(PERL_LIB)/XClips/Compiler

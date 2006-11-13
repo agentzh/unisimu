@@ -2,6 +2,7 @@ package Clips::GraphViz;
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use List::MoreUtils qw(any first_index);
 use GraphViz;
