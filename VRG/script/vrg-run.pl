@@ -43,7 +43,7 @@ if ($ext eq 'vrg') {
     $ext = 'xclp';
 }
 if ($ext eq 'xclp') {
-    if (system("$^X script/xclips.pl -I knowledge $infile") != 0) {
+    if (system("$^X script/xclips.pl -c -I knowledge $infile") != 0) {
         die "Can't compile $infile down to CLIPS code";
     }
     $infile =~ s/\.xclp/.clp/i;

@@ -2,11 +2,11 @@ package Clips::GraphViz;
 
 use strict;
 use warnings;
-no warnings 'redefine';
 
 use List::MoreUtils qw(any first_index);
 use GraphViz;
 use Data::Dump::Streamer;
+use File::Slurp;
 
 my %NormalNodeStyle =
 (
@@ -151,6 +151,7 @@ sub draw($$$) {
         }
     }
     $gv->as_png($fname);
+    write_file("$fname.dot", $gv->as_debug);
 }
 
 sub get_facts ($$$$) {
