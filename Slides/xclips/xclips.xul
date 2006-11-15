@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="css/agentzh.css" type="text/css"?>
+
+<page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="sporx" xmlns:html="http:/www.w3.org/1999/xhtml" orient="vertical" onkeypress="Sporx.onKeyPress(event);">
+
+<html:textarea id="builtinCode" style="visibility: collapse">Introduction to XClips
+----
+Introduction to {{#x|XClips}}
+{{#v|☺}}{{#author|Agent Zhang}}{{#v|☺}}
+{{#author|(章亦春)}}
+{{#date|2006.11}}
+----
+  {{#x|XClips}}
+  ➥  {{#ci|Expert system}} programming language
+    
+   
+XClips 是一种专家系统编程语言
+----
+  {{#x|XClips}}
+  ➥  Targeting NASA's {{#ci|CLIPS}}
+  
+    
+XClips 以美国航空航天局的 CLIPS 作为目标平台
+----
+  {{#x|XClips}}
+  ➥  {{#ci|Born}} in my VRG project but
+      is also a {{#i|general-purpose}} language
+    
+   
+XClips 诞生于我的 VRG 项目但同时也是通用目的的语言。
+----
+ {{#x|Features}} of XClips
++ {{#tag|♡}} {{#i|Prolog}}-style {{#ci|syntax}} for rules and facts
++ {{#tag|♡}} {{#i|Perl 6}}-style {{#ci|user-defined}} operators
++ {{#tag|♡}} {{#i|C}}-style {{#ci|file inclusion}} and automatic
+    reinclusion elimination
++ {{#tag|♡}} {{#i|Good}} access to the {{#i|CLIPS}} {{#ci|semantics}}
++ {{#tag|♡}}  Rule {{#ci|coverage}} {{#i|testing}} support
++ {{#tag|♡}} {{#i|Inferencing}} process {{#ci|visualization}} support
++ {{#tag|♡}} {{#i|Modular}} programming
+----
+{{#cm|Case #1}}:  Reasoning on {{#ci|family}} trees
+    
+{{#v|♨}}
+   
+案例 #1: 家族树上的推理
+----
+{{img src="#" width="0" height="0"}}
+{{img src="images/pedigree.png" width="333" height="347"}}
+----
+{{#v|☺}}  {{#ci|Defining}} XClips {{#x|facts}}
+   
+  
+定义 XClips 事实
+----
+  
+      mother({{#x|Mary}}, {{#x|John}}).
+      father({{#x|John}}, {{#x|Simon}}).
+      father({{#x|Simon}}, {{#x|Jack}}).
+      father({{#x|Tom}}, {{#x|John}}).
+       
+----
+{{#x|Unlike}} Prolog, symbols with leading a capital letter
+or underscore are {{#ci|not}} variables.
+   
+与 Prolog 不同的是，以大写字母或下划线起始的符号
+并不是变量。
+----
+{{#v|☺}}  {{#ci|Defining}} XClips {{#x|rules}}
+   
+  
+定义 XClips 规则
+----
+  mother({{#v|?A}}, {{#v|?B}}){{#c|;}} father({{#v|?A}}, {{#v|?B}}) {{#c|=>}}
+            ancestor({{#v|?A}}, {{#v|?B}}).
+   
+  ancestor({{#v|?A}}, {{#v|?B}}){{#c|,}} ancestor({{#v|?B}}, {{#v|?C}}) {{#c|=>}}
+            ancestor({{#v|?A}}, {{#v|?C}}).
+    
+  ancestor({{#x|Tom}}, {{#v|?X}}) {{#c|=>}} {{#kw|printout}}({{#kw|t}}, {{#v|?X}}, {{#kw|crlf}}).
+
+----
+{{#x|Unlike}} Prolog, the {{#ci|rules}} are expressed 
+in the {{#ci|forward-chaining}} style.
+    
+与 Prolog 不同的是，规则被表达为正向链风格
+----
+{{#x|Unlike}} Prolog, the {{#ci|variables}} are specified by
+the {{#x|?}} sigil.
+    
+与 Prolog 不同的是，变量是通过问号这个
+魔法标记来指示的。
+----
+Let's put {{#i|rules}} and {{#i|facts}} {{#x|together}}.
+  
+让我们把规则和事实放到一起。
+----
+  {{#cm|/* family.xclp */}}
+  mother({{#x|Mary}}, {{#x|John}}).
+  father({{#x|John}}, {{#x|Simon}}).
+  father({{#x|Simon}}, {{#x|Jack}}).
+  father({{#x|Tom}}, {{#x|John}}).
+  mother({{#v|?A}}, {{#v|?B}}){{#c|;}} father({{#v|?A}}, {{#v|?B}}) {{#c|=>}}
+            ancestor({{#v|?A}}, {{#v|?B}}).
+  ancestor({{#v|?A}}, {{#v|?B}}){{#c|,}} ancestor({{#v|?B}}, {{#v|?C}}) {{#c|=>}}
+            ancestor({{#v|?A}}, {{#v|?C}}).
+  ancestor({{#x|Tom}}, {{#v|?X}}) {{#c|=>}} {{#kw|printout}}({{#kw|t}}, {{#v|?X}}, {{#kw|crlf}}).
+  
+----
+{{img src="images/family-screen.png" width="638" height="367"}}
+----
+   
+    {{#v|C:\\xclips>}}{{#x|xclips}} family.xclp
+    John
+    Jack
+    Simon
+   
+    {{#v|C:\\xclips>}}
+      
+----
+{{#v|☺}}  Generating {{#ci|inferencing flowcharts}} 
+   
+生成推理流程图
+----
+   {{#v|C:\\xclips>}}xclips {{#x|-d}} family.xclp
+    generating {{#x|a.png}}...
+    
+   {{#v|C:\\xclips>}}
+----
+{{img src="images/family-reason.png" width="859" height="536"}}
+----
+{{#v|☺}}  Generating {{#ci|rule coverage}} reports
+   
+生成规则覆盖报告
+----
+   
+   {{#v|C:\\xclips>}}xclips {{#x|-d}} family.xclp
+    generating a.png...
+   {{#v|C:\\xclips>}}{{#x|clips-cover}}
+    ---------------
+    Rule      Count
+    ---------------
+    family-10 {{#x|3}}
+    family-8  {{#x|4}}
+    family-9  {{#x|7}}
+   
+    For total {{#x|100.00%}} of the rules have been fired.
+     
+----
+Let's study a {{#ci|real-world}} pedigree.
+    
+{{#v|♨}}
+   
+让我们研究一下真实世界的家谱。
+----
+{{img src="images/myfamily.png" width="715" height="301"}}
+----
+{{#v|☺}}  Defining the {{#x|facts}} and {{#x|goals}}
+  
+定义事实和目标
+----
+   
+ {{#cm|/* myfamily.xclp */}}
+ father({{#x|"章腾文"}}, {{#x|"章丹江"}}).
+ father({{#x|"章腾文"}}, {{#x|"章春雷"}}).
+ father({{#x|"章腾文"}}, {{#x|"章震峰"}}).
+ couple({{#x|"章腾文"}}, {{#x|"崔静"}}).
+ mother({{#x|"章丹江"}}, {{#x|"栾旻露"}}).
+ father({{#x|"栾卫东"}}, {{#x|"栾旻露"}}).
+ mother({{#x|"汪宗娟"}}, {{#x|"章寅生"}}).
+ father({{#x|"章春雷"}}, {{#x|"章寅生"}}).
+ mother({{#x|"谈梅兰"}}, {{#x|"章亦春"}}).
+ father({{#x|"章震峰"}}, {{#x|"章亦春"}}).
+ {{#cm|/* goal */}}
+ ancestor({{#v|?elder}}, {{#x|"章亦春"}}) {{#c|=>}}
+     {{#kw|printout}}({{#kw|t}}, {{#x|"Found "}}, {{#v|?elder}}, {{#kw|crlf}}).
+       
+----
+{{#tag|☆}} {{#x|Double-quotes}} are {{#ci|required}} here because
+Chinese glyphs are {{#ci|not}} valid XClips symbols
+   
+这儿的双引号是不能省略的，
+因为汉字不是合法的 XClips 符号。
+----
+{{#v|☺}}  Defining {{#x|rules}} for {{#ci|ancestor}} and {{#ci|couple}}
+   
+为 ancestor 和 couple 定义规则
+----
+ {{#cm|/* pedigree-rules.xclp */}}
+   
+ mother({{#v|?a}}, {{#v|?b}}){{#c|;}} father({{#v|?a}}, {{#v|?b}}) {{#c|=>}} ancestor({{#v|?a}}, {{#v|?b}}).
+ ancestor({{#v|?a}}, {{#v|?b}}){{#c|,}} ancestor({{#v|?b}}, {{#v|?c}}) {{#c|=>}} ancestor({{#v|?a}}, {{#v|?c}}).
+ couple({{#v|?a}}, {{#v|?b}}){{#c|,}} father({{#v|?a}}, {{#v|?c}}) {{#c|=>}} mother({{#v|?b}}, {{#v|?c}}).
+ couple({{#v|?a}}, {{#v|?b}}){{#c|,}} mother({{#v|?a}}, {{#v|?c}}) {{#c|=>}} father({{#v|?b}}, {{#v|?c}}).
+----
+    {{#v|C:\\xclips>}}xclips {{#x|myfamily.xclp}} {{#x|pedigree-rules.xclp}}
+     Found 章震峰
+     Found 谈梅兰
+     Found 崔静
+     Found 章腾文
+----
+{{#tag|☆}} This time, we put {{#x|reusable}} rules into a {{#ci|separate}} file.
+  
+这一回，我们将可复用的规则
+放进了单独的一个文件。
+----
+{{#v|☺}}  We can precompile {{#x|pedigree-rules.xclp}} to {{#x|CLIPS}}
+source in order to {{#ci|save}} compilation time.
+  
+我们可以将 pedigree-rules.xclp 预编译成 CLIPS 源代码，
+以便节约编译时间。
+----
+    {{#v|C:\\xclips>}}xclips {{#x|-c}} pedigree-rules.{{#x|xclp}}
+  
+    {{#v|C:\\xclips>}}xclips myfamily.xclp pedigree-rules.{{#x|clp}}
+     Found 章震峰
+     Found 谈梅兰
+     Found 崔静
+     Found 章腾文
+----
+{{#tag|☆}} For this specific example, {{#ci|precompilation}} can save
+{{#x|18%}} of the total time.
+   
+对于这个例子而言，预编译可以节约 18% 的总时间。
+----
+While {{#x|debugging}}, the {{#c|-v}} option may come to handy.
+It instructs {{#i|xclips}} to print the underlying {{#x|CLIPS}} sessions
+  
+当调试的时候，-v 选项可能是很方便的。
+----
+  
+ {{#v|C:\xclips>}}xclips {{#x|-v}} myfamily.xclp pedigree-rules.clp
+          CLIPS (V6.24 06/15/06)
+ CLIPS> (watch facts)
+ CLIPS> (watch rules)
+ CLIPS> (reset)
+ ==> f-0     (initial-fact)
+ ==> f-1     (father {{#c|"章腾文"}} {{#c|"章丹江"}})
+ ==> f-2     (father {{#c|"章腾文"}} {{#c|"章春雷"}})
+ ==> f-3     (father {{#c|"章腾文"}} {{#c|"章震峰"}})
+ ==> f-4     (couple {{#c|"章腾文"}} {{#c|"崔静"}})
+ ==> f-5     (mother {{#c|"章丹江"}} {{#c|"栾旻露"}})
+ ==> f-6     (father {{#c|"栾卫东"}} {{#c|"栾旻露"}})
+ ...
+   
+----
+     ...
+     CLIPS> (rules *)
+     MAIN:
+        myfamily-17
+        pedigree-rules-1
+        pedigree-rules-2
+        pedigree-rules-3
+        pedigree-rules-4
+     For a total of 5 defrules.
+     CLIPS> (run)
+     FIRE    1 pedigree-rules-1: f-10
+     ==> f-11    (ancestor {{#c|"章震峰"}} {{#c|"章亦春"}})
+     FIRE    2 myfamily-17: f-11
+     Found 章震峰
+     ...
+   
+----
+{{#v|☺}}  Generating {{#ci|rule coverage}} reports
+(again)
+   
+生成规则覆盖报告
+（再一次地）
+----
+   
+   {{#v|C:\\xclips>}}{{#x|clips-cover -d}}
+   {{#v|C:\\xclips>}}xclips {{#x|-d}} myfamily.xclp pedigree-rules.clp
+    generating a.png...
+   {{#v|C:\\xclips>}}{{#x|clips-cover}}
+    ----------------------
+    Rule             Count
+    ----------------------
+    pedigree-rules-6  {{#c|0}}
+    pedigree-rules-5  {{#c|3}}
+    myfamily-17       {{#c|4}}
+    pedigree-rules-4  {{#c|6}}
+    pedigree-rules-3  {{#c|12}}
+  
+    For total {{#c|80.00%}} of the rules have been fired.
+      
+----
+The rule that has {{#ci|never}} been fired:
+➥ {{#x|pedigree-rules-6}}
+  
+从未触发过的规则：predigree-rules-6
+  
++(i.e. the rule at line {{#x|6}} of the file {{#x|pedigree-rules}}.xclp)
+  
+即 pedigree-rules.xclp 文件的第 6 行上的规则
+----
+  
+    /* pedigree-rules.xclp */
+    
+    mother(?a, ?b); father(?a, ?b) => ancestor(?a, ?b).
+    ancestor(?a, ?b), ancestor(?b, ?c) => ancestor(?a, ?c).
+    couple(?a, ?b), father(?a, ?c) => mother(?b, ?c).
+    {{#x|couple(?a, ?b), mother(?a, ?c) => father(?b, ?c).}}
+  
+----
+{{#cm|Case #2}}:  Reasoning in {{#x|Geometry}}
+    
+{{#v|♨}}
+   
+案例 #2: 几何学中的推理
+----
+ If {{#ci|l}}, {{#ci|m}}, and {{#ci|n}} are all {{#x|lines}} in 3-space, and
+ {{#ci|l}} {{#i|∥}} {{#ci|m}}, {{#ci|m}} {{#i|∥}} {{#ci|n}}, then {{#ci|l}} {{#i|∥}} {{#ci|n}}.
+  
+ 如果 l, m, 和 n 都是三维空间中的直线，且 l {{#i|∥}} m,
+ m {{#i|∥}} n，则有 l {{#i|∥}} n.
+----
+{{#tag|☆}} Let's translate this {{#x|theorem}} to an {{#c|XClips rule}}.
+  
+让我们将这个定理翻译成 XClips 规则。
+----
+    {{#cm|/* geometry.xclp */}}
+      
+    line({{#v|?l}}){{#c|,}} line({{#v|?m}}){{#c|,}} line({{#v|?n}}){{#c|,}}
+    parallel({{#v|?l}}, {{#v|?m}}){{#c|,}} parallel({{#v|?m}}, {{#v|?n}}){{#c|,}} {{#v|?l}} {{#c|\\=}} {{#v|?n}},
+        {{#c|=>}} parallel({{#v|?l}}, {{#v|?n}}).
+----
+{{#cm|☹}} Oh, it looks {{#ci|far}} too {{#x|verbose}}...
+   
+哦，它看上去太罗嗦了……
+----  
+{{#tag|☆}} Let's add some {{#ci|syntax sugar}}
+by defining some {{#x|operators}} of our own!
+   
+让我们通过定义一些我们自己的运算符
+来添加一些“记法糖”！
+----
+    {{#cm|/* geometry.xclp */}}
+  
+    {{#kw|prefix}}:&lt;{{#c||}}>   {{#c|line}}
+    {{#kw|infix}}:&lt;{{#c|//}}>   {{#c|parallel}}
+      
+    {{#x||}}{{#v|?l}}, {{#x||}}{{#v|?m}}, {{#x||}}{{#v|?n}},
+    {{#v|?l}} {{#x|//}} {{#v|?m}}, {{#v|?m}} {{#x|//}} {{#v|?n}}, {{#v|?l}} \\= {{#v|?n}}
+        => {{#v|?l}} {{#x|//}} {{#v|?n}}.
+----
+{{#ci|Perl 6}} style {{#x|operator}} definition syntax!
+  
+Perl 6 风格的运算符定义记法！
+----
+{{#ci|XClips}} currently supports the following {{#x|operator categories}}:
+  
++ {{#kw|prefix}}:&lt;X>
++ {{#kw|infix}}:&lt;X>
++ {{#kw|infix_prefix}}:&lt;X>
++ {{#kw|infix_circumfix}}:&lt;X Y>
+----
+{{#v|☺}}  Let's define some {{#x|facts}} so as to {{#ci|test}} it.
+  
+让我们来定义一些事实，以便测试它一下。
+----
+  
+    {{#cm|/* test_parallel.xclp */}}
+    {{#kw|prefix}}:&lt;{{#c||}}>  line
+    {{#kw|infix}}:&lt;{{#c|//}}>  parallel
+  
+    {{#c||}}a, {{#c||}}b, {{#c||}}c, {{#c||}}d.
+     a {{#c|//}} b, b {{#c|//}} c, c {{#c|//}} d.
+      
+    {{#cm|/* the goal */}}
+     a {{#c|//}} d => {{#kw|printout}}({{#kw|t}}, {{#x|"Yes."}}, {{#kw|crlf}}).
+      
+----
+    {{#v|C:\\xclips>}}xclips test_parallel.xclp geometry.xclp
+    {{#x|Yes.}}
+----
+{{#v|☺}}  Generate the {{#ci|inferencing flowchart}}:
+  
+生成推理流程图
+----  
+    {{#v|C:\\xclips>}}xclips {{#x|-d}} test_parallel.xclp geometry.xclp
+     generating {{#x|a.png}}...
+----
+{{img src="images/parallel-reason.png" width="950" height="454"}}
+----
+It's meaningful to {{#ci|share}} the {{#i|operator definitions}}
+among {{#x|facts}} and {{#x|rules}}.
+  
+在事实与规则之间共享运算符定义是有意义的。
+----
+  
+   
+    {{#cm|/* sugar.xclp */}}
+  
+    {{#kw|prefix}}:&lt;{{#c||}}>  {{#x|line}}
+    {{#kw|infix}}:&lt;{{#c|//}}>  {{#x|parallel}}
+   
+     
+----
+    {{#cm|/* geometry.xclp */}}
+  
+    {{#kw|include}} {{#x|"sugar.xclp"}}
+  
+    {{#x||}}{{#v|?l}}, {{#x||}}{{#v|?m}}, {{#x||}}{{#v|?n}},
+    {{#v|?l}} {{#x|//}} {{#v|?m}}, {{#v|?m}} {{#x|//}} {{#v|?n}}, {{#v|?l}} \\= {{#v|?n}}
+        => {{#v|?l}} {{#x|//}} {{#v|?n}}.
+----
+    {{#cm|/* test_parallel.xclp */}}
+  
+    {{#kw|include}} {{#x|"sugar.xclp"}}
+  
+    {{#c||}}a, {{#c||}}b, {{#c||}}c, {{#c||}}d.
+     a {{#c|//}} b, b {{#c|//}} c, c {{#c|//}} d.
+      
+    {{#cm|/* the goal */}}
+     a {{#c|//}} d => {{#kw|printout}}({{#kw|t}}, {{#x|"Yes."}}, {{#kw|crlf}}).
+----
+{{#tag|☆}} {{#ci|C}}-style file {{#x|inclusion}}!
+  
+C 风格的文件包含！
+----
+    {{#v|C:\\xclips>}}xclips test_parallel.xclp geometry.xclp
+    {{#x|Yes.}}
+----
+{{#ci|Never}} feed {{#i|included}} files to {{#x|xclips}}.
+  
+永远不要将被包含的文件喂给 xclips.
+----
+{{img src="images/include.png" width="309" height="251"}}
+----
+{{#tag|☆}} {{#ci|Unlike}} C, XClips will {{#i|automatically}} {{#x|prevent}}
+a file to be included {{#ci|more}} than once.
+So you {{#x|don't}} need to worry about that.
+    
+与 C 不同的是，XClips 会自动避免一个文件
+被重复包含多次，因此你不必担心这个问题。
+----
+{{#v|☺}}  Some more {{#x|examples}} for 
+{{#i|user-defined}} {{#ci|operators}}
+  
+更多的用户自定义运算符的示例……
+----
+      {{#kw|infix}}:&lt;{{#x|T}}>   {{#c|perpendicular}}
+        
+       a {{#x|T}} b, b {{#x|T}} c.
+         
+      {{#cm|/* equivalent to:}}
+        {{#cm|perpendicular(a, b), perpendicular(b, c). */}}
+----
+     {{#kw|infix_prefix}}:&lt;{{#x|~}}>  {{#c|not_}} {{#x|&amp;}}
+       
+      a {{#x|~}}// b, a {{#x|~}}T b.
+        
+     {{#cm|/* equivalent to:}}
+        {{#cm|not_parallel(a, b), not_perpendicular(b, c). */}}
+----
+     {{#kw|infix_circumfix}}:&lt;{{#x|[ ]}}>  {{#c|space-relation}}
+       
+      a {{#x|[}}//{{#x|]}} b, a {{#x|[}}T{{#x|]}} b.
+        
+     {{#cm|/* equivalent to:}}
+        {{#cm|space-relation(parallel, a, b),}}
+        {{#cm|space-relation(perpendicular, b, c). */}}
+----
+     {{#kw|infix_circumfix}}:&lt;{{#x|&lt; >}}>  {{#c|vector-relation}}
+       
+     {{#v|?a}} {{#x|&lt;}}{{#v|?R}}{{#x|>}} {{#v|?b}} => {{#v|?a}} {{#x|&lt;}}{{#v|?R}}{{#x|>}} {{#v|?b}}.
+        
+     {{#cm|/* equivalent to:}}
+        {{#cm|vector-relation(?R, ?a, ?b) =>}}
+        {{#cm|vector-relation(?R, ?a, ?b). */}}
+----
+{{#v|☺}}  I'm adding {{#x|new}} operator {{#c|categories}} like
+  
++    {{#kw|postfix}}:&lt;{{#x|X}}>,
++    {{#kw|circumfix}}:&lt;{{#x|X Y}}>,
++    {{#kw|infix_postfix}}:&lt;{{#x|X}}>,
+  
++  and even {{#ci|more}}...
+----
+{{#tag|☆}} {{#i|XClips}} tries to give you the {{#ci|power}} of {{#x|notation}}.
+  
+XClips 努力带给你记法的威力。
+----
+{{#tag|☆}} {{#ci|Modular}} programming support in {{#x|XClips}}
+  
+XClips 的模块化编程支持
+----
+    {{#kw|define}} defmodule({{#x|FOO}},
+        import({{#x|BAR}}, deftemplate, {{#v|?ALL}}),
+        import({{#x|MAIN}}, deftemplate, initial-fact)
+    )
+  
+    {{#kw|module}} {{#x|FOO}}.
+  
+    {{#cm|/* rules and facts go here */}}
+----
+{{#v|☺}}  Yes, it's just a {{#ci|thin}} wrapper around the {{#x|CLIPS}} syntx.
+I'll {{#ci|abstract}} this to some more {{#x|elegant}} form in the future.
+   
+是的，它仅仅是对 CLIPS 记法的一层薄薄的包裹。
+未来我将把它抽象为更为优雅的形式。
+----
+{{#c|Thank you!}}
+{{#x|☺}}
+----
+</html:textarea>
+
+<deck flex="1" id="deck">
+ <vbox flex="1" onmousemove="Sporx.onMouseMoveOnCanvas(event);">
+  <toolbox id="canvasToolbar">
+   <toolbar>
+    <toolbarbutton oncommand="Sporx.home()" label="|&lt;&lt;" observes="canBack"/>
+    <toolbarbutton oncommand="Sporx.back()" label="&lt;" observes="canBack"/>
+    <toolbarbutton oncommand="Sporx.forward()" label="&gt;" observes="canForward"/>
+    <toolbarbutton oncommand="Sporx.end()" label="&gt;&gt;|" observes="canForward"/>
+    <toolbarseparator/>
+    <hbox align="center">
+     <textbox id="current_page" size="4" oninput="if (this.value) Sporx.showPage(parseInt(this.value)-1);"/>
+     <description value="/"/>
+     <description id="max_page"/>
+    </hbox>
+    <toolbarseparator/>
+    <vbox flex="2">
+     <spacer flex="1"/>
+     <scrollbar id="scroller" align="center" orient="horizontal" oncommand="Sporx.showPage(parseInt(event.target.getAttribute('curpos')));" onclick="Sporx.showPage(parseInt(event.target.getAttribute('curpos')));" onmousedown="Sporx.onScrollerDragStart();" onmousemove="Sporx.onScrollerDragMove();" onmouseup="Sporx.onScrollerDragDrop();"/>
+     <spacer flex="1"/>
+    </vbox>
+    <toolbarseparator/>
+    <spacer flex="1"/>
+    <toolbarseparator/>
+    <toolbarbutton id="toggleEva" label="Eva" type="checkbox" autoCheck="false" oncommand="Sporx.toggleEvaMode();"/>
+    <toolbarseparator/>
+    <toolbarbutton label="Edit" oncommand="Sporx.toggleEditMode();"/>
+    <toolbarbutton oncommand="Sporx.reload();" label="Reload"/>
+   </toolbar>
+  </toolbox>
+  <vbox flex="1" id="canvas" onclick="Sporx.onPresentationClick(event);">
+   <spacer flex="1"/>
+   <hbox flex="1">
+    <spacer flex="1"/>
+    <vbox id="content"/>
+    <spacer flex="1"/>
+   </hbox>
+   <spacer flex="1"/>
+  </vbox>
+ </vbox>
+ <vbox flex="1" id="edit">
+  <toolbox>
+   <toolbar>
+    <toolbarbutton label="New Page" oncommand="Sporx.addPage()"/>
+    <spacer flex="1"/>
+    <toolbarseparator/>
+    <toolbarbutton label="View" oncommand="Sporx.toggleEditMode();"/>
+    <toolbarbutton oncommand="Sporx.reload();" label="Reload"/>
+   </toolbar>
+  </toolbox>
+  <textbox id="textField" flex="1" multiline="true" oninput="Sporx.onEdit()"/>
+  <hbox collapsed="true">
+   <iframe id="dataLoader" onload="if (window.Sporx) Sporx.onDataLoad();"/>
+  </hbox>
+ </vbox>
+</deck>
+
+<broadcasterset>
+ <broadcaster id="canBack"/>
+ <broadcaster id="canForward"/>
+</broadcasterset>
+
+<commandset>
+ <command id="cmd_forward" oncommand="if (Sporx.isPresentationMode) Sporx.forward();"/>
+ <command id="cmd_back" oncommand="if (Sporx.isPresentationMode) Sporx.back();"/>
+ <command id="cmd_home" oncommand="if (Sporx.isPresentationMode) Sporx.home();"/>
+ <command id="cmd_end" oncommand="if (Sporx.isPresentationMode) Sporx.end();"/>
+</commandset>
+
+<keyset>
+ <key key=" "                   command="cmd_forward"/>
+ <key keycode="VK_ENTER"        command="cmd_forward"/>
+ <key keycode="VK_RETURN"       command="cmd_forward"/>
+ <key keycode="VK_PAGE_DOWN"    command="cmd_forward"/>
+ <key keycode="VK_RIGHT"        command="cmd_forward"/>
+ <key keycode="VK_DOWN"         command="cmd_forward"/>
+ <!--key keycode="VK_BACK_SPACE"   command="cmd_back"/-->
+ <key keycode="VK_UP"           command="cmd_back"/>
+ <key keycode="VK_PAGE_UP"      command="cmd_back"/>
+ <!--<key keycode="VK_BACK_UP"    command="cmd_back"/>-->
+ <!--<key keycode="VK_BACK_LEFT"  command="cmd_back"/>-->
+ <key keycode="VK_HOME"         command="cmd_home"/>
+ <!--<key keycode="VK_END"        command="cmd_end"/>-->
+
+ <key key="n" modifiers="accel" oncommand="Sporx.addPage();"/>
+ <key key="r" modifiers="accel" oncommand="window.location.reload();"/>
+ <key key="e" modifiers="accel" oncommand="Sporx.toggleEditMode();"/>
+ <key key="a" modifiers="accel" oncommand="Sporx.toggleEvaMode();"/>
+</keyset>
+
+
+<script src="lib/sporx.js" type="application/x-javascript" />
+
+</page>
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is the Takahashi-Method-based Presentation Tool in XUL.
+   -
+   - The Initial Developer of the Original Code is SHIMODA Hiroshi.
+   - Portions created by the Initial Developer are Copyright (C) 2005
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s): SHIMODA Hiroshi <piro@p.club.ne.jp>
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
