@@ -182,9 +182,9 @@ Go {{#ci|out}} of the {{#x|Zhenjiang}} site
 ----
 {{img src="images/zj_out.png" width="794" height="618"}}
 ----
-{{#tag|☆}} {{#ci|Integrate}} {{#x|Google Map}} and {{#x|Weather.com}}
+{{#tag|☆}} {{#ci|Integrate}} {{#x|Yahoo Map}} and {{#x|Weather.com}}
    
-整合 Google Map 和 Weather.com
+整合 Yahoo Map 和 Weather.com
 ----
 {{img src="images/atwater_map.png" width="823" height="633"}}
 ----
