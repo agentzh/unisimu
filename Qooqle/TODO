@@ -1,0 +1,11 @@
+[TODO]
+* Test Qooqle against other DBMSes such as MySQL, SQL Server 2000, and MS Access.
+* Test Qooqle against Apache and Httptd using FCGI.
+* Write bin/qqcleanup.pl to clean up incomplete sessions in the qooqle database.
+* Write bin/qqexport.pl to export the Qooqle database as CSV or JSON files.
+* Add --csv option to bin/qqimport.pl so as to import CSV/JSON data generated
+  by bin/qqexport.pl.
+* Extract the scaffolding code out into a .pm file (such as Qooqle/LoadModles.pm).
+* Add auto-completing functionality to the "search keys" textbox.
+* Add more tests for bin/qqparse.pl and bin/qqimport.pl.
+* Add user login interface and setup access control for Qooqle.
