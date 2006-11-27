@@ -1,0 +1,36 @@
+<%init>
+my $search = Jifty->web->new_action(
+      class   => 'Search',
+      moniker => 'search',
+      sticky_on_success => 1,
+);
+</%init>
+
+<&| /_elements/wrapper, title => '搜索1' &>
+<h1> 搜索 1 </h1>
+
+% my $form = Jifty->web->form;
+<% $form->start() %>
+<% $form->next_page( url => '/search2' ) %>
+
+<table cellspacing=0 cellpadding=0>
+
+<tr width=100%>
+<td align=left>
+<% $search->form_field('search_keys', length => 55) %>
+</td>
+</tr>
+
+<tr width=100%>
+<td style="vertical-align: bottom; text-align: center;">
+<% $form->submit( label => 'Qooqle Search' ) %>
+</td>
+</tr>
+
+</table>
+
+<% $form->end() %>
+
+<center> 章亦春，版权所有 </center>
+
+</&>
