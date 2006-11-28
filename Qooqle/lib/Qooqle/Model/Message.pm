@@ -2,11 +2,18 @@ use strict;
 use warnings;
 
 package Qooqle::Model::Message;
+use base qw(Jifty::Record Qooqle::Record);
+
 use Jifty::DBI::Schema;
 use Qooqle::Model::Session;
 use Qooqle::Model::QQUser;
 
 use Qooqle::Record schema {
+    column sent =>
+        type is 'timestamp',
+        label is 'Sent time',
+        is mandatory;
+
     column sender => 
         refers_to Qooqle::Model::QQUser by 'qq_number',
         is mandatory;
@@ -21,13 +28,8 @@ use Qooqle::Record schema {
         render_as 'Textarea',
         is mandatory;
 
-    column sent =>
-        type is 'timestamp',
-        label is 'Sent time',
-        is mandatory;
-
-    column session_id =>
-        refers_to Qooqle::Model::Session,
+    column msg_session =>
+        refers_to Qooqle::Model::Session by 'id',
         is mandatory;
 
     column session_offset =>

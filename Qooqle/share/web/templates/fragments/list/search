@@ -1,0 +1,30 @@
+<%args>
+$search_keys => ''
+</%args>
+
+<%init>
+my $search = Jifty->web->new_action(
+    class             => "Search",
+    moniker           => "search",
+    sticky_on_success => 1,
+);
+#warn "Search key in list/search: $search_keys";
+my $current_keys = $search->argument_value('keys');
+$search->argument_value(keys => $search_keys) if !$current_keys and $search_keys;
+</%init>
+
+<div class="jifty_admin">
+
+<% $search->form_field('keys', length => 55) %>
+
+<% $search->button(
+    label   => 'Search!',
+    onclick => {
+        submit  => $search,
+        refresh => Jifty->web->current_region->parent,
+        args    => { page => 1 }
+    }
+  )
+%>
+<hr />
+</div>

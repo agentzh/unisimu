@@ -130,7 +130,7 @@ _EOC_
                     receiver => $receiver,
                     content  => $msg->[2],
                     sent     => $msg->[0],
-                    session_id     => $Session->id, 
+                    msg_session     => $Session->id, 
                     session_offset => $offset++,
                 );
                 if (!defined $Message->id) {

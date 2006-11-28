@@ -1,0 +1,11 @@
+<&|/_elements/wrapper, title => 'Qooqle Search Results' &>
+
+<% Jifty->web->form->start %>
+
+<% Jifty->web->region(name => "list",
+                      path => "/fragments/list/list", 
+                      defaults => { render_submit => 1 }) %>
+
+<% Jifty->web->form->end %>
+
+</&>

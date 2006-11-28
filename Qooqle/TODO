@@ -9,3 +9,4 @@
 * Add auto-completing functionality to the "search keys" textbox.
 * Add more tests for bin/qqparse.pl and bin/qqimport.pl.
 * Add user login interface and setup access control for Qooqle.
+* Seperate the QQ user's info into another config file.

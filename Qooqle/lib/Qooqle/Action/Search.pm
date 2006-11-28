@@ -1,6 +1,3 @@
-use strict;
-use warnings;
-
 =head1 NAME
 
 Qooqle::Action::Search
@@ -10,37 +7,34 @@ Qooqle::Action::Search
 package Qooqle::Action::Search;
 use base qw/Qooqle::Action Jifty::Action/;
 
+use strict;
+use warnings;
+
+use Jifty::Param::Schema;
+use Jifty::Action schema {
+
+param keys =>
+    label is '',
+    hints are 'Enter your search keys here',
+    focus is 1;
+};
+
 =head2 arguments
 
 =cut
-
-sub arguments {
-    return (
-        {
-            search_keys => {
-                label          => '',
-                length         => 55,
-            },
-            wholeword_only => {
-                type    => 'checkbox',
-                label   => 'Wholeword only',
-                default => 0,
-            },
-        }
-    );
-}
 
 =head2 take_action
 
 =cut
 
+use Encode qw(encode decode);
+
 sub take_action {
     my $self = shift;
-    
-    # Custom action code
-    
-    $self->report_success if not $self->result->failure;
-    
+    my $keys = $self->argument_value('keys');
+    $self->result->content(keys => $keys);
+    warn "User searches for [", encode('GBK', $keys), "]\n";
+    #warn "From Action::Search: (GBK): ", decode('GBK', $keys), "\n";
     return 1;
 }
 
@@ -48,10 +42,14 @@ sub take_action {
 
 =cut
 
-sub report_success {
-    my $self = shift;
-    # Your success message here
-    $self->result->message('Success');
+sub validate_search_keys {
+   my ($self, $keys) = @_;
+   if ($keys eq '') {
+       return $self->validation_error(
+           search_keys => "Forgot to enter your search keys above? *cough*"
+       );
+   }
+   return $self->validation_ok('search_keys');
 }
 
 1;

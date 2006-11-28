@@ -58,7 +58,7 @@ my ($first_id) = $msg->create(
     sender   => '321352111',
     sent     => '2006-11-23 12:03:01',
     content  => $content,
-    session_id  => $session->id,
+    msg_session  => $session->id,
     session_offset   => 0,
 );
 
@@ -81,11 +81,11 @@ my ($second_id) = $msg->create(
     sender => '279005114',
     sent => '1163924434',
     content => $content,
-    session_id => $session->id,
+    msg_session => $session->id,
     session_offset => 3,
 );
 ok($second_id, "Successfully created the second Message");
-is $msg->session->id, $session->id, 'session ok';
+is $msg->msg_session->id, $session->id, 'session ok';
 is $msg->session_offset, 3, 'session session_offset ok';
 is $msg->content, $content, 'content ok';
 is $msg->sent, '2006-11-19 08:20:34', 'epoch conversion worked';

@@ -1,0 +1,87 @@
+<%args>
+$search_keys => ''
+$page => 1
+</%args>
+
+<%init>
+my $keys;
+my $pool = Jifty->web->response->result('search');
+$keys = $pool->content('keys') if $pool;
+$keys = $search_keys if !defined $keys or $keys eq '';
+#warn "list/list keys => $search_keys, page => $page\n";
+my $collection = Qooqle::Model::MessageCollection->new;
+if(!$keys) {
+    $m->out("Sorry, system internal error: Can't get search keys");
+    $m->abort;
+}
+
+#Jifty->web->session->set(search_keys => $search_keys);
+my $key_list = $collection->split_keys($keys);
+$collection->search($key_list);
+
+$collection->set_page_info( current_page => $page,
+                            per_page     => 25
+                           );
+</%init>
+
+<% Jifty->web->region(name => "search",
+                      path => "/fragments/list/search",
+                      defaults => {
+                          search_keys => $keys,
+                      }) %>
+
+% if ($collection->pager->last_page > 1) {
+    <span class="page-count">Page <% $page %> of <% $collection->pager->last_page %></span>   
+% }
+
+% if ($collection->pager->total_entries == 0) {
+  No items found.
+% }
+
+<div class="paging">
+% if ($collection->pager->previous_page) {
+<span class="prev-page">
+  <% Jifty->web->link(
+        label => "Previous Page",
+        onclick => {
+            args => {
+                search_keys => $keys,
+                page => $collection->pager->previous_page,
+            }
+        }
+    ) %>
+</span>
+% }
+% if ($collection->pager->next_page) {
+<span class="next-page">
+  <% Jifty->web->link(
+        label => "Next Page",
+        onclick => {
+            args => {
+                search_keys => $keys,
+                page => $collection->pager->next_page,
+            }
+        }
+    ) %>
+</span>
+% }
+</div>
+
+<br />
+<br />
+
+<div class="list">
+<table border=1>
+% while ( my $item = $collection->next ) {
+<tr>
+<td>session: <% $item->msg_session->id %></td>
+<td><% $item->msg_session->begin_time %></td>
+<td>offset: <% $item->session_offset %></td>
+<td width=155><% $item->sent %><td>
+<td width=65><% $item->sender->realname %></td>
+<td colspan=5><% $item->content %></td>
+</tr>
+
+% }
+</table>
+</div>
