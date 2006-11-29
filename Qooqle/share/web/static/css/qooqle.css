@@ -1,0 +1,94 @@
+/* global */
+
+body {
+    font-family: arial, sans-serif;
+}
+
+div#jifty-wait-message {
+    color: red;
+    background: black;
+    font-size: 2em;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 42;
+}
+
+div.copyright {
+    text-align: center;
+    font-size: small;
+    color: #333;
+    margin-top: 1in;
+}
+
+/* index.html */
+
+table.search {
+    width: 100%;
+}
+
+table.search td {
+    text-align: center;
+    padding: 4px;
+}
+
+span.headline {
+    color: #0000FF;
+    font-family: Arial;
+    font-size: 80%;
+    font-weight: bold;
+    padding: 55px;
+}
+
+label.argument-keys {
+    display: none;
+}
+
+div.argument-keys .hints {
+    text-align: center;
+    float: left;
+}
+
+div.argument-keys .canonicalization_note {
+    text-align: center;
+}
+
+.submit_button input {
+    text-align: center;
+    margin: 0 0 0 0;
+}
+
+/* list/search */
+
+img.small-logo {
+    float: left;
+    border: 0px;
+    padding: 5;
+}
+
+table.small-search td {
+    text-align: left;
+    padding: 5;
+}
+
+input.small-search-keys {
+    text-align: left;
+}
+
+table.small-search {
+    width: auto;
+}
+
+/* list/list */
+
+table.stats-bar {
+    width: 100%;
+    border-top: 1px solid #36c;
+    background-color: #e5ecf9;
+    margin: 0;
+    padding: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 3px;
+    margin-top: 5px;
+}
