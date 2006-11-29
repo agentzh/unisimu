@@ -1,0 +1,34 @@
+<%args>
+$keys
+$total
+$from
+$to
+$elapsed
+</%args>
+
+<table class="stats-bar">
+  <tr>
+    <td width="1%" nowrap>
+      <font size="+1"><b>QQ Database</b></font>
+    </td>
+    <td align="right" nowrap>
+    
+% if ($total) {
+
+      <font size="-1">
+        Results <b><% $from %></b> - <b><% $to %></b> of <b><% $total %>
+          </b> for <b><% $keys %></b>.
+        (<b><% $elapsed %></b> seconds)
+      </font>
+    </td>
+
+% } else {
+
+   <font size="-1">
+     No results found for <b><% $keys %></b>.
+   </font>
+
+%}
+
+  </tr>
+</table>
