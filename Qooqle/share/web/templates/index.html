@@ -1,74 +1,45 @@
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>Qooqle Search</title>
-<style><!--
-body,td,a,p,.h{font-family:arial,sans-serif;}
-.h{font-size: 20px;}
-.q{color:#0000cc;}
-//-->
-</style>
+<&| /_elements/wrapper, title => 'Qooqle Search' &>
 
-  <% Jifty->web->include_css %>
-  <% Jifty->web->include_javascript %> 
-
-</head>
-<body bgcolor=#ffffff text=#000000 link=#0000cc vlink=#551a8b alink=#ff0000 topmargin=3 marginheight=3>
 <center>
-<table border=0 cellspacing=0 cellpadding=0 width=100%>
-<tr>
-<td align=right nowrap>&nbsp;</td>
-</tr><tr height=4><td><img alt="" width=1 height=1></td></tr>
-</table>
-<img src="images/logo.png" width=276 height=110 alt="Qooqle"><br><br>
-<table border=0 cellspacing=0 cellpadding=4 width="344"><tr><td nowrap><b>
-		<font size="-1" face="Arial" color="#0000FF">
-This is a Google-like search engine for QQ Databases<br />
-　</font></b></td></tr></table>
+  <br/>
+  <br/>
+  <img src="images/logo.png" alt="Qooqle">
+  <br/>
+  <br/>
 
-<!-- BEGIN FORM -->
-
-<%init>
-my $search = Jifty->web->new_action(
-      class             => 'Search',
-      moniker           => 'search',
-      sticky_on_success => 1,
-);
-</%init>
+  <%init>
+  my $search = Jifty->web->new_action(
+        class             => 'Search',
+        moniker           => 'search',
+        sticky_on_success => 1,
+  );
+  </%init>
 
 % my $form = Jifty->web->form;
-<% $form->start() %>
-<% $form->next_page( url => '/results' ) %>
-<table cellspacing=0 cellpadding=0>
-<tr width=100%>
-<td align=left>
-<% $search->form_field('keys', length => 55) %>
-</td>
-</tr>
-<tr width=100%>
-<td style="vertical-align: bottom; text-align: left;">
-&nbsp; &nbsp; <% $form->submit( label => 'Qooqle Search' ) %>&nbsp; &nbsp;
-</td>
-</tr>
-</table>
+  <% $form->start() %>
+  <% $form->next_page( url => '/results' ) %>
 
-<% $form->end() %>
+  <table class="search">
+    <tr>
+      <td>
+        <span class="headline">
+          A Google-like search engine for QQ Databases
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <% $search->form_field('keys', length => 65) %>
+	  </td>
+    </tr>
+    <tr>
+      <td> 
+        <% $form->submit( label => 'Qooqle Search' ) %>
+	  </td>
+    </tr>
+  </table>
+  <% $form->end() %>
 
-<!-- END FORM -->
-
-</td>
-<td valign=top nowrap width=25%><font size=-2>&nbsp;&nbsp;</font>
-</td>
-		</table><br>　<p>
-<font size="2">Copyright &copy; 2005, 2006 by Agent Zhang (章亦春)</font></p>
 </center>
 
-% if ( Jifty->config->framework('PubSub')->{'Enable'} && Jifty::Subs->list ) {
-<script>new Jifty.Subs({}).start();</script>
-% }
-
-</body>
-</html>
-<%init>
-$r->content_type('text/html; charset=utf-8');
-</%init>
+</&>

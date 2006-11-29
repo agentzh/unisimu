@@ -27,13 +27,17 @@ sub search ($$) {
     if (!ref $keys) {
         $keys = $self->split_keys($keys);
     }
+    my $alias = $self->join(
+        column1 => 'msg_session',
+        table2 => 'sessions', column2 => 'id');
     for my $key (@$keys) {
         #(my $pat = $key) =~ s/\%/\%\%/g;
         $self->limit(
             column => 'content', value => "%$key%", operator => 'LIKE'
         );
     }
-    $self->order_by(column => 'session_offset', order => 'DES');
+    $self->order_by(column => 'session_offset', order => 'ASC');
+    $self->order_by(alias => $alias, column => 'begin_time', order => 'DESC');
 }
 
 1;

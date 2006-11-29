@@ -13,18 +13,25 @@ my $current_keys = $search->argument_value('keys');
 $search->argument_value(keys => $search_keys) if !$current_keys and $search_keys;
 </%init>
 
-<div class="jifty_admin">
+<a href="/">
+  <img class="small-logo" src="images/logo_sm.png" alt="Go to Qooqle Home" />
+</a>
 
-<% $search->form_field('keys', length => 55) %>
-
-<% $search->button(
-    label   => 'Search!',
-    onclick => {
-        submit  => $search,
-        refresh => Jifty->web->current_region->parent,
-        args    => { page => 1 }
-    }
-  )
-%>
-<hr />
-</div>
+<table class="search small-search">
+  <tr>
+    <td align="left">
+        <% $search->form_field('keys', length => 55, class => 'small-search-keys') %>
+    </td>
+    <td align="left">
+        <% $search->button(
+            class   => 'small-search-keys',
+            label   => 'Search!',
+            onclick => {
+            submit  => $search,
+            refresh => Jifty->web->current_region->parent,
+            args    => { page => 1 }
+            }
+          ) %>
+    </td>
+  </tr>
+</table>

@@ -14,7 +14,6 @@ use Jifty::Param::Schema;
 use Jifty::Action schema {
 
 param keys =>
-    label is '',
     hints are 'Enter your search keys here',
     focus is 1;
 };
@@ -42,14 +41,14 @@ sub take_action {
 
 =cut
 
-sub validate_search_keys {
+sub validate_keys {
    my ($self, $keys) = @_;
    if ($keys eq '') {
        return $self->validation_error(
-           search_keys => "Forgot to enter your search keys above? *cough*"
+           keys => "Forgot to enter your search keys above? *cough*"
        );
    }
-   return $self->validation_ok('search_keys');
+   return $self->validation_ok('keys');
 }
 
 1;

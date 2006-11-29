@@ -22,6 +22,12 @@ $collection->search($key_list);
 $collection->set_page_info( current_page => $page,
                             per_page     => 25
                            );
+
+my $total   = $collection->pager->total_entries;
+my $from    = 25 * ($page - 1) + 1;
+my $to      = ($total - 25 * $page <= 0) ? $total : 25 * $page;
+my $elapsed = 0.0012;  # this is a temporary hack. :(
+
 </%init>
 
 <% Jifty->web->region(name => "search",
@@ -30,12 +36,48 @@ $collection->set_page_info( current_page => $page,
                           search_keys => $keys,
                       }) %>
 
-% if ($collection->pager->last_page > 1) {
-    <span class="page-count">Page <% $page %> of <% $collection->pager->last_page %></span>   
+<& /_elements/stats_bar,
+    keys => $keys,
+    total => $total, from => $from, to => $to,
+    elapsed => $elapsed &>
+
+<br />
+
+% if ($total == 0) {
+ No QQ sessions containing any of your
+  search terms were found.<br>
+  <br>
+  Your search - <b>"<% $keys %>"</b> - did not match any QQ
+  conversations.<br>
+  <br>
+  Suggestions:
+
+  <blockquote>
+    - Make sure all words are spelled correctly.<br>
+    - Try different keywords.<br>
+    - Try more general keywords.
+  </blockquote>
+%   $m->abort();
 % }
 
-% if ($collection->pager->total_entries == 0) {
-  No items found.
+<div class="list">
+<table border=1>
+% while ( my $item = $collection->next ) {
+<tr>
+<td>session: <% $item->msg_session->id %></td>
+<td><% $item->msg_session->begin_time %></td>
+<td>offset: <% $item->session_offset %></td>
+<td width=155><% $item->sent %><td>
+<td width=65><% $item->sender->realname %></td>
+<td colspan=5><% $item->content %></td>
+</tr>
+
+% }
+</table>
+</div>
+
+% if ($collection->pager->last_page > 1) {
+    <span class="page-count">Page <% $page %> of <% $collection->pager->last_page %></span>   
 % }
 
 <div class="paging">
@@ -62,26 +104,6 @@ $collection->set_page_info( current_page => $page,
                 page => $collection->pager->next_page,
             }
         }
-    ) %>
+     ) %>
 </span>
 % }
-</div>
-
-<br />
-<br />
-
-<div class="list">
-<table border=1>
-% while ( my $item = $collection->next ) {
-<tr>
-<td>session: <% $item->msg_session->id %></td>
-<td><% $item->msg_session->begin_time %></td>
-<td>offset: <% $item->session_offset %></td>
-<td width=155><% $item->sent %><td>
-<td width=65><% $item->sender->realname %></td>
-<td colspan=5><% $item->content %></td>
-</tr>
-
-% }
-</table>
-</div>

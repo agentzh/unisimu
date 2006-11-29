@@ -1,0 +1,2 @@
+perl bin/qqparse.pl E:\agent2\QQ-log\Person\*\*.txt
+perl bin/qqimport.pl E:\agent2\QQ-log\Person\*\*.data
