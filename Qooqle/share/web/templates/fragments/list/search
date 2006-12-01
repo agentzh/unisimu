@@ -19,10 +19,7 @@ $search->argument_value(keys => $search_keys) if !$current_keys and $search_keys
 
 <table class="search small-search">
   <tr>
-    <td align="left">
-        <% $search->form_field('keys', length => 55, class => 'small-search-keys') %>
-    </td>
-    <td align="left">
+    <td>
         <% $search->button(
             class   => 'small-search-keys',
             label   => 'Search!',
@@ -32,6 +29,9 @@ $search->argument_value(keys => $search_keys) if !$current_keys and $search_keys
             args    => { page => 1 }
             }
           ) %>
+    </td>
+    <td align="left">
+        <% $search->form_field('keys', length => 55, class => 'small-search-keys') %>
     </td>
   </tr>
 </table>

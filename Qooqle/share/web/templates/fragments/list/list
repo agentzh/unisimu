@@ -10,7 +10,7 @@ $keys = $pool->content('keys') if $pool;
 $keys = $search_keys if !defined $keys or $keys eq '';
 #warn "list/list keys => $search_keys, page => $page\n";
 my $collection = Qooqle::Model::MessageCollection->new;
-if(!$keys) {
+if(!defined $keys) {
     $m->out("Sorry, system internal error: Can't get search keys");
     $m->abort;
 }
@@ -41,15 +41,15 @@ my $elapsed = 0.0012;  # this is a temporary hack. :(
     total => $total, from => $from, to => $to,
     elapsed => $elapsed &>
 
-<br />
-
 % if ($total == 0) {
+
+ <br />
  No QQ sessions containing any of your
   search terms were found.<br>
-  <br>
+  <br />
   Your search - <b>"<% $keys %>"</b> - did not match any QQ
   conversations.<br>
-  <br>
+  <br />
   Suggestions:
 
   <blockquote>
@@ -60,50 +60,51 @@ my $elapsed = 0.0012;  # this is a temporary hack. :(
 %   $m->abort();
 % }
 
-<div class="list">
-<table border=1>
-% while ( my $item = $collection->next ) {
-<tr>
-<td>session: <% $item->msg_session->id %></td>
-<td><% $item->msg_session->begin_time %></td>
-<td>offset: <% $item->session_offset %></td>
-<td width=155><% $item->sent %><td>
-<td width=65><% $item->sender->realname %></td>
-<td colspan=5><% $item->content %></td>
-</tr>
-
-% }
-</table>
-</div>
+<& /_elements/sessions, collection => $collection &>
 
 % if ($collection->pager->last_page > 1) {
-    <span class="page-count">Page <% $page %> of <% $collection->pager->last_page %></span>   
+    <center>
+      <span class="page-count">Page <% $page %> of <% $collection->pager->last_page %></span>
+    </center>
 % }
 
+<hr />
+<center>
 <div class="paging">
+  <span class="c1">ResultPage:</span>
+  <table>
+    <tr>
+      <td nowrap=1>
 % if ($collection->pager->previous_page) {
-<span class="prev-page">
-  <% Jifty->web->link(
-        label => "Previous Page",
-        onclick => {
-            args => {
-                search_keys => $keys,
-                page => $collection->pager->previous_page,
-            }
-        }
-    ) %>
-</span>
+        <span class="prev-page">
+          <% Jifty->web->link(
+                label => "Previous Page",
+                onclick => {
+                    args => {
+                        search_keys => $keys,
+                        page => $collection->pager->previous_page,
+                    }
+                }
+            ) %>
+        </span>
 % }
+     </td>
+     <td nowrap=1>
 % if ($collection->pager->next_page) {
-<span class="next-page">
-  <% Jifty->web->link(
-        label => "Next Page",
-        onclick => {
-            args => {
-                search_keys => $keys,
-                page => $collection->pager->next_page,
-            }
-        }
-     ) %>
-</span>
+        <span class="next-page">
+          <% Jifty->web->link(
+                label => "Next Page",
+                onclick => {
+                    args => {
+                        search_keys => $keys,
+                        page => $collection->pager->next_page,
+                    }
+                }
+             ) %>
+        </span>
 % }
+      </td>
+    </tr>
+  </table>
+</div>
+</center>

@@ -1,0 +1,49 @@
+<%args>
+$collection
+</%args>
+
+<div class="list">
+
+% my $prev_session;
+% while ( my $item = $collection->next ) {
+%   my $sender = $item->sender->realname || $item->sender->nickname;
+%   my $receiver = $item->receiver->realname || $item->receiver;
+%   my $sent = $item->sent;
+%   my $content = $item->content;
+%   my $session = $item->msg_session->id;
+
+%   if (defined $prev_session and $session != $prev_session) {
+%     my $begin = $item->msg_session->begin_time;
+%     my $end   = $item->msg_session->end_time;
+
+[ <span class="timestamp"> <% $begin %> ~ <% $end %> </span> ]
+
+%   }
+%   if (!defined $prev_session or $session != $prev_session) {
+
+<h2 class="session-title">
+  <% Jifty->web->link(
+        label => "$sender vs $receiver",
+        url   => '/session',
+        target => '_blank',
+        refresh_self => 0,
+        tooltip => 'Go to the whole session~',
+     ) %>
+</h2>
+
+%     $prev_session = $session;
+%   }
+
+<table class="session-summary">
+  <tbody>
+    <tr>
+      <td>
+        <pre><% $content %></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+% }
+
+</div>

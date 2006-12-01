@@ -17,7 +17,7 @@ $elapsed
 
       <font size="-1">
         Results <b><% $from %></b> - <b><% $to %></b> of <b><% $total %>
-          </b> for <b><% $keys %></b>.
+          </b> QQ messages for <b><% $keys %></b>.
         (<b><% $elapsed %></b> seconds)
       </font>
     </td>
