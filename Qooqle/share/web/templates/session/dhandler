@@ -1,0 +1,63 @@
+<%init>
+my $session_id = $m->dhandler_arg;
+my $messages = Qooqle::Model::MessageCollection->new;
+$messages->limit(column => 'msg_session', value => $session_id);
+
+my $session = Qooqle::Model::Session->new;
+$session->load($session_id);
+
+my $sessions = Qooqle::Model::SessionCollection->new;
+$sessions->limit(
+    column   => 'begin_time',
+    operator => '<',
+    value    => $session->begin_time,
+);
+$sessions->order_by(column => 'begin_time', order => 'ASC');
+my $prev_session = $sessions->last;
+
+$sessions->unlimit;
+$sessions->limit(
+    column   => 'begin_time',
+    operator => '>',
+    value    => $session->begin_time
+);
+$sessions->order_by(column => 'begin_time', order => 'ASC');
+my $next_session = $sessions->first;
+</%init>
+
+<&| /_elements/wrapper, title => "Session View" &>
+
+<h1 class="session"> Qooqle QQ log </h1>
+<p> Powered by <a href="/">qooqle</a>. </p>
+
+<p>
+% if ($prev_session) {
+<a href="/session/<% $prev_session->id %>">&larr;&nbsp;Prev session</a>&nbsp;&nbsp;
+% }
+% if ($next_session) {
+<a href="/session/<% $next_session->id %>">Next session&nbsp;&rarr;</a>
+% }
+</p>
+
+<hr />
+
+<table class="session">
+  <tr>
+    <th>Who</th> <th>What</th> <th>When</th>
+  </tr>
+% my $i = 1;
+% while (my $msg = $messages->next) {
+  <tr class="<% $i % 2 == 1 ? 'odd' : 'even' %>">
+    <td width="8%">
+      <% $msg->sender->realname || $msg->sender->nickname %>
+    </td>
+    <td class="content">
+      <% $msg->content %>
+    </td>
+    <td class="sent"> <% $msg->sent %> </td>
+  </tr>
+%   $i++;
+% }
+</table>
+
+</&>

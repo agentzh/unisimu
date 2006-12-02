@@ -24,7 +24,7 @@ $collection
 <h2 class="session-title">
   <% Jifty->web->link(
         label => "$sender vs $receiver",
-        url   => '/session',
+        url   => "/session/$session",
         target => '_blank',
         refresh_self => 0,
         tooltip => 'Go to the whole session~',
@@ -38,7 +38,7 @@ $collection
   <tbody>
     <tr>
       <td>
-        <pre><% $content %></pre>
+        <% $content %>
       </td>
     </tr>
   </tbody>

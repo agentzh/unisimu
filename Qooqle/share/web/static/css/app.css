@@ -1,7 +1,7 @@
 /* global */
 
 body {
-    font-family: arial, sans-serif;
+    font-family: arial, sans-serif, »ªÎÄÏ¸ºÚ;
 }
 
 div#jifty-wait-message {
@@ -132,4 +132,38 @@ table.paging td {
     font-size: 12pt;
     color: #00c;
     font-weight: bold;
+}
+
+/* session/dhandler */
+
+h1.session {
+    color: #b66c64;
+}
+
+table.session {
+    width: 100%;
+}
+
+table.session td {
+    font-size: small;
+    white-space: nowrap;
+    text-align: center;
+}
+
+table.session .content {
+    font-size: small;
+    white-space: wrap;
+    text-align: left;
+}
+
+table.session .sent {
+    color: #0000cc;
+}
+
+table.session .even {
+    background-color: #f0f0f0;
+}
+
+table.session .odd {
+    background-color: #e0e0e0;
 }
