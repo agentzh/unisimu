@@ -1,9 +1,0 @@
-<%args>
-$session_id
-</%args>
-
-<%init>
-warn "HERE!!!";
-</%init>
-
-<% $session_id %>
