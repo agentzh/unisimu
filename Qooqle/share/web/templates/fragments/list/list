@@ -63,48 +63,7 @@ my $elapsed = 0.0012;  # this is a temporary hack. :(
 <& /_elements/sessions, collection => $collection &>
 
 % if ($collection->pager->last_page > 1) {
-    <center>
-      <span class="page-count">Page <% $page %> of <% $collection->pager->last_page %></span>
-    </center>
+  <br />
+  <br />
+  <& /_elements/paging, keys => $keys, page => $page, collection => $collection &>
 % }
-
-<hr />
-<center>
-<div class="paging">
-  <span class="c1">ResultPage:</span>
-  <table>
-    <tr>
-      <td nowrap=1>
-% if ($collection->pager->previous_page) {
-        <span class="prev-page">
-          <% Jifty->web->link(
-                label => "Previous Page",
-                onclick => {
-                    args => {
-                        search_keys => $keys,
-                        page => $collection->pager->previous_page,
-                    }
-                }
-            ) %>
-        </span>
-% }
-     </td>
-     <td nowrap=1>
-% if ($collection->pager->next_page) {
-        <span class="next-page">
-          <% Jifty->web->link(
-                label => "Next Page",
-                onclick => {
-                    args => {
-                        search_keys => $keys,
-                        page => $collection->pager->next_page,
-                    }
-                }
-             ) %>
-        </span>
-% }
-      </td>
-    </tr>
-  </table>
-</div>
-</center>

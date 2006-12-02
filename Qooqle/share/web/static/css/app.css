@@ -1,0 +1,135 @@
+/* global */
+
+body {
+    font-family: arial, sans-serif;
+}
+
+div#jifty-wait-message {
+    color: white;
+    background: red;
+    font-size: 18px;
+    position: fixed;
+    top: 5px;
+    right: 10px;
+    z-index: 42;
+}
+
+div.copyright {
+    text-align: center;
+    font-size: small;
+    color: #333;
+    margin-top: 1in;
+}
+
+/* index.html */
+
+table.search {
+    width: 100%;
+}
+
+table.search td {
+    text-align: center;
+    padding: 4px;
+}
+
+span.headline {
+    color: #0000FF;
+    font-family: Arial;
+    font-size: 80%;
+    font-weight: bold;
+    padding: 55px;
+}
+
+table.search .hints {
+    text-align: center;
+    float: left;
+}
+
+table.search .error {
+    background: none;
+    text-align: center;
+    float: left;
+}
+
+table.search .canonicalization_note {
+    text-align: center;
+}
+
+table.search .button {
+    margin: 0 0 0 0;
+}
+
+/* list/search */
+
+img.small-logo {
+    float: left;
+    border: 0px;
+    padding: 5;
+}
+
+table.small-search td {
+    text-align: left;
+    padding: 5;
+}
+
+table.small-search-keys input {
+    text-align: left;
+}
+
+table.small-search {
+    width: auto;
+}
+
+/* list/list */
+
+table.stats-bar {
+    width: 100%;
+    border-top: 1px solid #36c;
+    background-color: #e5ecf9;
+    margin: 0;
+    padding: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 3px;
+    margin-top: 5px;
+}
+
+table.session-summary {
+    font-size: 80%;
+    width: 60%;
+}
+
+h2.session-title {
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.timestamp {
+    font-size: 80%;
+    color: green;
+}
+
+table.paging {
+    align: center;
+    border: 0;
+    width: 1%;
+}
+
+table.paging td {
+    font-size: 80%;
+    white-space: nowrap;
+}
+
+.prev-page {
+    text-align: right;
+    font-size: 12pt;
+    color: #00c;
+    font-weight: bold;
+}
+
+.next-page {
+    text-align: left;
+    font-size: 12pt;
+    color: #00c;
+    font-weight: bold;
+}

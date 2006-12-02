@@ -14,6 +14,7 @@ use Jifty::Param::Schema;
 use Jifty::Action schema {
 
 param keys =>
+    label is '',
     hints are 'Enter your search keys here',
     focus is 1;
 };
@@ -26,7 +27,7 @@ param keys =>
 
 =cut
 
-use Encode qw(encode decode);
+use Encode qw(encode);
 
 sub take_action {
     my $self = shift;

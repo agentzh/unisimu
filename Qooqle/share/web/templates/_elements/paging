@@ -1,0 +1,76 @@
+<%args>
+$keys
+$page
+$collection
+</%args>
+
+<%init>
+my ($from, $to);
+my $npages = $collection->pager->last_page;
+if ($npages <= 10) {
+    $from = 1;
+    $to   = $npages;
+} else {
+    $from = $page - 10 >= 1 ? $page - 10 : 1;
+    $to   = $page + 9;
+}
+</%init>
+
+<center>
+  <table class="paging">
+    <tr>
+      <td>
+        Result Page:&nbsp; &nbsp;
+      </td>
+      <td>
+% if ($collection->pager->previous_page) {
+        <span class="prev-page">
+          <% Jifty->web->link(
+                label => "Previous",
+                onclick => {
+                    args => {
+                        search_keys => $keys,
+                        page => $collection->pager->previous_page,
+                    }
+                }
+            ) %>
+        </span>
+% }
+      </td>
+
+% for my $i ($from..$to) {
+%   if ($i == $page) {
+      <td><b><% $i %></b></td>
+%   } else {
+      <td>
+        <% Jifty->web->link(
+              label => $i,
+              onclick => {
+                  args => {
+                      search_keys => $keys,
+                      page => $i,
+                  }
+              }
+           ) %>
+      </td>
+%   }
+% }
+
+      <td>
+% if ($collection->pager->next_page) {
+        <span class="next-page">
+          <% Jifty->web->link(
+                label => "Next",
+                onclick => {
+                    args => {
+                        search_keys => $keys,
+                        page => $collection->pager->next_page,
+                    }
+                }
+             ) %>
+        </span>
+% }
+      </td>
+    </tr>
+  </table>
+</center>
