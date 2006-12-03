@@ -38,7 +38,8 @@ $collection
   <tbody>
     <tr>
       <td>
-        <% $content %>
+        <span class="sender">&lt;<% $sender %>&gt;</span>
+	<% $content %>
       </td>
     </tr>
   </tbody>

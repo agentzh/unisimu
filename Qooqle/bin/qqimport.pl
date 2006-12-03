@@ -13,9 +13,9 @@ use Jifty::Config;
 use Jifty::ClassLoader;
 
 BEGIN {
-    $YAML::Syck::ImplicitUnicode = 1;
     Jifty::ClassLoader->new(base => 'Qooqle')->require;
     binmode(\*STDERR, ":encoding(GBK)");
+    binmode(\*STDOUT, ":encoding(GBK)");
 }
 
 $YAML::Syck::ImplicitUnicode = 1;
@@ -74,7 +74,7 @@ sub process_file {
         my $friend_real = $data->{realname};
         my $friend_qq   = $data->{qq_number};
         register_user($friend_qq, $friend_nick, $friend_real);
-        warn <<"_EOC_";
+        print <<"_EOC_";
 ---
 nickname: $friend_nick
 real name: $friend_real
@@ -90,7 +90,7 @@ _EOC_
             my $msg_count = @$session;
             my $begin_time = $session->[0]->[0];
             my $end_time = $session->[-1]->[0];
-            warn "session found: $begin_time ~ $end_time ($msg_count msg).\n";
+            print "session found: $begin_time ~ $end_time ($msg_count msg).\n";
 
             #warn "HERE!";
             #$msg_count
@@ -138,7 +138,7 @@ _EOC_
                 }
                 #warn "message created.\n";
             }
-            warn "session created.\n";
+            print "session created.\n";
         }
     } else {
         warn $data->{type}, " type is not supported.\n";
@@ -164,7 +164,7 @@ sub register_user {
         if (!defined $User->id) {
             die "error: failed to create user $qq_number";
         } else {
-            warn "user $qq_number ($nickname) created.\n";
+            print "user $qq_number ($nickname) created.\n";
         }
     }
 }
@@ -182,7 +182,7 @@ sub nick_to_number {
         if (!defined $User->id) {
             die "error: failed to create user $nickname";
         } else {
-            warn "user $nickname created.\n";
+            print "user $nickname created.\n";
         }
         return '888888';
     }
