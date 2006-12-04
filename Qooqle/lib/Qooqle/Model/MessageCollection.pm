@@ -33,7 +33,8 @@ sub search ($$) {
     for my $key (@$keys) {
         #(my $pat = $key) =~ s/\%/\%\%/g;
         $self->limit(
-            column => 'content', value => "%$key%", operator => 'LIKE'
+            column => 'content', value => "%$key%", operator => 'LIKE',
+            entry_aggregator => 'AND',
         );
     }
     $self->order_by(column => 'session_offset', order => 'ASC');
