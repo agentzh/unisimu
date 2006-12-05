@@ -12,7 +12,7 @@ $title => 'Qooqle Search'
   <div id="content">
   <a name="content"></a>
   <% Jifty->web->render_messages %>
-  <% $m->content |n%>
+  <% $m->content |n %>
   <& /_elements/footer &>
   <& /_elements/keybindings &>
   </div>
