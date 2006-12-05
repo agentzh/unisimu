@@ -2,6 +2,9 @@
 
 body {
     font-family: arial, sans-serif, »ªÎÄÏ¸ºÚ;
+    background: #fff;
+    color: #000;
+    margin: 10px;
 }
 
 div#jifty-wait-message {
@@ -32,12 +35,11 @@ table.search td {
     padding: 4px;
 }
 
-span.headline {
+table.search .headline {
     color: #0000FF;
     font-family: Arial;
-    font-size: 80%;
     font-weight: bold;
-    padding: 55px;
+    font-size: 85%;
 }
 
 table.search .label {

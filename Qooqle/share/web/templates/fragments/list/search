@@ -11,6 +11,8 @@ my $search = Jifty->web->new_action(
 #warn "Search key in list/search: $search_keys";
 my $current_keys = $search->argument_value('keys');
 $search->argument_value(keys => $search_keys) if !$current_keys and $search_keys;
+#warn "Current Region: ", Jifty->web->current_region->parent;
+#warn "Qualified Region: ", Jifty->web->qualified_region(Jifty->web->current_region);
 </%init>
 
 <a href="/">
@@ -20,7 +22,7 @@ $search->argument_value(keys => $search_keys) if !$current_keys and $search_keys
 <table class="search small-search">
   <tr>
     <td>
-        <% $search->form_field('keys', length => 55, class => 'small-search-keys') %>
+        <% $search->form_field('keys', length => 55) %>
     </td>
   </tr>
   <tr>
@@ -28,9 +30,8 @@ $search->argument_value(keys => $search_keys) if !$current_keys and $search_keys
         <% $search->button(
             label   => 'Search!',
             onclick => {
-            submit  => $search,
-            refresh => Jifty->web->current_region->parent,
-            args    => { page => 1 }
+                submit  => $search,
+                refresh => Jifty->web->current_region->parent,
             }
           ) %>
     </td>

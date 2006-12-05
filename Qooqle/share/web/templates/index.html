@@ -18,13 +18,10 @@
 % my $form = Jifty->web->form;
   <% $form->start() %>
   <% $form->next_page( url => '/results' ) %>
-
   <table class="search">
     <tr>
-      <td>
-        <span class="headline">
+      <td class="headline">
           A Google-like search engine for QQ Databases
-        </span>
       </td>
     </tr>
     <tr>
@@ -39,7 +36,6 @@
     </tr>
   </table>
   <% $form->end() %>
-
 </center>
 
 </&>
