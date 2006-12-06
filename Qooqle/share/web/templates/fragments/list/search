@@ -32,6 +32,7 @@ $search->argument_value(keys => $search_keys) if !$current_keys and $search_keys
             onclick => {
                 submit  => $search,
                 refresh => Jifty->web->current_region->parent,
+                args => { page => 1 },
             }
           ) %>
     </td>
