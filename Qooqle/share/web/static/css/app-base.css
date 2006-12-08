@@ -6,13 +6,10 @@ body {
 }
 
 div#jifty-wait-message {
-    color: white;
-    background: red;
-    font-size: 18px;
-    position: fixed;
-    top: 5px;
-    right: 10px;
-    z-index: 42;
+    color: white !important;
+    background: red !important;
+    font-size: 18px !important;
+    float: right;
 }
 
 div.copyright {
