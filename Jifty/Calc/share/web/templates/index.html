@@ -1,0 +1,15 @@
+<&| /_elements/wrapper, title => 'Calculator' &>
+
+<br/>
+<br/>
+<br/>
+
+<center>
+    <div class="console roundNormal">
+    <% Jifty->web->region(name => "console",
+                          path => "/fragments/console", 
+                          defaults => { reset => 1 }) %>
+    </div>
+</center>
+
+</&>

@@ -1,0 +1,10 @@
+<%args>
+$title
+</%args>
+
+<html>
+  <head>
+    <title><% $title %></title>
+    <% Jifty->web->include_css %>
+    <% Jifty->web->include_javascript %> 
+  </head>

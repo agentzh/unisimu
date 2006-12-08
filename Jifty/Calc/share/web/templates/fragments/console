@@ -1,0 +1,45 @@
+<%args>
+$input => ''
+$expr => '0.'
+$reset
+</%args>
+
+<%init>
+$input =~ s/-X/-/g;
+$expr = '' if $expr =~ /ERROR/;
+if ($input eq '=') {
+  $expr =~ s/\^/**/g;
+  $expr = eval $expr;
+  if ($@) { $expr = 'SYNTAX ERROR'; }
+  $reset = 1;
+} elsif ($input eq 'C' or $input eq '') {
+  $expr = '0.';
+  $reset = 1;
+} elsif ($reset and $input =~ /[\.\d\(\)]/) {
+  $expr = $input;
+  $reset = 0;
+} else {
+  $expr .= $input;
+  $reset = 0;
+}
+warn "$expr\n";
+</%init>
+
+<table>
+  <tr>
+    <td>
+      <table class="screen">
+        <tr>
+          <td><input type="text" value="<% $expr %>" readonly="true"/></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="buttons">
+        <& /_elements/buttons, expr => $expr, reset => $reset &>
+      </div>
+    </td>
+  </tr>
+</table>
