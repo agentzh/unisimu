@@ -6,19 +6,20 @@ use lib 'lib';
 
 use YAML::Syck;
 use Encode 'decode';
-use UNIVERSAL::require;
 #use Data::Dumper;
 use File::Slurp;
+
+use UNIVERSAL::require;
 use Jifty::Config;
 use Jifty::ClassLoader;
 
 BEGIN {
     Jifty::ClassLoader->new(base => 'Qooqle')->require;
-    binmode(\*STDERR, ":encoding(GBK)");
-    binmode(\*STDOUT, ":encoding(GBK)");
 }
 
 $YAML::Syck::ImplicitUnicode = 1;
+binmode(\*STDERR, ":encoding(GBK)");
+binmode(\*STDOUT, ":encoding(GBK)");
 
 use Qooqle::Model::QQUser;
 use Qooqle::Model::Session;

@@ -61,7 +61,7 @@ my $elapsed = 0.0012;  # this is a temporary hack. :(
 %   $m->abort();
 % }
 
-<& /_elements/sessions, collection => $collection &>
+<& /_elements/sessions, keys => $key_list, collection => $collection &>
 
 % if ($collection->pager->last_page > 1) {
   <br />

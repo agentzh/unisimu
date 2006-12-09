@@ -1,6 +1,11 @@
 <%args>
+$keys
 $collection
 </%args>
+
+<%init>
+use Qooqle::Util;
+</%init>
 
 <div class="list">
 
@@ -39,7 +44,7 @@ $collection
     <tr>
       <td>
         <span class="sender">&lt;<% $sender %>&gt;</span>
-	<% $content %>
+	<% Qooqle::Util->highlight($content, $keys) |n %>
       </td>
     </tr>
   </tbody>
