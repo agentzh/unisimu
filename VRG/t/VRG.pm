@@ -8,7 +8,7 @@ our @EXPORT = qw(run_tests);
 
 my $count = 0;
 
-my $xclips = "$^X -Ilib script/xclips.pl -c -I knowledge";
+my $xclips = "xclips.bat -c -I knowledge";
 
 #no_diff;
 
