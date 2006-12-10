@@ -25,8 +25,7 @@ vpath %.pl script xprolog
 
 all: clips_all
 
-clips_all: lib/XClips/Compiler.pm lib/XClips/Compiler/Base.pm lib/VRG/Compiler.pm \
-	lib/CLIPS/Batch.pm $(clp_files)
+clips_all: lib/VRG/Compiler.pm $(clp_files)
 
 prolog_all: $(pro_files)
 
