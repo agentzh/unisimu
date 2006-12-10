@@ -1,0 +1,37 @@
+define defmodule(MAIN,
+    export(deftemplate, initial-fact)
+)
+
+define defmodule(Vectorize,
+    export(deftemplate, ?ALL)
+)
+
+include "preprocess.xclp"
+
+/* vectorization rules */
+
+include "vrg-sugar.xclp"
+
+module Vectorize.
+
+/* line-line relationships */
+
+\?l, \?m, ?l [?R] ?m => ?l <?R> ?m.
+
+/* line-plane relationships */
+
+\?l, #?alpha, ?l [T] ?alpha  => ?l <//> ?alpha.
+\?l, #?alpha, ?l [//] ?alpha => ?l <T> ?alpha.
+\?l, #?alpha, ?l [X] ?alpha  => ?l <X> ?alpha.
+\?l, #?alpha, ?l [on] ?alpha => ?l <T> ?alpha.
+
+\?l, #?alpha, ?l [~T] ?alpha  => ?l <~//> ?alpha.
+\?l, #?alpha, ?l [~//] ?alpha => ?l <~T> ?alpha.
+\?l, #?alpha, ?l [~X] ?alpha  => ?l <~X> ?alpha.
+
+/* plane-plane relationships */
+
+#?alpha, #?beta, ?alpha [?R] ?beta => ?alpha <?R> ?beta.
+
+/* control rules */
+contradiction($?) => halt().

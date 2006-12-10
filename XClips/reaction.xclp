@@ -1,0 +1,8 @@
+circumfix:<[ ]>  ion
+circumfix:<{ }>  deposit
+circumfix:<^ ^>  gas
+
+[Ba, +2], [SO4, -2] => {BaSO4}.
+[Ag, +1], [Cl, -1]  => {AgCl}.
+
+{?X} => printout(t, ?X, crlf).

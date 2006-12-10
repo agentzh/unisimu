@@ -1,0 +1,27 @@
+/* rules for vector space evaluation */
+
+define defmodule(
+    Eval,
+    import(Vectorize, deftemplate, vector-relation, contradiction)
+)
+
+module Eval.
+
+include "vrg-sugar.xclp".
+
+?a <//> ?b, ?b <?R> ?c, ?a \= ?c
+=> ?a <?R> ?c.
+
+?a <T> ?b; ?a <X> ?b => ?a <~//> ?b.
+
+?a <T> ?b, ?b <T> ?c, ?c <T> ?d, ?d <T> ?a, ?a <~//> ?c, ?b \= ?d
+=> ?b <//> ?d.
+
+?a <?R> ?b => ?b <?R> ?a.
+
+/* assertions */
+?a <//> ?b, ?a <~//> ?b => contradiction("<//>", "<~//>", ?a, ?b).
+?a <T> ?b, ?a <~T> ?b => contradiction("<T>", "<~T>", ?a, ?b).
+?a <T> ?b, ?a <X> ?b => contradiction("<T>", "<X>", ?a, ?b).
+?a <X> ?b, ?a <~X> ?b => contradiction("<X>", "<~X>", ?a, ?b).
+contradiction($?) => halt().

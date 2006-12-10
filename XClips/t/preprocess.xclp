@@ -1,0 +1,25 @@
+/* preprocessing rules for vectorization */
+
+include "vrg-sugar.xclp"
+
+module Vectorize.
+
+#?alpha, #?beta, meet(?alpha, ?beta, ?l)
+=> ?alpha [~//] ?beta, ?l [on] ?alpha, ?l [on] ?beta.
+
+\?l, \?m, meet(?l, ?m, ?)
+=>
+    ?alpha := gensym(), #?alpha, temp(?alpha),
+    ?l [on] ?alpha, ?m [on] ?alpha,
+    ?l [~//] ?m.
+
+\?l, #?alpha, meet(?l, ?alpha, ?) => ?l [~//] ?alpha, ?l [~on] ?alpha.
+
+\?l, #?alpha, \?m, project(?l, ?alpha, ?m)
+=>
+    ?theta := gensym(), #?theta, temp(?theta),
+    ?l [X] ?alpha, ?l [on] ?theta,
+    meet(?theta, ?alpha, ?m),
+    ?theta [T] ?alpha.
+
+#?alpha, \?l, ?alpha [?R] ?l => ?l [?R] ?alpha.

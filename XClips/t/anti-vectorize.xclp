@@ -1,0 +1,40 @@
+define defmodule(AntiVectorize,
+    import(Vectorize, deftemplate, ?ALL),
+    import(MAIN, deftemplate, initial-fact)
+)
+
+/* vectorization rules */
+
+include "vrg-sugar.xclp"
+
+module AntiVectorize.
+
+/* line-line relationships */
+
+\?l, \?m, ?l <?R> ?m => ?l [?R] ?m.
+
+/* line-plane relationships */
+
+\?l, #?alpha, ?l <//> ?alpha => ?l [T] ?alpha.
+\?l, #?alpha, ?l <T> ?alpha => ?l [~T] ?alpha, ?l [~X] ?alpha.
+\?l, #?alpha, ?l <X> ?alpha => ?l [X] ?alpha.
+
+\?l, #?alpha, ?l <~//> ?alpha => ?l [~T] ?alpha.
+\?l, #?alpha, ?l <~T> ?alpha => ?l [~//] ?alpha, ?l [~on] ?alpha.
+\?l, #?alpha, ?l <~X> ?alpha => ?l [~X] ?alpha.
+
+\?l, #?alpha, #?beta, ?l [on] ?alpha, ?alpha [//] ?beta => ?l [~on] ?beta.
+\?l, #?alpha, ?l [~T] ?alpha, ?l [~X] ?alpha, ?l [~on] ?alpha => ?l [//] ?alpha.
+
+\?l, #?alpha, (?l [//] ?alpha; ?l [T] ?alpha; ?l [X] ?alpha) => ?l [~on] ?alpha.
+
+/* plane-plane relationships */
+
+#?alpha, #?beta,
+~temp(?alpha), ~temp(?beta),
+?alpha <?R> ?beta => ?alpha [?R] ?beta.
+
+/* assertions */
+\?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha => contradiction("[on]", "[~on]", ?l, ?alpha).
+
+contradiction($?) => halt().

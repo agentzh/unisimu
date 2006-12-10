@@ -1,0 +1,201 @@
+program : statement(s) eofile { join "\n\n", grep $_, @{ $item[1] } }
+        | <error>
+
+comment : /\/\*(.*?)\*\//s ws  { my $cmt = "; $1"; $cmt =~ s/\n(?=.)/;/g; $cmt }
+
+rule : disjunction '=>' <commit> new_facts '.'
+
+        { $::count++;
+          "; $::infile (line $thisline)\n".
+          "(defrule $::module$::base-$thisline\n".
+          "    $item[1]\n".
+          "    =>\n".
+          "$item[4])" } ws { $item[6] }
+
+     | <error?> <reject>
+
+disjunction : conjunction ';' disjunction
+
+    { "(or $item{conjunction} $item{disjunction})" }
+    
+            | conjunction
+            | <error?> <reject>
+
+conjunction : clause ',' conjunction
+
+    { "(and $item{clause} $item{conjunction})" }
+
+            | clause
+            | <error?> <reject>
+
+clause : '(' <commit> disjunction ')'  { $item{disjunction} }
+
+       | circum_open <commit>  arguments { ::match_circum_close($text, $item[1]) }
+
+			{ "(" . $::circumfix{$item[1]} . $item{arguments} . ")" }
+
+       | prefix <commit> atom
+
+            { my $s = $item{prefix};
+              my ($open, $close) = (0, 0);
+              $open++ while $s =~ /\(/g;
+              $close++ while $s =~ /\)/g;
+              "($s$item{atom})" . (')' x ($open - $close))
+            }
+
+       | atom <skip:''> /\s+/ general_infix /\s+/ <commit> <skip:'\s*'> atom
+
+            { my $s = $item{general_infix};
+              my ($open, $close) = (0, 0);
+              $open++ while $s =~ /\(/g;
+              $close++ while $s =~ /\)/g;
+              "($s$item[1] $item[8])" . (')' x ($open - $close))
+            }
+
+       | atom <skip:''> postfix
+
+            { "($item{postfix}$item{atom})" }
+
+       | atom
+       | <error?> <reject>
+
+circum_open: { ::match_circum_open($text) }
+
+prefix : { ::match_prefix($text) } <commit> { $::prefix{$item[1]} }
+
+atom : predicate
+     | variable
+     | literal
+
+predicate : identifier /\(\s*\)/ <commit> { "($item{identifier})" }
+		  | identifier '(' <commit> arguments ')'  { "($item[1] $item{arguments})" }
+          | <error?> <reject>
+
+eofile : /^\Z/
+
+statement : comment
+          | directive
+          | rule
+          | facts '.' <commit> ws  { '' }
+          | <error>
+
+facts : fact ',' <commit> facts
+      | fact
+      | <error?> <reject>
+
+fact : clause   { push @::facts, "; $::infile (line $thisline)",
+                    "$item{clause}\n"; '' }
+
+ws: /[\n\s]*/
+
+directive : 'module' <commit> identifier '.' ws
+
+        { $::module = $item{identifier} . '::'; '' }
+
+          | 'include' <commit> string /\.?/ ws
+
+        { my $res = ::process_include(eval $item{string}, $thisline) }
+
+          | 'define' <commit> predicate /\.?/ ws
+
+        { $item{predicate} }
+
+          | 'circumfix:<' <commit> <skip:''> circum_pattern '>'
+		    <skip:'\s*'> target /\.?/ ws
+
+        {   my $pattern = $item{circum_pattern};
+		    #warn "~~~ @$pattern\n";
+			$::circumfix{$pattern->[0]} = eval $item{target};
+			$::circum_close{$pattern->[0]} = $pattern->[1];
+            @::circumfix = sort { -($a cmp $b) } keys %::circumfix; '' }
+
+          | 'prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> target /\.?/ ws
+          
+        { $::prefix{$item{pattern}} = eval $item{target};
+          @::prefix = sort { -($a cmp $b) } keys %::prefix; '' }
+
+          | 'infix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> target /\.?/ ws
+
+        { $::infix{$item{pattern}} = eval $item{target};
+          #warn "$item{pattern} => $item{target}\n";
+          #warn "INFIX: ", join(' ', sort { -($a cmp $b) } keys %::infix), "\n";
+          @::infix = sort { -($a cmp $b) } keys %::infix; '' }
+
+          | 'infix_prefix:<' <commit> <skip:''> pattern '>' <skip:'\s*'> target /\.?/ ws
+
+        { $::infix_prefix{$item{pattern}} = eval $item{target};
+          @::infix_prefix = sort { -($a cmp $b) } keys %::infix_prefix; '' }
+
+          | 'infix_circumfix:<' <commit> <skip:''> circum_pattern '>'
+		    <skip:'\s*'> target /\.?/ ws
+
+        {   my $pattern = $item{circum_pattern};
+		    #warn "~~~ @$pattern\n";
+			$::infix_circumfix{$pattern->[0]} = eval $item{target};
+			$::infix_circum_close{$pattern->[0]} = $pattern->[1];
+            @::infix_circumfix = sort { -($a cmp $b) } keys %::infix_circumfix; '' }
+
+          | <error?> <reject>
+
+target : identifier /\&?/ { $item[2] ? "'$item[1]'" : "'$item[1] '" }
+       | string
+
+pattern : /\S+(?=>)/
+
+circum_pattern : /(\S+) (\S+)(?=>)/ <commit> { [$1, $2] }
+
+new_facts : new_fact ',' <commit> new_facts
+
+              { $item{new_fact} . $item{new_facts} }
+
+          | new_fact
+          | <error?> <reject>
+
+new_fact : clause
+
+    { $item[1] =~
+        /(?x) ^ \( (?:bind|halt|printout|assert|format|open|read|close|exit) \b/ ?
+        "    $item[1]\n" : "    (assert $item[1])\n" }
+
+general_infix : infix_circum_open <commit> general_infix
+                { ::match_infix_circum_close($text, $item[1]) }
+
+			{ $::infix_circumfix{$item[1]} . $item{general_infix} }
+
+			  | infix_prefix <commit> general_infix  { $item{infix_prefix} . $item{general_infix} }
+              | infix
+              | <error?> <reject>
+
+infix_circum_open : { ::match_infix_circum_open($text) }
+
+arguments : <leftop: clause ',' clause>  <commit> { join ' ', @{ $item[1] } }
+
+variable : /\$?\?[A-Za-z_]([-\w])*/ <commit> { $item[1] . $item{identifier} }
+         | /\$?\?/
+
+literal : identifier
+        | number
+        | string
+        | <error>
+
+identifier : /[A-Za-z_]([-\w])*/
+
+number : /[-+]?\d+(?:\.\d*)?/
+       | /[-+]?\.\d+/
+
+string : { extract_delimited($text, '"') }
+       | { extract_delimited($text, "'") }
+       | <error>
+
+infix_prefix : { ::match_infix_prefix($text) } <commit> { $::infix_prefix{$item[1]} }
+
+infix : variable <commit> { $item[1] . " " }
+      | { ::match_infix($text) } <commit> { $::infix{$item[1]} }
+
+postfix : 'postfix'
+
+compound: <leftop: clause /([;,])/ clause>
+
+    { "\n    " . join "", (map { m/^[;,]$/ ? "$_\n    " : $_ } @{ $item[1] }); }
+
+        | <error>
