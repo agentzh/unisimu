@@ -69,7 +69,3 @@ install:
 	$(cp_f) script/xclips.bat $(PERL_BIN)
 	$(cp_f) script/clips-cover.bat $(PERL_BIN)
 	$(cp_f) lib/VRG/Compiler.pm $(PERL_LIB)/VRG
-	$(cp_f) lib/Clips/Batch.pm $(PERL_LIB)/Clips
-	$(cp_f) lib/Clips/GraphViz.pm $(PERL_LIB)/Clips
-	$(cp_f) lib/XClips/Compiler.pm $(PERL_LIB)/XClips
-	$(cp_f) lib/XClips/Compiler/Base.pm $(PERL_LIB)/XClips/Compiler
