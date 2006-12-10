@@ -5,12 +5,12 @@ framework:
   ApplicationName: Qooqle
   Database: 
     Database: qooqle
-    Driver: SQLite
+    Driver: mysql
     Host: localhost
-    Password: ''
+    Password: 'angel94'
     RecordBaseClass: Jifty::DBI::Record::Cachable
-    User: ''
-    Version: 0.0.2
+    User: 'root'
+    Version: 0.0.1
   DevelMode: 1
   L10N: 
     PoDir: share/po
@@ -34,8 +34,3 @@ framework:
     ServeStaticFiles: 1
     StaticRoot: share/web/static
     TemplateRoot: share/web/templates
-
-  QQ:
-    my_qq_number: 279005114
-    my_qq_nickname: ียาเดบ
-    my_qq_realname: ียาเดบ

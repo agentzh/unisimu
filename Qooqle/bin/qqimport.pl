@@ -9,44 +9,26 @@ use Encode 'decode';
 #use Data::Dumper;
 use File::Slurp;
 
-use UNIVERSAL::require;
-use Jifty::Config;
-use Jifty::ClassLoader;
-
-BEGIN {
-    Jifty::ClassLoader->new(base => 'Qooqle')->require;
-}
+use Config::Simple;
+use Config::Simple;
+use Jifty::Everything;
+use Qooqle::Model::QQUser;
+use Qooqle::Model::Session;
+use Qooqle::Model::Message;
 
 $YAML::Syck::ImplicitUnicode = 1;
 binmode(\*STDERR, ":encoding(GBK)");
 binmode(\*STDOUT, ":encoding(GBK)");
 
-use Qooqle::Model::QQUser;
-use Qooqle::Model::Session;
-use Qooqle::Model::Message;
-
 my @infiles = map glob, @ARGV or
     die "error: no input file given.\n";
 
-my $config = Jifty::Config->new;
-$config->load;
-my $db_config = $config->framework('Database');
-my $qq_config = $config->framework('QQ');
-#warn Dumper($qq_config);
-my $my_qq   = $qq_config->{my_qq_number};
-my $my_nick = decode('GBK', $qq_config->{my_qq_nickname});
-my $my_real = decode('GBK', $qq_config->{my_qq_realname});
+my $config = Config::Simple->new('qq.config');
+my $my_qq   = $config->param('me.qq_number');
+my $my_nick = $config->param('me.qq_nickname');
+my $my_real = $config->param('me.real_name');
 
-use Jifty::DBI::Handle;
-my $handle = Jifty::DBI::Handle->new();
-$handle->connect(
-    driver   => $db_config->{Driver},
-    database => $db_config->{Database},
-    user     => $db_config->{User},
-    password => $db_config->{Password},
-);
-#$handle->connect;
-Jifty->new( handle => $handle );
+Jifty->new();
 
 my $User    = Qooqle::Model::QQUser->new;
 my $Session = Qooqle::Model::Session->new;

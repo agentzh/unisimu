@@ -2,13 +2,12 @@ use strict;
 use warnings;
 
 package Qooqle::Model::Message;
-use base qw(Jifty::Record Qooqle::Record);
 
 use Jifty::DBI::Schema;
 use Qooqle::Model::Session;
 use Qooqle::Model::QQUser;
 
-use Qooqle::Record schema {
+use Jifty::Record schema {
     column sent =>
         type is 'timestamp',
         label is 'Sent time',

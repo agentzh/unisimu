@@ -3,9 +3,8 @@ use warnings;
 
 package Qooqle::Model::QQUser;
 use Jifty::DBI::Schema;
-use DateTime;
 
-use Qooqle::Record schema {
+use Jifty::Record schema {
     column qq_number =>
         type is 'text',
         label is 'QQ number';

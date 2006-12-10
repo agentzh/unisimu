@@ -9,7 +9,7 @@ sub highlight ($$$) {
     my $escaped_content = Jifty->web->escape($content);
     for my $key (@$keys) {
         my $pat = quotemeta Jifty->web->escape($key);
-        $escaped_content =~ s{$pat}{<b>$&</b>}g;
+        $escaped_content =~ s{$pat}{<b>$&</b>}gis;
     }
     $escaped_content;
 }

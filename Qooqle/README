@@ -1,2 +1,4 @@
+jifty schema --setup
 perl bin/qqparse.pl E:\agent2\QQ-log\Person\*\*.txt F:\agent\AIDB\ÕÂÒà´º\QQÁÄÌì¼ÇÂ¼\*\*.txt
 perl bin/qqimport.pl E:\agent2\QQ-log\Person\*\*.data F:\agent\AIDB\ÕÂÒà´º\QQÁÄÌì¼ÇÂ¼\*\*.data
+jifty server
