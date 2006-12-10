@@ -34,11 +34,9 @@ lib/XClips/Compiler/Base.pm: xclips.grammar
 test: all
 	prove -Ilib t/*.t
 
-clean:
-	perl script/clips-cover.pl -d
-
-veryclean: clean
+clean: clean
 	$(rm_f) lib/XClips/Compiler/Base.pm
+	clips-cover -d
 
 install:
 	pl2bat script/xclips.pl script/clips-cover.pl
