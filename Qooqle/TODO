@@ -5,8 +5,5 @@
 * Write bin/qqexport.pl to export the Qooqle database as CSV or JSON files.
 * Add --csv option to bin/qqimport.pl so as to import CSV/JSON data generated
   by bin/qqexport.pl.
-* Extract the scaffolding code out into a .pm file (such as Qooqle/LoadModles.pm).
-* Add auto-completing functionality to the "search keys" textbox.
 * Add more tests for bin/qqparse.pl and bin/qqimport.pl.
 * Add user login interface and setup access control for Qooqle.
-* Seperate the QQ user's info into another config file.
