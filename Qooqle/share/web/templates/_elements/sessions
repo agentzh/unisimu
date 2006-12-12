@@ -9,7 +9,7 @@ use Qooqle::Util;
 
 <div class="list">
 
-% my $prev_session;
+% my ($prev_item, $prev_session);
 % while ( my $item = $collection->next ) {
 %   my $sender = $item->sender->realname || $item->sender->nickname;
 %   my $receiver = $item->receiver->realname || $item->receiver;
@@ -49,6 +49,15 @@ use Qooqle::Util;
     </tr>
   </tbody>
 </table>
+
+%   $prev_item = $item;
+% }
+
+% if ($prev_item) {
+%     my $begin = $prev_item->msg_session->begin_time;
+%     my $end   = $prev_item->msg_session->end_time;
+
+[ <span class="timestamp"> <% $begin %> ~ <% $end %> </span> ]
 
 % }
 
