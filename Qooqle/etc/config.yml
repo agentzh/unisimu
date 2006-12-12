@@ -5,13 +5,13 @@ framework:
   ApplicationName: Qooqle
   Database: 
     Database: qooqle
-    Driver: mysql
+    Driver: SQLite
     Host: localhost
-    Password: 'angel94'
+    Password: ''
     RecordBaseClass: Jifty::DBI::Record::Cachable
-    User: 'root'
+    User: ''
     Version: 0.0.1
-  DevelMode: 1
+  DevelMode: 0
   L10N: 
     PoDir: share/po
   LogLevel: INFO

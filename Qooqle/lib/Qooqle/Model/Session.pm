@@ -4,7 +4,7 @@ use warnings;
 package Qooqle::Model::Session;
 use Jifty::DBI::Schema;
 
-use Jifty::Record schema {
+use Qooqle::Record schema {
     column begin_time =>
         type is 'timestamp',
         label is 'Begin time',

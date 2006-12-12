@@ -21,14 +21,14 @@ my $user = Qooqle::Model::QQUser->new(current_user => $system_user);
 
 $user->create(
     qq_number => '279005114',
-    realname => 'ÕÂÒà´º',
+    realname => 'ç« äº¦æ˜¥',
     nickname  => 'Agent2002',
     gender    => 'M'
 );
 
 $user->create(
     qq_number => '11854905',
-    realname => 'ñÒöÎêÀ',
+    realname => 'è¤šé‘«æ˜€',
     gender    => 'F',
 );
 

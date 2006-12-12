@@ -4,7 +4,7 @@ use warnings;
 package Qooqle::Model::QQUser;
 use Jifty::DBI::Schema;
 
-use Jifty::Record schema {
+use Qooqle::Record schema {
     column qq_number =>
         type is 'text',
         label is 'QQ number';

@@ -10,8 +10,10 @@ use Encode 'decode';
 use File::Slurp;
 
 use Config::Simple;
-use Config::Simple;
 use Jifty::Everything;
+
+BEGIN { Jifty->new(); }
+
 use Qooqle::Model::QQUser;
 use Qooqle::Model::Session;
 use Qooqle::Model::Message;
@@ -27,8 +29,6 @@ my $config = Config::Simple->new('qq.config');
 my $my_qq   = $config->param('me.qq_number');
 my $my_nick = $config->param('me.qq_nickname');
 my $my_real = $config->param('me.real_name');
-
-Jifty->new();
 
 my $User    = Qooqle::Model::QQUser->new;
 my $Session = Qooqle::Model::Session->new;
@@ -131,7 +131,7 @@ _EOC_
 sub register_user {
     my ($qq_number, $nickname, $realname) = @_;
     $User->load_by_cols( qq_number => $qq_number );
-    if (defined $User->id) {
+    if ($qq_number ne '0000' and defined $User->id) {
         if ($realname) {
             $User->set_realname( $realname );
         }
@@ -159,7 +159,7 @@ sub nick_to_number {
         return $User->qq_number;
     } else {
         $User->create(
-            qq_number => '888888',  # place-holder
+            qq_number => '0000',  # place-holder
             nickname  => $nickname,
         );
         if (!defined $User->id) {

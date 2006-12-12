@@ -18,7 +18,7 @@ if(!defined $keys) {
 #Jifty->web->session->set(search_keys => $search_keys);
 my $key_list = $collection->split_keys($keys);
 $collection->search($key_list);
-#warn $collection->build_select_query();
+warn $collection->build_select_query();
 
 $collection->set_page_info( current_page => $page,
                             per_page     => 25

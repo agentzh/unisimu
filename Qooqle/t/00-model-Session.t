@@ -20,27 +20,27 @@ ok($system_user, "Found a system user");
 # Try testing a create
 my $o = Qooqle::Model::Session->new(current_user => $system_user);
 my ($id) = $o->create(
-    begin_time => '2006-09-20 5:00',
-    end_time => '2006-10-20 4:21',
+    begin_time => '2006-09-20 05:00:00',
+    end_time => '2006-10-20 04:21:00',
     message_count => 3,
 );
 ok($id, "Session create returned success");
 ok($o->id, "New Session has valid id set");
 is($o->id, $id, "Create returned the right id");
-is($o->begin_time, '2006-09-20 5:00', 'begin time ok');
-is($o->end_time, '2006-10-20 4:21', 'end time ok');
+is($o->begin_time, '2006-09-20 05:00:00', 'begin time ok');
+is($o->end_time, '2006-10-20 04:21:00', 'end time ok');
 is($o->message_count, 3, 'message count ok');
 
 # And another
 $o->create(
-    begin_time => '1985-12-09 18:30',
-    end_time   => '1992-10-24 06:21',
+    begin_time => '1985-12-09 18:30:00',
+    end_time   => '1992-10-24 06:21:00',
     message_count => 0,
 );
 ok($o->id, "Session create returned another value");
 isnt($o->id, $id, "And it is different from the previous one");
-is($o->begin_time, '1985-12-09 18:30', 'begin time ok');
-is($o->end_time, '1992-10-24 06:21', 'end time ok');
+is($o->begin_time, '1985-12-09 18:30:00', 'begin time ok');
+is($o->end_time, '1992-10-24 06:21:00', 'end time ok');
 is($o->message_count, 0, 'message count ok');
 
 # Searches in general

@@ -27,9 +27,13 @@ sub search ($$) {
     if (!ref $keys) {
         $keys = $self->split_keys($keys);
     }
+    my $sessions = Qooqle::Model::Session->table;
+    warn "SESSIONS: $sessions\n";
     my $alias = $self->join(
         column1 => 'msg_session',
-        table2 => 'sessions', column2 => 'id');
+        table2 => $sessions, column2 => 'id');
+    #warn "ALIAS: $alias\n";
+    #$self->order_by(alias => $alias, column => 'begin_time', order => 'DESC');
     for my $key (@$keys) {
         #(my $pat = $key) =~ s/\%/\%\%/g;
         $self->limit(
@@ -37,8 +41,10 @@ sub search ($$) {
             entry_aggregator => 'AND',
         );
     }
-    $self->order_by(column => 'session_offset', order => 'ASC');
-    $self->order_by(alias => $alias, column => 'begin_time', order => 'DESC');
+    $self->order_by(
+        {alias => $alias, column => 'begin_time', order => 'DESC'},
+        {column => 'session_offset', order => 'ASC'},
+    );
 }
 
 1;

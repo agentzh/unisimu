@@ -7,7 +7,7 @@ use Jifty::DBI::Schema;
 use Qooqle::Model::Session;
 use Qooqle::Model::QQUser;
 
-use Jifty::Record schema {
+use Qooqle::Record schema {
     column sent =>
         type is 'timestamp',
         label is 'Sent time',
@@ -37,16 +37,5 @@ use Jifty::Record schema {
         validator is sub { $_[0] >= 0; },
         is mandatory;
 };
-
-sub create {
-    my $self = shift;
-    my %args = @_;
-    my $sent = $args{'sent'};
-    if ($sent and $sent =~ /^\d+$/) {
-        my $time = DateTime->from_epoch(epoch => $sent);
-        $args{'sent'} = $time->ymd . " " . $time->hms;
-    }
-    $self->SUPER::create(%args);
-}
 
 1;
