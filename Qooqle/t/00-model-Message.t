@@ -79,7 +79,7 @@ _EOC_
 my ($second_id) = $msg->create(
     receiver => '11854905',
     sender => '279005114',
-    sent => '1163924434',
+    sent => '2006-11-19 08:20:34',
     content => $content,
     msg_session => $session->id,
     session_offset => 3,
