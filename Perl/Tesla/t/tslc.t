@@ -8,10 +8,10 @@ use strict;
 use warnings;
 use Test::More tests => 11;
 
-is( system('perl script/tslc.pl -o t/simple.pl t/simple.tsl'), 0 );
+is( system('perl -Ilib script/tslc.pl -o t/simple.pl t/simple.tsl'), 0 );
 
 my $in;
-ok(open($in,'perl t/simple.pl|'));
+ok(open($in,'perl -Ilib t/simple.pl|'));
 
 undef $/;
 is( <$in>, <<'_EOC_' );
@@ -23,9 +23,9 @@ _EOC_
 
 close $in;
 
-is( system('perl script/tslc.pl -o t/comp.pl t/comp.tsl'), 0 );
+is( system('perl -Ilib script/tslc.pl -o t/comp.pl t/comp.tsl'), 0 );
 
-ok(open($in,'perl t/comp.pl|'));
+ok(open($in,'perl -Ilib t/comp.pl|'));
 
 undef $/;
 is( <$in>, <<'_EOC_' );
@@ -42,9 +42,9 @@ _EOC_
 
 close $in;
 
-is( system('perl script/tslc.pl -o t/SR_latch.pl t/SR_latch.tsl'), 0 );
+is( system('perl -Ilib script/tslc.pl -o t/SR_latch.pl t/SR_latch.tsl'), 0 );
 
-ok(open($in,'perl t/SR_latch.pl|'));
+ok(open($in,'perl -Ilib t/SR_latch.pl|'));
 
 undef $/;
 is( <$in>, <<'_EOC_' );
@@ -64,8 +64,8 @@ _EOC_
 
 close $in;
 
-is( system("perl script/tslc.pl -o lib/std.pm lib/std.tm"), 0 );
-is( system("perl script/tslc.pl -o t/std.t t/std.t.tsl"), 0 );
+is( system("perl -Ilib script/tslc.pl -o lib/std.pm lib/std.tm"), 0 );
+is( system("perl -Ilib script/tslc.pl -o t/std.t t/std.t.tsl"), 0 );
 # system( "perl std.t" );
 
 0;

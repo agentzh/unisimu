@@ -16,6 +16,8 @@ build_requires  ('Test::Simple');
 build_requires  ('Data::Dumper');
 build_requires  ('Carp');
 
+system($^X, 'script/tslc.pl', 'lib/std.tm');
+
 makemaker_args  (
     test => { TESTS => "t/*.t" },
 );

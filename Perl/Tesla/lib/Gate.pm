@@ -13,7 +13,7 @@ use warnings;
 package Gate;
 
 use Carp;
-use EventConsole;
+use Tesla;
 
 our $DEBUG = 0;
 
@@ -70,8 +70,10 @@ sub activate {
         local $" = ',';
         warn "Evaluating ", ref($self), "(@input_vals)...\n" if $DEBUG;
         my $delay = $self->{_delay};
-        my $time = Clock->reading + $delay;
-        EventConsole->add_event( $time, $output, $new_val );
+        my $time = Tesla->now + $delay;
+        Tesla->schedule(
+            $time => $output => $new_val
+		);
         return 1;
     }
     return 0;

@@ -10,7 +10,6 @@ use strict;
 use warnings;
 
 use Tesla;
-use Clock;
 use Data::Dumper;
 
 $Data::Dumper::Indent = 1;
@@ -111,11 +110,11 @@ sub value {
         $self->{_value} = $val;
 
         # append record to this signal's history:
-        push @{$self->{_hist}}, $val, Clock->reading;
+        push @{$self->{_hist}}, $val, Tesla->now;
 
         # print info to stderr if in DEBUG mode:
         if ($Signal::DEBUG) {
-            warn "$self->{_name} <== $val at " . Clock->reading . " ns\n";
+            warn "$self->{_name} <== $val at " . Tesla->now . " ns\n";
         }
         
         # inform all the gates which this signal flows into:

@@ -106,7 +106,6 @@ while (<$in>) {
 $Signal::DEBUG = 1;
 $Clock::DEBUG = 1;
 $Gate::DEBUG = 1;
-$EventConsole::DEBUG = 1;
 _EOC_
         next;
     }
@@ -115,7 +114,6 @@ _EOC_
 $Signal::DEBUG = 0;
 $Clock::DEBUG = 0;
 $Gate::DEBUG = 0;
-$EventConsole::DEBUG = 0;
 _EOC_
         next;
     }
@@ -393,7 +391,7 @@ sub gen_sig_events {
     }
     local $" = ',';
     output(
-        qq/EventConsole->add_events( [@times], \$$sig, [@vals] );\n/
+        qq/Tesla->schedule( [@times] => \$$sig => [@vals] );\n/
     );
 }
 
