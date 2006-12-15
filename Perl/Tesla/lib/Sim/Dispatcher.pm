@@ -4,59 +4,47 @@ use strict;
 use warnings;
 
 use Carp 'carp';
+use Sim::Clock;
 
 our $DEBUG = 0;
+my @Queue;
+my $Clock = Sim::Clock->new;
 
-sub new ($$) {
-    my $class = ref $_[0] ? ref shift : shift;
-    my $clock = shift;
-    return bless {
-        queue => [],
-        clock => $clock,
-    }, $class;
-}
-
-sub clock ($) {
-    return $_[0]->{clock};
+sub now {
+    $Clock->now;
 }
 
 sub schedule {
-    my $self = shift;
+    my $class = shift;
     my %events = @_;
     while (my ($time, $handle) = each %events) {
-        if ($time < $self->clock->now) {
+        if ($time < $class->now) {
             carp "out-dated event [$time => $handle] ignored";
             next;
         }
-        $self->_insert_event([$time => $handle]);
+        $class->_insert_event([$time => $handle]);
     }
-}
-
-sub _queue {
-    $_[0]->{queue};
 }
 
 sub _insert_event {
-    my ($self, $event) = @_;
-    my $queue = $self->_queue;
-    for (my $i = 0; $i < @$queue; $i++) {
-        if ($event->[0] < $queue->[$i]->[0]) {
-            splice( @$queue, $i, 0, $event );
+    my ($class, $event) = @_;
+    for (my $i = 0; $i < @Queue; $i++) {
+        if ($event->[0] < $Queue[$i]->[0]) {
+            splice( @Queue, $i, 0, $event );
             return;
         }
     }
-    push @$queue, $event;
+    push @Queue, $event;
 }
 
 sub fire_next ($) {
-    my $self = shift;
-    my $queue = $self->_queue;
-    return undef if @$queue == 0;
-    my $event = shift @$queue;
+    my $class = shift;
+    return undef if @Queue == 0;
+    my $event = shift @Queue;
     my ($time, $handle) = @$event;
-    my $now = $self->clock->now;
+    my $now = $class->now;
     if ($time >= $now) {
-        $self->clock->push_to($time);
+        $Clock->push_to($time);
         $handle->();
     } else {
         die "Clock modified outside of the dispatcher: next event is at $time while now is $now";
@@ -65,26 +53,24 @@ sub fire_next ($) {
 }
 
 sub run ($@) {
-    my $self = shift;
+    my $class = shift;
     my $count = defined $_[0] ? shift : 1000;
     my $i = 0;
     while (1) {
         #warn "run: next!";
-        last if $i++ >= $count or !defined $self->fire_next;
+        last if $i++ >= $count or !defined $class->fire_next;
     }
 }
 
 sub time_of_next ($) {
-    my $self = shift;
-    my $queue = $self->_queue;
-    return @$queue ? $queue->[0]->[0] : undef;
+    my $class = shift;
+    return @Queue ? $Queue[0]->[0] : undef;
 }
 
 sub reset ($) {
-    my $self = shift;
-    my $queue = $self->_queue;
-    @$queue = ();
-    $self->clock->reset();
+    my $class = shift;
+    @Queue = ();
+    $Clock->reset();
 }
 
 1;

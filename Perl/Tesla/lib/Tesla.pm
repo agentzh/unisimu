@@ -11,18 +11,15 @@ our $VERSION = '0.05';
 use strict;
 use warnings;
 
-use Sim::Clock;
-use Sim::Dispatcher;
+use base 'Sim::Dispatcher';
 use Gate;
 use Signal;
 
 our @sigs;
 our $DEBUG = 0;
 
-my $dispatcher = new Sim::Dispatcher(new Sim::Clock);
-
 sub schedule {
-    shift;
+    my $class = shift;
 	my ($times, $signal, $values) = @_;
     #warn "schedule: ", join (" ", @$times), " => $signal => ", join(' ', @$values), "\n";
 	if (!ref $times) {
@@ -35,25 +32,25 @@ sub schedule {
     for my $i (0..$len-1) {
         my ($time, $value) = ($times->[$i], $values->[$i]);
         warn "Adding event ", $signal->name, " <== $value at $time\n" if $DEBUG;
-        $dispatcher->schedule(
+        $class->SUPER::schedule(
             $time => 
             sub {
                 $signal->value($value);
-                Tesla->dumpstate() if $DEBUG;
+                $class->dumpstate() if $DEBUG;
             }
         );
 	}
 }
 
 sub run {
-    shift;
+    my $class = shift;
     #warn "HERE!";
     my $limit = shift;
-    while (defined(my $time = $dispatcher->time_of_next)) {
+    while (defined(my $time = $class->time_of_next)) {
         last if $time > $limit;
         warn "run: $time < $limit\n" if $DEBUG;
         warn "pushing clock to $time...\n" if $DEBUG;
-        $dispatcher->fire_next;
+        $class->fire_next;
     }
 }
 
@@ -64,7 +61,8 @@ sub reg_sig {
 }
 
 sub reset {
-    $dispatcher->reset;
+    my $class = shift;
+    $class->SUPER::reset;
     foreach my $sig (@sigs) {
         $sig->hist([]);
         $sig->force;
@@ -92,10 +90,6 @@ sub dumpstate {
         push @strs, $sig->name . "=" . $sig->value if $sig->value ne 'U';
     } 
     warn "STATE : " . join( ',', @strs ) . "\n";
-}
-
-sub now {
-    $dispatcher->clock->now;
 }
 
 1;
