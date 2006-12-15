@@ -13,6 +13,7 @@ sub new {
         id    => $Counter++,
         queue => [],
         busy  => 0,
+        serve_time => @_ ? shift : sub { 2 },
     }, $class;
 }
 
@@ -21,11 +22,11 @@ sub _serve_next {
     my $queue = $self->_queue;
     if ($self->busy and @$queue) {
         my $client = shift @$queue;
-        $self->log("Client $client leaves the queue.");
+        $self->log("==> Client $client");
     }
     if (@$queue) {
         $self->{busy} = 1;
-        $self->log("Starts to serve client $queue->[0].");
+        $self->log("serves Client $queue->[0].");
         my $serve_time = $self->gen_serve_time();
         my $now = SM::Simulator->now;
         SM::Simulator->schedule(
@@ -47,7 +48,7 @@ sub busy {
 }
 
 sub gen_serve_time {
-    2;
+    $_[0]->{serve_time}->();
 }
 
 sub _queue {
@@ -56,7 +57,7 @@ sub _queue {
 
 sub join_queue {
     my $self = shift;
-    $self->log("Client @_ joins the queue.");
+    $self->log("<== Client @_");
     push @{ $self->{queue} }, @_;
     if (not $self->busy) { $self->_serve_next; }
 }

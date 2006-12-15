@@ -3,5 +3,5 @@ SM::Server::_serve_next
 SM::Server::join_queue
 SM::Server::gen_serve_time
 SM::Client::new
-SM::Client::gen_next_interval
+SM::Client::gen_arrival_interval
 Sim::Dispatcher::schedule
