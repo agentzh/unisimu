@@ -9,7 +9,7 @@ our @EXPORT_OK = qw(log);
 
 sub log {
     my $now = __PACKAGE__->now;
-    warn "\@$now @_\n";
+    print "\@$now @_\n";
 }
 
 1;
