@@ -8,11 +8,13 @@ BEGIN { push @INC, 'lib'; }
 use SM;
 
 my $count = shift || 10;
+my $arrival_time = shift || 2;
+my $service_time = shift || 1;
 
-$SM::Client::ArrivalInterval = sub { 1 };
+$SM::Client::ArrivalInterval = sub { $arrival_time };
 my @servers;
 for (1..5) {
-    push @servers, SM::Server->new(sub { 2 });
+    push @servers, SM::Server->new(sub { $service_time });
 }
 my $handle;
 $handle = sub {

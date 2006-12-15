@@ -1,11 +1,12 @@
 use strict;
 use warnings;
+use Regexp::Common qw /number/;
 
 my @servers;
 my @clients;
 my $prev_time = 0;
 while (<>) {
-    if (/^\@(\d+) <Server (\d+)> (<==|==>) Client (\d+)/) {
+    if (/^\@($RE{num}{real}) <Server (\d+)> (<==|==>) Client (\d+)/) {
         my ($time, $server_id, $direction, $client_id) = ($1, $2, $3, $4);
         my $server = $servers[$server_id] ||= {
             queue_len => [],
@@ -24,7 +25,7 @@ while (<>) {
             $client->{leave} = $time;
         }
     }
-    elsif (/^@(\d+) <Server (\d+)> serves Client (\d+)/) {
+    elsif (/^@($RE{num}{real}) <Server (\d+)> serves Client (\d+)/) {
         my ($time, $server_id, $client_id) = ($1, $2, $3);
         $clients[$client_id]->{start_serving} = $time;
     }
