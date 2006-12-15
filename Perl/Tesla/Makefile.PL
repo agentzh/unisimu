@@ -17,6 +17,7 @@ build_requires  ('Data::Dumper');
 build_requires  ('Carp');
 
 system($^X, 'script/tslc.pl', 'lib/std.tm');
+system($^X, '-Ilib', 'script/tslc.pl', '-o', 't/std.t', 't/std.t.tsl');
 
 makemaker_args  (
     test => { TESTS => "t/*.t" },
