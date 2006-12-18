@@ -1,0 +1,4 @@
+circumfix:<[ ]>  ion
+circumfix:<{ }>  solid
+prefix:<^>       gas
+prefix:<~>       liquid

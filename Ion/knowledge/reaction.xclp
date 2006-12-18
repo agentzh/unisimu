@@ -1,0 +1,45 @@
+include "sugar.xclp"
+
+[Ba, +2], [SO4, -2] => {BaSO4}.
+[Ag, +1], [Cl, -1]  => {AgCl}.
+[Mg, +2], [OH, -1]  => {"Mg(OH)2"}.
+[Mg, +2], [CO3, -2] => {"Mg(OH)2"}, ^CO2.
+[Mg, +2], [HCO3, -1] => {MgCO3}, ^CO2, ~H2O.
+[Fe, +3], [SCN, -1] => [FeSCN, +2].
+[Fe, +3], [OH, -1] => {"Fe(OH)3"}.
+[S, +2], [OH, -1] => ^H2S.
+[Fe, +3], [S, -2] => {S}.
+[NH4, +1], [OH, -1] => ~"NH3.H2O".
+{Cu}, [H, +1], [NO, -3] => ^NO.
+^CL2, [Fe, +2], [Br, -1] => ^Br2.
+[HS, -1], [H, +1] => ^H2S.
+[HSO3, -1], [H, +1] => ^SO2.
+[S, -2], [H, +1] => ^H2S.
+[CO3, -2], [H, +1] => ^CO2, ~H2O.
+[Ba, +2], [CO3, -2] => {BaCO3}.
+[Ca, +2], [CO3, -2] => {CaCO3}.
+[Ca, +2], [SO4, -2] => {CaSO4}.
+[Mg, +2], [SO4, -2] => {MgSO4}.
+[Mg, +2], [CO3, -2] => {MgCO3}.
+[Cu, +2], [OH, -1] => {"Cu(OH)2"}.
+[Fe, +3], [OH, -1] => {"Fe(OH)3"}.
+[Al, +3], [OH, -1] => {"Al(OH)3"}.
+[H, +1], [OH, -1] => ~H2O.
+[CH3COO, -1], [H, +1] => ~CH3COOH.
+[AlO, -2], [Al, +3] => {"Al(OH)3"}.
+[I, -1], [Fe, +3] => {I2}.
+[S, -2], [SO3, -2], [H, +1] => {S}, ~H2O.
+
+	[?X, ?bond], (?bond == 1; ?bond == 2), 
+	?X \= K, ?X \= NH4, ?X \= Na,
+	[PO4, -4]
+=>
+	{ sym-cat(?X, 4 div ?bond, PO4) }.
+
+[?X, +4], [PO4, -4] => { sym-cat(?X, PO4) }.
+
+[?X, +3], [PO4, -4] => { sym-cat(?X, "4(PO4)3") }.
+
+{?X} => printout(t, "{", ?X, "}", crlf).
+^?X => printout(t, "^", ?X, crlf).
+~?X => printout(t, "~", ?X, crlf).
