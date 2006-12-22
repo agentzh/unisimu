@@ -68,17 +68,17 @@ for (0..$#servers) {
        $accum2 += ($end_time - $prev_time) * ($prev_len - 1);
    }
     my $ave_len = $accum / $duration;
-    print " Customers in system: $ave_len\n";
+    print "  Customers in system: $ave_len\n";
     my $ave_len2 = $accum2 / $duration;
-    print " Customers in queue: $ave_len2\n";
+    print "  Customers in queue: $ave_len2\n";
     push @ave_len, $ave_len;
     push @ave_len2, $ave_len2;
 }
 
 print "Total\n";
 
-print " Customers in system: ", sum(@ave_len) / scalar(@ave_len), "\n";
-print " Customers in queue: ", sum(@ave_len2) / scalar(@ave_len2), "\n";
+print "  Customers in system: ", sum(@ave_len) / scalar(@ave_len), "\n";
+print "  Customers in queue: ", sum(@ave_len2) / scalar(@ave_len2), "\n";
 
 my ($count, $accum) = (0, 0);
 for (0..$#clients) {
