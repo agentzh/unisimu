@@ -54,11 +54,16 @@ sub fire_next ($) {
 
 sub run ($@) {
     my $class = shift;
-    my $count = defined $_[0] ? shift : 1000;
+    my %opts = @_;
+    my $end_time = $class->now + $opts{duration} if defined $opts{duration};
+    my $fires    = $opts{fires} || 100_000_000;
     my $i = 0;
     while (1) {
         #warn "run: next!";
-        last if $i++ >= $count or !defined $class->fire_next;
+        last if ++$i > $fires;
+        my $t = $class->time_of_next;
+        last if !defined $t or (defined $end_time and $t > $end_time);
+        $class->fire_next;
     }
 }
 
