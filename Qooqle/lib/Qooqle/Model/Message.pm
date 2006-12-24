@@ -29,6 +29,7 @@ use Qooqle::Record schema {
 
     column msg_session =>
         refers_to Qooqle::Model::Session by 'id',
+        #render_as 'Text',
         is mandatory;
 
     column session_offset =>
