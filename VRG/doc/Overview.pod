@@ -1,0 +1,196 @@
+=head1 NAME
+
+Overview - VRG 专家系统概览
+
+=head1 AUTHOR
+
+章亦春 E<lt>agentzh@gmail.comE<gt>
+
+3030602110 计算机0304班
+
+计算机科学与通信工程学院 江苏大学
+
+=head1 VERSION
+
+   Maintainer: Agent Zhang <agentzh@gmail.com>
+   Date: 24 Dec 2006
+   Last Modified: 24 Dec 2006
+   Version: 0.01
+
+=head1 VRG 是什么？
+
+VRG 是一个立体几何定性问题证明系统。比如下面这样的问题都可以使用
+VRG 进行证明：
+
+=over
+
+=item 1.
+
+若直线 l // 平面 alpha, 则 l 平行于 alpha 内的所有直线吗？
+
+=item 2.
+
+设 alpha、beta 表示平面，a、b 表示直线，则 a // alpha 的一个充分条件
+是不是 alpha 垂直于 beta, 且 a 垂直于 beta ?
+
+=item 3.
+
+判断平行于同一个平面的两个平面是否平行
+
+=item 4.
+
+一个平面内的两相交直线与另一个平面内的两条相交直线分别平行，
+则这两个平面平行吗？
+
+=item 5.
+
+若平面 alpha 垂直于 平面 beta, 直线 n 在 alpha 上，直线 m 在 beta 上，
+m 垂直于 n, 则同时有 n 垂直于 beta 和 m 垂直于 alpha 成立吗？
+
+=item 6.
+
+PA、PO 分别是平面 alpha 的垂线、斜线，AO 是 PO 在平面 alpha 内的射影，
+且 a 在 alpha 上，a 垂直于 AO，则 a 垂直于 PQ.
+
+=back
+
+上述问题都引用自 VRG 的自动化测试台的用例。VRG 可以对任一个用户问题
+作出 2 种基本判断：Yes （即可以证明）和 No（即无法确定），并且给出提
+示信息和证明过程。
+
+=head1 用户如何向 VRG 描述自己的问题？
+
+用户通过一种类似几何语言的“用户语言”向 VRG 描述自己的问题。
+
+例如上面的第 1 题可以用 VRG 用户语言表达如下：
+
+    line l, m;
+    plane alpha;
+    l // alpha, m on alpha => l // m;
+
+第 2 题可以表达如下：
+
+    plane alpha, beta;
+    line a, b;
+
+    alpha T beta, a T beta => a // alpha
+
+第 3 题可以表达如下：
+
+    plane alpha, beta, theta;
+    alpha // theta, beta // theta => alpha // beta
+
+第 4 题可以表达如下：
+
+    line l1, l2, l3, l4;
+    plane alpha, beta;
+    point P, Q;
+
+    l1 on alpha, l2 on alpha, meet(l1, l2, Q),
+    l3 on beta, l4 on beta, meet(l3, l4, Q),
+    l1 // l3, l2 // l4 => alpha // beta
+
+第 5 题可以表达如下：
+
+    plane alpha, beta;
+    line m, n;
+
+    alpha T beta, n on alpha, m on beta, m T n => n T beta, m T alpha;
+
+第 6 题即三垂线定理，其 VRG 描述如下：
+
+    plane alpha;
+    line a;
+    line b; -- line PA
+    line d; -- line AO
+    line c; -- line PO
+    b T alpha, project(c, alpha, d), a on alpha, a T d
+    =>
+    a T c;
+
+=head1 用户该如何运行 VRG 系统？
+
+用户首先使用 VRG 用户语言描述自己的立体几何问题，并将之保存到
+一个磁盘文件，并使用 C<.vrg> 作为文件扩展名。然后使用下面的命令行
+进行求解：
+
+    $ perl script/vrg-run.pl foo.vrg
+
+典型地，若将上面的第 1 题用 VRG 语言描述后保存至 F<problem-1.vrg>
+文件，则运行 C<vrg-run> 程序的情景如下：
+
+    $ perl script/vrg-run.pl problem-1.vrg
+    Yes.
+
+    generating vectorize.png...
+    generating vector-eval.png...
+    generating anti-vectorize.png...
+    generating problem-1.png...
+    generating problem-1.vrg1.png...
+    generating problem-1.vrg2.png...
+
+输出的第一行为"C<Yes.>"，表示成功求证。后面的输出表示 C<vrg-run> 程序又生
+成了许多图片文件。其中最重要的是 F<problem-1.png>，它以有向图的形式绘出了
+整个程序证明的推理过程，即系统是如何从已知事实出发一步一步推出求证目标的。
+而 F<vectorize.png> 描绘的是整个证明流程中的第一大步，即“向量化”阶段的推理过程；
+F<vector-eval.png> 描绘的则是第二阶段，向量空间内的推理过程；F<anti-vectorize.png>
+描述的则是第三阶段，亦最后一大步，即“逆向量化”部分的推理过程。
+
+最后生成的 2 张图片比较特别。F<problem-1.vrg1.png> 描述的是已知条件所对应的
+向量关系图（即 Vector Relational Graph），而 F<problem-1.vrg2.png> 描绘的则是
+推理结束后结论加已知条件所对应的向量关系图。向量关系图本身使用下面的表示约定：
+所有节点表示向量，黑色实线表示“垂直关系”，黑色虚线表示“既不平行，也不垂直”，
+红色实线表示“平行关系”，红色虚线表示“不平行关系”，而其他关系会用文字显式标出。
+通过“向量关系图”，用户可以看到证明过程的数学本质。
+
+=head1 VRG 是如何绘制这些 PNG 格式的有向图的？
+
+VRG 在内部使用 AT&T 的自由软件库 Graphviz 来生成所有的有向图。
+
+=head1 VRG 在证明结果的描述上还有哪些特别之处？
+
+对于多证明目标的题目，VRG 在判断不成立时，会显式地指出具体是哪些目标是未决的。
+而对于题目自身的条件是彼此冲突的，比如两个几何元素既平行又垂直了，VRG 也会显
+式地指出冲突所涉及的细节（比如哪两个元素冲突了，是哪两个关系冲突了）。
+
+=head1 VRG 经过了怎么的测试？
+
+我已使用高中数学教材中所有的公理、定义、定理和推论对 VRG 进行了测试（在 VRG
+的测试集中即对应 sanity.t 文件），此外，我还使用高三时候积累的所有相关的高考复习
+题对 VRG 进行了测试（在测试集中即对应 senior.t 文件）。
+
+=head1 哪些立体几何问题是 VRG 无法求解的？
+
+对于涉及定量关系的几何问题是无法用 VRG 进行求解的，比如角度计算问题、线段长度
+之类。VRG 是定性求解系统，它只能处理“垂直”、“平行”、“线在面上”这样的定性关系。
+
+=head1 VRG 的知识库是使用什么语言描述的？
+
+VRG 的知识库全部是使用我自主设计和实现的通用目的专家系统编程语言 XClips 进行描述的，
+在 VRG 源代码目录中，对应 F<knowledge/*.xclp> 这些文件。
+
+由于使用了可扩展的 XClips 语言，VRG 的知识库非常简洁，非常清晰。
+
+=head1 VRG 在底层采用了什么样的推理引擎？
+
+VRG 在底层使用了美国航空航天局约翰逊太空中心开发的正向链推理机 CLIPS. 事实上，
+VRG 系统与 CLIPS 的交互全部是通过 XClips 系统来完成的。XClips 正是建筑在
+CLIPS 之上的。
+
+值得一提的是，CLIPS 是发布在公共域(public domain)中的，因此可以将之用于任何目的。
+
+=head1 VRG 可以运行在哪些操作系统上？
+
+VRG 的构件和依赖项都是高度可移植的，包括 CLIPS, perl, Graphviz, 因此可以不加修
+改地运行在包括 Windows, Linux, FreeBSD, Solaris 在内的多种操作系统上。目前，
+我只在 Windows XP 和 Windows 2000 上进行过测试。
+
+=head1 如何获取 VRG ?
+
+您总是可以从下面的 SVN 仓库获得 VRG 最新版本的源代码：
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/VRG>
+
+=head1 如何加入 VRG 的开发工作？
+
+如果您想帮助完善 VRG 系统，请发送电子邮件告知作者。谢谢！

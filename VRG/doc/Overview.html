@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Overview - VRG 专家系统概览</title>
+<link rel="stylesheet" href="Active.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Overview - VRG 专家系统概览</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+	<li><a href="#version">VERSION</a></li>
+	<li><a href="#vrg_________">VRG 是什么？</a></li>
+	<li><a href="#___________vrg_________________">用户如何向 VRG 描述自己的问题？</a></li>
+	<li><a href="#_______________vrg_______">用户该如何运行 VRG 系统？</a></li>
+	<li><a href="#vrg________________png_________________">VRG 是如何绘制这些 PNG 格式的有向图的？</a></li>
+	<li><a href="#vrg_____________________________________">VRG 在证明结果的描述上还有哪些特别之处？</a></li>
+	<li><a href="#vrg___________________">VRG 经过了怎么的测试？</a></li>
+	<li><a href="#___________________vrg_____________">哪些立体几何问题是 VRG 无法求解的？</a></li>
+	<li><a href="#vrg_______________________________">VRG 的知识库是使用什么语言描述的？</a></li>
+	<li><a href="#vrg_______________________________">VRG 在底层采用了什么样的推理引擎？</a></li>
+	<li><a href="#vrg___________________________">VRG 可以运行在哪些操作系统上？</a></li>
+	<li><a href="#_________vrg_">如何获取 VRG ?</a></li>
+	<li><a href="#_________vrg_____________">如何加入 VRG 的开发工作？</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Overview - VRG 专家系统概览</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>章亦春 &lt;<a href="mailto:agentzh@gmail.com">agentzh@gmail.com</a>&gt;</p>
+<p>3030602110 计算机0304班</p>
+<p>计算机科学与通信工程学院 江苏大学</p>
+<p>
+</p>
+<hr />
+<h1><a name="version">VERSION</a></h1>
+<pre>
+   Maintainer: Agent Zhang &lt;agentzh@gmail.com&gt;
+   Date: 24 Dec 2006
+   Last Modified: 24 Dec 2006
+   Version: 0.01</pre>
+<p>
+</p>
+<hr />
+<h1><a name="vrg_________">VRG 是什么？</a></h1>
+<p>VRG 是一个立体几何定性问题证明系统。比如下面这样的问题都可以使用
+VRG 进行证明：</p>
+<ol>
+<li>
+<p>若直线 l // 平面 alpha, 则 l 平行于 alpha 内的所有直线吗？</p>
+</li>
+<li>
+<p>设 alpha、beta 表示平面，a、b 表示直线，则 a // alpha 的一个充分条件
+是不是 alpha 垂直于 beta, 且 a 垂直于 beta ?</p>
+</li>
+<li>
+<p>判断平行于同一个平面的两个平面是否平行</p>
+</li>
+<li>
+<p>一个平面内的两相交直线与另一个平面内的两条相交直线分别平行，
+则这两个平面平行吗？</p>
+</li>
+<li>
+<p>若平面 alpha 垂直于 平面 beta, 直线 n 在 alpha 上，直线 m 在 beta 上，
+m 垂直于 n, 则同时有 n 垂直于 beta 和 m 垂直于 alpha 成立吗？</p>
+</li>
+<li>
+<p>PA、PO 分别是平面 alpha 的垂线、斜线，AO 是 PO 在平面 alpha 内的射影，
+且 a 在 alpha 上，a 垂直于 AO，则 a 垂直于 PQ.</p>
+</li>
+</ol>
+<p>上述问题都引用自 VRG 的自动化测试台的用例。VRG 可以对任一个用户问题
+作出 2 种基本判断：Yes （即可以证明）和 No（即无法确定），并且给出提
+示信息和证明过程。</p>
+<p>
+</p>
+<hr />
+<h1><a name="___________vrg_________________">用户如何向 VRG 描述自己的问题？</a></h1>
+<p>用户通过一种类似几何语言的“用户语言”向 VRG 描述自己的问题。</p>
+<p>例如上面的第 1 题可以用 VRG 用户语言表达如下：</p>
+<pre>
+    line l, m;
+    plane alpha;
+    l // alpha, m on alpha =&gt; l // m;</pre>
+<p>第 2 题可以表达如下：</p>
+<pre>
+    <span class="variable">plane</span> <span class="variable">alpha</span><span class="operator">,</span> <span class="variable">beta</span><span class="operator">;</span>
+    <span class="variable">line</span> <span class="variable">a</span><span class="operator">,</span> <span class="variable">b</span><span class="operator">;</span>
+</pre>
+<pre>
+    alpha T beta, a T beta =&gt; a // alpha</pre>
+<p>第 3 题可以表达如下：</p>
+<pre>
+    plane alpha, beta, theta;
+    alpha // theta, beta // theta =&gt; alpha // beta</pre>
+<p>第 4 题可以表达如下：</p>
+<pre>
+    <span class="variable">line</span> <span class="variable">l1</span><span class="operator">,</span> <span class="variable">l2</span><span class="operator">,</span> <span class="variable">l3</span><span class="operator">,</span> <span class="variable">l4</span><span class="operator">;</span>
+    <span class="variable">plane</span> <span class="variable">alpha</span><span class="operator">,</span> <span class="variable">beta</span><span class="operator">;</span>
+    <span class="variable">point</span> <span class="variable">P</span><span class="operator">,</span> <span class="variable">Q</span><span class="operator">;</span>
+</pre>
+<pre>
+    l1 on alpha, l2 on alpha, meet(l1, l2, Q),
+    l3 on beta, l4 on beta, meet(l3, l4, Q),
+    l1 // l3, l2 // l4 =&gt; alpha // beta</pre>
+<p>第 5 题可以表达如下：</p>
+<pre>
+    plane alpha, beta;
+    line m, n;</pre>
+<pre>
+    alpha T beta, n on alpha, m on beta, m T n =&gt; n T beta, m T alpha;</pre>
+<p>第 6 题即三垂线定理，其 VRG 描述如下：</p>
+<pre>
+    <span class="variable">plane</span> <span class="variable">alpha</span><span class="operator">;</span>
+    <span class="variable">line</span> <span class="variable">a</span><span class="operator">;</span>
+    <span class="variable">line</span> <span class="variable">b</span><span class="operator">;</span> <span class="operator">--</span> <span class="variable">line</span> <span class="variable">PA</span>
+    <span class="variable">line</span> <span class="variable">d</span><span class="operator">;</span> <span class="operator">--</span> <span class="variable">line</span> <span class="variable">AO</span>
+    <span class="variable">line</span> <span class="variable">c</span><span class="operator">;</span> <span class="operator">--</span> <span class="variable">line</span> <span class="variable">PO</span>
+    <span class="variable">b</span> <span class="variable">T</span> <span class="variable">alpha</span><span class="operator">,</span> <span class="variable">project</span><span class="operator">(</span><span class="variable">c</span><span class="operator">,</span> <span class="variable">alpha</span><span class="operator">,</span> <span class="variable">d</span><span class="operator">),</span> <span class="variable">a</span> <span class="variable">on</span> <span class="variable">alpha</span><span class="operator">,</span> <span class="variable">a</span> <span class="variable">T</span> <span class="string">d</span>
+    <span class="operator">=&gt;</span>
+    <span class="variable">a</span> <span class="variable">T</span> <span class="variable">c</span><span class="operator">;</span>
+</pre>
+<p>
+</p>
+<hr />
+<h1><a name="_______________vrg_______">用户该如何运行 VRG 系统？</a></h1>
+<p>用户首先使用 VRG 用户语言描述自己的立体几何问题，并将之保存到
+一个磁盘文件，并使用 <code>.vrg</code> 作为文件扩展名。然后使用下面的命令行
+进行求解：</p>
+<pre>
+    $ perl script/vrg-run.pl foo.vrg</pre>
+<p>典型地，若将上面的第 1 题用 VRG 语言描述后保存至 <em>problem-1.vrg</em>
+文件，则运行 <code>vrg-run</code> 程序的情景如下：</p>
+<pre>
+    $ perl script/vrg-run.pl problem-1.vrg
+    Yes.</pre>
+<pre>
+    generating vectorize.png...
+    generating vector-eval.png...
+    generating anti-vectorize.png...
+    generating problem-1.png...
+    generating problem-1.vrg1.png...
+    generating problem-1.vrg2.png...</pre>
+<p>输出的第一行为``<code>Yes.</code>''，表示成功求证。后面的输出表示 <code>vrg-run</code> 程序又生
+成了许多图片文件。其中最重要的是 <em>problem-1.png</em>，它以有向图的形式绘出了
+整个程序证明的推理过程，即系统是如何从已知事实出发一步一步推出求证目标的。
+而 <em>vectorize.png</em> 描绘的是整个证明流程中的第一大步，即“向量化”阶段的推理过程；
+<em>vector-eval.png</em> 描绘的则是第二阶段，向量空间内的推理过程；<em>anti-vectorize.png</em>
+描述的则是第三阶段，亦最后一大步，即“逆向量化”部分的推理过程。</p>
+<p>最后生成的 2 张图片比较特别。<em>problem-1.vrg1.png</em> 描述的是已知条件所对应的
+向量关系图（即 Vector Relational Graph），而 <em>problem-1.vrg2.png</em> 描绘的则是
+推理结束后结论加已知条件所对应的向量关系图。向量关系图本身使用下面的表示约定：
+所有节点表示向量，黑色实线表示“垂直关系”，黑色虚线表示“既不平行，也不垂直”，
+红色实线表示“平行关系”，红色虚线表示“不平行关系”，而其他关系会用文字显式标出。
+通过“向量关系图”，用户可以看到证明过程的数学本质。</p>
+<p>
+</p>
+<hr />
+<h1><a name="vrg________________png_________________">VRG 是如何绘制这些 PNG 格式的有向图的？</a></h1>
+<p>VRG 在内部使用 AT&amp;T 的自由软件库 Graphviz 来生成所有的有向图。</p>
+<p>
+</p>
+<hr />
+<h1><a name="vrg_____________________________________">VRG 在证明结果的描述上还有哪些特别之处？</a></h1>
+<p>对于多证明目标的题目，VRG 在判断不成立时，会显式地指出具体是哪些目标是未决的。
+而对于题目自身的条件是彼此冲突的，比如两个几何元素既平行又垂直了，VRG 也会显
+式地指出冲突所涉及的细节（比如哪两个元素冲突了，是哪两个关系冲突了）。</p>
+<p>
+</p>
+<hr />
+<h1><a name="vrg___________________">VRG 经过了怎么的测试？</a></h1>
+<p>我已使用高中数学教材中所有的公理、定义、定理和推论对 VRG 进行了测试（在 VRG
+的测试集中即对应 sanity.t 文件），此外，我还使用高三时候积累的所有相关的高考复习
+题对 VRG 进行了测试（在测试集中即对应 senior.t 文件）。</p>
+<p>
+</p>
+<hr />
+<h1><a name="___________________vrg_____________">哪些立体几何问题是 VRG 无法求解的？</a></h1>
+<p>对于涉及定量关系的几何问题是无法用 VRG 进行求解的，比如角度计算问题、线段长度
+之类。VRG 是定性求解系统，它只能处理“垂直”、“平行”、“线在面上”这样的定性关系。</p>
+<p>
+</p>
+<hr />
+<h1><a name="vrg_______________________________">VRG 的知识库是使用什么语言描述的？</a></h1>
+<p>VRG 的知识库全部是使用我自主设计和实现的通用目的专家系统编程语言 XClips 进行描述的，
+在 VRG 源代码目录中，对应 <em>knowledge/*.xclp</em> 这些文件。</p>
+<p>由于使用了可扩展的 XClips 语言，VRG 的知识库非常简洁，非常清晰。</p>
+<p>
+</p>
+<hr />
+<h1><a name="vrg_______________________________">VRG 在底层采用了什么样的推理引擎？</a></h1>
+<p>VRG 在底层使用了美国航空航天局约翰逊太空中心开发的正向链推理机 CLIPS. 事实上，
+VRG 系统与 CLIPS 的交互全部是通过 XClips 系统来完成的。XClips 正是建筑在
+CLIPS 之上的。</p>
+<p>值得一提的是，CLIPS 是发布在公共域(public domain)中的，因此可以将之用于任何目的。</p>
+<p>
+</p>
+<hr />
+<h1><a name="vrg___________________________">VRG 可以运行在哪些操作系统上？</a></h1>
+<p>VRG 的构件和依赖项都是高度可移植的，包括 CLIPS, perl, Graphviz, 因此可以不加修
+改地运行在包括 Windows, Linux, FreeBSD, Solaris 在内的多种操作系统上。目前，
+我只在 Windows XP 和 Windows 2000 上进行过测试。</p>
+<p>
+</p>
+<hr />
+<h1><a name="_________vrg_">如何获取 VRG ?</a></h1>
+<p>您总是可以从下面的 SVN 仓库获得 VRG 最新版本的源代码：</p>
+<p><a href="http://svn.berlios.de/svnroot/repos/unisimu/VRG">http://svn.berlios.de/svnroot/repos/unisimu/VRG</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="_________vrg_____________">如何加入 VRG 的开发工作？</a></h1>
+<p>如果您想帮助完善 VRG 系统，请发送电子邮件告知作者。谢谢！</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;Overview - VRG 专家系统概览</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
