@@ -39,6 +39,16 @@ SM::Simulator - Simulator for the SM library
 SM::Simulator subclasses the Sim::Dispatcher class and only provides one
 more subroutine, namely, the C<log> sub.
 
+=head1 METHODS
+
+=over
+
+=item C<< CLASS->log($message) >>
+
+Logs the message. currently the logger is just stdout.
+
+=back
+
 =head1 AUTHOR
 
 Agent Zhang E<lt>agentzh@gmail.comE<gt>
