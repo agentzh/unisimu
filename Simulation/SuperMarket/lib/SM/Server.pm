@@ -27,10 +27,10 @@ sub _serve_next {
     if (@$queue) {
         $self->{busy} = 1;
         $self->log("serves Client $queue->[0].");
-        my $serve_time = $self->gen_service_time();
+        my $service_time = $self->gen_service_time();
         my $now = SM::Simulator->now;
         SM::Simulator->schedule(
-            $now + $serve_time,
+            $now + $service_time,
             =>
             sub { $self->_serve_next }
         );
