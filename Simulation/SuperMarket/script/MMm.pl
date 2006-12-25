@@ -10,8 +10,8 @@ BEGIN { push @INC, 'lib'; }
 use SM;
 
 GetOptions("servers=i"      => \my $server_count,
-           "service_rate=f" => \my $service_rate,
-           "arrival_rate=f" => \my $arrival_rate,
+           "service-rate=f" => \my $service_rate,
+           "arrival-rate=f" => \my $arrival_rate,
            "duration=f"     => \my $duration) or help();
 
 defined $server_count && defined $service_rate && defined $arrival_rate && $duration or
