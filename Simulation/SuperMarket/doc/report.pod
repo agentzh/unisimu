@@ -67,20 +67,134 @@ G/G/m ÒâÎ¶×Å²»½öÊÇ¶à·şÎñÌ¨£¬ÇÒ¹Ë¿Íµ½´ï¼ä¸ôºÍ·şÎñÊ±¼ä¶¼ÔÊĞíÓÃ»§Ö¸¶¨ÈÎÒâµÄËæ»ú·Ö²¼
 
 Ê¹ÓÃÏÂÃæµÄ¶¯Ì¬ÍøÒ³¶ÔÎÒµÄ M/M/1 ÏµÍ³µÄ·ÂÕæĞĞÎª½øĞĞ¼òµ¥ÆÀ¹À£º
 
- XXX url?
+L<http://staff.um.edu.mt/jskl1/simweb/simmm1.html>
+
+µ±µ½´ïÂÊÎª 1.0, ·şÎñÂÊÎª 2.0 Ê±£¬ÀíÂÛÉÏµÄÍ³¼Æ½á¹ûÈçÏÂ£º
+
+    Customers in system (Ls)     1
+    Customers in queue (Lq)      0.5
+    Time in system (Ws)          1
+    Time in queue (Wq)           0.5
+
+ÔËĞĞÎÒµÄ M/M/1 ·ÂÕæ³ÌĞòµÃµ½µÄµäĞÍ½á¹ûÈçÏÂ£º
+
+  $ script/MMm.pl --servers 1 --arrival-rate 1.0 --service-rate 2.0 --duration 10000 | script/stats.pl
+  <Server 0>
+    Customers in system: 1.02794950226181
+    Customers in queue: 0.53571203835544
+  Total
+    Customers in system: 1.02794950226181
+    Customers in queue: 0.53571203835544
+    Time in system: 1.03843772326681
+    Time in queue: 0.541177935504031
+    Service time: 0.497259787762777
+
+ÎÒÃÇ¿´µ½£¬Í³¼Æ½á¹ûÓëÀíÂÛÖµ·Ç³£½Ó½ü¡£
+
+µ±µ½´ïÂÊÎª 2.0, ·şÎñÂÊÎª 3.0 Ê±£¬ÀíÂÛÉÏµÄÍ³¼Æ½á¹ûÈçÏÂ£º
+
+    Customers in system (Ls)     1.9999999999999998
+    Customers in queue (Lq)      1.333333333333333
+    Time in system (Ws)          1
+    Time in queue (Wq)           0.6666666666666666
+
+ÔËĞĞÎÒµÄ M/M/1 ·ÂÕæ³ÌĞòµÃµ½µÄµäĞÍÊä³öÈçÏÂ£º
+
+  $ script/MMm.pl --servers 1 --arrival-rate 2.0 --service-rate 3.0 --duration 10000 | script/stats.pl
+  <Server 0>
+    Customers in system: 2.09386974690431
+    Customers in queue: 1.41764277489404
+  Total
+    Customers in system: 2.09386974690431
+    Customers in queue: 1.41764277489404
+    Time in system: 1.04126000641718
+    Time in queue: 0.704979250531617
+    Service time: 0.336280755885562
 
 Í¬Ê±£¬ÎÒÊ¹ÓÃÏÂÃæµÄ Mathworks ¹«Ë¾µÄ Simlink ½Ì³ÌÖĞ¹ØÓÚ M/M/m ÅÅ¶ÓÄ£ĞÍµÄ·ÂÕæºÍÀíÂÛ
 ½á¹û¶ÔÎÒµÄ M/M/m ÏµÍ³µÄ·ÂÕæĞĞÎª½øĞĞÁË¼òµ¥ÆÀ¹À£º
 
- XXX url?
+L<http://www.mathworks.com/access/helpdesk/help/toolbox/simevents/ug/index.html?/access/helpdesk/help/toolbox/simevents/ug/bqhtldv.html&>
+
+¸ÃÍøÒ³ÖĞµÄÊ¾ÀıÎª M/M/5, µ½´ïÂÊÎª 1/2, ·şÎñÂÊÎª 1/5. ÀíÂÛÉÏµÃµ½µÄ¹Ë¿ÍÔÚÏµÍ³ÖĞµÄÆ½¾ùÖÍÁôÊ±¼ä
+(Time in system) Îª 5.26.
+
+ÔËĞĞÎÒµÄ M/M/m ·ÂÕæ³ÌĞòµÃµ½µÄÒ»´ÎµäĞÍÊä³öÈçÏÂ£º
+
+  $ script/MMm.pl --servers 5 --arrival-rate 0.5 --service-rate 0.2 --duration 100000 | script/stats.pl
+  <Server 0>
+    Customers in system: 0.881863476971515
+    Customers in queue: 0.129042495647583
+  <Server 1>
+    Customers in system: 0.705254839874987
+    Customers in queue: 0.0706424768835602
+  <Server 2>
+    Customers in system: 0.547579115143208
+    Customers in queue: 0.0375359592039925
+  <Server 3>
+    Customers in system: 0.384430970742194
+    Customers in queue: 0.0203471250551609
+  <Server 4>
+    Customers in system: 0.238368972369843
+    Customers in queue: 0.00918000216203186
+  Total
+    Customers in system: 0.551499475020349
+    Customers in queue: 0.0533496117904658
+    Time in system: 5.55423698384582
+    Time in queue: 0.537193554133421
+    Service time: 5.01698932186263
+
+ÎÒÃÇ¿´µ½ÔÚ 0 ~ 100000 µÄÊ±¼ä¼ä¸ôÄÚµÄÍ³¼Æ½á¹ûÎª 5.55, Óë 5.26 ÊÇºÜ½Ó½üµÄ¡£
 
 =item *
 
 ÔÚÊÂ¼ş×¢²áÉÏÊ¹ÓÃÁË¼ÆËã»ú¿ÆÑ§ÖĞÏÈ½øµÄ Continuation ¼¼Êõ¡£
 
 ¼òÒªÑÔÖ®£¬±ãÊÇÊ¹ÓÃContinuation À´ÊµÏÖÃ¿µ±Ò»¸ö¹Ë¿Íµ½À´Ê±£¬²Å¡°¼Æ»®¡±ÏÂÒ»¸ö¹Ë¿ÍµÄµ½
-À´Ê±¿ÌµÄ¶èĞÔĞĞÎª¡£ÀàËÆµØ£¬Ã¿µ±·şÎñÌ¨¿ªÊ¼·şÎñÏÂÒ»¸ö¹Ë¿ÍµÄÊ±ºò£¬²ÅÕæÕı¡°¼Æ»®¡±Ëü·şÎñÍê
-¸Ã¹Ë¿ÍËùĞèµÄÊ±¼ä¡£
+À´Ê±¿ÌµÄ¶èĞÔĞĞÎª¡£±ÈÈçÏÂÃæµÄ´úÂëÆ¬¶Î£º
+
+    my $server = new SM::Server(sub { rand(1) });
+    my $handle;
+    $handle = sub {
+        $server->join_queue(new SM::Client);
+        SM::Simulator->schedule(
+            SM::Simulator->now + rand(2) => $handle
+        );
+    };
+    SM::Simulator->schedule( rand(2) => $handle );
+    SM::Simulator->run(duration => 25.0);
+
+Õâ¶ùµÄ rand(1) ²úÉú·şÎñÊ±¼ä£¬¶ø rand(2) ²úÉúµ½´ï¼ä¸ô¡£´Ë´¦µÄ Continuation ÊÇÀûÓÃ
+Perl µÄ±Õ°üÀ´ÊµÏÖµÄ¡£×¢Òâ $handle ÊÇÈçºÎµİ¹éµØÏò·ÂÕæÌ¨×¢²á $handle ×ÔÉíµÄ¡£
+
+ÀàËÆµØ£¬Ã¿µ±·şÎñÌ¨¿ªÊ¼·şÎñÏÂÒ»¸ö¹Ë¿ÍµÄÊ±ºò£¬²ÅÕæÕı¡°¼Æ»®¡±Ëü·şÎñÍê
+¸Ã¹Ë¿ÍËùĞèµÄÊ±¼ä¡£±ÈÈç SM::Server ÀàµÄ _serve_next ·½·¨£º
+
+    sub _serve_next {
+        my $self = shift;
+        my $queue = $self->_queue;
+        if ($self->busy and @$queue) {
+            my $client = shift @$queue;
+            $self->log("==> Client $client");
+        }
+        if (@$queue) {
+            $self->{busy} = 1;
+            $self->log("serves Client $queue->[0].");
+            my $service_time = $self->gen_service_time();
+            my $now = SM::Simulator->now;
+            SM::Simulator->schedule(
+                $now + $service_time,
+                =>
+                sub { $self->_serve_next }
+            );
+        } else {
+            $self->{busy} = 0;
+        }
+    }
+
+×¢Òâ´Ë´¦ _serve_next ÊÇÈçºÎÍ¨¹ı schedule ·½·¨µİ¹éµØ×¢²á _serve_next ×ÔÉíµÄ¡£Öµ
+µÃÖ¸³öµÄÊÇ£¬ÕâÃÇ²¢·ÇÒ»°ãÒâÒåÉÏµÄº¯Êıµİ¹éµ÷ÓÃ£¬ÒòÎª _serve_next ½öÊÇÄÚ²ã _serve_next
+µ÷ÓÃµÄ¡°×¢²áÕß¡±£¬»òÕßËµ¡°¼Æ»®Õß¡±£¬¶ø·Ç¡°µ÷ÓÃÕß(caller)¡±¡£
 
 Continuation µÄºÃ´¦ÔÚÓÚÎŞĞèÈËÎªµØÍÆ¶¯Õâ¸ö¶èĞÔµÄ´«²¥Á´Ìõ£¬¶øÊµÏÖ×Ô¶¯µÄ¿ØÖÆÈ¨´«µİ¡£
 Õâ¸ø·ÂÕæÖÕÖ¹Ìõ¼şµÄÈ·¶¨´øÀ´¼«´óµÄÁé»îĞÔ£¬Í¬Ê±Ò²Í¨¹ı¶èĞÔĞĞÎªÏÔÖøµØ¸ÄÉÆÁË·ÂÕæÏµÍ³
@@ -103,23 +217,67 @@ Continuation µÄºÃ´¦ÔÚÓÚÎŞĞèÈËÎªµØÍÆ¶¯Õâ¸ö¶èĞÔµÄ´«²¥Á´Ìõ£¬¶øÊµÏÖ×Ô¶¯µÄ¿ØÖÆÈ¨´«µİ¡
 Ô´´úÂë±£³ÖÕû½à£¬Í¬Ê±·½±ã·Ö±ğ¶Ô·ÂÕæÆ÷ºÍÍ³¼ÆÁ¿¼ÆËã²¿¼ş½øĞĞµ¥Ôª²âÊÔ£¬ÎÒÔÚ SM ÏîÄ¿ÖĞ
 ½«¶şÕßµÄÊµÏÖ·ÖÀë¡£
 
-»ù±¾µÄ·ÂÕæÆ÷ÔËĞĞ¹ı³ÌÈçÏÂ£ºÊ×ÏÈÔËĞĞ·ÂÕæÆ÷£¬½«·ÂÕæ½á¹ûÒÔ»ù±¾µÄÊÂ¼şÈÕÖ¾µÄĞÎÊ½Êä³öµ½ stdout
-£¨»òÕßÖØ¶¨Ïòµ½¹ÜµÀºÍ´ÅÅÌÎÄ¼ş£©¡£È»ºóÔÙ½«¸ÃÊä³ö×÷ÎªÊäÈëÎ¹¸øÍ³¼ÆÁ¿¼ÆËã³ÌĞò£¬¼ÆËã³öËùĞèµÄ
-Æ½¾ùÅÅ¶ÓÊ±¼ä¡¢Æ½¾ù¶Ó³¤µÈÒ»ÏµÍ³Í³¼ÆÁ¿¡£
+ÎÒµÄÍ¬Ñ§ºÎÉ¼¾ÍÔøÎÊ¹ıÎÒÓ¦¸Ã°ÑÓëÍ³¼ÆÏà¹ØµÄ±äÁ¿·ÅÔÚ·ÂÕæÊµÌåËù¶ÔÓ¦µÄ C++ ÀàµÄÍâ±ß£¬»¹
+ÊÇ¸Ã·ÅÖÃÔÚÀàµÄÄÚ²¿×÷Îª³ÉÔ±¡£ÎÒµÄ»Ø´ğÊÇ£¬¼È²»·ÅÔÚÀàµÄÀï£¬Ò²²»·ÅÔÚÀàÍâ£¬ÄÇ¾ÍÊÇ¸ù±¾²»
+·ÅÔÚ·ÂÕæ³ÌĞòÖĞ£¬¶øÊÇµ¥¶ÀµØ·ÅÔÚÒ»¸ö×¨ÃÅµÄÍ³¼Æ³ÌĞòÖĞ£»ÓÉ¸ÃÍ³¼Æ³ÌĞòÀ´´¦Àí·ÂÕæ³ÌĞò²úÉú
+µÄÔ­Ê¼µÄ·ÂÕæÈÕÖ¾¡£
+
+»ù±¾µÄ·ÂÕæÆ÷ÔËĞĞ¹ı³ÌÈçÏÂ£ºÊ×ÏÈÔËĞĞ·ÂÕæÆ÷£¨±ÈÈç MMm.pl£¬½«·ÂÕæ½á¹ûÒÔ»ù±¾µÄÊÂ¼şÈÕÖ¾µÄĞÎ
+Ê½Êä³öµ½ stdout£¨»òÕßÖØ¶¨Ïòµ½¹ÜµÀºÍ´ÅÅÌÎÄ¼ş£©¡£È»ºóÔÙ½«¸ÃÊä³ö×÷ÎªÊäÈëÎ¹¸øÍ³¼ÆÁ¿¼ÆËã³ÌĞò
+£¨±ÈÈç stats.pl£©£¬¼ÆËã³öËùĞèµÄ¾ùÅÅ¶ÓÊ±¼ä¡¢Æ½¾ù¶Ó³¤µÈÒ»ÏµÍ³Í³¼ÆÁ¿¡£
 
 =item *
 
 Ê¹ÓÃÎÒ¿ª·¢µÄ CPAN Ä£¿é C<UML::Class::Simple> ×Ô¶¯Í¨¹ıÔËĞĞ SM ºÍ Sim Àà¿â»æÖÆ³öÕû¸ö·ÂÕæÏµÍ³
-µÄ UML ÀàÍ¼£¨¼ò»¯°æ±¾£©£º
+µÄ UML ÀàÍ¼£¨¾­¹ıËõÂÔ£©£º
 
-XXX test.png
+=begin html
+
+<center>
+    <img src="class.png" width="700">
+</center>
+
+=end html
+
+100% ³ß´çµÄÔ­Í¼¿ÉÒÔ´ÓÏÂÃæµÄÎ»ÖÃÏÂÔØ£º
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Simulation/SuperMarket/doc/class.png>
 
 Ê¹ÓÃ XXX ¿ª·¢µÄ CPAN Ä£¿é C<UML::Sequence> ×Ô¶¯Í¨¹ıÔËĞĞ G/G/m ·ÂÕæ´úÂë»æÖÆ³ö·ÂÕæÏµÍ³µÄ
 UML ĞòÁĞÍ¼ (UML Sequence Diagram)£º
 
-XXX test2.png
+=begin html
+
+<center>
+    <img src="seq.png" height="1000">
+</center>
+
+=end html
+
+100% ³ß´çµÄÔ­Í¼¿ÉÒÔ´ÓÏÂÃæµÄÎ»ÖÃÏÂÔØ£º
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Simulation/SuperMarket/doc/seq.png>
 
 =back
+
+=head1 ÈçºÎ»ñÈ¡Ô´´úÂë
+
+SM ¿â¼°Ïà¹Ø½Å±¾£¬Èç MMm.pl ºÍ stats.pl£¬¿ÉÒÔ´ÓÎÒµÄ SVN ²Ö¿âµÃµ½£º
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Simulation/SuperMarket>
+
+ÍÆ¼öÊ¹ÓÃÏñ TortoiseSVN ÕâÑùµÄ SVN ¿Í»§¶Ë½øĞĞÏÂÔØ¡£
+
+Ö»Íâ£¬SuperMarket ÒÀÀµÎÒµÄ Sim ·ÂÕæ¿â¡£Ä¿Ç°ËüÊÇÎÒµÄÊı×ÖµçÂ··ÂÕæÏµÍ³µÄÒ»²¿·Ö£º
+
+L<http://svn.berlios.de/svnroot/repos/unisimu/Perl/Tesla>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 by Agent Zhang (ÕÂÒà´º). All rights reserved.
+
+This library is free software; you can redistribute it and/or modify it under the same
+terms as Perl itself.
 
 =head1 SEE ALSO
 
