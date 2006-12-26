@@ -194,3 +194,11 @@ L<http://svn.berlios.de/svnroot/repos/unisimu/VRG>
 =head1 如何加入 VRG 的开发工作？
 
 如果您想帮助完善 VRG 系统，请发送电子邮件告知作者。谢谢！
+
+=head1 COPYRIGHT
+
+Copyright 2006 by Agent Zhang (章亦春). All rights reserved.
+
+=head1 SEE ALSO
+
+L<KB>

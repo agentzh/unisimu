@@ -66,6 +66,11 @@ C<beta> ╨м C<l>.
 
 ╠Да©р╩╟Цсцсз╧ФтРё╛╤ЬЁёа©р╩╟ЦЁЖожтзйбй╣жп║ё
 
+уБп╘фДй╣╤╪йг XClips сОят╣дсО╥╗║ёсп╧ь XClips сОят╣д╦Э╤Юпео╒ё╛гК╡н╪Шнр╣д"Introduction to XClips"
+╫╡вЫ╣д╩ц╣фф╛ё╨
+
+L<http://perlcabal.org/~agentzh/slides/xclips/xclips.pdf>
+
 =head1 ж╙й╤©Б╣д╫╗дё╤тоС
 
 VRG ж╙й╤©Б╢СлЕио©ирт╥жн╙хЩ╦Ж╡©╥жё╛р╩йгтза╒лЕ╪╦╨н©у╪Джп╣дмфюМё╛╤ЧйгоРа©©у╪Джп
@@ -568,7 +573,7 @@ VRG ╣дй╣╪Ы╠МцВё╛тз╩Ысз╧ФтР╣до╣мЁжпй╣ож DBC р╙╠х╢╚мЁ╣дцЭаНй╫сОятр╙╥╫╠Ц╨мвтх╩╣ц╤Ю║
 
 дЗвэйг©ирт╢собцФ╣д Subversion (SVN) ╡ж©Бх║╣цвНпб╟Ф╠╬╣д VRG ж╙й╤©Бё╨
 
-L<http://svn.berlios.de/svnroot/repos/unisimu/VRG/knowledge>
+L<https://svn.berlios.de/svnroot/repos/unisimu/VRG/knowledge>
 
 =head1 TODO
 
@@ -582,6 +587,10 @@ L<http://svn.berlios.de/svnroot/repos/unisimu/VRG/knowledge>
 ╣╚отй╫╣д╣Ц╤тоСнчри╩АлА╦ъ╧ФтР╣д©и╤апт╨мж╙й╤©Б╣д©ию╘у╧пт║ё
 
 =back
+
+=head1 COPYRIGHT
+
+Copyright 2006 by Agent Zhang (убрЮ╢╨). All rights reserved.
 
 =head1 SEE ALSO
 
