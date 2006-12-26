@@ -9,8 +9,8 @@ Agent Zhang (ียาเดบ) E<lt>agentzh@gmail.comE<gt>
 =head1 VERSION
 
    Maintainer: Agent Zhang <agentzh@gmail.com>
-   Date: 24 Dec 2006
-   Last Modified: 24 Dec 2006
+   Date: 26 Dec 2006
+   Last Modified: 26 Dec 2006
    Version: 0.01
 
 =head1 DESCRIPTION
