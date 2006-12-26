@@ -1,0 +1,651 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>KB - VRG 知识库简介</title>
+<link rel="stylesheet" href="perl.css" type="text/css" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;KB - VRG 知识库简介</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#NAME">NAME</a></li>
+	<li><a href="#AUTHOR">AUTHOR</a></li>
+	<li><a href="#VERSION">VERSION</a></li>
+	<li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+	<li><a href="#bcc7b7a8d4bcb6a8">记法约定</a></li>
+	<li><a href="#d6aacab6bfe2b5c4bda8c4a3b6d4cff3">知识库的建模对象</a></li>
+	<ul>
+
+		<li><a href="#c1a2cce5bcb8bacebfd5bce4">立体几何空间</a></li>
+		<ul>
+
+			<li><a href="#b6fed4aab9d8cfb5">二元关系</a></li>
+			<li><a href="#c8fdd4aab9d8cfb5">三元关系</a></li>
+		</ul>
+
+		<li><a href="#cff2c1bfbfd5bce4">向量空间</a></li>
+	</ul>
+
+	<li><a href="#bbf9b1bebcd9c9e8ccf5bcfe">基本假设条件</a></li>
+	<li><a href="#d6aacab6bfe2b5c4cdc6c0edc1f7b3cc">知识库的推理流程</a></li>
+	<li><a href="#d6aacab6bfe2b5c4c4dab2bfbde1b9b9">知识库的内部结构</a></li>
+	<ul>
+
+		<li><a href="#vrg2dsugar2exclp"><em>vrg-sugar.xclp</em></a></li>
+		<li><a href="#preprocess2exclp"><em>preprocess.xclp</em></a></li>
+		<li><a href="#vectorize2exclp"><em>vectorize.xclp</em></a></li>
+		<ul>
+
+			<li><a href="#cfdfcfdfb9d8cfb5b5c4cff2c1bfbbaf">线线关系的向量化</a></li>
+			<li><a href="#cfdfc3e6b9d8cfb5b5c4cff2c1bfbbaf">线面关系的向量化</a></li>
+			<li><a href="#c3e6c3e6b9d8cfb5b5c4cff2c1bfbbaf">面面关系的向量化</a></li>
+		</ul>
+
+		<li><a href="#vector2deval2exclp"><em>vector-eval.xclp</em></a></li>
+		<li><a href="#anti2dvectorize2exclp"><em>anti-vectorize.xclp</em></a></li>
+		<li><a href="#goal2dmatch2exclp"><em>goal-match.xclp</em></a></li>
+	</ul>
+
+	<li><a href="#d6aacab6bfe2b5c4cdead5fbd0d4d7d4bcecd3eb20DBC">知识库的完整性自检与 DBC</a></li>
+	<li><a href="#d6aacab6bfe2b5c420Subversion20b2d6bfe2">知识库的 Subversion 仓库</a></li>
+	<li><a href="#TODO">TODO</a></li>
+	<li><a href="#SEE20ALSO">SEE ALSO</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="NAME">NAME</a></h1>
+<p>KB - VRG 知识库简介</p>
+<p>
+</p>
+<hr />
+<h1><a name="AUTHOR">AUTHOR</a></h1>
+<p>Agent Zhang (章亦春) &lt;<a href="mailto:agentzh@gmail.com">agentzh@gmail.com</a>&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="VERSION">VERSION</a></h1>
+<pre>
+   Maintainer: Agent Zhang &lt;agentzh@gmail.com&gt;
+   Date: 24 Dec 2006
+   Last Modified: 24 Dec 2006
+   Version: 0.01</pre>
+<p>
+</p>
+<hr />
+<h1><a name="DESCRIPTION">DESCRIPTION</a></h1>
+<p>这篇文档将简要地介绍一下 VRG 立体几何定性证明系统的知识库。</p>
+<p>
+</p>
+<hr />
+<h1><a name="bcc7b7a8d4bcb6a8">记法约定</a></h1>
+<p>VRG 知识库使用 XClips 语言进行描述。为方便起见，在本文档中的规则和事实示例亦
+使用 XClips 记法。VRG 定义了如下的特有运算符：</p>
+<ul>
+<li>
+<p>前缀 (prefix) <code>\</code> 表示谓词名 <code>line</code>，例如 <code>\a</code> 等同于 <code>line(a)</code>.</p>
+</li>
+<li>
+<p>前缀 <code>#</code> 表示谓词名 <code>plane</code>，例如 <code>#alpha</code> 等同于 <code>plane(alpha)</code>.</p>
+</li>
+<li>
+<p>中缀 (infix) <code>T</code> 等同于谓词名 <code>orthogonal</code>，表示正交或者垂直关系。</p>
+</li>
+<li>
+<p>中缀 <code>//</code> 等同于谓词名 <code>parallel</code>，表示平行关系。</p>
+</li>
+<li>
+<p>中缀 <code>X</code> 等同于谓词名 <code>cross</code>, 表示既不平行也不垂直的关系（在 VRG 内部术语中，称
+此种关系为 “斜交关系”）。</p>
+</li>
+<li>
+<p>中前缀 (infix-prefix) <code>~</code> 表示谓词名前缀 <code>not_</code>, 例如 <code>a [~//] b</code> 等价于 <code>not_parallel(a, b)</code>.</p>
+</li>
+<li>
+<p>中包围缀 (infix-circumfix) <code>[ ]</code> 表示立体几何空间中的关系，比如 <code>a [//] b</code> 就等同于谓词
+<code>space_parallel(a, b)</code>，而 <code>a [T] b</code> 就等同于谓词 <code>space_orthogonal(a, b)</code>.</p>
+</li>
+<li>
+<p>中包围缀 <code>&lt; &gt;</code> 表示向量空间中的关系，例如 <code>a &lt;//&gt; b</code> 等价于谓词
+<code>vector_parallel(a, b)</code>, 而 <code>a &lt;~T&gt; b</code> 则等价于谓词 <code>not_vector_orthogonal(a, b)</code>.</p>
+</li>
+</ul>
+<p>特别地，以问号 (<code>?</code>) 起始的标识符为 XClips 变量，如 <code>?alpha</code>, <code>?m</code> 之类；否则为常量，如
+<code>beta</code> 和 <code>l</code>.</p>
+<p>变量一般用于规则，而常量一般出现在事实中。</p>
+<p>
+</p>
+<hr />
+<h1><a name="d6aacab6bfe2b5c4bda8c4a3b6d4cff3">知识库的建模对象</a></h1>
+<p>VRG 知识库大体上可以分为三个部分，一是在立体几何空间中的推理，二是向量空间中
+的推理，三是在这两个空间之间的关系映射。</p>
+<p>
+</p>
+<h2><a name="c1a2cce5bcb8bacebfd5bce4">立体几何空间</a></h2>
+<p>在立体几何空间中，基本的研究对象是空间直线和平面这两种立体几何元素以及它们之间的关系。
+这些关系包括</p>
+<p>
+</p>
+<h3><a name="b6fed4aab9d8cfb5">二元关系</a></h3>
+<dl>
+<dt><strong><a name="item_25CF25DF25CF25DF25B3925D3825CF25B35">线线关系</a></strong>
+
+<dd>
+<p>对于线线关，VRG 仅处理线线关系中的平行关系，垂直关系，斜交关系，以及它们的衍生关系，例如
+不平行，不垂直，不斜交等等。</p>
+</dd>
+</li>
+<dt><strong><a name="item_25CF25DF25C3325E3625B3925D3825CF25B35">线面关系</a></strong>
+
+<dd>
+<p>VRG 仅处理线面关系中的线面平行，线面垂直，线面斜交，线在面上，以及它们的衍生关系，例如
+线面不垂直，线不在面上等等。</p>
+</dd>
+<dd>
+<p>比如：</p>
+</dd>
+<dd>
+<pre>
+    /* line a is parallel to line b */
+    \a, \b, a [//] b.</pre>
+</dd>
+<dd>
+<pre>
+    /* line c is perpendicular to line d */
+    \c, \d, a [T] b.</pre>
+</dd>
+<dd>
+<pre>
+    /* line e is not parallel to line f */
+    \e, \f, e [~//] f.</pre>
+</dd>
+</li>
+<dt><strong><a name="item_25C3325E3625C3325E3625B3925D3825CF25B35">面面关系</a></strong>
+
+<dd>
+<p>VRG 仅处理面面关系中的面面平行，面面垂直，面面斜交，以及它们的衍生关系，例如面面不平行等等。</p>
+</dd>
+<dd>
+<p>比如：</p>
+</dd>
+<dd>
+<pre>
+    /* line l is parallel to plane alpha */
+    \l, #alpha, l [//] alpha.</pre>
+</dd>
+<dd>
+<pre>
+    /* line a is perpendicular to plane beta */
+    \a, #beta, a [T] beta.</pre>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<h3><a name="c8fdd4aab9d8cfb5">三元关系</a></h3>
+<dl>
+<dt><strong><a name="item_25CF25DF25CF25DF25CF25E3025BD25BB25D3325DA25D3225BB25B3525E33">线线相交于一点</a></strong>
+
+<dd>
+<p>比如下面这条事实</p>
+</dd>
+<dd>
+<pre>
+    \a, \b, meet(a, b, A).</pre>
+</dd>
+<dd>
+<p>便指示了直线 a 和直线 b 相交于点 A.</p>
+</dd>
+</li>
+<dt><strong><a name="item_25CF25DF25D3425DA25C3325E3625C3925CF25B3525C3425CD25B3625D3325B30">线在面上的投影</a></strong>
+
+<dd>
+<p>该关系是指，一条直线在一个平面上的投影是另一条直线（或点）</p>
+</dd>
+<dd>
+<p>下面这条 XClips 事实</p>
+</dd>
+<dd>
+<pre>
+    \a, #A, \b, project(a, A, b).</pre>
+</dd>
+<dd>
+<p>就指明了直线 a 在平面 A 上的投影是 b.</p>
+</dd>
+</li>
+<dt><strong><a name="item_25CF25DF25C3325E3625CF25E3025BD25BB25D3325DA25D3225BB25B3525E33">线面相交于一点</a></strong>
+
+<dd>
+<p>比如下面这条事实</p>
+</dd>
+<dd>
+<pre>
+    \a, #alpha, meet(a, alpha, P).</pre>
+</dd>
+<dd>
+<p>指示直线 a 与平面 alpha 相交点 P.</p>
+</dd>
+</li>
+</dl>
+<p>VRG 在立几空间中的推理任务主要是将复杂的关系分解为基本关系，或者将基本关系合成为复杂关系。</p>
+<p>
+</p>
+<h2><a name="cff2c1bfbfd5bce4">向量空间</a></h2>
+<p>向量是立体几何元素的抽象表示。从数学语义上讲，立几空间中的平面在向量空间中对应其“法向量”，
+而立几空间中的直线在向量空间中对应其“方向向量”。</p>
+<p>向量空间中的关系演绎是整个证明系统的核心。VRG 正是通过从已有的向量关系推出新的向量关系，来
+间接地从已有的几何关系推出新的几何关系的。</p>
+<p>在向量空间中仅讨论下列关系：</p>
+<dl>
+<dt><strong><a name="item_25C3625BD25D3025D3025B3925D3825CF25B35">平行关系</a></strong>
+
+<dd>
+<p>例如</p>
+</dd>
+<dd>
+<pre>
+    a &lt;//&gt; b</pre>
+</dd>
+<dd>
+<p>表示向量 a 与向量 b 平行。</p>
+</dd>
+</li>
+<dt><strong><a name="item_25B3425B3925D3625B3125B3925D3825CF25B35">垂直关系</a></strong>
+
+<dd>
+<p>例如</p>
+</dd>
+<dd>
+<pre>
+    a &lt;T&gt; b</pre>
+</dd>
+<dd>
+<p>表示向量 a 与向量 b 垂直。</p>
+</dd>
+</li>
+<dt><strong><a name="item_25D3025B3125BD25BB25B3925D3825CF25B35">斜交关系</a></strong>
+
+<dd>
+<p>例如</p>
+</dd>
+<dd>
+<p>例如</p>
+</dd>
+<dd>
+<pre>
+    a &lt;X&gt; b</pre>
+</dd>
+<dd>
+<p>表示向量 a 与向量 b 斜交。</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="bbf9b1bebcd9c9e8ccf5bcfe">基本假设条件</a></h1>
+<p>目前，知识库使用了下列假设条件：</p>
+<ul>
+<li>
+<p>若一平面与另一平面的名称不同，则认为两平面不重合。（知识库自身创建的“辅助平面”除外。）</p>
+</li>
+<li>
+<p>若一直线与另一直线的名称不同，则认为两直线不重合。（知识库自身创建的“辅助直线”除外。）</p>
+</li>
+</ul>
+<p>取消这两条基本假设虽然从逻辑上更加完整，但从实用性的角度上讲，将不可避免地使知识库中
+到处充斥着“a 与 b 不重合”这样的断言，同时也会增加了用户输入已知条件的负担，增加了因
+人为的已知条件不充足而无法求证的可能性。</p>
+<p>
+</p>
+<hr />
+<h1><a name="d6aacab6bfe2b5c4cdc6c0edc1f7b3cc">知识库的推理流程</a></h1>
+<p>知识库从物理上分为 4 个 CLIPS 模块(module)，亦对应推理流程的 4 大阶段：</p>
+<dl>
+<dt><strong><a name="item_Vectorize_25C3425A3325BF25E39">Vectorize 模块</a></strong>
+
+<dd>
+<p>Vectorize 模块是由 <em>preprocess.xclp</em> 和 <em>vectorize.xclp</em> 这两个文件实现的。
+该模块负责完成从几何空间内的线线关系、线面关系、面面关系及其他复杂关系到
+向量空间内的向量关系的转换。</p>
+</dd>
+</li>
+<dt><strong><a name="item_Eval_25C3425A3325BF25E39">Eval 模块</a></strong>
+
+<dd>
+<p>Eval 模块是由 <em>vector-eval.xclp</em> 文件实现。该模块负责在向量空间内执行推理，
+从已知的向量关系不断推出新的向量关系。</p>
+</dd>
+</li>
+<dt><strong><a name="item_AntiVectorize_25C3425A3325BF25E39">AntiVectorize 模块</a></strong>
+
+<dd>
+<p>此模块由 <em>anti-vectorize.xclp</em> 文件实现。它负责执行 Vectorize 模块的“逆操作”，
+即将新的向量关系还原为几何空间中的线线关系、线面关系和面面关系。</p>
+</dd>
+</li>
+<dt><strong><a name="item_GoalMatch_25C3425A3325BF25E39">GoalMatch 模块</a></strong>
+
+<dd>
+<p>GoalMatch 模块完成用户给定的证明目标在所有已知事实中的匹配及相关的解释工作。</p>
+</dd>
+</li>
+</dl>
+<p>当推理机的焦点处于某个模块时，只有属于该模块的规则和事实才能被参与推理。</p>
+<p>有关立几空间的事实由 Vectorize 模块，AntiVectorize，和 GoalMatch 模块共享；
+有关向量空间的事实由 Vectorize 模块，Eval 模块，和 AntiVectorize 模块共享。</p>
+<p>推理机运行的具体流程如下</p>
+<ul>
+<li>
+<p>用户输入的已知条件所对应的“初始事实”被导入到 Vectorize 模块。</p>
+</li>
+<li>
+<p>推理机焦点 (focus) 从默认模块 MAIN 切换至 Vectorize 模块，执行立几空间内的
+关系演算和“向量化”操作。</p>
+</li>
+<li>
+<p>上一步运行完毕后，再将焦点移至 Eval 模块，执行向量空间内的关系演算，推出更多的
+向量关系。</p>
+</li>
+<li>
+<p>将焦点移至 AntiVectorize 模块，对所有新的向量关系执行反向量化，还原出立几空
+间中的语义。</p>
+</li>
+<li>
+<p>焦点被切换至 GoalMatch 模块，使用用户给定的证明目标对所有已知事实进行匹配，
+并生成解释和评价。</p>
+</li>
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="d6aacab6bfe2b5c4c4dab2bfbde1b9b9">知识库的内部结构</a></h1>
+<p>知识库由下列 XClips 源文件构成：</p>
+<p>
+</p>
+<h2><a name="vrg2dsugar2exclp"><em>vrg-sugar.xclp</em></a></h2>
+<p>该文件定义了知识库中所使用的特殊的运算符，例如前缀 <code>\</code> 和中缀 <code>//</code>.
+该文件为知识库中所有其他 .xclp 文件所包含。详情请参与 <a href="#bcc7b7a8d4bcb6a8">记法约定</a>.</p>
+<p>例如前缀 <code>\</code> 的定义如下：</p>
+<pre>
+    prefix:&lt;\&gt;   line</pre>
+<p>而中缀 <code>//</code> 的定义如下：</p>
+<pre>
+    infix:&lt;//&gt;   parallel</pre>
+<p>
+</p>
+<h2><a name="preprocess2exclp"><em>preprocess.xclp</em></a></h2>
+<p>该文件定义了 VRG 的“预处理规则”。这些规则的主要工作是在立几空间内部
+进行关系演算，其目的在于将 project（投影）和 meet（相交）这样的复杂
+关系转换为平行、垂直之类的简单关系，同时为某些基本关系生成“同构异形体”，
+以简化后续的匹配工作。</p>
+<p>具体说来，此文件包含下列几条规则：</p>
+<ul>
+<li>
+<p>当两个平面 <code>alpha</code> 和 <code>beta</code> 相交于直线 <code>l</code> 时，则 <code>alpha</code> 与 <code>beta</code>
+不平行，并且 <code>l</code> 同时在 <code>alpha</code> 和 <code>beta</code> 上.</p>
+<pre>
+    #?alpha, #?beta, meet(?alpha, ?beta, ?l)
+    =&gt; ?alpha [~//] ?beta, ?l [on] ?alpha, ?l [on] ?beta.</pre>
+<p>这儿的前缀问号(?)表示为变量，而非常量。</p>
+</li>
+<li>
+<p>当两条直线 <code>l</code> 和 <code>m</code> 相交于一点时，则存在一个平面 <code>alpha</code> 使得 <code>l</code> 和 <code>m</code>
+都在 <code>alpha</code> 上，且 <code>l</code> 不平行于 <code>m</code>.</p>
+<pre>
+    \?l, \?m, meet(?l, ?m, ?)
+    =&gt;
+        ?alpha := gensym(), #?alpha, temp(?alpha),
+        ?l [on] ?alpha, ?m [on] ?alpha,
+        ?l [~//] ?m.</pre>
+<p>这里的单个问号变量 (?) 表示“通配符”(wildcard).</p>
+</li>
+<li>
+<p>若直线 <code>l</code> 和平面 <code>alpha</code> 相交于一点，则 <code>l</code> 既不平行于 <code>alpha</code>，也不在 <code>alpha</code>
+之上：</p>
+<pre>
+    \?l, #?alpha, meet(?l, ?alpha, ?) =&gt; ?l [~//] ?alpha, ?l [~on] ?alpha.</pre>
+</li>
+<li>
+<p>若直线 <code>l</code> 在平面 <code>alpha</code> 上的投影为直线 <code>m</code>，则存在一个平面 <code>theta</code> 使得 (1) <code>l</code>
+与 <code>alpha</code> 斜交，(2) <code>l</code> 在 <code>theta</code> 上, (3) <code>theta</code> 与 <code>alpha</code> 相交于 <code>m</code>, 并且
+(4) <code>theta</code> 与 <code>alpha</code> 垂直：</p>
+<pre>
+    \?l, #?alpha, \?m, project(?l, ?alpha, ?m)
+    =&gt;
+        ?theta := gensym(), #?theta, temp(?theta),
+        ?l [X] ?alpha, ?l [on] ?theta,
+        meet(?theta, ?alpha, ?m),
+        ?theta [T] ?alpha.</pre>
+</li>
+<li>
+<p>若平面 <code>alpha</code> 与直线 <code>l</code> 之间存在某个特定的关系 R, 则 <code>l</code> 与 <code>alpha</code> 亦满足（交换律）：</p>
+<pre>
+    <span class="comment">#?alpha, \?l, ?alpha [?R] ?l =&gt; ?l [?R] ?alpha.</span>
+</pre>
+</li>
+</ul>
+<p>
+</p>
+<h2><a name="vectorize2exclp"><em>vectorize.xclp</em></a></h2>
+<p>本文件包含了执行“向量化”步骤的所有规则。</p>
+<p>
+</p>
+<h3><a name="cfdfcfdfb9d8cfb5b5c4cff2c1bfbbaf">线线关系的向量化</a></h3>
+<p>若直线 <code>l</code> 与直线 <code>m</code> 之间存在关系 <code>R</code>, 则向量 <code>l</code> 与向量 <code>m</code> 之间
+亦存在关系 <code>R</code>.</p>
+<pre>
+    \?l, \?m, ?l [?R] ?m =&gt; ?l &lt;?R&gt; ?m.</pre>
+<p>
+</p>
+<h3><a name="cfdfc3e6b9d8cfb5b5c4cff2c1bfbbaf">线面关系的向量化</a></h3>
+<ul>
+<li>
+<p>若直线 <code>l</code> 与平面 <code>alpha</code> 垂直，则向量 <code>l</code> 与向量 <code>alpha</code> 平行：</p>
+<pre>
+    \?l, #?alpha, ?l [T] ?alpha  =&gt; ?l &lt;//&gt; ?alpha.</pre>
+</li>
+<li>
+<p>若直线 <code>l</code> 与平面 <code>alpha</code> 平行，则向量 <code>l</code> 与向量 <code>alpha</code> 垂直：</p>
+<pre>
+    \?l, #?alpha, ?l [//] ?alpha =&gt; ?l &lt;T&gt; ?alpha.</pre>
+</li>
+<li>
+<p>若直线 <code>l</code> 与平面 <code>alpha</code> 斜交，则向量 <code>l</code> 与向量 <code>alpha</code> 亦斜交：</p>
+<pre>
+    \?l, #?alpha, ?l [X] ?alpha  =&gt; ?l &lt;X&gt; ?alpha.</pre>
+</li>
+<li>
+<p>若直线 <code>l</code> 在平面 <code>alpha</code> 上，则向量 <code>l</code> 与向量 <code>alpha</code> 垂直：</p>
+<pre>
+    \?l, #?alpha, ?l [on] ?alpha =&gt; ?l &lt;T&gt; ?alpha.</pre>
+</li>
+<li>
+<p>上述关系的否定亦然：</p>
+<pre>
+    \?l, #?alpha, ?l [~T] ?alpha  =&gt; ?l &lt;~//&gt; ?alpha.
+    \?l, #?alpha, ?l [~//] ?alpha =&gt; ?l &lt;~T&gt; ?alpha.
+    \?l, #?alpha, ?l [~X] ?alpha  =&gt; ?l &lt;~X&gt; ?alpha.</pre>
+</li>
+</ul>
+<p>
+</p>
+<h3><a name="c3e6c3e6b9d8cfb5b5c4cff2c1bfbbaf">面面关系的向量化</a></h3>
+<p>若平面 <code>alpha</code> 与平面 <code>beta</code> 满足关系 <code>R</code>, 则在向量空间中，<code>alpha</code> 与 <code>beta</code> 亦
+满足关系 <code>R</code>.</p>
+<pre>
+    <span class="comment">#?alpha, #?beta, ?alpha [?R] ?beta =&gt; ?alpha &lt;?R&gt; ?beta.</span>
+</pre>
+<p>
+</p>
+<h2><a name="vector2deval2exclp"><em>vector-eval.xclp</em></a></h2>
+<p>此文件中的规则都是向量空间内的“求解规则”，用于从已知的向量关系推出全新的向量关系。
+这些规则是整个 VRG 系统知识的<strong>核心</strong>。</p>
+<ul>
+<li>
+<p>已知 <code>a</code>, <code>b</code>, <code>c</code> 都是向量，若 <code>a</code> // <code>b</code>, <code>b</code> 与 <code>c</code> 满足关系 <code>R</code>,
+且 <code>c</code> 不同于 <code>a</code>，则 <code>a</code> 与 <code>c</code> 亦满足关系 <code>R</code>.</p>
+<pre>
+    ?a &lt;//&gt; ?b, ?b &lt;?R&gt; ?c, ?a \= ?c
+    =&gt; ?a &lt;?R&gt; ?c.</pre>
+<p>这一条规则的意义是，向量间的关系可以通过“平行”关系进行传递。在立体几何空间中，
+许多定理、定义和推论都对应于这一条规则。</p>
+<p>比如高中数学课本``立体几何''一章有下列公理和定理是本条向量规则在立几语义中
+特殊的表现形式：</p>
+<ul>
+<li><strong><a name="item_25C3625BD25D3025D3025B3925AB25C3025ED">平行公理</a></strong>
+
+<li><strong><a name="item_25D3625B3125CF25DF25BA25CD25C3625BD25C3325E3625B3425B3925D3625B3125B3525C3425C">直线和平面垂直的判定定理 II</a></strong>
+
+<li><strong><a name="item_25D3625B3125CF25DF25BA25CD25C3625BD25C3325E3625B3425B3925D3625B3125B3525C3425D">直线和平面垂直的性质定理</a></strong>
+
+<li><strong>直线和平面垂直的性质定理 II</strong>
+
+<li><strong><a name="item_25C3125BD25B3825F3625C3625BD25C3325E3625C3625BD25D3025D3025B3525C3425D3025D3425D">两个平面平行的性质定理 II</a></strong>
+
+<li><strong>两个平面平行的性质定理 III</strong>
+
+<li><strong><a name="item_25C3125BD25B3825F3625C3625BD25C3325E3625B3425B3925D3625B3125B3525C3425C3525D3025B">两个平面垂直的判定定理</a></strong>
+
+<li><strong><a name="item_25D3625B3125CF25DF25BA25CD25C3625BD25C3325E3625C3625BD25D3025D3025B3525C3425C">直线和平面平行的判定定理</a></strong>
+
+<li><strong><a name="item_25C3625BD25D3025D3025CF25DF25D3725E3925B3625A3825C3025ED">平行线组定理</a></strong>
+
+</ul>
+<p>我们看到，一条向量化规则对应到如此之多的立几定理和公理。从这个意义上讲，向
+量化方法有效地揭示出立体关系的本质。</p>
+<li>
+<p>已知 <code>a</code> 和 <code>b</code> 都是向量，若 <code>a</code> 垂直于向量 <code>b</code>, 或者 <code>a</code> 与 <code>b</code> 斜交，
+则 <code>a</code> 不平行于 <code>b</code>.</p>
+<pre>
+    ?a &lt;T&gt; ?b; ?a &lt;X&gt; ?b =&gt; ?a &lt;~//&gt; ?b.</pre>
+<p>本规则其实揭示的其实就是“不平行”的定义。之所以专门编写一条规则来产生“不平行”
+关系，是因为“不平行”在下面这条规则中扮演着关键性的角色。</p>
+</li>
+<li>
+<p>已知 <code>a</code>, <code>b</code>, <code>c</code>, <code>d</code> 四个向量满足下列关系：<code>a</code> 垂直于 <code>b</code>, <code>b</code> 垂直于 <code>c</code>,
+<code>c</code> 垂直于 <code>d</code>, <code>d</code> 垂直于 <code>a</code>, <code>a</code> 不平行于 <code>c</code>, 且 <code>b</code> 不同于 <code>d</code>,
+则有 <code>b // d</code>.</p>
+<pre>
+    ?a &lt;T&gt; ?b, ?b &lt;T&gt; ?c, ?c &lt;T&gt; ?d, ?d &lt;T&gt; ?a, ?a &lt;~//&gt; ?c, ?b \= ?d
+    =&gt; ?b &lt;//&gt; ?d.</pre>
+<p>在高中数学课本中有如下定理是该向量规则的“特殊表现形式”：</p>
+<ul>
+<li><strong><a name="item_25D3625B3125CF25DF25BA25CD25C3625BD25C3325E3625C3625BD25D3025D3025B3525C3425D">直线和平面平行的性质定理</a></strong>
+
+<li><strong>直线和平面垂直的判定定理</strong>
+
+<li><strong><a name="item_25C3125BD25B3825F3625C3625BD25C3325E3625C3625BD25D3025D3025B3525C3425C3525D3025B">两个平面平行的判定定理</a></strong>
+
+<li><strong>两个平面平行的性质定理</strong>
+
+<li><strong><a name="item_25C3125BD25B3825F3625C3625BD25C3325E3625B3425B3925D3625B3125B3525C3425D3025D3425D">两个平面垂直的性质定理</a></strong>
+
+<li><strong><a name="item_25C3825FD25B3425B3925CF25DF25B3625A3825C3025ED">三垂线定理</a></strong>
+
+<li><strong><a name="item_25C3825FD25B3425B3925CF25DF25B3625A3825C3025ED25C3425E3625B3625A3825C3025ED">三垂线定理逆定理</a></strong>
+
+</ul>
+<li>
+<p>若向量 <code>a</code> 与向量 <code>b</code> 满足关系 <code>R</code>，则 <code>b</code> 与 <code>a</code> 亦满足关系 <code>R</code>.</p>
+<pre>
+    ?a &lt;?R&gt; ?b =&gt; ?b &lt;?R&gt; ?a.</pre>
+<p>这条规则揭示的是向量关系满足交换律。</p>
+</li>
+</ul>
+<p>
+</p>
+<h2><a name="anti2dvectorize2exclp"><em>anti-vectorize.xclp</em></a></h2>
+<p>本文件中的几条规则执行“逆向量化”操作，正好是 <em>vectorize.xclp</em> 中规则的“反函数”，比如
+逆向量化规则</p>
+<pre>
+    \?l, #?alpha, ?l &lt;T&gt; ?alpha =&gt; ?l [~T] ?alpha, ?l [~X] ?alpha.</pre>
+<p>的含义是：如果在向量空间中，向量 <code>l</code> 垂直于向量 <code>alpha</code>，且在立体几何空间中，<code>l</code>
+是直线，<code>alpha</code> 是平面，则有在立几空间中，直线 <code>l</code> 不垂直于平面 <code>alpha</code>，且
+直线 <code>l</code> 不斜交于平面 <code>alpha</code>.</p>
+<p>
+</p>
+<h2><a name="goal2dmatch2exclp"><em>goal-match.xclp</em></a></h2>
+<p>本文件中的规则使用用户给定的证明目标对已得到的事实进行匹配。</p>
+<ul>
+<li>
+<p>若用户求证 <code>a</code> 与 <code>b</code> 在立几空间存在关系 <code>R</code>, 且事实库中确实存在该事实，
+则生成 solved 事实指示目标已解决。</p>
+<pre>
+    ?a *[?R] ?b, ?a [?R] ?b
+    =&gt; solved(space-relation, ?R, ?a, ?b).</pre>
+</li>
+<li>
+<p>若用户求证 <code>a</code> 与 <code>b</code> 在立几空间存在关系 <code>R</code>，且事实库中不存在该事实，
+则生成 pending 事实以指示该目标“未决”。</p>
+<pre>
+    ?a *[?R] ?b, ~exists(?a [?R] ?b)
+    =&gt; pending(space-relation, ?R, ?a, ?b).</pre>
+</li>
+<li>
+<p>若用户给定的有关 <code>a</code> 和 <code>b</code> 的一求证目标未决，且事实库中存在 <code>a</code> 与 <code>b</code>
+之间确定的某种关系，则生成 hint 事实，以提示用户。</p>
+<pre>
+    pending(space-relation, ?, ?a, ?b), ?a [?R] ?b
+    =&gt; hint(space-relation, ?R, ?a, ?b).</pre>
+</li>
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="d6aacab6bfe2b5c4cdead5fbd0d4d7d4bcecd3eb20DBC">知识库的完整性自检与 DBC</a></h1>
+<p>除了上述规则之外，知识库中还收录了许多自检测规则，用于检测事实库内部的完整性。
+这些设施可以有效地检测出用户给定事实之间的冲突、知识库规则之间的冲突，以及其
+他形式的 VRG bug.</p>
+<p>事实上，在 VRG 的早期，这些自检测规则确实捕捉到不少连题库测试台都未捕捉到的 bugs。</p>
+<p>一条典型的自检规则如下：</p>
+<pre>
+    \?l, #?alpha, ?l [on] ?alpha, ?l [~on] ?alpha
+    =&gt; contradiction(&quot;[on]&quot;, &quot;[~on]&quot;, ?l, ?alpha).</pre>
+<p>其含义是：一条直线要么在一个平面上，要不不在那个平面上。如果同时存在这两个事实，
+则生成 contradction 事实指示矛盾冲突的存在。</p>
+<p>将完整性测试逻辑与系统自身的实现放在一起，在软件工程中称为 Design by contract (DBC).
+VRG 的实践表明，在基于规则的系统中实现 DBC 要比传统的命令式语言要方便和自然得多。</p>
+<p>
+</p>
+<hr />
+<h1><a name="d6aacab6bfe2b5c420Subversion20b2d6bfe2">知识库的 Subversion 仓库</a></h1>
+<p>您总是可以从下面的 Subversion (SVN) 仓库取得最新版本的 VRG 知识库：</p>
+<p><a href="http://svn.berlios.de/svnroot/repos/unisimu/VRG/knowledge">http://svn.berlios.de/svnroot/repos/unisimu/VRG/knowledge</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="TODO">TODO</a></h1>
+<ul>
+<li>
+<p>在 <code>line</code> 和 <code>plane</code> 谓词的基础上引入 <code>point</code> 谓词用于显式地声明几何点。</p>
+<p>虽然当前知识库已通过使用隐式的点对象来处理类似“两线交于一点”的条件，
+但显式的点对象无疑会提高规则的可读性和知识库的可扩展性。</p>
+</li>
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="SEE20ALSO">SEE ALSO</a></h1>
+<p><a href="././Overview.html">the Overview manpage</a></p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;KB - VRG 知识库简介</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
