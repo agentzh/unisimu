@@ -28,8 +28,8 @@ SM::Client - Client entity in the supermarket
 
 =head1 SYNOPSIS
 
-	use SM::Client;
-	my $client = SM::Client->new;
+    use SM::Client;
+    my $client = SM::Client->new;
 
 =head1 DESCRIPTION
 

@@ -81,8 +81,8 @@ SM::Server - Server entity in the supermarket
 
 =head1 SYNOPSIS
 
-	use SM::Server;
-	my $server = SM::Server->new( sub { rand(3) } );
+    use SM::Server;
+    my $server = SM::Server->new( sub { rand(3) } );
     $server->join_queue($client_1, $client_2);
 
     print $server->id, " : ", $server->queue_len();
