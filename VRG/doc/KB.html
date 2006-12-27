@@ -112,7 +112,8 @@
 此种关系为 “斜交关系”）。</p>
 </li>
 <li>
-<p>中前缀 (infix-prefix) <code>~</code> 表示谓词名前缀 <code>not_</code>, 例如 <code>a [~//] b</code> 等价于 <code>not_parallel(a, b)</code>.</p>
+<p>中前缀 (infix-prefix) <code>~</code> 表示谓词名前缀 <code>not_</code>, 例如 <code>a [~//] b</code> 等价于
+<code>space_not_parallel(a, b)</code>.</p>
 </li>
 <li>
 <p>中包围缀 (infix-circumfix) <code>[ ]</code> 表示立体几何空间中的关系，比如 <code>a [//] b</code> 就等同于谓词
@@ -120,7 +121,7 @@
 </li>
 <li>
 <p>中包围缀 <code>&lt; &gt;</code> 表示向量空间中的关系，例如 <code>a &lt;//&gt; b</code> 等价于谓词
-<code>vector_parallel(a, b)</code>, 而 <code>a &lt;~T&gt; b</code> 则等价于谓词 <code>not_vector_orthogonal(a, b)</code>.</p>
+<code>vector_parallel(a, b)</code>, 而 <code>a &lt;~T&gt; b</code> 则等价于谓词 <code>vector_not_orthogonal(a, b)</code>.</p>
 </li>
 </ul>
 <p>特别地，以问号 (<code>?</code>) 起始的标识符为 XClips 变量，如 <code>?alpha</code>, <code>?m</code> 之类；否则为常量，如

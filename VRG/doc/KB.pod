@@ -47,7 +47,8 @@ VRG 知识库使用 XClips 语言进行描述。为方便起见，在本文档中的规则和事实示例亦
 
 =item *
 
-中前缀 (infix-prefix) C<~> 表示谓词名前缀 C<not_>, 例如 C<a [~//] b> 等价于 C<not_parallel(a, b)>.
+中前缀 (infix-prefix) C<~> 表示谓词名前缀 C<not_>, 例如 C<a [~//] b> 等价于
+C<space_not_parallel(a, b)>.
 
 =item *
 
@@ -57,7 +58,7 @@ C<space_parallel(a, b)>，而 C<a [T] b> 就等同于谓词 C<space_orthogonal(a, b)>.
 =item *
 
 中包围缀 C<< < > >> 表示向量空间中的关系，例如 C<< a <//> b >> 等价于谓词
-C<vector_parallel(a, b)>, 而 C<< a <~T> b >> 则等价于谓词 C<not_vector_orthogonal(a, b)>.
+C<vector_parallel(a, b)>, 而 C<< a <~T> b >> 则等价于谓词 C<vector_not_orthogonal(a, b)>.
 
 =back
 
