@@ -21,7 +21,8 @@ use Qooqle::Util;
 %     my $begin = $item->msg_session->begin_time;
 %     my $end   = $item->msg_session->end_time;
 
-[ <span class="timestamp"> <% $begin %> ~ <% $end %> </span> ]
+[ <span class="timestamp"><% $item->msg_session->message_count %> msg,
+<% $begin %> ~ <% $end %> </span> ]
 
 %   }
 %   if (!defined $prev_session or $session != $prev_session) {
@@ -57,7 +58,8 @@ use Qooqle::Util;
 %     my $begin = $prev_item->msg_session->begin_time;
 %     my $end   = $prev_item->msg_session->end_time;
 
-[ <span class="timestamp"> <% $begin %> ~ <% $end %> </span> ]
+[ <span class="timestamp"> <% $prev_item->msg_session->message_count %> msg,
+<% $begin %> ~ <% $end %> </span> ]
 
 % }
 
