@@ -1,0 +1,22 @@
+root: expression eof { return (bool) items[1] ? 'T' : 'F'; }
+
+eof: /^\Z/
+
+expression: and_expr 'or' expression
+                { return (bool) items[1] || (bool) items[3]; }
+          | and_expr
+
+and_expr:   not_expr 'and' and_expr
+                { return (bool) items[1] && (bool) items[3]; }
+        |   not_expr
+
+not_expr:   'not' brack_expr
+                { return ! (bool) items[2]; }
+        |   brack_expr
+
+brack_expr: '(' expression ')'
+                { return (bool) items[2]; }
+          | atom
+
+atom: 'T' { return true;  }
+    | 'F' { return false; }

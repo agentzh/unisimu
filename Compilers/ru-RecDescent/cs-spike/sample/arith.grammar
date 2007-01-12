@@ -1,0 +1,41 @@
+input: expr eof { return items[1]; }
+
+eof: /^\Z/
+
+expr: <leftop: term /([-+])/ term>
+
+        { ArrayList list = (ArrayList) items[1];
+          double sum = (double) list[0];
+          for (int i = 1; i < list.Count; i += 2) {
+            string op = (string) list[i];
+            if (op == "+") sum += (double) list[i+1];
+            else           sum -= (double) list[i+1];
+          }
+          return sum;
+        }
+
+term: <leftop: factor /([*\/])/ factor>
+
+        { ArrayList list = (ArrayList) items[1];
+          double product = (double) list[0];
+          for (int i = 1; i < list.Count; i += 2) {
+            string op = (string) list[i];
+            //print("{0} {1}\n", list[i], list[i+1]);
+            if (op == "*") product *= (double) list[i+1];
+            else           product /= (double) list[i+1];
+          }
+          return product;
+        }
+
+factor: neg(?) number
+
+            { ArrayList container = (ArrayList) items[1];
+              if (container.Count > 0) return -(double)items[2];
+              else                 return items[2];
+            }
+
+      | '(' expr ')'  { return items[2]; }
+
+neg: '-'
+
+number: /[1-9]\d*(?:\.\d+)?/  { return double.Parse( (string) items[1] ); }
