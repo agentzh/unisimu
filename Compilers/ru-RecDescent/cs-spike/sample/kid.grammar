@@ -1,0 +1,67 @@
+program: statement_list eofile
+       | <error>
+
+statement_list: statement(s)
+
+statement: if_statement
+         | block /;?/
+         | declaration
+         | assignment /;?/
+         | list_assignment /;?/
+         | comment
+         | <error>
+
+if_statement: 'if' <commit> '(' condition ')' statement <uncommit>
+              'else' <commit> else_statement
+            |  'if' <commit> '(' condition ')' statement <uncommit>
+            | <error?> <reject>
+
+condition: expression rel_op <commit> rhs_expression
+         | <error?> <reject>
+
+rel_op: />=|>|<=|<>|<|=/
+
+rhs_expression: expression
+
+else_statement: statement
+
+block: '{' <commit> statement_list '}'
+     | <error?> <reject>
+
+declaration: proc_decl
+
+proc_decl: 'proc' <commit> identifier '(' identifier_list ')' block
+
+identifier_list: identifier(s /,/)
+
+assignment: var ':=' <commit> expression
+          | <error?> <reject>
+
+list_assignment: identifier_list ':=' <commit> expression_list
+               | <error?> <reject>
+
+var: identifier
+
+identifier: /[A-Za-z_]\w*/
+
+expression: <leftop: term /([-+])/ term>
+
+term: <leftop: factor /([*\/])/ factor>
+    | neg <leftop: factor /([*\/])/ factor>
+
+neg: '-'
+
+factor: number
+      | '(' <commit> expression ')'
+      | proc_call
+      | var
+
+proc_call: identifier '(' expression_list ')'
+
+expression_list: expression(s /,/)
+
+number: /-?\d+(?:\.\d+)?/
+
+comment: /#.*/
+
+eofile: /^\Z/
