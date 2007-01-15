@@ -1,13 +1,10 @@
 SHELL = cmd
 
 rm_f = perl -MExtUtils::Command -e rm_f
-exe_files = arith.exe kid.exe logic.exe spike2.exe
+exe_files = arith.exe kid.exe logic.exe
 cs_files = $(patsubst %.exe,%.cs,$(exe_files))
 
 all: $(exe_files)
-
-spike2.exe: spike2.cs util.cs
-	csc /debug /nologo $< util.cs
 
 %.exe: %.cs
 	csc /debug /nologo $<
@@ -29,3 +26,8 @@ test: all
 
 clean:
 	$(rm_f) $(exe_files) $(cs_files)
+
+doc: doc/report.html
+
+%.html: %.pod
+	podhtm -s perl.css -o $@ $<

@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 
 class Util {
-    public static Hashtable NewHash(params object[] pairs) {
+    public static Hashtable new_hash(params object[] pairs) {
 		Hashtable h = new Hashtable();
 		if (pairs.Length % 2 != 0) {
-			Console.Error.WriteLine("Warning: Odd number of arguments for NewHash");
+			Console.Error.WriteLine("Warning: Odd number of arguments for new_hash");
 			return h;
 		}
 		for (int i = 0; i < pairs.Length; i += 2) {
@@ -13,7 +13,7 @@ class Util {
 		}
 		return h;
 	}
-    public static ArrayList NewArray(params object[] elems) {
+    public static ArrayList new_array(params object[] elems) {
 		return new ArrayList(elems);
 	}
 	public static string dump_data(object tree, params object[] extra) {

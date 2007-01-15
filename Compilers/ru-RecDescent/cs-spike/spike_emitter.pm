@@ -19,6 +19,7 @@ sub emit {
     $ast = adjust_ast($ast);
     $ast->{is_module} = $is_module;
     $ast->{package} = $package || 'Parser';
+    #warn $package;
     #warn Dumper($ast);
     my $buffer;
     $TT->process(\*DATA, $ast, \$buffer)
@@ -172,7 +173,7 @@ class X {
     public static bool group = false;
 }
 
-public class Parser {
+public class [% package %] {
     public static bool RD_TRACE   = false;  // default off
     public static bool RD_VERBOSE = true;  // default on
 
@@ -527,31 +528,4 @@ class Runner {
     }
 }
 
-/*
-my %opts;
-getopts('d', \%opts);
-
-local $/;
-my $src = <>;
-die "No input source code.\n" if !defined $src;
-
-my $parser = [% package %]->new;
-my $ast;
-if ($opts{d}) {
-    $::RD_TRACE = 1;
-    $ast = $parser->parse($src);
-    print "\n", defined($ast) ? 'success' : 'fail', "\n";
-} else {
-    $::Data::Dumper::Indent = 1;
-    $ast = $parser->parse($src);
-    if (!defined $ast) {
-        warn "Syntax error.\n";
-        exit(1);
-    } elsif (ref $ast) {
-        print Data::Dumper->Dump([$ast], ['AST']);
-    } else {
-        print $ast, "\n";
-    }
-}
-*/
 [%- END %]

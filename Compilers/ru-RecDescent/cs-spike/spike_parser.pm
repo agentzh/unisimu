@@ -45,6 +45,7 @@ item: repetition
     | terminal
     | action
     | directive
+    | comment
 
 subrule: /[A-Za-z]\w*\b(?!\s*:)/
 
@@ -74,6 +75,8 @@ howoften: '(?)'                         { [ '?' ]; }
         | '(s?' <commit> regex(?) ')'   { [ 's?', @{$item[3]} ]; }
         | '(s'  <commit> regex(?) ')'   { [ 's', @{$item[3]} ]; }
 
+comment: /\/\*.*?\*\//  { '' }
+
 nil: ''  { ["''"] }
 
 END_GRAMMAR
@@ -82,7 +85,7 @@ my $Parser;
 
 sub new {
     my $class = shift;
-    warn "HERE!";
+    #warn "HERE!";
     $Parser ||= new Parse::RecDescent ($Grammar) or die "Bad grammar!\n";
     $class;
 }
