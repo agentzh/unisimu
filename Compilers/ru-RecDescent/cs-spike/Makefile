@@ -1,7 +1,7 @@
 rm_f = perl -MExtUtils::Command -e rm_f
 exe_files = ./arith.exe ./kid.exe ./logic.exe
 cs_files = $(patsubst %.exe,%.cs,$(exe_files))
-CS_COMPILER = csc
+CS_COMPILER = mcs
 
 all: $(exe_files)
 
