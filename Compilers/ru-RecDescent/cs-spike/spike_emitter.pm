@@ -7,7 +7,7 @@ package Spike::Emitter;
 use strict;
 use warnings;
 use Template;
-use Data::Dumper::Simple;
+#use Smart::Comments;
 
 my $TT = Template->new;
 
@@ -15,12 +15,12 @@ our $DEBUG;
 
 sub emit {
     my ($self, $ast, $is_module, $package) = @_;
-    #warn Dumper($ast);
+    ### AST (1): $ast
     $ast = adjust_ast($ast);
     $ast->{is_module} = $is_module;
     $ast->{package} = $package || 'Parser';
-    #warn $package;
-    #warn Dumper($ast);
+    ### Package: $package
+    ### AST (2): $ast
     my $buffer;
     $TT->process(\*DATA, $ast, \$buffer)
         || die $TT->error(), "\n";
