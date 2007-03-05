@@ -1,0 +1,41 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Linux::Smaps;
+use Smart::Comments; 
+use Time::HiRes;
+
+die "No command specified.\n" unless @ARGV;
+my $parent = $$;
+my $pid;
+unless ($pid = fork()) {
+    # Child process goes here
+    ### Parent: $parent
+    ### Child: $$
+    exec @ARGV;
+    exit 0;
+}
+# Parent process goes here
+### Child: $pid
+### Parent: $$
+my $value = 0;
+while (1) {
+    my $map = Linux::Smaps->new($pid);
+    if (!$map) {
+        die "Can't fetch smap for PID $pid\n";
+    }
+    my $tmp = $map->private_dirty;
+    last if !defined $tmp;
+    last if $tmp == 0;
+    next if $tmp == $value;
+    $value = $tmp if $tmp > $value;
+    ### value: $value
+}
+if ($value > 1000) {
+    $value /= 1000;
+    printf("%.03f MB memory used.\n", $value);
+} else {
+    printf("%d KB memory used.\n", $value);
+}
