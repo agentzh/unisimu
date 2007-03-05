@@ -1,0 +1,119 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use List::Util 'first';
+use IPC::Run3;
+
+my ($stdout, $stderr);
+
+sub run ($);
+sub run_and_check ($);
+sub file_found ($);
+
+##
+# check missing files
+file_found 'Makefile.PL';
+file_found 'MANIFEST';
+file_found 'Changes';
+
+##
+# check META.yml related issues
+run 'make veryclean';
+run_and_check 'perl Makefile.PL';
+file_found 'META.yml';
+
+##
+# check missing items in MENIFEST:
+run_and_check 'make distcheck';
+#print $stderr;
+my @lines = grep {
+    !/\.swp$/ and !/\.vim/
+} split '\n', $stderr;
+warn join("\n", @lines), "\n" if @lines;
+
+my ($tests, $dist_tests);
+
+##
+# make test
+run_and_check 'make test';
+# print $stdout;
+if ($stdout =~ /(?xms) \n Files=\d+, \s+ Tests=(\d+)/) {
+    $tests = $1;
+} else {
+    die "ERROR: Unknown 'make test' output format: '$stdout'\n";
+}
+
+##
+# make disttest
+run_and_check 'make disttest';
+if ($stdout =~ /(?xms) \n Files=\d+, \s+ Tests=(\d+)/) {
+    $dist_tests = $1;
+} else {
+    die "ERROR: Unknown 'make disttest' output format: '$stdout'\n";
+}
+
+##
+# check if test counts mismatch
+if ($tests != $dist_tests) {
+    die "ERROR: The number of tests from 'make test' doesn't match the one from 'make disttest': $tests <> $dist_tests\n";
+}
+
+my $main_pm;
+{ # get main .pm file from Makefile.PL
+    open my $in, 'Makefile.PL' or
+        die "ERROR: Can't open Makefile.PL for reading: $!";
+    my @lines = <$in>;
+    close $in;
+
+    my $line = first {
+        m{(?x) ^ \s* \w+_from .*? \b(lib/[\w\/]+\.pm)} && ($main_pm = $1)
+    } @lines;
+    if (!$main_pm) {
+        die "ERROR: Can't find the main .pm file for your distribution from your Makefile.PL. It's often serve as an argument to functions like 'all_from'.\n";
+    }
+    #warn $main_pm;
+}
+
+{ # Check the sanity of the main .pm file
+    open my $in, $main_pm or
+        die "ERROR: Can't open $main_pm for reading: $!\n";
+    my $version;
+    while (<$in>) {
+        if (!$version and /(?x) \$VERSION \s* = .*? ([\d\.]*\d+)/) {
+            my $version = $1;
+            warn "$version\n";
+        } elsif (/This document describes \S+ ([\d\.]*\d+)/) {
+            warn "$1\n";
+        }
+    }
+    close $in;
+}
+
+run_and_check "pod2text $main_pm > README";
+run_and_check "make dist";
+
+##############################################
+# utility functions
+#
+sub run_and_check ($) {
+    my $cmd = shift;
+    run($cmd);
+    if ($? != 0) {
+        warn $stderr;
+        die "ERROR: command '$cmd' returns non-zero code.\n";
+    }
+}
+
+sub run ($) {
+    my $cmd = shift;
+    run3 $cmd, \undef, \$stdout, \$stderr;
+}
+
+sub file_found ($) {
+    my $file = shift;
+    -f $file or die "ERROR: File $file missing.\n";
+    -s $file or die "ERROR: File $file empty.\n";
+}
+

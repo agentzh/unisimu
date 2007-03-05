@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+poff -a
+echo "Press any key to continue..."
+read
+

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+t=agentz-archive
+m='dmirror -t'
+
+cd ~
+
+[ ! -d $t ] && mkdir $t
+[ ! -d $t/bin ] && mkdir $t/bin
+[ ! -d $t/ppp ] && mkdir $t/ppp
+[ ! -d $t/desktop ] && mkdir $t/desktop
+$m ~/.vimrc $t
+$m ~/.svk $t
+$m ~/mdom-trunk $t
+$m ~/mdom-gmake $t
+$m ~/makefileps-trunk $t
+$m ~/makefilegv-trunk $t
+$m ~/ttperl $t
+$m ~/ttposix $t
+$m ~/unisimu $t
+$m /usr/bin/releng $t/bin
+$m /usr/bin/dmirror $t/bin
+$m /usr/bin/archive $t/bin
+$m /usr/bin/reindex $t/bin
+$m /usr/bin/fjoin $t/bin
+$m /usr/bin/dialup $t/bin
+$m /usr/bin/offline $t/bin
+$m /etc/ppp/peers/dsl-free $t/ppp
+$m /etc/ppp/peers/dsl-nonfree $t/ppp
+$m ~/Desktop/不限时拨号.desktop $t/desktop
+$m ~/Desktop/限时拨号.desktop $t/desktop
+$m ~/Desktop/下线.desktop $t/desktop
+$m ~/fonts $t
+tar cvf $t.tar $t > /dev/null
+#gzip --fast -f $t.tar
+

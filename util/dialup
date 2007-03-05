@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+suffix=$1
+[ -z "$suffix" ] && suffix=provider
+echo "using dsl-$suffix..."
+
+poff -a
+pon dsl-$suffix
+echo "Please wait 10 s..."
+sleep 10
+plog
+
+echo "Done!"
+echo "Press any key to continue..."
+read
+

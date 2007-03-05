@@ -1,0 +1,92 @@
+#!/usr/bin/perl
+# dmirror - mirror file directory
+
+use strict;
+use warnings;
+
+use Getopt::Std;
+use File::Find;
+use File::Spec;
+#use Smart::Comments;
+
+my %opts;
+getopts('tqT', \%opts);  # Trim Mode And Quiet Mode
+
+sub Usage {
+    my $retval = shift;
+    my $info = "Usage:\n\t dmirror <source-path> <destination-path>\n";
+    if ($retval == 0) {
+        print $info;
+        exit(0);
+    } else {
+        warn $info;
+        exit($retval);
+    }
+}
+
+if (@ARGV != 2){
+    Usage(1);
+}
+
+my ($src, $des) = @ARGV;
+my $T = $opts{T} ? 'T' : '';
+my $retval = system 'cp', "-urpv$T", $src, $des;
+die "failed to run copy" if $retval != 0;
+
+exit(0) if not defined $opts{'t'};
+
+if (-d $des and -d $src) {
+    $des =~ s{/$}{}g;
+    if (!$opts{T}) {
+        my $base;
+        if ($src =~ /[^\/\\]+$/) {
+            $base = $&;
+        } else {
+            die "Can't get directory base: $des";
+        }
+        ### basename: $base
+        $des .= "/$base";
+        ### destination: $des
+    }
+    ### process source: $src
+    process_dir($des, $src);
+}
+
+sub process_dir {
+    my ($des_dir, $src_dir) = @_;
+    if (-d $des_dir and not -e $src_dir) {
+        print "Remove directory $des_dir? (y/n) ";
+        my $ans = <STDIN>;
+        if ($ans =~ /^y/i) {
+            system qw[ rm -rf ], $des_dir;
+        }
+        return;
+    }
+    opendir my $dir, $des_dir
+        or die "can't open dir $des_dir for reading: $!";
+    my @entries = readdir $dir;
+    close $dir;
+    foreach my $entry (@entries) {
+        #warn "$entry";
+        next if $entry eq '.' or $entry eq '..';
+        my $path = "$des_dir/$entry";
+        if (-f $path) {
+            process_file($path, "$src_dir/$entry");
+        } elsif (-d $path) {
+            process_dir($path, "$src_dir/$entry");
+        } else {
+            warn "unknown entity $path";
+        }
+    }
+}
+
+sub process_file {
+    my ($des_file, $src_file) = @_;
+    if (-f $des_file and not -e $src_file) {
+        warn "Removing $des_file...\n";
+        if (system( qw[ rm -i ], $des_file ) != 0) {
+            die "Can't remove file $des_file. Abort.\n";
+        }
+    }
+}
+

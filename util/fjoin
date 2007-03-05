@@ -1,0 +1,79 @@
+#!/usr/bin/perl
+#: Description:
+#:    fjoin for gathering the text in the specified files
+#: into one file getting ready for printing.
+#: Usage:
+#:   perl -w fjoin.pl -o<OUT_PUT_NAME> <SOURCE_FILES>
+
+use strict;
+use warnings;
+no strict 'subs';
+no strict 'refs';
+
+use Getopt::Std;
+use FileHandle;
+use File::Spec;
+
+our $VERSION = '1.02';
+my $title = "Agent Zhang fjoin Version $VERSION\n".
+    "For gathering the text in the specified files into one file\n".
+    "so as to get ready for printing.\n".
+    "All rights reserved.\n\n";
+warn $title;
+
+$" = "";
+
+my %opts;
+getopts('lo:',\%opts);
+
+my $out;
+my $outfile = $opts{o};
+if (defined $outfile){
+    $out = new FileHandle(">$outfile")
+        || die "cannot open the file '$opts{o}' for writing.\n";
+}
+else{
+    $out = STDOUT;
+}
+
+if (@ARGV == 0){
+    warn("Usage:\n\tfjoin [-l] -o<OUT_PUT_NAME> <SOURCE_FILES>\n");
+    die "\n";
+}
+
+@ARGV = map glob, @ARGV;
+
+my $fname;
+my $i = 0;
+foreach $fname (@ARGV){
+    $i++;
+
+    if ($outfile and
+        File::Spec->rel2abs($fname) eq File::Spec->rel2abs($outfile)) {
+        warn "Skipped output file $outfile...\n";
+        next;
+    }
+    my $fh = new FileHandle( "<$fname" );
+    if(!$fh){
+        warn "couldn't open file '$fname' for reading.\n";
+        close($out);
+        exit(0);
+    }
+    warn "picking the file '$fname'...\n";
+
+    my $indent = "";
+    $indent = ' ' x (5+1) if $opts{l};
+    my $len = length($fname);
+    print $out $indent.$fname."\n";
+    print $out $indent.("=" x $len)."\n";
+
+    while (<$fh>){
+        printf $out "%5s ", $. if $opts{l};
+        print $out $_;
+    }
+    print $out ("\n" x 4) if $i < @ARGV;
+    close( $fh );
+}
+
+close($out);
+
