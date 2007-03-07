@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 
+use File::Slurp;
 use List::Util 'first';
 use IPC::Run3;
 
@@ -11,6 +12,7 @@ my ($stdout, $stderr);
 sub run ($);
 sub run_and_check ($);
 sub file_found ($);
+sub file_contains ($$);
 
 ##
 # check missing files
@@ -76,19 +78,25 @@ my $main_pm;
     #warn $main_pm;
 }
 
+my $version;
 { # Check the sanity of the main .pm file
     open my $in, $main_pm or
         die "ERROR: Can't open $main_pm for reading: $!\n";
-    my $version;
     while (<$in>) {
         if (!$version and /(?x) \$VERSION \s* = .*? ([\d\.]*\d+)/) {
-            my $version = $1;
+            $version = $1;
             warn "$version\n";
         } elsif (/This document describes \S+ ([\d\.]*\d+)/) {
             warn "$1\n";
         }
     }
     close $in;
+}
+
+my $pat;
+($pat = $version) =~ s/\./\\./g;
+if (! file_contains 'Changes', qr/\b$pat\b/) {
+    die "ERROR: File 'Changes' has nothing regarding release $version\n";
 }
 
 run_and_check "pod2text $main_pm > README";
@@ -115,5 +123,11 @@ sub file_found ($) {
     my $file = shift;
     -f $file or die "ERROR: File $file missing.\n";
     -s $file or die "ERROR: File $file empty.\n";
+}
+
+sub file_contains ($$) {
+    my ($file, $regex) = @_;
+    my $content = read_file($file);
+    return $content =~ /$regex/ms;
 }
 
