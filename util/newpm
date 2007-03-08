@@ -1,0 +1,149 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Std;
+use Template;
+
+my %opts;
+getopts('v:h', \%opts) or help();
+
+help() if $opts{h};
+
+my $package = shift or help();
+
+my $version = $opts{v} || '0.01';
+my $numeric_ver = $version;
+if ($version =~ /^(\d+)\.(\d+)\.(\d+)$/) {
+    $numeric_ver = sprintf("%d.%03d%03d", $1, $2, $3);
+}
+
+my @parts = split /::/, $package;
+my $outfile = pop(@parts) . '.pm';
+my $outdir = join('/', @parts) || ".";
+if (-d 'lib') {
+    $outdir = "lib/$outdir";
+    system "mkdir -p $outdir" if !-d $outdir;
+} else {
+    $outdir = '.';
+}
+
+my ($year, $date);
+my $str = localtime();
+if ($str =~ /^\S+\s+(\S+)\s+(\d+).*?(\d+)$/) {
+    ($year, $date) = ($3, "$1 $2, $3");
+} else {
+    die "$str failed to match";
+}
+
+my $data = {
+    package => $package,
+    version => $version,
+    numeric_ver => $numeric_ver,
+    year    => $year,
+    date    => $date,
+};
+
+open my $out, "> $outdir/$outfile" or
+    die "Can't open $outdir/$outfile for writing: $!\n";
+
+my $tt = Template->new;
+$tt->process(\*DATA, $data, $out) or
+    die "Can't process the template: ", $tt->error;
+
+close $out;
+warn "$outdir/$outfile generated.\n";
+
+sub help {
+    die "usage: newpm [-v <version>] <package>";
+}
+__DATA__
+package [% package %];
+
+use strict;
+use warnings;
+
+our $VERSION = '[% numeric_ver %]';
+
+
+
+1;
+__END__
+
+=head1 NAME
+
+[% package %] - XXX
+
+=head1 VERSION
+
+This document describes [% package %] [% version %]
+released on [% date %].
+
+=head1 SYNOPSIS
+
+  use [% package %];
+  XXX
+
+=head1 DESCRIPTION
+
+XXX
+
+=head1 INSTALLATION
+
+You can install this module to your Perl distribution
+by the following commands:
+
+  perl Makefile.PL
+  make
+  make test
+  make install
+
+If you're on Windows, you should type "nmake" instead of
+"make".
+
+=head1 BUGS AND WISHLIST
+
+There must be some serious bugs lurking somewhere,
+if you find some, please report them to
+L<http://rt.cpan.org/Public/Dist/Display.html?Name=
+[%- package.replace('::', '-') %]>;
+I'll try to fix them as soon as possible. Thanks!
+
+Wishlist is welcomed to submit there too :)
+
+=head1 SOURCE CONTROL
+
+You can always get the latest source code from the
+following Subversion repository:
+
+L<http://svn.openfoundry.org/XXX>
+
+There's anonymous access to all.
+
+If you'd like to get a commit bit, please let me
+know :)
+
+=head1 CODE COVERAGE
+
+I use L<Devel::Cover> to test the code coverage of
+my tests, below is the L<Devel::Cover> report on
+this module test suite.
+
+XXX
+
+=head1 AUTHOR
+
+Agent Zhang E<lt>agentzh@gmail.comE<gt>
+
+=head1 COPYRIGHT
+
+Copyright (c) [% year %] by Agent Zhang. All rights reserved.
+
+This library is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+XXX
+
