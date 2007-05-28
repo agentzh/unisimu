@@ -1,8 +1,9 @@
-#: flowasm.pl
-#: FlowAsm compiler that generates flowcharts in PNG format
-#: v0.01
-#: Copyright (c) 2005 Agent Zhang
-#: 2005-10-28 2005-10-30
+#!/usr/bin/env perl
+# flowasm.pl
+# FlowAsm compiler that generates flowcharts in PNG format
+# v0.01
+# Copyright (c) 2005 Agent Zhang
+# 2005-10-28 2005-10-30
 
 use strict;
 use warnings;

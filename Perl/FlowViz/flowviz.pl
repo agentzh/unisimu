@@ -1,8 +1,9 @@
-#: flowviz.pl
-#: FlowViz compiler that generates FlowAsm code.
-#: v0.02
-#: Copyright (c) 2005 Agent Zhang
-#: 2005-10-29 2005-10-31
+#!/usr/bin/perl
+# flowviz.pl
+# FlowViz compiler that generates FlowAsm code.
+# v0.02
+# Copyright (c) 2005 Agent Zhang
+# 2005-10-29 2005-10-31
 
 use strict;
 use warnings;
@@ -102,7 +103,11 @@ print $out $asm;
 close $out;
 warn "$outfile generated.\n";
 if (!$opts{c}) {
-    system("flowasm $outfile");
+    if ($^O eq 'Win32') {
+        system("flowasm $outfile");
+    } else {
+        system("./flowasm.pl $outfile");
+    }
 }
 
 sub process_if_stmt {
