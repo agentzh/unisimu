@@ -4,11 +4,11 @@ report - OS Design Report
 
 =head1 AUTHOR
 
-���ഺ E<lt>agentz@tom.comE<gt>
+章亦春 E<lt>agentz@tom.comE<gt>
 
-3030602110 �����0304��
+3030602110 计算机0304班
 
-�������ѧ��ͨ�Ź���ѧԺ ���մ�ѧ
+计算机科学与通信工程学院 江苏大学
 
 =head1 VERSION
 
@@ -19,43 +19,43 @@ report - OS Design Report
 
 =head1 DESCRIPTION
 
-���ĵ�����Ϊ�ҵĲ���ϵͳ�γ���Ƶı�����Ƶġ�����������У���
-��Ը�����ϵ��������ҵ��ļ������Ϻ��û��ĵ�����������������
-�ҵĵ�ʦ�����ˣ�����ϣ���Լ�д�µľ����ܵ������Լ��Ķ���������
-���� QQ ��������һ��ͬѧ�ı��� "full of dregs" һ������Ҳ��
-����Լ������£������Ҳ�����˳�Ϯ�Ļ���
+本文档是作为我的操作系统课程设计的报告编制的。在这个报告中，我
+不愿将网上到处都能找到的技术材料和用户文档塞在这里，或许这会让
+我的导师不高兴，但我希望自己写下的尽可能的是我自己的东西。正如
+我在 QQ 上批评我一个同学的报告 "full of dregs" 一样，我也会
+抨击自己的文章，如果它也充满了抄袭的话。
 
-=head1 UNIX ����ϵͳ
+=head1 UNIX 操作系统
 
-�������Ҳ�Ը���ע��������ĳһ���ض��� UNIX ��������ϡ���ʵ�ϣ�
-�����ڿγ�����ڼ�ʹ�õ��� Solaris 8, ��������Ļ����ϰ�װ����
-Redhat Linux 9. �ӿ���ֲ�ԵĽǶȳ�������Ҳ��������ʹ�÷���
-POSIX ��׼��ͨ�����ԡ�
+在这里我不愿意把注意力放在某一种特定的 UNIX 家族变种上。事实上，
+我们在课程设计期间使用的是 Solaris 8, 而在宿舍的机器上安装的是
+Redhat Linux 9. 从可移植性的角度出发，我也更倾向于使用符合
+POSIX 标准的通用特性。
 
-=head2 UNIX �Ļ�
+=head2 UNIX 文化
 
-����Ϊ���ǲ�Ӧ���� UNIX ������һ���������ڶ๦�ܺ����Ե�������
-�����������������û�������������� UNIX Ϊ���е��Ļ�ȴ����Ϊ
-����ġ�
+我以为我们不应当将 UNIX 当作是一个包含了众多功能和特性的软件来
+看待。软件是死物，并没有生命。但是以 UNIX 为依托的文化却是最为
+宝贵的。
 
-UNIX �Ļ������������Ũ��� Windows �����ĳ���Ա�������Ǿ���
-�롰���桱�͡�ħ������һ�����ϵ��һ��ġ�UNIX �ϵ���������������
-էһ�����ƺ�����ԭʼ����Ϊ������ϲ�����������к��ı���������
-ͼ�ν������ꡣ����ϰ��ȥ������ƽ̨���˿���ȥ�ܿ�Ц�����飬��
-����Χ�ŵ�����ζ����������ת���Ǻ�
+UNIX 文化在我这个具有浓厚的 Windows 背景的程序员看来，是经常
+与“神奇”和“魔术”这一类词联系在一起的。UNIX 上的人们所做的事情
+乍一看，似乎落后而原始。因为他们最喜欢的是命令行和文本，而不是
+图形界面和鼠标。他们习惯去做其他平台的人看上去很可笑的事情，那
+就是围着单调乏味的命令团团转。呵呵
 
-�������Ҳ����ô���� UNIX �Ļ��ġ�Ȼ���Դ���ѧϰ�� Perl������
-������ UNIX ���������֮���ҿ�ʼ�������к��ı����������𺳡�
-������û���뵽����ȥ��˴���������н����� UNIX ����Ա�ǵ�����
-��Ȼ������ħ������ֻ�����뼸������һ�����������ɺܸ��ӵ�����
-�����ԡ��������͡���������ʽ����������ƴ����һ�������е���������
-���� GUI ��ʽ�º����Զ����ġ�
+起初，我也是这么看待 UNIX 文化的。然后，自从我学习了 Perl，这种
+出生成 UNIX 世界的语言之后，我开始被命令行和文本的力量所震撼。
+我万万没有想到看上去如此呆板的命令行界面在 UNIX 程序员们的手中
+居然充满了魔力。我只需输入几条甚至一条命令就能完成很复杂的任务，
+或者以“并联”和“串联”方式将几条命令拼接在一起。这其中的许多任务
+是在 GUI 方式下很难自动化的。
 
-������һ���������������ӣ�
+下面是一个“串联”的例子：
 
     get-data.pl | preprocess.tcl | process.py | postprocess.sh > output
 
-�����һ���������������ӣ�
+这儿是一个“并联”的例子：
 
     ./init
     ./father   > f.out &
@@ -63,33 +63,33 @@ UNIX �Ļ������������Ũ��� Windows �����ĳ���Ա�������Ǿ���
     ./daughter > d.out &
     ./son      > s.out &
 
-�� ActivePerl ����ҵ������У����ǲ��ѿ��� Perl Я���� UNIX �Ļ�
-�� Windows �Ļ�����ҪӰ�졣��Ȼ���������Ļ�����˲�ͬ��������ʵ֤����
-�����ǿ��������෽���ں������ġ�
+从 ActivePerl 在企业界的流行，我们不难看出 Perl 携带的 UNIX 文化
+对 Windows 文化的重要影响。虽然，这两种文化是如此不同，但是事实证明，
+它们是可以在许多方面融合起来的。
 
-���磬��ƪ�ĵ������� Perl �� POD ��ʽ����������һ������ podhtm ��
-Perl �ű����ɵġ��������ǰ໹�кü���ͬѧ��ѡ�� POD ���������ǵĿ�
-����Ʊ��档As witnessed on QQ:
+比如，这篇文档就是用 Perl 的 POD 格式描述，再由一个叫做 podhtm 的
+Perl 脚本生成的。相信我们班还有好几个同学会选择 POD 来制作他们的课
+程设计报告。As witnessed on QQ:
 
-    ���ഺ  (2006-01-01 14:49:34)
+    章亦春  (2006-01-01 14:49:34)
     I've seen sal's OS design report.
 
-    ���ഺ  (2006-01-01 14:49:47)
+    章亦春  (2006-01-01 14:49:47)
     it's full of dregs. sigh.
 
-    ���ഺ  (2006-01-01 14:52:03)
+    章亦春  (2006-01-01 14:52:03)
     but anyway, i do like the POD appearance of his report.
     it looks pretty cute.
 
-    ����  (2006-01-01 14:54:55)
-    ������������pod�����ҵ�
+    万珣新  (2006-01-01 14:54:55)
+    我现在正在用pod来做我的
     os design
 
-    ���ഺ  (2006-01-01 14:55:20)
+    章亦春  (2006-01-01 14:55:20)
     great! it seems to me that pod is quickly gaining ground
     in our department. hooray!
 
-��һƪ�ĵ����ɵ�����ͼ������ʾ��
+这一篇文档生成的流程图如下所示：
 
 =begin html
 
@@ -99,159 +99,159 @@ Perl �ű����ɵġ��������ǰ໹�кü���ͬѧ��ѡ�� POD ���������ǵĿ�
 
 =end html
 
-ֵ��һ�������������ͼҲ���ҵ�һ������ gvmake �� Perl �ű��Զ����ݸ�
-��Ŀ�� Makefile �ļ��Զ����ɵġ���ʵ��������ͼ�ͽ� doc.png�������
-��ͼ�п������Լ���������ɵģ�Hooray for bootstrapping!
+值得一提的是上面这张图也是我的一个叫做 gvmake 的 Perl 脚本自动根据该
+项目的 Makefile 文件自动生成的。其实上面这张图就叫 doc.png，你可以
+在图中看到它自己是如何生成的！Hooray for bootstrapping!
 
-UNIX �Ļ�����ʵ���Ļ�������ϲ��������ʵ�����߽���������UNIX �Ļ��Ǵ�
-����Ļ�����������Ƕ��������û������ֵ��Լ��Ĺ��������Һų�����Ϊ��
-�������衱��UNIX �Ļ�����ħ�����Ļ������������ϰ���ڿ���д����ĳ���
-������������һ��������Ϊ����д���еĳ��򣬶���Щ�������������� OS ��
-�����ǿ�������ֱ����ħ����
+UNIX 文化是务实的文化，它不喜欢华而不实，或者矫揉造作。UNIX 文化是创
+造的文化，这里的人们都热衷于让机器来分担自己的工作，并且号称是因为自
+己“懒惰”。UNIX 文化又是魔法的文化，这儿的人们习惯于开发写程序的程序，
+并且梦想着有一天计算机能为它们写所有的程序，而这些技术在许多其他 OS 上
+的人们看来，简直就是魔术。
 
-��ֻ��������򵥵��о�һ���Լ��� UNIX �Ļ��ĸ����Ҳ��᳢������ƪ
-������ȥ����̽�� UNIX �Ļ������У���Ϊ���󳬳����ҵ�������Χ��
+我只能在这里简单地列举一下自己对 UNIX 文化的感悟，我不会尝试在这篇
+报告中去深入探究 UNIX 文化的真谛，因为这大大超出了我的能力范围。
 
-=head2 UNIX �İ�װ
+=head2 UNIX 的安装
 
-�� UNIX ������У���ֻ��װ�� Redhat Linux 9�����һ��Ǽ���ǰ�������ˡ�
-��ֻ�ǵõ������Ϊ Linux ����Ӳ�̷����������Ҳ��ٵĹ��򡣺����������
-������� /hda �����ķ��ŵĺ��壬��Ű�װ�ɹ����� Linux �� Windows ����
-����һ̨�����ǱȽ���Ȥ�ģ����ҳ�����Ҳ�Ǻ��б�Ҫ�ġ��Ͼ��������е�Ӳ������
-������ Linux �ṩ֧�֡���˳����һ�£�����������������պ��෴������
-������Ŀ��֧�� Linux������ Windows ��֧�������ܲ��
+在 UNIX 大家族中，我只安装过 Redhat Linux 9，而且还是几年前的事情了。
+我只记得当初如何为 Linux 分配硬盘分区花费了我不少的功夫。好在最后终于
+搞清楚了 /hda 这样的符号的含义，这才安装成功。让 Linux 与 Windows “共
+享”一台机器是比较有趣的，而且常常了也是很有必要的。毕竟不是所有的硬件和软
+件都对 Linux 提供支持。（顺便提一下，在自由软件领域，则刚好相反，几乎
+所有项目都支持 Linux，但对 Windows 的支持往往很差。）
 
-�⼸�գ��Ҽ���ǰ���������� Linux ��װ���ڱ�ϵ��ͬѧ���С�շת��������
-������ǣ���Ҷ���װ Linux�������һ�����ô�����
+这几日，我几年前购买的正版的 Linux 安装盘在本系的同学当中“辗转”。现在
+的情况是，大家都会装 Linux，就是我还不怎么清楚。
 
-=head2 UNIX ��������
+=head2 UNIX 基本操作
 
-�Ҷ� UNIX ������������Ϥ����Ȼ��ֻ�ڿγ�����ڼ��¼��ѧУ�� Solaris С
-�ͻ�ϵͳ�����ؾ������ҵ� Windows ϵͳ���ܻᰲװ Cygwin�������� Windows
-API �����˴󲿷ֵ� UNIX POSIX API���Ӷ�ʹ������ UNIX C/C++ ����
-�����޸Ļ���ֻ�������޸ľͿ�����ֲ�� Win32 ƽ̨�ϡ�����˼������������
-JVM���Ǻǡ���������ÿ��Ĺ����мȿ���ʹ�� Win32 ����� tree, dir, cl,
-notepad ֮�࣬�ֿ���ʹ�� UNIX ����� ls, time, grep, diff, gcc. ����
-��ϵ�ȷ��������ܣ�
+我对 UNIX 基本操作很熟悉，虽然我只在课程设计期间登录过学校的 Solaris 小
+型机系统。奥秘就在于我的 Windows 系统上总会安装 Cygwin，它利用 Windows
+API 摸拟了大部分的 UNIX POSIX API，从而使得许多 UNIX C/C++ 程序
+不加修改或者只需少许修改就可以移植到 Win32 平台上。它的思想让我想起了
+JVM，呵呵。现在我在每天的工作中既可以使用 Win32 命令，如 tree, dir, cl,
+notepad 之类，又可以使用 UNIX 命令，如 ls, time, grep, diff, gcc. 这种
+组合的确是令人振奋！
 
-�ҷ��ֵ�ϵͳ�а�װ�ж���汾��ͬһ����ʱ�� UNIX ����� which ����ǳ����ã�
-�����Ը����� OS �� PATH ���������о��������ҵ������ĸ��汾��������һ��
-Cygwin �е�һ�����ӣ�
+我发现当系统中安装有多个版本的同一软件时， UNIX 世界的 which 命令非常有用，
+它可以告诉我 OS 在 PATH 环境变量中究竟首先找到的是哪个版本。下面是一个
+Cygwin 中的一个例子：
 
     D:\Agent2002>which perl
     /cygdrive/e/perl/bin/perl
 
-=head1 Apache ������������
+=head1 Apache 服务器的配置
 
-ǰ�����Һ�����һ������ Apache �������� Windows XP �ϵİ�װ�����ã�
-���ǳɹ����� apache ���������� Perl �� Catalyst ��ܿ����� Web Ӧ��
-��������ĺܲ�����ֻ�����տ�ʼ��ʱ����������޸����������ļ���������
-���ٵĹ���
+前不久我和万珣新一起尝试了 Apache 服务器在 Windows XP 上的安装与配置，
+我们成功地让 apache 启动了我用 Perl 的 Catalyst 框架开发的 Web 应用
+程序。它真的很不错，只不过刚开始的时候搞清楚如何修改它的配置文件花了我们
+不少的工夫。
 
-�������ʣ�CGI ������ Perl ����Ա�Ľ��������ҵ��ǣ�Windows NT �� IIS
-������������ CGI �ű���������������ƣ������Ϊ��Դ������ Apache ����
-���ڿ���ֲ���ϣ�������������϶��Ǹ������ѡ��
+毫无疑问，CGI 是我们 Perl 程序员的骄傲。不幸的是，Windows NT 的 IIS
+服务器在运行 CGI 脚本方面有着诸多限制，因此作为开源软件的 Apache 无论
+是在可移植性上，还是在灵活性上都是更理想的选择。
 
-=head1 UNIX ����ͨ�Ű���
+=head1 UNIX 进程通信案例
 
-��ʦ���������� UNIX IPC ϵͳ���ý��� PV �����ı�̡���Ŀ�������ģ���
-���ĸ����̣��ֱ���Ϊ father, mother, daughter, �� son. ���ǹ���
-OS �е�һ��洢������Ϊ plate. ���� father ��ͣ���� plate �з�
-ƻ����mother ��ͣ���� plate �зŽ��ӣ�daughter �أ���ͣ�ش�
-plate ��ȡƻ����son ��ͣ�ش� plate ��ȡ���ӡ��ĸ����̲������У�Ҫ
-�� plate �����ֻ�ܷ� 5 ��ˮ����
+老师让我们利用 UNIX IPC 系统调用进行 PV 操作的编程。题目是这样的：现
+有四个进程，分别名为 father, mother, daughter, 和 son. 它们共享
+OS 中的一块存储区域，名为 plate. 现在 father 不停地往 plate 中放
+苹果，mother 不停地往 plate 中放桔子，daughter 呢，则不停地从
+plate 中取苹果，son 则不停地从 plate 中取桔子。四个进程并发运行，要
+求 plate 中最多只能放 5 个水果。
 
-=head2 Perl ���߳�ʵ��
+=head2 Perl 多线程实现
 
-��ʵ�ϣ��ں����������û����㷨֮���Ҿ������� Perl �� ithread ��
-�߳�ģ�Ͷ��㷨������������֤��ͬһ������� Perl ���߳�ʵ�ֱ� C Ҫ���
-�����öࣺ
+事实上，在和万珣新商量好基本算法之后，我就立刻用 Perl 的 ithread 多
+线程模型对算法本身进行了验证。同一个问题的 Perl 多线程实现比 C 要简洁
+清晰得多：
 
 B<bigplate.pl>
 
 =include "../bigplate.pl"
 
-����ű�ʹ�����ұ�д�� PV.pm ģ�顣��ģ�����ñ�׼�� Thread::Semaphore
-ģ����ʵ�ֶ��߳������µ� PV ���������������ṩ�˴����ź����ļ򵥽ӿڡ���
-Դ��������ʾ��
+这个脚本使用了我编写的 PV.pm 模块。该模块利用标准的 Thread::Semaphore
+模块来实现多线程条件下的 PV 操作。另外它还提供了创建信号量的简单接口。其
+源码如下所示：
 
 B<PV.pm>
 
 =include "../PV.pm"
 
-=head2 UNIX C �����ʵ��
+=head2 UNIX C 多进程实现
 
-=head3 ��������
+=head3 开发环境
 
-��Ӧ���õ��� UNIX �� shared memory �� semaphore ����������޷���
-Cygwin �й����������Գɹ����룩�����ҵĻ�����ֻ��װ������ Windows 2000
-����ϵͳ�������ֻ��ÿ�ε�¼��ѧУ�� Solaris С�ͻ��Ͻ��г�����ԡ�
-��ʵ֤����Windows �ϵ� ftp �� telnet ����Ϲ����÷ǳ��ã�ÿ������
-Windows ���ص� EditPlus Դ����༭���ϱ༭�ô���֮�󣬾��� ftp ��
-ʾ������ mput ���� put �����ϴ�֮��������� telnet ��ʾ������Զ����
-�����ͱ��롢���еȵ����
+该应用用到了 UNIX 的 shared memory 和 semaphore 机构，因此无法在
+Cygwin 中工作（但可以成功编译），而我的机器上只安装了两个 Windows 2000
+操作系统，因此我只好每次登录到学校的 Solaris 小型机上进行程序调试。
+事实证明，Windows 上的 ftp 与 telnet 的组合工作得非常好，每次我在
+Windows 本地的 EditPlus 源代码编辑器上编辑好代码之后，就在 ftp 提
+示符下用 mput 或者 put 命令上传之，最好再在 telnet 提示符下向远方机
+器发送编译、运行等等命令。
 
-���Ǹ� Solaris �Ϲ�����Ŀ�Ĺ��̻��ǱȽ�ʹ��ģ���Ϊ���� make ���߶�
-û���ṩ�������ֻ��ʹ�� Perl �ű���ʹ��Ŀ����Ͳ��Թ����Զ�������Ҫ��
-����������� Perl �汾�����֮�ϣ���Ȼ���� 5.005_4������� Perl 5
-�ĵ�һ����ʽ�İ汾Ŷ����������ǰѧ Perl ��ʱ�򣬰汾�ž��Ѵﵽ 5.6.1
-�ˣ�����������ƽ����һ�μ�����˹��ϵ� Perl ��װ��
+在那个 Solaris 上构造项目的过程还是比较痛苦的，因为它连 make 工具都
+没有提供，因此我只好使用 Perl 脚本来使项目构造和测试过程自动化。更要命
+的是它上面的 Perl 版本是如此之老，居然还是 5.005_4，这可是 Perl 5
+的第一个正式的版本哦。我在五年前学 Perl 的时候，版本号就已达到 5.6.1
+了，所以这是我平生第一次见到如此古老的 Perl 安装。
 
-=head3 ��λ�ȡ��Ŀ��Դ����ĵ�
+=head3 如何获取项目的源码和文档
 
-�ҵ���Щ C �� Perl ���붼�Ѵ��� SVN/SVK �İ汾����֮�¡������ǿ�����
-�κ�ʱ�䣬�����ڵ¹��� SVN �������õ�����Ŀ�����°汾��
+我的这些 C 和 Perl 代码都已处在 SVN/SVK 的版本控制之下。你总是可以在
+任何时间，从我在德国的 SVN 服务器得到该项目的最新版本：
 
 L<http://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX/>
 
-������� IE �������� repository, �������ŵķ�ʽ��ͨ�� SVN �ͻ�����
-������������Ŀ¼���ļ��������ʹ�� Windows�� TortoiseSVN �Ƿǳ�������ѡ��
-�������ṩ�˼��ɵ����ҵĵ��ԡ��е�ͼ�ν��棬���������������������Դ�����
-�ٷ���ҳ�õ���
+你可以在 IE 中浏览这个 repository, 但更优雅的方式是通过 SVN 客户端自
+动地下载所有目录和文件。如果你使用 Windows， TortoiseSVN 是非常不错的选择，
+它不仅提供了集成到“我的电脑”中的图形界面，而且它是免费软件。你可以从它的
+官方主页得到：
 
 L<http://tortoisesvn.tigris.org/>
 
-ʹ�� SVN �ͻ��˽������ص�ʱ����Ҫʹ������� URL ���� checkout��
+使用 SVN 客户端进行下载的时候，需要使用下面的 URL 进行 checkout：
 
 L<https://svn.berlios.de./svnroot/repos/unisimu/OS/PV/UNIX>
 
-=head3 ��Ŀ������������
+=head3 项目的生成与运行
 
-����������Ŀ�����ļ� (F<README>) ��˵��������ɺ����д���Ŀ��
+下面引用项目自述文件 (F<README>) 来说明如何生成和运行此项目：
 
 B<README>
 
 =include "README"
 
-=head3 ��Ŀ����ϵ�ṹ
+=head3 项目的体系结构
 
 =over
 
 =item pv.h
 
-��ͷ�ļ��з����˾����ܺ÷�װ IPC Ӧ������ĺ��� API. ��Щ API �Ƕ���
-�ھ���Ӧ�õģ�Ҳ����˵�����ǿ����������� IPC ��Ŀ��ʹ�����ͷ�ļ��ṩ
-�ĺ����������� pv.h �Ķ��壺
+该头文件中放置了经过很好封装 IPC 应用所需的核心 API. 这些 API 是独立
+于具体应用的，也就是说，我们可以在其他的 IPC 项目中使用这个头文件提供
+的函数。下面是 pv.h 的定义：
 
 =include "pv.h"
 
 =item pv.c
 
-F<pv.c> �� C<pv.h> ��ʵ���ļ�������ʹ���� C<pv.h> �� C/C++ �ļ���Ӧ��
-���ļ�һ��������ӡ����ڸ��ļ�ƪ���ϳ����Ұ����ŵ���L</APPENDIX> �С�
+F<pv.c> 是 C<pv.h> 的实现文件。但凡使用了 C<pv.h> 的 C/C++ 文件都应与
+此文件一起编译链接。由于该文件篇幅较长，我把它放到了L</APPENDIX> 中。
 
 =item app.h
 
-��ͷ�ļ��м��з�����������Ŀ�����ȫ�ֳ��������������ڴ���ź����ļ�ֵ��
-���Կ��� DEBUG���ַ��������Ĵ�С���Լ�һЩ�����õ� C/C++ �ꡣ
+该头文件中集中放置了整个项目所需的全局常量，包括共享内存和信号量的键值，
+调试开关 DEBUG，字符缓冲区的大小，以及一些调试用的 C/C++ 宏。
 
 =include "app.h"
 
 =item init.c
 
-���Ǳ�Ӧ�õĳ�ʼ�����̣������𴴽�Ӧ���е�������������� OS �����ϵĹ���
-��Դ����������������� F<father>, F<mother> �����Ľ���ִ�С���ʵ�ִ���
-��μ� L</APPENDIX>.
+这是本应用的初始化进程，它负责创建应用中的其他进程所需的 OS 级别上的共享
+资源。因此它必须先优于 F<father>, F<mother> 这样的进程执行。其实现代码
+请参见 L</APPENDIX>.
 
 =item father.c
 
@@ -261,72 +261,72 @@ F<pv.c> �� C<pv.h> ��ʵ���ļ�������ʹ���� C<pv.h> �� C/C++ �ļ���Ӧ��
 
 =item son.c
 
-���ĸ� C �ļ��ֱ�ʵ���� F<father>, F<mother>, F<daughter>, �� F<son>
-���ĸ������Ľ��̡����ǵ�Դ����˴˺������������� L</APPENDIX> �п�����
-��������Դ�����б���
+这四个 C 文件分别实现了 F<father>, F<mother>, F<daughter>, 和 F<son>
+这四个独立的进程。它们的源代码彼此很相近，你可以在 L</APPENDIX> 中看到它
+们完整的源代码列表。
 
 =item destroy.c
 
-F<destroy> �����������μ� L</��Դй©> һ�ڡ�Դ������ŵ��� L</APPENDIX>
-�С�
+F<destroy> 程序的作用请参见 L</资源泄漏> 一节。源代码亦放到了 L</APPENDIX>
+中。
 
 =item build
 
-��д F<build> �ű����Զ�����Ŀ�Ĺ��������ʵʵ�����Ρ����С�ͻ��ϰ�װ��
-make ���ߵĻ����ҵ� Makefile ����õ�ѡ�������Ҳ���Ϥ UNIX shell����
-�Ա��� Perl �ű������ˣ�
+编写 F<build> 脚本来自动化项目的构造过程其实实属无奈。如果小型机上安装有
+make 工具的话，我的 Makefile 是最好的选择。由于我不熟悉 UNIX shell，所
+以便用 Perl 脚本来做了：
 
 =include "build"
 
-ע�⣬�û������� F<build> �ű��ṩһ�������в�����ָ��ʹ�õ� C/C++ ����
-����Ĭ��ʹ�õ��� g++. ��ʵ�ϣ��ҵ���Щ������ǺϷ��� C ���룬�����ϸ��
-C++ ���룬���ʹ���ϸ�� C++ �����������ڱ����ڼ䷢�ָ����Ǳ�ڵĴ���
-��Ȼ����Ҳ���Ը��� gcc �������������ǣ�
+注意，用户可以向 F<build> 脚本提供一个命令行参数以指定使用的 C/C++ 编译
+器。默认使用的是 g++. 事实上，我的这些代码既是合法的 C 代码，又是严格的
+C++ 代码，因此使用严格的 C++ 编译器可以在编译期间发现更多的潜在的错误。
+当然，你也可以改用 gcc 编译器，方法是：
 
     ./build gcc
 
 =item clean
 
-�ұ�д��һ�� 20 ���е� Perl ��������Զ���ָ���û���������Ϣ��(semaphore)
-�����й����ڴ� (shared memory) ������ա�ÿ�������������ǵ�Ӧ��֮ǰ����
-����� perl �ű������еؽ��л���������������� Perl �������� UNIX ����
-ipcs �õ���ǰ���������е��ź����͹����ڴ���б���Ȼ�������������ʽ����ɸ
-ѡ����ǰ�û����ź����͹����ڴ�� ID���������Զ����� UNIX ���� ipcrm ��
-���ǽ�����һɾ������ע�⵽��ֻ���ź����͹����ڴ�������߲���Ȩ��ɾ������
-������ϵͳ����ԱҲ��Ȩ�ޣ�����
+我编写了一个 20 多行的 Perl 程序可以自动对指定用户的所有信息量(semaphore)
+和所有共享内存 (shared memory) 进行清空。每次我们运行我们的应用之前先运
+行这个 perl 脚本，集中地进行环境清理工作。这个 Perl 程序利用 UNIX 命令
+ipcs 得到当前环境中所有的信号量和共享内存的列表，然后利用正则表达式从中筛
+选出当前用户的信号量和共享内存的 ID，而后再自动调用 UNIX 命令 ipcrm 对
+它们进行逐一删除。我注意到，只有信号量和共享内存的所有者才有权限删除它们
+（或许系统管理员也有权限？）。
 
-�û�����ͨ�������в���ָ��ɾ������Ӧ�õ��ʻ�������
+用户可以通过命令行参数指定删除操作应用的帐户，比如
 
     ./clean n0304
 
-�Ͱ� n0304 �û��Ĺ�����Դȫ��ɾ����������ṩ�κβ���������
+就把 n0304 用户的共享资源全部删除。如果不提供任何参数，比如
 
     ./clean
 
-�� F<clean> �ű�ͨ�� Perl �ڽ����� getlogin ��ȡ��ǰ��¼�û����û�����
-���ڲ���� ipcs �������ʽ�Ƿ��� UNIX �������ֵ���ͳһ����� clean ��
-Linux, FreeBSD ��ϵͳ�ϵĿ���ֲ�ԾͲ�����ˡ�
+则 F<clean> 脚本通过 Perl 内建函数 getlogin 获取当前登录用户的用户名。
+由于不清楚 ipcs 的输出格式是否在 UNIX 各个变种当中统一，因此 clean 在
+Linux, FreeBSD 等系统上的可移植性就不清楚了。
 
-���� F<clean> �Ĵ��������֮�٣������Ҿ��������������棺
+由于 F<clean> 的代码是如此之少，所以我决定把它放在下面：
 
 =include "clean"
 
 =item run
 
-���ֹ���ʽ��һ���� F<init>, F<father>, F<mother> ... ��ͨ����������
-���������ú�̨��ʽ�����Ƕര�ڷ�ʽ���Ҷ��Թ��ˣ����ǹ����÷ǳ�֮�á�
+用手工方式逐一启动 F<init>, F<father>, F<mother> ... 是通常的做法。
+无论是利用后台方式，还是多窗口方式，我都试过了，它们工作得非常之好。
 
-Ϊ�˱��ڲ��ԣ��һ��� perl д��һ�����������桱����Ϊ F<run>. �������첽
-�����ε��� father, mother, daughter, �� son ���ĸ����̡�
+为了便于测试，我还用 perl 写了一个“驱动引擎”，名为 F<run>. 它可以异步
+地依次调用 father, mother, daughter, 和 son 这四个进程。
 
-����������Դ���룺
+下面是它的源代码：
 
 =include "run"
 
 =back
 
-��ͼ���ҵ� gvmake ���߸�����Ŀ�� F<Makefile> ���Ƶģ�����������������Ŀ
-���� C/C++ �����ļ��ı�����̣��Լ�����֮��Ĺ�ϵ��
+下图是我的 gvmake 工具根据项目的 F<Makefile> 绘制的，它清晰地描述了项目
+核心 C/C++ 代码文件的编译过程，以及它们之间的关系：
 
 =begin html
 
@@ -336,36 +336,36 @@ Linux, FreeBSD ��ϵͳ�ϵĿ���ֲ�ԾͲ�����ˡ�
 
 =end html
 
-��ͼ�����ݵ� F<Makefile> �ļ��������£�
+上图所依据的 F<Makefile> 文件内容如下：
 
 =include "Makefile"
 
-��ʵ�ϣ������ͼƬֻ������ F<Makefile> �ļ����� C<all> Ϊ��������������
-Ŀ�� C<clean> û�л���, �� C<doc> Ŀ��Ͷ�Ӧ�� L</UNIX �Ļ�> һ���и���
-��ͼƬ��
+事实上，上面的图片只绘制了 F<Makefile> 文件中以 C<all> 为根的生成树。根
+目标 C<clean> 没有绘制, 而 C<doc> 目标就对应于 L</UNIX 文化> 一节中给出
+的图片。
 
-=head3 ���⼰��������
+=head3 问题及其解决方案
 
 =over
 
 =item *
 
-���������塱���ڴ����
+“核心陷阱”与内存管理
 
-���ڵ��Ե� UNIX C ����Ĺ����о�����������Ĵ�����Ϣ��
+我在调试的 UNIX C 程序的过程中经常遇到下面的错误信息：
 
-    �δ���--��������
+    段错误--核心陷阱
     
-����������������ʱ�����Ե������޴룬������Ϊ�����ض��� UNIX ���������Ĵ���
-��Ϣ��������˵Ļ�����Ҳ��û��ʲô�������������ˡ����Ǻ����ҷ��֣�����ʵ�ǳ��ձ飬
-�����Ƿ� IPC �� C Ӧ��Ҳ�ᴥ���˴�����ʵ�ϣ����ڴ�ķǷ����ʣ��ͻᴥ���ô���
-������Ӧ�÷ǳ������� Windows �����µġ��ó���ִ���˷Ƿ������������رա�����
-���� Windows �ﳣ���� ��XXX ָ�������ڴ���Ч�ģ����ڴ治��Ϊ read/written������
-�������Ѿ�ϰ��Ϊ��������֪��������Ŵ��ˡ�
+初次遇到这个问题的时候，我显得手足无措，并且以为这是特定于 UNIX 共享操作的错误
+信息。果真如此的话，我也就没有什么东西可以依靠了。但是后来我发现，它其实非常普遍，
+即便是非 IPC 的 C 应用也会触发此错误。事实上，对内存的非法访问，就会触发该错误。
+我想它应该非常类似于 Windows 环境下的“该程序执行了非法操作，即将关闭……”
+或者 Windows 里常见的 “XXX 指令引用内存无效的，该内存不能为 read/written”。我
+，现在已经习已为常，并且知道该如何排错了。
 
-��ʹ�� F<app.h> ͷ�ļ��ж���� HERE
-���������������λ�õ�ȷ�����������ִ�е� HERE ��չ����λ�ã��ͻ��� stderr ��
-ӡ����λ���ϵ��ļ������кš�HERE ���һ��������������ʾ��
+我使用 F<app.h> 头文件中定义的 HERE
+宏来辅助程序崩溃位置的确定。如果程序执行到 HERE 宏展开的位置，就会向 stderr 打
+印出该位置上的文件名和行号。HERE 宏的一组典型输出如下所示：
 
     father.c: line 51 : GOT HERE!
     father.c: line 56 : GOT HERE!
@@ -373,84 +373,84 @@ Linux, FreeBSD ��ϵͳ�ϵĿ���ֲ�ԾͲ�����ˡ�
     father.c: line 65 : GOT HERE!
     father.c: line 28 : GOT HERE!
 
-����������ʵ�� F<father.c> �ļ��� 51��56��61��65���� 28 ���ϵ� HERE ��������
-�� stderr �����������Ȼ��������ǲ�ϣ�� HERE ������ੲ��ݵĻ���ֻ�轫 F<app.h>
-ͷ�ļ��е� DEBUG ������ȡֵ��Ϊ 0 �Ϳ����ˡ�
+上面的输出其实是 F<father.c> 文件第 51，56，61，65，和 28 行上的 HERE 宏所产生
+的 stderr 调试输出。当然，如果我们不希望 HERE 宏继续喋喋不休的话，只需将 F<app.h>
+头文件中的 DEBUG 常数的取值改为 0 就可以了。
 
-˵ʵ����C �汾��ʵ�ֱ�������û�Ҫ���ף������м������յĴ��󣬻��ǻ������Ҽ���Сʱ�ĵ�
-�����Ŵ�ʱ�䡣�����ڴ�δ��ʼ�������ڴ�ָ��ǳ���ȡ֮����������⡣���¸����ң�����
-ͬѧ��һ�ᵽָ�룬���Ǿͷ���Ϳ���������Ǵ�Ҷ��������͵Ĵ�����ϢӦ�û��Ǻ���Ϥ�ġ����
-��һ��֤ʵ���ҵ��Ʋ⣺���ԣ����ͬѧҲ��������⡱��
+说实话，C 版本的实现比我想象得还要容易，但是有几个阴险的错误，还是花费了我几个小时的调
+试与排错时间。都是内存未初始化或者内存指针非常存取之类的讨厌问题。万珣新告诉我，不少
+同学，一提到指针，他们就犯糊涂，看来我们大家对这种类型的错误信息应该还是很熟悉的。徐飞
+进一步证实了我的推测：“对，别的同学也有这个问题”。
 
 =item *
 
-��Դй©
+资源泄漏
 
-Solaris С�ͻ��ڷ���Ĺ�����Դ���������������Ƶģ����ڱ��ܵĿγ�����ڼ䣬��
-�����֮���ͬѧ��¼ Solaris С�ͻ������Լ��� IPC ����������ʦû���ṩ��
-��������������С�ͻ�������������Դ�ɷ�������Ρ����Ե��������� init ��ʱ��
-�ͻ�õ�����ĳ�����Ϣ��
+Solaris 小型机在分配的共享资源的数量上是有限制的，而在本周的课程设计期间，又
+有如此之多的同学登录 Solaris 小型机运行自己的 IPC 程序。由于老师没有提供任
+何清理程序，于是小型机经常出现无资源可分配的情形。所以当我在运行 init 的时候，
+就会得到下面的出错信息：
 
     $ ./init
     create_sema: : No space left on device
     create_sema: : No space left on device
     init.c: line 30: Failed to create semaphore 'can_put'.
 
-�������Ⱥ��� n0305, n0302 �� n0304 �����ݵ�¼��Ȼ�������ҵ� F<clean> �ű�����Щ
-�û����е����й����ڴ�͹����ź���������ա������ҵĳ����ֿ������������ˡ�
+于是我先后以 n0305, n0302 和 n0304 的身份登录，然后运行我的 F<clean> 脚本对这些
+用户持有的所有共享内存和共享信号量进行清空。现在我的程序又可以正常工作了。
 
-���� F<clean> �ű��ͷ�ĳ����¼�û�����ӵ�е����й�����Դ�����ǲ���ò����Ϊ����Ϊ
-�п����ж���û���ͬһ��¼����ʹ�ü�����������ɾ������Դ�ܿ���ǡ��������ĳ��ͬѧ
-����������ʹ�õġ��������¾�����Թ˵������������ʦ����ʾ��ʱ���������й�����Դ
-�����ҵ� F<clean> ɾ���ˣ��������ĳ��򡰵��ڳ�������
+运行 F<clean> 脚本释放某个登录用户名所拥有的所有共享资源可能是不礼貌的行为。因为
+有可能有多个用户以同一登录名来使用计算机。因此我删除的资源很可能恰好是其他某个同学
+创建并正在使用的。比如万珣新就曾报怨说，我在他给老师作演示的时候他的所有共享资源
+都被我的 F<clean> 删除了，导致他的程序“当众出错”。
 
-��������Ϊ��õĽ�������ǣ�ÿ���û��Լ��ṩһ������β������ר�Ÿ����������
-���Լ��ĳ�ʼ�����̴�������Щ��Դ���ҵ� BigPlate ��Ŀ�е��������β������
-��Ϊ F<destroy>����Դ�ļ��� F<destroy.c>
+于是我认为最好的解决方案是，每个用户自己提供一个“收尾”程序，专门负责在最后清
+除自己的初始化进程创建的那些资源。我的 BigPlate 项目中的这个“收尾”程序
+名为 F<destroy>，其源文件是 F<destroy.c>
 
-F<destroy.c> �ļ�ʹ���� C<pv.h> ���������������� C<free_shared_mem> ��
-C<free_sema>�����ǵĺ�����һĿ��Ȼ�ģ���Ӧ��ʵ�ִ�����Ȼ������ C<pv.c> �ļ��С�
+F<destroy.c> 文件使用了 C<pv.h> 中新增的两个函数 C<free_shared_mem> 和
+C<free_sema>，它们的含义是一目了然的，对应的实现代码自然放在了 C<pv.c> 文件中。
 
-F<destroy> ���������û��ֹ������ģ��������� F<run> �����������ű���������������ʱ����
-����������й� F<father>, F<mother>, F<daughter>, �� F<son> �Ĳ���������֮��
+F<destroy> 程序是由用户手工启动的（或由类似 F<run> 这样的驱动脚本启动），启动的时机是
+在我们完成有关 F<father>, F<mother>, F<daughter>, 和 F<son> 的操作和试验之后。
 
-ÿһ���ú�������ˣ֮�󣬶�Ӧ����������Ϸ���ء� ��ҲӦ�����ǡ���Ϸ���򡱵�һ���֡�
-��ʹ�����������ϵͳ��Դ֮�󲻼�ʱ�ͷţ��ͻᷢ��ϵͳ��Դй©��
+每一个好孩子在玩耍之后，都应该清理好游戏场地。 这也应该算是“游戏规则”的一部分。
+在使用完申请过的系统资源之后不及时释放，就会发生系统资源泄漏。
 
-��ʵ�ϣ����Ѿ��� perl д��һ��ͨ�õ� F<clean> ����������ɾ����ָ�����û������е�
-ָ������Դ���������ŵĽ�������ǣ������Լ���Ϊÿһ�� IPC Ӧ�ñ�дһ�� C ����
-��Ϊ��β���� F<init> ���̴����Ĺ�����Դȫ��ɾ������ô���ĺô����ڣ�ÿһ�����Ǿ���
-�޸Ĺ����ڴ���ź����ļ�ֵ��ʱ�򣬾�ֻ��Ҫ�޸�һ�����壬�Ǿ��� F<app.h> �еĳ������塣
-�������ǻ�������ÿ���޸��� F<app.h> ֮����ȥ�޸� F<clean.cfg> �ļ��е����ݣ�
-�����ɽ������ֹ��Ĺ�����������˳��ֲ�һ�µĿ����ԣ�Υ������ν�� I<DRY> ԭ��
-(Don��t Repeat Yourself!).
+事实上，我已经用 perl 写了一个通用的 F<clean> 程序，它可以删除你指定的用户所持有的
+指定的资源。但更优雅的解决方案是，我们自己再为每一个 IPC 应用编写一个 C 程序，
+作为收尾，把 F<init> 进程创建的共享资源全部删除。这么做的好处在于，每一次我们决定
+修改共享内存或信号量的键值的时候，就只需要修改一处定义，那就是 F<app.h> 中的常量定义。
+否则，我们还必须在每次修改了 F<app.h> 之后，再去修改 F<clean.cfg> 文件中的内容，
+这无疑将增加手工的工作量，提高了出现不一致的可能性，违反了所谓的 I<DRY> 原则
+(Don’t Repeat Yourself!).
 
-F<destroy> ���������� F<init> �����Ӧ������ǰ��������ͷ���Դ�����������������Դ��
-���ǵĹ�ϵ���������� C++ ��� delete �� new ������� C++ ����Ա�������� new 
-�������̬�ش�������ʹ�����֮���� delete ���ٶ������Ǻõı��ϰ�ߡ�
+F<destroy> 程序正好与 F<init> 程序对应起来，前者在最后释放资源，后者在最初申请资源。
+它们的关系让我想起了 C++ 里的 delete 和 new 运算符。 C++ 程序员们总是用 new 
+运算符动态地创建对象，使用完毕之后，再 delete 销毁对象。这是好的编程习惯。
 
-��ʵ�ϣ��� IPC ����̵ĳ��ϣ�����ʱ�ͷŵ�������Դ������ C++ �����ǵ��� delete��
-���Ҫ���صöࡣ��Ϊ C++ �����ڶ���������ڴ���Դ���ǻ��ڽ�����ֹʱǿ�Ƶ��˻��� OS��
-���� OS �����ϵĹ����ڴ���ź�������ȫ��ͬ�������������ǵĽ��������˳����������ǲ�
-��ʽ���ͷţ����ǽ���һֱ������ OS �У�ֱ���þ����е� OS ��Դ����������һ�㣬����
-��ǰ�ƺ���δ�����㹻�����ӡ�
+事实上，在 IPC 多进程的场合，不及时释放掉共享资源，比在 C++ 中忘记调用 delete，
+后果要严重得多。因为 C++ 进程在堆中申请的内存资源总是会在进程终止时强制地退还给 OS，
+但是 OS 级别上的共享内存和信号量则完全不同，即便申请它们的进程早已退出，如若我们不
+显式地释放，它们将会一直留存在 OS 中，直到用尽所有的 OS 资源。而对于这一点，我们
+从前似乎并未给予足够的重视。
 
 =back
 
-=head2 Win32 Perl �����ʵ��
+=head2 Win32 Perl 多进程实现
 
-���� Perl �� Win32::Mutex, Win32::Semaphore ģ�齫ǰ��� UNIX C ʵ����������ֲ
-�� Windows ƽ̨����ȫ���ܵġ����� Microsfot δ�ṩ�򵥵Ľ��̼乲���ڴ�Ľӿڣ�Win32
-���ڴ�ӳ�����ͬ�����ʵĶ��������ǽӿڸ��ӣ�������Ϊ�������ļ����ź�������������Ժ�
-�õ�ģ��������ڴ档�����ƺ�������뷨�ܸ���Ȥ����ϧ������û���㹻��ʱ�����������
+利用 Perl 的 Win32::Mutex, Win32::Semaphore 模块将前面的 UNIX C 实现完整地移植
+到 Windows 平台是完全可能的。由于 Microsfot 未提供简单的进程间共享内存的接口（Win32
+的内存映射表是同种性质的东西，但是接口复杂），我以为将磁盘文件与信号量结合起来可以很
+好地模拟出共享内存。万珣新似乎对这个想法很感兴趣，可惜我现在没有足够的时机来完成它。
 
-���������뵽һ�������ǣ�Perl �� Win32::Semaphore δ�ṩɾ���ź����Ľӿڣ�����ζ����
-��ֻ�ܴ���������ɾ�����������۴�ϵͳ��Դ�������ʵĽǶȣ����Ǵ�Ӧ�����³�ʼ���ĽǶȣ���
-������˵���ǱȽ����ѵġ�
+现在我能想到一个问题是，Perl 的 Win32::Semaphore 未提供删除信号量的接口，这意味着我
+们只能创建，不能删除。于是无论从系统资源的利用率的角度，还是从应用重新初始化的角度，对
+我们来说都是比较困难的。
 
 =head1 APPENDIX
 
-=head2 UNIX C ʵ�ֵ�Դ�����б�
+=head2 UNIX C 实现的源代码列表
 
 =over
 
