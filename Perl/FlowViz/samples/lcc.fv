@@ -1,0 +1,54 @@
+font simsun
+
+start init进程
+do 创建共享缓冲区
+do 创建共享变量\n用于存放缓冲区大小
+do 创建进程R,M,P\n对应的缓冲区当前焦点\nR_i,M_i,P_i
+do 创建信号量\nR_enter,M_enter,P_enter
+end 退出
+
+start R进程
+while (永真) {
+    do P(R_enter)
+    io 获得下一个\n用户字符串s
+    do 将s写入R_i\n指向的缓冲区单元
+    do 移动R_i至下一位置
+    do V(M_enter)
+    if (s == 终结串)
+        end 退出
+    do next
+}
+end 退出
+
+start M进程
+while (永真) {
+    do P(M_enter)
+    do 读取M_i指向的\n缓冲区单元至s
+    do 对s进行指定的\n字符串变换
+    do 将s写回原来的\n缓冲区单元
+    do 移动M_i\n至下一位置
+    do V(P_enter)
+    if (s == 终结串)
+        end 退出
+    do next
+}
+end 退出
+
+start P进程
+while (永真) {
+    do P(P_enter)
+    do 读取P_i指向的\n缓冲区单元至s
+    io 打印s到标准输出
+    do 移动P_i\n至下一位置
+    do V(R_enter)
+    if (s == 终结串)
+        end 退出
+    do next
+}
+end 退出
+
+start clear进程
+do 释放共享缓冲区
+do 释放共享变量
+do 释放信号量\nR_enter,M_enter,P_enter
+end 退出
