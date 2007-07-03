@@ -1,0 +1,37 @@
+all: embperl.lib
+
+perlxsi.obj: perlxsi.c
+	cl /c /nologo  -nologo -Gf -W3 -MD -Zi -DNDEBUG -O1 -DWIN32 -D_CONSOLE -DNO_STRICT -DHAVE_DES_FCRYPT  -DNO_HASH_SEED -DPERL_IMPLICIT_CONTEXT -DPERL_IMPLICIT_SYS -DUSE_PERLIO -DPERL_MSVCRT_READFIX  -I"D:\Perl\lib\CORE" perlxsi.c
+
+plstub.obj: plstub.c
+	cl /c /nologo  -nologo -Gf -W3 -MD -Zi -DNDEBUG -O1 -DWIN32 -D_CONSOLE -DNO_STRICT -DHAVE_DES_FCRYPT  -DNO_HASH_SEED -DPERL_IMPLICIT_CONTEXT -DPERL_IMPLICIT_SYS -DUSE_PERLIO -DPERL_MSVCRT_READFIX  -I"D:\Perl\lib\CORE" plstub.c
+
+plinterp.obj: plinterp.cpp plproxy.hpp embperl.h
+	cl /nologo /c /Za /EHsc plinterp.cpp
+
+plsv.obj: plsv.cpp plproxy.hpp embperl.h
+	cl /nologo /c /Za /EHsc plsv.cpp
+
+plav.obj: plav.cpp plproxy.hpp embperl.h
+	cl /nologo /c /Za /EHsc plav.cpp
+
+plhv.obj: plhv.cpp plproxy.hpp embperl.h
+	cl /nologo /c /Za /EHsc plhv.cpp
+
+embperl.lib: perlxsi.obj plstub.obj plinterp.obj plsv.obj plav.obj plhv.obj
+	lib /nologo /out:embperl.lib /NODEFAULTLIB perlxsi.obj plstub.obj \
+	plinterp.obj plsv.obj plav.obj plhv.obj \
+	perl58.lib
+
+test: all t\interp.t.exe t\sv.t.exe t\av.t.exe t\hv.t.exe
+	cd t && gen_t.bat && cd ..
+	prove t/*.t
+
+clean:
+	perl -MExtUtils::Command -e rm_f *.obj *.lib t/*.obj t/*.exe vc70.pdb t/*.t
+
+install: all
+	cp embperl.lib WinRel/
+	cp embperl.h WinRel/
+
+.PHONY: all test clean install
