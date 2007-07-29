@@ -1,0 +1,47 @@
+<wrapper>
+
+{
+    sub can_put {
+        my ($chessboard, $x, $y) = @_;
+        my @queens = @$chessboard;
+        for my $j (0..$#queens) {
+            my $i = $queens[$j];
+            if ($i == $x or $i + $j == $x + $y or $i - $j == $x - $y) {
+                return undef;
+            }
+        }
+        1;
+    }
+}
+
+var x, y, chessboard;
+
+init:
+    { 1 }
+    { $chessboard = []; $y = 0; }
+
+put_ln0:
+    { can_put($chessboard, 0, $y) }
+    { $x = 0 }
+
+put_ln1:
+    { can_put($chessboard, 1, $y) }
+    { $x = 1 }
+
+put_ln2:
+    { can_put($chessboard, 2, $y) }
+    { $x = 2 }
+
+put_ln3:
+    { can_put($chessboard, 3, $y) }
+    { $x = 3 }
+
+next_col:
+    { defined $x }
+    { push @$chessboard, $x; undef $x; $y++; }
+
+found:
+    { @$chessboard == 4 } { warn "@$chessboard\n" }
+
+init ((put_ln0 | put_ln1 | put_ln2 | put_ln3) next_col)* found;
+

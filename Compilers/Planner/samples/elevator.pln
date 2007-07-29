@@ -1,0 +1,19 @@
+<wrapper>
+
+var on, pos;
+
+init: {1} { $on = [5, 3]; $pos = 4; }
+
+up:
+    { defined ($on->[0]) && $on->[0] > $pos }
+    { warn "up $on->[0]"; $pos = $on->[0] }
+
+down:
+    { defined ($on->[0]) && $on->[0] < $pos }
+    { warn "down $on->[0]"; $pos = $on->[0] }
+
+off:
+    { defined ($on->[0]) && $on->[0] == $pos }
+    { shift @$on }
+
+init ((up|down) off)*;

@@ -1,0 +1,9 @@
+<wrapper>
+
+var str, pos;
+
+a: { substr($str, $pos, 1) eq 'a' } { $pos++ }
+b: { substr($str, $pos, 1) eq 'b' } { $pos++ }
+
+(a|b)*(a a|b b)(a|b)*;
+
