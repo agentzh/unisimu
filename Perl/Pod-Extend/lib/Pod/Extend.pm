@@ -17,6 +17,7 @@ our $maple;
 our $dbi_dsn;
 our $dbi_username;
 our $dbi_password;
+my $dbh;
 
 my $in_code = 0;
 my $code = '';
@@ -85,7 +86,7 @@ my %hooks = (
         $sql =~ s/^[\s\n]+|[\s\n]+$//sg;
         my $res = '';
 
-        my $dbh = connect_db();
+        $dbh ||= connect_db();
         if (not $dbh) {
             return fmt_code_res($sql, $DBI::errstr, 'SQL')
         }
